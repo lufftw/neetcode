@@ -1,0 +1,86 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run all tests for current problem",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run case #1 for current problem",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/case_runner.py",
+                "${fileBasenameNoExtension}",
+                "1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run case #2 for current problem",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/case_runner.py",
+                "${fileBasenameNoExtension}",
+                "2"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run case (prompt for number)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/case_runner.py",
+                "${fileBasenameNoExtension}",
+                "${input:caseNumber}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "caseNumber",
+            "description": "Enter case number (e.g., 1, 2, 3...)",
+            "default": "1",
+            "type": "promptString"
+        }
+    ]
+}

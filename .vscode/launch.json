@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug current problem (case #1)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/case_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "1"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Debug current problem (case #2)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/case_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "2"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Debug solution directly (no stdin)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Run all tests (Debug mode)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        }
+    ]
+}
