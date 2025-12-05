@@ -209,37 +209,37 @@ python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
 
 SOLUTIONS = {
     "default": {
-        "method": "mergeKLists_heap",       # 對應的方法名稱
+        "method": "mergeKListsPriorityQueue",       # 對應的方法名稱
         "complexity": "O(N log k)",          # 時間複雜度
         "description": "Priority Queue approach"
     },
     "heap": {
-        "method": "mergeKLists_heap",
+        "method": "mergeKListsPriorityQueue",
         "complexity": "O(N log k)",
         "description": "Priority Queue (Min Heap)"
     },
     "greedy": {
-        "method": "mergeKLists_greedy",
+        "method": "mergeKListsGreedy",
         "complexity": "O(kN)",
         "description": "Greedy comparison"
     },
     "divide": {
-        "method": "mergeKLists_divide_conquer",
+        "method": "mergeKListsDivideConquer",
         "complexity": "O(N log k)",
         "description": "Divide and Conquer"
     },
 }
 
 class Solution:
-    def mergeKLists_heap(self, lists):
+    def mergeKListsPriorityQueue(self, lists):
         # Heap 解法實作...
         pass
     
-    def mergeKLists_greedy(self, lists):
+    def mergeKListsGreedy(self, lists):
         # Greedy 解法實作...
         pass
     
-    def mergeKLists_divide_conquer(self, lists):
+    def mergeKListsDivideConquer(self, lists):
         # Divide & Conquer 解法實作...
         pass
 
