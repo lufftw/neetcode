@@ -1,0 +1,13 @@
+# Set default behavior to automatically normalize line endings
+* text=auto eol=lf
+
+# Test files must use LF
+tests/*.in text eol=lf
+tests/*.out text eol=lf
+
+# Python files
+*.py text eol=lf
+
+# Batch files need CRLF on Windows
+*.bat text eol=crlf
+

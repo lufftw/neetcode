@@ -199,7 +199,12 @@ Examples:
         # 測試所有解法
         methods_to_test = list(solutions_meta.keys())
     elif args.method:
-        # 測試指定解法
+        # 測試指定解法 - 驗證 method 是否存在
+        if solutions_meta and args.method not in solutions_meta:
+            available = list(solutions_meta.keys())
+            print(f"❌ 找不到解法 '{args.method}'")
+            print(f"   可用的解法: {', '.join(available)}")
+            sys.exit(1)
         methods_to_test = [args.method]
     elif solutions_meta and "default" in solutions_meta:
         # 有 SOLUTIONS 但沒指定，用 default
