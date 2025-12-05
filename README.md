@@ -28,7 +28,8 @@ neetcode/
 │   └── ...
 │
 ├── templates/               ← 新題目模板
-│   ├── template_solution.py
+│   ├── template_solution.py       ← 單一解法模板
+│   ├── template_solution_multi.py ← 多解法模板
 │   └── template_test.txt
 │
 ├── leetcode/                ← Python 虛擬環境 (Python 3.11)
@@ -75,7 +76,11 @@ leetcode\Scripts\activate
 ### 3. 建立新題目
 
 ```batch
+# 單一解法模板
 new_problem.bat 0007_reverse_integer
+
+# 多解法模板（支援 --all、--benchmark）
+new_problem.bat 0023_merge_k_lists --multi
 ```
 
 這會自動建立：
@@ -170,6 +175,161 @@ python runner/case_runner.py <problem_name> <case_index>
 python runner/test_runner.py 0001_two_sum
 python runner/case_runner.py 0001_two_sum 1
 ```
+
+---
+
+## 🚀 多解法測試與效能比較
+
+當一道題目有多種解法時，可以同時測試並比較效能。
+
+### 命令列參數
+
+```bash
+# 執行預設解法
+python runner/test_runner.py 0023_merge_k_sorted_lists
+
+# 執行指定解法
+python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
+python runner/test_runner.py 0023_merge_k_sorted_lists --method greedy
+python runner/test_runner.py 0023_merge_k_sorted_lists --method divide
+
+# 執行所有解法
+python runner/test_runner.py 0023_merge_k_sorted_lists --all
+
+# 執行所有解法 + 效能比較
+python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
+```
+
+### 如何定義多解法
+
+在 solution 檔案中加入 `SOLUTIONS` 字典：
+
+```python
+# solutions/0023_merge_k_sorted_lists.py
+
+SOLUTIONS = {
+    "default": {
+        "method": "mergeKListsPriorityQueue",       # 對應的方法名稱
+        "complexity": "O(N log k)",          # 時間複雜度
+        "description": "Priority Queue approach"
+    },
+    "heap": {
+        "method": "mergeKListsPriorityQueue",
+        "complexity": "O(N log k)",
+        "description": "Priority Queue (Min Heap)"
+    },
+    "greedy": {
+        "method": "mergeKListsGreedy",
+        "complexity": "O(kN)",
+        "description": "Greedy comparison"
+    },
+    "divide": {
+        "method": "mergeKListsDivideConquer",
+        "complexity": "O(N log k)",
+        "description": "Divide and Conquer"
+    },
+}
+
+class Solution:
+    def mergeKListsPriorityQueue(self, lists):
+        # Heap 解法實作...
+        pass
+    
+    def mergeKListsGreedy(self, lists):
+        # Greedy 解法實作...
+        pass
+    
+    def mergeKListsDivideConquer(self, lists):
+        # Divide & Conquer 解法實作...
+        pass
+
+def solve():
+    import os
+    # 從環境變數取得要執行的解法
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    sol = Solution()
+    method_func = getattr(sol, method_func_name)
+    result = method_func(...)
+    print(result)
+```
+
+### 效能比較輸出範例
+
+```
+============================================================
+🧪 Testing: 0023_merge_k_sorted_lists
+============================================================
+
+📌 Method: heap
+   Complexity: O(N log k)
+   Description: Priority Queue (Min Heap) approach
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (0.15ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (0.02ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
+
+   Result: 3 / 3 cases passed.
+
+📌 Method: greedy
+   Complexity: O(kN)
+   Description: Greedy comparison - compare all k heads each time
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (0.45ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (0.02ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
+
+   Result: 3 / 3 cases passed.
+
+📌 Method: divide
+   Complexity: O(N log k)
+   Description: Divide and Conquer - merge pairs recursively
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (0.12ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (0.01ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
+
+   Result: 3 / 3 cases passed.
+
+============================================================
+📊 Performance Comparison
+============================================================
+Method               Avg Time     Complexity      Pass Rate
+------------------------------------------------------------
+heap                    0.06ms   O(N log k)      3/3
+greedy                  0.16ms   O(kN)           3/3
+divide                  0.05ms   O(N log k)      3/3
+============================================================
+```
+
+### SOLUTIONS 欄位說明
+
+| 欄位 | 說明 | 必填 |
+|------|------|------|
+| `method` | Solution class 中對應的方法名稱 | ✅ |
+| `complexity` | 時間複雜度（用於顯示比較） | ❌ |
+| `description` | 解法描述 | ❌ |
+
+### 自定義短名稱
+
+`SOLUTIONS` 的 **key** 就是命令列使用的短名稱，可以自由定義：
+
+```python
+SOLUTIONS = {
+    "default": {"method": "solve_optimal", ...},     # 預設解法
+    "heap": {"method": "solve_heap", ...},           # --method heap
+    "h": {"method": "solve_heap", ...},              # --method h (別名)
+    "pq": {"method": "solve_priority_queue", ...},   # --method pq
+    "bf": {"method": "solve_bruteforce", ...},       # --method bf
+    "dc": {"method": "solve_divide_conquer", ...},   # --method dc
+}
+```
+
+> **注意**: 
+> - `default` 是預設解法，不指定 `--method` 時使用
+> - 時間複雜度需由使用者自行標註，系統僅測量實際執行時間
 
 ---
 
