@@ -14,8 +14,41 @@ class ListNode:
         self.val = val
         self.next = next
 
-
+import heapq
 class Solution:
+    def mergeKListsPriorityQueue(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        # Edge case: empty input list
+        if not lists:
+            return None
+        # Min-heap: each entry is a tuple (value, list_index, node)
+        # list index is used to break ties when node values are equal
+        min_heap = []
+
+        for i, node in enumerate(lists):
+            if node:
+                # Push tuple (value, index, node) into heap
+                # value → primary sort key
+                # index → tie-breaker (prevents comparing ListNode objects)
+                # node → the actual node to attach
+                heapq.heappush(min_heap, (node.val, i, node))
+
+        dummy = ListNode()
+        tail = dummy
+
+        while min_heap:
+            # Pop the smallest node among all current heads of the lists.
+            val, i, node = heapq.heappop(min_heap)
+
+            # Attach this node to the result list
+            tail.next = node
+            tail = tail.next
+
+            # Move forward in the same list, and push the new head into heap if it exists.
+            if node.next:
+                heapq.heappush(min_heap, (node.next.val, i, node.next))
+
+        return dummy.next
+
     def mergeKListsGreedy(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         k = len(lists)
 
@@ -67,6 +100,24 @@ def linkedlist_to_list(node: Optional[ListNode]) -> List[int]:
     return result
 
 
+def copy_linkedlist(node: Optional[ListNode]) -> Optional[ListNode]:
+    """深拷貝 LinkedList"""
+    if not node:
+        return None
+    dummy = ListNode(0)
+    current = dummy
+    while node:
+        current.next = ListNode(node.val)
+        current = current.next
+        node = node.next
+    return dummy.next
+
+
+def copy_lists(lists: List[Optional[ListNode]]) -> List[Optional[ListNode]]:
+    """深拷貝整個 linked list 陣列"""
+    return [copy_linkedlist(node) for node in lists]
+
+
 def solve():
     """
     輸入格式:
@@ -93,9 +144,18 @@ def solve():
             lists.append(None)
 
     sol = Solution()
-    result = sol.mergeKListsGreedy(lists)
 
-    # 輸出格式: [1, 1, 2, 3, 4, 4, 5, 6]
+    # 根據參數選擇解法
+    import sys
+    method = sys.argv[1] if len(sys.argv) > 1 else 'heap'
+
+    if method == 'greedy':
+        # 解法二: Greedy (O(kN))
+        result = sol.mergeKListsGreedy(copy_lists(lists))
+    else:
+        # 解法一: Priority Queue (O(N log k)) - 預設
+        result = sol.mergeKListsPriorityQueue(copy_lists(lists))
+
     print(linkedlist_to_list(result))
 
 
