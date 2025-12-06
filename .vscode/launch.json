@@ -54,7 +54,7 @@
             "justMyCode": true
         },
         {
-            "name": "Run all tests (Debug mode)",
+            "name": "Debug all tests",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/runner/test_runner.py",
@@ -73,6 +73,21 @@
             "program": "${workspaceFolder}/runner/test_runner.py",
             "args": [
                 "${fileBasenameNoExtension}",
+                "--benchmark"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Benchmark current problem all solutions",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--all",
                 "--benchmark"
             ],
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",

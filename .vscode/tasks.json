@@ -73,6 +73,49 @@
                 "cwd": "${workspaceFolder}"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Benchmark current problem",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--benchmark"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run all solutions with benchmark",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--all",
+                "--benchmark"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
         }
     ],
     "inputs": [
