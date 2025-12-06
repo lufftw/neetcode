@@ -159,11 +159,13 @@ if __name__ == "__main__":
 ```
 2,7,11,15
 9
+
 ```
 
 ### 輸出檔 (`.out`)
 ```
 [0, 1]
+
 ```
 
 ---
@@ -217,17 +219,22 @@ python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
 
 SOLUTIONS = {
     "default": {
-        "method": "mergeKLists_heap",       # 對應的方法名稱
+        "method": "mergeKListsPriorityQueue",       # 對應的方法名稱
         "complexity": "O(N log k)",          # 時間複雜度
         "description": "Priority Queue approach"
     },
     "heap": {
-        "method": "mergeKLists_heap",
+        "method": "mergeKListsPriorityQueue",
         "complexity": "O(N log k)",
         "description": "Priority Queue (Min Heap)"
     },
+    "divide": {
+        "method": "mergeKListsDivideConquer",
+        "complexity": "O(N log k)",
+        "description": "Divide and Conquer"
+    },
     "greedy": {
-        "method": "mergeKLists_greedy",
+        "method": "mergeKListsGreedy",
         "complexity": "O(kN)",
         "description": "Greedy comparison"
     },
@@ -237,7 +244,11 @@ class Solution:
     def mergeKLists_heap(self, lists):
         # Heap 解法實作...
         pass
-    
+
+    def mergeKListsDivideConquer(self, lists):
+        # Divide & Conquer 解法實作...
+        pass
+
     def mergeKLists_greedy(self, lists):
         # Greedy 解法實作...
         pass
@@ -290,13 +301,43 @@ SOLUTIONS = {
 🧪 Testing: 0023_merge_k_sorted_lists
 ============================================================
 
+📌 Method: default
+   Complexity: O(N log k)
+   Description: Priority Queue (Min Heap) approach
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (53.04ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (43.11ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (44.50ms)
+
+   Result: 3 / 3 cases passed.
+
 📌 Method: heap
    Complexity: O(N log k)
    Description: Priority Queue (Min Heap) approach
 
-   0023_merge_k_sorted_lists_1: ✅ PASS (0.15ms)
-   0023_merge_k_sorted_lists_2: ✅ PASS (0.02ms)
-   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
+   0023_merge_k_sorted_lists_1: ✅ PASS (44.40ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (43.89ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (44.79ms)
+
+   Result: 3 / 3 cases passed.
+
+📌 Method: divide
+   Complexity: O(N log k)
+   Description: Divide and Conquer approach
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (44.02ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (44.32ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (45.11ms)
+
+   Result: 3 / 3 cases passed.
+
+📌 Method: greedy
+   Complexity: O(kN)
+   Description: Greedy comparison - compare all k heads each time
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (44.68ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (45.00ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (44.78ms)
 
    Result: 3 / 3 cases passed.
 
@@ -305,8 +346,10 @@ SOLUTIONS = {
 ============================================================
 Method               Avg Time     Complexity      Pass Rate
 ------------------------------------------------------------
-heap                    0.06ms   O(N log k)      3/3
-greedy                  0.16ms   O(kN)           3/3
+default                 46.88ms   O(N log k)      3/3
+heap                    44.36ms   O(N log k)      3/3
+divide                  44.48ms   O(N log k)      3/3
+greedy                  44.82ms   O(kN)           3/3
 ============================================================
 ```
 
