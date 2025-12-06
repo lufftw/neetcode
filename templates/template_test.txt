@@ -1,39 +1,39 @@
 # ============================================
-# 測資模板說明 (Test Case Template)
+# Test Case Template
 # ============================================
 # 
-# 檔案命名規則:
-#   - 輸入檔: {problem_name}_{case_number}.in
-#   - 輸出檔: {problem_name}_{case_number}.out
+# File naming convention:
+#   - Input file: {problem_name}_{case_number}.in
+#   - Output file: {problem_name}_{case_number}.out
 #
-# 例如:
+# Examples:
 #   tests/0001_two_sum_1.in
 #   tests/0001_two_sum_1.out
 #   tests/0001_two_sum_2.in
 #   tests/0001_two_sum_2.out
 #
 # ============================================
-# .in 檔案格式範例 (以 Two Sum 為例)
+# .in file format example (Two Sum)
 # ============================================
-# 第一行: nums 陣列 (逗號分隔)
-# 第二行: target 數字
+# Line 1: nums array (comma separated)
+# Line 2: target number
 #
-# 例:
+# Example:
 # 2,7,11,15
 # 9
 #
 # ============================================
-# .out 檔案格式範例
+# .out file format example
 # ============================================
-# 輸出你程式預期印出的結果
+# The expected output from your program
 #
-# 例:
+# Example:
 # [0, 1]
 #
 # ============================================
-# 小提示:
-# - 每題的輸入格式由你在 solve() 函式中定義
-# - 輸出格式需與你的 print() 結果完全一致
-# - 空白和換行會自動正規化，不用擔心末尾空白
+# Tips:
+# - Input format is defined by your solve() function
+# - Output format must match your print() result exactly
+# - Whitespace and newlines are normalized automatically
+# - Files must use LF line endings (Unix format)
 # ============================================
-

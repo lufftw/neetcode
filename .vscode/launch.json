@@ -30,6 +30,20 @@
             "justMyCode": true
         },
         {
+            "name": "Debug current problem (case #3)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/case_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "3"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
             "name": "Debug solution directly (no stdin)",
             "type": "debugpy",
             "request": "launch",
@@ -46,6 +60,20 @@
             "program": "${workspaceFolder}/runner/test_runner.py",
             "args": [
                 "${fileBasenameNoExtension}"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Benchmark current problem",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--benchmark"
             ],
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
