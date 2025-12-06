@@ -30,8 +30,9 @@ neetcode/
 │   └── ...
 │
 ├── templates/               ← 新題目模板
-│   ├── template_solution.py       ← 單一解法模板
-│   ├── template_solution_multi.py ← 多解法模板
+│   ├── template_solution.py         ← 單一解法模板
+│   ├── template_solution_multi.py   ← 多解法（單一類別）
+│   ├── template_solution_wrapper.py ← 多解法（Wrapper 模式）
 │   └── template_test.txt
 │
 ├── leetcode/                ← Python 虛擬環境 (Python 3.11)
@@ -81,8 +82,11 @@ leetcode\Scripts\activate
 # 單一解法模板
 new_problem.bat 0007_reverse_integer
 
-# 多解法模板（支援 --all、--benchmark）
+# 多解法模板（單一類別，多個方法）
 new_problem.bat 0023_merge_k_lists --multi
+
+# Wrapper 模式模板（多個類別，保留 LeetCode 原始方法名稱）
+new_problem.bat 0025_reverse_nodes --wrapper
 ```
 
 這會自動建立：
@@ -291,6 +295,93 @@ SOLUTIONS = {
 > **注意**: 
 > - `default` 是預設解法，不指定 `--method` 時使用
 > - 時間複雜度需由使用者自行標註，系統僅測量實際執行時間
+
+### 進階：使用 Wrapper 函式分離多個解法類別
+
+當實作多種解法（如遞迴 vs 迭代）時，你可能會遇到：
+- 方法名稱在同一個類別內衝突
+- 需要重新命名方法，偏離原本 LeetCode 的簽名
+
+**解決方案**：使用獨立的 Solution 類別搭配 wrapper 函式。
+
+```python
+# solutions/0025_reverse_nodes_in_k_group.py
+
+# ============================================
+# 解法一：遞迴
+# ============================================
+class SolutionRecursive:
+    def reverseKGroup(self, head, k):
+        # 遞迴實作...
+        pass
+
+# ============================================
+# 解法二：迭代
+# ============================================
+class SolutionIterative:
+    def reverseKGroup(self, head, k):
+        # 迭代實作...
+        pass
+
+# ============================================
+# Wrapper 函式 - 整合 test_runner
+# ============================================
+def solve_recursive(head, k):
+    """SolutionRecursive 的 wrapper。"""
+    return SolutionRecursive().reverseKGroup(head, k)
+
+def solve_iterative(head, k):
+    """SolutionIterative 的 wrapper。"""
+    return SolutionIterative().reverseKGroup(head, k)
+
+# ============================================
+# SOLUTIONS 定義
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_iterative",
+        "complexity": "O(N) time, O(1) space",
+        "description": "迭代式原地反轉"
+    },
+    "recursive": {
+        "method": "solve_recursive",
+        "complexity": "O(N) time, O(N) space",
+        "description": "遞迴反轉（使用堆疊）"
+    },
+    "iterative": {
+        "method": "solve_iterative",
+        "complexity": "O(N) time, O(1) space",
+        "description": "迭代式原地反轉"
+    },
+}
+
+def solve():
+    import os
+    import sys
+    
+    # 從環境變數取得解法名稱
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # 解析輸入
+    lines = sys.stdin.read().strip().split('\n')
+    # ... 解析你的輸入 ...
+    
+    # 直接呼叫 wrapper 函式（不透過類別）
+    method_func = globals()[method_func_name]
+    result = method_func(head, k)
+    
+    print(result)
+```
+
+**這個模式的好處：**
+- 每個解法都在獨立的類別中（`SolutionRecursive`、`SolutionIterative`）
+- 保留原本 LeetCode 的方法名稱（如 `reverseKGroup`、`mergeKLists`）
+- 不會在同一個類別內發生方法名稱衝突
+- 當題目有超過兩種解法時，擴展性佳
+
+> **提示**：使用 `new_problem.bat <name> --wrapper` 建立此模式的模板。
 
 ---
 
