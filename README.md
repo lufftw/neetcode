@@ -219,8 +219,8 @@ Add a `SOLUTIONS` dictionary in your solution file:
 
 SOLUTIONS = {
     "default": {
-        "method": "mergeKListsPriorityQueue",       # 對應的方法名稱
-        "complexity": "O(N log k)",          # 時間複雜度
+        "method": "mergeKListsPriorityQueue",   # Name of the method in Solution class
+        "complexity": "O(N log k)",             # Time complexity
         "description": "Priority Queue approach"
     },
     "heap": {

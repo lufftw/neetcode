@@ -31,7 +31,7 @@ SOLUTIONS = {
     },
     "greedy": {
         "method": "mergeKListsGreedy",
-        "complexplexity": "O(kN)",
+        "complexity": "O(kN)",
         "description": "Greedy comparison - compare all k heads each time"
     },
 }
