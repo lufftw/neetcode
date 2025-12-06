@@ -30,8 +30,9 @@ neetcode/
 │   └── ...
 │
 ├── templates/               ← Templates for new problems
-│   ├── template_solution.py       ← Single solution template
-│   ├── template_solution_multi.py ← Multi-solution template
+│   ├── template_solution.py         ← Single solution template
+│   ├── template_solution_multi.py   ← Multi-solution (one class)
+│   ├── template_solution_wrapper.py ← Multi-solution (wrapper pattern)
 │   └── template_test.txt
 │
 ├── leetcode/                ← Python virtual environment (Python 3.11)
@@ -81,8 +82,11 @@ leetcode\Scripts\activate
 # Single solution template
 new_problem.bat 0007_reverse_integer
 
-# Multi-solution template (supports --all, --benchmark)
+# Multi-solution template (one class, multiple methods)
 new_problem.bat 0023_merge_k_lists --multi
+
+# Wrapper-based template (multiple classes, preserves LeetCode method names)
+new_problem.bat 0025_reverse_nodes --wrapper
 ```
 
 This will create:
@@ -291,6 +295,93 @@ SOLUTIONS = {
 > **Note**: 
 > - `default` is used when `--method` is not specified
 > - Time complexity must be annotated by user; system only measures actual execution time
+
+### Advanced: Wrapper-Based Pattern for Multiple Solution Classes
+
+When implementing multiple approaches (e.g., recursive vs iterative), you may encounter:
+- Method name conflicts inside one class
+- Having to rename methods away from their original LeetCode signatures
+
+**Solution**: Use separate Solution classes with wrapper functions.
+
+```python
+# solutions/0025_reverse_nodes_in_k_group.py
+
+# ============================================
+# Solution 1: Recursive approach
+# ============================================
+class SolutionRecursive:
+    def reverseKGroup(self, head, k):
+        # Recursive implementation...
+        pass
+
+# ============================================
+# Solution 2: Iterative approach  
+# ============================================
+class SolutionIterative:
+    def reverseKGroup(self, head, k):
+        # Iterative implementation...
+        pass
+
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_recursive(head, k):
+    """Wrapper for SolutionRecursive."""
+    return SolutionRecursive().reverseKGroup(head, k)
+
+def solve_iterative(head, k):
+    """Wrapper for SolutionIterative."""
+    return SolutionIterative().reverseKGroup(head, k)
+
+# ============================================
+# SOLUTIONS metadata
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_iterative",
+        "complexity": "O(N) time, O(1) space",
+        "description": "Iterative in-place reversal"
+    },
+    "recursive": {
+        "method": "solve_recursive",
+        "complexity": "O(N) time, O(N) space",
+        "description": "Recursive reversal with stack"
+    },
+    "iterative": {
+        "method": "solve_iterative",
+        "complexity": "O(N) time, O(1) space",
+        "description": "Iterative in-place reversal"
+    },
+}
+
+def solve():
+    import os
+    import sys
+    
+    # Get solution method from environment variable
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Parse input
+    lines = sys.stdin.read().strip().split('\n')
+    # ... parse your input ...
+    
+    # Call wrapper function directly (not via class)
+    method_func = globals()[method_func_name]
+    result = method_func(head, k)
+    
+    print(result)
+```
+
+**Benefits of this pattern:**
+- Each solution stays in its own class (`SolutionRecursive`, `SolutionIterative`)
+- Preserve original LeetCode method names (e.g., `reverseKGroup`, `mergeKLists`)
+- No method name collisions inside a single class
+- Scales nicely when a problem has more than two approaches
+
+> **Tip**: Use `new_problem.bat <name> --wrapper` to create a template with this pattern.
 
 ---
 
