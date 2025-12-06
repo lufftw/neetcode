@@ -1,0 +1,359 @@
+# 🧩 NeetCode / LeetCode 練習框架
+
+**Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
+
+一套完整的 LeetCode 練習框架，支援多筆測資、自動比對、Debug 整合。
+
+---
+
+## 📁 專案結構
+
+```
+neetcode/
+│
+├── .vscode/                 ← VS Code 整合設定
+│   ├── settings.json        ← Python 環境設定
+│   ├── tasks.json           ← Ctrl+Shift+B 快捷任務
+│   └── launch.json          ← F5 Debug 設定
+│
+├── runner/                  ← 執行器模組
+│   ├── test_runner.py       ← 跑所有 .in/.out 並比對
+│   ├── case_runner.py       ← 跑單一 .in 測資（Debug 用）
+│   └── util.py              ← 共用工具函式
+│
+├── solutions/               ← 每一題的解答程式
+│   └── 0001_two_sum.py
+│
+├── tests/                   ← 所有測資
+│   ├── 0001_two_sum_1.in
+│   ├── 0001_two_sum_1.out
+│   └── ...
+│
+├── templates/               ← 新題目模板
+│   ├── template_solution.py       ← 單一解法模板
+│   ├── template_solution_multi.py ← 多解法模板
+│   └── template_test.txt
+│
+├── leetcode/                ← Python 虛擬環境 (Python 3.11)
+│
+├── run_tests.bat            ← Windows: 執行所有測資
+├── run_case.bat             ← Windows: 執行單一測資
+├── new_problem.bat          ← Windows: 建立新題目
+│
+└── README.md
+```
+
+---
+
+## 🚀 快速開始
+
+### 1. 環境設定（首次安裝）
+
+> 參考 [LeetCode 官方環境說明](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages)
+
+```powershell
+# 進入專案目錄
+cd /d "D:\Developer\program\python\neetcode"
+
+# 安裝 Python 3.11（如果尚未安裝）
+py install 3.11
+
+# 建立虛擬環境
+py -3.11 -m venv leetcode
+
+# 啟動虛擬環境
+leetcode\Scripts\activate
+
+# 安裝 debugpy（Debug 用）
+pip install debugpy
+```
+
+### 2. 日常使用（啟動環境）
+
+```powershell
+cd /d "D:\Developer\program\python\neetcode"
+leetcode\Scripts\activate
+```
+
+### 3. 建立新題目
+
+```batch
+# 單一解法模板
+new_problem.bat 0007_reverse_integer
+
+# 多解法模板（支援 --all、--benchmark）
+new_problem.bat 0023_merge_k_lists --multi
+```
+
+這會自動建立：
+- `solutions/0007_reverse_integer.py`
+- `tests/0007_reverse_integer_1.in`
+- `tests/0007_reverse_integer_1.out`
+
+### 4. 執行測試
+
+```batch
+# 執行所有測資
+run_tests.bat 0001_two_sum
+
+# 執行單一測資
+run_case.bat 0001_two_sum 1
+```
+
+---
+
+## ⌨️ VS Code 快捷鍵
+
+| 快捷鍵 | 功能 |
+|--------|------|
+| `Ctrl+Shift+B` | 執行當前檔案對應的所有測資 |
+| `F5` | Debug 當前檔案的 case #1 |
+
+> **注意**: 請先開啟 `solutions/` 中的解答檔案，再使用快捷鍵。
+
+---
+
+## 📝 解答檔案格式
+
+```python
+# solutions/0001_two_sum.py
+from typing import List
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # 你的解法
+        pass
+
+def solve():
+    import sys
+    lines = sys.stdin.read().strip().split('\n')
+    
+    # 解析輸入
+    nums = list(map(int, lines[0].split(',')))
+    target = int(lines[1])
+    
+    sol = Solution()
+    result = sol.twoSum(nums, target)
+    
+    # 輸出答案
+    print(result)
+
+if __name__ == "__main__":
+    solve()
+```
+
+---
+
+## 📋 測資檔案格式
+
+### 格式規範
+
+| 項目 | 規範 |
+|------|------|
+| 換行符號 | **LF** (Unix/Linux 格式，`\n`) |
+| 編碼 | UTF-8 |
+| 結尾 | 必須以單一換行結尾 |
+| 命名規則 | `{題號}_{題目名稱}_{編號}.in/.out` |
+
+### 輸入檔 (`.in`)
+```
+2,7,11,15
+9
+```
+
+### 輸出檔 (`.out`)
+```
+[0, 1]
+```
+
+---
+
+## 🔧 命令列用法
+
+```bash
+# 執行所有測資
+python runner/test_runner.py <problem_name>
+
+# 執行單一測資
+python runner/case_runner.py <problem_name> <case_index>
+```
+
+### 範例
+
+```bash
+python runner/test_runner.py 0001_two_sum
+python runner/case_runner.py 0001_two_sum 1
+```
+
+---
+
+## 🚀 多解法測試與效能比較
+
+當一道題目有多種解法時，可以同時測試並比較效能。
+
+### 命令列參數
+
+```bash
+# 執行預設解法
+python runner/test_runner.py 0023_merge_k_sorted_lists
+
+# 執行指定解法
+python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
+python runner/test_runner.py 0023_merge_k_sorted_lists --method greedy
+
+# 執行所有解法
+python runner/test_runner.py 0023_merge_k_sorted_lists --all
+
+# 執行所有解法 + 效能比較
+python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
+```
+
+### 如何定義多解法
+
+在 solution 檔案中加入 `SOLUTIONS` 字典：
+
+```python
+# solutions/0023_merge_k_sorted_lists.py
+
+SOLUTIONS = {
+    "default": {
+        "method": "mergeKLists_heap",       # 對應的方法名稱
+        "complexity": "O(N log k)",          # 時間複雜度
+        "description": "Priority Queue approach"
+    },
+    "heap": {
+        "method": "mergeKLists_heap",
+        "complexity": "O(N log k)",
+        "description": "Priority Queue (Min Heap)"
+    },
+    "greedy": {
+        "method": "mergeKLists_greedy",
+        "complexity": "O(kN)",
+        "description": "Greedy comparison"
+    },
+}
+
+class Solution:
+    def mergeKLists_heap(self, lists):
+        # Heap 解法實作...
+        pass
+    
+    def mergeKLists_greedy(self, lists):
+        # Greedy 解法實作...
+        pass
+
+def solve():
+    import os
+    # 從環境變數取得要執行的解法
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    sol = Solution()
+    method_func = getattr(sol, method_func_name)
+    result = method_func(...)
+    print(result)
+```
+
+### SOLUTIONS 欄位說明
+
+| 欄位 | 說明 | 必填 |
+|------|------|------|
+| `method` | Solution class 中對應的方法名稱 | ✅ |
+| `complexity` | 時間複雜度（用於顯示比較） | ❌ |
+| `description` | 解法描述 | ❌ |
+
+### 自定義短名稱
+
+`SOLUTIONS` 的 **key** 就是命令列使用的短名稱，可以自由定義：
+
+```python
+SOLUTIONS = {
+    "default": {"method": "solve_optimal", ...},     # 預設解法
+    "heap": {"method": "solve_heap", ...},           # --method heap
+    "h": {"method": "solve_heap", ...},              # --method h (別名)
+    "pq": {"method": "solve_priority_queue", ...},   # --method pq
+    "bf": {"method": "solve_bruteforce", ...},       # --method bf
+}
+```
+
+> **注意**: 
+> - `default` 是預設解法，不指定 `--method` 時使用
+> - 時間複雜度需由使用者自行標註，系統僅測量實際執行時間
+
+---
+
+## 📊 測試結果範例
+
+```
+============================================================
+🧪 Testing: 0023_merge_k_sorted_lists
+============================================================
+
+📌 Method: heap
+   Complexity: O(N log k)
+   Description: Priority Queue (Min Heap) approach
+
+   0023_merge_k_sorted_lists_1: ✅ PASS (0.15ms)
+   0023_merge_k_sorted_lists_2: ✅ PASS (0.02ms)
+   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
+
+   Result: 3 / 3 cases passed.
+
+============================================================
+📊 Performance Comparison
+============================================================
+Method               Avg Time     Complexity      Pass Rate
+------------------------------------------------------------
+heap                    0.06ms   O(N log k)      3/3
+greedy                  0.16ms   O(kN)           3/3
+============================================================
+```
+
+---
+
+## 🐍 Python 環境
+
+- **Python 版本**: 3.11（與 [LeetCode 官方環境](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages) 一致）
+- **虛擬環境**: `leetcode/` (專案內)
+- **已安裝套件**:
+  - `debugpy` - Debug 支援
+
+### 啟動虛擬環境
+
+```powershell
+# PowerShell
+.\leetcode\Scripts\Activate.ps1
+
+# CMD
+leetcode\Scripts\activate.bat
+```
+
+### 安裝新套件
+
+```powershell
+# 先啟動虛擬環境，再安裝
+leetcode\Scripts\activate
+pip install <package_name>
+```
+
+---
+
+## 💡 小技巧
+
+1. **新增多筆測資**: 複製 `.in/.out` 檔案，修改編號即可
+   ```
+   0001_two_sum_1.in → 0001_two_sum_2.in
+   0001_two_sum_1.out → 0001_two_sum_2.out
+   ```
+
+2. **Debug 特定測資**: 修改 `launch.json` 中的 case 編號
+
+3. **自訂輸入格式**: 在 `solve()` 函式中自由定義解析邏輯
+
+---
+
+## 📜 License
+
+MIT License - 自由使用於個人學習
+

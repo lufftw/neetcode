@@ -1,117 +1,119 @@
 # 🧩 NeetCode / LeetCode Practice Framework
 
-一套完整的 LeetCode 練習框架，支援多筆測資、自動比對、Debug 整合。
+**Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
+
+A complete LeetCode practice framework with multiple test cases, auto-comparison, and debug integration.
 
 ---
 
-## 📁 專案結構
+## 📁 Project Structure
 
 ```
 neetcode/
 │
-├── .vscode/                 ← VS Code 整合設定
-│   ├── settings.json        ← Python 環境設定
-│   ├── tasks.json           ← Ctrl+Shift+B 快捷任務
-│   └── launch.json          ← F5 Debug 設定
+├── .vscode/                 ← VS Code integration
+│   ├── settings.json        ← Python environment settings
+│   ├── tasks.json           ← Ctrl+Shift+B shortcuts
+│   └── launch.json          ← F5 Debug configuration
 │
-├── runner/                  ← 執行器模組
-│   ├── test_runner.py       ← 跑所有 .in/.out 並比對
-│   ├── case_runner.py       ← 跑單一 .in 測資（Debug 用）
-│   └── util.py              ← 共用工具函式
+├── runner/                  ← Test runner modules
+│   ├── test_runner.py       ← Run all .in/.out and compare
+│   ├── case_runner.py       ← Run single test case (for debugging)
+│   └── util.py              ← Shared utilities
 │
-├── solutions/               ← 每一題的解答程式
+├── solutions/               ← Solution files for each problem
 │   └── 0001_two_sum.py
 │
-├── tests/                   ← 所有測資
+├── tests/                   ← All test cases
 │   ├── 0001_two_sum_1.in
 │   ├── 0001_two_sum_1.out
 │   └── ...
 │
-├── templates/               ← 新題目模板
-│   ├── template_solution.py       ← 單一解法模板
-│   ├── template_solution_multi.py ← 多解法模板
+├── templates/               ← Templates for new problems
+│   ├── template_solution.py       ← Single solution template
+│   ├── template_solution_multi.py ← Multi-solution template
 │   └── template_test.txt
 │
-├── leetcode/                ← Python 虛擬環境 (Python 3.11)
+├── leetcode/                ← Python virtual environment (Python 3.11)
 │
-├── run_tests.bat            ← Windows: 執行所有測資
-├── run_case.bat             ← Windows: 執行單一測資
-├── new_problem.bat          ← Windows: 建立新題目
+├── run_tests.bat            ← Windows: Run all tests
+├── run_case.bat             ← Windows: Run single test
+├── new_problem.bat          ← Windows: Create new problem
 │
 └── README.md
 ```
 
 ---
 
-## 🚀 快速開始
+## 🚀 Quick Start
 
-### 1. 環境設定（首次安裝）
+### 1. Environment Setup (First Time)
 
-> 參考 [LeetCode 官方環境說明](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages)
+> Reference: [LeetCode Official Environment](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages)
 
 ```powershell
-# 進入專案目錄
+# Navigate to project directory
 cd /d "D:\Developer\program\python\neetcode"
 
-# 安裝 Python 3.11（如果尚未安裝）
+# Install Python 3.11 (if not already installed)
 py install 3.11
 
-# 建立虛擬環境
+# Create virtual environment
 py -3.11 -m venv leetcode
 
-# 啟動虛擬環境
+# Activate virtual environment
 leetcode\Scripts\activate
 
-# 安裝 debugpy（Debug 用）
+# Install debugpy (for debugging)
 pip install debugpy
 ```
 
-### 2. 日常使用（啟動環境）
+### 2. Daily Usage (Activate Environment)
 
 ```powershell
 cd /d "D:\Developer\program\python\neetcode"
 leetcode\Scripts\activate
 ```
 
-### 3. 建立新題目
+### 3. Create New Problem
 
 ```batch
-# 單一解法模板
+# Single solution template
 new_problem.bat 0007_reverse_integer
 
-# 多解法模板（支援 --all、--benchmark）
+# Multi-solution template (supports --all, --benchmark)
 new_problem.bat 0023_merge_k_lists --multi
 ```
 
-這會自動建立：
+This will create:
 - `solutions/0007_reverse_integer.py`
 - `tests/0007_reverse_integer_1.in`
 - `tests/0007_reverse_integer_1.out`
 
-### 4. 執行測試
+### 4. Run Tests
 
 ```batch
-# 執行所有測資
+# Run all test cases
 run_tests.bat 0001_two_sum
 
-# 執行單一測資
+# Run single test case
 run_case.bat 0001_two_sum 1
 ```
 
 ---
 
-## ⌨️ VS Code 快捷鍵
+## ⌨️ VS Code Shortcuts
 
-| 快捷鍵 | 功能 |
-|--------|------|
-| `Ctrl+Shift+B` | 執行當前檔案對應的所有測資 |
-| `F5` | Debug 當前檔案的 case #1 |
+| Shortcut | Function |
+|----------|----------|
+| `Ctrl+Shift+B` | Run all tests for current file |
+| `F5` | Debug current file with case #1 |
 
-> **注意**: 請先開啟 `solutions/` 中的解答檔案，再使用快捷鍵。
+> **Note**: Open a solution file in `solutions/` before using shortcuts.
 
 ---
 
-## 📝 解答檔案格式
+## 📝 Solution File Format
 
 ```python
 # solutions/0001_two_sum.py
@@ -119,21 +121,21 @@ from typing import List
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        # 你的解法
+        # Your solution
         pass
 
 def solve():
     import sys
     lines = sys.stdin.read().strip().split('\n')
     
-    # 解析輸入
+    # Parse input
     nums = list(map(int, lines[0].split(',')))
     target = int(lines[1])
     
     sol = Solution()
     result = sol.twoSum(nums, target)
     
-    # 輸出答案
+    # Print result
     print(result)
 
 if __name__ == "__main__":
@@ -142,82 +144,41 @@ if __name__ == "__main__":
 
 ---
 
-## 📋 測資檔案格式
+## 📋 Test File Format
 
-### 格式規範
+### Specifications
 
-| 項目 | 規範 |
-|------|------|
-| 換行符號 | **LF** (Unix/Linux 格式，`\n`) |
-| 編碼 | UTF-8 |
-| 結尾 | 必須以單一換行結尾 |
-| 命名規則 | `{題號}_{題目名稱}_{編號}.in/.out` |
+| Item | Requirement |
+|------|-------------|
+| Line Ending | **LF** (Unix/Linux format, `\n`) |
+| Encoding | UTF-8 |
+| File Ending | Must end with single newline |
+| Naming | `{problem_number}_{problem_name}_{case_number}.in/.out` |
 
-### 輸入檔 (`.in`)
-
-每行一筆資料，檔案以 **單一 LF 換行** 結尾：
-
+### Input File (`.in`)
 ```
 2,7,11,15
 9
-
 ```
 
-### 輸出檔 (`.out`)
-
-預期輸出，檔案以 **單一 LF 換行** 結尾：
-
+### Output File (`.out`)
 ```
 [0, 1]
-
-```
-
-### ⚠️ 重要注意事項
-
-1. **必須使用 LF 換行**（不是 Windows 的 CRLF）
-2. **檔案結尾必須有換行**，但只能有一個
-3. **不要有多餘空行**
-
-### VS Code 設定
-
-在 VS Code 右下角可以看到換行格式，點擊可切換：
-- `CRLF` → Windows 格式 ❌
-- `LF` → Unix 格式 ✅
-
-或在 `.vscode/settings.json` 加入：
-
-```json
-{
-    "files.eol": "\n"
-}
-```
-
-### 批次轉換換行格式
-
-如果測資使用了錯誤的換行格式，可執行：
-
-```bash
-python -c "
-import glob
-for f in glob.glob('tests/*'):
-    content = open(f, 'rb').read().replace(b'\r\n', b'\n').rstrip() + b'\n'
-    open(f, 'wb').write(content)
-"
 ```
 
 ---
 
-## 🔧 命令列用法
+## 🔧 Command Line Usage
 
 ```bash
-# 執行所有測資
+# Run all test cases
 python runner/test_runner.py <problem_name>
 
-# 執行單一測資
+# Run single test case
 python runner/case_runner.py <problem_name> <case_index>
 ```
 
-### 範例
+### Examples
 
 ```bash
 python runner/test_runner.py 0001_two_sum
@@ -226,74 +187,64 @@ python runner/case_runner.py 0001_two_sum 1
 
 ---
 
-## 🚀 多解法測試與效能比較
+## 🚀 Multi-Solution Testing & Performance Comparison
 
-當一道題目有多種解法時，可以同時測試並比較效能。
+Test multiple solutions and compare performance for the same problem.
 
-### 命令列參數
+### Command Line Parameters
 
 ```bash
-# 執行預設解法
+# Run default solution
 python runner/test_runner.py 0023_merge_k_sorted_lists
 
-# 執行指定解法
+# Run specific solution
 python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
 python runner/test_runner.py 0023_merge_k_sorted_lists --method greedy
-python runner/test_runner.py 0023_merge_k_sorted_lists --method divide
 
-# 執行所有解法
+# Run all solutions
 python runner/test_runner.py 0023_merge_k_sorted_lists --all
 
-# 執行所有解法 + 效能比較
+# Run all solutions + performance comparison
 python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
 ```
 
-### 如何定義多解法
+### How to Define Multiple Solutions
 
-在 solution 檔案中加入 `SOLUTIONS` 字典：
+Add a `SOLUTIONS` dictionary in your solution file:
 
 ```python
 # solutions/0023_merge_k_sorted_lists.py
 
 SOLUTIONS = {
     "default": {
-        "method": "mergeKListsPriorityQueue",       # 對應的方法名稱
-        "complexity": "O(N log k)",          # 時間複雜度
+        "method": "mergeKLists_heap",       # Corresponding method name
+        "complexity": "O(N log k)",          # Time complexity
         "description": "Priority Queue approach"
     },
     "heap": {
-        "method": "mergeKListsPriorityQueue",
+        "method": "mergeKLists_heap",
         "complexity": "O(N log k)",
         "description": "Priority Queue (Min Heap)"
     },
     "greedy": {
-        "method": "mergeKListsGreedy",
+        "method": "mergeKLists_greedy",
         "complexity": "O(kN)",
         "description": "Greedy comparison"
-    },
-    "divide": {
-        "method": "mergeKListsDivideConquer",
-        "complexity": "O(N log k)",
-        "description": "Divide and Conquer"
     },
 }
 
 class Solution:
-    def mergeKListsPriorityQueue(self, lists):
-        # Heap 解法實作...
+    def mergeKLists_heap(self, lists):
+        # Heap solution...
         pass
     
-    def mergeKListsGreedy(self, lists):
-        # Greedy 解法實作...
-        pass
-    
-    def mergeKListsDivideConquer(self, lists):
-        # Divide & Conquer 解法實作...
+    def mergeKLists_greedy(self, lists):
+        # Greedy solution...
         pass
 
 def solve():
     import os
-    # 從環境變數取得要執行的解法
+    # Get solution method from environment variable
     method_name = os.environ.get('SOLUTION_METHOD', 'default')
     method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
     method_func_name = method_info['method']
@@ -304,7 +255,35 @@ def solve():
     print(result)
 ```
 
-### 效能比較輸出範例
+### SOLUTIONS Field Description
+
+| Field | Description | Required |
+|-------|-------------|----------|
+| `method` | Method name in Solution class | ✅ |
+| `complexity` | Time complexity (for display) | ❌ |
+| `description` | Solution description | ❌ |
+
+### Custom Short Names
+
+The **key** in `SOLUTIONS` is the short name used in command line:
+
+```python
+SOLUTIONS = {
+    "default": {"method": "solve_optimal", ...},     # Default solution
+    "heap": {"method": "solve_heap", ...},           # --method heap
+    "h": {"method": "solve_heap", ...},              # --method h (alias)
+    "pq": {"method": "solve_priority_queue", ...},   # --method pq
+    "bf": {"method": "solve_bruteforce", ...},       # --method bf
+}
+```
+
+> **Note**: 
+> - `default` is used when `--method` is not specified
+> - Time complexity must be annotated by user; system only measures actual execution time
+
+---
+
+## 📊 Test Result Example
 
 ```
 ============================================================
@@ -321,26 +300,6 @@ def solve():
 
    Result: 3 / 3 cases passed.
 
-📌 Method: greedy
-   Complexity: O(kN)
-   Description: Greedy comparison - compare all k heads each time
-
-   0023_merge_k_sorted_lists_1: ✅ PASS (0.45ms)
-   0023_merge_k_sorted_lists_2: ✅ PASS (0.02ms)
-   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
-
-   Result: 3 / 3 cases passed.
-
-📌 Method: divide
-   Complexity: O(N log k)
-   Description: Divide and Conquer - merge pairs recursively
-
-   0023_merge_k_sorted_lists_1: ✅ PASS (0.12ms)
-   0023_merge_k_sorted_lists_2: ✅ PASS (0.01ms)
-   0023_merge_k_sorted_lists_3: ✅ PASS (0.01ms)
-
-   Result: 3 / 3 cases passed.
-
 ============================================================
 📊 Performance Comparison
 ============================================================
@@ -348,64 +307,19 @@ Method               Avg Time     Complexity      Pass Rate
 ------------------------------------------------------------
 heap                    0.06ms   O(N log k)      3/3
 greedy                  0.16ms   O(kN)           3/3
-divide                  0.05ms   O(N log k)      3/3
 ============================================================
 ```
 
-### SOLUTIONS 欄位說明
-
-| 欄位 | 說明 | 必填 |
-|------|------|------|
-| `method` | Solution class 中對應的方法名稱 | ✅ |
-| `complexity` | 時間複雜度（用於顯示比較） | ❌ |
-| `description` | 解法描述 | ❌ |
-
-### 自定義短名稱
-
-`SOLUTIONS` 的 **key** 就是命令列使用的短名稱，可以自由定義：
-
-```python
-SOLUTIONS = {
-    "default": {"method": "solve_optimal", ...},     # 預設解法
-    "heap": {"method": "solve_heap", ...},           # --method heap
-    "h": {"method": "solve_heap", ...},              # --method h (別名)
-    "pq": {"method": "solve_priority_queue", ...},   # --method pq
-    "bf": {"method": "solve_bruteforce", ...},       # --method bf
-    "dc": {"method": "solve_divide_conquer", ...},   # --method dc
-}
-```
-
-> **注意**: 
-> - `default` 是預設解法，不指定 `--method` 時使用
-> - 時間複雜度需由使用者自行標註，系統僅測量實際執行時間
-
 ---
 
-## 📊 測試結果範例
+## 🐍 Python Environment
 
-```
-=== 0001_two_sum_1.in ===
-✅ PASS
+- **Python Version**: 3.11 (matches [LeetCode Official Environment](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages))
+- **Virtual Environment**: `leetcode/` (inside project)
+- **Installed Packages**:
+  - `debugpy` - Debug support
 
-=== 0001_two_sum_2.in ===
-✅ PASS
-
-=== 0001_two_sum_3.in ===
-✅ PASS
-
-測試結果 / Summary: 3 / 3 cases passed.
-```
-
----
-
-## 🐍 Python 環境
-
-- **Python 版本**: 3.11（與 [LeetCode 官方環境](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages) 一致）
-- **虛擬環境**: `leetcode/` (專案內)
-- **已安裝套件**:
-  - `debugpy` - Debug 支援
-
-### 啟動虛擬環境
+### Activate Virtual Environment
 
 ```powershell
 # PowerShell
@@ -415,31 +329,30 @@ SOLUTIONS = {
 leetcode\Scripts\activate.bat
 ```
 
-### 安裝新套件
+### Install New Packages
 
 ```powershell
-# 先啟動虛擬環境，再安裝
+# Activate virtual environment first, then install
 leetcode\Scripts\activate
 pip install <package_name>
 ```
 
 ---
 
-## 💡 小技巧
+## 💡 Tips
 
-1. **新增多筆測資**: 複製 `.in/.out` 檔案，修改編號即可
+1. **Add more test cases**: Copy `.in/.out` files and change the number
    ```
    0001_two_sum_1.in → 0001_two_sum_2.in
    0001_two_sum_1.out → 0001_two_sum_2.out
    ```
 
-2. **Debug 特定測資**: 修改 `launch.json` 中的 case 編號
+2. **Debug specific test case**: Modify case number in `launch.json`
 
-3. **自訂輸入格式**: 在 `solve()` 函式中自由定義解析邏輯
+3. **Custom input format**: Define parsing logic in `solve()` function
 
 ---
 
 ## 📜 License
 
-MIT License - 自由使用於個人學習
-
+MIT License - Free for personal learning

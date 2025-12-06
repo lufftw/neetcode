@@ -1,21 +1,21 @@
 # solutions/xxxx_problem_name.py
 """
-題目: [Problem Name]
-連結: https://leetcode.com/problems/xxx/
+Problem: [Problem Name]
+Link: https://leetcode.com/problems/xxx/
 
-多解法模板 - 支援 --all 和 --method 參數測試
+Multi-solution template - Supports --all and --method parameters
 """
 from typing import List, Optional
 import os
 
 # ============================================
-# SOLUTIONS 定義（必須）
-# 告訴 test_runner 有哪些解法可以測試
+# SOLUTIONS Definition (Required)
+# Tells test_runner which solutions are available
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_optimal",      # 對應下方的方法名稱
-        "complexity": "O(n)",           # 時間複雜度
+        "method": "solve_optimal",      # Corresponding method name below
+        "complexity": "O(n)",           # Time complexity
         "description": "Optimal solution using hash map"
     },
     "bruteforce": {
@@ -23,27 +23,27 @@ SOLUTIONS = {
         "complexity": "O(n²)",
         "description": "Brute force approach"
     },
-    # 可繼續新增更多解法...
+    # Add more solutions as needed...
 }
 
 
 class Solution:
     # ============================================
-    # 解法一：最佳解
+    # Solution 1: Optimal
     # ============================================
     def solve_optimal(self, *args):
         """
-        TODO: 實作最佳解法
+        TODO: Implement optimal solution
         Time: O(n), Space: O(n)
         """
         pass
     
     # ============================================
-    # 解法二：暴力解
+    # Solution 2: Brute Force
     # ============================================
     def solve_bruteforce(self, *args):
         """
-        TODO: 實作暴力解法
+        TODO: Implement brute force solution
         Time: O(n²), Space: O(1)
         """
         pass
@@ -51,31 +51,30 @@ class Solution:
 
 def solve():
     """
-    從 stdin 讀取輸入，根據 SOLUTION_METHOD 環境變數選擇解法。
+    Parse input from stdin, select solution based on SOLUTION_METHOD env var.
     """
     import sys
     
-    # 讀取環境變數，決定要用哪個解法
+    # Read environment variable to determine which solution to use
     method_name = os.environ.get('SOLUTION_METHOD', 'default')
     
-    # 取得對應的方法名稱
+    # Get the corresponding method name
     method_info = SOLUTIONS.get(method_name, SOLUTIONS.get('default'))
     method_func_name = method_info['method']
     
-    # 解析輸入
+    # Parse input
     data = sys.stdin.read().strip().split('\n')
-    # TODO: 根據題目格式解析輸入
+    # TODO: Parse input according to problem format
     
     sol = Solution()
     
-    # 動態呼叫對應的解法
+    # Dynamically call the corresponding solution
     method_func = getattr(sol, method_func_name)
-    result = method_func()  # TODO: 傳入解析後的參數
+    result = method_func()  # TODO: Pass parsed parameters
     
-    # 輸出答案
+    # Print the result
     print(result)
 
 
 if __name__ == "__main__":
     solve()
-
