@@ -38,3 +38,6 @@ Thumbs.db
 # Debug
 *.log
 
+# Generated failed test cases (from --save-failed)
+*_failed_*.in
+

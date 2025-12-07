@@ -38,6 +38,8 @@
   - [JUDGE_FUNC 範例](#judge_func-範例)
   - [適用題目](#適用題目)
 
+- [測資產生器](#-測資產生器)
+
 - [測試結果範例](#-測試結果範例)
 
 - [Python 環境](#-python-環境)
@@ -719,6 +721,127 @@ JUDGE_FUNC = judge
 | 浮點數運算 | `JUDGE_FUNC`（誤差容忍） | ✅ |
 | LinkedList/Tree | `JUDGE_FUNC`（解析格式） | ✅ |
 | 自訂壓力測試 | `JUDGE_FUNC`（judge-only） | ❌ |
+
+---
+
+## 🎲 測資產生器
+
+自動產生測資來壓力測試你的解法。
+
+### 設定
+
+在 `generators/` 建立與 solution 同名的檔案：
+
+```
+generators/
+└── 0004_median_of_two_sorted_arrays.py
+```
+
+### Generator 模板
+
+```python
+# generators/0004_median_of_two_sorted_arrays.py
+"""
+LeetCode Constraints:
+- 0 <= m, n <= 1000
+- 1 <= m + n <= 2000
+- -10^6 <= nums1[i], nums2[i] <= 10^6
+"""
+import random
+from typing import Iterator, Optional
+
+
+def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
+    """
+    產生測資輸入。
+    
+    Args:
+        count: 產生幾筆測資
+        seed: 隨機種子（可重現）
+    
+    Yields:
+        str: 測資輸入（與 .in 檔案格式相同）
+    """
+    # Constraints
+    min_m, max_m = 0, 1000
+    min_n, max_n = 0, 1000
+    min_val, max_val = -10**6, 10**6
+    
+    if seed is not None:
+        random.seed(seed)
+    
+    # 邊界測資優先
+    yield "[]\n[1]"
+    yield "[1]\n[]"
+    count -= 2
+    
+    # 隨機測資
+    for _ in range(count):
+        m = random.randint(min_m, max_m)
+        n = random.randint(min_n, max_n)
+        nums1 = sorted([random.randint(min_val, max_val) for _ in range(m)])
+        nums2 = sorted([random.randint(min_val, max_val) for _ in range(n)])
+        yield f"{nums1}\n{nums2}".replace(' ', '')
+```
+
+### 使用方式
+
+```bash
+# 執行 tests/ + 10 筆生成測資
+python runner/test_runner.py 0004_median --generate 10
+
+# 只執行生成測資（跳過 tests/）
+python runner/test_runner.py 0004_median --generate-only 10
+
+# 指定 seed（可重現）
+python runner/test_runner.py 0004_median --generate 10 --seed 12345
+
+# 儲存失敗的測資
+python runner/test_runner.py 0004_median --generate 10 --save-failed
+```
+
+### 輸出範例
+
+```
+============================================================
+🧪 Testing: 0004_median_of_two_sorted_arrays
+⚖️  Judge: JUDGE_FUNC
+🎲 Generator: 10 cases, seed: 12345
+============================================================
+
+📌 Running default solution...
+
+   --- tests/ (static) ---
+   0004_median_1: ✅ PASS (12.33ms) [judge]
+   0004_median_2: ✅ PASS (11.15ms) [judge]
+
+   --- generators/ (10 cases, seed: 12345) ---
+   gen_1: ✅ PASS (8.20ms) [generated]
+   gen_2: ✅ PASS (7.15ms) [generated]
+   gen_3: ❌ FAIL [generated]
+      ┌─ Input ─────────────────────────────────
+      │ [1,3,5,7,9]
+      │ [2,4,6,8,10]
+      ├─ Actual ────────────────────────────────
+      │ 5.0
+      └─────────────────────────────────────────
+      💾 Saved to: tests/0004_median_failed_1.in
+   ...
+
+Summary: 11 / 12 cases passed.
+   ├─ Static (tests/): 2/2
+   └─ Generated: 9/10
+
+💡 To reproduce: python runner/test_runner.py 0004_median --generate 10 --seed 12345
+```
+
+### 需求
+
+| 元件 | 必要 | 說明 |
+|------|------|------|
+| `generators/{problem}.py` | Generator 檔案 | 需有 `generate(count, seed)` 函式 |
+| `JUDGE_FUNC` in solution | ✅ | 生成測資無 `.out`，需要 judge |
+| `tests/*.in` | 可選 | 靜態測資先執行 |
 
 ---
 

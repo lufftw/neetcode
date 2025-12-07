@@ -38,6 +38,8 @@ A complete LeetCode practice framework with multiple test cases, auto-comparison
   - [JUDGE_FUNC Examples](#judge_func-examples)
   - [Applicable Problems](#applicable-problems)
 
+- [Test Case Generator](#-test-case-generator)
+
 - [Test Result Example](#-test-result-example)
 
 - [Python Environment](#-python-environment)
@@ -719,6 +721,127 @@ JUDGE_FUNC = judge
 | Floating point | `JUDGE_FUNC` (tolerance) | ✅ |
 | LinkedList/Tree | `JUDGE_FUNC` (parse format) | ✅ |
 | Custom stress tests | `JUDGE_FUNC` (judge-only) | ❌ |
+
+---
+
+## 🎲 Test Case Generator
+
+Automatically generate test cases to stress-test your solutions.
+
+### Setup
+
+Create a generator file in `generators/` with the same name as your solution:
+
+```
+generators/
+└── 0004_median_of_two_sorted_arrays.py
+```
+
+### Generator Template
+
+```python
+# generators/0004_median_of_two_sorted_arrays.py
+"""
+LeetCode Constraints:
+- 0 <= m, n <= 1000
+- 1 <= m + n <= 2000
+- -10^6 <= nums1[i], nums2[i] <= 10^6
+"""
+import random
+from typing import Iterator, Optional
+
+
+def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
+    """
+    Generate test case inputs.
+    
+    Args:
+        count: Number of test cases to generate
+        seed: Random seed for reproducibility
+    
+    Yields:
+        str: Test input (same format as .in files)
+    """
+    # Constraints
+    min_m, max_m = 0, 1000
+    min_n, max_n = 0, 1000
+    min_val, max_val = -10**6, 10**6
+    
+    if seed is not None:
+        random.seed(seed)
+    
+    # Edge cases first
+    yield "[]\n[1]"
+    yield "[1]\n[]"
+    count -= 2
+    
+    # Random cases
+    for _ in range(count):
+        m = random.randint(min_m, max_m)
+        n = random.randint(min_n, max_n)
+        nums1 = sorted([random.randint(min_val, max_val) for _ in range(m)])
+        nums2 = sorted([random.randint(min_val, max_val) for _ in range(n)])
+        yield f"{nums1}\n{nums2}".replace(' ', '')
+```
+
+### Usage
+
+```bash
+# Run tests/ + 10 generated cases
+python runner/test_runner.py 0004_median --generate 10
+
+# Only run generated cases (skip tests/)
+python runner/test_runner.py 0004_median --generate-only 10
+
+# Use seed for reproducibility
+python runner/test_runner.py 0004_median --generate 10 --seed 12345
+
+# Save failed cases for debugging
+python runner/test_runner.py 0004_median --generate 10 --save-failed
+```
+
+### Output Example
+
+```
+============================================================
+🧪 Testing: 0004_median_of_two_sorted_arrays
+⚖️  Judge: JUDGE_FUNC
+🎲 Generator: 10 cases, seed: 12345
+============================================================
+
+📌 Running default solution...
+
+   --- tests/ (static) ---
+   0004_median_1: ✅ PASS (12.33ms) [judge]
+   0004_median_2: ✅ PASS (11.15ms) [judge]
+
+   --- generators/ (10 cases, seed: 12345) ---
+   gen_1: ✅ PASS (8.20ms) [generated]
+   gen_2: ✅ PASS (7.15ms) [generated]
+   gen_3: ❌ FAIL [generated]
+      ┌─ Input ─────────────────────────────────
+      │ [1,3,5,7,9]
+      │ [2,4,6,8,10]
+      ├─ Actual ────────────────────────────────
+      │ 5.0
+      └─────────────────────────────────────────
+      💾 Saved to: tests/0004_median_failed_1.in
+   ...
+
+Summary: 11 / 12 cases passed.
+   ├─ Static (tests/): 2/2
+   └─ Generated: 9/10
+
+💡 To reproduce: python runner/test_runner.py 0004_median --generate 10 --seed 12345
+```
+
+### Requirements
+
+| Component | Required | Description |
+|-----------|----------|-------------|
+| `generators/{problem}.py` | Generator file | Must have `generate(count, seed)` function |
+| `JUDGE_FUNC` in solution | ✅ | Generator cases have no `.out`, need judge |
+| `tests/*.in` | Optional | Static tests run before generated |
 
 ---
 
