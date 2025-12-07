@@ -542,7 +542,17 @@ def solve():
 
 ## 🔀 Flexible Output Comparison
 
-Some LeetCode problems state **"You may return the answer in any order"** or have multiple valid answers. The test runner supports two approaches:
+Some LeetCode problems state **"You may return the answer in any order"** or have multiple valid answers. The test runner supports flexible validation with clear output labels.
+
+### Validation Modes
+
+| Label | Description | Requires `.out` |
+|-------|-------------|-----------------|
+| `[judge]` | JUDGE_FUNC with `.out` reference | ✅ |
+| `[judge-only]` | JUDGE_FUNC without `.out` (pure validation) | ❌ |
+| `[exact]` | Exact string match | ✅ |
+| `[sorted]` | Sort lists before comparison | ✅ |
+| `[set]` | Set comparison | ✅ |
 
 ### Priority
 
@@ -552,22 +562,41 @@ Some LeetCode problems state **"You may return the answer in any order"** or hav
 3. Exact string match (default)
 ```
 
+### Test Output Example
+
+```
+============================================================
+🧪 Testing: 0051_n_queens
+⚖️  Judge: JUDGE_FUNC
+============================================================
+
+📌 Method: default
+
+   0051_n_queens_1: ✅ PASS (88.33ms) [judge]
+   0051_n_queens_2: ✅ PASS (92.15ms) [judge]
+   0051_n_queens_3: ✅ PASS (156.20ms) [judge-only]
+
+   Result: 3 / 3 cases passed.
+```
+
 ---
 
 ### Approach 1: JUDGE_FUNC (Recommended for Complex Cases)
 
 Use **Decision Problem** approach: verify the answer is **valid**, not just **identical**.
 
+**Key Feature**: `.out` file is **optional** when `JUDGE_FUNC` is defined!
+
 ```python
 # solutions/0051_n_queens.py
 
-def judge(actual: list, expected: list, input_data: str) -> bool:
+def judge(actual: list, expected, input_data: str) -> bool:
     """
     Custom validation function.
     
     Args:
-        actual: Program output (parsed as Python object if possible, otherwise raw string)
-        expected: Expected output (parsed as Python object if possible, otherwise raw string)
+        actual: Program output (parsed as Python object if possible)
+        expected: Expected output, or None if .out file doesn't exist
         input_data: Input data (raw string)
     
     Returns:
@@ -575,16 +604,17 @@ def judge(actual: list, expected: list, input_data: str) -> bool:
     """
     n = int(input_data.strip())
     
-    # 1. Check solution count
-    if len(actual) != len(expected):
-        return False
-    
-    # 2. Verify each solution is valid
+    # Validate solution regardless of expected
     for board in actual:
         if not is_valid_n_queens(board, n):
             return False
     
-    # 3. Check no duplicates
+    # Check count only if expected is provided
+    if expected is not None:
+        if len(actual) != len(expected):
+            return False
+    
+    # Check no duplicates
     return len(set(tuple(b) for b in actual)) == len(actual)
 
 JUDGE_FUNC = judge  # Tell test_runner to use this function
@@ -593,13 +623,19 @@ JUDGE_FUNC = judge  # Tell test_runner to use this function
 **Benefits:**
 - Validates correctness, not just string equality
 - Handles multiple valid answers
+- **`.out` file optional** - supports judge-only mode for custom test cases
 - Works with any output format (strings, objects, custom formats)
+
+**Use Cases for Judge-Only Mode (no `.out`):**
+- Custom large test cases you generate
+- Stress testing with random inputs
+- Cases where computing expected output is complex
 
 ---
 
 ### Approach 2: COMPARE_MODE (Simple Cases)
 
-For simple order-independent comparisons:
+For simple order-independent comparisons (requires `.out` file):
 
 ```python
 # solutions/0046_permutations.py
@@ -617,13 +653,21 @@ COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 
 ### JUDGE_FUNC Examples
 
-#### Example 1: N-Queens (Object Mode)
+#### Example 1: N-Queens (with optional `.out`)
 
 ```python
-def judge(actual: list, expected: list, input_data: str) -> bool:
+def judge(actual: list, expected, input_data: str) -> bool:
     n = int(input_data.strip())
-    # Verify each board is valid...
-    return all(is_valid_board(b, n) for b in actual)
+    
+    # Always validate board correctness
+    if not all(is_valid_board(b, n) for b in actual):
+        return False
+    
+    # If .out exists, also check count
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True  # Judge-only mode: just validate
 
 JUDGE_FUNC = judge
 ```
@@ -649,18 +693,31 @@ def judge(actual: float, expected: float, input_data: str) -> bool:
 JUDGE_FUNC = judge
 ```
 
+#### Example 4: Pure Validation (Judge-Only)
+
+```python
+def judge(actual: list, expected, input_data: str) -> bool:
+    """Validate without expected output."""
+    # expected is None when .out doesn't exist
+    params = parse_input(input_data)
+    return is_valid_solution(actual, params)
+
+JUDGE_FUNC = judge
+```
+
 ---
 
 ### Applicable Problems
 
-| Problem | Recommended Approach |
-|---------|---------------------|
-| N-Queens | `JUDGE_FUNC` (validate board) |
-| Permutations | `COMPARE_MODE = "sorted"` |
-| Subsets | `COMPARE_MODE = "sorted"` |
-| Shortest Path (multiple) | `JUDGE_FUNC` (validate path) |
-| Floating point | `JUDGE_FUNC` (tolerance) |
-| LinkedList/Tree | `JUDGE_FUNC` (parse format) |
+| Problem | Recommended Approach | `.out` Required |
+|---------|---------------------|-----------------|
+| N-Queens | `JUDGE_FUNC` (validate board) | Optional |
+| Permutations | `COMPARE_MODE = "sorted"` | ✅ |
+| Subsets | `COMPARE_MODE = "sorted"` | ✅ |
+| Shortest Path (multiple) | `JUDGE_FUNC` (validate path) | Optional |
+| Floating point | `JUDGE_FUNC` (tolerance) | ✅ |
+| LinkedList/Tree | `JUDGE_FUNC` (parse format) | ✅ |
+| Custom stress tests | `JUDGE_FUNC` (judge-only) | ❌ |
 
 ---
 
@@ -787,3 +844,4 @@ pip install <package_name>
 ## 📜 License
 
 MIT License - Free for personal learning
+

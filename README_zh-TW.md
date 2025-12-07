@@ -542,7 +542,17 @@ def solve():
 
 ## 🔀 彈性輸出比對
 
-某些 LeetCode 題目會標註 **「可以以任意順序回傳答案」** 或有多個正確答案。測試執行器支援兩種方式：
+某些 LeetCode 題目會標註 **「可以以任意順序回傳答案」** 或有多個正確答案。測試執行器支援彈性驗證，並在輸出中顯示清楚的標籤。
+
+### 驗證模式
+
+| 標籤 | 說明 | 需要 `.out` |
+|------|------|-------------|
+| `[judge]` | JUDGE_FUNC 搭配 `.out` 參考 | ✅ |
+| `[judge-only]` | JUDGE_FUNC 純驗證（無 `.out`） | ❌ |
+| `[exact]` | 精確字串比對 | ✅ |
+| `[sorted]` | 排序後比對 | ✅ |
+| `[set]` | 集合比對 | ✅ |
 
 ### 優先級
 
@@ -552,22 +562,41 @@ def solve():
 3. 精確字串比對（預設）
 ```
 
+### 測試輸出範例
+
+```
+============================================================
+🧪 Testing: 0051_n_queens
+⚖️  Judge: JUDGE_FUNC
+============================================================
+
+📌 Method: default
+
+   0051_n_queens_1: ✅ PASS (88.33ms) [judge]
+   0051_n_queens_2: ✅ PASS (92.15ms) [judge]
+   0051_n_queens_3: ✅ PASS (156.20ms) [judge-only]
+
+   Result: 3 / 3 cases passed.
+```
+
 ---
 
 ### 方式一：JUDGE_FUNC（複雜情況推薦）
 
 使用 **Decision Problem** 方式：驗證答案是否**正確**，而非是否**相同**。
 
+**重要特色**：定義 `JUDGE_FUNC` 時，`.out` 檔案是**可選的**！
+
 ```python
 # solutions/0051_n_queens.py
 
-def judge(actual: list, expected: list, input_data: str) -> bool:
+def judge(actual: list, expected, input_data: str) -> bool:
     """
     自訂驗證函式
     
     Args:
-        actual: 程式輸出（若可解析則為 Python 物件，否則為原始字串）
-        expected: 預期輸出（若可解析則為 Python 物件，否則為原始字串）
+        actual: 程式輸出（若可解析則為 Python 物件）
+        expected: 預期輸出，若 .out 不存在則為 None
         input_data: 輸入資料（原始字串）
     
     Returns:
@@ -575,16 +604,17 @@ def judge(actual: list, expected: list, input_data: str) -> bool:
     """
     n = int(input_data.strip())
     
-    # 1. 檢查解的數量
-    if len(actual) != len(expected):
-        return False
-    
-    # 2. 驗證每個解是否合法
+    # 不管有沒有 expected，都要驗證解的合法性
     for board in actual:
         if not is_valid_n_queens(board, n):
             return False
     
-    # 3. 檢查無重複
+    # 有 expected 時才檢查數量
+    if expected is not None:
+        if len(actual) != len(expected):
+            return False
+    
+    # 檢查無重複
     return len(set(tuple(b) for b in actual)) == len(actual)
 
 JUDGE_FUNC = judge  # 告訴 test_runner 使用這個函式
@@ -593,13 +623,19 @@ JUDGE_FUNC = judge  # 告訴 test_runner 使用這個函式
 **優點：**
 - 驗證正確性，而非字串相等
 - 處理多個正確答案
+- **`.out` 檔案可選** - 支援純驗證模式（judge-only）
 - 支援任何輸出格式（字串、物件、自訂格式）
+
+**純驗證模式（無 `.out`）的使用情境：**
+- 自訂的大型測資
+- 使用隨機輸入做壓力測試
+- 計算預期輸出太複雜的情況
 
 ---
 
 ### 方式二：COMPARE_MODE（簡單情況）
 
-適用於簡單的順序無關比對：
+適用於簡單的順序無關比對（需要 `.out` 檔案）：
 
 ```python
 # solutions/0046_permutations.py
@@ -617,13 +653,21 @@ COMPARE_MODE = "sorted"  # 選項: "exact" | "sorted" | "set"
 
 ### JUDGE_FUNC 範例
 
-#### 範例一：N-Queens（物件模式）
+#### 範例一：N-Queens（支援可選的 `.out`）
 
 ```python
-def judge(actual: list, expected: list, input_data: str) -> bool:
+def judge(actual: list, expected, input_data: str) -> bool:
     n = int(input_data.strip())
-    # 驗證每個棋盤配置是否合法...
-    return all(is_valid_board(b, n) for b in actual)
+    
+    # 永遠驗證棋盤正確性
+    if not all(is_valid_board(b, n) for b in actual):
+        return False
+    
+    # 有 .out 時也檢查數量
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True  # 純驗證模式：只驗證合法性
 
 JUDGE_FUNC = judge
 ```
@@ -649,18 +693,31 @@ def judge(actual: float, expected: float, input_data: str) -> bool:
 JUDGE_FUNC = judge
 ```
 
+#### 範例四：純驗證（Judge-Only）
+
+```python
+def judge(actual: list, expected, input_data: str) -> bool:
+    """不需要預期輸出的驗證"""
+    # 當 .out 不存在時，expected 為 None
+    params = parse_input(input_data)
+    return is_valid_solution(actual, params)
+
+JUDGE_FUNC = judge
+```
+
 ---
 
 ### 適用題目
 
-| 題目 | 推薦方式 |
-|------|----------|
-| N-Queens | `JUDGE_FUNC`（驗證棋盤） |
-| Permutations | `COMPARE_MODE = "sorted"` |
-| Subsets | `COMPARE_MODE = "sorted"` |
-| 最短路徑（多解） | `JUDGE_FUNC`（驗證路徑） |
-| 浮點數運算 | `JUDGE_FUNC`（誤差容忍） |
-| LinkedList/Tree | `JUDGE_FUNC`（解析格式） |
+| 題目 | 推薦方式 | 需要 `.out` |
+|------|----------|-------------|
+| N-Queens | `JUDGE_FUNC`（驗證棋盤） | 可選 |
+| Permutations | `COMPARE_MODE = "sorted"` | ✅ |
+| Subsets | `COMPARE_MODE = "sorted"` | ✅ |
+| 最短路徑（多解） | `JUDGE_FUNC`（驗證路徑） | 可選 |
+| 浮點數運算 | `JUDGE_FUNC`（誤差容忍） | ✅ |
+| LinkedList/Tree | `JUDGE_FUNC`（解析格式） | ✅ |
+| 自訂壓力測試 | `JUDGE_FUNC`（judge-only） | ❌ |
 
 ---
 
@@ -787,3 +844,4 @@ pip install <package_name>
 ## 📜 License
 
 MIT License - 自由使用於個人學習
+

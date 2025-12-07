@@ -75,6 +75,27 @@ def judge(actual: List[List[str]], expected: List[List[str]], input_data: str) -
 JUDGE_FUNC = judge  # Tell test_runner to use custom validation function
 
 # ============================================
+# Alternative: COMPARE_MODE (simpler, but less rigorous)
+# ============================================
+# If you don't need full validation, you can use COMPARE_MODE instead:
+#
+#   COMPARE_MODE = "sorted"  # Sort lists before comparison
+#
+# This will sort both actual and expected outputs and compare them.
+# Pros: Simple, no custom code needed
+# Cons: Only checks if outputs match, doesn't validate solution correctness
+#
+# For N-Queens, JUDGE_FUNC is recommended because it:
+# - Validates each board is a legal N-Queens configuration
+# - Checks for duplicate solutions
+# - Works even without .out file (judge-only mode)
+#
+# Use COMPARE_MODE when:
+# - Order doesn't matter but exact values do (e.g., Permutations, Subsets)
+# - You trust the expected output is correct
+# ============================================
+
+# ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
 # ============================================
 SOLUTIONS = {
