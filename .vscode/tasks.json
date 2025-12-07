@@ -170,6 +170,203 @@
                 "panel": "shared",
                 "clear": true
             }
+        },
+        {
+            "label": "Run with generated cases (10)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--generate",
+                "10",
+                "--benchmark"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run generated only (prompt for count)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--generate-only",
+                "${input:generateCount}",
+                "--benchmark"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run generated with seed (reproducible)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--generate",
+                "${input:generateCount}",
+                "--seed",
+                "${input:seedNumber}",
+                "--benchmark"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run generated + save failed",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--generate",
+                "${input:generateCount}",
+                "--save-failed",
+                "--benchmark"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run all solutions + generated (benchmark)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--all",
+                "--benchmark",
+                "--generate",
+                "${input:generateCount}"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run all solutions + generated only (benchmark)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--all",
+                "--benchmark",
+                "--generate-only",
+                "${input:generateCount}"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
         }
     ],
     "inputs": [
@@ -177,6 +374,18 @@
             "id": "caseNumber",
             "description": "Enter case number (e.g., 1, 2, 3...)",
             "default": "1",
+            "type": "promptString"
+        },
+        {
+            "id": "generateCount",
+            "description": "Number of test cases to generate",
+            "default": "10",
+            "type": "promptString"
+        },
+        {
+            "id": "seedNumber",
+            "description": "Random seed for reproducibility",
+            "default": "12345",
             "type": "promptString"
         }
     ]

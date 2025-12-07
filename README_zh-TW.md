@@ -16,7 +16,10 @@
   - [建立新題目](#3-建立新題目)
   - [執行測試](#4-執行測試)
 
-- [VS Code 快捷鍵](#️-vs-code-快捷鍵)
+- [VS Code 整合](#️-vs-code-整合)
+  - [快捷鍵](#快捷鍵)
+  - [Tasks](#tasksctrlshiftp--tasks-run-task)
+  - [Debug 配置](#debug-配置f5--選擇)
 
 - [解答檔案格式](#-解答檔案格式)
 
@@ -37,6 +40,8 @@
   - [COMPARE_MODE](#方式二compare_mode簡單情況)
   - [JUDGE_FUNC 範例](#judge_func-範例)
   - [適用題目](#適用題目)
+
+- [測資產生器](#-測資產生器)
 
 - [測試結果範例](#-測試結果範例)
 
@@ -262,7 +267,9 @@ run_case.bat 0001_two_sum 1
 
 ---
 
-## ⌨️ VS Code 快捷鍵
+## ⌨️ VS Code 整合
+
+### 快捷鍵
 
 | 快捷鍵 | 功能 |
 |--------|------|
@@ -270,6 +277,36 @@ run_case.bat 0001_two_sum 1
 | `F5` | Debug 當前檔案的 case #1 |
 
 > **注意**: 請先開啟 `solutions/` 中的解答檔案，再使用快捷鍵。
+
+### Tasks（Ctrl+Shift+P → "Tasks: Run Task"）
+
+| Task | 說明 |
+|------|------|
+| Run all tests for current problem | 基本測試執行 |
+| Run case #1 / #2 | 執行特定測資 |
+| Benchmark current problem | 顯示執行時間 |
+| Run all solutions with benchmark | 比較所有解法 |
+| Run with generated cases (10) | 靜態 + 10 筆生成測資 |
+| Run generated only | 跳過靜態測資 |
+| Run generated with seed | 可重現的生成 |
+| Run generated + save failed | 儲存失敗的輸入 |
+| Run all solutions + generated | 所有解法 + 生成測資 |
+
+### Debug 配置（F5 → 選擇）
+
+| 配置 | 說明 |
+|------|------|
+| Debug current problem (case #1/2/3) | Debug 特定測資 |
+| Debug all tests | Debug 完整測試 |
+| Benchmark current problem | 帶計時執行 |
+| Debug with generated cases | 靜態 + 生成測資 |
+| Debug generated only | 只用生成測資 |
+| Debug generated with seed | 可重現的 debug |
+| Debug all solutions + generated | 比較所有解法 + 生成 |
+
+> 💡 **提示**：這些 tasks/配置執行的指令與 [命令列用法](#-命令列用法) 和 [測資產生器](#-測資產生器) 相同。
+> 
+> 範例："Benchmark current problem" 執行 `python runner/test_runner.py {problem} --benchmark`
 
 ---
 
@@ -719,6 +756,127 @@ JUDGE_FUNC = judge
 | 浮點數運算 | `JUDGE_FUNC`（誤差容忍） | ✅ |
 | LinkedList/Tree | `JUDGE_FUNC`（解析格式） | ✅ |
 | 自訂壓力測試 | `JUDGE_FUNC`（judge-only） | ❌ |
+
+---
+
+## 🎲 測資產生器
+
+自動產生測資來壓力測試你的解法。
+
+### 設定
+
+在 `generators/` 建立與 solution 同名的檔案：
+
+```
+generators/
+└── 0004_median_of_two_sorted_arrays.py
+```
+
+### Generator 模板
+
+```python
+# generators/0004_median_of_two_sorted_arrays.py
+"""
+LeetCode Constraints:
+- 0 <= m, n <= 1000
+- 1 <= m + n <= 2000
+- -10^6 <= nums1[i], nums2[i] <= 10^6
+"""
+import random
+from typing import Iterator, Optional
+
+
+def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
+    """
+    產生測資輸入。
+    
+    Args:
+        count: 產生幾筆測資
+        seed: 隨機種子（可重現）
+    
+    Yields:
+        str: 測資輸入（與 .in 檔案格式相同）
+    """
+    # Constraints
+    min_m, max_m = 0, 1000
+    min_n, max_n = 0, 1000
+    min_val, max_val = -10**6, 10**6
+    
+    if seed is not None:
+        random.seed(seed)
+    
+    # 邊界測資優先
+    yield "[]\n[1]"
+    yield "[1]\n[]"
+    count -= 2
+    
+    # 隨機測資
+    for _ in range(count):
+        m = random.randint(min_m, max_m)
+        n = random.randint(min_n, max_n)
+        nums1 = sorted([random.randint(min_val, max_val) for _ in range(m)])
+        nums2 = sorted([random.randint(min_val, max_val) for _ in range(n)])
+        yield f"{nums1}\n{nums2}".replace(' ', '')
+```
+
+### 使用方式
+
+```bash
+# 執行 tests/ + 10 筆生成測資
+python runner/test_runner.py 0004_median --generate 10
+
+# 只執行生成測資（跳過 tests/）
+python runner/test_runner.py 0004_median --generate-only 10
+
+# 指定 seed（可重現）
+python runner/test_runner.py 0004_median --generate 10 --seed 12345
+
+# 儲存失敗的測資
+python runner/test_runner.py 0004_median --generate 10 --save-failed
+```
+
+### 輸出範例
+
+```
+============================================================
+🧪 Testing: 0004_median_of_two_sorted_arrays
+⚖️  Judge: JUDGE_FUNC
+🎲 Generator: 10 cases, seed: 12345
+============================================================
+
+📌 Running default solution...
+
+   --- tests/ (static) ---
+   0004_median_1: ✅ PASS (12.33ms) [judge]
+   0004_median_2: ✅ PASS (11.15ms) [judge]
+
+   --- generators/ (10 cases, seed: 12345) ---
+   gen_1: ✅ PASS (8.20ms) [generated]
+   gen_2: ✅ PASS (7.15ms) [generated]
+   gen_3: ❌ FAIL [generated]
+      ┌─ Input ─────────────────────────────────
+      │ [1,3,5,7,9]
+      │ [2,4,6,8,10]
+      ├─ Actual ────────────────────────────────
+      │ 5.0
+      └─────────────────────────────────────────
+      💾 Saved to: tests/0004_median_failed_1.in
+   ...
+
+Summary: 11 / 12 cases passed.
+   ├─ Static (tests/): 2/2
+   └─ Generated: 9/10
+
+💡 To reproduce: python runner/test_runner.py 0004_median --generate 10 --seed 12345
+```
+
+### 需求
+
+| 元件 | 必要 | 說明 |
+|------|------|------|
+| `generators/{problem}.py` | Generator 檔案 | 需有 `generate(count, seed)` 函式 |
+| `JUDGE_FUNC` in solution | ✅ | 生成測資無 `.out`，需要 judge |
+| `tests/*.in` | 可選 | 靜態測資先執行 |
 
 ---
 

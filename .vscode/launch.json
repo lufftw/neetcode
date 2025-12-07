@@ -136,6 +136,97 @@
             "linux": {
                 "python": "${workspaceFolder}/leetcode/bin/python"
             }
+        },
+        {
+            "name": "Debug with generated cases (10)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--generate",
+                "10",
+                "--benchmark"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
+        },
+        {
+            "name": "Debug generated only (10)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--generate-only",
+                "10",
+                "--benchmark"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
+        },
+        {
+            "name": "Debug generated with seed",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--generate",
+                "10",
+                "--seed",
+                "12345",
+                "--benchmark"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
+        },
+        {
+            "name": "Debug all solutions + generated (10)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/runner/test_runner.py",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--all",
+                "--benchmark",
+                "--generate",
+                "10"
+            ],
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         }
     ]
 }

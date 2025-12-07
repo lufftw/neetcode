@@ -36,18 +36,18 @@ def _is_valid_board(board: List[str], n: int) -> bool:
     return True
 
 
-def judge(actual: List[List[str]], expected: List[List[str]], input_data: str) -> bool:
+def judge(actual: List[List[str]], expected, input_data: str) -> bool:
     """
     Custom validation function for N-Queens (Decision Problem approach).
     
     Validation logic:
-    1. Number of solutions must match
-    2. Each solution must be a valid N-Queens configuration
-    3. No duplicate solutions allowed
+    1. Each solution must be a valid N-Queens configuration
+    2. No duplicate solutions allowed
+    3. Number of solutions must be correct (check against expected or known counts)
     
     Args:
         actual: Program output (parsed as list)
-        expected: Expected output (parsed as list)
+        expected: Expected output (parsed as list), or None for generated tests
         input_data: Input data (raw string)
     
     Returns:
@@ -55,19 +55,29 @@ def judge(actual: List[List[str]], expected: List[List[str]], input_data: str) -
     """
     n = int(input_data.strip())
     
-    # 1. Check solution count
-    if len(actual) != len(expected):
-        return False
+    # Known solution counts for N-Queens (for judge-only validation)
+    KNOWN_COUNTS = {1: 1, 2: 0, 3: 0, 4: 2, 5: 10, 6: 4, 7: 40, 8: 92, 9: 352}
     
-    # 2. Verify each solution is valid
+    # 1. Verify each solution is valid
     for board in actual:
         if not _is_valid_board(board, n):
             return False
     
-    # 3. Check no duplicate solutions
+    # 2. Check no duplicate solutions
     unique_solutions = set(tuple(row for row in board) for board in actual)
     if len(unique_solutions) != len(actual):
         return False
+    
+    # 3. Check solution count
+    if expected is not None:
+        # Has .out file: compare against expected
+        if len(actual) != len(expected):
+            return False
+    else:
+        # Judge-only mode (generated tests): use known counts
+        expected_count = KNOWN_COUNTS.get(n)
+        if expected_count is not None and len(actual) != expected_count:
+            return False
     
     return True
 
