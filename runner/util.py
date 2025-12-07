@@ -165,7 +165,7 @@ def _compare_set(actual: any, expected: any) -> bool:
         return actual == expected
 
 
-def compare_result(actual_str: str, expected_str: str, input_str: str,
+def compare_result(actual_str: str, expected_str: Optional[str], input_str: str,
                    module, compare_mode: str = "exact") -> bool:
     """
     Integrated comparison logic supporting JUDGE_FUNC and COMPARE_MODE.
@@ -176,7 +176,7 @@ def compare_result(actual_str: str, expected_str: str, input_str: str,
     
     Args:
         actual_str: Actual program output (raw string)
-        expected_str: Expected output (raw string)
+        expected_str: Expected output (raw string, or None if .out doesn't exist)
         input_str: Input data (raw string)
         module: Loaded solution module
         compare_mode: Comparison mode ("exact" | "sorted" | "set")
@@ -189,6 +189,7 @@ def compare_result(actual_str: str, expected_str: str, input_str: str,
         
         - If actual/expected can be parsed by ast.literal_eval, pass parsed objects
         - If parsing fails, pass raw strings
+        - expected is None when .out file doesn't exist (judge-only mode)
         - input_data is always raw string
     
     Examples:
@@ -200,27 +201,46 @@ def compare_result(actual_str: str, expected_str: str, input_str: str,
         # Custom format comparison (string mode)
         def judge(actual: str, expected: str, input_data: str) -> bool:
             return parse_linked_list(actual) == parse_linked_list(expected)
+        
+        # Judge-only mode (no .out file)
+        def judge(actual: list, expected, input_data: str) -> bool:
+            # expected is None when .out doesn't exist
+            n = int(input_data)
+            return is_valid_solution(actual, n)
     """
     import ast
     
     actual_norm = normalize_output(actual_str)
-    expected_norm = normalize_output(expected_str)
+    expected_norm = normalize_output(expected_str) if expected_str is not None else None
     
     # ========== Priority 1: JUDGE_FUNC ==========
     judge_func = getattr(module, 'JUDGE_FUNC', None) if module else None
     
     if judge_func:
-        # Try to parse as Python objects
+        # Try to parse actual as Python object
         try:
             actual_obj = ast.literal_eval(actual_norm)
-            expected_obj = ast.literal_eval(expected_norm)
-            # Parsing succeeded -> pass objects
-            return judge_func(actual_obj, expected_obj, input_str)
         except (ValueError, SyntaxError):
-            # Parsing failed -> pass raw strings
-            return judge_func(actual_norm, expected_norm, input_str)
+            actual_obj = actual_norm
+        
+        # Try to parse expected as Python object (if exists)
+        if expected_norm is not None:
+            try:
+                expected_obj = ast.literal_eval(expected_norm)
+            except (ValueError, SyntaxError):
+                expected_obj = expected_norm
+        else:
+            # No .out file -> expected is None (judge-only mode)
+            expected_obj = None
+        
+        return judge_func(actual_obj, expected_obj, input_str)
     
     # ========== Priority 2: COMPARE_MODE ==========
+    # COMPARE_MODE requires .out file
+    if expected_norm is None:
+        # This shouldn't happen if test_runner handles it correctly
+        return False
+    
     return compare_outputs(actual_norm, expected_norm, compare_mode)
 
 

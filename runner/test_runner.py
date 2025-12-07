@@ -67,7 +67,7 @@ def load_solution_module(problem: str):
 
 def run_one_case(problem: str, input_path: str, output_path: str, 
                  method: Optional[str] = None, benchmark: bool = False,
-                 compare_mode: str = "exact", module: Any = None) -> tuple[bool, float, str, str]:
+                 compare_mode: str = "exact", module: Any = None) -> tuple[Optional[bool], float, str, Optional[str], str]:
     """
     Run a single test case.
     
@@ -81,18 +81,37 @@ def run_one_case(problem: str, input_path: str, output_path: str,
         module: Loaded solution module (for JUDGE_FUNC)
     
     Returns: 
-        tuple: (passed: bool, elapsed_ms: float, actual: str, expected: str)
+        tuple: (passed, elapsed_ms, actual, expected, validation_mode)
+            - passed: bool or None (None = skipped)
+            - elapsed_ms: float
+            - actual: str
+            - expected: str or None
+            - validation_mode: "judge" | "judge-only" | "exact" | "sorted" | "set" | "skip"
     """
+    # Check if .out file exists
+    has_out_file = os.path.exists(output_path)
+    judge_func = getattr(module, 'JUDGE_FUNC', None) if module else None
+    
+    # Read input
     with open(input_path, "r", encoding="utf-8") as f:
         input_data = f.read()
     
-    with open(output_path, "r", encoding="utf-8") as f:
-        expected = f.read()
+    # Read expected output (if exists)
+    if has_out_file:
+        with open(output_path, "r", encoding="utf-8") as f:
+            expected = f.read()
+    else:
+        expected = None
+    
+    # Handle missing .out file
+    if not has_out_file and not judge_func:
+        # No .out and no JUDGE_FUNC -> skip
+        return None, 0.0, "", None, "skip"
     
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
         print(f"❌ Solution file not found: {solution_path}")
-        return False, 0.0, "", expected
+        return False, 0.0, "", expected, "error"
     
     # Prepare environment variables to pass method parameter
     env = os.environ.copy()
@@ -111,10 +130,22 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     
     actual = result.stdout
     
-    # Use integrated comparison function (supports JUDGE_FUNC and COMPARE_MODE)
-    ok = compare_result(actual, expected, input_data, module, compare_mode)
+    # Determine validation mode and run comparison
+    if judge_func:
+        # JUDGE_FUNC mode
+        ok = compare_result(actual, expected, input_data, module, compare_mode)
+        validation_mode = "judge" if has_out_file else "judge-only"
+    else:
+        # COMPARE_MODE (requires .out file)
+        ok = compare_result(actual, expected, input_data, module, compare_mode)
+        validation_mode = compare_mode  # "exact" / "sorted" / "set"
     
-    return ok, elapsed_ms, actual, expected
+    return ok, elapsed_ms, actual, expected, validation_mode
+
+
+def format_validation_label(validation_mode: str) -> str:
+    """Format validation mode as a label for output."""
+    return f"[{validation_mode}]"
 
 
 def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any],
@@ -129,7 +160,9 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
         "cases": [],
         "passed": 0,
         "total": 0,
-        "times": []
+        "skipped": 0,
+        "times": [],
+        "validation_summary": {}  # Track count by validation mode
     }
     
     print(f"\n📌 Method: {method_name}")
@@ -141,34 +174,45 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
     
     for in_path in input_files:
         out_path = in_path.replace(".in", ".out")
-        if not os.path.exists(out_path):
-            print(f"   ⚠️ Output file not found: {out_path}")
-            continue
-        
         case_name = os.path.basename(in_path).replace(".in", "")
-        ok, elapsed_ms, actual, expected = run_one_case(
+        
+        ok, elapsed_ms, actual, expected, validation_mode = run_one_case(
             problem, in_path, out_path, method_name, benchmark, compare_mode, module
         )
+        
+        # Track validation mode counts
+        results["validation_summary"][validation_mode] = \
+            results["validation_summary"].get(validation_mode, 0) + 1
+        
+        # Handle skipped cases
+        if validation_mode == "skip":
+            results["skipped"] += 1
+            print(f"   {case_name}: ⚠️ SKIP (missing .out, no JUDGE_FUNC)")
+            continue
         
         results["total"] += 1
         results["times"].append(elapsed_ms)
         
+        label = format_validation_label(validation_mode)
+        
         if ok:
             results["passed"] += 1
             if benchmark:
-                print(f"   {case_name}: ✅ PASS ({elapsed_ms:.2f}ms)")
+                print(f"   {case_name}: ✅ PASS ({elapsed_ms:.2f}ms) {label}")
             else:
-                print(f"   {case_name}: ✅ PASS")
+                print(f"   {case_name}: ✅ PASS {label}")
         else:
-            print(f"   {case_name}: ❌ FAIL")
+            print(f"   {case_name}: ❌ FAIL {label}")
             # Show diff for debugging
-            print(f"      Expected: {normalize_output(expected)[:100]}...")
+            if expected is not None:
+                print(f"      Expected: {normalize_output(expected)[:100]}...")
             print(f"      Actual:   {normalize_output(actual)[:100]}...")
         
         results["cases"].append({
             "name": case_name,
             "passed": ok,
-            "time_ms": elapsed_ms
+            "time_ms": elapsed_ms,
+            "validation_mode": validation_mode
         })
     
     return results
@@ -267,34 +311,49 @@ Examples:
             print()
             passed = 0
             total = 0
+            skipped = 0
             times = []
+            validation_summary = {}
             
             for in_path in input_files:
                 out_path = in_path.replace(".in", ".out")
-                if not os.path.exists(out_path):
-                    print(f"   ⚠️ Output file not found: {out_path}")
-                    continue
-                
                 case_name = os.path.basename(in_path).replace(".in", "")
-                ok, elapsed_ms, actual, expected = run_one_case(
+                
+                ok, elapsed_ms, actual, expected, validation_mode = run_one_case(
                     problem, in_path, out_path, None, args.benchmark, compare_mode, module
                 )
+                
+                # Track validation mode counts
+                validation_summary[validation_mode] = \
+                    validation_summary.get(validation_mode, 0) + 1
+                
+                # Handle skipped cases
+                if validation_mode == "skip":
+                    skipped += 1
+                    print(f"   {case_name}: ⚠️ SKIP (missing .out, no JUDGE_FUNC)")
+                    continue
+                
                 total += 1
                 times.append(elapsed_ms)
+                
+                label = format_validation_label(validation_mode)
                 
                 if ok:
                     passed += 1
                     if args.benchmark:
-                        print(f"   {case_name}: ✅ PASS ({elapsed_ms:.2f}ms)")
+                        print(f"   {case_name}: ✅ PASS ({elapsed_ms:.2f}ms) {label}")
                     else:
-                        print(f"   {case_name}: ✅ PASS")
+                        print(f"   {case_name}: ✅ PASS {label}")
                 else:
-                    print(f"   {case_name}: ❌ FAIL")
+                    print(f"   {case_name}: ❌ FAIL {label}")
                     # Show diff for debugging
-                    print(f"      Expected: {normalize_output(expected)[:100]}...")
+                    if expected is not None:
+                        print(f"      Expected: {normalize_output(expected)[:100]}...")
                     print(f"      Actual:   {normalize_output(actual)[:100]}...")
             
             print(f"\nSummary: {passed} / {total} cases passed.")
+            if skipped > 0:
+                print(f"Skipped: {skipped} cases (missing .out)")
             
             if args.benchmark and times:
                 avg_time = sum(times) / len(times)
