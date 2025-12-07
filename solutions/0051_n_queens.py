@@ -1,0 +1,302 @@
+# solutions/0051_n_queens.py
+"""
+Problem: N-Queens
+Link: https://leetcode.com/problems/n-queens/
+
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard
+such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+"""
+from typing import List, Set
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_backtrack_sets",
+        "complexity": "O(N!) time, O(N) space",
+        "description": "Backtracking with hash sets for O(1) conflict detection",
+    },
+    "sets": {
+        "method": "solve_backtrack_sets",
+        "complexity": "O(N!) time, O(N) space",
+        "description": "Backtracking with hash sets for O(1) conflict detection",
+    },
+    "bitmask": {
+        "method": "solve_backtrack_bitmask",
+        "complexity": "O(N!) time, O(N) space",
+        "description": "Backtracking with bitmask for ultra-fast conflict detection",
+    },
+}
+
+
+# ============================================
+# Solution 1: Backtracking with Hash Sets
+# Time: O(N!), Space: O(N)
+# ============================================
+#
+# ALGORITHM OVERVIEW:
+# The N-Queens problem is a classic constraint satisfaction problem (CSP).
+# We use backtracking to systematically explore all possible queen placements
+# while pruning invalid branches early.
+#
+# KEY INSIGHT:
+# - Place queens row by row (one queen per row is guaranteed)
+# - For each row, try each column and check three constraints:
+#   1. Column constraint: no two queens in same column
+#   2. Main diagonal (\): characterized by (row - col) = constant
+#   3. Anti-diagonal (/): characterized by (row + col) = constant
+#
+# TIME COMPLEXITY: O(N!)
+# - At row 0, we have N choices
+# - At row 1, we have at most N-1 choices (one column blocked)
+# - At row 2, we have at most N-2 choices
+# - Total: N × (N-1) × (N-2) × ... × 1 = O(N!)
+# - Note: The actual number is much smaller due to diagonal constraints
+#
+# SPACE COMPLEXITY: O(N)
+# - board[]: O(N) to store queen positions
+# - Three sets: O(N) each in worst case
+# - Recursion stack: O(N) depth
+# - Output space is not counted (it's the required output)
+#
+# WHY THIS APPROACH:
+# 1. Clean separation of concerns (constraint checking vs. board building)
+# 2. O(1) constraint lookup using hash sets
+# 3. Proper backtracking with state restoration
+# 4. The "choice-explore-unchoice" pattern essential for backtracking
+# ============================================
+class SolutionBacktrackSets:
+    """
+    Backtracking solution using hash sets for O(1) conflict detection.
+    
+    Recommended approach as it balances readability with efficiency.
+    """
+    
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        results: List[List[str]] = []
+        
+        # board[row] = col means queen at (row, col)
+        # Using array instead of 2D grid saves space and simplifies board construction
+        board: List[int] = [-1] * n
+        
+        # Constraint tracking sets for O(1) lookup
+        # These sets remember which columns and diagonals are "under attack"
+        used_cols: Set[int] = set()      # Columns occupied by queens
+        used_diag1: Set[int] = set()     # Main diagonals (\): row - col = constant
+        used_diag2: Set[int] = set()     # Anti-diagonals (/): row + col = constant
+        
+        def backtrack(row: int) -> None:
+            """
+            Place queens starting from the given row.
+            
+            Base case: row == n means all queens are placed successfully.
+            Recursive case: try each column in the current row.
+            """
+            # BASE CASE: All N queens have been placed successfully
+            if row == n:
+                results.append(self._build_board(board))
+                return
+            
+            # RECURSIVE CASE: Try each column in the current row
+            for col in range(n):
+                # ========== CONSTRAINT CHECK (Pruning) ==========
+                # Skip if this column is already occupied
+                if col in used_cols:
+                    continue
+                
+                # Calculate diagonal identifiers
+                # Main diagonal (\): all cells on same diagonal have same (row - col)
+                # Anti-diagonal (/): all cells on same diagonal have same (row + col)
+                diag1 = row - col  # Main diagonal identifier
+                diag2 = row + col  # Anti-diagonal identifier
+                
+                # Skip if either diagonal is already under attack
+                if diag1 in used_diag1 or diag2 in used_diag2:
+                    continue
+                
+                # ========== MAKE CHOICE ==========
+                board[row] = col
+                used_cols.add(col)
+                used_diag1.add(diag1)
+                used_diag2.add(diag2)
+                
+                # ========== EXPLORE ==========
+                backtrack(row + 1)
+                
+                # ========== UNDO CHOICE (Backtrack) ==========
+                # Restore state for the next iteration
+                board[row] = -1
+                used_cols.discard(col)
+                used_diag1.discard(diag1)
+                used_diag2.discard(diag2)
+        
+        # Start backtracking from row 0
+        backtrack(0)
+        return results
+    
+    def _build_board(self, board: List[int]) -> List[str]:
+        """
+        Convert the board array to the required string format.
+        
+        board[row] = col means queen at position (row, col)
+        Output: ["..Q.", "Q...", "...Q", ".Q.."] for n=4
+        """
+        n = len(board)
+        result: List[str] = []
+        
+        for row in range(n):
+            # Create a row of dots, then place 'Q' at the queen's column
+            row_chars = ['.'] * n
+            row_chars[board[row]] = 'Q'
+            result.append(''.join(row_chars))
+        
+        return result
+
+
+# ============================================
+# Solution 2: Backtracking with Bitmask
+# Time: O(N!), Space: O(N) - slightly better constants
+# ============================================
+#
+# OPTIMIZATION:
+# Using bitmasks instead of hash sets provides:
+# 1. Better cache locality (integers vs. hash table)
+# 2. Faster operations (bitwise AND/OR vs. hash lookup)
+# 3. Lower memory overhead (3 integers vs. 3 hash sets)
+#
+# HOW BITMASK WORKS:
+# - Each bit position represents a column or diagonal
+# - Bit = 1 means that column/diagonal is under attack
+# - To check if column c is free: (cols & (1 << c)) == 0
+# - To mark column c as used: cols |= (1 << c)
+# - To unmark column c: cols &= ~(1 << c)
+#
+# NOTE:
+# This solution is more performant but harder to understand.
+# Recommended after mastering the hash set approach first.
+# ============================================
+class SolutionBacktrackBitmask:
+    """
+    Backtracking solution using bitmasks for ultra-fast conflict detection.
+    
+    This is an optimized version that uses bitwise operations instead of hash sets.
+    Preferred for competitive programming or when maximum performance is needed.
+    """
+    
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        results: List[List[str]] = []
+        board: List[int] = [-1] * n
+        
+        def backtrack(row: int, cols: int, diag1: int, diag2: int) -> None:
+            """
+            Place queens using bitmasks for constraint tracking.
+            
+            Args:
+                row: Current row to place a queen
+                cols: Bitmask of occupied columns
+                diag1: Bitmask of occupied main diagonals (shifted)
+                diag2: Bitmask of occupied anti-diagonals (shifted)
+            """
+            if row == n:
+                results.append(self._build_board(board, n))
+                return
+            
+            # available_positions = columns that are not under attack
+            # We need to consider all three constraints simultaneously
+            # For a column c to be available:
+            #   - Column c must not be in cols
+            #   - The main diagonal at this row must not be in diag1
+            #   - The anti-diagonal at this row must not be in diag2
+            
+            for col in range(n):
+                col_bit = 1 << col
+                
+                # Check all three constraints using bitwise AND
+                if cols & col_bit:
+                    continue
+                if diag1 & col_bit:
+                    continue
+                if diag2 & col_bit:
+                    continue
+                
+                # Place queen and recurse
+                board[row] = col
+                
+                # Key insight for diagonal bitmasks:
+                # - diag1 shifts LEFT as we go down (main diagonal goes right)
+                # - diag2 shifts RIGHT as we go down (anti-diagonal goes left)
+                backtrack(
+                    row + 1,
+                    cols | col_bit,
+                    (diag1 | col_bit) << 1,  # Shift left for next row
+                    (diag2 | col_bit) >> 1   # Shift right for next row
+                )
+                
+                board[row] = -1
+        
+        backtrack(0, 0, 0, 0)
+        return results
+    
+    def _build_board(self, board: List[int], n: int) -> List[str]:
+        """Convert board array to string format."""
+        result: List[str] = []
+        for row in range(n):
+            row_chars = ['.'] * n
+            row_chars[board[row]] = 'Q'
+            result.append(''.join(row_chars))
+        return result
+
+
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_backtrack_sets(n: int) -> List[List[str]]:
+    """Wrapper for SolutionBacktrackSets."""
+    return SolutionBacktrackSets().solveNQueens(n)
+
+
+def solve_backtrack_bitmask(n: int) -> List[List[str]]:
+    """Wrapper for SolutionBacktrackBitmask."""
+    return SolutionBacktrackBitmask().solveNQueens(n)
+
+
+# ============================================
+# Local runner integration
+# ============================================
+def solve():
+    """
+    Input format:
+    Line 1: n (board size)
+
+    Example:
+    4
+    """
+    import sys
+    
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Parse input
+    lines = sys.stdin.read().strip().split('\n')
+    n = int(lines[0])
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(n)
+    
+    # Output result
+    # Sort for consistent output (order doesn't matter per problem statement)
+    result.sort()
+    print(result)
+
+
+if __name__ == "__main__":
+    solve()
+
