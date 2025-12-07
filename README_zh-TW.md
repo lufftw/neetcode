@@ -499,6 +499,130 @@ def solve():
 
 ---
 
+## 🔀 彈性輸出比對
+
+某些 LeetCode 題目會標註 **「可以以任意順序回傳答案」** 或有多個正確答案。測試執行器支援兩種方式：
+
+### 優先級
+
+```
+1. JUDGE_FUNC（自訂驗證函式）- 最高優先級
+2. COMPARE_MODE（排序/集合比對）
+3. 精確字串比對（預設）
+```
+
+---
+
+### 方式一：JUDGE_FUNC（複雜情況推薦）
+
+使用 **Decision Problem** 方式：驗證答案是否**正確**，而非是否**相同**。
+
+```python
+# solutions/0051_n_queens.py
+
+def judge(actual: list, expected: list, input_data: str) -> bool:
+    """
+    自訂驗證函式
+    
+    Args:
+        actual: 程式輸出（若可解析則為 Python 物件，否則為原始字串）
+        expected: 預期輸出（若可解析則為 Python 物件，否則為原始字串）
+        input_data: 輸入資料（原始字串）
+    
+    Returns:
+        bool: 答案是否正確
+    """
+    n = int(input_data.strip())
+    
+    # 1. 檢查解的數量
+    if len(actual) != len(expected):
+        return False
+    
+    # 2. 驗證每個解是否合法
+    for board in actual:
+        if not is_valid_n_queens(board, n):
+            return False
+    
+    # 3. 檢查無重複
+    return len(set(tuple(b) for b in actual)) == len(actual)
+
+JUDGE_FUNC = judge  # 告訴 test_runner 使用這個函式
+```
+
+**優點：**
+- 驗證正確性，而非字串相等
+- 處理多個正確答案
+- 支援任何輸出格式（字串、物件、自訂格式）
+
+---
+
+### 方式二：COMPARE_MODE（簡單情況）
+
+適用於簡單的順序無關比對：
+
+```python
+# solutions/0046_permutations.py
+
+COMPARE_MODE = "sorted"  # 選項: "exact" | "sorted" | "set"
+```
+
+| 模式 | 說明 | 適用情境 |
+|------|------|----------|
+| `"exact"` | 精確比對（預設） | 大多數題目 |
+| `"sorted"` | 排序後比對 | Permutations、Combinations |
+| `"set"` | 集合比對（忽略重複） | 不重複元素 |
+
+---
+
+### JUDGE_FUNC 範例
+
+#### 範例一：N-Queens（物件模式）
+
+```python
+def judge(actual: list, expected: list, input_data: str) -> bool:
+    n = int(input_data.strip())
+    # 驗證每個棋盤配置是否合法...
+    return all(is_valid_board(b, n) for b in actual)
+
+JUDGE_FUNC = judge
+```
+
+#### 範例二：LinkedList（字串模式）
+
+```python
+def judge(actual: str, expected: str, input_data: str) -> bool:
+    # 解析 "1->2->3" 格式
+    def parse(s):
+        return s.strip().split("->") if s.strip() else []
+    return parse(actual) == parse(expected)
+
+JUDGE_FUNC = judge
+```
+
+#### 範例三：浮點數誤差
+
+```python
+def judge(actual: float, expected: float, input_data: str) -> bool:
+    return abs(actual - expected) < 1e-5
+
+JUDGE_FUNC = judge
+```
+
+---
+
+### 適用題目
+
+| 題目 | 推薦方式 |
+|------|----------|
+| N-Queens | `JUDGE_FUNC`（驗證棋盤） |
+| Permutations | `COMPARE_MODE = "sorted"` |
+| Subsets | `COMPARE_MODE = "sorted"` |
+| 最短路徑（多解） | `JUDGE_FUNC`（驗證路徑） |
+| 浮點數運算 | `JUDGE_FUNC`（誤差容忍） |
+| LinkedList/Tree | `JUDGE_FUNC`（解析格式） |
+
+---
+
 ## 📊 測試結果範例
 
 ```

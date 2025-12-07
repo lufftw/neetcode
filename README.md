@@ -499,6 +499,130 @@ def solve():
 
 ---
 
+## 🔀 Flexible Output Comparison
+
+Some LeetCode problems state **"You may return the answer in any order"** or have multiple valid answers. The test runner supports two approaches:
+
+### Priority
+
+```
+1. JUDGE_FUNC (custom validation) - highest priority
+2. COMPARE_MODE (sorted/set comparison)
+3. Exact string match (default)
+```
+
+---
+
+### Approach 1: JUDGE_FUNC (Recommended for Complex Cases)
+
+Use **Decision Problem** approach: verify the answer is **valid**, not just **identical**.
+
+```python
+# solutions/0051_n_queens.py
+
+def judge(actual: list, expected: list, input_data: str) -> bool:
+    """
+    Custom validation function.
+    
+    Args:
+        actual: Program output (parsed as Python object if possible, otherwise raw string)
+        expected: Expected output (parsed as Python object if possible, otherwise raw string)
+        input_data: Input data (raw string)
+    
+    Returns:
+        bool: Whether the answer is correct
+    """
+    n = int(input_data.strip())
+    
+    # 1. Check solution count
+    if len(actual) != len(expected):
+        return False
+    
+    # 2. Verify each solution is valid
+    for board in actual:
+        if not is_valid_n_queens(board, n):
+            return False
+    
+    # 3. Check no duplicates
+    return len(set(tuple(b) for b in actual)) == len(actual)
+
+JUDGE_FUNC = judge  # Tell test_runner to use this function
+```
+
+**Benefits:**
+- Validates correctness, not just string equality
+- Handles multiple valid answers
+- Works with any output format (strings, objects, custom formats)
+
+---
+
+### Approach 2: COMPARE_MODE (Simple Cases)
+
+For simple order-independent comparisons:
+
+```python
+# solutions/0046_permutations.py
+
+COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
+```
+
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| `"exact"` | Exact string match (default) | Most problems |
+| `"sorted"` | Sort lists before comparison | Permutations, Combinations |
+| `"set"` | Set comparison (ignores duplicates) | Unique elements |
+
+---
+
+### JUDGE_FUNC Examples
+
+#### Example 1: N-Queens (Object Mode)
+
+```python
+def judge(actual: list, expected: list, input_data: str) -> bool:
+    n = int(input_data.strip())
+    # Verify each board is valid...
+    return all(is_valid_board(b, n) for b in actual)
+
+JUDGE_FUNC = judge
+```
+
+#### Example 2: LinkedList (String Mode)
+
+```python
+def judge(actual: str, expected: str, input_data: str) -> bool:
+    # Parse "1->2->3" format
+    def parse(s):
+        return s.strip().split("->") if s.strip() else []
+    return parse(actual) == parse(expected)
+
+JUDGE_FUNC = judge
+```
+
+#### Example 3: Floating Point Tolerance
+
+```python
+def judge(actual: float, expected: float, input_data: str) -> bool:
+    return abs(actual - expected) < 1e-5
+
+JUDGE_FUNC = judge
+```
+
+---
+
+### Applicable Problems
+
+| Problem | Recommended Approach |
+|---------|---------------------|
+| N-Queens | `JUDGE_FUNC` (validate board) |
+| Permutations | `COMPARE_MODE = "sorted"` |
+| Subsets | `COMPARE_MODE = "sorted"` |
+| Shortest Path (multiple) | `JUDGE_FUNC` (validate path) |
+| Floating point | `JUDGE_FUNC` (tolerance) |
+| LinkedList/Tree | `JUDGE_FUNC` (parse format) |
+
+---
+
 ## 📊 Test Result Example
 
 ```

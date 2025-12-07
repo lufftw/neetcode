@@ -27,10 +27,18 @@ def normalize_output(s: str) -> str:
 
 
 def load_solution_module(problem: str):
-    """動態載入 solution 模組，取得 SOLUTIONS metadata"""
+    """
+    動態載入 solution 模組，取得 SOLUTIONS metadata 和 COMPARE_MODE
+    
+    Returns:
+        tuple: (module, solutions_meta, compare_mode)
+            - module: 載入的模組物件
+            - solutions_meta: SOLUTIONS 字典（如果有）
+            - compare_mode: 比較模式 ("exact" | "sorted" | "set")
+    """
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
-        return None, None
+        return None, None, "exact"
     
     spec = importlib.util.spec_from_file_location(f"solution_{problem}", solution_path)
     module = importlib.util.module_from_spec(spec)
@@ -38,18 +46,34 @@ def load_solution_module(problem: str):
         spec.loader.exec_module(module)
     except Exception as e:
         print(f"⚠️ 載入模組時發生錯誤: {e}")
-        return None, None
+        return None, None, "exact"
     
     # 取得 SOLUTIONS metadata（如果有的話）
     solutions_meta = getattr(module, 'SOLUTIONS', None)
-    return module, solutions_meta
+    
+    # 取得 COMPARE_MODE（預設為 "exact"）
+    compare_mode = getattr(module, 'COMPARE_MODE', 'exact')
+    
+    return module, solutions_meta, compare_mode
 
 
 def run_one_case(problem: str, input_path: str, output_path: str, 
-                 method: Optional[str] = None, benchmark: bool = False) -> tuple[bool, float]:
+                 method: Optional[str] = None, benchmark: bool = False,
+                 compare_mode: str = "exact", module: Any = None) -> tuple[bool, float, str, str]:
     """
     執行單一測資
-    Returns: (passed: bool, elapsed_ms: float)
+    
+    Args:
+        problem: 題目名稱
+        input_path: 輸入檔路徑
+        output_path: 預期輸出檔路徑
+        method: 解法名稱（可選）
+        benchmark: 是否計時
+        compare_mode: 比較模式 ("exact" | "sorted" | "set")
+        module: 載入的 solution 模組（用於 JUDGE_FUNC）
+    
+    Returns: 
+        tuple: (passed: bool, elapsed_ms: float, actual: str, expected: str)
     """
     with open(input_path, "r", encoding="utf-8") as f:
         input_data = f.read()
@@ -60,7 +84,7 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
         print(f"❌ 找不到解答檔案: {solution_path}")
-        return False, 0.0
+        return False, 0.0, "", expected
     
     # 準備環境變數傳遞 method 參數
     env = os.environ.copy()
@@ -78,15 +102,17 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     elapsed_ms = (time.perf_counter() - start_time) * 1000
     
     actual = result.stdout
-    exp_norm = normalize_output(expected)
-    act_norm = normalize_output(actual)
     
-    ok = (exp_norm == act_norm)
-    return ok, elapsed_ms
+    # 使用整合比對函式（支援 JUDGE_FUNC 和 COMPARE_MODE）
+    from runner.util import compare_result
+    ok = compare_result(actual, expected, input_data, module, compare_mode)
+    
+    return ok, elapsed_ms, actual, expected
 
 
 def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any],
-                     input_files: List[str], benchmark: bool = False) -> Dict[str, Any]:
+                     input_files: List[str], benchmark: bool = False,
+                     compare_mode: str = "exact", module: Any = None) -> Dict[str, Any]:
     """執行某個解法的所有測資"""
     results = {
         "method": method_name,
@@ -113,7 +139,9 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
             continue
         
         case_name = os.path.basename(in_path).replace(".in", "")
-        ok, elapsed_ms = run_one_case(problem, in_path, out_path, method_name, benchmark)
+        ok, elapsed_ms, actual, expected = run_one_case(
+            problem, in_path, out_path, method_name, benchmark, compare_mode, module
+        )
         
         results["total"] += 1
         results["times"].append(elapsed_ms)
@@ -126,6 +154,9 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
                 print(f"   {case_name}: ✅ PASS")
         else:
             print(f"   {case_name}: ❌ FAIL")
+            # 顯示差異以便除錯
+            print(f"      Expected: {normalize_output(expected)[:100]}...")
+            print(f"      Actual:   {normalize_output(actual)[:100]}...")
         
         results["cases"].append({
             "name": case_name,
@@ -187,11 +218,18 @@ Examples:
         print(f"⚠️ 找不到測資檔案 (no test inputs): {pattern}")
         sys.exit(1)
     
-    # 載入 solution 模組取得 SOLUTIONS metadata
-    module, solutions_meta = load_solution_module(problem)
+    # 載入 solution 模組取得 SOLUTIONS metadata 和 COMPARE_MODE
+    module, solutions_meta, compare_mode = load_solution_module(problem)
+    
+    # 檢查是否有 JUDGE_FUNC
+    has_judge_func = hasattr(module, 'JUDGE_FUNC') if module else False
     
     print(f"\n{'=' * 60}")
     print(f"🧪 Testing: {problem}")
+    if has_judge_func:
+        print(f"⚖️  Judge: JUDGE_FUNC (custom validation)")
+    elif compare_mode != "exact":
+        print(f"📋 Compare Mode: {compare_mode}")
     print(f"{'=' * 60}")
     
     # 決定要測試哪些解法
@@ -231,7 +269,9 @@ Examples:
                     continue
                 
                 case_name = os.path.basename(in_path).replace(".in", "")
-                ok, elapsed_ms = run_one_case(problem, in_path, out_path, None, args.benchmark)
+                ok, elapsed_ms, actual, expected = run_one_case(
+                    problem, in_path, out_path, None, args.benchmark, compare_mode, module
+                )
                 total += 1
                 times.append(elapsed_ms)
                 
@@ -243,6 +283,9 @@ Examples:
                         print(f"   {case_name}: ✅ PASS")
                 else:
                     print(f"   {case_name}: ❌ FAIL")
+                    # 顯示差異以便除錯
+                    print(f"      Expected: {normalize_output(expected)[:100]}...")
+                    print(f"      Actual:   {normalize_output(actual)[:100]}...")
             
             print(f"\n測試結果 / Summary: {passed} / {total} cases passed.")
             
@@ -252,7 +295,9 @@ Examples:
         else:
             # 多解法模式
             method_info = solutions_meta.get(method, {"method": method}) if solutions_meta else {"method": method}
-            result = run_method_tests(problem, method, method_info, input_files, args.benchmark)
+            result = run_method_tests(
+                problem, method, method_info, input_files, args.benchmark, compare_mode, module
+            )
             all_results.append(result)
             print(f"\n   Result: {result['passed']} / {result['total']} cases passed.")
     
