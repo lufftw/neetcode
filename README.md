@@ -16,7 +16,10 @@ A complete LeetCode practice framework with multiple test cases, auto-comparison
   - [Create New Problem](#3-create-new-problem)
   - [Run Tests](#4-run-tests)
 
-- [VS Code Shortcuts](#️-vs-code-shortcuts)
+- [VS Code Integration](#️-vs-code-integration)
+  - [Quick Shortcuts](#quick-shortcuts)
+  - [Tasks](#tasks-ctrlshiftp--tasks-run-task)
+  - [Debug Configurations](#debug-configurations-f5--select)
 
 - [Solution File Format](#-solution-file-format)
 
@@ -264,7 +267,9 @@ run_case.bat 0001_two_sum 1
 
 ---
 
-## ⌨️ VS Code Shortcuts
+## ⌨️ VS Code Integration
+
+### Quick Shortcuts
 
 | Shortcut | Function |
 |----------|----------|
@@ -272,6 +277,36 @@ run_case.bat 0001_two_sum 1
 | `F5` | Debug current file with case #1 |
 
 > **Note**: Open a solution file in `solutions/` before using shortcuts.
+
+### Tasks (Ctrl+Shift+P → "Tasks: Run Task")
+
+| Task | Description |
+|------|-------------|
+| Run all tests for current problem | Basic test run |
+| Run case #1 / #2 | Run specific test case |
+| Benchmark current problem | Show execution time |
+| Run all solutions with benchmark | Compare all solutions |
+| Run with generated cases (10) | Static + 10 generated |
+| Run generated only | Skip static tests |
+| Run generated with seed | Reproducible generation |
+| Run generated + save failed | Save failed inputs |
+| Run all solutions + generated | All solutions with generator |
+
+### Debug Configurations (F5 → Select)
+
+| Configuration | Description |
+|---------------|-------------|
+| Debug current problem (case #1/2/3) | Debug specific test case |
+| Debug all tests | Debug full test suite |
+| Benchmark current problem | Run with timing |
+| Debug with generated cases | Static + generated |
+| Debug generated only | Only generated cases |
+| Debug generated with seed | Reproducible debug |
+| Debug all solutions + generated | Compare all with generator |
+
+> 💡 **Tip**: These tasks/configs run the same commands documented in [Command Line Usage](#-command-line-usage) and [Test Case Generator](#-test-case-generator).
+> 
+> Example: "Benchmark current problem" runs `python runner/test_runner.py {problem} --benchmark`
 
 ---
 

@@ -378,19 +378,33 @@ def print_benchmark_summary(all_results: List[Dict[str, Any]]):
     print("📊 Performance Comparison")
     print("=" * 60)
     
+    # Check if any results have generated tests
+    has_generated = any(r.get("gen_total", 0) > 0 for r in all_results)
+    
     # Header
-    print(f"{'Method':<20} {'Avg Time':<12} {'Complexity':<15} {'Pass Rate'}")
-    print("-" * 60)
+    if has_generated:
+        print(f"{'Method':<20} {'Avg Time':<12} {'Complexity':<15} {'Static':<10} {'Generated'}")
+        print("-" * 75)
+    else:
+        print(f"{'Method':<20} {'Avg Time':<12} {'Complexity':<15} {'Pass Rate'}")
+        print("-" * 60)
     
     for result in all_results:
         method = result["method"]
         complexity = result["complexity"]
         avg_time = sum(result["times"]) / len(result["times"]) if result["times"] else 0
-        pass_rate = f"{result['passed']}/{result['total']}"
         
-        print(f"{method:<20} {avg_time:>8.2f}ms   {complexity:<15} {pass_rate}")
+        static_rate = f"{result['passed']}/{result['total']}"
+        gen_passed = result.get("gen_passed", 0)
+        gen_total = result.get("gen_total", 0)
+        
+        if has_generated:
+            gen_rate = f"{gen_passed}/{gen_total}" if gen_total > 0 else "-"
+            print(f"{method:<20} {avg_time:>8.2f}ms   {complexity:<15} {static_rate:<10} {gen_rate}")
+        else:
+            print(f"{method:<20} {avg_time:>8.2f}ms   {complexity:<15} {static_rate}")
     
-    print("=" * 60)
+    print("=" * (75 if has_generated else 60))
 
 
 def main():

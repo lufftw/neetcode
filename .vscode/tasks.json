@@ -301,6 +301,72 @@
                 "panel": "shared",
                 "clear": true
             }
+        },
+        {
+            "label": "Run all solutions + generated (benchmark)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--all",
+                "--benchmark",
+                "--generate",
+                "${input:generateCount}"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Run all solutions + generated only (benchmark)",
+            "type": "shell",
+            "command": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "args": [
+                "runner/test_runner.py",
+                "${fileBasenameNoExtension}",
+                "--all",
+                "--benchmark",
+                "--generate-only",
+                "${input:generateCount}"
+            ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
         }
     ],
     "inputs": [

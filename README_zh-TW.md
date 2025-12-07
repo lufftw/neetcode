@@ -16,7 +16,10 @@
   - [建立新題目](#3-建立新題目)
   - [執行測試](#4-執行測試)
 
-- [VS Code 快捷鍵](#️-vs-code-快捷鍵)
+- [VS Code 整合](#️-vs-code-整合)
+  - [快捷鍵](#快捷鍵)
+  - [Tasks](#tasksctrlshiftp--tasks-run-task)
+  - [Debug 配置](#debug-配置f5--選擇)
 
 - [解答檔案格式](#-解答檔案格式)
 
@@ -264,7 +267,9 @@ run_case.bat 0001_two_sum 1
 
 ---
 
-## ⌨️ VS Code 快捷鍵
+## ⌨️ VS Code 整合
+
+### 快捷鍵
 
 | 快捷鍵 | 功能 |
 |--------|------|
@@ -272,6 +277,36 @@ run_case.bat 0001_two_sum 1
 | `F5` | Debug 當前檔案的 case #1 |
 
 > **注意**: 請先開啟 `solutions/` 中的解答檔案，再使用快捷鍵。
+
+### Tasks（Ctrl+Shift+P → "Tasks: Run Task"）
+
+| Task | 說明 |
+|------|------|
+| Run all tests for current problem | 基本測試執行 |
+| Run case #1 / #2 | 執行特定測資 |
+| Benchmark current problem | 顯示執行時間 |
+| Run all solutions with benchmark | 比較所有解法 |
+| Run with generated cases (10) | 靜態 + 10 筆生成測資 |
+| Run generated only | 跳過靜態測資 |
+| Run generated with seed | 可重現的生成 |
+| Run generated + save failed | 儲存失敗的輸入 |
+| Run all solutions + generated | 所有解法 + 生成測資 |
+
+### Debug 配置（F5 → 選擇）
+
+| 配置 | 說明 |
+|------|------|
+| Debug current problem (case #1/2/3) | Debug 特定測資 |
+| Debug all tests | Debug 完整測試 |
+| Benchmark current problem | 帶計時執行 |
+| Debug with generated cases | 靜態 + 生成測資 |
+| Debug generated only | 只用生成測資 |
+| Debug generated with seed | 可重現的 debug |
+| Debug all solutions + generated | 比較所有解法 + 生成 |
+
+> 💡 **提示**：這些 tasks/配置執行的指令與 [命令列用法](#-命令列用法) 和 [測資產生器](#-測資產生器) 相同。
+> 
+> 範例："Benchmark current problem" 執行 `python runner/test_runner.py {problem} --benchmark`
 
 ---
 
