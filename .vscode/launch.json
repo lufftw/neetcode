@@ -13,7 +13,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         },
         {
             "name": "Debug current problem (case #2)",
@@ -27,7 +33,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         },
         {
             "name": "Debug current problem (case #3)",
@@ -41,7 +53,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         },
         {
             "name": "Debug solution directly (no stdin)",
@@ -51,7 +69,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         },
         {
             "name": "Debug all tests",
@@ -64,7 +88,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         },
         {
             "name": "Benchmark current problem",
@@ -78,7 +108,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         },
         {
             "name": "Benchmark current problem all solutions",
@@ -93,7 +129,13 @@
             "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "justMyCode": true
+            "justMyCode": true,
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
         }
     ]
 }

@@ -1,5 +1,11 @@
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/leetcode/Scripts/python.exe",
+    "[linux]": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/leetcode/bin/python"
+    },
+    "[osx]": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/leetcode/bin/python"
+    },
     "python.terminal.activateEnvironment": true,
     "files.eol": "\n",
     "files.encoding": "utf8"

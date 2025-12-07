@@ -9,6 +9,15 @@
                 "runner/test_runner.py",
                 "${fileBasenameNoExtension}"
             ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -34,6 +43,15 @@
                 "${fileBasenameNoExtension}",
                 "1"
             ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -55,6 +73,15 @@
                 "${fileBasenameNoExtension}",
                 "2"
             ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -69,6 +96,15 @@
                 "${fileBasenameNoExtension}",
                 "${input:caseNumber}"
             ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -83,6 +119,15 @@
                 "${fileBasenameNoExtension}",
                 "--benchmark"
             ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -105,6 +150,15 @@
                 "--all",
                 "--benchmark"
             ],
+            "windows": {
+                "command": "${workspaceFolder}/leetcode/Scripts/python.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/leetcode/bin/python"
+            },
             "options": {
                 "cwd": "${workspaceFolder}"
             },
