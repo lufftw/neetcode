@@ -16,6 +16,13 @@ import argparse
 import importlib.util
 from typing import Optional, Dict, List, Any
 
+# Add project root to path for imports
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from runner.util import compare_result
+
 PYTHON_EXE = sys.executable
 
 
@@ -104,7 +111,6 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     actual = result.stdout
     
     # 使用整合比對函式（支援 JUDGE_FUNC 和 COMPARE_MODE）
-    from runner.util import compare_result
     ok = compare_result(actual, expected, input_data, module, compare_mode)
     
     return ok, elapsed_ms, actual, expected
