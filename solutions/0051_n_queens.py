@@ -13,6 +13,68 @@ import os
 
 
 # ============================================
+# JUDGE_FUNC - Custom validation for "return in any order" problems
+# Uses Decision Problem approach: verify solution validity, not exact match
+# ============================================
+def _is_valid_board(board: List[str], n: int) -> bool:
+    """Check if a single board configuration is valid (no queens attacking each other)."""
+    if len(board) != n:
+        return False
+    
+    queens = []
+    for r, row in enumerate(board):
+        if len(row) != n or row.count('Q') != 1:
+            return False
+        c = row.index('Q')
+        queens.append((r, c))
+    
+    # Check column and diagonal conflicts
+    for i, (r1, c1) in enumerate(queens):
+        for r2, c2 in queens[i+1:]:
+            if c1 == c2 or abs(r1 - r2) == abs(c1 - c2):
+                return False
+    return True
+
+
+def judge(actual: List[List[str]], expected: List[List[str]], input_data: str) -> bool:
+    """
+    Custom validation function for N-Queens (Decision Problem approach).
+    
+    Validation logic:
+    1. Number of solutions must match
+    2. Each solution must be a valid N-Queens configuration
+    3. No duplicate solutions allowed
+    
+    Args:
+        actual: Program output (parsed as list)
+        expected: Expected output (parsed as list)
+        input_data: Input data (raw string)
+    
+    Returns:
+        bool: Whether the answer is correct
+    """
+    n = int(input_data.strip())
+    
+    # 1. Check solution count
+    if len(actual) != len(expected):
+        return False
+    
+    # 2. Verify each solution is valid
+    for board in actual:
+        if not _is_valid_board(board, n):
+            return False
+    
+    # 3. Check no duplicate solutions
+    unique_solutions = set(tuple(row for row in board) for board in actual)
+    if len(unique_solutions) != len(actual):
+        return False
+    
+    return True
+
+
+JUDGE_FUNC = judge  # Tell test_runner to use custom validation function
+
+# ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
 # ============================================
 SOLUTIONS = {
@@ -292,8 +354,8 @@ def solve():
     result = method_func(n)
     
     # Output result
-    # Sort for consistent output (order doesn't matter per problem statement)
-    result.sort()
+    # Note: JUDGE_FUNC handles order-independent validation
+    # No need to sort here - the test runner will use JUDGE_FUNC
     print(result)
 
 
