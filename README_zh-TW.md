@@ -41,6 +41,10 @@ neetcode/
 ├── run_case.bat             ← Windows: 執行單一測資
 ├── new_problem.bat          ← Windows: 建立新題目
 │
+├── run_tests.sh             ← Linux/macOS: 執行所有測資
+├── run_case.sh              ← Linux/macOS: 執行單一測資
+├── new_problem.sh           ← Linux/macOS: 建立新題目
+│
 └── README.md
 ```
 
@@ -51,6 +55,8 @@ neetcode/
 ### 1. 環境設定（首次安裝）
 
 > 參考 [LeetCode 官方環境說明](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages)
+
+#### Windows (PowerShell)
 
 ```powershell
 # 進入專案目錄
@@ -69,14 +75,97 @@ leetcode\Scripts\activate
 pip install debugpy
 ```
 
+#### Linux / macOS（使用 pyenv - 推薦）
+
+> **為什麼用 pyenv？** 安裝在使用者目錄，不影響系統 Python，支援多版本管理。
+
+```bash
+# ============================================
+# 步驟 1: 安裝 pyenv（僅需一次）
+# ============================================
+
+# --- macOS ---
+brew install pyenv
+
+# --- Linux (Ubuntu/Debian/Fedora 等) ---
+# 先安裝相依套件：
+sudo apt update && sudo apt install -y build-essential libssl-dev zlib1g-dev \
+  libbz2-dev libreadline-dev libsqlite3-dev curl \
+  libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+# 安裝 pyenv：
+curl https://pyenv.run | bash
+
+# ============================================
+# 步驟 2: 設定 shell（加入 ~/.bashrc 或 ~/.zshrc）
+# ============================================
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+# 重新載入 shell
+source ~/.bashrc   # 或: source ~/.zshrc
+
+# ============================================
+# 步驟 3: 安裝 Python 3.11 並設定專案
+# ============================================
+# 進入專案目錄
+cd ~/path/to/neetcode
+
+# 安裝 Python 3.11（不影響系統 Python）
+pyenv install 3.11
+
+# 僅在此專案使用 Python 3.11
+pyenv local 3.11
+
+# 建立虛擬環境
+python -m venv leetcode
+
+# 啟動虛擬環境
+source leetcode/bin/activate
+
+# 安裝 debugpy（Debug 用）
+pip install debugpy
+
+# 設定腳本執行權限（僅需執行一次）
+chmod +x run_tests.sh run_case.sh new_problem.sh
+```
+
+<details>
+<summary>📋 替代方案：直接系統安裝（可能影響現有 Python）</summary>
+
+```bash
+# Ubuntu/Debian:
+sudo apt update && sudo apt install python3.11 python3.11-venv
+
+# macOS (Homebrew):
+brew install python@3.11
+
+# 然後建立 venv：
+python3.11 -m venv leetcode
+```
+
+</details>
+
 ### 2. 日常使用（啟動環境）
+
+#### Windows
 
 ```powershell
 cd /d "D:\Developer\program\python\neetcode"
 leetcode\Scripts\activate
 ```
 
+#### Linux / macOS
+
+```bash
+cd ~/path/to/neetcode
+source leetcode/bin/activate
+```
+
 ### 3. 建立新題目
+
+#### Windows
 
 ```batch
 # 單一解法模板
@@ -89,6 +178,19 @@ new_problem.bat 0023_merge_k_lists --multi
 new_problem.bat 0025_reverse_nodes --wrapper
 ```
 
+#### Linux / macOS
+
+```bash
+# 單一解法模板
+./new_problem.sh 0007_reverse_integer
+
+# 多解法模板（單一類別，多個方法）
+./new_problem.sh 0023_merge_k_lists --multi
+
+# Wrapper 模式模板（多個類別，保留 LeetCode 原始方法名稱）
+./new_problem.sh 0025_reverse_nodes --wrapper
+```
+
 這會自動建立：
 - `solutions/0007_reverse_integer.py`
 - `tests/0007_reverse_integer_1.in`
@@ -96,12 +198,24 @@ new_problem.bat 0025_reverse_nodes --wrapper
 
 ### 4. 執行測試
 
+#### Windows
+
 ```batch
 # 執行所有測資
 run_tests.bat 0001_two_sum
 
 # 執行單一測資
 run_case.bat 0001_two_sum 1
+```
+
+#### Linux / macOS
+
+```bash
+# 執行所有測資
+./run_tests.sh 0001_two_sum
+
+# 執行單一測資
+./run_case.sh 0001_two_sum 1
 ```
 
 ---
@@ -381,7 +495,7 @@ def solve():
 - 不會在同一個類別內發生方法名稱衝突
 - 當題目有超過兩種解法時，擴展性佳
 
-> **提示**：使用 `new_problem.bat <name> --wrapper` 建立此模式的模板。
+> **提示**：使用 `new_problem.bat <name> --wrapper`（Windows）或 `./new_problem.sh <name> --wrapper`（Linux/macOS）建立此模式的模板。
 
 ---
 
@@ -455,6 +569,8 @@ greedy                  44.82ms   O(kN)           3/3
 
 ### 啟動虛擬環境
 
+#### Windows
+
 ```powershell
 # PowerShell
 .\leetcode\Scripts\Activate.ps1
@@ -463,11 +579,27 @@ greedy                  44.82ms   O(kN)           3/3
 leetcode\Scripts\activate.bat
 ```
 
+#### Linux / macOS
+
+```bash
+source leetcode/bin/activate
+```
+
 ### 安裝新套件
+
+#### Windows
 
 ```powershell
 # 先啟動虛擬環境，再安裝
 leetcode\Scripts\activate
+pip install <package_name>
+```
+
+#### Linux / macOS
+
+```bash
+# 先啟動虛擬環境，再安裝
+source leetcode/bin/activate
 pip install <package_name>
 ```
 
@@ -490,4 +622,3 @@ pip install <package_name>
 ## 📜 License
 
 MIT License - 自由使用於個人學習
-

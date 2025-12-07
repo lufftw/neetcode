@@ -41,6 +41,10 @@ neetcode/
 ├── run_case.bat             ← Windows: Run single test
 ├── new_problem.bat          ← Windows: Create new problem
 │
+├── run_tests.sh             ← Linux/macOS: Run all tests
+├── run_case.sh              ← Linux/macOS: Run single test
+├── new_problem.sh           ← Linux/macOS: Create new problem
+│
 └── README.md
 ```
 
@@ -51,6 +55,8 @@ neetcode/
 ### 1. Environment Setup (First Time)
 
 > Reference: [LeetCode Official Environment](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages)
+
+#### Windows (PowerShell)
 
 ```powershell
 # Navigate to project directory
@@ -69,14 +75,97 @@ leetcode\Scripts\activate
 pip install debugpy
 ```
 
+#### Linux / macOS (Using pyenv - Recommended)
+
+> **Why pyenv?** Installs Python in user directory without affecting system Python. Supports multiple versions.
+
+```bash
+# ============================================
+# Step 1: Install pyenv (one-time setup)
+# ============================================
+
+# --- macOS ---
+brew install pyenv
+
+# --- Linux (Ubuntu/Debian/Fedora/etc.) ---
+# Install dependencies first:
+sudo apt update && sudo apt install -y build-essential libssl-dev zlib1g-dev \
+  libbz2-dev libreadline-dev libsqlite3-dev curl \
+  libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+# Install pyenv:
+curl https://pyenv.run | bash
+
+# ============================================
+# Step 2: Configure shell (add to ~/.bashrc or ~/.zshrc)
+# ============================================
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+# Reload shell
+source ~/.bashrc   # or: source ~/.zshrc
+
+# ============================================
+# Step 3: Install Python 3.11 and setup project
+# ============================================
+# Navigate to project directory
+cd ~/path/to/neetcode
+
+# Install Python 3.11 (doesn't affect system Python)
+pyenv install 3.11
+
+# Set Python 3.11 for this project only
+pyenv local 3.11
+
+# Create virtual environment
+python -m venv leetcode
+
+# Activate virtual environment
+source leetcode/bin/activate
+
+# Install debugpy (for debugging)
+pip install debugpy
+
+# Make shell scripts executable (first time only)
+chmod +x run_tests.sh run_case.sh new_problem.sh
+```
+
+<details>
+<summary>📋 Alternative: Direct system install (may affect existing Python)</summary>
+
+```bash
+# Ubuntu/Debian:
+sudo apt update && sudo apt install python3.11 python3.11-venv
+
+# macOS (Homebrew):
+brew install python@3.11
+
+# Then create venv:
+python3.11 -m venv leetcode
+```
+
+</details>
+
 ### 2. Daily Usage (Activate Environment)
+
+#### Windows
 
 ```powershell
 cd /d "D:\Developer\program\python\neetcode"
 leetcode\Scripts\activate
 ```
 
+#### Linux / macOS
+
+```bash
+cd ~/path/to/neetcode
+source leetcode/bin/activate
+```
+
 ### 3. Create New Problem
+
+#### Windows
 
 ```batch
 # Single solution template
@@ -89,6 +178,19 @@ new_problem.bat 0023_merge_k_lists --multi
 new_problem.bat 0025_reverse_nodes --wrapper
 ```
 
+#### Linux / macOS
+
+```bash
+# Single solution template
+./new_problem.sh 0007_reverse_integer
+
+# Multi-solution template (one class, multiple methods)
+./new_problem.sh 0023_merge_k_lists --multi
+
+# Wrapper-based template (multiple classes, preserves LeetCode method names)
+./new_problem.sh 0025_reverse_nodes --wrapper
+```
+
 This will create:
 - `solutions/0007_reverse_integer.py`
 - `tests/0007_reverse_integer_1.in`
@@ -96,12 +198,24 @@ This will create:
 
 ### 4. Run Tests
 
+#### Windows
+
 ```batch
 # Run all test cases
 run_tests.bat 0001_two_sum
 
 # Run single test case
 run_case.bat 0001_two_sum 1
+```
+
+#### Linux / macOS
+
+```bash
+# Run all test cases
+./run_tests.sh 0001_two_sum
+
+# Run single test case
+./run_case.sh 0001_two_sum 1
 ```
 
 ---
@@ -381,7 +495,7 @@ def solve():
 - No method name collisions inside a single class
 - Scales nicely when a problem has more than two approaches
 
-> **Tip**: Use `new_problem.bat <name> --wrapper` to create a template with this pattern.
+> **Tip**: Use `new_problem.bat <name> --wrapper` (Windows) or `./new_problem.sh <name> --wrapper` (Linux/macOS) to create a template with this pattern.
 
 ---
 
@@ -455,6 +569,8 @@ greedy                  44.82ms   O(kN)           3/3
 
 ### Activate Virtual Environment
 
+#### Windows
+
 ```powershell
 # PowerShell
 .\leetcode\Scripts\Activate.ps1
@@ -463,11 +579,27 @@ greedy                  44.82ms   O(kN)           3/3
 leetcode\Scripts\activate.bat
 ```
 
+#### Linux / macOS
+
+```bash
+source leetcode/bin/activate
+```
+
 ### Install New Packages
+
+#### Windows
 
 ```powershell
 # Activate virtual environment first, then install
 leetcode\Scripts\activate
+pip install <package_name>
+```
+
+#### Linux / macOS
+
+```bash
+# Activate virtual environment first, then install
+source leetcode/bin/activate
 pip install <package_name>
 ```
 
