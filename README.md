@@ -6,6 +6,47 @@ A complete LeetCode practice framework with multiple test cases, auto-comparison
 
 ---
 
+## 📑 Table of Contents
+
+- [Project Structure](#-project-structure)
+
+- [Quick Start](#-quick-start)
+  - [Environment Setup](#1-environment-setup-first-time)
+  - [Daily Usage](#2-daily-usage-activate-environment)
+  - [Create New Problem](#3-create-new-problem)
+  - [Run Tests](#4-run-tests)
+
+- [VS Code Shortcuts](#️-vs-code-shortcuts)
+
+- [Solution File Format](#-solution-file-format)
+
+- [Test File Format](#-test-file-format)
+
+- [Command Line Usage](#-command-line-usage)
+
+- [Multi-Solution Testing](#-multi-solution-testing--performance-comparison)
+  - [Command Line Parameters](#command-line-parameters)
+  - [Define Multiple Solutions](#how-to-define-multiple-solutions)
+  - [SOLUTIONS Field Description](#solutions-field-description)
+  - [Custom Short Names](#custom-short-names)
+  - [Wrapper-Based Pattern](#advanced-wrapper-based-pattern-for-multiple-solution-classes)
+
+- [Flexible Output Comparison](#-flexible-output-comparison)
+  - [JUDGE_FUNC](#approach-1-judge_func-recommended-for-complex-cases)
+  - [COMPARE_MODE](#approach-2-compare_mode-simple-cases)
+  - [JUDGE_FUNC Examples](#judge_func-examples)
+  - [Applicable Problems](#applicable-problems)
+
+- [Test Result Example](#-test-result-example)
+
+- [Python Environment](#-python-environment)
+
+- [Tips](#-tips)
+
+- [License](#-license)
+
+---
+
 ## 📁 Project Structure
 
 ```

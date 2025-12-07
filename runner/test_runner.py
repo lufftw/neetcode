@@ -1,11 +1,12 @@
 # runner/test_runner.py
 """
-Test Runner - 支援多解法測試與效能比較
+Test Runner - Multi-solution testing with performance comparison.
+
 Usage:
-    python runner/test_runner.py 0001_two_sum                    # 執行預設解法
-    python runner/test_runner.py 0023 --method heap              # 執行指定解法
-    python runner/test_runner.py 0023 --all                      # 執行所有解法
-    python runner/test_runner.py 0023 --all --benchmark          # 所有解法 + 效能比較
+    python runner/test_runner.py 0001_two_sum                    # Run default solution
+    python runner/test_runner.py 0023 --method heap              # Run specific solution
+    python runner/test_runner.py 0023 --all                      # Run all solutions
+    python runner/test_runner.py 0023 --all --benchmark          # All solutions + benchmark
 """
 import subprocess
 import glob
@@ -27,7 +28,7 @@ PYTHON_EXE = sys.executable
 
 
 def normalize_output(s: str) -> str:
-    """正規化輸出，避免多餘空白/換行造成比對失敗。"""
+    """Normalize output by removing trailing whitespace and extra newlines."""
     lines = s.strip().splitlines()
     lines = [line.rstrip() for line in lines]
     return "\n".join(lines)
@@ -35,13 +36,13 @@ def normalize_output(s: str) -> str:
 
 def load_solution_module(problem: str):
     """
-    動態載入 solution 模組，取得 SOLUTIONS metadata 和 COMPARE_MODE
+    Dynamically load solution module to get SOLUTIONS metadata and COMPARE_MODE.
     
     Returns:
         tuple: (module, solutions_meta, compare_mode)
-            - module: 載入的模組物件
-            - solutions_meta: SOLUTIONS 字典（如果有）
-            - compare_mode: 比較模式 ("exact" | "sorted" | "set")
+            - module: Loaded module object
+            - solutions_meta: SOLUTIONS dictionary (if exists)
+            - compare_mode: Comparison mode ("exact" | "sorted" | "set")
     """
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
@@ -52,13 +53,13 @@ def load_solution_module(problem: str):
     try:
         spec.loader.exec_module(module)
     except Exception as e:
-        print(f"⚠️ 載入模組時發生錯誤: {e}")
+        print(f"⚠️ Error loading module: {e}")
         return None, None, "exact"
     
-    # 取得 SOLUTIONS metadata（如果有的話）
+    # Get SOLUTIONS metadata (if exists)
     solutions_meta = getattr(module, 'SOLUTIONS', None)
     
-    # 取得 COMPARE_MODE（預設為 "exact"）
+    # Get COMPARE_MODE (default: "exact")
     compare_mode = getattr(module, 'COMPARE_MODE', 'exact')
     
     return module, solutions_meta, compare_mode
@@ -68,16 +69,16 @@ def run_one_case(problem: str, input_path: str, output_path: str,
                  method: Optional[str] = None, benchmark: bool = False,
                  compare_mode: str = "exact", module: Any = None) -> tuple[bool, float, str, str]:
     """
-    執行單一測資
+    Run a single test case.
     
     Args:
-        problem: 題目名稱
-        input_path: 輸入檔路徑
-        output_path: 預期輸出檔路徑
-        method: 解法名稱（可選）
-        benchmark: 是否計時
-        compare_mode: 比較模式 ("exact" | "sorted" | "set")
-        module: 載入的 solution 模組（用於 JUDGE_FUNC）
+        problem: Problem name
+        input_path: Input file path
+        output_path: Expected output file path
+        method: Solution method name (optional)
+        benchmark: Whether to measure time
+        compare_mode: Comparison mode ("exact" | "sorted" | "set")
+        module: Loaded solution module (for JUDGE_FUNC)
     
     Returns: 
         tuple: (passed: bool, elapsed_ms: float, actual: str, expected: str)
@@ -90,10 +91,10 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
-        print(f"❌ 找不到解答檔案: {solution_path}")
+        print(f"❌ Solution file not found: {solution_path}")
         return False, 0.0, "", expected
     
-    # 準備環境變數傳遞 method 參數
+    # Prepare environment variables to pass method parameter
     env = os.environ.copy()
     if method:
         env['SOLUTION_METHOD'] = method
@@ -110,7 +111,7 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     
     actual = result.stdout
     
-    # 使用整合比對函式（支援 JUDGE_FUNC 和 COMPARE_MODE）
+    # Use integrated comparison function (supports JUDGE_FUNC and COMPARE_MODE)
     ok = compare_result(actual, expected, input_data, module, compare_mode)
     
     return ok, elapsed_ms, actual, expected
@@ -119,7 +120,7 @@ def run_one_case(problem: str, input_path: str, output_path: str,
 def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any],
                      input_files: List[str], benchmark: bool = False,
                      compare_mode: str = "exact", module: Any = None) -> Dict[str, Any]:
-    """執行某個解法的所有測資"""
+    """Run all test cases for a specific solution method."""
     results = {
         "method": method_name,
         "display_name": method_info.get("method", method_name),
@@ -141,7 +142,7 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
     for in_path in input_files:
         out_path = in_path.replace(".in", ".out")
         if not os.path.exists(out_path):
-            print(f"   ⚠️ 找不到對應的 output 檔: {out_path}")
+            print(f"   ⚠️ Output file not found: {out_path}")
             continue
         
         case_name = os.path.basename(in_path).replace(".in", "")
@@ -160,7 +161,7 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
                 print(f"   {case_name}: ✅ PASS")
         else:
             print(f"   {case_name}: ❌ FAIL")
-            # 顯示差異以便除錯
+            # Show diff for debugging
             print(f"      Expected: {normalize_output(expected)[:100]}...")
             print(f"      Actual:   {normalize_output(actual)[:100]}...")
         
@@ -174,12 +175,12 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
 
 
 def print_benchmark_summary(all_results: List[Dict[str, Any]]):
-    """印出效能比較表"""
+    """Print performance comparison table."""
     print("\n" + "=" * 60)
     print("📊 Performance Comparison")
     print("=" * 60)
     
-    # 表頭
+    # Header
     print(f"{'Method':<20} {'Avg Time':<12} {'Complexity':<15} {'Pass Rate'}")
     print("-" * 60)
     
@@ -196,7 +197,7 @@ def print_benchmark_summary(all_results: List[Dict[str, Any]]):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="LeetCode Test Runner - 支援多解法測試",
+        description="LeetCode Test Runner - Multi-solution testing",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -206,28 +207,28 @@ Examples:
   python runner/test_runner.py 0023 --all --benchmark
         """
     )
-    parser.add_argument("problem", help="題目名稱 (e.g., 0001_two_sum)")
-    parser.add_argument("--method", "-m", help="指定要測試的解法名稱")
-    parser.add_argument("--all", "-a", action="store_true", help="測試所有解法")
-    parser.add_argument("--benchmark", "-b", action="store_true", help="顯示執行時間比較")
-    parser.add_argument("--tests-dir", "-t", default="tests", help="測資目錄 (預設: tests)")
+    parser.add_argument("problem", help="Problem name (e.g., 0001_two_sum)")
+    parser.add_argument("--method", "-m", help="Specific solution method to test")
+    parser.add_argument("--all", "-a", action="store_true", help="Test all solutions")
+    parser.add_argument("--benchmark", "-b", action="store_true", help="Show execution time comparison")
+    parser.add_argument("--tests-dir", "-t", default="tests", help="Tests directory (default: tests)")
     
     args = parser.parse_args()
     
     problem = args.problem
     tests_dir = args.tests_dir
     
-    # 找測資檔案
+    # Find test input files
     pattern = os.path.join(tests_dir, f"{problem}_*.in")
     input_files = sorted(glob.glob(pattern))
     if not input_files:
-        print(f"⚠️ 找不到測資檔案 (no test inputs): {pattern}")
+        print(f"⚠️ No test input files found: {pattern}")
         sys.exit(1)
     
-    # 載入 solution 模組取得 SOLUTIONS metadata 和 COMPARE_MODE
+    # Load solution module to get SOLUTIONS metadata and COMPARE_MODE
     module, solutions_meta, compare_mode = load_solution_module(problem)
     
-    # 檢查是否有 JUDGE_FUNC
+    # Check if JUDGE_FUNC is defined
     has_judge_func = hasattr(module, 'JUDGE_FUNC') if module else False
     
     print(f"\n{'=' * 60}")
@@ -238,30 +239,30 @@ Examples:
         print(f"📋 Compare Mode: {compare_mode}")
     print(f"{'=' * 60}")
     
-    # 決定要測試哪些解法
+    # Determine which solutions to test
     if args.all and solutions_meta:
-        # 測試所有解法
+        # Test all solutions
         methods_to_test = list(solutions_meta.keys())
     elif args.method:
-        # 測試指定解法 - 驗證 method 是否存在
+        # Test specific solution - verify method exists
         if solutions_meta and args.method not in solutions_meta:
             available = list(solutions_meta.keys())
-            print(f"❌ 找不到解法 '{args.method}'")
-            print(f"   可用的解法: {', '.join(available)}")
+            print(f"❌ Solution method '{args.method}' not found")
+            print(f"   Available methods: {', '.join(available)}")
             sys.exit(1)
         methods_to_test = [args.method]
     elif solutions_meta and "default" in solutions_meta:
-        # 有 SOLUTIONS 但沒指定，用 default
+        # Has SOLUTIONS but no method specified, use default
         methods_to_test = ["default"]
     else:
-        # 沒有 SOLUTIONS metadata，使用傳統模式
+        # No SOLUTIONS metadata, use legacy mode
         methods_to_test = [None]
     
     all_results = []
     
     for method in methods_to_test:
         if method is None:
-            # 傳統模式：不指定 method
+            # Legacy mode: no method specified
             print(f"\n📌 Running default solution...")
             print()
             passed = 0
@@ -271,7 +272,7 @@ Examples:
             for in_path in input_files:
                 out_path = in_path.replace(".in", ".out")
                 if not os.path.exists(out_path):
-                    print(f"   ⚠️ 找不到對應的 output 檔: {out_path}")
+                    print(f"   ⚠️ Output file not found: {out_path}")
                     continue
                 
                 case_name = os.path.basename(in_path).replace(".in", "")
@@ -289,17 +290,17 @@ Examples:
                         print(f"   {case_name}: ✅ PASS")
                 else:
                     print(f"   {case_name}: ❌ FAIL")
-                    # 顯示差異以便除錯
+                    # Show diff for debugging
                     print(f"      Expected: {normalize_output(expected)[:100]}...")
                     print(f"      Actual:   {normalize_output(actual)[:100]}...")
             
-            print(f"\n測試結果 / Summary: {passed} / {total} cases passed.")
+            print(f"\nSummary: {passed} / {total} cases passed.")
             
             if args.benchmark and times:
                 avg_time = sum(times) / len(times)
-                print(f"平均執行時間 / Avg Time: {avg_time:.2f}ms")
+                print(f"Average Time: {avg_time:.2f}ms")
         else:
-            # 多解法模式
+            # Multi-solution mode
             method_info = solutions_meta.get(method, {"method": method}) if solutions_meta else {"method": method}
             result = run_method_tests(
                 problem, method, method_info, input_files, args.benchmark, compare_mode, module
@@ -307,12 +308,12 @@ Examples:
             all_results.append(result)
             print(f"\n   Result: {result['passed']} / {result['total']} cases passed.")
     
-    # 如果是多解法 + benchmark，印出比較表
+    # Print benchmark summary for multi-solution mode
     if len(all_results) > 1 and args.benchmark:
         print_benchmark_summary(all_results)
     elif len(all_results) == 1:
         result = all_results[0]
-        print(f"\n測試結果 / Summary: {result['passed']} / {result['total']} cases passed.")
+        print(f"\nSummary: {result['passed']} / {result['total']} cases passed.")
 
 
 if __name__ == "__main__":
