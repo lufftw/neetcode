@@ -32,6 +32,7 @@ A complete LeetCode practice framework with multiple test cases, auto-comparison
   - [Wrapper-Based Pattern](#advanced-wrapper-based-pattern-for-multiple-solution-classes)
 
 - [Flexible Output Comparison](#-flexible-output-comparison)
+  - [Validation Modes](#validation-modes)
   - [JUDGE_FUNC](#approach-1-judge_func-recommended-for-complex-cases)
   - [COMPARE_MODE](#approach-2-compare_mode-simple-cases)
   - [JUDGE_FUNC Examples](#judge_func-examples)

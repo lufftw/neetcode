@@ -32,6 +32,7 @@
   - [Wrapper 模式](#進階使用-wrapper-函式分離多個解法類別)
 
 - [彈性輸出比對](#-彈性輸出比對)
+  - [驗證模式](#驗證模式)
   - [JUDGE_FUNC](#方式一judge_func複雜情況推薦)
   - [COMPARE_MODE](#方式二compare_mode簡單情況)
   - [JUDGE_FUNC 範例](#judge_func-範例)
