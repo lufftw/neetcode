@@ -1,0 +1,134 @@
+# runner/executor.py
+"""
+Test Case Executor - Run individual test cases.
+"""
+import subprocess
+import os
+import sys
+import time
+from typing import Optional, Any, Tuple
+
+from runner.compare import compare_result
+
+PYTHON_EXE = sys.executable
+
+
+def run_one_case(problem: str, input_path: str, output_path: str, 
+                 method: Optional[str] = None, benchmark: bool = False,
+                 compare_mode: str = "exact", module: Any = None) -> Tuple[Optional[bool], float, str, Optional[str], str]:
+    """
+    Run a single test case.
+    
+    Args:
+        problem: Problem name
+        input_path: Input file path
+        output_path: Expected output file path
+        method: Solution method name (optional)
+        benchmark: Whether to measure time
+        compare_mode: Comparison mode ("exact" | "sorted" | "set")
+        module: Loaded solution module (for JUDGE_FUNC)
+    
+    Returns: 
+        tuple: (passed, elapsed_ms, actual, expected, validation_mode)
+            - passed: bool or None (None = skipped)
+            - elapsed_ms: float
+            - actual: str
+            - expected: str or None
+            - validation_mode: "judge" | "judge-only" | "exact" | "sorted" | "set" | "skip"
+    """
+    # Check if .out file exists
+    has_out_file = os.path.exists(output_path)
+    judge_func = getattr(module, 'JUDGE_FUNC', None) if module else None
+    
+    # Read input
+    with open(input_path, "r", encoding="utf-8") as f:
+        input_data = f.read()
+    
+    # Read expected output (if exists)
+    if has_out_file:
+        with open(output_path, "r", encoding="utf-8") as f:
+            expected = f.read()
+    else:
+        expected = None
+    
+    # Handle missing .out file
+    if not has_out_file and not judge_func:
+        # No .out and no JUDGE_FUNC -> skip
+        return None, 0.0, "", None, "skip"
+    
+    solution_path = os.path.join("solutions", f"{problem}.py")
+    if not os.path.exists(solution_path):
+        print(f"❌ Solution file not found: {solution_path}")
+        return False, 0.0, "", expected, "error"
+    
+    # Prepare environment variables to pass method parameter
+    env = os.environ.copy()
+    if method:
+        env['SOLUTION_METHOD'] = method
+    
+    start_time = time.perf_counter()
+    result = subprocess.run(
+        [PYTHON_EXE, solution_path],
+        input=input_data,
+        text=True,
+        capture_output=True,
+        env=env
+    )
+    elapsed_ms = (time.perf_counter() - start_time) * 1000
+    
+    actual = result.stdout
+    
+    # Determine validation mode and run comparison
+    if judge_func:
+        # JUDGE_FUNC mode
+        ok = compare_result(actual, expected, input_data, module, compare_mode)
+        validation_mode = "judge" if has_out_file else "judge-only"
+    else:
+        # COMPARE_MODE (requires .out file)
+        ok = compare_result(actual, expected, input_data, module, compare_mode)
+        validation_mode = compare_mode  # "exact" / "sorted" / "set"
+    
+    return ok, elapsed_ms, actual, expected, validation_mode
+
+
+def run_generated_case(problem: str, input_data: str, case_name: str,
+                       method: Optional[str], benchmark: bool,
+                       compare_mode: str, module: Any) -> Tuple[Optional[bool], float, str, str]:
+    """
+    Run a single generated test case.
+    
+    Returns:
+        tuple: (passed, elapsed_ms, actual, input_data)
+    """
+    judge_func = getattr(module, 'JUDGE_FUNC', None) if module else None
+    
+    if not judge_func:
+        # Generated cases require JUDGE_FUNC
+        return None, 0.0, "", input_data
+    
+    solution_path = os.path.join("solutions", f"{problem}.py")
+    if not os.path.exists(solution_path):
+        return False, 0.0, "", input_data
+    
+    # Prepare environment variables
+    env = os.environ.copy()
+    if method:
+        env['SOLUTION_METHOD'] = method
+    
+    start_time = time.perf_counter()
+    result = subprocess.run(
+        [PYTHON_EXE, solution_path],
+        input=input_data,
+        text=True,
+        capture_output=True,
+        env=env
+    )
+    elapsed_ms = (time.perf_counter() - start_time) * 1000
+    
+    actual = result.stdout
+    
+    # Validate using JUDGE_FUNC (expected is None for generated cases)
+    ok = compare_result(actual, None, input_data, module, compare_mode)
+    
+    return ok, elapsed_ms, actual, input_data
+

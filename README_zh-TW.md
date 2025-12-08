@@ -49,6 +49,8 @@
 
 - [小技巧](#-小技巧)
 
+- [Runner 模組架構](#️-runner-模組架構開發者專區)
+
 - [License](#-license)
 
 ---
@@ -64,9 +66,16 @@ neetcode/
 │   └── launch.json          ← F5 Debug 設定
 │
 ├── runner/                  ← 執行器模組
-│   ├── test_runner.py       ← 跑所有 .in/.out 並比對
-│   ├── case_runner.py       ← 跑單一 .in 測資（Debug 用）
-│   └── util.py              ← 共用工具函式
+│   ├── test_runner.py       ← CLI 入口點
+│   ├── module_loader.py     ← 載入 solution/generator 模組
+│   ├── executor.py          ← 執行測試案例
+│   ├── reporter.py          ← 格式化與顯示結果
+│   ├── compare.py           ← 輸出比較邏輯
+│   ├── paths.py             ← 路徑工具
+│   ├── io_utils.py          ← 檔案 I/O 操作
+│   ├── util.py              ← Re-exports（向後兼容）
+│   ├── complexity_estimator.py  ← 時間複雜度估算
+│   └── case_runner.py       ← 跑單一測資（Debug 用）
 │
 ├── solutions/               ← 每一題的解答程式
 │   └── 0001_two_sum.py
@@ -122,8 +131,8 @@ py -3.11 -m venv leetcode
 # 啟動虛擬環境
 leetcode\Scripts\activate
 
-# 安裝 debugpy（Debug 用）
-pip install debugpy
+# 安裝相依套件
+pip install -r requirements.txt
 ```
 
 #### Linux / macOS（使用 pyenv - 推薦）
@@ -175,8 +184,8 @@ python -m venv leetcode
 # 啟動虛擬環境
 source leetcode/bin/activate
 
-# 安裝 debugpy（Debug 用）
-pip install debugpy
+# 安裝相依套件
+pip install -r requirements.txt
 
 # 設定腳本執行權限（僅需執行一次）
 chmod +x run_tests.sh run_case.sh new_problem.sh
@@ -1003,6 +1012,84 @@ pip install <package_name>
 2. **Debug 特定測資**: 修改 `launch.json` 中的 case 編號
 
 3. **自訂輸入格式**: 在 `solve()` 函式中自由定義解析邏輯
+
+---
+
+## 🏗️ Runner 模組架構（開發者專區）
+
+> ⚠️ **供貢獻者和維護者參考** - 一般使用者可以跳過此部分
+
+`runner/` 目錄包含模組化的測試執行元件：
+
+### 模組總覽
+
+```
+runner/
+├── test_runner.py         # CLI 入口點與主流程
+├── module_loader.py       # 動態載入 solution/generator 模組
+├── executor.py            # 測試案例執行（subprocess 管理）
+├── reporter.py            # 結果格式化與效能報告
+├── compare.py             # 輸出比較邏輯（exact/sorted/set/judge）
+├── paths.py               # 路徑工具函式
+├── io_utils.py            # 檔案 I/O 操作
+├── util.py                # Re-exports（向後兼容）
+├── complexity_estimator.py # 時間複雜度估算（big_O 整合）
+└── case_runner.py         # 單一案例執行器（Debug 用）
+```
+
+### 模組職責
+
+| 模組 | 行數 | 職責 |
+|------|------|------|
+| `compare.py` | ~190 | 輸出比較：`normalize_output`, `compare_outputs`, `compare_result`, `_compare_sorted`, `_compare_set` |
+| `paths.py` | ~30 | 路徑建構：`get_solution_path`, `get_test_input_path`, `get_test_output_path` |
+| `io_utils.py` | ~45 | 檔案操作：`read_file`, `write_file`, `file_exists`, `print_diff` |
+| `module_loader.py` | ~65 | 動態匯入：`load_solution_module`, `load_generator_module` |
+| `executor.py` | ~120 | 測試執行：`run_one_case`, `run_generated_case` |
+| `reporter.py` | ~160 | 輸出格式：`truncate_input`, `format_validation_label`, `save_failed_case`, `print_benchmark_summary`, `run_method_tests` |
+| `test_runner.py` | ~310 | CLI 與協調：參數解析、主流程 |
+| `complexity_estimator.py` | ~300 | 複雜度估算：`ComplexityEstimator`，Mock stdin 方法 |
+| `case_runner.py` | ~60 | 單一案例 Debug |
+
+### 向後兼容
+
+重構後的模組保持完整的向後兼容性：
+
+```python
+# 舊的 import 方式仍然有效：
+from runner.util import normalize_output, compare_result
+from runner.test_runner import run_one_case, load_solution_module
+
+# 新的直接 import 方式（新程式碼推薦使用）：
+from runner.compare import normalize_output, compare_result
+from runner.executor import run_one_case
+from runner.module_loader import load_solution_module
+```
+
+### 相依關係圖
+
+```
+test_runner.py (CLI 入口)
+    ├── module_loader.py
+    ├── executor.py ──────────┐
+    ├── reporter.py ──────────┼──→ compare.py
+    └── complexity_estimator.py
+
+util.py (re-exports)
+    ├── compare.py
+    ├── paths.py
+    └── io_utils.py
+```
+
+### 單元測試
+
+所有模組都有 `.dev/tests/` 中的特徵測試覆蓋：
+
+```bash
+# 執行所有單元測試
+leetcode\Scripts\python.exe -m pytest .dev/tests -v  # Windows
+leetcode/bin/python -m pytest .dev/tests -v          # Linux/macOS
+```
 
 ---
 
