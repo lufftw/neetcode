@@ -43,6 +43,60 @@ SOLUTIONS = {
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result by computing the expected k-group reversal.
+    
+    Args:
+        actual: Program output (may be list or string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+    
+    Returns:
+        bool: True if correct
+    """
+    import ast
+    
+    # Parse input
+    lines = input_data.strip().split('\n')
+    values = list(map(int, lines[0].split(',')))
+    k = int(lines[1])
+    
+    # Compute expected result using simple simulation
+    correct = _compute_k_group_reversal(values, k)
+    
+    # Parse actual output
+    try:
+        if isinstance(actual, list):
+            actual_list = actual
+        else:
+            actual_list = ast.literal_eval(str(actual).strip())
+        return actual_list == correct
+    except (ValueError, SyntaxError):
+        return False
+
+
+def _compute_k_group_reversal(values: List[int], k: int) -> List[int]:
+    """Compute expected k-group reversal result."""
+    n = len(values)
+    result = values.copy()
+    
+    # Process each complete group of k elements
+    i = 0
+    while i + k <= n:
+        # Reverse the group [i, i+k)
+        result[i:i+k] = result[i:i+k][::-1]
+        i += k
+    
+    return result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # Solution 1: Recursive k-group reversal
 # Time: O(N), Space: O(N) recursion stack in worst case
 #   - We scan at most k nodes per group to check availability

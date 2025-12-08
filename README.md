@@ -43,6 +43,8 @@ A complete LeetCode practice framework with multiple test cases, auto-comparison
 
 - [Test Case Generator](#-test-case-generator)
 
+- [Time Complexity Estimation](#-time-complexity-estimation)
+
 - [Test Result Example](#-test-result-example)
 
 - [Python Environment](#-python-environment)
@@ -886,6 +888,112 @@ Summary: 11 / 12 cases passed.
 
 ---
 
+## 📈 Time Complexity Estimation
+
+Automatically estimate algorithm time complexity using the big_O library approach.
+
+### Design Philosophy
+
+**Simple and generic** - Only requires one additional function in your generator:
+
+| Function | Purpose | Required |
+|----------|---------|----------|
+| `generate(count, seed)` | Random test cases for functional testing | ✅ Required |
+| `generate_for_complexity(n)` | Controlled size cases for complexity estimation | Optional |
+
+The estimator uses **Mock stdin** approach internally:
+- ✅ Generic - works with any solution that has `solve()` function
+- ✅ No subprocess overhead
+- ✅ Maintains stdin abstraction design
+
+### Usage
+
+```bash
+# Estimate complexity (requires generate_for_complexity in generator)
+python runner/test_runner.py 0004_median_of_two_sorted_arrays --estimate
+
+# Combine with other flags
+python runner/test_runner.py 0004 --all --benchmark --estimate
+```
+
+### Generator Example
+
+```python
+# generators/0004_median_of_two_sorted_arrays.py
+
+# Required: Random test generation
+def generate(count: int, seed: Optional[int] = None) -> Iterator[str]:
+    """Random sizes - tests functional correctness"""
+    for _ in range(count):
+        m = random.randint(0, 1000)
+        n = random.randint(0, 1000)
+        yield _generate_case(m, n)
+
+
+# Optional: Enable complexity estimation
+def generate_for_complexity(n: int) -> str:
+    """
+    Generate test case with specific input size.
+    
+    For this problem, n = total elements (m + n)
+    """
+    m = random.randint(0, n)
+    return _generate_case(m, n - m)
+```
+
+### Output Example
+
+```
+📈 Running complexity estimation...
+   Mode: Direct call (Mock stdin, no subprocess overhead)
+   Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000]
+   n=   10: 0.0040ms (avg of 3 runs)
+   n=  100: 0.0082ms (avg of 3 runs)
+   n= 1000: 0.0685ms (avg of 3 runs)
+   n= 2000: 0.1796ms (avg of 3 runs)
+
+✅ Estimated: O(n log n)
+   Confidence: 1.00
+```
+
+### Requirements
+
+| Component | Required | Description |
+|-----------|----------|-------------|
+| `big-O` package | ✅ | `pip install big-O` |
+| `generate_for_complexity(n)` | ✅ | Function that takes size `n` and returns test input |
+
+### Suitable Problem Types
+
+Not all problems are suitable for time complexity estimation. The estimation works best when:
+
+| ✅ Suitable | ❌ Not Suitable |
+|-------------|-----------------|
+| Input size `n` can vary continuously (10, 100, 1000...) | Input size has hard constraints (e.g., n ≤ 9) |
+| Execution time scales with input size | Execution time is dominated by fixed overhead |
+| Linear, logarithmic, polynomial complexity | Factorial/exponential with small n limit |
+
+**Examples:**
+
+| Problem | Suitable? | Reason |
+|---------|-----------|--------|
+| Two Sum | ✅ | n can be 10 ~ 10000, O(n) scales clearly |
+| Longest Substring | ✅ | String length can vary widely |
+| Merge k Sorted Lists | ✅ | Total elements N can scale |
+| N-Queens (0051) | ❌ | n ≤ 9 (factorial explosion), can't vary size meaningfully |
+| Rotting Oranges (0994) | ❌ | Grid size limited, BFS time dominated by grid structure |
+| Sudoku Solver | ❌ | Fixed 9x9 grid, backtracking complexity |
+
+> **Tip**: Only add `generate_for_complexity(n)` to generators where `n` can meaningfully vary from small (10) to large (1000+).
+
+### Backward Compatibility
+
+- **Solution files**: No changes required (must have `solve()` function)
+- **Existing generators**: Continue to work without changes
+- **New feature**: Add `generate_for_complexity(n)` to enable estimation
+
+---
+
 ## 📊 Test Result Example
 
 ```
@@ -951,8 +1059,19 @@ greedy                  44.82ms   O(kN)           3/3
 
 - **Python Version**: 3.11 (matches [LeetCode Official Environment](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages))
 - **Virtual Environment**: `leetcode/` (inside project)
-- **Installed Packages**:
-  - `debugpy` - Debug support
+- **Dependencies**: See `requirements.txt`
+
+### Install Dependencies
+
+```bash
+# Activate virtual environment first, then:
+pip install -r requirements.txt
+```
+
+| Package | Required | Description |
+|---------|----------|-------------|
+| `debugpy` | ✅ | Debug support for VS Code |
+| `big-O` | Optional | Time complexity estimation |
 
 ### Activate Virtual Environment
 

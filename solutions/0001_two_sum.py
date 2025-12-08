@@ -1,10 +1,13 @@
 # solutions/0001_two_sum.py
 """
-題目: Two Sum
-連結: https://leetcode.com/problems/two-sum/
+Problem: Two Sum
+Link: https://leetcode.com/problems/two-sum/
 
 Given an array of integers nums and an integer target, 
 return indices of the two numbers such that they add up to target.
+
+Time Complexity: O(n) - single pass with hash map
+Space Complexity: O(n) - hash map storage
 """
 from typing import List
 
@@ -23,9 +26,9 @@ class Solution:
 
 def solve():
     """
-    輸入格式:
-    第一行: nums (用逗號分隔)
-    第二行: target
+    Input format:
+    Line 1: nums (comma-separated)
+    Line 2: target
     
     Example:
     2,7,11,15
@@ -34,18 +37,17 @@ def solve():
     import sys
     lines = sys.stdin.read().strip().split('\n')
     
-    # 解析 nums
+    # Parse nums array
     nums = list(map(int, lines[0].split(',')))
-    # 解析 target
+    # Parse target
     target = int(lines[1])
     
     sol = Solution()
     result = sol.twoSum(nums, target)
     
-    # 輸出格式: [0, 1]
+    # Output format: [0, 1]
     print(result)
 
 
 if __name__ == "__main__":
     solve()
-

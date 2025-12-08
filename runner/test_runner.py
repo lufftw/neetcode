@@ -13,6 +13,10 @@ Generator support:
     python runner/test_runner.py 0004 --generate-only 10         # Only generated cases
     python runner/test_runner.py 0004 --generate 10 --seed 123   # Reproducible
     python runner/test_runner.py 0004 --generate 10 --save-failed  # Save failed inputs
+
+Complexity estimation:
+    python runner/test_runner.py 0004 --estimate                 # Estimate time complexity
+    (requires generate_for_complexity(n) function in generator)
 """
 import subprocess
 import glob
@@ -440,6 +444,10 @@ Generator examples:
     parser.add_argument("--save-failed", action="store_true",
                         help="Save failed generated cases to tests/")
     
+    # Complexity estimation
+    parser.add_argument("--estimate", "-e", action="store_true",
+                        help="Estimate time complexity (requires generate_for_complexity in generator)")
+    
     args = parser.parse_args()
     
     problem = args.problem
@@ -469,18 +477,19 @@ Generator examples:
     # Check if JUDGE_FUNC is defined
     has_judge_func = hasattr(module, 'JUDGE_FUNC') if module else False
     
-    # Load generator module if needed
+    # Load generator module if needed (for generation or complexity estimation)
     generator_module = None
-    if generate_count > 0:
+    if generate_count > 0 or args.estimate:
         generator_module = load_generator_module(problem)
         if not generator_module:
-            print(f"⚠️ No generator found: generators/{problem}.py")
-            if generate_only:
-                sys.exit(1)
-            else:
-                print(f"   Continuing with tests/ only...")
-                generate_count = 0
-        elif not has_judge_func:
+            if generate_count > 0:
+                print(f"⚠️ No generator found: generators/{problem}.py")
+                if generate_only:
+                    sys.exit(1)
+                else:
+                    print(f"   Continuing with tests/ only...")
+                    generate_count = 0
+        elif generate_count > 0 and not has_judge_func:
             print(f"❌ Generator requires JUDGE_FUNC in solution file")
             sys.exit(1)
     
@@ -493,6 +502,8 @@ Generator examples:
     if generator_module and generate_count > 0:
         seed_info = f", seed: {args.seed}" if args.seed else ""
         print(f"🎲 Generator: {generate_count} cases{seed_info}")
+    if args.estimate:
+        print(f"📈 Complexity estimation: requested")
     print(f"{'=' * 60}")
     
     # Determine which solutions to test
@@ -656,6 +667,49 @@ Generator examples:
     elif len(all_results) == 1:
         result = all_results[0]
         print(f"\nSummary: {result['passed']} / {result['total']} cases passed.")
+    
+    # Complexity estimation (separate from random test generation)
+    if args.estimate:
+        from runner.complexity_estimator import ComplexityEstimator
+        
+        print(f"\n{'=' * 60}")
+        print(f"📈 Complexity Estimation")
+        print(f"{'=' * 60}")
+        
+        if not ComplexityEstimator.is_available():
+            print(f"❌ big-O package not installed")
+            print(f"   Install with: pip install big-O")
+        elif not ComplexityEstimator.can_estimate(generator_module):
+            reason = ComplexityEstimator.get_unavailable_reason(generator_module)
+            print(f"❌ Cannot estimate complexity: {reason}")
+            print(f"\n   To enable complexity estimation, add to your generator:")
+            print(f"   ```python")
+            print(f"   def generate_for_complexity(n: int) -> str:")
+            print(f"       '''Generate test case with input size = n'''")
+            print(f"       # Return test input string for size n")
+            print(f"       ...")
+            print(f"   ```")
+        else:
+            # Run estimation for each method
+            methods = methods_to_test if methods_to_test[0] is not None else [None]
+            for method in methods:
+                method_name = method or "default"
+                print(f"\n📌 Estimating: {method_name}")
+                
+                estimator = ComplexityEstimator(
+                    generator_module=generator_module,
+                    problem=problem,
+                    solution_module=module,
+                    method=method
+                )
+                result = estimator.estimate()
+                
+                if result:
+                    print(f"\n   ✅ Estimated: {result.complexity}")
+                    print(f"      Confidence: {result.confidence:.2f}")
+                    print(f"      Details: {result.details}")
+                else:
+                    print(f"\n   ❌ Estimation failed")
 
 
 if __name__ == "__main__":
