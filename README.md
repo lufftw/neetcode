@@ -105,11 +105,14 @@ neetcode/
 
 #### Windows (PowerShell)
 
+> **Prerequisite**: To use `py install` command, you need to install **Python Install Manager** from the [Python official website](https://www.python.org/downloads/) first.
+
 ```powershell
 # Navigate to project directory
 cd /d "D:\Developer\program\python\neetcode"
 
 # Install Python 3.11 (if not already installed)
+# Note: Requires Python Install Manager from https://www.python.org/downloads/
 py install 3.11
 
 # Create virtual environment

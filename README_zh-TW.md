@@ -105,11 +105,14 @@ neetcode/
 
 #### Windows (PowerShell)
 
+> **前置需求**：要使用 `py install` 指令，需要先從 [Python 官方網站](https://www.python.org/downloads/) 安裝 **Python Install Manager**。
+
 ```powershell
 # 進入專案目錄
 cd /d "D:\Developer\program\python\neetcode"
 
 # 安裝 Python 3.11（如果尚未安裝）
+# 注意：需要先從 https://www.python.org/downloads/ 安裝 Python Install Manager
 py install 3.11
 
 # 建立虛擬環境
