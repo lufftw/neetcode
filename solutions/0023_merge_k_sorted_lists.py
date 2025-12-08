@@ -36,6 +36,51 @@ SOLUTIONS = {
     },
 }
 
+
+# ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result by computing the expected merged sorted list.
+    
+    Args:
+        actual: Program output (may be list or string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+    
+    Returns:
+        bool: True if correct
+    """
+    import ast
+    
+    # Parse input to get all values
+    lines = input_data.strip().split('\n')
+    k = int(lines[0])
+    
+    all_values = []
+    for i in range(1, k + 1):
+        if i < len(lines) and lines[i] and lines[i] != 'empty':
+            values = list(map(int, lines[i].split(',')))
+            all_values.extend(values)
+    
+    # Expected result: sorted merge of all lists
+    correct = sorted(all_values)
+    
+    # Parse actual output (may be list or string)
+    try:
+        if isinstance(actual, list):
+            actual_list = actual
+        else:
+            actual_list = ast.literal_eval(str(actual).strip())
+        return actual_list == correct
+    except (ValueError, SyntaxError):
+        return False
+
+
+JUDGE_FUNC = judge
+
+
 class ListNode:
     def __init__(self, val: int = 0, next: 'ListNode' = None):
         self.val = val

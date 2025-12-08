@@ -9,10 +9,16 @@ LeetCode Constraints:
 - 0 <= n <= 1000
 - 1 <= m + n <= 2000
 - -10^6 <= nums1[i], nums2[i] <= 10^6
+
+Time Complexity: O(log(m+n))
 """
 import random
 from typing import Iterator, Optional
 
+
+# ============================================
+# Random Test Generation (for functional testing)
+# ============================================
 
 def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     """
@@ -70,5 +76,38 @@ def _generate_random_case(min_m, max_m, min_n, max_n,
     nums2 = sorted([random.randint(min_val, max_val) for _ in range(n)])
     
     # Format as .in file content (no spaces in list)
+    return f"{nums1}\n{nums2}".replace(' ', '')
+
+
+# ============================================
+# Complexity Estimation (controlled size)
+# ============================================
+
+def generate_for_complexity(n: int) -> str:
+    """
+    Generate test case with specific input size for complexity estimation.
+    
+    For this problem:
+    - Input size n represents total elements (m + n)
+    - Time complexity is O(log(m+n)), so we use m+n as the size
+    
+    Args:
+        n: Total size (m + n)
+    
+    Returns:
+        str: Test input with total size = n
+    """
+    min_val, max_val = -10**6, 10**6
+    
+    # Ensure n is at least 1
+    n = max(1, n)
+    
+    # Randomly split n into m and (n - m)
+    m = random.randint(0, n)
+    remaining = n - m
+    
+    nums1 = sorted([random.randint(min_val, max_val) for _ in range(m)])
+    nums2 = sorted([random.randint(min_val, max_val) for _ in range(remaining)])
+    
     return f"{nums1}\n{nums2}".replace(' ', '')
 

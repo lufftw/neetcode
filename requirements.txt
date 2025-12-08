@@ -1,0 +1,11 @@
+# LeetCode Practice Framework - Dependencies
+#
+# Install with: pip install -r requirements.txt
+#
+# Required packages:
+debugpy>=1.8.0          # Debug support for VS Code
+
+# Optional packages (for complexity estimation):
+big-O>=0.10.0           # Time complexity estimation
+# numpy                 # Required by big-O (installed automatically)
+
