@@ -184,19 +184,13 @@ neetcode/
 │   │
 │   ├── run_tests.bat        ← Windows: Run unit tests
 │   ├── run_tests.sh         ← Linux/macOS: Run unit tests
-│   ├── run_tests.bat        ← Windows: Run unit tests
-│   ├── run_tests.sh         ← Linux/macOS: Run unit tests
 │   │
-│   ├── TESTING.md           ← Complete testing documentation
-│   ├── TEST_SUMMARY.md      ← Test suite summary
-│   └── README.md            ← Maintainer guide
 │   ├── TESTING.md           ← Complete testing documentation
 │   ├── TEST_SUMMARY.md      ← Test suite summary
 │   └── README.md            ← Maintainer guide
 │
 ├── leetcode/                ← Python virtual environment (Python 3.11)
 │
-├── pytest.ini               ← pytest configuration (for unit tests)
 ├── pytest.ini               ← pytest configuration (for unit tests)
 │
 ├── run_tests.bat            ← Windows: Run all tests
@@ -211,9 +205,6 @@ neetcode/
 └── README.md
 ```
 
-> **📝 Note**: 
-> - **End users**: Focus on `solutions/`, `tests/`, `runner/` and root-level scripts
-> - **Maintainers**: `.dev/` folder contains unit tests and maintenance docs to ensure refactoring doesn't break existing functionality
 > **📝 Note**: 
 > - **End users**: Focus on `solutions/`, `tests/`, `runner/` and root-level scripts
 > - **Maintainers**: `.dev/` folder contains unit tests and maintenance docs to ensure refactoring doesn't break existing functionality
@@ -1232,7 +1223,6 @@ pip install <package_name>
 ---
 
 ## 🔧 Maintainer Zone (Unit Tests)
-## 🔧 Maintainer Zone (Unit Tests)
 
 > ⚠️ **For project maintainers and contributors** - End users can skip this section
 
@@ -1245,10 +1235,8 @@ The `.dev/` folder contains a complete **unit test suite** and maintenance docum
 - **Test Types**: Unit tests, edge case tests, integration tests
 
 ### Quick Usage
-### Quick Usage
 
 ```bash
-# 1. Activate virtual environment
 # 1. Activate virtual environment
 # Windows
 leetcode\Scripts\activate
@@ -1257,16 +1245,13 @@ leetcode\Scripts\activate
 source leetcode/bin/activate
 
 # 2. Install test dependencies
-# 2. Install test dependencies
 pip install pytest pytest-cov
 
-# 3. Run all unit tests
 # 3. Run all unit tests
 cd .dev
 run_tests.bat          # Windows
 ./run_tests.sh         # Linux/Mac
 
-# 4. Generate coverage report
 # 4. Generate coverage report
 cd ..
 leetcode\Scripts\python.exe -m pytest .dev/tests --cov=runner --cov-report=html  # Windows
@@ -1274,20 +1259,7 @@ leetcode/bin/python -m pytest .dev/tests --cov=runner --cov-report=html  # Linux
 ```
 
 ### Documentation
-### Documentation
 
-- **[.dev/README.md](.dev/README.md)** - Maintainer guide
-- **[.dev/TESTING.md](.dev/TESTING.md)** - Complete testing documentation
-- **[.dev/TEST_SUMMARY.md](.dev/TEST_SUMMARY.md)** - Test suite summary
-
-### Test Purpose
-
-These tests ensure:
-- ✅ Refactoring doesn't break existing functionality
-- ✅ Given same input → always same output
-- ✅ Edge cases (empty input, error input, large data) are covered
-
-**Test Maintainer**: luffdev
 - **[.dev/README.md](.dev/README.md)** - Maintainer guide
 - **[.dev/TESTING.md](.dev/TESTING.md)** - Complete testing documentation
 - **[.dev/TEST_SUMMARY.md](.dev/TEST_SUMMARY.md)** - Test suite summary
