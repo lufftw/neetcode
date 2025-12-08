@@ -5,6 +5,10 @@
 # Required packages:
 debugpy>=1.8.0          # Debug support for VS Code
 
+# Testing packages:
+pytest>=7.4.0           # Unit testing framework
+pytest-cov>=4.1.0       # Coverage reporting
+
 # Optional packages (for complexity estimation):
 big-O>=0.10.0           # Time complexity estimation
 # numpy                 # Required by big-O (installed automatically)
