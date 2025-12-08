@@ -74,6 +74,7 @@ neetcode/
 ├── tests/                   ← 所有測資
 │   ├── 0001_two_sum_1.in
 │   ├── 0001_two_sum_1.out
+│   ├── *_failed_*.in        ← 自動儲存的失敗生成測資（使用 --save-failed）
 │   └── ...
 │
 ├── templates/               ← 新題目模板
@@ -835,6 +836,7 @@ python runner/test_runner.py 0004_median --generate-only 10
 python runner/test_runner.py 0004_median --generate 10 --seed 12345
 
 # 儲存失敗的測資
+# 失敗的測資會儲存到 tests/ 目錄，檔名為 {problem}_failed_{n}.in
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
@@ -880,6 +882,7 @@ Summary: 11 / 12 cases passed.
 | `generators/{problem}.py` | Generator 檔案 | 需有 `generate(count, seed)` 函式 |
 | `JUDGE_FUNC` in solution | ✅ | 生成測資無 `.out`，需要 judge |
 | `tests/*.in` | 可選 | 靜態測資先執行 |
+| `tests/*_failed_*.in` | 自動生成 | 使用 `--save-failed` 時自動儲存失敗測資 |
 
 ---
 
