@@ -2,11 +2,84 @@
 
 **Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
 
-一套完整的 LeetCode 練習框架，支援多筆測資、自動比對、Debug 整合。
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![VS Code](https://img.shields.io/badge/VS%20Code-Integration-007ACC.svg)](https://code.visualstudio.com/)
+
+一套**高效能 Python LeetCode / 演算法練習框架**，支援可重現隨機測資生成、自訂 `JUDGE_FUNC` 驗證、多解法效能比較，以及完整的 VS Code Debug 工作流程整合。專為**競程**、**演算法工程**和**大規模壓力測試**設計。
+
+> 🚀 **核心功能**：演算法自動化測試執行器 | 可重現隨機測資生成器 | Judge 函式驗證（Codeforces/ICPC 風格）| 多解法效能比較 | VS Code Debug 整合 | 壓力測試工具
+
+---
+
+## ⭐ 為什麼這個框架不一樣
+
+大多數 LeetCode 專案只是解答集。**這個框架是一套完整的測試基礎設施**：
+
+| 功能 | 此框架 | 一般 LeetCode 專案 |
+|------|--------|-------------------|
+| **可重現隨機測資** | ✅ 帶 Seed 的生成器 | ❌ 僅手動測資 |
+| **自訂 Judge 函式** | ✅ Codeforces/ICPC 風格驗證 | ❌ 僅字串完全比對 |
+| **多解法效能比較** | ✅ 自動比較 N 種解法 | ❌ 一個檔案一種解法 |
+| **VS Code 整合** | ✅ Tasks、Debug、快捷鍵 | ❌ 僅命令列 |
+| **壓力測試** | ✅ 生成 1000+ 筆測資 | ❌ 僅限手動測資 |
+| **時間複雜度估算** | ✅ 自動 Big-O 分析 | ❌ 無此功能 |
+
+---
+
+## ❓ 常見問題
+
+<details>
+<summary><strong>這個框架解決什麼問題？</strong></summary>
+
+- 自動執行多種演算法實作
+- 生成大規模可重現測資進行壓力測試
+- 比較不同解法的效能差異
+- 使用 VS Code 整合 Debug LeetCode 風格題目
+- 使用自訂邏輯驗證輸出，超越簡單的 `.out` 檔案比對
+
+</details>
+
+<details>
+<summary><strong>這個框架適合誰？</strong></summary>
+
+- **競程選手**：準備比賽（Codeforces、ICPC 等）
+- **軟體工程師**：準備技術面試（FAANG 等）
+- **學生**：修習資料結構與演算法課程
+- **研究人員**：需要大規模演算法壓力測試
+
+</details>
+
+<details>
+<summary><strong>這和單純複製 LeetCode 解答有什麼不同？</strong></summary>
+
+這不是解答集——而是一套**測試基礎設施**。你撰寫解答，框架會：
+1. 用靜態測資執行測試
+2. 自動生成隨機測資
+3. 用自訂 Judge 函式驗證正確性
+4. 比較多種解法的效能
+5. 經驗性估算時間複雜度
+
+</details>
+
+<details>
+<summary><strong>可以用這個準備面試嗎？</strong></summary>
+
+當然可以！這個框架非常適合面試準備，因為：
+- 你可以用**真正的 LeetCode 格式**練習撰寫解答
+- 隨機測資生成器幫你找到**你可能遺漏的邊界條件**
+- 多解法效能比較顯示哪種方法**實際上更快**
+- VS Code 整合讓 **Debug 變得簡單**
+
+</details>
 
 ---
 
 ## 📑 目錄
+
+- [為什麼這個框架不一樣](#-為什麼這個框架不一樣)
+
+- [常見問題](#-常見問題)
 
 - [專案結構](#-專案結構)
 
@@ -43,11 +116,15 @@
 
 - [測資產生器](#-測資產生器)
 
+- [時間複雜度估算](#-時間複雜度估算)
+
 - [測試結果範例](#-測試結果範例)
 
 - [Python 環境](#-python-環境)
 
 - [小技巧](#-小技巧)
+
+- [維護者專區](#-維護者專區單元測試)
 
 - [Runner 模組架構](#️-runner-模組架構開發者專區)
 
@@ -895,6 +972,112 @@ Summary: 11 / 12 cases passed.
 
 ---
 
+## 📈 時間複雜度估算
+
+使用 big_O 函式庫自動估算演算法的時間複雜度。
+
+### 設計理念
+
+**簡單且通用** - 只需在 generator 中新增一個函式：
+
+| 函式 | 用途 | 必要 |
+|------|------|------|
+| `generate(count, seed)` | 功能測試的隨機測資 | ✅ 必要 |
+| `generate_for_complexity(n)` | 複雜度估算的可控大小測資 | 可選 |
+
+估算器內部使用 **Mock stdin** 方式：
+- ✅ 通用 - 只要解答有 `solve()` 函式即可
+- ✅ 無 subprocess 開銷
+- ✅ 維持 stdin 抽象設計
+
+### 使用方法
+
+```bash
+# 估算複雜度（需要 generator 中有 generate_for_complexity）
+python runner/test_runner.py 0004_median_of_two_sorted_arrays --estimate
+
+# 與其他參數組合使用
+python runner/test_runner.py 0004 --all --benchmark --estimate
+```
+
+### Generator 範例
+
+```python
+# generators/0004_median_of_two_sorted_arrays.py
+
+# 必要：隨機測資生成
+def generate(count: int, seed: Optional[int] = None) -> Iterator[str]:
+    """隨機大小 - 測試功能正確性"""
+    for _ in range(count):
+        m = random.randint(0, 1000)
+        n = random.randint(0, 1000)
+        yield _generate_case(m, n)
+
+
+# 可選：啟用複雜度估算
+def generate_for_complexity(n: int) -> str:
+    """
+    生成特定輸入大小的測資。
+    
+    對於此題，n = 總元素數量（m + n）
+    """
+    m = random.randint(0, n)
+    return _generate_case(m, n - m)
+```
+
+### 輸出範例
+
+```
+📈 Running complexity estimation...
+   Mode: Direct call (Mock stdin, no subprocess overhead)
+   Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000]
+   n=   10: 0.0040ms (avg of 3 runs)
+   n=  100: 0.0082ms (avg of 3 runs)
+   n= 1000: 0.0685ms (avg of 3 runs)
+   n= 2000: 0.1796ms (avg of 3 runs)
+
+✅ Estimated: O(n log n)
+   Confidence: 1.00
+```
+
+### 需求
+
+| 元件 | 必要 | 說明 |
+|------|------|------|
+| `big-O` 套件 | ✅ | `pip install big-O` |
+| `generate_for_complexity(n)` | ✅ | 接收大小 `n` 並回傳測資輸入的函式 |
+
+### 適合的題目類型
+
+並非所有題目都適合時間複雜度估算。估算在以下情況效果最佳：
+
+| ✅ 適合 | ❌ 不適合 |
+|---------|----------|
+| 輸入大小 `n` 可連續變化（10, 100, 1000...）| 輸入大小有硬性限制（如 n ≤ 9）|
+| 執行時間隨輸入大小增長 | 執行時間被固定開銷主導 |
+| 線性、對數、多項式複雜度 | 階乘/指數複雜度且 n 上限很小 |
+
+**範例：**
+
+| 題目 | 適合？ | 原因 |
+|------|--------|------|
+| Two Sum | ✅ | n 可以是 10 ~ 10000，O(n) 明顯增長 |
+| Longest Substring | ✅ | 字串長度可大幅變化 |
+| Merge k Sorted Lists | ✅ | 總元素 N 可以擴展 |
+| N-Queens (0051) | ❌ | n ≤ 9（階乘爆炸），無法有意義地變化大小 |
+| Rotting Oranges (0994) | ❌ | 網格大小有限，BFS 時間受網格結構主導 |
+| Sudoku Solver | ❌ | 固定 9x9 網格，回溯複雜度 |
+
+> **提示**：只有當 `n` 可以有意義地從小（10）變化到大（1000+）時，才在 generator 中加入 `generate_for_complexity(n)`。
+
+### 向後兼容
+
+- **解答檔案**：不需更動（需有 `solve()` 函式）
+- **現有 generator**：無需更動仍可運作
+- **新功能**：新增 `generate_for_complexity(n)` 以啟用估算
+
+---
+
 ## 📊 測試結果範例
 
 ```
@@ -1012,6 +1195,59 @@ pip install <package_name>
 2. **Debug 特定測資**: 修改 `launch.json` 中的 case 編號
 
 3. **自訂輸入格式**: 在 `solve()` 函式中自由定義解析邏輯
+
+---
+
+## 🔧 維護者專區（單元測試）
+
+> ⚠️ **專為專案維護者和貢獻者** - 一般使用者可以跳過此部分
+
+`.dev/` 資料夾包含完整的**單元測試套件**和維護文檔，用於確保代碼重構不會破壞現有功能。
+
+### 測試統計
+
+- **測試案例**: 150+ 個
+- **測試覆蓋率**: 80-100%
+- **測試類型**: 單元測試、邊界測試、整合測試
+
+### 快速使用
+
+```bash
+# 1. 啟動虛擬環境
+# Windows
+leetcode\Scripts\activate
+
+# Linux/Mac
+source leetcode/bin/activate
+
+# 2. 安裝測試依賴
+pip install pytest pytest-cov
+
+# 3. 運行所有單元測試
+cd .dev
+run_tests.bat          # Windows
+./run_tests.sh         # Linux/Mac
+
+# 4. 生成覆蓋率報告
+cd ..
+leetcode\Scripts\python.exe -m pytest .dev/tests --cov=runner --cov-report=html  # Windows
+leetcode/bin/python -m pytest .dev/tests --cov=runner --cov-report=html  # Linux/Mac
+```
+
+### 詳細文檔
+
+- **[.dev/README.md](.dev/README.md)** - 維護者指南
+- **[.dev/TESTING.md](.dev/TESTING.md)** - 完整測試文檔
+- **[.dev/TEST_SUMMARY.md](.dev/TEST_SUMMARY.md)** - 測試摘要
+
+### 測試目的
+
+這些測試確保：
+- ✅ 重構不會破壞現有功能
+- ✅ 給定相同輸入 → 永遠相同輸出
+- ✅ 邊界條件（空輸入、錯誤輸入、大資料）都被覆蓋
+
+**測試負責人**: luffdev
 
 ---
 
