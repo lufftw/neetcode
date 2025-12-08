@@ -74,6 +74,7 @@ neetcode/
 ├── tests/                   ← All test cases
 │   ├── 0001_two_sum_1.in
 │   ├── 0001_two_sum_1.out
+│   ├── *_failed_*.in        ← Auto-saved failed generated cases (with --save-failed)
 │   └── ...
 │
 ├── templates/               ← Templates for new problems
@@ -105,11 +106,14 @@ neetcode/
 
 #### Windows (PowerShell)
 
+> **Prerequisite**: To use `py install` command, you need to install **Python Install Manager** from the [Python official website](https://www.python.org/downloads/) first.
+
 ```powershell
 # Navigate to project directory
 cd /d "D:\Developer\program\python\neetcode"
 
 # Install Python 3.11 (if not already installed)
+# Note: Requires Python Install Manager from https://www.python.org/downloads/
 py install 3.11
 
 # Create virtual environment
@@ -832,6 +836,7 @@ python runner/test_runner.py 0004_median --generate-only 10
 python runner/test_runner.py 0004_median --generate 10 --seed 12345
 
 # Save failed cases for debugging
+# Failed cases will be saved to tests/ as {problem}_failed_{n}.in
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
@@ -877,6 +882,7 @@ Summary: 11 / 12 cases passed.
 | `generators/{problem}.py` | Generator file | Must have `generate(count, seed)` function |
 | `JUDGE_FUNC` in solution | ✅ | Generator cases have no `.out`, need judge |
 | `tests/*.in` | Optional | Static tests run before generated |
+| `tests/*_failed_*.in` | Auto-generated | Failed cases saved with `--save-failed` flag |
 
 ---
 

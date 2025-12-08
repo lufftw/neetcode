@@ -74,6 +74,7 @@ neetcode/
 ├── tests/                   ← 所有測資
 │   ├── 0001_two_sum_1.in
 │   ├── 0001_two_sum_1.out
+│   ├── *_failed_*.in        ← 自動儲存的失敗生成測資（使用 --save-failed）
 │   └── ...
 │
 ├── templates/               ← 新題目模板
@@ -105,11 +106,14 @@ neetcode/
 
 #### Windows (PowerShell)
 
+> **前置需求**：要使用 `py install` 指令，需要先從 [Python 官方網站](https://www.python.org/downloads/) 安裝 **Python Install Manager**。
+
 ```powershell
 # 進入專案目錄
 cd /d "D:\Developer\program\python\neetcode"
 
 # 安裝 Python 3.11（如果尚未安裝）
+# 注意：需要先從 https://www.python.org/downloads/ 安裝 Python Install Manager
 py install 3.11
 
 # 建立虛擬環境
@@ -832,6 +836,7 @@ python runner/test_runner.py 0004_median --generate-only 10
 python runner/test_runner.py 0004_median --generate 10 --seed 12345
 
 # 儲存失敗的測資
+# 失敗的測資會儲存到 tests/ 目錄，檔名為 {problem}_failed_{n}.in
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
@@ -877,6 +882,7 @@ Summary: 11 / 12 cases passed.
 | `generators/{problem}.py` | Generator 檔案 | 需有 `generate(count, seed)` 函式 |
 | `JUDGE_FUNC` in solution | ✅ | 生成測資無 `.out`，需要 judge |
 | `tests/*.in` | 可選 | 靜態測資先執行 |
+| `tests/*_failed_*.in` | 自動生成 | 使用 `--save-failed` 時自動儲存失敗測資 |
 
 ---
 
