@@ -51,6 +51,8 @@ A complete LeetCode practice framework with multiple test cases, auto-comparison
 
 - [Tips](#-tips)
 
+- [Runner Module Architecture](#️-runner-module-architecture-for-developers)
+
 - [License](#-license)
 
 ---
@@ -66,10 +68,16 @@ neetcode/
 │   └── launch.json          ← F5 Debug configuration
 │
 ├── runner/                  ← Test runner modules
-│   ├── test_runner.py       ← Run all .in/.out and compare
-│   ├── case_runner.py       ← Run single test case (for debugging)
+│   ├── test_runner.py       ← CLI entry point
+│   ├── module_loader.py     ← Load solution/generator modules
+│   ├── executor.py          ← Run test cases
+│   ├── reporter.py          ← Format and display results
+│   ├── compare.py           ← Output comparison logic
+│   ├── paths.py             ← Path utilities
+│   ├── io_utils.py          ← File I/O operations
+│   ├── util.py              ← Re-exports (backward compatible)
 │   ├── complexity_estimator.py  ← Time complexity estimation
-│   └── util.py              ← Shared utilities
+│   └── case_runner.py       ← Run single case (debugging)
 │
 ├── solutions/               ← Solution files for each problem
 │   └── 0001_two_sum.py
@@ -152,8 +160,8 @@ py -3.11 -m venv leetcode
 # Activate virtual environment
 leetcode\Scripts\activate
 
-# Install debugpy (for debugging)
-pip install debugpy
+# Install dependencies
+pip install -r requirements.txt
 ```
 
 #### Linux / macOS (Using pyenv - Recommended)
@@ -205,8 +213,8 @@ python -m venv leetcode
 # Activate virtual environment
 source leetcode/bin/activate
 
-# Install debugpy (for debugging)
-pip install debugpy
+# Install dependencies
+pip install -r requirements.txt
 
 # Make shell scripts executable (first time only)
 chmod +x run_tests.sh run_case.sh new_problem.sh
@@ -1203,6 +1211,84 @@ leetcode/bin/python -m pytest .dev/tests --cov=runner --cov-report=html  # Linux
 2. **Debug specific test case**: Modify case number in `launch.json`
 
 3. **Custom input format**: Define parsing logic in `solve()` function
+
+---
+
+## 🏗️ Runner Module Architecture (For Developers)
+
+> ⚠️ **For contributors and maintainers** - End users can skip this section
+
+The `runner/` directory contains modular components for test execution:
+
+### Module Overview
+
+```
+runner/
+├── test_runner.py         # CLI entry point and main orchestration
+├── module_loader.py       # Dynamic loading of solution/generator modules
+├── executor.py            # Test case execution (subprocess management)
+├── reporter.py            # Result formatting and benchmark display
+├── compare.py             # Output comparison logic (exact/sorted/set/judge)
+├── paths.py               # Path helper utilities
+├── io_utils.py            # File I/O operations
+├── util.py                # Re-exports for backward compatibility
+├── complexity_estimator.py # Time complexity estimation (big_O integration)
+└── case_runner.py         # Single case runner for debugging
+```
+
+### Module Responsibilities
+
+| Module | Lines | Responsibility |
+|--------|-------|----------------|
+| `compare.py` | ~190 | Output comparison: `normalize_output`, `compare_outputs`, `compare_result`, `_compare_sorted`, `_compare_set` |
+| `paths.py` | ~30 | Path construction: `get_solution_path`, `get_test_input_path`, `get_test_output_path` |
+| `io_utils.py` | ~45 | File operations: `read_file`, `write_file`, `file_exists`, `print_diff` |
+| `module_loader.py` | ~65 | Dynamic import: `load_solution_module`, `load_generator_module` |
+| `executor.py` | ~120 | Test execution: `run_one_case`, `run_generated_case` |
+| `reporter.py` | ~160 | Output formatting: `truncate_input`, `format_validation_label`, `save_failed_case`, `print_benchmark_summary`, `run_method_tests` |
+| `test_runner.py` | ~310 | CLI and orchestration: argument parsing, main flow |
+| `complexity_estimator.py` | ~300 | Complexity estimation: `ComplexityEstimator`, Mock stdin approach |
+| `case_runner.py` | ~60 | Single case debugging |
+
+### Backward Compatibility
+
+The refactored modules maintain full backward compatibility:
+
+```python
+# Old imports still work:
+from runner.util import normalize_output, compare_result
+from runner.test_runner import run_one_case, load_solution_module
+
+# New direct imports (recommended for new code):
+from runner.compare import normalize_output, compare_result
+from runner.executor import run_one_case
+from runner.module_loader import load_solution_module
+```
+
+### Dependency Graph
+
+```
+test_runner.py (CLI entry)
+    ├── module_loader.py
+    ├── executor.py ──────────┐
+    ├── reporter.py ──────────┼──→ compare.py
+    └── complexity_estimator.py
+
+util.py (re-exports)
+    ├── compare.py
+    ├── paths.py
+    └── io_utils.py
+```
+
+### Unit Tests
+
+All modules are covered by characterization tests in `.dev/tests/`:
+
+```bash
+# Run all unit tests
+leetcode\Scripts\python.exe -m pytest .dev/tests -v  # Windows
+leetcode/bin/python -m pytest .dev/tests -v          # Linux/macOS
+```
 
 ---
 
