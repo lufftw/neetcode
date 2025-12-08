@@ -97,26 +97,26 @@ neetcode/
 │   ├── template_solution_wrapper.py ← Multi-solution (wrapper pattern)
 │   └── template_test.txt
 │
-├── .dev/                    ⚠️ 維護者專區 - 單元測試與開發文檔
-│   ├── tests/               ← 單元測試套件 (150+ 測試案例)
-│   │   ├── test_util.py            ← runner/util.py 的測試
-│   │   ├── test_case_runner.py     ← runner/case_runner.py 的測試
-│   │   ├── test_test_runner.py     ← runner/test_runner.py 的測試
-│   │   ├── test_complexity_estimator.py  ← 複雜度估算器測試
-│   │   ├── test_edge_cases.py      ← 邊界條件測試
-│   │   ├── test_integration.py     ← 端到端整合測試
-│   │   └── README.md               ← 測試詳細說明
+├── .dev/                    ⚠️ Maintainer Zone - Unit tests and development docs
+│   ├── tests/               ← Unit test suite (150+ test cases)
+│   │   ├── test_util.py            ← Tests for runner/util.py
+│   │   ├── test_case_runner.py     ← Tests for runner/case_runner.py
+│   │   ├── test_test_runner.py     ← Tests for runner/test_runner.py
+│   │   ├── test_complexity_estimator.py  ← Complexity estimator tests
+│   │   ├── test_edge_cases.py      ← Edge case tests
+│   │   ├── test_integration.py     ← End-to-end integration tests
+│   │   └── README.md               ← Test documentation
 │   │
-│   ├── run_tests.bat        ← Windows: 運行單元測試
-│   ├── run_tests.sh         ← Linux/macOS: 運行單元測試
+│   ├── run_tests.bat        ← Windows: Run unit tests
+│   ├── run_tests.sh         ← Linux/macOS: Run unit tests
 │   │
-│   ├── TESTING.md           ← 完整測試文檔
-│   ├── TEST_SUMMARY.md      ← 測試套件摘要
-│   └── README.md            ← 維護者指南
+│   ├── TESTING.md           ← Complete testing documentation
+│   ├── TEST_SUMMARY.md      ← Test suite summary
+│   └── README.md            ← Maintainer guide
 │
 ├── leetcode/                ← Python virtual environment (Python 3.11)
 │
-├── pytest.ini               ← pytest 配置 (用於單元測試)
+├── pytest.ini               ← pytest configuration (for unit tests)
 │
 ├── run_tests.bat            ← Windows: Run all tests
 ├── run_case.bat             ← Windows: Run single test
@@ -130,9 +130,9 @@ neetcode/
 └── README.md
 ```
 
-> **📝 注意**: 
-> - **一般使用者**：只需關注 `solutions/`, `tests/`, `runner/` 和根目錄的執行腳本
-> - **專案維護者**：`.dev/` 資料夾包含單元測試和維護文檔，用於確保代碼重構不會破壞現有功能
+> **📝 Note**: 
+> - **End users**: Focus on `solutions/`, `tests/`, `runner/` and root-level scripts
+> - **Maintainers**: `.dev/` folder contains unit tests and maintenance docs to ensure refactoring doesn't break existing functionality
 
 ---
 
@@ -1147,56 +1147,56 @@ pip install <package_name>
 
 ---
 
-## 🔧 Maintainer Zone (單元測試)
+## 🔧 Maintainer Zone (Unit Tests)
 
-> ⚠️ **專為專案維護者和貢獻者** - 一般使用者可以跳過此部分
+> ⚠️ **For project maintainers and contributors** - End users can skip this section
 
-`.dev/` 資料夾包含完整的**單元測試套件**和維護文檔，用於確保代碼重構不會破壞現有功能。
+The `.dev/` folder contains a complete **unit test suite** and maintenance documentation to ensure code refactoring doesn't break existing functionality.
 
-### 測試統計
+### Test Statistics
 
-- **測試案例**: 150+ 個
-- **測試覆蓋率**: 80-100%
-- **測試類型**: 單元測試、邊界測試、整合測試
+- **Test Cases**: 150+ cases
+- **Test Coverage**: 80-100%
+- **Test Types**: Unit tests, edge case tests, integration tests
 
-### 快速使用
+### Quick Usage
 
 ```bash
-# 1. 啟動虛擬環境
+# 1. Activate virtual environment
 # Windows
 leetcode\Scripts\activate
 
 # Linux/Mac
 source leetcode/bin/activate
 
-# 2. 安裝測試依賴
+# 2. Install test dependencies
 pip install pytest pytest-cov
 
-# 3. 運行所有單元測試
+# 3. Run all unit tests
 cd .dev
 run_tests.bat          # Windows
 ./run_tests.sh         # Linux/Mac
 
-# 4. 生成覆蓋率報告
+# 4. Generate coverage report
 cd ..
 leetcode\Scripts\python.exe -m pytest .dev/tests --cov=runner --cov-report=html  # Windows
 leetcode/bin/python -m pytest .dev/tests --cov=runner --cov-report=html  # Linux/Mac
 ```
 
-### 詳細文檔
+### Documentation
 
-- **[.dev/README.md](.dev/README.md)** - 維護者指南
-- **[.dev/TESTING.md](.dev/TESTING.md)** - 完整測試文檔
-- **[.dev/TEST_SUMMARY.md](.dev/TEST_SUMMARY.md)** - 測試摘要
+- **[.dev/README.md](.dev/README.md)** - Maintainer guide
+- **[.dev/TESTING.md](.dev/TESTING.md)** - Complete testing documentation
+- **[.dev/TEST_SUMMARY.md](.dev/TEST_SUMMARY.md)** - Test suite summary
 
-### 測試目的
+### Test Purpose
 
-這些測試確保：
-- ✅ 重構不會破壞現有功能
-- ✅ 給定相同輸入 → always 相同輸出
-- ✅ 邊界條件（空輸入、錯誤輸入、大資料）都被覆蓋
+These tests ensure:
+- ✅ Refactoring doesn't break existing functionality
+- ✅ Given same input → always same output
+- ✅ Edge cases (empty input, error input, large data) are covered
 
-**測試負責人**: luffdev
+**Test Maintainer**: luffdev
 
 ---
 
