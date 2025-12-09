@@ -1,0 +1,69 @@
+# Problem: Minimum Size Subarray Sum
+# https://leetcode.com/problems/minimum-size-subarray-sum/
+
+# ===== Problem Info =====
+id = "0209"
+slug = "0209_minimum_size_subarray_sum"
+title = "Minimum Size Subarray Sum"
+leetcode_id = 209
+url = "https://leetcode.com/problems/minimum-size-subarray-sum/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search", "sliding_window", "prefix_sum"]
+companies = ["google", "meta", "amazon", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "sliding_window_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_cost_bounded"]
+families         = ["substring_window"]
+data_structures  = ["array"]
+algorithms       = ["sliding_window", "two_pointers"]
+related_problems = ["0003", "0076", "0325", "0718", "0862"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+derives_from = "0003"
+delta_summary = "Numeric sliding window with sum constraint, minimize window"
+
+# ===== Relationship to Base =====
+[kernel_delta]
+base_problem = "0003"
+changes = [
+    "Input: string → numeric array",
+    "State: character map → single integer (running sum)",
+    "Invariant: unique chars → sum >= target",
+    "Goal: maximize → minimize (like LC76)",
+    "Precondition: all positive numbers (ensures monotonicity)",
+]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0209_minimum_size_subarray_sum.py"
+generator = "generators/0209_minimum_size_subarray_sum.py"
+tests_dir = "tests/0209_minimum_size_subarray_sum/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minSubArrayLen"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_cost_bounded"]
+families         = ["substring_window"]
+data_structures  = ["array"]
+algorithms       = ["sliding_window", "two_pointers"]
+related_problems = ["0003", "0076"]
+
+role       = "variant"
+variant    = "numeric_sum_minimize"
+based_on   = ["0003#default"]
+delta      = "State is a single integer (sum) instead of map. Minimize window with sum >= target."
+complexity = "O(n) time, O(1) space"
+notes      = "Simplest sliding window state - just one integer. Demonstrates numeric variant of the pattern."
+

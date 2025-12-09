@@ -22,7 +22,19 @@ patterns         = ["sliding_window_unique"]
 families         = ["substring_window"]
 data_structures  = ["string", "hash_map", "array"]
 algorithms       = ["sliding_window", "two_pointers"]
-related_problems = ["0159", "0340", "0076", "0438", "0209", "0424"]
+related_problems = ["0159", "0340", "0076", "0438", "0209", "0567", "0424"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "SubstringSlidingWindow"
+derived_problems = ["0076", "0159", "0209", "0340", "0438", "0567"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0003_longest_substring_without_repeating_characters.py"
+generator = "generators/0003_longest_substring_without_repeating_characters.py"
+tests_dir = "tests/0003_longest_substring_without_repeating_characters/"
 
 # ===== Solutions =====
 [[solutions]]
@@ -42,4 +54,37 @@ variant    = ""
 based_on   = []
 delta      = ""
 complexity = "O(n) time, O(min(n, Σ)) space"
-notes      = "Canonical sliding window template with last-seen index array. This is the base template for all substring sliding window problems."
+notes      = "Canonical sliding window template with last-seen index array. Uses jump optimization instead of while-loop contraction. This is the BASE TEMPLATE for all SubstringSlidingWindow problems."
+
+[[solutions]]
+key    = "dict"
+class  = "SolutionDict"
+method = "lengthOfLongestSubstring"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_unique"]
+data_structures  = ["string", "hash_map"]
+algorithms       = ["sliding_window"]
+
+role       = "variant"
+variant    = "dictionary"
+based_on   = ["0003#default"]
+delta      = "Uses dictionary instead of array for last-seen index. More flexible for Unicode."
+complexity = "O(n) time, O(min(n, Σ)) space"
+
+[[solutions]]
+key    = "set"
+class  = "SolutionWithSet"
+method = "lengthOfLongestSubstring"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_unique"]
+data_structures  = ["string", "hash_set"]
+algorithms       = ["sliding_window"]
+
+role       = "variant"
+variant    = "set_while_loop"
+based_on   = ["0003#default"]
+delta      = "Uses set + while-loop contraction. More intuitive but no jump optimization."
+complexity = "O(n) time, O(min(n, Σ)) space"
+notes      = "Demonstrates standard while-loop contraction pattern used in other variants."

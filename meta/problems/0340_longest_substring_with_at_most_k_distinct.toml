@@ -1,0 +1,86 @@
+# Problem: Longest Substring with At Most K Distinct Characters
+# https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
+# Also covers LeetCode 159 (K=2 special case)
+
+# ===== Problem Info =====
+id = "0340"
+slug = "0340_longest_substring_with_at_most_k_distinct"
+title = "Longest Substring with At Most K Distinct Characters"
+leetcode_id = 340
+url = "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "hash_table", "sliding_window"]
+companies = ["google", "amazon", "meta", "microsoft", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["sliding_window_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_at_most_k_distinct"]
+families         = ["substring_window"]
+data_structures  = ["string", "hash_map"]
+algorithms       = ["sliding_window", "two_pointers"]
+related_problems = ["0003", "0159", "0076", "0424", "0904"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+derives_from = "0003"
+delta_summary = "Relax uniqueness constraint to 'at most K distinct characters'"
+
+# ===== Relationship to Base =====
+[kernel_delta]
+base_problem = "0003"
+changes = [
+    "Invariant: all unique → distinct count <= K",
+    "State: last_seen_index → frequency_map",
+    "Contraction: jump optimization not possible, must use while-loop",
+    "Reason: exceeding K doesn't give us a specific jump target",
+]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0340_longest_substring_with_at_most_k_distinct.py"
+generator = "generators/0340_longest_substring_with_at_most_k_distinct.py"
+tests_dir = "tests/0340_longest_substring_with_at_most_k_distinct/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "lengthOfLongestSubstringKDistinct"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_at_most_k_distinct"]
+families         = ["substring_window"]
+data_structures  = ["string", "hash_map"]
+algorithms       = ["sliding_window", "two_pointers"]
+related_problems = ["0003", "0159"]
+
+role       = "variant"
+variant    = "at_most_k_distinct"
+based_on   = ["0003#default"]
+delta      = "Replace 'unique' with 'distinct count <= K'. Use frequency map instead of last-seen-index."
+complexity = "O(n) time, O(K) space"
+notes      = "Cannot use jump optimization - must shrink incrementally. Uses len(freq_map) as distinct count."
+
+[[solutions]]
+key    = "two_distinct"
+class  = "SolutionTwoDistinct"
+method = "lengthOfLongestSubstringTwoDistinct"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_at_most_k_distinct"]
+data_structures  = ["string", "hash_map"]
+algorithms       = ["sliding_window"]
+
+role       = "variant"
+variant    = "k_equals_2"
+based_on   = ["0340#default"]
+delta      = "Special case: K=2 (LeetCode 159)"
+complexity = "O(n) time, O(1) space"
+notes      = "Direct specialization for LeetCode 159. Hardcodes K=2."
+
