@@ -1,0 +1,165 @@
+# Topics - LeetCode-style topics/tags for categorization
+
+[[topics]]
+id = "array"
+summary = "Problems involving array manipulation."
+
+[[topics]]
+id = "string"
+summary = "Problems involving string processing."
+
+[[topics]]
+id = "hash_table"
+summary = "Problems using hash-based structures."
+
+[[topics]]
+id = "linked_list"
+summary = "Problems on linked list structures."
+
+[[topics]]
+id = "stack"
+summary = "Problems using stack data structure."
+
+[[topics]]
+id = "queue"
+summary = "Problems using queue data structure."
+
+[[topics]]
+id = "tree"
+summary = "Problems on tree structures."
+
+[[topics]]
+id = "binary_tree"
+summary = "Problems on binary trees."
+
+[[topics]]
+id = "binary_search_tree"
+summary = "Problems on BST."
+
+[[topics]]
+id = "graph"
+summary = "Problems on graph structures."
+
+[[topics]]
+id = "breadth_first_search"
+summary = "Problems using BFS."
+
+[[topics]]
+id = "depth_first_search"
+summary = "Problems using DFS."
+
+[[topics]]
+id = "dynamic_programming"
+summary = "Problems using DP approach."
+
+[[topics]]
+id = "greedy"
+summary = "Problems using greedy strategy."
+
+[[topics]]
+id = "backtracking"
+summary = "Problems using backtracking."
+
+[[topics]]
+id = "binary_search"
+summary = "Problems using binary search."
+
+[[topics]]
+id = "sliding_window"
+summary = "Problems using sliding window technique."
+
+[[topics]]
+id = "two_pointers"
+summary = "Problems using two pointers technique."
+
+[[topics]]
+id = "heap"
+summary = "Problems using heap/priority queue."
+
+[[topics]]
+id = "sorting"
+summary = "Problems involving sorting."
+
+[[topics]]
+id = "math"
+summary = "Problems requiring mathematical reasoning."
+
+[[topics]]
+id = "bit_manipulation"
+summary = "Problems using bit operations."
+
+[[topics]]
+id = "recursion"
+summary = "Problems solved recursively."
+
+[[topics]]
+id = "divide_and_conquer"
+summary = "Problems using divide and conquer."
+
+[[topics]]
+id = "union_find"
+summary = "Problems using disjoint set union."
+
+[[topics]]
+id = "trie"
+summary = "Problems using trie data structure."
+
+[[topics]]
+id = "matrix"
+summary = "Problems on 2D matrices."
+
+[[topics]]
+id = "simulation"
+summary = "Problems requiring step-by-step simulation."
+
+[[topics]]
+id = "design"
+summary = "Problems about designing data structures."
+
+[[topics]]
+id = "counting"
+summary = "Problems involving counting occurrences."
+
+[[topics]]
+id = "prefix_sum"
+summary = "Problems using prefix sum technique."
+
+[[topics]]
+id = "monotonic_stack"
+summary = "Problems using monotonic stack."
+
+[[topics]]
+id = "ordered_set"
+summary = "Problems using ordered set/map."
+
+[[topics]]
+id = "geometry"
+summary = "Problems involving geometric concepts."
+
+[[topics]]
+id = "number_theory"
+summary = "Problems involving number theory."
+
+[[topics]]
+id = "combinatorics"
+summary = "Problems involving combinations/permutations."
+
+[[topics]]
+id = "game_theory"
+summary = "Problems involving game theory concepts."
+
+[[topics]]
+id = "topological_sort"
+summary = "Problems using topological ordering."
+
+[[topics]]
+id = "shortest_path"
+summary = "Problems finding shortest paths."
+
+[[topics]]
+id = "memoization"
+summary = "Problems using memoization."
+
+[[topics]]
+id = "interactive"
+summary = "Interactive problems with queries."

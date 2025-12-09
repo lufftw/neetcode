@@ -1,0 +1,19 @@
+# Difficulties - LeetCode difficulty levels
+
+[[difficulties]]
+id = "easy"
+level = 1
+color = "green"
+summary = "Beginner-friendly problems."
+
+[[difficulties]]
+id = "medium"
+level = 2
+color = "orange"
+summary = "Intermediate problems."
+
+[[difficulties]]
+id = "hard"
+level = 3
+color = "red"
+summary = "Advanced problems."

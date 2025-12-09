@@ -1,0 +1,102 @@
+# Problem: Merge k Sorted Lists
+# https://leetcode.com/problems/merge-k-sorted-lists/
+
+# ===== Problem Info =====
+id = "0023"
+slug = "0023_merge_k_sorted_lists"
+title = "Merge k Sorted Lists"
+leetcode_id = 23
+url = "https://leetcode.com/problems/merge-k-sorted-lists/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["linked_list", "divide_and_conquer", "heap"]
+companies = ["google", "meta", "amazon", "microsoft", "uber", "bloomberg", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "leetcode_top_100"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["KWayMerge"]
+patterns         = ["merge_k_sorted_heap", "merge_k_sorted_divide"]
+families         = ["merge_sorted", "linked_list_manipulation", "heap_priority"]
+data_structures  = ["linked_list", "min_heap"]
+algorithms       = ["divide_and_conquer"]
+related_problems = ["0021", "0004", "0378", "0264"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "mergeKListsPriorityQueue"
+
+api_kernels      = ["KWayMerge"]
+patterns         = ["merge_k_sorted_heap"]
+families         = ["merge_sorted", "heap_priority"]
+data_structures  = ["linked_list", "min_heap"]
+algorithms       = []
+related_problems = ["0021", "0378"]
+
+role       = "base"
+variant    = "heap"
+based_on   = []
+delta      = ""
+complexity = "O(N log k) time, O(k) space"
+notes      = "Min-heap based K-way merge. Classic API Kernel for merging K sorted sequences."
+
+[[solutions]]
+key    = "heap"
+class  = "Solution"
+method = "mergeKListsPriorityQueue"
+
+api_kernels      = ["KWayMerge"]
+patterns         = ["merge_k_sorted_heap"]
+families         = ["merge_sorted", "heap_priority"]
+data_structures  = ["linked_list", "min_heap"]
+algorithms       = []
+related_problems = ["0021", "0378"]
+
+role       = "base"
+variant    = "heap"
+based_on   = []
+delta      = ""
+complexity = "O(N log k) time, O(k) space"
+notes      = "Same as default. Min-heap keeps track of smallest among K heads."
+
+[[solutions]]
+key    = "divide"
+class  = "Solution"
+method = "mergeKListsDivideAndConquer"
+
+api_kernels      = ["KWayMerge"]
+patterns         = ["merge_k_sorted_divide"]
+families         = ["merge_sorted"]
+data_structures  = ["linked_list"]
+algorithms       = ["divide_and_conquer"]
+related_problems = ["0021"]
+
+role       = "variant"
+variant    = "divide_and_conquer"
+based_on   = ["0023#heap"]
+delta      = "Use merge-sort-like tree instead of heap. Pair-wise merge in log(k) rounds."
+complexity = "O(N log k) time, O(log k) space (recursion)"
+notes      = "Divide and conquer: recursively merge pairs until one list remains."
+
+[[solutions]]
+key    = "greedy"
+class  = "Solution"
+method = "mergeKListsGreedy"
+
+api_kernels      = ["KWayMerge"]
+patterns         = []
+families         = ["merge_sorted"]
+data_structures  = ["linked_list"]
+algorithms       = ["greedy"]
+related_problems = []
+
+role       = "variant"
+variant    = "greedy_comparison"
+based_on   = ["0023#heap"]
+delta      = "Compare all K heads each time to find minimum. Less efficient but simpler."
+complexity = "O(kN) time, O(1) space"
+notes      = "Naive greedy approach for comparison. Demonstrates why heap optimization matters."

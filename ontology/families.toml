@@ -1,0 +1,97 @@
+# Problem Families - Groups of related problems sharing patterns or themes
+
+[[families]]
+id = "substring_window"
+summary = "Problems about finding optimal substrings using sliding window."
+
+[[families]]
+id = "graph_wavefront"
+summary = "Problems involving BFS propagation / shortest path on graphs."
+
+[[families]]
+id = "merge_sorted"
+summary = "Problems merging multiple sorted sequences."
+
+[[families]]
+id = "stack_monotonic"
+summary = "Problems using monotonic stack for range queries."
+
+[[families]]
+id = "binary_search_answer"
+summary = "Problems where answer is found by binary searching a value space."
+
+[[families]]
+id = "backtracking_combinatorial"
+summary = "Problems generating permutations, combinations, or placements."
+
+[[families]]
+id = "linked_list_manipulation"
+summary = "Problems involving in-place linked list operations."
+
+[[families]]
+id = "tree_traversal"
+summary = "Problems involving tree traversal patterns."
+
+[[families]]
+id = "tree_construction"
+summary = "Problems building trees from traversal orders."
+
+[[families]]
+id = "tree_path"
+summary = "Problems finding paths in trees."
+
+[[families]]
+id = "dynamic_programming_sequence"
+summary = "DP problems on sequences (LIS, LCS, etc.)."
+
+[[families]]
+id = "dynamic_programming_grid"
+summary = "DP problems on 2D grids."
+
+[[families]]
+id = "dynamic_programming_string"
+summary = "DP problems on strings (edit distance, regex, etc.)."
+
+[[families]]
+id = "two_sum_variants"
+summary = "Problems finding pairs/tuples with target sum."
+
+[[families]]
+id = "interval_scheduling"
+summary = "Problems involving interval merging, scheduling, or overlap."
+
+[[families]]
+id = "graph_connectivity"
+summary = "Problems about connected components, reachability."
+
+[[families]]
+id = "graph_shortest_path"
+summary = "Problems finding shortest paths in graphs."
+
+[[families]]
+id = "graph_cycle"
+summary = "Problems detecting or using cycles in graphs."
+
+[[families]]
+id = "heap_priority"
+summary = "Problems using heap for priority-based selection."
+
+[[families]]
+id = "string_matching"
+summary = "Problems involving pattern matching in strings."
+
+[[families]]
+id = "array_partition"
+summary = "Problems partitioning arrays based on conditions."
+
+[[families]]
+id = "matrix_traversal"
+summary = "Problems traversing 2D matrices in various patterns."
+
+[[families]]
+id = "bit_manipulation"
+summary = "Problems using bitwise operations."
+
+[[families]]
+id = "math_number_theory"
+summary = "Problems involving number theory concepts."

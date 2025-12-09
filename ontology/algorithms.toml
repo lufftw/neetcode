@@ -1,0 +1,195 @@
+# Algorithms - Core algorithms, techniques, and paradigms
+# kind: "core" = classic named algorithms
+# kind: "technique" = coding patterns/tricks
+# kind: "paradigm" = high-level strategies
+# kind: "category" = abstract groupings (not directly used)
+
+# === Categories (Abstract Parents) ===
+[[algorithms]]
+id = "graph_traversal"
+kind = "category"
+parent = ""
+summary = "Algorithms for traversing graph structures."
+
+[[algorithms]]
+id = "sorting"
+kind = "category"
+parent = ""
+summary = "Algorithms for ordering elements."
+
+[[algorithms]]
+id = "searching"
+kind = "category"
+parent = ""
+summary = "Algorithms for finding elements."
+
+# === Core Algorithms ===
+[[algorithms]]
+id = "bfs"
+kind = "core"
+parent = "graph_traversal"
+summary = "Breadth-first search using a queue."
+
+[[algorithms]]
+id = "dfs"
+kind = "core"
+parent = "graph_traversal"
+summary = "Depth-first search using recursion or stack."
+
+[[algorithms]]
+id = "dijkstra"
+kind = "core"
+parent = "graph_traversal"
+summary = "Shortest path in weighted graph using priority queue."
+
+[[algorithms]]
+id = "bellman_ford"
+kind = "core"
+parent = "graph_traversal"
+summary = "Shortest path with negative edges."
+
+[[algorithms]]
+id = "floyd_warshall"
+kind = "core"
+parent = "graph_traversal"
+summary = "All-pairs shortest path."
+
+[[algorithms]]
+id = "topological_sort"
+kind = "core"
+parent = "graph_traversal"
+summary = "Order DAG nodes respecting edge directions."
+
+[[algorithms]]
+id = "binary_search"
+kind = "core"
+parent = "searching"
+summary = "Divide search space by half each step."
+
+[[algorithms]]
+id = "merge_sort"
+kind = "core"
+parent = "sorting"
+summary = "Divide-and-conquer sorting algorithm."
+
+[[algorithms]]
+id = "quick_sort"
+kind = "core"
+parent = "sorting"
+summary = "Partition-based sorting algorithm."
+
+[[algorithms]]
+id = "heap_sort"
+kind = "core"
+parent = "sorting"
+summary = "Sorting using heap data structure."
+
+[[algorithms]]
+id = "counting_sort"
+kind = "core"
+parent = "sorting"
+summary = "Linear time sorting for bounded integers."
+
+[[algorithms]]
+id = "kmp"
+kind = "core"
+parent = "searching"
+summary = "Knuth-Morris-Pratt string matching."
+
+[[algorithms]]
+id = "rabin_karp"
+kind = "core"
+parent = "searching"
+summary = "Rolling hash string matching."
+
+# === Techniques ===
+[[algorithms]]
+id = "two_pointers"
+kind = "technique"
+parent = ""
+summary = "Move two indices over a sequence under some rule."
+
+[[algorithms]]
+id = "sliding_window"
+kind = "technique"
+parent = "two_pointers"
+summary = "Maintain a dynamic window [L,R] with an invariant."
+
+[[algorithms]]
+id = "fast_slow_pointers"
+kind = "technique"
+parent = "two_pointers"
+summary = "Two pointers moving at different speeds (cycle detection)."
+
+[[algorithms]]
+id = "prefix_sum"
+kind = "technique"
+parent = ""
+summary = "Precompute cumulative sums for range queries."
+
+[[algorithms]]
+id = "monotonic_stack"
+kind = "technique"
+parent = ""
+summary = "Stack maintaining monotonic order for efficient queries."
+
+[[algorithms]]
+id = "monotonic_queue"
+kind = "technique"
+parent = ""
+summary = "Queue maintaining monotonic order for sliding window max/min."
+
+[[algorithms]]
+id = "union_find"
+kind = "technique"
+parent = ""
+summary = "Disjoint set with union and find operations."
+
+[[algorithms]]
+id = "recursion"
+kind = "technique"
+parent = ""
+summary = "Function calling itself to solve subproblems."
+
+[[algorithms]]
+id = "memoization"
+kind = "technique"
+parent = ""
+summary = "Cache recursive results to avoid recomputation."
+
+[[algorithms]]
+id = "bit_manipulation"
+kind = "technique"
+parent = ""
+summary = "Use bitwise operations for efficient computation."
+
+# === Paradigms ===
+[[algorithms]]
+id = "greedy"
+kind = "paradigm"
+parent = ""
+summary = "Make locally optimal choices at each step."
+
+[[algorithms]]
+id = "dynamic_programming"
+kind = "paradigm"
+parent = ""
+summary = "Optimal substructure + overlapping subproblems."
+
+[[algorithms]]
+id = "divide_and_conquer"
+kind = "paradigm"
+parent = ""
+summary = "Split problem into subproblems, solve, and combine."
+
+[[algorithms]]
+id = "backtracking"
+kind = "paradigm"
+parent = ""
+summary = "Explore all possibilities with pruning."
+
+[[algorithms]]
+id = "branch_and_bound"
+kind = "paradigm"
+parent = ""
+summary = "Systematic enumeration with bounds-based pruning."

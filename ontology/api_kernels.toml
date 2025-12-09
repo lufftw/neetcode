@@ -1,0 +1,71 @@
+# API Kernels - Mechanism-level algorithmic cores
+# These are minimal, reusable, highly-optimized algorithmic patterns
+# that can be applied across many problem families.
+
+[[api_kernels]]
+id = "SubstringSlidingWindow"
+summary = "1D window state machine over sequences with dynamic invariants."
+
+[[api_kernels]]
+id = "GridBFSMultiSource"
+summary = "Multi-source BFS wavefront propagation on a grid graph."
+
+[[api_kernels]]
+id = "KWayMerge"
+summary = "Merge K sorted sequences using heap or divide-and-conquer."
+
+[[api_kernels]]
+id = "MonotonicStack"
+summary = "Stack maintaining monotonic order for next-greater/smaller queries."
+
+[[api_kernels]]
+id = "BinarySearchBoundary"
+summary = "Binary search for boundary conditions (first >=, last <=, etc.)."
+
+[[api_kernels]]
+id = "UnionFindConnectivity"
+summary = "Disjoint set union for connectivity queries."
+
+[[api_kernels]]
+id = "BacktrackingExploration"
+summary = "Exhaustive search with pruning for combinatorial problems."
+
+[[api_kernels]]
+id = "LinkedListInPlaceReversal"
+summary = "Reverse linked list nodes in-place with pointer manipulation."
+
+[[api_kernels]]
+id = "TwoPointerPartition"
+summary = "Partition array using two pointers (Dutch flag, quick select)."
+
+[[api_kernels]]
+id = "PrefixSumRangeQuery"
+summary = "Precomputed cumulative sums for O(1) range sum queries."
+
+[[api_kernels]]
+id = "TreeTraversalDFS"
+summary = "Depth-first tree traversal (preorder, inorder, postorder)."
+
+[[api_kernels]]
+id = "TreeTraversalBFS"
+summary = "Level-order tree traversal using queue."
+
+[[api_kernels]]
+id = "DPSequence"
+summary = "Dynamic programming on linear sequences (LIS, LCS, etc.)."
+
+[[api_kernels]]
+id = "DPInterval"
+summary = "Dynamic programming on intervals/ranges."
+
+[[api_kernels]]
+id = "TopologicalSort"
+summary = "Ordering nodes in DAG respecting edge directions."
+
+[[api_kernels]]
+id = "TriePrefixSearch"
+summary = "Trie-based prefix matching and autocomplete."
+
+[[api_kernels]]
+id = "HeapTopK"
+summary = "Maintain top K elements using heap."

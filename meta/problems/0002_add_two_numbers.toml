@@ -1,0 +1,45 @@
+# Problem: Add Two Numbers
+# https://leetcode.com/problems/add-two-numbers/
+
+# ===== Problem Info =====
+id = "0002"
+slug = "0002_add_two_numbers"
+title = "Add Two Numbers"
+leetcode_id = 2
+url = "https://leetcode.com/problems/add-two-numbers/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["linked_list", "math", "recursion"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "leetcode_top_100"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = []
+patterns         = []
+families         = ["linked_list_manipulation", "math_number_theory"]
+data_structures  = ["linked_list"]
+algorithms       = []
+related_problems = ["0043", "0067", "0371", "0415", "0445"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "addTwoNumbers"
+
+api_kernels      = []
+patterns         = []
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = []
+related_problems = ["0445"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(max(m,n)) time, O(max(m,n)) space"
+notes      = "Single pass through both lists with carry propagation."

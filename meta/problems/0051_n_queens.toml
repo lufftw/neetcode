@@ -1,0 +1,45 @@
+# Problem: N-Queens
+# https://leetcode.com/problems/n-queens/
+
+# ===== Problem Info =====
+id = "0051"
+slug = "0051_n_queens"
+title = "N-Queens"
+leetcode_id = 51
+url = "https://leetcode.com/problems/n-queens/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "backtracking"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_n_queens"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array", "hash_set"]
+algorithms       = ["backtracking"]
+related_problems = ["0052", "0037"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "solveNQueens"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_n_queens"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array", "hash_set"]
+algorithms       = ["backtracking"]
+related_problems = ["0052"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n!) time"
+notes      = "Classic backtracking with column/diagonal tracking using sets. Demonstrates constraint satisfaction solving."
