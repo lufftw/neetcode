@@ -1,0 +1,164 @@
+# Data Structures - Common data structures used in solutions
+
+# === Abstract Parents ===
+[[data_structures]]
+id = "associative_container"
+parent = ""
+summary = "Containers with key-based access."
+
+[[data_structures]]
+id = "priority_queue"
+parent = ""
+summary = "Queue with priority ordering."
+
+[[data_structures]]
+id = "tree"
+parent = ""
+summary = "Hierarchical node structure."
+
+# === Basic Structures ===
+[[data_structures]]
+id = "array"
+parent = ""
+summary = "Contiguous indexed collection."
+
+[[data_structures]]
+id = "string"
+parent = "array"
+summary = "Character array."
+
+[[data_structures]]
+id = "matrix"
+parent = "array"
+summary = "2D array."
+
+[[data_structures]]
+id = "stack"
+parent = ""
+summary = "LIFO collection."
+
+[[data_structures]]
+id = "queue"
+parent = ""
+summary = "FIFO collection."
+
+[[data_structures]]
+id = "deque"
+parent = ""
+summary = "Double-ended queue."
+
+# === Hash-based ===
+[[data_structures]]
+id = "hash_map"
+parent = "associative_container"
+summary = "Key-value store with O(1) average access."
+
+[[data_structures]]
+id = "hash_set"
+parent = "associative_container"
+summary = "Unique element collection with O(1) average lookup."
+
+[[data_structures]]
+id = "counter"
+parent = "hash_map"
+summary = "Hash map for counting occurrences."
+
+# === Heap-based ===
+[[data_structures]]
+id = "min_heap"
+parent = "priority_queue"
+summary = "Binary heap for min-priority queue."
+
+[[data_structures]]
+id = "max_heap"
+parent = "priority_queue"
+summary = "Binary heap for max-priority queue."
+
+# === Linked Structures ===
+[[data_structures]]
+id = "linked_list"
+parent = ""
+summary = "Linear collection with O(1) insert/delete at known position."
+
+[[data_structures]]
+id = "doubly_linked_list"
+parent = "linked_list"
+summary = "Linked list with prev and next pointers."
+
+# === Tree Structures ===
+[[data_structures]]
+id = "binary_tree"
+parent = "tree"
+summary = "Tree where each node has at most two children."
+
+[[data_structures]]
+id = "binary_search_tree"
+parent = "binary_tree"
+summary = "Binary tree with ordered property."
+
+[[data_structures]]
+id = "balanced_bst"
+parent = "binary_search_tree"
+summary = "Self-balancing BST (AVL, Red-Black)."
+
+[[data_structures]]
+id = "n_ary_tree"
+parent = "tree"
+summary = "Tree where each node can have N children."
+
+[[data_structures]]
+id = "trie"
+parent = "tree"
+summary = "Prefix tree for string operations."
+
+[[data_structures]]
+id = "segment_tree"
+parent = "tree"
+summary = "Tree for range queries and updates."
+
+[[data_structures]]
+id = "binary_indexed_tree"
+parent = "tree"
+summary = "Fenwick tree for prefix operations."
+
+# === Graph Structures ===
+[[data_structures]]
+id = "graph"
+parent = ""
+summary = "Nodes and edges structure."
+
+[[data_structures]]
+id = "adjacency_list"
+parent = "graph"
+summary = "Graph represented as list of neighbors."
+
+[[data_structures]]
+id = "adjacency_matrix"
+parent = "graph"
+summary = "Graph represented as 2D matrix."
+
+[[data_structures]]
+id = "grid"
+parent = "graph"
+summary = "2D matrix as implicit graph."
+
+# === Specialized ===
+[[data_structures]]
+id = "disjoint_set"
+parent = ""
+summary = "Union-Find data structure."
+
+[[data_structures]]
+id = "monotonic_stack"
+parent = "stack"
+summary = "Stack maintaining monotonic order."
+
+[[data_structures]]
+id = "monotonic_deque"
+parent = "deque"
+summary = "Deque maintaining monotonic order."
+
+[[data_structures]]
+id = "lru_cache"
+parent = ""
+summary = "Least Recently Used cache (hash map + doubly linked list)."

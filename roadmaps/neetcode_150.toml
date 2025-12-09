@@ -1,0 +1,262 @@
+# NeetCode 150 - Curated problem list organized by topic
+# https://neetcode.io/roadmap
+
+id = "neetcode_150"
+name = "NeetCode 150"
+
+[[groups]]
+name = "Arrays & Hashing"
+order = 1
+problems = [
+  "0217_contains_duplicate",
+  "0242_valid_anagram",
+  "0001_two_sum",
+  "0049_group_anagrams",
+  "0347_top_k_frequent_elements",
+  "0238_product_of_array_except_self",
+  "0036_valid_sudoku",
+  "0128_longest_consecutive_sequence",
+]
+
+[[groups]]
+name = "Two Pointers"
+order = 2
+problems = [
+  "0125_valid_palindrome",
+  "0167_two_sum_ii",
+  "0015_three_sum",
+  "0011_container_with_most_water",
+  "0042_trapping_rain_water",
+]
+
+[[groups]]
+name = "Sliding Window"
+order = 3
+problems = [
+  "0121_best_time_to_buy_and_sell_stock",
+  "0003_longest_substring_without_repeating_characters",
+  "0424_longest_repeating_character_replacement",
+  "0567_permutation_in_string",
+  "0076_minimum_window_substring",
+  "0239_sliding_window_maximum",
+]
+
+[[groups]]
+name = "Stack"
+order = 4
+problems = [
+  "0020_valid_parentheses",
+  "0155_min_stack",
+  "0150_evaluate_reverse_polish_notation",
+  "0022_generate_parentheses",
+  "0739_daily_temperatures",
+  "0853_car_fleet",
+  "0084_largest_rectangle_in_histogram",
+]
+
+[[groups]]
+name = "Binary Search"
+order = 5
+problems = [
+  "0704_binary_search",
+  "0074_search_a_2d_matrix",
+  "0875_koko_eating_bananas",
+  "0033_search_in_rotated_sorted_array",
+  "0153_find_minimum_in_rotated_sorted_array",
+  "0981_time_based_key_value_store",
+  "0004_median_of_two_sorted_arrays",
+]
+
+[[groups]]
+name = "Linked List"
+order = 6
+problems = [
+  "0206_reverse_linked_list",
+  "0021_merge_two_sorted_lists",
+  "0143_reorder_list",
+  "0019_remove_nth_node_from_end_of_list",
+  "0138_copy_list_with_random_pointer",
+  "0002_add_two_numbers",
+  "0141_linked_list_cycle",
+  "0287_find_the_duplicate_number",
+  "0146_lru_cache",
+  "0023_merge_k_sorted_lists",
+  "0025_reverse_nodes_in_k_group",
+]
+
+[[groups]]
+name = "Trees"
+order = 7
+problems = [
+  "0226_invert_binary_tree",
+  "0104_maximum_depth_of_binary_tree",
+  "0543_diameter_of_binary_tree",
+  "0110_balanced_binary_tree",
+  "0100_same_tree",
+  "0572_subtree_of_another_tree",
+  "0235_lowest_common_ancestor_of_a_bst",
+  "0102_binary_tree_level_order_traversal",
+  "0199_binary_tree_right_side_view",
+  "1448_count_good_nodes_in_binary_tree",
+  "0098_validate_binary_search_tree",
+  "0230_kth_smallest_element_in_a_bst",
+  "0105_construct_binary_tree_from_preorder_and_inorder_traversal",
+  "0124_binary_tree_maximum_path_sum",
+  "0297_serialize_and_deserialize_binary_tree",
+]
+
+[[groups]]
+name = "Tries"
+order = 8
+problems = [
+  "0208_implement_trie",
+  "0211_design_add_and_search_words_data_structure",
+  "0212_word_search_ii",
+]
+
+[[groups]]
+name = "Heap / Priority Queue"
+order = 9
+problems = [
+  "0703_kth_largest_element_in_a_stream",
+  "1046_last_stone_weight",
+  "0973_k_closest_points_to_origin",
+  "0215_kth_largest_element_in_an_array",
+  "0621_task_scheduler",
+  "0355_design_twitter",
+  "0295_find_median_from_data_stream",
+]
+
+[[groups]]
+name = "Backtracking"
+order = 10
+problems = [
+  "0078_subsets",
+  "0039_combination_sum",
+  "0046_permutations",
+  "0090_subsets_ii",
+  "0040_combination_sum_ii",
+  "0079_word_search",
+  "0131_palindrome_partitioning",
+  "0017_letter_combinations_of_a_phone_number",
+  "0051_n_queens",
+]
+
+[[groups]]
+name = "Graphs"
+order = 11
+problems = [
+  "0200_number_of_islands",
+  "0133_clone_graph",
+  "0695_max_area_of_island",
+  "0417_pacific_atlantic_water_flow",
+  "0130_surrounded_regions",
+  "0994_rotting_oranges",
+  "0286_walls_and_gates",
+  "0207_course_schedule",
+  "0210_course_schedule_ii",
+  "0684_redundant_connection",
+  "0323_number_of_connected_components_in_an_undirected_graph",
+  "0261_graph_valid_tree",
+  "0127_word_ladder",
+]
+
+[[groups]]
+name = "Advanced Graphs"
+order = 12
+problems = [
+  "0332_reconstruct_itinerary",
+  "1584_min_cost_to_connect_all_points",
+  "0743_network_delay_time",
+  "0778_swim_in_rising_water",
+  "0269_alien_dictionary",
+  "0787_cheapest_flights_within_k_stops",
+]
+
+[[groups]]
+name = "1-D Dynamic Programming"
+order = 13
+problems = [
+  "0070_climbing_stairs",
+  "0746_min_cost_climbing_stairs",
+  "0198_house_robber",
+  "0213_house_robber_ii",
+  "0005_longest_palindromic_substring",
+  "0647_palindromic_substrings",
+  "0091_decode_ways",
+  "0322_coin_change",
+  "0152_maximum_product_subarray",
+  "0139_word_break",
+  "0300_longest_increasing_subsequence",
+  "0416_partition_equal_subset_sum",
+]
+
+[[groups]]
+name = "2-D Dynamic Programming"
+order = 14
+problems = [
+  "0062_unique_paths",
+  "0097_interleaving_string",
+  "1143_longest_common_subsequence",
+  "0309_best_time_to_buy_and_sell_stock_with_cooldown",
+  "0494_target_sum",
+  "0518_coin_change_ii",
+  "0072_edit_distance",
+  "0329_longest_increasing_path_in_a_matrix",
+  "0115_distinct_subsequences",
+  "0312_burst_balloons",
+  "0010_regular_expression_matching",
+]
+
+[[groups]]
+name = "Greedy"
+order = 15
+problems = [
+  "0053_maximum_subarray",
+  "0055_jump_game",
+  "0045_jump_game_ii",
+  "0134_gas_station",
+  "0846_hand_of_straights",
+  "1899_merge_triplets_to_form_target_triplet",
+  "0763_partition_labels",
+  "0678_valid_parenthesis_string",
+]
+
+[[groups]]
+name = "Intervals"
+order = 16
+problems = [
+  "0057_insert_interval",
+  "0056_merge_intervals",
+  "0435_non_overlapping_intervals",
+  "0252_meeting_rooms",
+  "0253_meeting_rooms_ii",
+  "1851_minimum_interval_to_include_each_query",
+]
+
+[[groups]]
+name = "Math & Geometry"
+order = 17
+problems = [
+  "0048_rotate_image",
+  "0054_spiral_matrix",
+  "0073_set_matrix_zeroes",
+  "0202_happy_number",
+  "0066_plus_one",
+  "0050_pow_x_n",
+  "0043_multiply_strings",
+  "2013_detect_squares",
+]
+
+[[groups]]
+name = "Bit Manipulation"
+order = 18
+problems = [
+  "0136_single_number",
+  "0191_number_of_1_bits",
+  "0338_counting_bits",
+  "0190_reverse_bits",
+  "0268_missing_number",
+  "0371_sum_of_two_integers",
+  "0007_reverse_integer",
+]

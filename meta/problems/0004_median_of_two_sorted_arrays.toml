@@ -1,0 +1,45 @@
+# Problem: Median of Two Sorted Arrays
+# https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+# ===== Problem Info =====
+id = "0004"
+slug = "0004_median_of_two_sorted_arrays"
+title = "Median of Two Sorted Arrays"
+leetcode_id = 4
+url = "https://leetcode.com/problems/median-of-two-sorted-arrays/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "binary_search", "divide_and_conquer"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "goldman_sachs"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "leetcode_top_100"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchBoundary", "KWayMerge"]
+patterns         = ["binary_search_on_answer", "merge_two_sorted"]
+families         = ["merge_sorted", "binary_search_answer"]
+data_structures  = ["array"]
+algorithms       = ["binary_search", "two_pointers", "divide_and_conquer"]
+related_problems = ["0023", "0021", "0215"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "findMedianSortedArrays"
+
+api_kernels      = ["KWayMerge"]
+patterns         = ["merge_two_sorted"]
+families         = ["merge_sorted"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021"]
+
+role       = "base"
+variant    = "two_pointer_merge"
+based_on   = []
+delta      = ""
+complexity = "O(m+n) time, O(1) space"
+notes      = "Two pointer merge approach. Optimal O(log(min(m,n))) solution uses binary search on partition."

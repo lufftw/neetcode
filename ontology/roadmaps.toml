@@ -1,0 +1,68 @@
+# Roadmaps - Learning paths and curated problem lists
+# Detailed content (problem order, groups) is in roadmaps/*.toml
+
+[[roadmaps]]
+id = "neetcode_150"
+name = "NeetCode 150"
+url = "https://neetcode.io/roadmap"
+summary = "Curated 150 problems for coding interview prep."
+
+[[roadmaps]]
+id = "neetcode_all"
+name = "NeetCode All"
+url = "https://neetcode.io/practice"
+summary = "Complete NeetCode problem set."
+
+[[roadmaps]]
+id = "blind_75"
+name = "Blind 75"
+url = "https://leetcode.com/discuss/general-discussion/460599/blind-75"
+summary = "Classic 75 interview questions from Blind."
+
+[[roadmaps]]
+id = "grind_75"
+name = "Grind 75"
+url = "https://www.techinterviewhandbook.org/grind75"
+summary = "Updated interview prep list with time-based scheduling."
+
+[[roadmaps]]
+id = "leetcode_top_100"
+name = "LeetCode Top 100 Liked"
+url = "https://leetcode.com/problemset/top-100-liked-questions/"
+summary = "Most liked problems on LeetCode."
+
+[[roadmaps]]
+id = "leetcode_top_interview"
+name = "LeetCode Top Interview Questions"
+url = "https://leetcode.com/problemset/top-interview-questions/"
+summary = "Frequently asked interview questions."
+
+[[roadmaps]]
+id = "sliding_window_path"
+name = "Sliding Window Mastery"
+summary = "Step-by-step path to master sliding window pattern."
+
+[[roadmaps]]
+id = "graph_bfs_path"
+name = "BFS Mastery"
+summary = "Step-by-step path to master BFS patterns."
+
+[[roadmaps]]
+id = "binary_search_path"
+name = "Binary Search Mastery"
+summary = "Step-by-step path to master binary search patterns."
+
+[[roadmaps]]
+id = "dp_path"
+name = "Dynamic Programming Path"
+summary = "Progressive path through DP patterns."
+
+[[roadmaps]]
+id = "tree_path"
+name = "Tree Problems Path"
+summary = "Comprehensive tree problem patterns."
+
+[[roadmaps]]
+id = "graph_path"
+name = "Graph Problems Path"
+summary = "Comprehensive graph problem patterns."

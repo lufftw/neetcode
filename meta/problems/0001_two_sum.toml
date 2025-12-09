@@ -1,0 +1,45 @@
+# Problem: Two Sum
+# https://leetcode.com/problems/two-sum/
+
+# ===== Problem Info =====
+id = "0001"
+slug = "0001_two_sum"
+title = "Two Sum"
+leetcode_id = 1
+url = "https://leetcode.com/problems/two-sum/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "hash_table"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "adobe"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75", "leetcode_top_100"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = []
+patterns         = ["two_pointer_opposite"]
+families         = ["two_sum_variants"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["two_pointers"]
+related_problems = ["0015", "0167", "0170", "0653"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "twoSum"
+
+api_kernels      = []
+patterns         = []
+families         = ["two_sum_variants"]
+data_structures  = ["array", "hash_map"]
+algorithms       = []
+related_problems = ["0167"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(n) space"
+notes      = "Single pass with hash map to find complement."

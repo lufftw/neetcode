@@ -1,0 +1,189 @@
+# Companies - Companies known to ask these problems in interviews
+
+[[companies]]
+id = "google"
+name = "Google"
+
+[[companies]]
+id = "meta"
+name = "Meta (Facebook)"
+
+[[companies]]
+id = "amazon"
+name = "Amazon"
+
+[[companies]]
+id = "microsoft"
+name = "Microsoft"
+
+[[companies]]
+id = "apple"
+name = "Apple"
+
+[[companies]]
+id = "netflix"
+name = "Netflix"
+
+[[companies]]
+id = "uber"
+name = "Uber"
+
+[[companies]]
+id = "lyft"
+name = "Lyft"
+
+[[companies]]
+id = "airbnb"
+name = "Airbnb"
+
+[[companies]]
+id = "linkedin"
+name = "LinkedIn"
+
+[[companies]]
+id = "twitter"
+name = "Twitter (X)"
+
+[[companies]]
+id = "bloomberg"
+name = "Bloomberg"
+
+[[companies]]
+id = "adobe"
+name = "Adobe"
+
+[[companies]]
+id = "oracle"
+name = "Oracle"
+
+[[companies]]
+id = "salesforce"
+name = "Salesforce"
+
+[[companies]]
+id = "bytedance"
+name = "ByteDance"
+
+[[companies]]
+id = "tiktok"
+name = "TikTok"
+
+[[companies]]
+id = "nvidia"
+name = "NVIDIA"
+
+[[companies]]
+id = "intel"
+name = "Intel"
+
+[[companies]]
+id = "paypal"
+name = "PayPal"
+
+[[companies]]
+id = "stripe"
+name = "Stripe"
+
+[[companies]]
+id = "snap"
+name = "Snap"
+
+[[companies]]
+id = "pinterest"
+name = "Pinterest"
+
+[[companies]]
+id = "walmart"
+name = "Walmart"
+
+[[companies]]
+id = "jpmorgan"
+name = "JPMorgan"
+
+[[companies]]
+id = "goldman_sachs"
+name = "Goldman Sachs"
+
+[[companies]]
+id = "citadel"
+name = "Citadel"
+
+[[companies]]
+id = "two_sigma"
+name = "Two Sigma"
+
+[[companies]]
+id = "jane_street"
+name = "Jane Street"
+
+[[companies]]
+id = "dropbox"
+name = "Dropbox"
+
+[[companies]]
+id = "spotify"
+name = "Spotify"
+
+[[companies]]
+id = "shopify"
+name = "Shopify"
+
+[[companies]]
+id = "doordash"
+name = "DoorDash"
+
+[[companies]]
+id = "instacart"
+name = "Instacart"
+
+[[companies]]
+id = "robinhood"
+name = "Robinhood"
+
+[[companies]]
+id = "coinbase"
+name = "Coinbase"
+
+[[companies]]
+id = "databricks"
+name = "Databricks"
+
+[[companies]]
+id = "snowflake"
+name = "Snowflake"
+
+[[companies]]
+id = "splunk"
+name = "Splunk"
+
+[[companies]]
+id = "vmware"
+name = "VMware"
+
+[[companies]]
+id = "cisco"
+name = "Cisco"
+
+[[companies]]
+id = "ibm"
+name = "IBM"
+
+[[companies]]
+id = "samsung"
+name = "Samsung"
+
+[[companies]]
+id = "huawei"
+name = "Huawei"
+
+[[companies]]
+id = "alibaba"
+name = "Alibaba"
+
+[[companies]]
+id = "tencent"
+name = "Tencent"
+
+[[companies]]
+id = "baidu"
+name = "Baidu"

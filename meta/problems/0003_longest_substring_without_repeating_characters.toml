@@ -1,0 +1,45 @@
+# Problem: Longest Substring Without Repeating Characters
+# https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+# ===== Problem Info =====
+id = "0003"
+slug = "0003_longest_substring_without_repeating_characters"
+title = "Longest Substring Without Repeating Characters"
+leetcode_id = 3
+url = "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "hash_table", "sliding_window"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "adobe", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75", "leetcode_top_100", "sliding_window_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_unique"]
+families         = ["substring_window"]
+data_structures  = ["string", "hash_map", "array"]
+algorithms       = ["sliding_window", "two_pointers"]
+related_problems = ["0159", "0340", "0076", "0438", "0209", "0424"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "lengthOfLongestSubstring"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_unique"]
+families         = ["substring_window"]
+data_structures  = ["string", "array"]
+algorithms       = ["sliding_window", "two_pointers"]
+related_problems = ["0340", "0076"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(min(n, Σ)) space"
+notes      = "Canonical sliding window template with last-seen index array. This is the base template for all substring sliding window problems."

@@ -1,0 +1,45 @@
+# Problem: Rotting Oranges
+# https://leetcode.com/problems/rotting-oranges/
+
+# ===== Problem Info =====
+id = "0994"
+slug = "0994_rotting_oranges"
+title = "Rotting Oranges"
+leetcode_id = 994
+url = "https://leetcode.com/problems/rotting-oranges/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "breadth_first_search", "matrix"]
+companies = ["amazon", "microsoft", "google", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "graph_bfs_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GridBFSMultiSource"]
+patterns         = ["grid_bfs_propagation"]
+families         = ["graph_wavefront", "matrix_traversal"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0286", "0542", "0127", "0752", "1091", "0200"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "orangesRotting"
+
+api_kernels      = ["GridBFSMultiSource"]
+patterns         = ["grid_bfs_propagation"]
+families         = ["graph_wavefront"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0286", "0542"]
+
+role       = "base"
+variant    = "multi_source_bfs"
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Classic multi-source BFS on 2D grid. All rotten oranges start in queue simultaneously, spreading layer by layer. This is the canonical API Kernel for grid propagation problems."

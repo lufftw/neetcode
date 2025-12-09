@@ -1,0 +1,83 @@
+# Problem: Reverse Nodes in k-Group
+# https://leetcode.com/problems/reverse-nodes-in-k-group/
+
+# ===== Problem Info =====
+id = "0025"
+slug = "0025_reverse_nodes_in_k_group"
+title = "Reverse Nodes in k-Group"
+leetcode_id = 25
+url = "https://leetcode.com/problems/reverse-nodes-in-k-group/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["linked_list", "recursion"]
+companies = ["google", "meta", "amazon", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["linked_list_k_group_reversal"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["recursion"]
+related_problems = ["0024", "0206", "0092"]
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "solve_iterative"
+
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["linked_list_k_group_reversal"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = []
+related_problems = ["0206", "0092"]
+
+role       = "base"
+variant    = "iterative"
+based_on   = []
+delta      = ""
+complexity = "O(N) time, O(1) space"
+notes      = "Iterative in-place k-group reversal using pointer manipulation. Constant space."
+
+[[solutions]]
+key    = "iterative"
+class  = "Solution"
+method = "solve_iterative"
+
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["linked_list_k_group_reversal"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = []
+related_problems = ["0206", "0092"]
+
+role       = "base"
+variant    = "iterative"
+based_on   = []
+delta      = ""
+complexity = "O(N) time, O(1) space"
+notes      = "Same as default. Process k nodes at a time, reverse in-place."
+
+[[solutions]]
+key    = "recursive"
+class  = "Solution"
+method = "solve_recursive"
+
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["linked_list_k_group_reversal"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["recursion"]
+related_problems = ["0206"]
+
+role       = "variant"
+variant    = "recursive"
+based_on   = ["0025#iterative"]
+delta      = "Use recursion to handle groups. Stack space for recursion."
+complexity = "O(N) time, O(N/k) space (recursion stack)"
+notes      = "Recursive approach: reverse k nodes, then recurse on remaining list."

@@ -1,0 +1,141 @@
+# Blind 75 - Classic interview questions
+# https://leetcode.com/discuss/general-discussion/460599/blind-75
+
+id = "blind_75"
+name = "Blind 75"
+
+[[groups]]
+name = "Array"
+order = 1
+problems = [
+  "0001_two_sum",
+  "0121_best_time_to_buy_and_sell_stock",
+  "0217_contains_duplicate",
+  "0238_product_of_array_except_self",
+  "0053_maximum_subarray",
+  "0152_maximum_product_subarray",
+  "0153_find_minimum_in_rotated_sorted_array",
+  "0033_search_in_rotated_sorted_array",
+  "0015_three_sum",
+  "0011_container_with_most_water",
+]
+
+[[groups]]
+name = "Binary"
+order = 2
+problems = [
+  "0371_sum_of_two_integers",
+  "0191_number_of_1_bits",
+  "0338_counting_bits",
+  "0268_missing_number",
+  "0190_reverse_bits",
+]
+
+[[groups]]
+name = "Dynamic Programming"
+order = 3
+problems = [
+  "0070_climbing_stairs",
+  "0322_coin_change",
+  "0300_longest_increasing_subsequence",
+  "1143_longest_common_subsequence",
+  "0139_word_break",
+  "0039_combination_sum",
+  "0198_house_robber",
+  "0213_house_robber_ii",
+  "0091_decode_ways",
+  "0062_unique_paths",
+  "0055_jump_game",
+]
+
+[[groups]]
+name = "Graph"
+order = 4
+problems = [
+  "0133_clone_graph",
+  "0207_course_schedule",
+  "0417_pacific_atlantic_water_flow",
+  "0200_number_of_islands",
+  "0128_longest_consecutive_sequence",
+  "0269_alien_dictionary",
+  "0261_graph_valid_tree",
+  "0323_number_of_connected_components_in_an_undirected_graph",
+]
+
+[[groups]]
+name = "Interval"
+order = 5
+problems = [
+  "0057_insert_interval",
+  "0056_merge_intervals",
+  "0435_non_overlapping_intervals",
+  "0252_meeting_rooms",
+  "0253_meeting_rooms_ii",
+]
+
+[[groups]]
+name = "Linked List"
+order = 6
+problems = [
+  "0206_reverse_linked_list",
+  "0141_linked_list_cycle",
+  "0021_merge_two_sorted_lists",
+  "0023_merge_k_sorted_lists",
+  "0019_remove_nth_node_from_end_of_list",
+  "0143_reorder_list",
+]
+
+[[groups]]
+name = "Matrix"
+order = 7
+problems = [
+  "0073_set_matrix_zeroes",
+  "0054_spiral_matrix",
+  "0048_rotate_image",
+  "0079_word_search",
+]
+
+[[groups]]
+name = "String"
+order = 8
+problems = [
+  "0003_longest_substring_without_repeating_characters",
+  "0424_longest_repeating_character_replacement",
+  "0076_minimum_window_substring",
+  "0242_valid_anagram",
+  "0049_group_anagrams",
+  "0020_valid_parentheses",
+  "0125_valid_palindrome",
+  "0005_longest_palindromic_substring",
+  "0647_palindromic_substrings",
+  "0271_encode_and_decode_strings",
+]
+
+[[groups]]
+name = "Tree"
+order = 9
+problems = [
+  "0104_maximum_depth_of_binary_tree",
+  "0100_same_tree",
+  "0226_invert_binary_tree",
+  "0124_binary_tree_maximum_path_sum",
+  "0102_binary_tree_level_order_traversal",
+  "0297_serialize_and_deserialize_binary_tree",
+  "0572_subtree_of_another_tree",
+  "0105_construct_binary_tree_from_preorder_and_inorder_traversal",
+  "0098_validate_binary_search_tree",
+  "0230_kth_smallest_element_in_a_bst",
+  "0235_lowest_common_ancestor_of_a_bst",
+  "0208_implement_trie",
+  "0211_design_add_and_search_words_data_structure",
+  "0212_word_search_ii",
+]
+
+[[groups]]
+name = "Heap"
+order = 10
+problems = [
+  "0023_merge_k_sorted_lists",
+  "0347_top_k_frequent_elements",
+  "0295_find_median_from_data_stream",
+]

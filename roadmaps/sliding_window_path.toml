@@ -1,0 +1,115 @@
+# Sliding Window Mastery Path
+# Step-by-step learning path for mastering sliding window pattern
+
+id = "sliding_window_path"
+name = "Sliding Window Mastery Path"
+api_kernel = "SubstringSlidingWindow"
+summary = "Master the sliding window pattern from basics to advanced variations."
+
+[[steps]]
+order = 1
+problem = "0003_longest_substring_without_repeating_characters"
+role = "base"
+pattern = "sliding_window_unique"
+prerequisite = []
+delta = ""
+note = "Learn the canonical sliding window template with uniqueness constraint."
+
+[[steps]]
+order = 2
+problem = "0121_best_time_to_buy_and_sell_stock"
+role = "base"
+pattern = "sliding_window_cost_bounded"
+prerequisite = []
+delta = ""
+note = "Simple one-pass tracking of minimum and maximum profit."
+
+[[steps]]
+order = 3
+problem = "0340_longest_substring_with_at_most_k_distinct_characters"
+role = "variant"
+pattern = "sliding_window_at_most_k_distinct"
+prerequisite = ["0003"]
+delta = "Change uniqueness to distinct_count <= K."
+note = "Generalize unique constraint to K distinct elements."
+
+[[steps]]
+order = 4
+problem = "0159_longest_substring_with_at_most_two_distinct_characters"
+role = "variant"
+pattern = "sliding_window_at_most_k_distinct"
+prerequisite = ["0340"]
+delta = "Special case: K = 2."
+note = "Practice the same pattern with fixed K value."
+
+[[steps]]
+order = 5
+problem = "0424_longest_repeating_character_replacement"
+role = "variant"
+pattern = "sliding_window_cost_bounded"
+prerequisite = ["0003"]
+delta = "Track most frequent char; constraint is replacements <= K."
+note = "Different cost function: number of replacements needed."
+
+[[steps]]
+order = 6
+problem = "0076_minimum_window_substring"
+role = "variant"
+pattern = "sliding_window_freq_cover"
+prerequisite = ["0003"]
+delta = "Track need/have frequencies; find minimum window covering all."
+note = "Reverse condition: window must cover all required characters."
+
+[[steps]]
+order = 7
+problem = "0567_permutation_in_string"
+role = "variant"
+pattern = "sliding_window_freq_cover"
+prerequisite = ["0076"]
+delta = "Fixed window size = pattern length."
+note = "Simplified version of minimum window substring."
+
+[[steps]]
+order = 8
+problem = "0438_find_all_anagrams_in_a_string"
+role = "variant"
+pattern = "sliding_window_freq_cover"
+prerequisite = ["0567"]
+delta = "Collect all starting indices instead of just checking existence."
+note = "Extension: find all valid window positions."
+
+[[steps]]
+order = 9
+problem = "0209_minimum_size_subarray_sum"
+role = "variant"
+pattern = "sliding_window_cost_bounded"
+prerequisite = ["0003"]
+delta = "Numeric array; condition is sum >= target; minimize window."
+note = "Numeric version of sliding window with sum constraint."
+
+[[steps]]
+order = 10
+problem = "1004_max_consecutive_ones_iii"
+role = "variant"
+pattern = "sliding_window_cost_bounded"
+prerequisite = ["0209"]
+delta = "Cost = number of flips; maximize window with flip_count <= K."
+note = "Binary array variant with flip budget."
+
+[[steps]]
+order = 11
+problem = "0239_sliding_window_maximum"
+role = "advanced"
+pattern = "sliding_window_fixed_size"
+prerequisite = ["0003"]
+delta = "Fixed window size; use monotonic deque for O(1) max query."
+note = "Combine sliding window with monotonic deque."
+
+[[steps]]
+order = 12
+problem = "0030_substring_with_concatenation_of_all_words"
+role = "advanced"
+pattern = "sliding_window_freq_cover"
+prerequisite = ["0076", "0438"]
+delta = "Word-level frequency matching instead of character-level."
+note = "Hard variant: sliding window over word chunks."
