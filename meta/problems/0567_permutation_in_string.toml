@@ -1,0 +1,68 @@
+# Problem: Permutation in String
+# https://leetcode.com/problems/permutation-in-string/
+
+# ===== Problem Info =====
+id = "0567"
+slug = "0567_permutation_in_string"
+title = "Permutation in String"
+leetcode_id = 567
+url = "https://leetcode.com/problems/permutation-in-string/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "hash_table", "two_pointers", "sliding_window"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "sliding_window_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_freq_cover"]
+families         = ["substring_window"]
+data_structures  = ["string", "hash_map"]
+algorithms       = ["sliding_window"]
+related_problems = ["0003", "0076", "0242", "0438"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+derives_from = "0076"
+delta_summary = "Fixed-size window with exact frequency match (permutation check)"
+
+# ===== Relationship to Base =====
+[kernel_delta]
+base_problem = "0076"
+changes = [
+    "Window size: variable → fixed (len(pattern))",
+    "Match type: at least → exact (permutation = same chars, same counts)",
+    "Output: substring → boolean",
+    "Simplification: no need to track minimum, just check match",
+]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0567_permutation_in_string.py"
+generator = "generators/0567_permutation_in_string.py"
+tests_dir = "tests/0567_permutation_in_string/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "checkInclusion"
+
+api_kernels      = ["SubstringSlidingWindow"]
+patterns         = ["sliding_window_freq_cover"]
+families         = ["substring_window"]
+data_structures  = ["string", "hash_map"]
+algorithms       = ["sliding_window"]
+related_problems = ["0076", "0438"]
+
+role       = "variant"
+variant    = "fixed_window_exact_match"
+based_on   = ["0076#default"]
+delta      = "Fixed window size = len(pattern). Check for exact frequency match (permutation)."
+complexity = "O(|s1| + |s2|) time, O(1) space"
+notes      = "Simpler than LC76 because window size is fixed. Uses matched_count optimization for O(1) validity check."
+
