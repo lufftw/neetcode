@@ -1,0 +1,129 @@
+# MkDocs Configuration for NeetCode Practice Framework
+site_name: NeetCode Practice Framework
+site_description: A high-performance Python LeetCode / algorithm practice framework
+site_url: https://yourusername.github.io/neetcode/
+repo_url: https://github.com/yourusername/neetcode
+repo_name: neetcode
+
+# Theme
+theme:
+  name: material
+  language: en
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  
+  icon:
+    repo: fontawesome/brands/github
+  
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+  - include-markdown
+  - minify:
+      minify_html: true
+
+# Navigation
+nav:
+  - 🏠 Home:
+    - English: index.md
+    - 繁體中文: index_zh-TW.md
+  - 🧠 Mind Maps:
+    - Overview: mindmaps/index.md
+    - Pattern Hierarchy: mindmaps/pattern_hierarchy.md
+    - Family Derivation: mindmaps/family_derivation.md
+    - Algorithm Usage: mindmaps/algorithm_usage.md
+    - Data Structure: mindmaps/data_structure.md
+    - Company Coverage: mindmaps/company_coverage.md
+    - Learning Roadmaps: mindmaps/roadmap_paths.md
+    - Problem Relations: mindmaps/problem_relations.md
+    - Solution Variants: mindmaps/solution_variants.md
+    - Difficulty × Topics: mindmaps/difficulty_topics.md
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/yourusername/neetcode
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/d3@7
+  - https://cdn.jsdelivr.net/npm/markmap-view
+  - https://cdn.jsdelivr.net/npm/markmap-lib
+  - https://cdn.jsdelivr.net/npm/markmap-toolbar
+

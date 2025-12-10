@@ -42,3 +42,9 @@ Thumbs.db
 # Generated failed test cases (from --save-failed)
 *_failed_*.in
 
+# MkDocs build output
+site/
+
+# Generated HTML mindmaps (use --html to regenerate)
+docs/pages/
+

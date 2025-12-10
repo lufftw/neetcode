@@ -24,6 +24,12 @@ data_structures  = ["array", "hash_set"]
 algorithms       = ["backtracking"]
 related_problems = ["0052", "0037"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0051_n_queens.py"
+generator = "generators/0051_n_queens.py"
+tests_dir = "tests/0051_n_queens/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
