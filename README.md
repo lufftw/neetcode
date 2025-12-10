@@ -28,30 +28,13 @@
 
 > 💡 **"The difference between a good programmer and a great one isn't the algorithm they choose — it's how they prove it works."**
 
-<table>
-<tr>
-<td width="60%">
-
-### 📦 Other LeetCode Repos
-❌ Copy solutions, hope they work  
-❌ Manual test cases only  
-❌ No way to compare approaches  
-❌ Memorize patterns blindly  
-❌ No systematic learning path  
-
-</td>
-<td width="40%">
-
-### 🚀 This Framework
-✅ **Prove** your solution is correct  
-✅ Auto-generate 1000+ test cases  
-✅ Benchmark N solutions side-by-side  
-✅ **Visualize** patterns with mind maps  
-✅ Structured roadmaps (NeetCode 150, Blind 75)  
-
-</td>
-</tr>
-</table>
+| 📦 Other LeetCode Repos | 🚀 NeetCode |
+|:------------------------|:------------|
+| ❌ Copy solutions, hope they work | ✅ **Prove** your solution is correct |
+| ❌ Manual test cases only | ✅ Auto-generate 1000+ test cases |
+| ❌ No way to compare approaches | ✅ Benchmark N solutions side-by-side |
+| ❌ Memorize patterns blindly | ✅ **Visualize** patterns with mind maps |
+| ❌ No systematic learning path | ✅ Structured roadmaps (NeetCode 150, Blind 75) |
 
 ### 🧠 The Knowledge Graph Advantage
 
