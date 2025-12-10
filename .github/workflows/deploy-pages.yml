@@ -38,7 +38,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install mkdocs-material mkdocs-minify-plugin
+          pip install -r requirements.txt
       
       - name: Generate Mind Maps (HTML)
         run: |

@@ -13,3 +13,14 @@ pytest-cov>=4.1.0       # Coverage reporting
 big-O>=0.10.0           # Time complexity estimation
 # numpy                 # Required by big-O (installed automatically)
 
+# Documentation generation (MkDocs):
+mkdocs>=1.6.0           # MkDocs static site generator
+mkdocs-material>=9.5.0  # Material theme for MkDocs
+mkdocs-minify-plugin>=0.7.0  # Minify HTML output
+mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
+
+# Optional LLM packages (for tools/text_to_mindmap.py):
+# openai>=1.0.0         # OpenAI API client (for GPT models)
+# anthropic>=0.18.0    # Anthropic API client (for Claude models)
+# requests>=2.31.0     # HTTP library (for Ollama local LLM)
+
