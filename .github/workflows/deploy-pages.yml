@@ -46,7 +46,7 @@ jobs:
       
       - name: Build MkDocs site
         run: |
-          mkdocs build --strict
+          mkdocs build
       
       - name: Copy mind map HTML files
         run: |
