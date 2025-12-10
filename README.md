@@ -70,17 +70,18 @@ Built on principles from **Codeforces, ICPC, and Google's engineering practices*
 
 ## 📑 Table of Contents
 
-- What Sets Us Apart
-- Why This Framework?
-- Quick Start
-- Key Features
-- Interactive Mind Maps
-- Usage Guide
-- Advanced Features
-- Project Architecture
-- FAQ
-- For Contributors
-- License
+- [What Sets Us Apart](#-what-sets-us-apart)
+- [Why This Framework?](#-why-this-framework)
+- [Quick Start](#-quick-start)
+- [Key Features](#-key-features)
+- [Interactive Mind Maps](#-interactive-mind-maps)
+- [Pattern Documentation](#-pattern-documentation)
+- [Usage Guide](#-usage-guide)
+- [Advanced Features](#-advanced-features)
+- [Project Architecture](#-project-architecture)
+- [FAQ](#-frequently-asked-questions)
+- [For Contributors](#️-for-contributors)
+- [License](#-license)
 
 ---
 
@@ -229,6 +230,24 @@ Visualize algorithm patterns, problem relationships, and learning paths:
 | 📊 **Difficulty × Topics** | Topics by difficulty | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty_topics.html) |
 
 👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
+
+---
+
+## 📐 Pattern Documentation
+
+> **"Don't memorize 200 problems. Master 10 patterns."**
+
+Each API Kernel has a dedicated pattern guide with **base template**, **variations**, and **copy-paste ready code**.
+
+| API Kernel | Guide | Problems |
+|:-----------|:-----:|:---------|
+| `SubstringSlidingWindow` | [📖](docs/patterns/sliding_window.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
+| `GridBFSMultiSource` | *soon* | LeetCode 994, 286, 542 |
+| `BacktrackingExploration` | *soon* | LeetCode 51, 52, 46, 78 |
+| `KWayMerge` | *soon* | LeetCode 23, 21, 88 |
+| `BinarySearchBoundary` | *soon* | LeetCode 4, 33, 34, 35 |
+
+👉 **[View All Pattern Guides →](docs/patterns/README.md)**
 
 ---
 
