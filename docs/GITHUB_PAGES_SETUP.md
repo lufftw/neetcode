@@ -483,11 +483,17 @@ Explore our algorithm patterns visually:
 
 | Mind Map | Description | Links |
 |----------|-------------|-------|
-| Pattern Hierarchy | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://yourusername.github.io/neetcode/mindmaps/pattern_hierarchy.html) |
-| Algorithm Usage | Which algorithms solve which problems | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://yourusername.github.io/neetcode/mindmaps/algorithm_usage.html) |
-| Company Coverage | Company interview questions | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://yourusername.github.io/neetcode/mindmaps/company_coverage.html) |
+| 📐 Pattern Hierarchy | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#pattern-hierarchy) |
+| 👨‍👩‍👧‍👦 Family Derivation | Base templates and derived problem variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
+| ⚡ Algorithm Usage | Which algorithms solve which problems | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
+| 🏗️ Data Structure Usage | Problems organized by data structures | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
+| 🏢 Company Coverage | Company interview questions | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
+| 🗺️ Learning Roadmaps | Curated problem sequences (NeetCode 150, Blind 75, etc.) | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
+| 🔗 Problem Relations | Related problems network | [Static](docs/mindmaps/problem_relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#problem-relations) |
+| 🔀 Solution Variants | Problems with multiple solution approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
+| 📊 Difficulty × Topics | Topics organized by difficulty level | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
 
-👉 **[View All Interactive Mind Maps](https://yourusername.github.io/neetcode/)**
+👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 ```
 
 ---

@@ -29,37 +29,39 @@
 
 ## ❓ 常見問題
 
-??? question "這個框架解決什麼問題？"
+### 這個框架解決什麼問題？
 
-    - 自動執行多種演算法實作
-    - 生成大規模可重現測資進行壓力測試
-    - 比較不同解法的效能差異
-    - 使用 VS Code 整合 Debug LeetCode 風格題目
-    - 使用自訂邏輯驗證輸出，超越簡單的 `.out` 檔案比對
+- 自動執行多種演算法實作
+- 生成大規模可重現測資進行壓力測試
+- 比較不同解法的效能差異
+- 使用 VS Code 整合 Debug LeetCode 風格題目
+- 使用自訂邏輯驗證輸出，超越簡單的 `.out` 檔案比對
 
-??? question "這個框架適合誰？"
+### 這個框架適合誰？
 
-    - **競程選手**：準備比賽（Codeforces、ICPC 等）
-    - **軟體工程師**：準備技術面試（FAANG 等）
-    - **學生**：修習資料結構與演算法課程
-    - **研究人員**：需要大規模演算法壓力測試
+- **競程選手**：準備比賽（Codeforces、ICPC 等）
+- **軟體工程師**：準備技術面試（FAANG 等）
+- **學生**：修習資料結構與演算法課程
+- **研究人員**：需要大規模演算法壓力測試
 
-??? question "這和單純複製 LeetCode 解答有什麼不同？"
+### 這和單純複製 LeetCode 解答有什麼不同？
 
-    這不是解答集——而是一套**測試基礎設施**。你撰寫解答，框架會：
-    1. 用靜態測資執行測試
-    2. 自動生成隨機測資
-    3. 用自訂 Judge 函式驗證正確性
-    4. 比較多種解法的效能
-    5. 經驗性估算時間複雜度
+這不是解答集——而是一套**測試基礎設施**。你撰寫解答，框架會：
 
-??? question "可以用這個準備面試嗎？"
+1. 用靜態測資執行測試
+2. 自動生成隨機測資
+3. 用自訂 Judge 函式驗證正確性
+4. 比較多種解法的效能
+5. 經驗性估算時間複雜度
 
-    當然可以！這個框架非常適合面試準備，因為：
-    - 你可以用**真正的 LeetCode 格式**練習撰寫解答
-    - 隨機測資生成器幫你找到**你可能遺漏的邊界條件**
-    - 多解法效能比較顯示哪種方法**實際上更快**
-    - VS Code 整合讓 **Debug 變得簡單**
+### 可以用這個準備面試嗎？
+
+當然可以！這個框架非常適合面試準備，因為：
+
+- 你可以用**真正的 LeetCode 格式**練習撰寫解答
+- 隨機測資生成器幫你找到**你可能遺漏的邊界條件**
+- 多解法效能比較顯示哪種方法**實際上更快**
+- VS Code 整合讓 **Debug 變得簡單**
 
 ---
 
@@ -67,43 +69,21 @@
 
 使用 [Markmap](https://markmap.js.org/) 提供的互動式心智圖，視覺化演算法模式、問題關係和學習路徑。
 
-### 可用的心智圖
+探索我們的演算法模式視覺化：
 
-透過互動式視覺化探索框架的本體論和問題關係：
+| 心智圖 | 說明 | 連結 |
+|--------|------|------|
+| 📐 模式階層 | API 核心 → 模式 → 問題的階層結構 | [靜態](docs/mindmaps/pattern_hierarchy.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#pattern-hierarchy) |
+| 👨‍👩‍👧‍👦 家族衍生 | 基礎模板和衍生問題變體 | [靜態](docs/mindmaps/family_derivation.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
+| ⚡ 演算法使用 | 依使用的演算法組織問題 | [靜態](docs/mindmaps/algorithm_usage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
+| 🏗️ 資料結構使用 | 依使用的資料結構組織問題 | [靜態](docs/mindmaps/data_structure.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
+| 🏢 公司覆蓋 | 公司常問的問題 | [靜態](docs/mindmaps/company_coverage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
+| 🗺️ 學習路線圖 | 精選問題序列（NeetCode 150、Blind 75 等） | [靜態](docs/mindmaps/roadmap_paths.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
+| 🔗 問題關係 | 相關問題網絡 | [靜態](docs/mindmaps/problem_relations.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#problem-relations) |
+| 🔀 解法變體 | 有多種解法方法的問題 | [靜態](docs/mindmaps/solution_variants.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
+| 📊 難度 × 主題 | 依難度級別組織的主題 | [靜態](docs/mindmaps/difficulty_topics.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
 
-- **📐 模式階層** - API 核心 → 模式 → 問題的階層結構
-- **👨‍👩‍👧‍👦 家族衍生** - 基礎模板和衍生問題變體
-- **⚡ 演算法使用** - 依使用的演算法組織問題
-- **🏗️ 資料結構使用** - 依使用的資料結構組織問題
-- **🏢 公司覆蓋** - 公司常問的問題
-- **🗺️ 學習路線圖** - 精選問題序列（NeetCode 150、Blind 75 等）
-- **🔗 問題關係** - 相關問題網絡
-- **🔀 解法變體** - 有多種解法方法的問題
-- **📊 難度 × 主題** - 依難度級別組織的主題
-
-### 查看心智圖
-
-**線上**：訪問 [https://lufftw.github.io/neetcode/mindmaps/](https://lufftw.github.io/neetcode/mindmaps/) 在瀏覽器中探索互動式心智圖。
-
-**本地**：使用內建工具在本地生成心智圖：
-
-```bash
-# 生成所有心智圖（Markdown 格式）
-python tools/generate_mindmaps.py
-
-# 生成互動式 HTML 檔案供本地查看
-python tools/generate_mindmaps.py --html
-
-# 生成特定類型的心智圖
-python tools/generate_mindmaps.py --type pattern_hierarchy --html
-```
-
-### 功能特色
-
-- **互動式導航** - 拖曳、縮放和展開/收合節點
-- **GitHub 整合** - 點擊問題連結在 GitHub 上查看解答
-- **模式發現** - 了解問題之間的關聯
-- **學習路徑** - 遵循結構化路線圖進行系統化學習
+👉 **[查看所有互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
 
 ---
 
@@ -157,6 +137,8 @@ python tools/generate_mindmaps.py --type pattern_hierarchy --html
 - [Python 環境](#-python-環境)
 
 - [小技巧](#-小技巧)
+
+- [本地生成心智圖](#️-本地生成心智圖)
 
 - [維護者專區](#-維護者專區單元測試)
 
@@ -223,8 +205,61 @@ neetcode/
 │   ├── TEST_SUMMARY.md      ← 測試套件摘要
 │   └── README.md            ← 維護者指南
 │
+├── tools/                   ← 文檔和生成工具
+│   ├── generate_mindmaps.py  ← 生成互動式心智圖
+│   ├── generate_mindmaps.toml ← 心智圖配置檔案
+│   ├── generate_pattern_docs.py ← 生成模式文檔
+│   ├── text_to_mindmap.py   ← 將文字轉換為心智圖（LLM）
+│   └── README.md            ← 工具文檔
+│
+├── docs/                    ← 文檔（MkDocs）
+│   ├── mindmaps/            ← 生成的心智圖 Markdown 檔案
+│   │   ├── pattern_hierarchy.md
+│   │   ├── algorithm_usage.md
+│   │   └── ...
+│   ├── patterns/            ← 生成的模式文檔
+│   │   └── sliding_window.md
+│   ├── pages/               ← 生成的 HTML（GitHub Pages 用，gitignored）
+│   │   └── mindmaps/        ← 互動式 HTML 心智圖
+│   ├── stylesheets/         ← 自訂 CSS
+│   ├── index.md             ← 首頁（英文）
+│   ├── index_zh-TW.md       ← 首頁（繁體中文）
+│   └── GITHUB_PAGES_SETUP.md ← GitHub Pages 設定指南
+│
+├── ontology/                ← 演算法本體論定義
+│   ├── api_kernels.toml     ← API 核心定義
+│   ├── patterns.toml         ← 模式定義
+│   ├── algorithms.toml      ← 演算法定義
+│   ├── data_structures.toml ← 資料結構定義
+│   ├── companies.toml       ← 公司定義
+│   ├── topics.toml          ← 主題定義
+│   ├── difficulties.toml    ← 難度定義
+│   ├── families.toml        ← 問題家族定義
+│   └── roadmaps.toml         ← 路線圖定義
+│
+├── meta/                    ← 問題和模式元數據
+│   ├── problems/            ← 問題元數據（TOML）
+│   │   └── *.toml           ← 每個問題一個檔案
+│   └── patterns/            ← 模式文檔來源
+│       └── <pattern_name>/  ← 模式特定的 Markdown 檔案
+│           ├── _header.md   ← 核心概念
+│           ├── _comparison.md ← 模式比較
+│           ├── _decision.md ← 何時使用
+│           ├── _templates.md ← 快速參考
+│           └── *.md         ← 問題特定內容
+│
+├── roadmaps/                ← 學習路線圖定義
+│   ├── neetcode_150.toml
+│   ├── blind_75.toml
+│   └── sliding_window_path.toml
+│
+├── .github/                 ← GitHub 配置
+│   └── workflows/
+│       └── deploy-pages.yml ← GitHub Pages 部署
+│
 ├── leetcode/                ← Python 虛擬環境 (Python 3.11)
 │
+├── mkdocs.yml               ← MkDocs 配置
 ├── pytest.ini               ← pytest 配置 (用於單元測試)
 │
 ├── run_tests.bat            ← Windows: 執行所有測資
@@ -236,12 +271,18 @@ neetcode/
 ├── new_problem.sh           ← Linux/macOS: 建立新題目
 │
 ├── requirements.txt         ← Python 相依套件
-└── README.md
+├── README.md                ← 主要文檔（英文）
+└── README_zh-TW.md          ← 主要文檔（繁體中文）
 ```
 
 > **📝 注意**: 
 > - **一般使用者**：只需關注 `solutions/`, `tests/`, `runner/` 和根目錄的執行腳本
 > - **專案維護者**：`.dev/` 資料夾包含單元測試和維護文檔，用於確保代碼重構不會破壞現有功能
+> - **文檔**：
+>   - `docs/mindmaps/*.md` - 由 `tools/generate_mindmaps.py` 自動生成
+>   - `docs/patterns/*.md` - 由 `tools/generate_pattern_docs.py` 自動生成
+>   - `docs/pages/` - 生成的 HTML 檔案（gitignored，部署時重新生成）
+>   - `ontology/` 和 `meta/` - 文檔生成的來源資料
 
 ---
 

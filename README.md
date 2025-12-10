@@ -29,37 +29,39 @@ Most LeetCode repos are just solution collections. **This framework is a complet
 
 ## ❓ Frequently Asked Questions
 
-??? question "What problems does this framework solve?"
+### What problems does this framework solve?
 
-    - Running multiple algorithm implementations automatically
-    - Generating large-scale reproducible test data for stress testing
-    - Benchmarking solutions to identify performance differences
-    - Debugging LeetCode-style problems with VS Code integration
-    - Validating outputs using custom logic beyond simple `.out` file comparison
+- Running multiple algorithm implementations automatically
+- Generating large-scale reproducible test data for stress testing
+- Benchmarking solutions to identify performance differences
+- Debugging LeetCode-style problems with VS Code integration
+- Validating outputs using custom logic beyond simple `.out` file comparison
 
-??? question "Who is this framework for?"
+### Who is this framework for?
 
-    - **Competitive programmers** preparing for contests (Codeforces, ICPC, etc.)
-    - **Software engineers** preparing for coding interviews (FAANG, etc.)
-    - **Students** taking data structures and algorithms courses
-    - **Researchers** needing large-scale algorithm stress tests
+- **Competitive programmers** preparing for contests (Codeforces, ICPC, etc.)
+- **Software engineers** preparing for coding interviews (FAANG, etc.)
+- **Students** taking data structures and algorithms courses
+- **Researchers** needing large-scale algorithm stress tests
 
-??? question "How is this different from just copying LeetCode solutions?"
+### How is this different from just copying LeetCode solutions?
 
-    This is not a solution collection — it's a **testing infrastructure**. You write solutions, and the framework:
-    1. Runs them against static test cases
-    2. Generates random test cases automatically
-    3. Validates correctness using custom judge functions
-    4. Benchmarks multiple solutions against each other
-    5. Estimates time complexity empirically
+This is not a solution collection — it's a **testing infrastructure**. You write solutions, and the framework:
 
-??? question "Can I use this for interview preparation?"
+1. Runs them against static test cases
+2. Generates random test cases automatically
+3. Validates correctness using custom judge functions
+4. Benchmarks multiple solutions against each other
+5. Estimates time complexity empirically
 
-    Yes! The framework is perfect for interview prep because:
-    - You can practice writing solutions in **real LeetCode format**
-    - The random test generator helps you find **edge cases you might miss**
-    - Multi-solution benchmarking shows which approach is **actually faster**
-    - VS Code integration makes **debugging easy**
+### Can I use this for interview preparation?
+
+Yes! The framework is perfect for interview prep because:
+
+- You can practice writing solutions in **real LeetCode format**
+- The random test generator helps you find **edge cases you might miss**
+- Multi-solution benchmarking shows which approach is **actually faster**
+- VS Code integration makes **debugging easy**
 
 ---
 
@@ -67,43 +69,21 @@ Most LeetCode repos are just solution collections. **This framework is a complet
 
 Visualize algorithm patterns, problem relationships, and learning paths with interactive mind maps powered by [Markmap](https://markmap.js.org/).
 
-### Available Mind Maps
+Explore our algorithm patterns visually:
 
-Explore the framework's ontology and problem relationships through interactive visualizations:
+| Mind Map | Description | Links |
+|----------|-------------|-------|
+| 📐 Pattern Hierarchy | API Kernels → Patterns → Problems hierarchy | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#pattern-hierarchy) |
+| 👨‍👩‍👧‍👦 Family Derivation | Base templates and derived problem variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
+| ⚡ Algorithm Usage | Problems organized by algorithms they use | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
+| 🏗️ Data Structure Usage | Problems organized by data structures | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
+| 🏢 Company Coverage | Problems frequently asked by companies | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
+| 🗺️ Learning Roadmaps | Curated problem sequences (NeetCode 150, Blind 75, etc.) | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
+| 🔗 Problem Relations | Related problems network | [Static](docs/mindmaps/problem_relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#problem-relations) |
+| 🔀 Solution Variants | Problems with multiple solution approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
+| 📊 Difficulty × Topics | Topics organized by difficulty level | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
 
-- **📐 Pattern Hierarchy** - API Kernels → Patterns → Problems hierarchy
-- **👨‍👩‍👧‍👦 Family Derivation** - Base templates and derived problem variants
-- **⚡ Algorithm Usage** - Problems organized by algorithms they use
-- **🏗️ Data Structure Usage** - Problems organized by data structures
-- **🏢 Company Coverage** - Problems frequently asked by companies
-- **🗺️ Learning Roadmaps** - Curated problem sequences (NeetCode 150, Blind 75, etc.)
-- **🔗 Problem Relations** - Related problems network
-- **🔀 Solution Variants** - Problems with multiple solution approaches
-- **📊 Difficulty × Topics** - Topics organized by difficulty level
-
-### View Mind Maps
-
-**Online**: Visit [https://lufftw.github.io/neetcode/mindmaps/](https://lufftw.github.io/neetcode/mindmaps/) to explore interactive mind maps in your browser.
-
-**Local**: Generate mind maps locally using the included tools:
-
-```bash
-# Generate all mind maps (Markdown format)
-python tools/generate_mindmaps.py
-
-# Generate interactive HTML files for local viewing
-python tools/generate_mindmaps.py --html
-
-# Generate specific mind map type
-python tools/generate_mindmaps.py --type pattern_hierarchy --html
-```
-
-### Features
-
-- **Interactive Navigation** - Drag, zoom, and expand/collapse nodes
-- **GitHub Integration** - Click problem links to view solutions on GitHub
-- **Pattern Discovery** - Understand how problems relate to each other
-- **Learning Paths** - Follow structured roadmaps for systematic learning
+👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 
 ---
 
@@ -157,6 +137,8 @@ python tools/generate_mindmaps.py --type pattern_hierarchy --html
 - [Python Environment](#-python-environment)
 
 - [Tips](#-tips)
+
+- [Generate Mind Maps Locally](#️-generate-mind-maps-locally)
 
 - [Maintainer Zone](#-maintainer-zone-unit-tests)
 
@@ -223,8 +205,61 @@ neetcode/
 │   ├── TEST_SUMMARY.md      ← Test suite summary
 │   └── README.md            ← Maintainer guide
 │
+├── tools/                   ← Documentation and generation tools
+│   ├── generate_mindmaps.py  ← Generate interactive mind maps
+│   ├── generate_mindmaps.toml ← Mind maps configuration
+│   ├── generate_pattern_docs.py ← Generate pattern documentation
+│   ├── text_to_mindmap.py   ← Convert text to mind maps (LLM)
+│   └── README.md            ← Tools documentation
+│
+├── docs/                    ← Documentation (MkDocs)
+│   ├── mindmaps/            ← Generated mind map markdown files
+│   │   ├── pattern_hierarchy.md
+│   │   ├── algorithm_usage.md
+│   │   └── ...
+│   ├── patterns/            ← Generated pattern documentation
+│   │   └── sliding_window.md
+│   ├── pages/               ← Generated HTML for GitHub Pages (gitignored)
+│   │   └── mindmaps/        ← Interactive HTML mind maps
+│   ├── stylesheets/         ← Custom CSS
+│   ├── index.md             ← Homepage (English)
+│   ├── index_zh-TW.md       ← Homepage (Traditional Chinese)
+│   └── GITHUB_PAGES_SETUP.md ← GitHub Pages setup guide
+│
+├── ontology/                ← Algorithm ontology definitions
+│   ├── api_kernels.toml     ← API kernel definitions
+│   ├── patterns.toml         ← Pattern definitions
+│   ├── algorithms.toml      ← Algorithm definitions
+│   ├── data_structures.toml ← Data structure definitions
+│   ├── companies.toml       ← Company definitions
+│   ├── topics.toml          ← Topic definitions
+│   ├── difficulties.toml    ← Difficulty definitions
+│   ├── families.toml        ← Problem family definitions
+│   └── roadmaps.toml         ← Roadmap definitions
+│
+├── meta/                    ← Problem and pattern metadata
+│   ├── problems/            ← Problem metadata (TOML)
+│   │   └── *.toml           ← One file per problem
+│   └── patterns/            ← Pattern documentation sources
+│       └── <pattern_name>/  ← Pattern-specific markdown files
+│           ├── _header.md   ← Core concepts
+│           ├── _comparison.md ← Pattern comparison
+│           ├── _decision.md ← When to use
+│           ├── _templates.md ← Quick reference
+│           └── *.md         ← Problem-specific content
+│
+├── roadmaps/                ← Learning roadmap definitions
+│   ├── neetcode_150.toml
+│   ├── blind_75.toml
+│   └── sliding_window_path.toml
+│
+├── .github/                 ← GitHub configuration
+│   └── workflows/
+│       └── deploy-pages.yml ← GitHub Pages deployment
+│
 ├── leetcode/                ← Python virtual environment (Python 3.11)
 │
+├── mkdocs.yml               ← MkDocs configuration
 ├── pytest.ini               ← pytest configuration (for unit tests)
 │
 ├── run_tests.bat            ← Windows: Run all tests
@@ -236,12 +271,18 @@ neetcode/
 ├── new_problem.sh           ← Linux/macOS: Create new problem
 │
 ├── requirements.txt         ← Python dependencies
-└── README.md
+├── README.md                ← Main documentation (English)
+└── README_zh-TW.md          ← Main documentation (Traditional Chinese)
 ```
 
 > **📝 Note**: 
 > - **End users**: Focus on `solutions/`, `tests/`, `runner/` and root-level scripts
 > - **Maintainers**: `.dev/` folder contains unit tests and maintenance docs to ensure refactoring doesn't break existing functionality
+> - **Documentation**: 
+>   - `docs/mindmaps/*.md` - Auto-generated by `tools/generate_mindmaps.py`
+>   - `docs/patterns/*.md` - Auto-generated by `tools/generate_pattern_docs.py`
+>   - `docs/pages/` - Generated HTML files (gitignored, regenerated on deploy)
+>   - `ontology/` and `meta/` - Source data for documentation generation
 
 ---
 
