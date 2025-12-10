@@ -212,4 +212,3 @@ Algorithmic API Kernels and their pattern instantiations with example problems.
 ### Heap Median Stream
 
 - *(No problems tagged yet)*
-

@@ -831,7 +831,139 @@ def generate_difficulty_topics(ontology: OntologyData, problems: dict[str, Probl
 # HTML Generation for GitHub Pages
 # ---------------------------------------------------------------------------
 
-HTML_TEMPLATE = '''<!DOCTYPE html>
+# HTML template without autoloader (default - manual initialization)
+HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - NeetCode Mind Maps</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        html, body {{ height: 100%; }}
+        .markmap {{ width: 100%; height: 100%; }}
+        .markmap > svg {{ width: 100%; height: 100%; }}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
+    <script>
+        // Global functions for buttons
+        function fitView() {{
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) svg.mm.fit();
+        }}
+        function expandAll() {{
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) {{
+                var root = svg.mm.state.data;
+                (function expand(n) {{
+                    n.payload = Object.assign({{}}, n.payload, {{ fold: 0 }});
+                    if (n.children) n.children.forEach(expand);
+                }})(root);
+                svg.mm.setData(root);
+                svg.mm.fit();
+            }}
+        }}
+        function collapseAll() {{
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) {{
+                var root = svg.mm.state.data;
+                root.children && root.children.forEach(function collapse(n) {{
+                    if (n.children && n.children.length) {{
+                        n.payload = Object.assign({{}}, n.payload, {{ fold: 1 }});
+                        n.children.forEach(collapse);
+                    }}
+                }});
+                svg.mm.setData(root);
+                svg.mm.fit();
+            }}
+        }}
+        
+        // Initialize markmap manually
+        document.addEventListener('DOMContentLoaded', function() {{
+            const {{ Transformer, Markmap }} = window.markmap;
+            const transformer = new Transformer();
+            
+            const markdown = `{markdown_content}`;
+            const {{ root }} = transformer.transform(markdown);
+            
+            const svg = d3.select('.markmap').append('svg');
+            const mm = Markmap.create(svg.node(), {{
+                color: (node) => node.payload?.color || '#f59e0b',
+            }}, root);
+            
+            // Store markmap instance for button functions
+            svg.node().mm = mm;
+            
+            // Add toolbar if available
+            if (window.markmap && window.markmap.Toolbar) {{
+                const toolbar = new window.markmap.Toolbar();
+                toolbar.attach(mm);
+                
+                // Customize toolbar after creation
+                setTimeout(function() {{
+                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {{
+                        // Remove dark mode button
+                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {{
+                            var title = (item.title || '').toLowerCase();
+                            if (title.includes('dark')) item.remove();
+                        }});
+                        
+                        // Replace brand - smaller, subtle color
+                        var brand = toolbar.querySelector('.mm-toolbar-brand');
+                        if (brand) {{
+                            brand.innerHTML = '🟡 NeetCode';
+                            brand.href = '#';
+                            brand.onclick = function(e) {{ e.preventDefault(); }};
+                            brand.style.fontSize = '12px';
+                            brand.style.color = '#666';
+                        }}
+                    }});
+                }}, 200);
+            }}
+        }});
+    </script>
+    <style>
+        #topbar {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 8px 16px;
+            display: flex;
+            gap: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 13px;
+        }}
+        #topbar button {{
+            padding: 4px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+        }}
+        #topbar button:hover {{ background: #f3f4f6; }}
+        .markmap {{ margin-top: 40px; height: calc(100% - 40px); }}
+    </style>
+</head>
+<body>
+    <div id="topbar">
+        <button onclick="fitView()">Fit View</button>
+        <button onclick="expandAll()">Expand All</button>
+        <button onclick="collapseAll()">Collapse All</button>
+    </div>
+    <div class="markmap"></div>
+</body>
+</html>
+'''
+
+# HTML template with autoloader (optional)
+HTML_TEMPLATE_AUTOLOADER = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1167,15 +1299,30 @@ def markdown_to_html_content(markdown_content: str) -> str:
     return content
 
 
-def generate_html_mindmap(title: str, markdown_content: str) -> str:
-    """Generate an HTML file with embedded markmap for a mind map."""
+def generate_html_mindmap(title: str, markdown_content: str, use_autoloader: bool = False) -> str:
+    """Generate an HTML file with embedded markmap for a mind map.
+    
+    Args:
+        title: Page title
+        markdown_content: Markdown content (with or without frontmatter)
+        use_autoloader: If True, use markmap-autoloader; otherwise use manual initialization (default)
+    """
     # Extract content without frontmatter
     content = markdown_to_html_content(markdown_content)
     
-    return HTML_TEMPLATE.format(
-        title=title,
-        markdown_content=content,
-    )
+    # Escape markdown content for JavaScript string
+    content_escaped = content.replace('`', '\\`').replace('$', '\\$')
+    
+    if use_autoloader:
+        return HTML_TEMPLATE_AUTOLOADER.format(
+            title=title,
+            markdown_content=content,
+        )
+    else:
+        return HTML_TEMPLATE_MANUAL.format(
+            title=title,
+            markdown_content=content_escaped,
+        )
 
 
 def setup_pages_directory(pages_dir: Path) -> None:
@@ -1212,6 +1359,7 @@ def generate_all_mindmaps(
     types: list[str] | None = None,
     generate_html: bool = False,
     pages_dir: Path | None = None,
+    use_autoloader: bool = False,
 ) -> dict[str, str]:
     """Generate all or specified mindmaps."""
     # Load data
@@ -1271,7 +1419,7 @@ def generate_all_mindmaps(
         # Write HTML file if requested
         if generate_html and pages_dir:
             title = titles.get(mindmap_type, mindmap_type.replace("_", " ").title())
-            html_content = generate_html_mindmap(title, content)
+            html_content = generate_html_mindmap(title, content, use_autoloader=use_autoloader)
             html_file = pages_dir / "mindmaps" / f"{mindmap_type}.html"
             html_file.write_text(html_content, encoding="utf-8")
             print(f"  Written: {html_file}")
@@ -1357,9 +1505,10 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python tools/generate_mindmaps.py              # Generate Markdown only
-  python tools/generate_mindmaps.py --html       # Generate Markdown + HTML for GitHub Pages
-  python tools/generate_mindmaps.py -t pattern   # Generate specific type
+  python tools/generate_mindmaps.py                    # Generate Markdown only
+  python tools/generate_mindmaps.py --html             # Generate Markdown + HTML (manual init)
+  python tools/generate_mindmaps.py --html --use-autoloader  # Generate HTML with autoloader
+  python tools/generate_mindmaps.py -t pattern         # Generate specific type
         """,
     )
     parser.add_argument(
@@ -1382,6 +1531,11 @@ Examples:
         "--html",
         action="store_true",
         help="Also generate interactive HTML files for GitHub Pages",
+    )
+    parser.add_argument(
+        "--use-autoloader",
+        action="store_true",
+        help="Use markmap-autoloader for HTML generation (default: manual initialization)",
     )
     parser.add_argument(
         "--pages-dir",
@@ -1410,6 +1564,7 @@ Examples:
         types=types,
         generate_html=args.html,
         pages_dir=args.pages_dir if args.html else None,
+        use_autoloader=args.use_autoloader,
     )
 
     if results:

@@ -24,4 +24,3 @@ then apply to variants with small modifications.
 - 🟡 [LeetCode 340 - Longest Substring with At Most K Distinct Characters](../../solutions/0340_longest_substring_with_at_most_k_distinct.py) — `O(n) time, O(K) space`
 - 🟡 [LeetCode 438 - Find All Anagrams in a String](../../solutions/0438_find_all_anagrams_in_a_string.py) — `O(|s| + |p|) time, O(1) space for maps, O(k) for output`
 - 🟡 [LeetCode 567 - Permutation in String](../../solutions/0567_permutation_in_string.py) — `O(|s1| + |s2|) time, O(1) space`
-

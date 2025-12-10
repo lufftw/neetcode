@@ -55,4 +55,3 @@ Problems organized by the primary data structures they use.
 ## Queue (1 problems)
 
 - 🟡 [LeetCode 994 - Rotting Oranges](../../solutions/0994_rotting_oranges.py)
-

@@ -47,4 +47,3 @@ Problems organized by the algorithms they use. Click links to view solution code
 ## Bfs (1 problems)
 
 - 🟡 [LeetCode 994 - Rotting Oranges](../../solutions/0994_rotting_oranges.py)
-
