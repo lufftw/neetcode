@@ -44,13 +44,13 @@
 
 Most people practice algorithms in isolation. We built an **interconnected knowledge system**:
 
-```
-📐 Pattern Hierarchy    →  See how API kernels become patterns become solutions
-👨‍👩‍👧‍👦 Family Derivation    →  Understand how problems evolve from base templates  
-⚡ Algorithm Usage      →  Know which algorithm applies where
-🏢 Company Coverage     →  Target your preparation for specific companies
-🗺️ Learning Roadmaps    →  Follow proven paths (NeetCode 150, Blind 75, etc.)
-```
+| Mind Map | Description | Link |
+|:---------|:------------|:----:|
+| 📐 **Pattern Hierarchy** | API kernels → patterns → solutions | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
+| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → derived variants | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
+| ⚡ **Algorithm Usage** | Know which algorithm applies where | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
+| 🏢 **Company Coverage** | Target preparation for specific companies | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
+| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
 
 **[→ Explore 9 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -218,15 +218,15 @@ Visualize algorithm patterns, problem relationships, and learning paths:
 
 | Mind Map | Description | Links |
 |:---------|:------------|:------|
-| 📐 **Pattern Hierarchy** | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#pattern-hierarchy) |
-| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → Derived variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
-| ⚡ **Algorithm Usage** | Problems by algorithm | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
-| 🏗️ **Data Structure Usage** | Problems by data structure | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
-| 🏢 **Company Coverage** | Company-specific problems | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
-| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
-| 🔗 **Problem Relations** | Related problems network | [Static](docs/mindmaps/problem_relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#problem-relations) |
-| 🔀 **Solution Variants** | Multiple approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
-| 📊 **Difficulty × Topics** | Topics by difficulty | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
+| 📐 **Pattern Hierarchy** | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
+| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → Derived variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
+| ⚡ **Algorithm Usage** | Problems by algorithm | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
+| 🏗️ **Data Structure Usage** | Problems by data structure | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/data_structure.html) |
+| 🏢 **Company Coverage** | Company-specific problems | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
+| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
+| 🔗 **Problem Relations** | Related problems network | [Static](docs/mindmaps/problem_relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/problem_relations.html) |
+| 🔀 **Solution Variants** | Multiple approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/solution_variants.html) |
+| 📊 **Difficulty × Topics** | Topics by difficulty | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty_topics.html) |
 
 👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 
