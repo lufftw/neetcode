@@ -14,6 +14,44 @@
     line-height: 1.7;
 }
 
+/* Badges hero section */
+.badges-hero {
+    text-align: center;
+    margin: 1.5rem 0;
+    line-height: 2.5;
+}
+
+.badges-hero p {
+    margin: 0.5rem 0;
+}
+
+.badges-hero img {
+    display: inline-block;
+    margin: 0.25rem 0.5rem;
+    vertical-align: middle;
+}
+
+/* Force line breaks for badge groups */
+.badges-hero p:first-of-type {
+    margin-bottom: 0.75rem;
+}
+
+/* Links hero section */
+.links-hero {
+    text-align: center;
+    margin: 1rem 0;
+    line-height: 1.8;
+}
+
+.links-hero p {
+    margin: 0.5rem 0;
+}
+
+.links-hero a {
+    margin: 0 0.5rem;
+    text-decoration: none;
+}
+
 :root {
     /* widen content area */
     --md-typeset-max-width: 1200px;

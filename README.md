@@ -1,6 +1,6 @@
 # 🧩 NeetCode Practice Framework
 
-<div align="center">
+<div class="badges-hero" markdown>
 
 [![GitHub stars](https://img.shields.io/github/stars/lufftw/neetcode?style=for-the-badge&logo=github&color=gold)](https://github.com/lufftw/neetcode/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/lufftw/neetcode?style=for-the-badge&logo=github&color=silver)](https://github.com/lufftw/neetcode/network)
@@ -12,11 +12,15 @@
 [![Mind Maps](https://img.shields.io/badge/Mind%20Maps-9%20Types-ff69b4?style=flat-square&logo=markmap&logoColor=white)](https://lufftw.github.io/neetcode/mindmaps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square&logo=git&logoColor=white)](https://github.com/lufftw/neetcode/pulls)
 
+</div>
+
 ### 🎯 Stop Memorizing. Start Engineering.
 
 *The algorithm practice framework that treats your code like production software.*
 
-[📚 Documentation](https://lufftw.github.io/neetcode/) &nbsp;•&nbsp; [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) &nbsp;•&nbsp; [🚀 Quick Start](#-quick-start)
+<div class="links-hero" markdown>
+
+[📚 Documentation](https://lufftw.github.io/neetcode/) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start)
 
 **Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
 

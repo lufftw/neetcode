@@ -1,6 +1,6 @@
 # 🧩 NeetCode 練習框架
 
-<div align="center">
+<div class="badges-hero" markdown>
 
 [![GitHub stars](https://img.shields.io/github/stars/lufftw/neetcode?style=for-the-badge&logo=github&color=gold)](https://github.com/lufftw/neetcode/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/lufftw/neetcode?style=for-the-badge&logo=github&color=silver)](https://github.com/lufftw/neetcode/network)
@@ -12,11 +12,15 @@
 [![Mind Maps](https://img.shields.io/badge/心智圖-9%20種-ff69b4?style=flat-square&logo=markmap&logoColor=white)](https://lufftw.github.io/neetcode/mindmaps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-歡迎-brightgreen?style=flat-square&logo=git&logoColor=white)](https://github.com/lufftw/neetcode/pulls)
 
+</div>
+
 ### 🎯 停止死背。開始工程化。
 
 *用生產級軟體的標準來練習演算法。*
 
-[📚 線上文件](https://lufftw.github.io/neetcode/) &nbsp;•&nbsp; [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) &nbsp;•&nbsp; [🚀 快速開始](#-快速開始)
+<div class="links-hero" markdown>
+
+[📚 線上文件](https://lufftw.github.io/neetcode/) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始)
 
 **Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
 

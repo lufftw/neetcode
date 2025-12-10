@@ -1,23 +1,23 @@
-# GitHub Pages 部署指南：互動心智圖
+# GitHub Pages Deployment Guide: Interactive Mind Maps
 
-本指南說明如何將心智圖部署到 GitHub Pages，實現完全互動功能。
+This guide explains how to deploy mind maps to GitHub Pages with full interactive functionality.
 
 ---
 
-## 📊 完整流程圖
+## 📊 Complete Workflow Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        心智圖產生與部署流程                               │
+│                    Mind Map Generation & Deployment Flow                  │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │  ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐       │
-│  │  資料來源  │ ──→ │  產生工具  │ ──→ │  輸出檔案  │ ──→ │ GitHub   │       │
+│  │   Source  │ ──→ │ Generator │ ──→ │  Output   │ ──→ │ GitHub   │       │
 │  └──────────┘     └──────────┘     └──────────┘     │ Pages    │       │
 │                                                      └──────────┘       │
-│  • ontology/*.toml   generate_         • *.md (靜態)                     │
-│  • meta/problems/    mindmaps.py       • *.html (互動)   自動部署        │
-│  • 任意文字           text_to_                                           │
+│  • ontology/*.toml   generate_         • *.md (static)                  │
+│  • meta/problems/    mindmaps.py       • *.html (interactive)  Auto     │
+│  • Any text          text_to_                      Deploy               │
 │                      mindmap.py                                          │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -25,376 +25,198 @@
 
 ---
 
-## 🗂️ 目錄結構
+## 🗂️ Directory Structure
 
 ```
 neetcode/
 ├── docs/
 │   ├── mindmaps/
-│   │   ├── README.md                    # 心智圖索引
-│   │   ├── pattern_hierarchy.md         # 靜態 Mermaid 版本
+│   │   ├── index.md                    # Mind map index
+│   │   ├── pattern_hierarchy.md        # Static Markdown version
 │   │   ├── algorithm_usage.md
 │   │   └── ...
 │   │
-│   └── pages/                           # 🆕 GitHub Pages 根目錄
-│       ├── index.html                   # 首頁
-│       ├── mindmaps/                    # 互動心智圖
-│       │   ├── index.html               # 心智圖列表
-│       │   ├── pattern_hierarchy.html   # 互動版本
-│       │   ├── algorithm_usage.html
-│       │   └── ...
-│       └── assets/
-│           └── style.css
+│   ├── pages/                          # 🆕 GitHub Pages root (gitignored)
+│   │   ├── mindmaps/                   # Interactive HTML mind maps
+│   │   │   ├── pattern_hierarchy.html
+│   │   │   └── ...
+│   │   └── ...
+│   │
+│   ├── stylesheets/                    # Custom CSS
+│   ├── index.md                        # Homepage (includes README.md)
+│   ├── index_zh-TW.md                  # Homepage (Traditional Chinese)
+│   └── GITHUB_PAGES_SETUP.md          # This file
 │
 ├── tools/
-│   ├── generate_mindmaps.py             # 從 ontology 產生
-│   ├── text_to_mindmap.py               # 從任意文字產生
-│   └── build_pages.py                   # 🆕 建置 GitHub Pages
+│   ├── generate_mindmaps.py            # Generate from ontology
+│   ├── text_to_mindmap.py              # Generate from any text
+│   └── generate_mindmaps.toml          # Configuration
 │
-└── .github/
-    └── workflows/
-        └── deploy-pages.yml             # 🆕 自動部署
+├── .github/
+│   └── workflows/
+│       └── deploy-pages.yml            # 🆕 Auto deployment
+│
+├── mkdocs.yml                          # MkDocs configuration
+└── site/                               # 🆕 MkDocs build output (gitignored)
 ```
 
 ---
 
-## 步驟 1：建立 GitHub Pages 結構
+## 🚀 Quick Start: Local Development
 
-### 1.1 建立首頁
+### Build MkDocs Documentation Locally
 
-```html
-<!-- docs/pages/index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeetCode Mind Maps</title>
-    <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>🧠 NeetCode Interactive Mind Maps</h1>
-        <p>Visual representations of algorithm patterns and problem relationships.</p>
-        
-        <h2>Available Mind Maps</h2>
-        <div class="grid">
-            <a href="mindmaps/pattern_hierarchy.html" class="card">
-                <h3>🔗 Pattern Hierarchy</h3>
-                <p>API Kernels → Patterns → Problems</p>
-            </a>
-            <a href="mindmaps/family_derivation.html" class="card">
-                <h3>🌳 Family Derivation</h3>
-                <p>Base templates and derived variants</p>
-            </a>
-            <a href="mindmaps/algorithm_usage.html" class="card">
-                <h3>⚙️ Algorithm Usage</h3>
-                <p>Algorithms → Problems</p>
-            </a>
-            <a href="mindmaps/company_coverage.html" class="card">
-                <h3>🏢 Company Coverage</h3>
-                <p>Companies → Problems they ask</p>
-            </a>
-            <a href="mindmaps/roadmap_paths.html" class="card">
-                <h3>🛣️ Learning Roadmaps</h3>
-                <p>Study paths and progressions</p>
-            </a>
-            <a href="mindmaps/solution_variants.html" class="card">
-                <h3>🔀 Solution Variants</h3>
-                <p>Problems with multiple solutions</p>
-            </a>
-        </div>
-        
-        <footer>
-            <p>Generated from <a href="https://github.com/yourusername/neetcode">NeetCode Repository</a></p>
-        </footer>
-    </div>
-</body>
-</html>
+Before deploying to GitHub Pages, you can preview the documentation locally:
+
+```bash
+# 1. Activate virtual environment
+# Windows
+.\leetcode\Scripts\activate.ps1
+
+# Linux/macOS
+source leetcode/bin/activate
+
+# 2. Install dependencies (if not already installed)
+pip install -r requirements.txt
+
+# 3. Build MkDocs site
+python -m mkdocs build
+
+# 4. Preview locally
+python -m mkdocs serve
+# Visit http://127.0.0.1:8000
 ```
 
-### 1.2 建立樣式
+**Output:** The built site will be in the `site/` directory.
 
-```css
-/* docs/pages/assets/style.css */
-:root {
-    --bg: #0d1117;
-    --card-bg: #161b22;
-    --border: #30363d;
-    --text: #c9d1d9;
-    --text-muted: #8b949e;
-    --link: #58a6ff;
-    --accent: #238636;
-}
+### Generate Mind Maps Locally
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+```bash
+# Generate Markdown mind maps
+python tools/generate_mindmaps.py
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-}
+# Generate HTML (interactive) mind maps
+python tools/generate_mindmaps.py --html
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
+# Use autoloader mode
+python tools/generate_mindmaps.py --html --autoloader
+```
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
+**Note:** Generated HTML files are saved to `docs/pages/mindmaps/` (gitignored).
 
-h2 {
-    margin: 2rem 0 1rem;
-    color: var(--text-muted);
-}
+---
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-}
+## Step 1: Setup MkDocs Configuration
 
-.card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-decoration: none;
-    color: var(--text);
-    transition: border-color 0.2s, transform 0.2s;
-}
+### 1.1 Install Dependencies
 
-.card:hover {
-    border-color: var(--link);
-    transform: translateY(-2px);
-}
+```bash
+pip install mkdocs-material mkdocs-include-markdown-plugin mkdocs-minify-plugin
+```
 
-.card h3 {
-    color: var(--link);
-    margin-bottom: 0.5rem;
-}
+### 1.2 Configure `mkdocs.yml`
 
-.card p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
+The `mkdocs.yml` file is already configured with:
+- Material theme
+- `include-markdown` plugin (includes README.md directly)
+- Custom CSS for badges and tables
+- Navigation structure
 
-footer {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-    color: var(--text-muted);
-    text-align: center;
-}
+---
 
-footer a {
-    color: var(--link);
-}
+## Step 2: Build and Preview Locally
+
+### 2.1 Build Documentation
+
+```bash
+# Build static site
+python -m mkdocs build
+
+# Output directory: site/
+```
+
+### 2.2 Preview Locally
+
+```bash
+# Start development server
+python -m mkdocs serve
+
+# Visit http://127.0.0.1:8000
+# The server auto-reloads on file changes
+```
+
+### 2.3 Common Build Commands
+
+```bash
+# Build with verbose output
+python -m mkdocs build --verbose
+
+# Build and check for broken links
+python -m mkdocs build --strict
+
+# Clean build (remove site/ directory first)
+rm -rf site/  # Linux/macOS
+Remove-Item -Recurse -Force site/  # Windows PowerShell
+python -m mkdocs build
 ```
 
 ---
 
-## 步驟 2：建立互動心智圖 HTML
+## Step 3: Generate Interactive Mind Maps
 
-### 2.1 心智圖 HTML 範本
+### 3.1 Generate HTML Mind Maps
 
-```html
-<!-- docs/pages/mindmaps/pattern_hierarchy.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pattern Hierarchy - NeetCode Mind Maps</title>
-    <style>
-        body { margin: 0; padding: 0; }
-        #toolbar {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-            background: rgba(0,0,0,0.8);
-            padding: 10px;
-            border-radius: 8px;
-        }
-        #toolbar a, #toolbar button {
-            color: white;
-            margin-right: 10px;
-            text-decoration: none;
-        }
-        #toolbar button {
-            background: #238636;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #mindmap { width: 100vw; height: 100vh; }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
-</head>
-<body>
-    <div id="toolbar">
-        <a href="../index.html">← Back</a>
-        <button onclick="mm.fit()">Fit View</button>
-        <button onclick="expandAll()">Expand All</button>
-        <button onclick="collapseAll()">Collapse All</button>
-    </div>
-    
-    <svg id="mindmap"></svg>
-    
-    <script>
-        const { Transformer, Markmap } = window.markmap;
-        const transformer = new Transformer();
-        
-        // Mind map content in Markdown
-        const markdown = `
-# API Kernels
+```bash
+# Generate all interactive mind maps
+python tools/generate_mindmaps.py --html
 
-## SubstringSlidingWindow
-### sliding_window_unique
-#### LeetCode 3 Longest Substring
-### sliding_window_freq_cover
-#### LeetCode 76 Min Window
-### sliding_window_at_most_k
-#### LeetCode 340 K Distinct
-#### LeetCode 159 Two Distinct
-### sliding_window_fixed_size
-#### LeetCode 567 Permutation
-#### LeetCode 438 Anagrams
-### sliding_window_cost_bounded
-#### LeetCode 209 Min Subarray
+# Generate specific mind map
+python tools/generate_mindmaps.py --html --type pattern_hierarchy
 
-## KWayMerge
-### merge_k_sorted_heap
-#### LeetCode 23 Merge K Lists
-### merge_k_sorted_divide
-#### LeetCode 23 Divide Conquer
-### merge_two_sorted
-#### LeetCode 21 Merge Two
+# Use autoloader mode (optional)
+python tools/generate_mindmaps.py --html --autoloader
+```
 
-## GridBFSMultiSource
-### grid_bfs_propagation
-#### LeetCode 994 Rotting Oranges
-### bfs_shortest_path
-#### LeetCode 286 Walls Gates
+**Output:** HTML files are generated in `docs/pages/mindmaps/`
 
-## BacktrackingExploration
-### backtracking_n_queens
-#### LeetCode 51 N Queens
-### backtracking_permutation
-#### LeetCode 46 Permutations
-### backtracking_combination
-#### LeetCode 77 Combinations
+### 3.2 Preview Mind Maps Locally
 
-## BinarySearchBoundary
-### binary_search_on_answer
-#### LeetCode 4 Median Arrays
-### binary_search_rotated
-#### LeetCode 33 Search Rotated
+```bash
+# Method 1: Open HTML directly
+# Windows
+start docs/pages/mindmaps/pattern_hierarchy.html
 
-## LinkedListInPlaceReversal
-### linked_list_k_group
-#### LeetCode 25 Reverse K Group
-### linked_list_full
-#### LeetCode 206 Reverse List
-`;
-        
-        const { root } = transformer.transform(markdown);
-        const mm = Markmap.create('#mindmap', {
-            autoFit: true,
-            duration: 500,
-            maxWidth: 300,
-        }, root);
-        
-        function expandAll() {
-            root.children?.forEach(function expand(n) {
-                n.payload = { ...n.payload, fold: 0 };
-                n.children?.forEach(expand);
-            });
-            mm.setData(root);
-            mm.fit();
-        }
-        
-        function collapseAll() {
-            root.children?.forEach(function collapse(n) {
-                if (n.children?.length) {
-                    n.payload = { ...n.payload, fold: 1 };
-                }
-            });
-            mm.setData(root);
-            mm.fit();
-        }
-    </script>
-</body>
-</html>
+# Linux/macOS
+open docs/pages/mindmaps/pattern_hierarchy.html
+
+# Method 2: Use HTTP server
+cd docs/pages
+python -m http.server 8000
+# Visit http://localhost:8000/mindmaps/pattern_hierarchy.html
 ```
 
 ---
 
-## 步驟 3：建立自動建置腳本
+## Step 4: Configure GitHub Actions for Auto Deployment
 
-```python
-# tools/build_pages.py
-#!/usr/bin/env python3
-"""
-Build GitHub Pages from mind map sources.
+### 4.1 Workflow Configuration
 
-Usage:
-    python tools/build_pages.py
-"""
-
-from pathlib import Path
-import shutil
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PAGES_DIR = PROJECT_ROOT / "docs" / "pages"
-MINDMAPS_SOURCE = PROJECT_ROOT / "docs" / "mindmaps"
-MINDMAPS_OUTPUT = PAGES_DIR / "mindmaps"
-
-def build():
-    """Build all pages."""
-    print("Building GitHub Pages...")
-    
-    # Ensure output directory exists
-    MINDMAPS_OUTPUT.mkdir(parents=True, exist_ok=True)
-    
-    # Copy static assets
-    # (index.html and style.css should already exist)
-    
-    print(f"Output directory: {PAGES_DIR}")
-    print("Done!")
-
-if __name__ == "__main__":
-    build()
-```
-
----
-
-## 步驟 4：設定 GitHub Actions 自動部署
+The `.github/workflows/deploy-pages.yml` file handles automatic deployment:
 
 ```yaml
 # .github/workflows/deploy-pages.yml
-name: Deploy Mind Maps to GitHub Pages
+name: Deploy Documentation to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
       - 'docs/**'
+      - 'mkdocs.yml'
+      - 'requirements.txt'
       - 'ontology/**'
       - 'meta/**'
-  workflow_dispatch:  # 允許手動觸發
+  workflow_dispatch:  # Allow manual trigger
 
 permissions:
   contents: read
@@ -417,9 +239,14 @@ jobs:
         with:
           python-version: '3.11'
       
-      - name: Generate Mind Maps
-        run: |
-          python tools/generate_mindmaps.py --all
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Generate mind maps
+        run: python tools/generate_mindmaps.py --html
+      
+      - name: Build MkDocs site
+        run: python -m mkdocs build
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -427,7 +254,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'docs/pages'
+          path: 'site'
 
   deploy:
     environment:
@@ -443,103 +270,141 @@ jobs:
 
 ---
 
-## 步驟 5：啟用 GitHub Pages
+## Step 5: Enable GitHub Pages
 
-### 5.1 在 GitHub 設定
+### 5.1 GitHub Settings
 
-1. 進入你的 Repository → **Settings**
-2. 左側選單找到 **Pages**
-3. Source 選擇 **GitHub Actions**
+1. Go to your Repository → **Settings**
+2. Find **Pages** in the left sidebar
+3. Under "Source", select **GitHub Actions**
 
-### 5.2 手動部署（第一次）
+### 5.2 First Deployment
 
 ```bash
-# 1. 確保檔案結構正確
-docs/
-└── pages/
-    ├── index.html
-    ├── assets/
-    │   └── style.css
-    └── mindmaps/
-        └── pattern_hierarchy.html
-
-# 2. Commit 並 Push
+# 1. Ensure file structure is correct
+# 2. Commit and push
 git add .
-git commit -m "feat: add GitHub Pages for interactive mind maps"
+git commit -m "feat: setup GitHub Pages with MkDocs"
 git push origin main
 
-# 3. GitHub Actions 會自動部署
-# 4. 訪問: https://yourusername.github.io/neetcode/
+# 3. GitHub Actions will automatically deploy
+# 4. Visit: https://yourusername.github.io/neetcode/
 ```
 
 ---
 
-## 步驟 6：在 README 加入連結
+## Step 6: Update README with Links
+
+The README.md already includes links to interactive mind maps:
 
 ```markdown
 ## 🧠 Interactive Mind Maps
 
-Explore our algorithm patterns visually:
-
 | Mind Map | Description | Links |
-|----------|-------------|-------|
+|:---------|:------------|:------|
 | 📐 Pattern Hierarchy | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#pattern-hierarchy) |
-| 👨‍👩‍👧‍👦 Family Derivation | Base templates and derived problem variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
-| ⚡ Algorithm Usage | Which algorithms solve which problems | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
-| 🏗️ Data Structure Usage | Problems organized by data structures | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
-| 🏢 Company Coverage | Company interview questions | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
-| 🗺️ Learning Roadmaps | Curated problem sequences (NeetCode 150, Blind 75, etc.) | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
+| 👨‍👩‍👧‍👦 Family Derivation | Base templates → Derived variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
+| ⚡ Algorithm Usage | Problems by algorithm | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
+| 🏗️ Data Structure Usage | Problems by data structure | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
+| 🏢 Company Coverage | Company-specific problems | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
+| 🗺️ Learning Roadmaps | NeetCode 150, Blind 75, etc. | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
 | 🔗 Problem Relations | Related problems network | [Static](docs/mindmaps/problem_relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#problem-relations) |
-| 🔀 Solution Variants | Problems with multiple solution approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
-| 📊 Difficulty × Topics | Topics organized by difficulty level | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
+| 🔀 Solution Variants | Multiple approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
+| 📊 Difficulty × Topics | Topics by difficulty | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
 
 👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 ```
 
 ---
 
-## 🔄 完整工作流程總結
+## 🔄 Complete Workflow Summary
 
 ```
-1. 編輯 ontology/ 或 meta/problems/
+1. Edit ontology/ or meta/problems/
    ↓
-2. git push (或手動執行 python tools/generate_mindmaps.py)
+2. Generate mind maps locally (optional)
+   python tools/generate_mindmaps.py --html
    ↓
-3. GitHub Actions 自動觸發
+3. Build MkDocs site locally (optional)
+   python -m mkdocs build
+   python -m mkdocs serve  # Preview
    ↓
-4. 產生心智圖 (Markdown + HTML)
+4. git push (or manually run generation scripts)
    ↓
-5. 部署到 GitHub Pages
+5. GitHub Actions automatically triggers
    ↓
-6. 訪問 https://yourusername.github.io/neetcode/
+6. Generate mind maps (Markdown + HTML)
    ↓
-7. 使用互動心智圖！
-   - 🖱️ 拖曳移動
-   - 🔍 滾輪縮放
-   - 👆 點擊折疊/展開
+7. Build MkDocs site
+   python -m mkdocs build
+   ↓
+8. Deploy to GitHub Pages
+   ↓
+9. Visit https://yourusername.github.io/neetcode/
+   ↓
+10. Use interactive mind maps!
+    - 🖱️ Drag to pan
+    - 🔍 Scroll to zoom
+    - 👆 Click to fold/unfold
 ```
 
 ---
 
-## ❓ 常見問題
+## ❓ Frequently Asked Questions
 
-### Q: 為什麼 GitHub README 不能直接互動？
-A: GitHub 基於安全考量，禁止執行 JavaScript。所以需要 GitHub Pages 來託管互動版本。
+### Q: Why can't GitHub README display interactive content directly?
 
-### Q: 可以用自訂網域嗎？
-A: 可以！在 Settings → Pages 設定 Custom domain。
+A: GitHub disables JavaScript execution for security reasons. GitHub Pages is needed to host the interactive version.
 
-### Q: 如何更新心智圖？
-A: 修改 ontology/ 或 meta/ 後 push，GitHub Actions 會自動重新部署。
+### Q: Can I use a custom domain?
 
-### Q: 本地預覽怎麼做？
+A: Yes! Configure it in Settings → Pages → Custom domain.
+
+### Q: How do I update mind maps?
+
+A: After modifying `ontology/` or `meta/`, push to GitHub. GitHub Actions will automatically regenerate and redeploy.
+
+### Q: How do I preview locally?
+
 A: 
-```bash
-# 方法 1: 直接開啟 HTML
-open docs/pages/index.html
 
-# 方法 2: 用簡單 HTTP server
+**For MkDocs documentation:**
+```bash
+python -m mkdocs serve
+# Visit http://127.0.0.1:8000
+```
+
+**For interactive mind maps:**
+```bash
+# Method 1: Open HTML directly
+open docs/pages/mindmaps/pattern_hierarchy.html
+
+# Method 2: Use HTTP server
 cd docs/pages
 python -m http.server 8000
-# 訪問 http://localhost:8000
+# Visit http://localhost:8000/mindmaps/pattern_hierarchy.html
 ```
+
+### Q: How do I fix MkDocs build warnings?
+
+A: Common fixes:
+- Remove anchor links from Table of Contents (MkDocs auto-generates navigation)
+- Change relative links to `.dev/` to GitHub full URLs
+- Ensure all referenced files exist in `docs/` directory
+
+### Q: What's the difference between `site/` and `docs/pages/`?
+
+A:
+- `site/` - MkDocs build output (contains full documentation site)
+- `docs/pages/` - Generated HTML mind maps (used by GitHub Pages)
+
+Both are gitignored and regenerated on build/deploy.
+
+---
+
+## 📝 Notes
+
+- **Local Development**: Always test locally with `python -m mkdocs build` and `python -m mkdocs serve` before pushing
+- **Build Output**: The `site/` directory contains the complete MkDocs site and is gitignored
+- **Mind Maps**: HTML mind maps are generated to `docs/pages/mindmaps/` and are also gitignored
+- **Auto Deployment**: GitHub Actions handles generation, building, and deployment automatically
