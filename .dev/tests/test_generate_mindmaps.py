@@ -24,16 +24,14 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "tools"))
 
-# Import the module under test
-from generate_mindmaps import (
-    parse_toml_simple,
-    parse_toml_value,
-    OntologyData,
-    ProblemData,
-    load_ontology,
-    load_problems,
-    markmap_frontmatter,
-    format_problem_entry,
+# Import from the refactored modules
+from mindmaps.toml_parser import parse_toml_simple, parse_toml_value
+from mindmaps.loader import OntologyData, load_ontology, load_problems
+from mindmaps.data import ProblemData
+from mindmaps.helpers import markmap_frontmatter, format_problem_entry
+from mindmaps.config import MindmapsConfig, load_config, get_config, DIFFICULTY_ICONS
+from mindmaps.html import markdown_to_html_content, generate_html_mindmap
+from mindmaps.generators import (
     generate_pattern_hierarchy,
     generate_family_derivation,
     generate_algorithm_usage,
@@ -43,12 +41,6 @@ from generate_mindmaps import (
     generate_problem_relations,
     generate_solution_variants,
     generate_difficulty_topics,
-    markdown_to_html_content,
-    generate_html_mindmap,
-    MindmapsConfig,
-    load_config,
-    get_config,
-    DIFFICULTY_ICONS,
 )
 
 
