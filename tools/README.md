@@ -1,157 +1,149 @@
-# Tools Directory
+# NeetCode Tools
 
-This directory contains utility scripts for the NeetCode Practice Framework.
+This directory contains code generation and documentation tools for the NeetCode Practice Framework.
 
-## Available Tools
+## Overview
 
-### `generate_pattern_docs.py`
+The tools in this directory automate the generation of:
+- **Mind Maps**: Interactive visualizations of algorithm patterns and problem relationships
+- **Pattern Documentation**: Comprehensive documentation for algorithmic patterns
 
-Generates comprehensive pattern documentation by composing markdown snippets from `meta/patterns/`.
+## Tools
 
-**Usage:**
+### 1. Mind Map Generator (`generate_mindmaps.py`)
 
+Generates Markmap-compatible mind maps from ontology and problem metadata.
+
+**Features:**
+- 9 different mind map types (pattern hierarchy, family derivation, algorithm usage, etc.)
+- Markdown output for VS Code markmap extension
+- HTML output for GitHub Pages deployment
+- Configurable GitHub repository links
+
+**Quick Start:**
 ```bash
-# List available patterns
-python tools/generate_pattern_docs.py --list
+# Generate all mind maps (Markdown only)
+python tools/generate_mindmaps.py
 
-# Generate all patterns
-python tools/generate_pattern_docs.py --all
+# Generate Markdown + HTML for GitHub Pages
+python tools/generate_mindmaps.py --html
+
+# Generate specific type
+python tools/generate_mindmaps.py --type pattern_hierarchy
+
+# List available types
+python tools/generate_mindmaps.py --list
+```
+
+**See:** [`mindmaps/README.md`](mindmaps/README.md) for detailed documentation.
+
+### 2. Pattern Documentation Generator (`generate_pattern_docs.py`)
+
+Generates comprehensive pattern documentation by composing ontology definitions and per-problem markdown snippets.
+
+**Features:**
+- Automatic section numbering
+- Table of contents generation
+- Pattern-based organization
+- Support for multiple problem examples per pattern
+
+**Quick Start:**
+```bash
+# Generate all pattern documentation
+python tools/generate_pattern_docs.py
 
 # Generate specific pattern
 python tools/generate_pattern_docs.py --pattern sliding_window
 
-# Validate only (dry run)
+# Validate without writing files
 python tools/generate_pattern_docs.py --validate
+
+# List available patterns
+python tools/generate_pattern_docs.py --list
 ```
 
-**How it works:**
+**See:** [`patterndocs/README.md`](patterndocs/README.md) for detailed documentation.
 
-1. Reads API Kernel and Pattern definitions from `ontology/`
-2. Collects markdown snippets from `meta/patterns/<pattern_name>/`
-3. Composes them into a single document in `docs/patterns/<pattern_name>.md`
+## Architecture
 
-**Source file structure:**
+Both tools follow a modular architecture:
 
 ```
-meta/patterns/<pattern_name>/
-├── _header.md        # Core concepts (required)
-├── _comparison.md    # Pattern comparison table
-├── _decision.md      # When to use this pattern
-├── _templates.md     # Quick reference templates
-├── 0003_base.md      # Problem-specific content (by problem number)
-├── 0076_variant.md
-└── ...
+tools/
+├── generate_mindmaps.py          # CLI entry point
+├── generate_pattern_docs.py      # CLI entry point
+│
+├── mindmaps/                     # Mind map generation module
+│   ├── config.py                 # Configuration and constants
+│   ├── toml_parser.py            # TOML parsing
+│   ├── data.py                   # ProblemData class
+│   ├── loader.py                 # Data loading
+│   ├── helpers.py                # Helper functions
+│   ├── html.py                   # HTML generation
+│   ├── templates.py              # HTML/CSS templates
+│   └── generators/               # Mind map generators
+│       ├── pattern.py
+│       ├── family.py
+│       ├── algorithm.py
+│       └── ...
+│
+└── patterndocs/                  # Pattern documentation module
+    ├── toml_parser.py            # TOML parsing
+    ├── data.py                   # Data classes
+    ├── loader.py                 # Ontology loading
+    ├── files.py                  # File collection
+    ├── sections.py               # Section numbering
+    └── composer.py               # Document composition
 ```
 
-**Output:**
+## Design Principles
 
-Generated documents follow this structure:
-1. Header (from `_header.md`)
-2. Auto-generated Table of Contents
-3. Problem sections (sorted by filename)
-4. Footer sections (comparison, decision, templates)
-5. Auto-generated footer with API Kernel reference
+1. **Modularity**: Each tool is split into focused modules (< 100 lines each)
+2. **Independence**: Tools are completely decoupled (no shared dependencies)
+3. **Testability**: Each module can be tested independently
+4. **Maintainability**: Clear separation of concerns
 
----
+## Testing
 
-### `generate_mindmaps.py`
-
-Generates multiple Mermaid mind maps from ontology and problem metadata.
-
-**Usage:**
+Both tools have comprehensive test suites:
 
 ```bash
-# List available mindmap types
-python tools/generate_mindmaps.py --list
+# Run all tool tests
+python -m pytest .dev/tests/test_generate_mindmaps.py .dev/tests/test_generate_pattern_docs.py -v
 
-# Generate all mindmaps
-python tools/generate_mindmaps.py
-
-# Generate specific mindmap type
-python tools/generate_mindmaps.py --type pattern_hierarchy
-
-# Use LLM for enhanced descriptions (requires API key)
-python tools/generate_mindmaps.py --llm
-
-# Generate interactive HTML (Markmap)
-leetcode\Scripts\python.exe tools\generate_mindmaps.py --html
+# Run specific test file
+python -m pytest .dev/tests/test_generate_mindmaps.py -v
 ```
 
-**Available Mind Map Types:**
+## Dependencies
 
-| Type | Description |
-|------|-------------|
-| `pattern_hierarchy` | API Kernels → Patterns → Problems |
-| `family_derivation` | Base templates and derived variants |
-| `algorithm_usage` | Algorithms → Problems |
-| `data_structure` | Data Structures → Problems |
-| `company_coverage` | Companies → Problems |
-| `roadmap_paths` | Learning roadmap structures |
-| `problem_relations` | Related problems network |
-| `solution_variants` | Problems with multiple solutions |
-| `difficulty_topics` | Topics by difficulty level |
+Both tools use only Python standard library (no external dependencies required).
 
-**Output:**
+## File Structure
 
-Generated mind maps in `docs/mindmaps/` with:
-- Mermaid syntax for visual rendering
-- Insights and analysis
-- Data source references
+### Input Files
 
----
+- `ontology/*.toml` - Ontology definitions (API kernels, patterns, algorithms, etc.)
+- `meta/problems/*.toml` - Problem metadata
+- `meta/patterns/<pattern>/*.md` - Pattern documentation source files
 
-### `text_to_mindmap.py`
+### Output Files
 
-Converts **ANY text** to structured mind maps using LLM.
+- `docs/mindmaps/*.md` - Generated mind map Markdown files
+- `docs/pages/mindmaps/*.html` - Generated HTML mind maps (for GitHub Pages)
+- `docs/patterns/*.md` - Generated pattern documentation
 
-**Usage:**
+## Contributing
 
-```bash
-# Direct text input
-python tools/text_to_mindmap.py --input "Your text here" --format mermaid
+When adding new features:
 
-# From file
-python tools/text_to_mindmap.py --file article.txt --format html --output mindmap.html
+1. **Keep modules small**: Aim for < 100 lines per file
+2. **Maintain independence**: Don't create shared dependencies between tools
+3. **Add tests**: Update test files in `.dev/tests/`
+4. **Update documentation**: Keep README files current
 
-# Different LLM backends
-python tools/text_to_mindmap.py --file notes.txt --backend ollama  # Local LLM
-python tools/text_to_mindmap.py --file notes.txt --backend anthropic  # Claude
-```
+## See Also
 
-**Output Formats:**
-
-| Format | Description | Use Case |
-|--------|-------------|----------|
-| `mermaid` | Mermaid mindmap syntax | Embed in Markdown |
-| `markdown` | Hierarchical headings | Convert with Markmap |
-| `html` | Interactive Markmap HTML | Standalone web page |
-| `json` | Structured JSON | Programmatic use |
-
-**Supported LLM Backends:**
-
-- `openai` - GPT-4 / GPT-3.5 (requires `OPENAI_API_KEY`)
-- `anthropic` - Claude (requires `ANTHROPIC_API_KEY`)
-- `ollama` - Local LLM (requires Ollama running)
-
-**Example - Convert any text to interactive mind map:**
-
-```bash
-# 1. Paste any text into a file
-echo "Sliding window is a technique..." > concept.txt
-
-# 2. Generate interactive HTML mind map
-python tools/text_to_mindmap.py -f concept.txt -t html -o docs/mindmaps/generated/concept.html
-
-# 3. Open in browser - fully interactive!
-```
-
----
-
-## Future Tools
-
-Planned utilities:
-
-- `validate_metadata.py` - Validate all TOML metadata files
-- `generate_problem_index.py` - Generate problem index from metadata
-- `sync_ontology.py` - Sync ontology with problem metadata
-
+- [Mind Maps Module Documentation](mindmaps/README.md)
+- [Pattern Docs Module Documentation](patterndocs/README.md)
+- [Testing Documentation](../.dev/TESTING.md)

@@ -24,24 +24,22 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "tools"))
 
-# Import the module under test
-from generate_pattern_docs import (
-    parse_toml_simple,
-    APIKernel,
-    Pattern,
-    PatternDocConfig,
+# Import from the refactored modules
+from patterndocs.toml_parser import parse_toml_simple
+from patterndocs.data import APIKernel, Pattern, PatternDocConfig
+from patterndocs.loader import (
     load_api_kernels,
     load_patterns,
     get_available_patterns,
     get_kernel_id_from_dir_name,
+)
+from patterndocs.files import (
     collect_source_files,
-    generate_toc,
-    create_anchor,
-    add_section_numbers,
-    compose_document,
     STRUCTURAL_FILES_ORDER,
     STRUCTURAL_FILES_FOOTER,
 )
+from patterndocs.sections import generate_toc, create_anchor, add_section_numbers
+from patterndocs.composer import compose_document
 
 
 # ===========================================================================
