@@ -44,13 +44,13 @@
 
 大多數人孤立地練習演算法。我們建立了**互聯的知識系統**：
 
-```
-📐 模式階層        →  看 API 核心如何演變成模式，再成為解法
-👨‍👩‍👧‍👦 家族衍生        →  理解問題如何從基礎模板演化
-⚡ 演算法使用      →  知道哪個演算法適用於哪裡
-🏢 公司覆蓋        →  針對特定公司精準準備
-🗺️ 學習路線圖      →  遵循經過驗證的路徑 (NeetCode 150, Blind 75 等)
-```
+| 心智圖 | 說明 | 連結 |
+|:-------|:-----|:----:|
+| 📐 **模式階層** | API 核心 → 模式 → 解法 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
+| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
+| ⚡ **演算法使用** | 知道哪個演算法適用於哪裡 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
+| 🏢 **公司覆蓋** | 針對特定公司精準準備 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
+| 🗺️ **學習路線圖** | 遵循經過驗證的路徑 (NeetCode 150, Blind 75 等) | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
 
 **[→ 探索 9 種互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -70,17 +70,18 @@
 
 ## 📑 目錄
 
-- 我們的獨特之處
-- 為什麼選擇這個框架？
-- 快速開始
-- 核心功能
-- 互動式心智圖
-- 使用指南
-- 進階功能
-- 專案架構
-- 常見問題
-- 貢獻者專區
-- 授權條款
+- [我們的獨特之處](#-我們的獨特之處)
+- [為什麼選擇這個框架？](#-為什麼選擇這個框架)
+- [快速開始](#-快速開始)
+- [核心功能](#-核心功能)
+- [互動式心智圖](#-互動式心智圖)
+- [模式文件](#-模式文件)
+- [使用指南](#-使用指南)
+- [進階功能](#-進階功能)
+- [專案架構](#-專案架構)
+- [常見問題](#-常見問題)
+- [貢獻者專區](#️-貢獻者專區)
+- [授權條款](#-授權條款)
 
 ---
 
@@ -218,17 +219,35 @@ run_tests.bat 0001_two_sum
 
 | 心智圖 | 說明 | 連結 |
 |:-------|:-----|:-----|
-| 📐 **模式階層** | API 核心 → 模式 → 問題 | [靜態](docs/mindmaps/pattern_hierarchy.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#pattern-hierarchy) |
-| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [靜態](docs/mindmaps/family_derivation.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#family-derivation) |
-| ⚡ **演算法使用** | 依演算法分類問題 | [靜態](docs/mindmaps/algorithm_usage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#algorithm-usage) |
-| 🏗️ **資料結構使用** | 依資料結構分類問題 | [靜態](docs/mindmaps/data_structure.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#data-structure-usage) |
-| 🏢 **公司覆蓋** | 各公司常見問題 | [靜態](docs/mindmaps/company_coverage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#company-coverage) |
-| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [靜態](docs/mindmaps/roadmap_paths.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#learning-roadmaps) |
-| 🔗 **問題關聯** | 相關問題網絡 | [靜態](docs/mindmaps/problem_relations.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#problem-relations) |
-| 🔀 **解法變體** | 多種解法方式 | [靜態](docs/mindmaps/solution_variants.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#solution-variants) |
-| 📊 **難度 × 主題** | 依難度分類主題 | [靜態](docs/mindmaps/difficulty_topics.md) · [互動式 ✨](https://lufftw.github.io/neetcode/mindmaps/#difficulty-topics) |
+| 📐 **模式階層** | API 核心 → 模式 → 問題 | [靜態](docs/mindmaps/pattern_hierarchy.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
+| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [靜態](docs/mindmaps/family_derivation.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
+| ⚡ **演算法使用** | 依演算法分類問題 | [靜態](docs/mindmaps/algorithm_usage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
+| 🏗️ **資料結構使用** | 依資料結構分類問題 | [靜態](docs/mindmaps/data_structure.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/data_structure.html) |
+| 🏢 **公司覆蓋** | 各公司常見問題 | [靜態](docs/mindmaps/company_coverage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
+| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [靜態](docs/mindmaps/roadmap_paths.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
+| 🔗 **問題關聯** | 相關問題網絡 | [靜態](docs/mindmaps/problem_relations.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/problem_relations.html) |
+| 🔀 **解法變體** | 多種解法方式 | [靜態](docs/mindmaps/solution_variants.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/solution_variants.html) |
+| 📊 **難度 × 主題** | 依難度分類主題 | [靜態](docs/mindmaps/difficulty_topics.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty_topics.html) |
 
 👉 **[查看所有互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
+
+---
+
+## 📐 模式文件
+
+> **「不要死背 200 道題。掌握 10 個模式。」**
+
+每個 API 核心都有專屬的模式指南，包含**基礎模板**、**變體**和**可直接複製的程式碼**。
+
+| API 核心 | 指南 | 題目 |
+|:---------|:----:|:-----|
+| `SubstringSlidingWindow` | [📖](docs/patterns/sliding_window.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
+| `GridBFSMultiSource` | *即將推出* | LeetCode 994, 286, 542 |
+| `BacktrackingExploration` | *即將推出* | LeetCode 51, 52, 46, 78 |
+| `KWayMerge` | *即將推出* | LeetCode 23, 21, 88 |
+| `BinarySearchBoundary` | *即將推出* | LeetCode 4, 33, 34, 35 |
+
+👉 **[查看所有模式指南 →](docs/patterns/README.md)**
 
 ---
 
