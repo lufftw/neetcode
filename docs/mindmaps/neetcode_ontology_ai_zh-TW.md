@@ -1,0 +1,298 @@
+---
+title: Sliding Window 全圖：從 API Kernel 到題目實戰
+markmap:
+  colorFreezeLevel: 2
+  maxWidth: 300
+---
+
+# Sliding Window 子字串視窗模式 🎯
+
+> 專注於 `SubstringSlidingWindow` API Kernel 與相關題目 / 模式的完整心智圖
+
+## 1️⃣ API Kernel：SubstringSlidingWindow
+
+- 定義
+  - **一維序列上的動態視窗狀態機**
+  - 維護區間 `[left, right]`，同時維持一個「==不變量 (invariant)==」
+- 關鍵元素
+  - 視窗邊界：`left`, `right`
+  - 視窗狀態：`state`（字典、計數器、整數和…）
+  - 不變量：例如「字元全唯一」、「至多 K 種字元」、「頻率覆蓋」、「總和 ≥ target」
+- 通用模板（變形自文件）📌
+  - **最大化視窗（找最長 / 最大）**
+    ```python
+    left = 0
+    state = init()
+    ans = 0
+    for right, x in enumerate(seq):
+        add(state, x)              # 擴張
+        while invalid(state):      # 違反不變量就收縮
+            remove(state, seq[left])
+            left += 1
+        ans = max(ans, right-left+1)
+    return ans
+    ```
+  - **最小化視窗（找最短 / 最小）**
+    ```python
+    left = 0
+    state = init()
+    ans = inf
+    for right, x in enumerate(seq):
+        add(state, x)
+        while valid(state):        # 只要還有效就盡量收縮
+            ans = min(ans, right-left+1)
+            remove(state, seq[left])
+            left += 1
+    return ans if ans != inf else 0
+    ```
+  - **固定長度視窗**
+    ```python
+    state = init()
+    for right, x in enumerate(seq):
+        add(state, x)
+        if right >= k:
+            remove(state, seq[right-k])
+        if right >= k-1 and valid(state):
+            process(state)
+    ```
+
+---
+
+## 2️⃣ Sliding Window 模式總覽 📚
+
+- 對應 `patterns`（皆掛在 `SubstringSlidingWindow`）
+  - **sliding_window_unique**  
+    - 不變量：視窗內所有元素「唯一」
+    - 用途：Longest Substring Without Repeating Characters
+  - **sliding_window_at_most_k_distinct**  
+    - 不變量：不同字元種類數 ≤ K
+    - 用途：At Most K Distinct Characters 類
+  - **sliding_window_freq_cover**  
+    - 不變量：視窗內頻率「覆蓋」需求（need / have）
+    - 用途：Minimum Window / Anagram / Permutation in String
+  - **sliding_window_cost_bounded**  
+    - 不變量：某種「成本 / 總和」達到或被限制（例如 sum ≥ target）
+    - 用途：Minimum Size Subarray Sum
+  - **sliding_window_fixed_size**  
+    - 不變量：視窗長度固定，常搭配頻率或最大值最小值等條件
+- 共通決策思路 ✅
+  - 題目關鍵字：
+    - 「substring / subarray」
+    - 「連續」「最長 / 最短」「和 / 字元條件」
+  - 若能：
+    - 只靠加入右端 / 移除左端 **O(1) 更新狀態**
+    - 不需回頭掃描整段視窗  
+    → 幾乎就是 Sliding Window 題
+
+---
+
+## 3️⃣ 關鍵題目樹 🌳（皆附 GitHub 解答連結）
+
+<!-- markmap: fold -->
+
+### A. Base Template：唯一字元視窗
+
+- [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) 🔥
+  - Pattern：`sliding_window_unique`
+  - Topic：`string`, `hash_table`, `sliding_window`
+  - Family：`substring_window`
+  - 不變量
+    - 視窗內字元 **不重複**
+  - 實作要點
+    - 狀態：`last_seen_index[char] -> index`
+    - 遇到重複字元：`left = max(left, last_seen[char] + 1)`（**跳躍式收縮**）
+    - 只需單向掃描，$O(n)$
+
+### B. At Most K Distinct：數量受限的多樣性
+
+- [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+  - Pattern：`sliding_window_at_most_k_distinct`
+  - 不變量
+    - 視窗內不同字元種類數 `len(freq)` ≤ K
+  - 實作要點
+    - 狀態：`char_frequency` 字典
+    - 超過 K：用 `while` 不斷 `left++` 並遞減頻率、為 0 就刪 key
+  - 與 LeetCode 3 差異
+    - LeetCode 3 是「不允許任何重複」→ 特化為 K=1 + 跳躍技巧
+    - 340 需要精準維護「種類數」，不能跳，只能逐步收縮
+
+---
+
+### C. 需求頻率覆蓋：Need / Have 模式
+
+#### 1. 最小視窗覆蓋
+
+- [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) 🌟
+  - Pattern：`sliding_window_freq_cover`
+  - 不變量
+    - 視窗內每個字元頻率 **至少** 等於 `t` 中需求
+  - 狀態設計
+    - `need_frequency`：目標字元需求
+    - `have_frequency`：目前視窗字元數
+    - `chars_satisfied` / `chars_required`
+  - 流程
+    - 擴張 `right`，直到 `chars_satisfied == chars_required` → 視窗有效
+    - 進入 `while valid`，嘗試縮小 `left`，更新最短長度
+  - 心法
+    - **先求有，再求小**：先讓視窗有效，再縮到不能再小
+
+#### 2. 找所有 Anagram
+
+- [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+  - Pattern：`sliding_window_freq_cover` + `sliding_window_fixed_size`
+  - 不變量
+    - 固定長度 `len(p)` 的視窗，其頻率表 == `p` 的頻率表
+  - 流程
+    - 固定視窗長度：`right - left + 1 == len(p)`
+    - 維護 `window_frequency`，同步更新 `chars_matched`
+    - 每次移動一格：加右、減左，視窗總長不變
+  - 與 76 差異
+    - 76：**變長視窗 + 最小長度**
+    - 438：**固定長度 + 找所有起點**
+
+#### 3. 是否存在任一排列
+
+- [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+  - Pattern：`sliding_window_freq_cover` + `sliding_window_fixed_size`
+  - 不變量
+    - 長度為 `len(s1)` 的視窗，頻率表 == `s1`
+  - 與 438 的差別
+    - 438：回傳所有 index
+    - 567：只要「存在」一個就 `True`，可提早結束
+  - 模板幾乎相同：**判斷條件 & 回傳類型** 不同
+
+---
+
+### D. Cost Bounded：總和 / 成本約束
+
+- [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+  - Pattern：`sliding_window_cost_bounded`
+  - 不變量
+    - 視窗內元素總和 `window_sum >= target`
+  - 狀態
+    - 單一整數 `window_sum`，空間 $O(1)$
+  - 流程
+    - 擴張：`window_sum += nums[right]`
+    - 當 `window_sum >= target`：
+      - 更新最短長度
+      - 收縮：`window_sum -= nums[left]`, `left++`
+  - 心法
+    - **數值型不變量** 通常狀態很輕量（sum / max / min）
+
+---
+
+## 4️⃣ Pattern 比較總表（中文版）📋
+
+> 改寫自 `_comparison.md`，補上題號與連結
+
+| 題目 | 視窗不變量 | 狀態 State | 視窗大小 | 目標 |
+|------|------------|-----------|----------|------|
+| [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | 視窗內字元皆唯一 | `last_index` 映射 | 可變 | **最大化** 長度 |
+| [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | 不同字元種類 ≤ K | 頻率表 `freq` | 可變 | **最大化** 長度 |
+| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | 視窗頻率覆蓋 `t` | `need` / `have` 頻率表 | 可變 | **最小化** 長度 |
+| [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | 視窗頻率 == `s1` | 頻率表 + 匹配計數 | 固定 | 是否 **存在** |
+| [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | 視窗頻率 == `p` | 頻率表 + 匹配計數 | 固定 | **列出全部** 起點 |
+| [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | 視窗總和 ≥ target | 單一整數 `sum` | 可變 | **最小化** 長度 |
+
+---
+
+## 5️⃣ 與其他核心概念的連結 🔗
+
+### 技巧 / 演算法關聯
+
+- `algorithms.sliding_window`
+  - 掛在 `two_pointers` 之下
+  - 典型實作：兩指標同向移動（`left`, `right`）
+- `algorithms.two_pointers`
+  - 相關題目：
+    - [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)（雖然常用 hash，但也可雙指標解排序版）
+    - [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)（有 merge two sorted 的雙指標思路）
+- `topics.prefix_sum`
+  - 某些「子陣列和」問題可由 Sliding Window → **升級成 Prefix Sum + Binary Search**
+  - 例如：`0209` 的 follow-ups / 變形題（含負數時）
+
+### 資料結構關聯
+
+- 常用結構
+  - `string`, `array`
+  - `hash_map` / `counter`：維護頻率或最後出現位置
+- 特殊情境
+  - 若需視窗最大 / 最小值：可搭配 `monotonic_deque`（此圖未列具體題目，但屬於同一思維）
+
+---
+
+## 6️⃣ 學習路線建議（Sliding Window Path）🛣️
+
+> 對應 `roadmaps.sliding_window_path`
+
+- 入門：理解「不變量 + 狀態」概念
+  - [x] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)  
+    → 建立 **唯一字元 + 跳躍收縮** 心智模型
+- 變形一：數量限制
+  - [x] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)  
+    → 練習 **while 收縮** + 頻率表維護
+- 變形二：總和約束
+  - [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)  
+    → 感受 **數值型狀態**（只用一個 sum）
+- 變形三：Need/Have 頻率覆蓋
+  - [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)  
+    → 練習 **先滿足再縮小** 的模式
+- 變形四：固定視窗 + 頻率精準匹配
+  - [ ] [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+  - [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)  
+    → 熟悉 **固定長度滑動** 模板
+
+---
+
+## 7️⃣ 什麼時候「不要」用 Sliding Window ❌
+
+- 來自 `_decision.md` 的判斷，中文重整
+
+- 不適用情境
+  - 需要的是「**子序列 (subsequence)**」而非「子陣列 / 子字串」
+  - 狀態更新 **無法 O(1)** 完成（例如每次都要重新掃描整個視窗）
+  - 條件依賴 **全域資訊**：例如「到目前為止的 prefix 最佳解」而非當前視窗
+- 此時可能改用：
+  - 動態規劃（`dynamic_programming`）
+  - 前綴和 + 二分搜（`prefix_sum` + `binary_search_on_answer`）
+  - 單調結構（`monotonic_stack`, `monotonic_deque`）
+
+---
+
+## 8️⃣ 與其他 API Kernels 的對照視角 🧠
+
+- `SubstringSlidingWindow` vs 其他 Kernels
+  - `GridBFSMultiSource`
+    - 例題：[LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+    - 也是「波前擴張」，但在 **圖 / 網格** 上，用 `queue` 而非 `[left, right]`
+  - `KWayMerge`
+    - 例題：[LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)、[LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+    - 是多路合併，不是固定一段區間
+  - `LinkedListInPlaceReversal`
+    - 例題：[LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
+    - 操作的是 **指標結構**，而非陣列索引
+
+---
+
+## 9️⃣ 面試答題實戰 Tips ⚡
+
+- 開場思路（拿到 substring / subarray 題時）
+  - 「這題看起來答案是某個 **連續區間** 的長度 / 起點 / 結果」
+  - 「我會用 **Sliding Window**，維護 `[left, right]` 與一個不變量」
+- 口頭框架
+  - 定義不變量：**一句話講清楚**
+    - 例：`視窗內所有字元不重複` / `視窗內至少包含 t 所有字元`
+  - 說明狀態：用什麼資料結構維護（hash map / sum）
+  - 說明擴張 & 收縮策略：何時 `right++`，何時 `left++`
+- 複雜度
+  - 幾乎所有上述題目皆為：
+    - 時間：$O(n)$
+    - 空間：$O(σ)$ 或 $O(1)$（σ 為字元集大小）
+
+---
+
+## 🔟 小結：Sliding Window 心智模型一句話
+
+> **「用兩個指標掃過一次序列，維護一個能 O(1) 更新的不變量，藉由擴張 / 收縮視窗來優化答案。」**
+
+掌握這個 API Kernel + 上面 6 題核心題目，你在 LeetCode 上遇到大部分 substring / subarray 類問題，都能快速辨識並套用正確的 Sliding Window 模式。
