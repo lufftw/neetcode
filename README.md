@@ -80,7 +80,7 @@ Built on principles from **Codeforces, ICPC, and Google's engineering practices*
 - [Advanced Features](#-advanced-features)
 - [Project Architecture](#-project-architecture)
 - [FAQ](#-frequently-asked-questions)
-- [For Contributors](#️-for-contributors)
+- [For Contributors](#-for-contributors)
 - [License](#-license)
 
 ---
