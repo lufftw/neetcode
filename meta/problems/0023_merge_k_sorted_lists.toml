@@ -24,6 +24,12 @@ data_structures  = ["linked_list", "min_heap"]
 algorithms       = ["divide_and_conquer"]
 related_problems = ["0021", "0004", "0378", "0264"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0023_merge_k_sorted_lists.py"
+generator = "generators/0023_merge_k_sorted_lists.py"
+tests_dir = "tests/0023_merge_k_sorted_lists/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"

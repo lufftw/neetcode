@@ -24,6 +24,12 @@ data_structures  = ["linked_list"]
 algorithms       = []
 related_problems = ["0043", "0067", "0371", "0415", "0445"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0002_add_two_numbers.py"
+generator = "generators/0002_add_two_numbers.py"
+tests_dir = "tests/0002_add_two_numbers/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"

@@ -7,23 +7,9 @@ This document presents the **canonical sliding window template** and all its maj
 
 ---
 
-## Table of Contents
+## Core Concepts
 
-1. [Core Concepts](#1-core-concepts)
-2. [Base Template: Unique Characters (LeetCode 3)](#2-base-template-unique-characters-leetcode-3)
-3. [Variation A: At Most K Distinct Characters (LeetCode 340/159)](#3-variation-a-at-most-k-distinct-characters-leetcode-340159)
-4. [Variation B: Minimum Window Substring (LeetCode 76)](#4-variation-b-minimum-window-substring-leetcode-76)
-5. [Variation C: Permutation in String (LeetCode 567)](#5-variation-c-permutation-in-string-leetcode-567)
-6. [Variation D: Find All Anagrams (LeetCode 438)](#6-variation-d-find-all-anagrams-leetcode-438)
-7. [Variation E: Minimum Size Subarray Sum (LeetCode 209)](#7-variation-e-minimum-size-subarray-sum-leetcode-209)
-8. [Pattern Comparison Table](#8-pattern-comparison-table)
-9. [When to Use Sliding Window](#9-when-to-use-sliding-window)
-
----
-
-## 1. Core Concepts
-
-### 1.1 The Sliding Window Invariant
+### The Sliding Window Invariant
 
 Every sliding window algorithm maintains an **invariant** — a condition that must always be true for the current window `[left, right]`.
 
@@ -35,7 +21,7 @@ Window State:
 └─────────────────────────────────────────┘
 ```
 
-### 1.2 Universal Template Structure
+### Universal Template Structure
 
 ```python
 def sliding_window_template(sequence):
@@ -68,21 +54,35 @@ def sliding_window_template(sequence):
     return answer
 ```
 
-### 1.3 Two Window Strategies
+### Two Window Strategies
 
 | Strategy | When to Use | Example Problems |
 |----------|-------------|------------------|
 | **Maximize Window** | Find longest/largest valid window | LeetCode 3, 340, 424 |
 | **Minimize Window** | Find shortest valid window | LeetCode 76, 209 |
 
+## Table of Contents
+
+1. [Core Concepts](#core-concepts)
+2. [Base Template: Unique Characters (LeetCode 3)](#base-template-unique-characters-leetcode-3)
+3. [Variation: Minimum Window Substring (LeetCode 76)](#variation-minimum-window-substring-leetcode-76)
+4. [Variation: Minimum Size Subarray Sum (LeetCode 209)](#variation-minimum-size-subarray-sum-leetcode-209)
+5. [Variation: At Most K Distinct Characters (LeetCode 340/159)](#variation-at-most-k-distinct-characters-leetcode-340159)
+6. [Variation: Find All Anagrams (LeetCode 438)](#variation-find-all-anagrams-leetcode-438)
+7. [Variation: Permutation in String (LeetCode 567)](#variation-permutation-in-string-leetcode-567)
+8. [Pattern Comparison Table](#pattern-comparison-table)
+9. [When to Use Sliding Window](#when-to-use-sliding-window)
+10. [Template Quick Reference](#template-quick-reference)
+
 ---
 
-## 2. Base Template: Unique Characters (LeetCode 3)
+## Base Template: Unique Characters (LeetCode 3)
 
 > **Problem**: Find the length of the longest substring without repeating characters.  
-> **Invariant**: All characters in window `[left, right]` are unique.
+> **Invariant**: All characters in window `[left, right]` are unique.  
+> **Role**: BASE TEMPLATE for `SubstringSlidingWindow` API Kernel.
 
-### 2.1 Implementation
+### Implementation
 
 ```python
 def length_of_longest_substring(s: str) -> int:
@@ -128,7 +128,7 @@ def length_of_longest_substring(s: str) -> int:
     return max_length
 ```
 
-### 2.2 Why This Works
+### Why This Works
 
 The key insight is the **jump optimization**: instead of incrementally shrinking the window with a while-loop, we directly jump `left` to `last_seen_index[char] + 1`.
 
@@ -137,7 +137,7 @@ This is valid because:
 2. The position `last_seen_index[char] + 1` is the first position that excludes the duplicate
 3. All characters between old `left` and new `left` are implicitly "removed" from consideration
 
-### 2.3 Trace Example
+### Trace Example
 
 ```
 Input: "abcabcbb"
@@ -158,96 +158,13 @@ Answer: 3 ("abc")
 
 ---
 
-## 3. Variation A: At Most K Distinct Characters (LeetCode 340/159)
-
-> **Problem**: Find the length of the longest substring with at most K distinct characters.  
-> **Invariant**: Number of distinct characters in window ≤ K.  
-> **Delta from Base**: Replace "unique" check with "distinct count ≤ K".
-
-### 3.1 Implementation
-
-```python
-def length_of_longest_substring_k_distinct(s: str, k: int) -> int:
-    """
-    Find the length of the longest substring with at most K distinct characters.
-    
-    Algorithm:
-    - Maintain a frequency map of characters in the current window
-    - When distinct count exceeds K, shrink window from left until count ≤ K
-    
-    Time Complexity: O(n) - each character added and removed at most once
-    Space Complexity: O(K) - at most K+1 entries in the frequency map
-    
-    Args:
-        s: Input string
-        k: Maximum number of distinct characters allowed
-        
-    Returns:
-        Length of the longest valid substring
-    """
-    if k == 0:
-        return 0
-    
-    # State: Frequency map tracking count of each character in window
-    char_frequency: dict[str, int] = {}
-    
-    left = 0
-    max_length = 0
-    
-    for right, char in enumerate(s):
-        # EXPAND: Add character to window
-        char_frequency[char] = char_frequency.get(char, 0) + 1
-        
-        # CONTRACT: Shrink window while we have more than K distinct characters
-        # Unlike base template, we cannot jump — we must shrink incrementally
-        # because removing one character might not restore the invariant
-        while len(char_frequency) > k:
-            left_char = s[left]
-            char_frequency[left_char] -= 1
-            
-            # Remove character from map when its count reaches zero
-            # This is crucial for correct distinct count via len(char_frequency)
-            if char_frequency[left_char] == 0:
-                del char_frequency[left_char]
-            
-            left += 1
-        
-        # UPDATE ANSWER: Window [left, right] has at most K distinct characters
-        max_length = max(max_length, right - left + 1)
-    
-    return max_length
-```
-
-### 3.2 Specialization: At Most 2 Distinct (LeetCode 159)
-
-```python
-def length_of_longest_substring_two_distinct(s: str) -> int:
-    """
-    Find the length of the longest substring with at most 2 distinct characters.
-    
-    This is a direct application of the K-distinct template with K=2.
-    """
-    return length_of_longest_substring_k_distinct(s, k=2)
-```
-
-### 3.3 Key Difference from Base Template
-
-| Aspect | Base (Unique) | K-Distinct |
-|--------|---------------|------------|
-| State | `last_seen_index` | `char_frequency` |
-| Invariant | All chars unique | `len(freq) ≤ K` |
-| Contract | Single jump | While-loop shrink |
-| Why | Jump to exclude duplicate | Must remove chars one by one |
-
----
-
-## 4. Variation B: Minimum Window Substring (LeetCode 76)
+## Variation: Minimum Window Substring (LeetCode 76)
 
 > **Problem**: Find the minimum window in `s` that contains all characters of `t`.  
 > **Invariant**: Window contains all required characters with sufficient frequency.  
 > **Delta from Base**: Track "have vs need" frequencies; minimize instead of maximize.
 
-### 4.1 Implementation
+### Implementation
 
 ```python
 def min_window(s: str, t: str) -> str:
@@ -326,7 +243,7 @@ def min_window(s: str, t: str) -> str:
     return s[min_window_start : min_window_start + min_length]
 ```
 
-### 4.2 Key Insight: Two-Phase Approach
+### Key Insight: Two-Phase Approach
 
 ```
 Phase 1: EXPAND until window is valid (contains all required chars)
@@ -339,7 +256,7 @@ Phase 3: Record answer, then continue expanding
          ──────────────────────────────────────────────────────►
 ```
 
-### 4.3 The "Satisfied Counter" Optimization
+### The "Satisfied Counter" Optimization
 
 Instead of checking `all(have[c] >= need[c] for c in need)` on every iteration (O(|t|)), we maintain `chars_satisfied`:
 
@@ -351,13 +268,248 @@ This reduces per-iteration cost from O(|t|) to O(1).
 
 ---
 
-## 5. Variation C: Permutation in String (LeetCode 567)
+## Variation: Minimum Size Subarray Sum (LeetCode 209)
+
+> **Problem**: Find the minimal length subarray with sum ≥ target.  
+> **Invariant**: Window sum ≥ target.  
+> **Delta from Base**: Numeric sum instead of character tracking; minimize window.
+
+### Implementation
+
+```python
+def min_subarray_len(target: int, nums: list[int]) -> int:
+    """
+    Find the minimal length of a subarray whose sum is >= target.
+    
+    Algorithm:
+    - Maintain a running sum of the current window
+    - Expand window by adding elements
+    - Once sum >= target, contract to find minimum length
+    - Continue until all elements are processed
+    
+    Time Complexity: O(n) - each element added and removed at most once
+    Space Complexity: O(1) - only tracking sum and pointers
+    
+    Args:
+        target: Target sum to reach or exceed
+        nums: Array of positive integers
+        
+    Returns:
+        Minimum length of valid subarray, or 0 if none exists
+    """
+    n = len(nums)
+    if n == 0:
+        return 0
+    
+    # State: Running sum of current window
+    window_sum = 0
+    
+    left = 0
+    min_length = float('inf')
+    
+    for right, num in enumerate(nums):
+        # EXPAND: Add element to window sum
+        window_sum += num
+        
+        # CONTRACT: While sum satisfies target, try to minimize window
+        # Note: We use 'while' not 'if' because multiple contractions may be possible
+        while window_sum >= target:
+            # UPDATE ANSWER: Current window is valid
+            min_length = min(min_length, right - left + 1)
+            
+            # Remove leftmost element
+            window_sum -= nums[left]
+            left += 1
+    
+    return min_length if min_length != float('inf') else 0
+```
+
+### Key Difference: Numeric State
+
+| Aspect | String Patterns | Numeric Sum |
+|--------|-----------------|-------------|
+| State | Frequency map | Single integer |
+| Add element | `freq[c] += 1` | `sum += num` |
+| Remove element | `freq[c] -= 1` | `sum -= num` |
+| Check invariant | `len(freq) > k` | `sum >= target` |
+
+---
+
+## Variation: At Most K Distinct Characters (LeetCode 340/159)
+
+> **Problem**: Find the length of the longest substring with at most K distinct characters.  
+> **Invariant**: Number of distinct characters in window ≤ K.  
+> **Delta from Base**: Replace "unique" check with "distinct count ≤ K".
+
+### Implementation
+
+```python
+def length_of_longest_substring_k_distinct(s: str, k: int) -> int:
+    """
+    Find the length of the longest substring with at most K distinct characters.
+    
+    Algorithm:
+    - Maintain a frequency map of characters in the current window
+    - When distinct count exceeds K, shrink window from left until count ≤ K
+    
+    Time Complexity: O(n) - each character added and removed at most once
+    Space Complexity: O(K) - at most K+1 entries in the frequency map
+    
+    Args:
+        s: Input string
+        k: Maximum number of distinct characters allowed
+        
+    Returns:
+        Length of the longest valid substring
+    """
+    if k == 0:
+        return 0
+    
+    # State: Frequency map tracking count of each character in window
+    char_frequency: dict[str, int] = {}
+    
+    left = 0
+    max_length = 0
+    
+    for right, char in enumerate(s):
+        # EXPAND: Add character to window
+        char_frequency[char] = char_frequency.get(char, 0) + 1
+        
+        # CONTRACT: Shrink window while we have more than K distinct characters
+        # Unlike base template, we cannot jump — we must shrink incrementally
+        # because removing one character might not restore the invariant
+        while len(char_frequency) > k:
+            left_char = s[left]
+            char_frequency[left_char] -= 1
+            
+            # Remove character from map when its count reaches zero
+            # This is crucial for correct distinct count via len(char_frequency)
+            if char_frequency[left_char] == 0:
+                del char_frequency[left_char]
+            
+            left += 1
+        
+        # UPDATE ANSWER: Window [left, right] has at most K distinct characters
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+```
+
+### Specialization: At Most 2 Distinct (LeetCode 159)
+
+```python
+def length_of_longest_substring_two_distinct(s: str) -> int:
+    """
+    Find the length of the longest substring with at most 2 distinct characters.
+    
+    This is a direct application of the K-distinct template with K=2.
+    """
+    return length_of_longest_substring_k_distinct(s, k=2)
+```
+
+### Key Difference from Base Template
+
+| Aspect | Base (Unique) | K-Distinct |
+|--------|---------------|------------|
+| State | `last_seen_index` | `char_frequency` |
+| Invariant | All chars unique | `len(freq) ≤ K` |
+| Contract | Single jump | While-loop shrink |
+| Why | Jump to exclude duplicate | Must remove chars one by one |
+
+---
+
+## Variation: Find All Anagrams (LeetCode 438)
+
+> **Problem**: Find all start indices of `p`'s anagrams in `s`.  
+> **Invariant**: Window has exact same character frequencies as `p`.  
+> **Delta from Permutation Check**: Collect all valid positions instead of returning on first.
+
+### Implementation
+
+```python
+def find_anagrams(s: str, p: str) -> list[int]:
+    """
+    Find all start indices of p's anagrams in s.
+    
+    This is an extension of the permutation check:
+    instead of returning True on first match, collect all match positions.
+    
+    Time Complexity: O(|s| + |p|)
+    Space Complexity: O(1) - bounded by alphabet size
+    
+    Args:
+        s: Source string to search in
+        p: Pattern string (looking for its anagrams)
+        
+    Returns:
+        List of starting indices where anagrams of p begin in s
+    """
+    result: list[int] = []
+    
+    if len(p) > len(s):
+        return result
+    
+    pattern_length = len(p)
+    
+    # State: Frequency maps
+    pattern_frequency: dict[str, int] = {}
+    window_frequency: dict[str, int] = {}
+    
+    for char in p:
+        pattern_frequency[char] = pattern_frequency.get(char, 0) + 1
+    
+    chars_matched = 0
+    chars_to_match = len(pattern_frequency)
+    
+    for right, char in enumerate(s):
+        # EXPAND: Add character to window
+        window_frequency[char] = window_frequency.get(char, 0) + 1
+        
+        if char in pattern_frequency:
+            if window_frequency[char] == pattern_frequency[char]:
+                chars_matched += 1
+            elif window_frequency[char] == pattern_frequency[char] + 1:
+                chars_matched -= 1
+        
+        # CONTRACT: Remove leftmost when window is full
+        left = right - pattern_length + 1
+        if left > 0:
+            left_char = s[left - 1]
+            
+            if left_char in pattern_frequency:
+                if window_frequency[left_char] == pattern_frequency[left_char]:
+                    chars_matched -= 1
+                elif window_frequency[left_char] == pattern_frequency[left_char] + 1:
+                    chars_matched += 1
+            
+            window_frequency[left_char] -= 1
+            if window_frequency[left_char] == 0:
+                del window_frequency[left_char]
+        
+        # COLLECT: Record starting index if window is an anagram
+        if chars_matched == chars_to_match:
+            result.append(left)
+    
+    return result
+```
+
+### Comparison: Permutation vs Anagram
+
+| Aspect | Permutation (LeetCode 567) | Anagram (LeetCode 438) |
+|--------|----------------------------|------------------------|
+| Return type | `bool` | `list[int]` |
+| On match | Return `True` | Append to result |
+| After match | N/A | Continue searching |
+
+---
+
+## Variation: Permutation in String (LeetCode 567)
 
 > **Problem**: Check if `s2` contains any permutation of `s1`.  
 > **Invariant**: Window has exact same character frequencies as `s1`.  
 > **Delta from Base**: Fixed window size; exact frequency match.
 
-### 5.1 Implementation
+### Implementation
 
 ```python
 def check_inclusion(s1: str, s2: str) -> bool:
@@ -434,7 +586,7 @@ def check_inclusion(s1: str, s2: str) -> bool:
     return False
 ```
 
-### 5.2 Key Difference: Fixed Window Size
+### Key Difference: Fixed Window Size
 
 Unlike variable-size windows, this problem uses a **fixed window** of size `len(s1)`:
 
@@ -449,159 +601,7 @@ Source:  "eidbaooo"
 
 ---
 
-## 6. Variation D: Find All Anagrams (LeetCode 438)
-
-> **Problem**: Find all start indices of `p`'s anagrams in `s`.  
-> **Invariant**: Window has exact same character frequencies as `p`.  
-> **Delta from Permutation Check**: Collect all valid positions instead of returning on first.
-
-### 6.1 Implementation
-
-```python
-def find_anagrams(s: str, p: str) -> list[int]:
-    """
-    Find all start indices of p's anagrams in s.
-    
-    This is an extension of the permutation check:
-    instead of returning True on first match, collect all match positions.
-    
-    Time Complexity: O(|s| + |p|)
-    Space Complexity: O(1) - bounded by alphabet size
-    
-    Args:
-        s: Source string to search in
-        p: Pattern string (looking for its anagrams)
-        
-    Returns:
-        List of starting indices where anagrams of p begin in s
-    """
-    result: list[int] = []
-    
-    if len(p) > len(s):
-        return result
-    
-    pattern_length = len(p)
-    
-    # State: Frequency maps
-    pattern_frequency: dict[str, int] = {}
-    window_frequency: dict[str, int] = {}
-    
-    for char in p:
-        pattern_frequency[char] = pattern_frequency.get(char, 0) + 1
-    
-    chars_matched = 0
-    chars_to_match = len(pattern_frequency)
-    
-    for right, char in enumerate(s):
-        # EXPAND: Add character to window
-        window_frequency[char] = window_frequency.get(char, 0) + 1
-        
-        if char in pattern_frequency:
-            if window_frequency[char] == pattern_frequency[char]:
-                chars_matched += 1
-            elif window_frequency[char] == pattern_frequency[char] + 1:
-                chars_matched -= 1
-        
-        # CONTRACT: Remove leftmost when window is full
-        left = right - pattern_length + 1
-        if left > 0:
-            left_char = s[left - 1]
-            
-            if left_char in pattern_frequency:
-                if window_frequency[left_char] == pattern_frequency[left_char]:
-                    chars_matched -= 1
-                elif window_frequency[left_char] == pattern_frequency[left_char] + 1:
-                    chars_matched += 1
-            
-            window_frequency[left_char] -= 1
-            if window_frequency[left_char] == 0:
-                del window_frequency[left_char]
-        
-        # COLLECT: Record starting index if window is an anagram
-        if chars_matched == chars_to_match:
-            result.append(left)
-    
-    return result
-```
-
-### 6.2 Comparison: Permutation vs Anagram
-
-| Aspect | Permutation (567) | Anagram (438) |
-|--------|-------------------|---------------|
-| Return type | `bool` | `list[int]` |
-| On match | Return `True` | Append to result |
-| After match | N/A | Continue searching |
-
----
-
-## 7. Variation E: Minimum Size Subarray Sum (LeetCode 209)
-
-> **Problem**: Find the minimal length subarray with sum ≥ target.  
-> **Invariant**: Window sum ≥ target.  
-> **Delta from Base**: Numeric sum instead of character tracking; minimize window.
-
-### 7.1 Implementation
-
-```python
-def min_subarray_len(target: int, nums: list[int]) -> int:
-    """
-    Find the minimal length of a subarray whose sum is >= target.
-    
-    Algorithm:
-    - Maintain a running sum of the current window
-    - Expand window by adding elements
-    - Once sum >= target, contract to find minimum length
-    - Continue until all elements are processed
-    
-    Time Complexity: O(n) - each element added and removed at most once
-    Space Complexity: O(1) - only tracking sum and pointers
-    
-    Args:
-        target: Target sum to reach or exceed
-        nums: Array of positive integers
-        
-    Returns:
-        Minimum length of valid subarray, or 0 if none exists
-    """
-    n = len(nums)
-    if n == 0:
-        return 0
-    
-    # State: Running sum of current window
-    window_sum = 0
-    
-    left = 0
-    min_length = float('inf')
-    
-    for right, num in enumerate(nums):
-        # EXPAND: Add element to window sum
-        window_sum += num
-        
-        # CONTRACT: While sum satisfies target, try to minimize window
-        # Note: We use 'while' not 'if' because multiple contractions may be possible
-        while window_sum >= target:
-            # UPDATE ANSWER: Current window is valid
-            min_length = min(min_length, right - left + 1)
-            
-            # Remove leftmost element
-            window_sum -= nums[left]
-            left += 1
-    
-    return min_length if min_length != float('inf') else 0
-```
-
-### 7.2 Key Difference: Numeric State
-
-| Aspect | String Patterns | Numeric Sum |
-|--------|-----------------|-------------|
-| State | Frequency map | Single integer |
-| Add element | `freq[c] += 1` | `sum += num` |
-| Remove element | `freq[c] -= 1` | `sum -= num` |
-| Check invariant | `len(freq) > k` | `sum >= target` |
-
----
-
-## 8. Pattern Comparison Table
+## Pattern Comparison Table
 
 | Problem | Invariant | State | Window Size | Goal |
 |---------|-----------|-------|-------------|------|
@@ -614,9 +614,9 @@ def min_subarray_len(target: int, nums: list[int]) -> int:
 
 ---
 
-## 9. When to Use Sliding Window
+## When to Use Sliding Window
 
-### 9.1 Problem Indicators
+### Problem Indicators
 
 ✅ **Use sliding window when:**
 - Looking for contiguous subarray/substring
@@ -629,7 +629,7 @@ def min_subarray_len(target: int, nums: list[int]) -> int:
 - Property requires global knowledge (use prefix sum + binary search)
 - Window boundaries depend on non-local information
 
-### 9.2 Decision Flowchart
+### Decision Flowchart
 
 ```
 Is the answer a contiguous subarray/substring?
@@ -645,7 +645,7 @@ Is the answer a contiguous subarray/substring?
 
 ---
 
-## Appendix: Template Quick Reference
+## Template Quick Reference
 
 ### Maximize Window (Variable Size)
 
@@ -713,6 +713,10 @@ def fixed_window(sequence, k):
     return result
 ```
 
+
+
 ---
+
+
 
 *Document generated for NeetCode Practice Framework — API Kernel: SubstringSlidingWindow*

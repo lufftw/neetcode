@@ -24,6 +24,12 @@ data_structures  = ["array"]
 algorithms       = ["binary_search", "two_pointers", "divide_and_conquer"]
 related_problems = ["0023", "0021", "0215"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0004_median_of_two_sorted_arrays.py"
+generator = "generators/0004_median_of_two_sorted_arrays.py"
+tests_dir = "tests/0004_median_of_two_sorted_arrays/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"

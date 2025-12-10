@@ -24,6 +24,12 @@ data_structures  = ["grid", "queue"]
 algorithms       = ["bfs"]
 related_problems = ["0286", "0542", "0127", "0752", "1091", "0200"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0994_rotting_oranges.py"
+generator = "generators/0994_rotting_oranges.py"
+tests_dir = "tests/0994_rotting_oranges/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"

@@ -24,6 +24,12 @@ data_structures  = ["array", "hash_map"]
 algorithms       = ["two_pointers"]
 related_problems = ["0015", "0167", "0170", "0653"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0001_two_sum.py"
+generator = "generators/0001_two_sum.py"
+tests_dir = "tests/0001_two_sum/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"

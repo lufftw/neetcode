@@ -24,6 +24,12 @@ data_structures  = ["linked_list"]
 algorithms       = ["recursion"]
 related_problems = ["0024", "0206", "0092"]
 
+# ===== File Locations =====
+[files]
+solution  = "solutions/0025_reverse_nodes_in_k_group.py"
+generator = "generators/0025_reverse_nodes_in_k_group.py"
+tests_dir = "tests/0025_reverse_nodes_in_k_group/"
+
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
