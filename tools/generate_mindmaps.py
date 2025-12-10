@@ -43,6 +43,13 @@ ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 META_PROBLEMS_DIR = PROJECT_ROOT / "meta" / "problems"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "docs" / "mindmaps"
 PAGES_OUTPUT_DIR = PROJECT_ROOT / "docs" / "pages"
+CONFIG_FILE = Path(__file__).resolve().parent / "generate_mindmaps.toml"
+
+# Default GitHub repository configuration
+# Can be overridden via config file or environment variables
+DEFAULT_GITHUB_REPO_URL = "https://github.com/lufftw/neetcode"
+DEFAULT_GITHUB_BRANCH = "main"
+DEFAULT_USE_GITHUB_LINKS = True
 
 # Mind map types
 MINDMAP_TYPES = [
@@ -63,6 +70,68 @@ DIFFICULTY_ICONS = {
     "medium": "🟡",
     "hard": "🔴",
 }
+
+
+# ---------------------------------------------------------------------------
+# Configuration Loading
+# ---------------------------------------------------------------------------
+
+@dataclass
+class MindmapsConfig:
+    """Configuration for mind maps generation."""
+    github_repo_url: str = DEFAULT_GITHUB_REPO_URL
+    github_branch: str = DEFAULT_GITHUB_BRANCH
+    use_github_links: bool = DEFAULT_USE_GITHUB_LINKS
+
+
+def load_config() -> MindmapsConfig:
+    """Load configuration from config file, environment variables, or defaults.
+    
+    Priority:
+    1. Environment variables (GITHUB_REPO_URL, GITHUB_BRANCH)
+    2. Config file (tools/mindmaps_config.toml)
+    3. Default values
+    """
+    config = MindmapsConfig()
+    
+    # Load from config file if exists
+    if CONFIG_FILE.exists():
+        try:
+            content = CONFIG_FILE.read_text(encoding="utf-8")
+            parsed = parse_toml_simple(content)
+            
+            github_config = parsed.get("github", {})
+            links_config = parsed.get("links", {})
+            
+            if github_config:
+                config.github_repo_url = github_config.get("repo_url", config.github_repo_url)
+                config.github_branch = github_config.get("branch", config.github_branch)
+            
+            if links_config:
+                config.use_github_links = links_config.get("use_github_links", config.use_github_links)
+        except Exception as e:
+            print(f"Warning: Failed to load config from {CONFIG_FILE}: {e}")
+    
+    # Override with environment variables
+    import os
+    if os.getenv("GITHUB_REPO_URL"):
+        config.github_repo_url = os.getenv("GITHUB_REPO_URL")
+    if os.getenv("GITHUB_BRANCH"):
+        config.github_branch = os.getenv("GITHUB_BRANCH")
+    
+    return config
+
+
+# Global config instance (loaded on first use)
+_config: MindmapsConfig | None = None
+
+
+def get_config() -> MindmapsConfig:
+    """Get configuration instance (singleton)."""
+    global _config
+    if _config is None:
+        _config = load_config()
+    return _config
 
 
 # ---------------------------------------------------------------------------
@@ -224,21 +293,48 @@ class ProblemData:
         """Return difficulty indicator emoji."""
         return DIFFICULTY_ICONS.get(self.difficulty.lower(), "⚪")
     
-    @property
-    def solution_link(self) -> str:
-        """Return relative link to solution file from docs/mindmaps/."""
+    def solution_link(self, use_github_link: bool | None = None) -> str:
+        """Return link to solution file.
+        
+        Args:
+            use_github_link: If True, return GitHub repo link; if False, return relative path.
+                           If None, use config setting.
+        
+        Returns:
+            GitHub link (e.g., https://github.com/user/repo/blob/main/solutions/file.py)
+            or relative path (e.g., ../../solutions/file.py)
+        """
+        # Determine solution file path
         if self.solution_file:
-            return f"../../{self.solution_file}"
-        # Fallback: construct from slug
-        if self.slug:
-            return f"../../solutions/{self.slug}.py"
-        return ""
+            solution_path = self.solution_file
+        elif self.slug:
+            solution_path = f"solutions/{self.slug}.py"
+        else:
+            return ""
+        
+        # Use config if not explicitly specified
+        if use_github_link is None:
+            use_github_link = get_config().use_github_links
+        
+        if use_github_link:
+            # Return GitHub blob URL
+            config = get_config()
+            return f"{config.github_repo_url}/blob/{config.github_branch}/{solution_path}"
+        else:
+            # Return relative path from docs/mindmaps/
+            return f"../../{solution_path}"
     
-    def markdown_link(self, include_difficulty: bool = True) -> str:
-        """Return markdown link: [LeetCode N - Title](path)"""
+    def markdown_link(self, include_difficulty: bool = True, use_github_link: bool | None = None) -> str:
+        """Return markdown link: [LeetCode N - Title](path)
+        
+        Args:
+            include_difficulty: Include difficulty icon
+            use_github_link: Use GitHub repo link instead of relative path.
+                           If None, use config setting.
+        """
         num = self.leetcode_id if self.leetcode_id else int(self.id)
         name = f"LeetCode {num} - {self.title}"
-        link = self.solution_link
+        link = self.solution_link(use_github_link=use_github_link)
         
         if include_difficulty:
             icon = self.difficulty_icon
@@ -694,8 +790,9 @@ def generate_problem_relations(ontology: OntologyData, problems: dict[str, Probl
         lines.append("")
         
         # Solution link
-        if prob.solution_link:
-            lines.append(f"📁 [View Solution]({prob.solution_link})")
+        solution_link = prob.solution_link()
+        if solution_link:
+            lines.append(f"📁 [View Solution]({solution_link})")
             lines.append("")
         
         lines.append("### Related Problems")
@@ -742,8 +839,9 @@ def generate_solution_variants(ontology: OntologyData, problems: dict[str, Probl
         lines.append(f"**{prob.difficulty_icon} {prob.difficulty.title()}** — {len(prob.solutions)} approaches")
         lines.append("")
         
-        if prob.solution_link:
-            lines.append(f"📁 [View All Solutions]({prob.solution_link})")
+        solution_link = prob.solution_link()
+        if solution_link:
+            lines.append(f"📁 [View All Solutions]({solution_link})")
             lines.append("")
         
         for sol in prob.solutions:
@@ -1570,7 +1668,7 @@ Examples:
     if results:
         generate_index(args.output, list(results.keys()))
 
-    print(f"\n✅ Generated {len(results)} mindmaps")
+    print(f"\n[OK] Generated {len(results)} mindmaps")
     print(f"   📁 Markdown: {args.output}")
     if args.html:
         print(f"   🌐 HTML:     {args.pages_dir}")
