@@ -1,8 +1,12 @@
-# 測試文檔 - NeetCode Runner System
+# 測試文檔 - NeetCode Practice Framework
 
 ## 概述
 
-本專案在 `test/core-runner-baseline` 分支上建立了完整的**行為測試（Characterization Tests）**套件，用於確保重構過程中不會破壞現有功能。
+本專案建立了完整的**行為測試（Characterization Tests）**套件，用於確保重構過程中不會破壞現有功能。
+
+測試分為兩大部分：
+1. **Runner 系統測試** - `test/core-runner-baseline` 分支
+2. **文件生成工具測試** - `refactor/core-docs-generator` 分支
 
 ## 測試負責人
 
@@ -46,6 +50,25 @@
   - 比較模式（exact/sorted/set）
   - JUDGE_FUNC 支援
 
+#### 工具程式測試（Tools Tests）
+- `test_generate_mindmaps.py` - Mind Map 生成器測試：
+  - TOML 解析器測試
+  - ProblemData/OntologyData 類別測試
+  - 9 種 Mind Map 生成器測試
+  - HTML 生成測試
+  - 設定載入測試
+  - 邊界情況測試
+  - 實際資料整合測試
+- `test_generate_pattern_docs.py` - Pattern 文檔生成器測試：
+  - TOML 解析器測試
+  - 資料類別測試（APIKernel, Pattern, PatternDocConfig）
+  - Kernel ID 對應測試
+  - TOC 與章節編號測試
+  - 檔案收集與分類測試
+  - 文檔組合測試
+  - 邊界情況測試
+  - 實際資料整合測試
+
 ## 測試覆蓋範圍
 
 ### runner/util.py
@@ -82,17 +105,56 @@
 - ✅ `_run_with_mock_stdin()` - Mock stdin 機制
 - ✅ `format_complexity_result()` - 結果格式化
 
+### tools/generate_mindmaps.py
+- ✅ `parse_toml_simple()` - TOML 解析（字串、陣列、布林、數字）
+- ✅ `parse_toml_value()` - TOML 值解析
+- ✅ `ProblemData` 類別 - display_name, difficulty_icon, solution_link, markdown_link
+- ✅ `OntologyData` 類別 - 預設值初始化
+- ✅ `markmap_frontmatter()` - Markmap YAML 前置資料
+- ✅ `format_problem_entry()` - 問題條目格式化
+- ✅ `generate_pattern_hierarchy()` - API Kernel → Patterns → Problems
+- ✅ `generate_family_derivation()` - Base/Variant 關係
+- ✅ `generate_algorithm_usage()` - 演算法使用統計
+- ✅ `generate_data_structure()` - 資料結構使用統計
+- ✅ `generate_company_coverage()` - 公司面試題覆蓋
+- ✅ `generate_roadmap_paths()` - 學習路徑
+- ✅ `generate_problem_relations()` - 問題關聯網路
+- ✅ `generate_solution_variants()` - 多解法問題
+- ✅ `generate_difficulty_topics()` - 難度 × 主題矩陣
+- ✅ `markdown_to_html_content()` - Markdown → HTML
+- ✅ `generate_html_mindmap()` - HTML 生成
+- ✅ `MindmapsConfig` - 設定載入
+
+### tools/generate_pattern_docs.py
+- ✅ `parse_toml_simple()` - TOML 解析
+- ✅ `APIKernel` 類別 - Kernel 資料結構
+- ✅ `Pattern` 類別 - Pattern 資料結構
+- ✅ `PatternDocConfig` 類別 - 文檔配置
+- ✅ `get_kernel_id_from_dir_name()` - 目錄名稱 → Kernel ID 對應
+- ✅ `generate_toc()` - 目錄生成
+- ✅ `create_anchor()` - Markdown anchor 建立
+- ✅ `add_section_numbers()` - 章節編號
+- ✅ `collect_source_files()` - 來源檔案收集與分類
+- ✅ `compose_document()` - 文檔組合
+
 ## 測試統計
 
+### Runner 系統測試
 - **測試檔案數量**: 6
 - **測試類別數量**: 50+
 - **測試案例數量**: 150+
-- **測試標記**:
-  - `@pytest.mark.unit` - 單元測試
-  - `@pytest.mark.integration` - 整合測試
-  - `@pytest.mark.edge_case` - 邊界測試
-  - `@pytest.mark.slow` - 慢速測試
-  - `@pytest.mark.requires_big_o` - 需要 big-O 套件
+
+### 工具程式測試
+- **測試檔案數量**: 2
+- **測試類別數量**: 20+
+- **測試案例數量**: 100+
+
+### 測試標記
+- `@pytest.mark.unit` - 單元測試
+- `@pytest.mark.integration` - 整合測試
+- `@pytest.mark.edge_case` - 邊界測試
+- `@pytest.mark.slow` - 慢速測試
+- `@pytest.mark.requires_big_o` - 需要 big-O 套件
 
 ## 如何運行測試
 
@@ -106,35 +168,43 @@ python -m pip install pytest pytest-cov
 
 ```bash
 # Windows
-run_unit_tests.bat
+.dev\run_tests.bat
 
 # Linux/Mac
-./run_unit_tests.sh
+.dev/run_tests.sh
 
 # 或直接使用 pytest
-python -m pytest tests_unit -v
+python -m pytest .dev/tests -v
 ```
 
 ### 運行特定測試
 
 ```bash
 # 只運行單元測試
-python -m pytest tests_unit -v -m unit
+python -m pytest .dev/tests -v -m unit
 
 # 只運行整合測試
-python -m pytest tests_unit -v -m integration
+python -m pytest .dev/tests -v -m integration
 
 # 只運行邊界測試
-python -m pytest tests_unit -v -m edge_case
+python -m pytest .dev/tests -v -m edge_case
 
 # 運行特定檔案
-python -m pytest tests_unit/test_util.py -v
+python -m pytest .dev/tests/test_util.py -v
+
+# 運行工具程式測試
+python -m pytest .dev/tests/test_generate_mindmaps.py -v
+python -m pytest .dev/tests/test_generate_pattern_docs.py -v
 ```
 
 ### 生成覆蓋率報告
 
 ```bash
-python -m pytest tests_unit --cov=runner --cov-report=html
+# Runner 系統覆蓋率
+python -m pytest .dev/tests --cov=runner --cov-report=html
+
+# 工具程式覆蓋率
+python -m pytest .dev/tests/test_generate_mindmaps.py .dev/tests/test_generate_pattern_docs.py --cov=tools --cov-report=html
 ```
 
 ## 測試原則
@@ -214,6 +284,23 @@ python -m pytest tests_unit --cov=runner --cov-report=html
 - ✅ Mock stdin 機制
 - ✅ 多次運行平均
 
+### 7. Mind Map 生成（generate_mindmaps.py）
+- ✅ TOML 解析（api_kernels, patterns, problems）
+- ✅ Ontology 資料載入
+- ✅ Problem metadata 載入
+- ✅ 9 種 Mind Map 類型生成
+- ✅ HTML 輸出（GitHub Pages 支援）
+- ✅ Markmap frontmatter 生成
+- ✅ 設定檔載入（GitHub repo URL, branch）
+
+### 8. Pattern 文檔生成（generate_pattern_docs.py）
+- ✅ TOML 解析
+- ✅ Kernel ID 對應（目錄名 → API Kernel）
+- ✅ 來源檔案收集與分類（header, problem, footer）
+- ✅ 章節編號與目錄生成
+- ✅ 文檔組合（separators, footer）
+- ✅ Anchor 建立
+
 ## 已知限制和注意事項
 
 1. **Python 版本**: 測試在 Python 3.14.2 上開發
@@ -224,22 +311,29 @@ python -m pytest tests_unit --cov=runner --cov-report=html
 ## 測試檔案結構
 
 ```
-tests_unit/
-├── __init__.py                    # 套件初始化
-├── test_util.py                   # util.py 測試（40+ 測試）
-├── test_case_runner.py            # case_runner.py 測試（15+ 測試）
-├── test_test_runner.py            # test_runner.py 測試（30+ 測試）
-├── test_complexity_estimator.py   # complexity_estimator.py 測試（25+ 測試）
-├── test_edge_cases.py             # 邊界測試（40+ 測試）
-├── test_integration.py            # 整合測試（20+ 測試）
-└── README.md                      # 測試說明文檔
+.dev/tests/
+├── __init__.py                      # 套件初始化
+│
+│   # === Runner 系統測試 ===
+├── test_util.py                     # util.py 測試（40+ 測試）
+├── test_case_runner.py              # case_runner.py 測試（15+ 測試）
+├── test_test_runner.py              # test_runner.py 測試（30+ 測試）
+├── test_complexity_estimator.py     # complexity_estimator.py 測試（25+ 測試）
+├── test_edge_cases.py               # 邊界測試（40+ 測試）
+├── test_integration.py              # 整合測試（20+ 測試）
+│
+│   # === 工具程式測試 ===
+├── test_generate_mindmaps.py        # generate_mindmaps.py 測試（50+ 測試）
+├── test_generate_pattern_docs.py    # generate_pattern_docs.py 測試（50+ 測試）
+│
+└── README.md                        # 測試說明文檔
 ```
 
 ## 配置檔案
 
-- `pytest.ini` - pytest 配置
-- `run_unit_tests.bat` - Windows 測試執行腳本
-- `run_unit_tests.sh` - Unix/Linux 測試執行腳本
+- `pytest.ini` - pytest 配置（專案根目錄）
+- `.dev/run_tests.bat` - Windows 測試執行腳本
+- `.dev/run_tests.sh` - Unix/Linux 測試執行腳本
 
 ## 下一步
 
@@ -252,8 +346,12 @@ tests_unit/
 ## 聯絡資訊
 
 **測試負責人**: luffdev  
-**分支**: `test/core-runner-baseline`  
-**建立日期**: 2025-12-08
+**分支**: 
+- Runner 測試: `test/core-runner-baseline`
+- 工具程式測試: `refactor/core-docs-generator`
+
+**建立日期**: 2025-12-08  
+**最後更新**: 2025-12-10
 
 ---
 
@@ -264,26 +362,30 @@ tests_unit/
 python -m pip install pytest pytest-cov
 
 # 運行所有測試
-python -m pytest tests_unit -v
+python -m pytest .dev/tests -v
 
 # 運行特定標記的測試
-python -m pytest tests_unit -v -m unit
-python -m pytest tests_unit -v -m integration
-python -m pytest tests_unit -v -m edge_case
+python -m pytest .dev/tests -v -m unit
+python -m pytest .dev/tests -v -m integration
+python -m pytest .dev/tests -v -m edge_case
 
 # 運行特定檔案
-python -m pytest tests_unit/test_util.py -v
+python -m pytest .dev/tests/test_util.py -v
+
+# 運行工具程式測試
+python -m pytest .dev/tests/test_generate_mindmaps.py -v
+python -m pytest .dev/tests/test_generate_pattern_docs.py -v
 
 # 生成覆蓋率報告
-python -m pytest tests_unit --cov=runner --cov-report=html
+python -m pytest .dev/tests --cov=runner --cov=tools --cov-report=html
 
 # 運行並顯示詳細輸出
-python -m pytest tests_unit -v --tb=long
+python -m pytest .dev/tests -v --tb=long
 
 # 運行並在第一個失敗時停止
-python -m pytest tests_unit -v -x
+python -m pytest .dev/tests -v -x
 
 # 運行失敗的測試
-python -m pytest tests_unit -v --lf
+python -m pytest .dev/tests -v --lf
 ```
 
