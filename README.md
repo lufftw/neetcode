@@ -66,16 +66,17 @@ Built on principles from **Codeforces, ICPC, and Google's engineering practices*
 
 ## 📑 Table of Contents
 
-- [Why This Framework?](#-why-this-framework)
-- [Quick Start](#-quick-start)
-- [Key Features](#-key-features)
-- [Interactive Mind Maps](#-interactive-mind-maps)
-- [Usage Guide](#-usage-guide)
-- [Advanced Features](#-advanced-features)
-- [Project Architecture](#-project-architecture)
-- [FAQ](#-frequently-asked-questions)
-- [For Contributors](#-for-contributors)
-- [License](#-license)
+- What Sets Us Apart
+- Why This Framework?
+- Quick Start
+- Key Features
+- Interactive Mind Maps
+- Usage Guide
+- Advanced Features
+- Project Architecture
+- FAQ
+- For Contributors
+- License
 
 ---
 
@@ -737,8 +738,8 @@ Configuration: `tools/generate_mindmaps.toml`
 
 ### Documentation
 
-- [`.dev/README.md`](.dev/README.md) — Maintainer guide
-- [`.dev/TESTING.md`](.dev/TESTING.md) — Testing documentation
+- [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
+- [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 
 ---

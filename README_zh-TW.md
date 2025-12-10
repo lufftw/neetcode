@@ -66,16 +66,17 @@
 
 ## 📑 目錄
 
-- [為什麼選擇這個框架？](#-為什麼選擇這個框架)
-- [快速開始](#-快速開始)
-- [核心功能](#-核心功能)
-- [互動式心智圖](#-互動式心智圖)
-- [使用指南](#-使用指南)
-- [進階功能](#-進階功能)
-- [專案架構](#-專案架構)
-- [常見問題](#-常見問題)
-- [貢獻者專區](#-貢獻者專區)
-- [授權條款](#-授權條款)
+- 我們的獨特之處
+- 為什麼選擇這個框架？
+- 快速開始
+- 核心功能
+- 互動式心智圖
+- 使用指南
+- 進階功能
+- 專案架構
+- 常見問題
+- 貢獻者專區
+- 授權條款
 
 ---
 
@@ -737,8 +738,8 @@ python tools/generate_mindmaps.py --html
 
 ### 文件
 
-- [`.dev/README.md`](.dev/README.md) — 維護者指南
-- [`.dev/TESTING.md`](.dev/TESTING.md) — 測試文件
+- [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — 維護者指南
+- [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — 測試文件
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — 部署指南
 
 ---
