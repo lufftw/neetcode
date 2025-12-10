@@ -164,10 +164,10 @@ python -m mkdocs build
 
 ## Step 3: Generate Interactive Mind Maps
 
-### 3.1 Generate HTML Mind Maps
+### 3.1 Generate Rule-Based HTML Mind Maps
 
 ```bash
-# Generate all interactive mind maps
+# Generate all interactive mind maps (rule-based)
 python tools/generate_mindmaps.py --html
 
 # Generate specific mind map
@@ -179,7 +179,67 @@ python tools/generate_mindmaps.py --html --autoloader
 
 **Output:** HTML files are generated in `docs/pages/mindmaps/`
 
-### 3.2 Preview Mind Maps Locally
+### 3.2 Generate AI-Powered Mind Maps (Manual Process)
+
+> ⚠️ **Important**: AI mindmaps are **NOT** automatically generated in CI/CD. You must generate them manually and commit the HTML files.
+
+**Why manual?**
+- Requires OpenAI API key (should not be stored in CI/CD)
+- API calls cost money (better to control when to regenerate)
+- Allows review before committing
+
+**Steps:**
+
+1. **Set up API key locally:**
+   ```bash
+   # Windows PowerShell
+   $env:OPENAI_API_KEY = "sk-..."
+   
+   # Linux/macOS
+   export OPENAI_API_KEY="sk-..."
+   ```
+
+2. **Generate AI mindmaps:**
+   ```bash
+   # Generate both English and 繁體中文 versions
+   python tools/generate_mindmaps_ai.py --config tools/mindmap_ai_config.toml
+   
+   # Or use interactive mode
+   python tools/generate_mindmaps_ai.py
+   ```
+
+3. **Verify generated files:**
+   ```bash
+   # Check that HTML files were created
+   ls docs/pages/mindmaps/neetcode_ontology_ai_*.html
+   # Should see:
+   # - neetcode_ontology_ai_en.html
+   # - neetcode_ontology_ai_zh-TW.html
+   ```
+
+4. **Commit and push:**
+   ```bash
+   # Add AI mindmap HTML files (they are tracked in git)
+   git add docs/pages/mindmaps/neetcode_ontology_ai_*.html
+   git commit -m "docs: Update AI mind maps"
+   git push
+   ```
+
+5. **CI/CD will automatically deploy** the committed HTML files.
+
+**Configuration:**
+- Edit `tools/mindmap_ai_config.toml` to customize:
+  - Output language(s): `language = ["en", "zh-TW"]`
+  - HTML generation: `generate_html = true`
+  - Output directory: `html_directory = "docs/pages/mindmaps"`
+
+**Note:** The `.gitignore` file is configured to track AI mindmap HTML files:
+```
+docs/pages/                    # Ignore all generated HTML
+!docs/pages/mindmaps/neetcode_ontology_ai_*.html  # But track AI mindmaps
+```
+
+### 3.3 Preview Mind Maps Locally
 
 ```bash
 # Method 1: Open HTML directly
@@ -242,8 +302,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       
-      - name: Generate mind maps
+      - name: Generate rule-based mind maps
         run: python tools/generate_mindmaps.py --html
+      
+      # Note: AI mindmaps are NOT generated in CI/CD
+      # They must be manually generated and committed to the repository
+      # See Step 3.2 for manual generation instructions
       
       - name: Build MkDocs site
         run: python -m mkdocs build
@@ -319,34 +383,58 @@ The README.md already includes links to interactive mind maps:
 
 ## 🔄 Complete Workflow Summary
 
+### Rule-Based Mind Maps (Auto-Generated in CI/CD)
+
 ```
 1. Edit ontology/ or meta/problems/
    ↓
-2. Generate mind maps locally (optional)
+2. git push
+   ↓
+3. GitHub Actions automatically triggers
+   ↓
+4. Generate rule-based mind maps (Markdown + HTML)
    python tools/generate_mindmaps.py --html
    ↓
-3. Build MkDocs site locally (optional)
+5. Build MkDocs site
    python -m mkdocs build
-   python -m mkdocs serve  # Preview
    ↓
-4. git push (or manually run generation scripts)
+6. Deploy to GitHub Pages
+   ↓
+7. Visit https://yourusername.github.io/neetcode/
+```
+
+### AI-Powered Mind Maps (Manual Process)
+
+```
+1. Set up OpenAI API key locally
+   $env:OPENAI_API_KEY = "sk-..."
+   ↓
+2. Generate AI mindmaps locally
+   python tools/generate_mindmaps_ai.py
+   ↓
+3. Review generated HTML files
+   docs/pages/mindmaps/neetcode_ontology_ai_*.html
+   ↓
+4. Commit and push
+   git add docs/pages/mindmaps/neetcode_ontology_ai_*.html
+   git commit -m "docs: Update AI mind maps"
+   git push
    ↓
 5. GitHub Actions automatically triggers
    ↓
-6. Generate mind maps (Markdown + HTML)
-   ↓
-7. Build MkDocs site
+6. Build MkDocs site (uses committed AI mindmap HTML files)
    python -m mkdocs build
    ↓
-8. Deploy to GitHub Pages
+7. Deploy to GitHub Pages
    ↓
-9. Visit https://yourusername.github.io/neetcode/
-   ↓
-10. Use interactive mind maps!
-    - 🖱️ Drag to pan
-    - 🔍 Scroll to zoom
-    - 👆 Click to fold/unfold
+8. Visit https://yourusername.github.io/neetcode/mindmaps/
 ```
+
+### Using Interactive Mind Maps
+
+- 🖱️ Drag to pan
+- 🔍 Scroll to zoom
+- 👆 Click to fold/unfold
 
 ---
 
@@ -362,7 +450,19 @@ A: Yes! Configure it in Settings → Pages → Custom domain.
 
 ### Q: How do I update mind maps?
 
-A: After modifying `ontology/` or `meta/`, push to GitHub. GitHub Actions will automatically regenerate and redeploy.
+**For rule-based mind maps:**
+After modifying `ontology/` or `meta/`, push to GitHub. GitHub Actions will automatically regenerate and redeploy.
+
+**For AI-powered mind maps:**
+1. Generate locally with `python tools/generate_mindmaps_ai.py`
+2. Commit the generated HTML files (`docs/pages/mindmaps/neetcode_ontology_ai_*.html`)
+3. Push to GitHub
+4. CI/CD will automatically deploy the committed files
+
+**Why manual for AI mindmaps?**
+- Requires OpenAI API key (not stored in CI/CD for security)
+- Allows cost control (you decide when to regenerate)
+- Enables review before committing
 
 ### Q: How do I preview locally?
 

@@ -47,4 +47,7 @@ site/
 
 # Generated HTML mindmaps (use --html to regenerate)
 docs/pages/
+# But track AI-generated mindmaps (manually generated and committed)
+!docs/pages/mindmaps/neetcode_ontology_ai_*.html
+!docs/mindmaps/neetcode_ontology_ai_*.md
 
