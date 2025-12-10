@@ -14,7 +14,7 @@ deepens your algorithmic thinking.
 
 **🔴 Hard** — 4 approaches
 
-📁 [View All Solutions](../../solutions/0023_merge_k_sorted_lists.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py" target="_blank" rel="noopener noreferrer">View All Solutions</a>
 
 ### 🎯 Default (Base)
 
@@ -50,7 +50,7 @@ deepens your algorithmic thinking.
 
 **🟡 Medium** — 3 approaches
 
-📁 [View All Solutions](../../solutions/0003_longest_substring_without_repeating_characters.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">View All Solutions</a>
 
 ### 🎯 Default (Base)
 
@@ -76,7 +76,7 @@ deepens your algorithmic thinking.
 
 **🔴 Hard** — 3 approaches
 
-📁 [View All Solutions](../../solutions/0025_reverse_nodes_in_k_group.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py" target="_blank" rel="noopener noreferrer">View All Solutions</a>
 
 ### 🎯 Default (Base)
 
@@ -104,7 +104,7 @@ deepens your algorithmic thinking.
 
 **🟡 Medium** — 2 approaches
 
-📁 [View All Solutions](../../solutions/0340_longest_substring_with_at_most_k_distinct.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py" target="_blank" rel="noopener noreferrer">View All Solutions</a>
 
 ### 🔄 Default
 

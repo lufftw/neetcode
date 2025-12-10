@@ -13,23 +13,23 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🟡 Medium** — Topics: string, hash_table, sliding_window
 
-📁 [View Solution](../../solutions/0003_longest_substring_without_repeating_characters.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
 - LeetCode 0159 *(metadata not yet added)*
-- 🟡 [LeetCode 340 - Longest Substring with At Most K Distinct Characters](../../solutions/0340_longest_substring_with_at_most_k_distinct.py)
-- 🔴 [LeetCode 76 - Minimum Window Substring](../../solutions/0076_minimum_window_substring.py)
-- 🟡 [LeetCode 438 - Find All Anagrams in a String](../../solutions/0438_find_all_anagrams_in_a_string.py)
-- 🟡 [LeetCode 209 - Minimum Size Subarray Sum](../../solutions/0209_minimum_size_subarray_sum.py)
-- 🟡 [LeetCode 567 - Permutation in String](../../solutions/0567_permutation_in_string.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py" target="_blank" rel="noopener noreferrer">LeetCode 340 - Longest Substring with At Most K Distinct Characters</a>
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py" target="_blank" rel="noopener noreferrer">LeetCode 76 - Minimum Window Substring</a>
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py" target="_blank" rel="noopener noreferrer">LeetCode 438 - Find All Anagrams in a String</a>
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py" target="_blank" rel="noopener noreferrer">LeetCode 209 - Minimum Size Subarray Sum</a>
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py" target="_blank" rel="noopener noreferrer">LeetCode 567 - Permutation in String</a>
 - LeetCode 0424 *(metadata not yet added)*
 
 ## LeetCode 994 - Rotting Oranges
 
 **🟡 Medium** — Topics: array, breadth_first_search, matrix
 
-📁 [View Solution](../../solutions/0994_rotting_oranges.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
@@ -44,7 +44,7 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🟡 Medium** — Topics: linked_list, math, recursion
 
-📁 [View Solution](../../solutions/0002_add_two_numbers.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
@@ -58,26 +58,26 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🔴 Hard** — Topics: string, hash_table, sliding_window
 
-📁 [View Solution](../../solutions/0076_minimum_window_substring.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
-- 🟡 [LeetCode 3 - Longest Substring Without Repeating Characters](../../solutions/0003_longest_substring_without_repeating_characters.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">LeetCode 3 - Longest Substring Without Repeating Characters</a>
 - LeetCode 0030 *(metadata not yet added)*
-- 🟡 [LeetCode 209 - Minimum Size Subarray Sum](../../solutions/0209_minimum_size_subarray_sum.py)
-- 🟡 [LeetCode 438 - Find All Anagrams in a String](../../solutions/0438_find_all_anagrams_in_a_string.py)
-- 🟡 [LeetCode 567 - Permutation in String](../../solutions/0567_permutation_in_string.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py" target="_blank" rel="noopener noreferrer">LeetCode 209 - Minimum Size Subarray Sum</a>
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py" target="_blank" rel="noopener noreferrer">LeetCode 438 - Find All Anagrams in a String</a>
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py" target="_blank" rel="noopener noreferrer">LeetCode 567 - Permutation in String</a>
 
 ## LeetCode 209 - Minimum Size Subarray Sum
 
 **🟡 Medium** — Topics: array, binary_search, sliding_window
 
-📁 [View Solution](../../solutions/0209_minimum_size_subarray_sum.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
-- 🟡 [LeetCode 3 - Longest Substring Without Repeating Characters](../../solutions/0003_longest_substring_without_repeating_characters.py)
-- 🔴 [LeetCode 76 - Minimum Window Substring](../../solutions/0076_minimum_window_substring.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">LeetCode 3 - Longest Substring Without Repeating Characters</a>
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py" target="_blank" rel="noopener noreferrer">LeetCode 76 - Minimum Window Substring</a>
 - LeetCode 0325 *(metadata not yet added)*
 - LeetCode 0718 *(metadata not yet added)*
 - LeetCode 0862 *(metadata not yet added)*
@@ -86,13 +86,13 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🟡 Medium** — Topics: string, hash_table, sliding_window
 
-📁 [View Solution](../../solutions/0340_longest_substring_with_at_most_k_distinct.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
-- 🟡 [LeetCode 3 - Longest Substring Without Repeating Characters](../../solutions/0003_longest_substring_without_repeating_characters.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">LeetCode 3 - Longest Substring Without Repeating Characters</a>
 - LeetCode 0159 *(metadata not yet added)*
-- 🔴 [LeetCode 76 - Minimum Window Substring](../../solutions/0076_minimum_window_substring.py)
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py" target="_blank" rel="noopener noreferrer">LeetCode 76 - Minimum Window Substring</a>
 - LeetCode 0424 *(metadata not yet added)*
 - LeetCode 0904 *(metadata not yet added)*
 
@@ -100,7 +100,7 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🟢 Easy** — Topics: array, hash_table
 
-📁 [View Solution](../../solutions/0001_two_sum.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
@@ -113,12 +113,12 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🔴 Hard** — Topics: linked_list, divide_and_conquer, heap
 
-📁 [View Solution](../../solutions/0023_merge_k_sorted_lists.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
 - LeetCode 0021 *(metadata not yet added)*
-- 🔴 [LeetCode 4 - Median of Two Sorted Arrays](../../solutions/0004_median_of_two_sorted_arrays.py)
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py" target="_blank" rel="noopener noreferrer">LeetCode 4 - Median of Two Sorted Arrays</a>
 - LeetCode 0378 *(metadata not yet added)*
 - LeetCode 0264 *(metadata not yet added)*
 
@@ -126,37 +126,37 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🟡 Medium** — Topics: string, hash_table, sliding_window
 
-📁 [View Solution](../../solutions/0438_find_all_anagrams_in_a_string.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
-- 🟡 [LeetCode 3 - Longest Substring Without Repeating Characters](../../solutions/0003_longest_substring_without_repeating_characters.py)
-- 🔴 [LeetCode 76 - Minimum Window Substring](../../solutions/0076_minimum_window_substring.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">LeetCode 3 - Longest Substring Without Repeating Characters</a>
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py" target="_blank" rel="noopener noreferrer">LeetCode 76 - Minimum Window Substring</a>
 - LeetCode 0242 *(metadata not yet added)*
-- 🟡 [LeetCode 567 - Permutation in String](../../solutions/0567_permutation_in_string.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py" target="_blank" rel="noopener noreferrer">LeetCode 567 - Permutation in String</a>
 
 ## LeetCode 567 - Permutation in String
 
 **🟡 Medium** — Topics: string, hash_table, two_pointers
 
-📁 [View Solution](../../solutions/0567_permutation_in_string.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
-- 🟡 [LeetCode 3 - Longest Substring Without Repeating Characters](../../solutions/0003_longest_substring_without_repeating_characters.py)
-- 🔴 [LeetCode 76 - Minimum Window Substring](../../solutions/0076_minimum_window_substring.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py" target="_blank" rel="noopener noreferrer">LeetCode 3 - Longest Substring Without Repeating Characters</a>
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py" target="_blank" rel="noopener noreferrer">LeetCode 76 - Minimum Window Substring</a>
 - LeetCode 0242 *(metadata not yet added)*
-- 🟡 [LeetCode 438 - Find All Anagrams in a String](../../solutions/0438_find_all_anagrams_in_a_string.py)
+- 🟡 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py" target="_blank" rel="noopener noreferrer">LeetCode 438 - Find All Anagrams in a String</a>
 
 ## LeetCode 4 - Median of Two Sorted Arrays
 
 **🔴 Hard** — Topics: array, binary_search, divide_and_conquer
 
-📁 [View Solution](../../solutions/0004_median_of_two_sorted_arrays.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
-- 🔴 [LeetCode 23 - Merge k Sorted Lists](../../solutions/0023_merge_k_sorted_lists.py)
+- 🔴 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py" target="_blank" rel="noopener noreferrer">LeetCode 23 - Merge k Sorted Lists</a>
 - LeetCode 0021 *(metadata not yet added)*
 - LeetCode 0215 *(metadata not yet added)*
 
@@ -164,7 +164,7 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🔴 Hard** — Topics: linked_list, recursion
 
-📁 [View Solution](../../solutions/0025_reverse_nodes_in_k_group.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 
@@ -176,7 +176,7 @@ Problems and their related problems. Practice related problems together to reinf
 
 **🔴 Hard** — Topics: array, backtracking
 
-📁 [View Solution](../../solutions/0051_n_queens.py)
+📁 <a href="https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py" target="_blank" rel="noopener noreferrer">View Solution</a>
 
 ### Related Problems
 

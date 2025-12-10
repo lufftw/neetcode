@@ -324,18 +324,29 @@ class ProblemData:
             # Return relative path from docs/mindmaps/
             return f"../../{solution_path}"
     
-    def markdown_link(self, include_difficulty: bool = True, use_github_link: bool | None = None) -> str:
-        """Return markdown link: [LeetCode N - Title](path)
+    def markdown_link(self, include_difficulty: bool = True, use_github_link: bool | None = None, open_in_new_tab: bool = True) -> str:
+        """Return markdown link: [LeetCode N - Title](path) or HTML link
         
         Args:
             include_difficulty: Include difficulty icon
             use_github_link: Use GitHub repo link instead of relative path.
                            If None, use config setting.
+            open_in_new_tab: If True and link is GitHub URL, use HTML link with target="_blank"
         """
         num = self.leetcode_id if self.leetcode_id else int(self.id)
         name = f"LeetCode {num} - {self.title}"
         link = self.solution_link(use_github_link=use_github_link)
         
+        # Use HTML link for GitHub URLs to support target="_blank"
+        if link and open_in_new_tab and link.startswith("http"):
+            # HTML link format for markmap (markdown supports HTML)
+            if include_difficulty:
+                icon = self.difficulty_icon
+                return f'{icon} <a href="{link}" target="_blank" rel="noopener noreferrer">{name}</a>'
+            else:
+                return f'<a href="{link}" target="_blank" rel="noopener noreferrer">{name}</a>'
+        
+        # Standard markdown link
         if include_difficulty:
             icon = self.difficulty_icon
             if link:
@@ -792,7 +803,7 @@ def generate_problem_relations(ontology: OntologyData, problems: dict[str, Probl
         # Solution link
         solution_link = prob.solution_link()
         if solution_link:
-            lines.append(f"📁 [View Solution]({solution_link})")
+            lines.append(f'📁 <a href="{solution_link}" target="_blank" rel="noopener noreferrer">View Solution</a>')
             lines.append("")
         
         lines.append("### Related Problems")
@@ -841,7 +852,7 @@ def generate_solution_variants(ontology: OntologyData, problems: dict[str, Probl
         
         solution_link = prob.solution_link()
         if solution_link:
-            lines.append(f"📁 [View All Solutions]({solution_link})")
+            lines.append(f'📁 <a href="{solution_link}" target="_blank" rel="noopener noreferrer">View All Solutions</a>')
             lines.append("")
         
         for sol in prob.solutions:
@@ -1669,10 +1680,10 @@ Examples:
         generate_index(args.output, list(results.keys()))
 
     print(f"\n[OK] Generated {len(results)} mindmaps")
-    print(f"   📁 Markdown: {args.output}")
+    print(f"   [MD] Markdown: {args.output}")
     if args.html:
-        print(f"   🌐 HTML:     {args.pages_dir}")
-        print(f"\n💡 To preview locally:")
+        print(f"   [HTML] HTML:     {args.pages_dir}")
+        print(f"\n[Tip] To preview locally:")
         print(f"   cd {args.pages_dir}")
         print(f"   python -m http.server 8000")
         print(f"   # Then open http://localhost:8000")

@@ -8,7 +8,7 @@
 
 A **high-performance Python LeetCode / algorithm practice framework** with reproducible random test generation, automated validation via custom `JUDGE_FUNC`, multi-solution benchmarking, and full VS Code debugging workflow integration. Designed for **competitive programming**, **algorithm engineering**, and **large-scale stress testing**.
 
-> 🚀 **Key Features**: Automated test runner for algorithms | Reproducible random test generator | Judge-function validation (Codeforces/ICPC style) | Multi-solution benchmarking | VS Code debugger integration | Stress testing toolkit
+> 🚀 **Key Features**: Automated test runner for algorithms | Reproducible random test generator | Judge-function validation (Codeforces/ICPC style) | Multi-solution benchmarking | VS Code debugger integration | Stress testing toolkit | Interactive mind maps for pattern visualization
 
 ---
 
@@ -29,49 +29,81 @@ Most LeetCode repos are just solution collections. **This framework is a complet
 
 ## ❓ Frequently Asked Questions
 
-<details>
-<summary><strong>What problems does this framework solve?</strong></summary>
+??? question "What problems does this framework solve?"
 
-- Running multiple algorithm implementations automatically
-- Generating large-scale reproducible test data for stress testing
-- Benchmarking solutions to identify performance differences
-- Debugging LeetCode-style problems with VS Code integration
-- Validating outputs using custom logic beyond simple `.out` file comparison
+    - Running multiple algorithm implementations automatically
+    - Generating large-scale reproducible test data for stress testing
+    - Benchmarking solutions to identify performance differences
+    - Debugging LeetCode-style problems with VS Code integration
+    - Validating outputs using custom logic beyond simple `.out` file comparison
 
-</details>
+??? question "Who is this framework for?"
 
-<details>
-<summary><strong>Who is this framework for?</strong></summary>
+    - **Competitive programmers** preparing for contests (Codeforces, ICPC, etc.)
+    - **Software engineers** preparing for coding interviews (FAANG, etc.)
+    - **Students** taking data structures and algorithms courses
+    - **Researchers** needing large-scale algorithm stress tests
 
-- **Competitive programmers** preparing for contests (Codeforces, ICPC, etc.)
-- **Software engineers** preparing for coding interviews (FAANG, etc.)
-- **Students** taking data structures and algorithms courses
-- **Researchers** needing large-scale algorithm stress tests
+??? question "How is this different from just copying LeetCode solutions?"
 
-</details>
+    This is not a solution collection — it's a **testing infrastructure**. You write solutions, and the framework:
+    1. Runs them against static test cases
+    2. Generates random test cases automatically
+    3. Validates correctness using custom judge functions
+    4. Benchmarks multiple solutions against each other
+    5. Estimates time complexity empirically
 
-<details>
-<summary><strong>How is this different from just copying LeetCode solutions?</strong></summary>
+??? question "Can I use this for interview preparation?"
 
-This is not a solution collection — it's a **testing infrastructure**. You write solutions, and the framework:
-1. Runs them against static test cases
-2. Generates random test cases automatically
-3. Validates correctness using custom judge functions
-4. Benchmarks multiple solutions against each other
-5. Estimates time complexity empirically
+    Yes! The framework is perfect for interview prep because:
+    - You can practice writing solutions in **real LeetCode format**
+    - The random test generator helps you find **edge cases you might miss**
+    - Multi-solution benchmarking shows which approach is **actually faster**
+    - VS Code integration makes **debugging easy**
 
-</details>
+---
 
-<details>
-<summary><strong>Can I use this for interview preparation?</strong></summary>
+## 🧠 Interactive Mind Maps
 
-Yes! The framework is perfect for interview prep because:
-- You can practice writing solutions in **real LeetCode format**
-- The random test generator helps you find **edge cases you might miss**
-- Multi-solution benchmarking shows which approach is **actually faster**
-- VS Code integration makes **debugging easy**
+Visualize algorithm patterns, problem relationships, and learning paths with interactive mind maps powered by [Markmap](https://markmap.js.org/).
 
-</details>
+### Available Mind Maps
+
+Explore the framework's ontology and problem relationships through interactive visualizations:
+
+- **📐 Pattern Hierarchy** - API Kernels → Patterns → Problems hierarchy
+- **👨‍👩‍👧‍👦 Family Derivation** - Base templates and derived problem variants
+- **⚡ Algorithm Usage** - Problems organized by algorithms they use
+- **🏗️ Data Structure Usage** - Problems organized by data structures
+- **🏢 Company Coverage** - Problems frequently asked by companies
+- **🗺️ Learning Roadmaps** - Curated problem sequences (NeetCode 150, Blind 75, etc.)
+- **🔗 Problem Relations** - Related problems network
+- **🔀 Solution Variants** - Problems with multiple solution approaches
+- **📊 Difficulty × Topics** - Topics organized by difficulty level
+
+### View Mind Maps
+
+**Online**: Visit [https://lufftw.github.io/neetcode/mindmaps/](https://lufftw.github.io/neetcode/mindmaps/) to explore interactive mind maps in your browser.
+
+**Local**: Generate mind maps locally using the included tools:
+
+```bash
+# Generate all mind maps (Markdown format)
+python tools/generate_mindmaps.py
+
+# Generate interactive HTML files for local viewing
+python tools/generate_mindmaps.py --html
+
+# Generate specific mind map type
+python tools/generate_mindmaps.py --type pattern_hierarchy --html
+```
+
+### Features
+
+- **Interactive Navigation** - Drag, zoom, and expand/collapse nodes
+- **GitHub Integration** - Click problem links to view solutions on GitHub
+- **Pattern Discovery** - Understand how problems relate to each other
+- **Learning Paths** - Follow structured roadmaps for systematic learning
 
 ---
 
@@ -80,6 +112,8 @@ Yes! The framework is perfect for interview prep because:
 - [Why This Framework is Different](#-why-this-framework-is-different)
 
 - [Frequently Asked Questions](#-frequently-asked-questions)
+
+- [Interactive Mind Maps](#-interactive-mind-maps)
 
 - [Project Structure](#-project-structure)
 
