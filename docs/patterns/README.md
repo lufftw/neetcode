@@ -16,7 +16,7 @@ This directory contains comprehensive documentation for each **API Kernel** and 
 | `BacktrackingExploration` | *coming soon* | Exhaustive search with pruning | LeetCode 51, 52, 46, 78 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `BinarySearchBoundary` | *coming soon* | Binary search boundaries | LeetCode 4, 33, 34, 35 |
-| `TwoPointerPartition` | *coming soon* | Two pointer techniques | LeetCode 1, 15, 167, 75 |
+| `TwoPointersTraversal` | [two_pointers.md](two_pointers.md) | Two pointer traversal patterns | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
 | `MonotonicStack` | *coming soon* | Monotonic stack patterns | LeetCode 84, 85, 496 |
 
@@ -80,18 +80,34 @@ meta/
 
 ```
 meta/patterns/sliding_window/
+├── _config.toml             # File ordering configuration (optional)
 ├── _header.md               # Invariant, template structure, strategies
 ├── _comparison.md           # Pattern comparison table
 ├── _decision.md             # When to use sliding window
 ├── _templates.md            # Maximize/minimize/fixed templates
 ├── 0003_base.md             # LeetCode 3 - Base template
 ├── 0076_min_window.md       # LeetCode 76 - Minimum Window Substring
-├── 0159_k_distinct.md       # LeetCode 159 - At Most Two Distinct
 ├── 0209_min_subarray.md     # LeetCode 209 - Minimum Size Subarray Sum
 ├── 0340_k_distinct.md       # LeetCode 340 - At Most K Distinct
 ├── 0438_anagrams.md         # LeetCode 438 - Find All Anagrams
 └── 0567_permutation.md      # LeetCode 567 - Permutation in String
 ```
+
+### File Ordering Configuration
+
+Each pattern directory can include a `_config.toml` file to control the order of files in the final document:
+
+```toml
+# meta/patterns/<pattern_name>/_config.toml
+header_files = ["_header.md"]
+problem_files = ["0003_base.md", "0076_min_window.md", ...]
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+```
+
+- **If `_config.toml` exists**: Files are ordered exactly as specified
+- **If `_config.toml` doesn't exist**: Falls back to default ordering (alphabetical for problems)
+
+See [`meta/patterns/README.md`](../../meta/patterns/README.md) for detailed documentation.
 
 ---
 

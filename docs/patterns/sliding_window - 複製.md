@@ -11,14 +11,13 @@ This document presents the **canonical sliding window template** and all its maj
 
 1. [Core Concepts](#1-core-concepts)
 2. [Base Template: Unique Characters (LeetCode 3)](#2-base-template-unique-characters-leetcode-3)
-3. [Variation: At Most K Distinct Characters (LeetCode 340/159)](#3-variation-at-most-k-distinct-characters-leetcode-340159)
-4. [Variation: Minimum Window Substring (LeetCode 76)](#4-variation-minimum-window-substring-leetcode-76)
-5. [Variation: Permutation in String (LeetCode 567)](#5-variation-permutation-in-string-leetcode-567)
-6. [Variation: Find All Anagrams (LeetCode 438)](#6-variation-find-all-anagrams-leetcode-438)
-7. [Variation: Minimum Size Subarray Sum (LeetCode 209)](#7-variation-minimum-size-subarray-sum-leetcode-209)
+3. [Variation A: At Most K Distinct Characters (LeetCode 340/159)](#3-variation-a-at-most-k-distinct-characters-leetcode-340159)
+4. [Variation B: Minimum Window Substring (LeetCode 76)](#4-variation-b-minimum-window-substring-leetcode-76)
+5. [Variation C: Permutation in String (LeetCode 567)](#5-variation-c-permutation-in-string-leetcode-567)
+6. [Variation D: Find All Anagrams (LeetCode 438)](#6-variation-d-find-all-anagrams-leetcode-438)
+7. [Variation E: Minimum Size Subarray Sum (LeetCode 209)](#7-variation-e-minimum-size-subarray-sum-leetcode-209)
 8. [Pattern Comparison Table](#8-pattern-comparison-table)
 9. [When to Use Sliding Window](#9-when-to-use-sliding-window)
-10. [Template Quick Reference](#10-template-quick-reference)
 
 ---
 
@@ -81,8 +80,7 @@ def sliding_window_template(sequence):
 ## 2. Base Template: Unique Characters (LeetCode 3)
 
 > **Problem**: Find the length of the longest substring without repeating characters.  
-> **Invariant**: All characters in window `[left, right]` are unique.  
-> **Role**: BASE TEMPLATE for `SubstringSlidingWindow` API Kernel.
+> **Invariant**: All characters in window `[left, right]` are unique.
 
 ### 2.1 Implementation
 
@@ -160,7 +158,7 @@ Answer: 3 ("abc")
 
 ---
 
-## 3. Variation: At Most K Distinct Characters (LeetCode 340/159)
+## 3. Variation A: At Most K Distinct Characters (LeetCode 340/159)
 
 > **Problem**: Find the length of the longest substring with at most K distinct characters.  
 > **Invariant**: Number of distinct characters in window ≤ K.  
@@ -243,7 +241,7 @@ def length_of_longest_substring_two_distinct(s: str) -> int:
 
 ---
 
-## 4. Variation: Minimum Window Substring (LeetCode 76)
+## 4. Variation B: Minimum Window Substring (LeetCode 76)
 
 > **Problem**: Find the minimum window in `s` that contains all characters of `t`.  
 > **Invariant**: Window contains all required characters with sufficient frequency.  
@@ -353,7 +351,7 @@ This reduces per-iteration cost from O(|t|) to O(1).
 
 ---
 
-## 5. Variation: Permutation in String (LeetCode 567)
+## 5. Variation C: Permutation in String (LeetCode 567)
 
 > **Problem**: Check if `s2` contains any permutation of `s1`.  
 > **Invariant**: Window has exact same character frequencies as `s1`.  
@@ -451,7 +449,7 @@ Source:  "eidbaooo"
 
 ---
 
-## 6. Variation: Find All Anagrams (LeetCode 438)
+## 6. Variation D: Find All Anagrams (LeetCode 438)
 
 > **Problem**: Find all start indices of `p`'s anagrams in `s`.  
 > **Invariant**: Window has exact same character frequencies as `p`.  
@@ -528,15 +526,15 @@ def find_anagrams(s: str, p: str) -> list[int]:
 
 ### 6.2 Comparison: Permutation vs Anagram
 
-| Aspect | Permutation (LeetCode 567) | Anagram (LeetCode 438) |
-|--------|----------------------------|------------------------|
+| Aspect | Permutation (567) | Anagram (438) |
+|--------|-------------------|---------------|
 | Return type | `bool` | `list[int]` |
 | On match | Return `True` | Append to result |
 | After match | N/A | Continue searching |
 
 ---
 
-## 7. Variation: Minimum Size Subarray Sum (LeetCode 209)
+## 7. Variation E: Minimum Size Subarray Sum (LeetCode 209)
 
 > **Problem**: Find the minimal length subarray with sum ≥ target.  
 > **Invariant**: Window sum ≥ target.  
@@ -647,9 +645,9 @@ Is the answer a contiguous subarray/substring?
 
 ---
 
-## 10. Template Quick Reference
+## Appendix: Template Quick Reference
 
-### 10.1 Maximize Window (Variable Size)
+### Maximize Window (Variable Size)
 
 ```python
 def maximize_window(sequence):
@@ -672,7 +670,7 @@ def maximize_window(sequence):
     return max_result
 ```
 
-### 10.2 Minimize Window (Variable Size)
+### Minimize Window (Variable Size)
 
 ```python
 def minimize_window(sequence):
@@ -693,7 +691,7 @@ def minimize_window(sequence):
     return min_result if min_result != float('inf') else 0
 ```
 
-### 10.3 Fixed Size Window
+### Fixed Size Window
 
 ```python
 def fixed_window(sequence, k):
@@ -715,10 +713,6 @@ def fixed_window(sequence, k):
     return result
 ```
 
-
-
 ---
-
-
 
 *Document generated for NeetCode Practice Framework — API Kernel: SubstringSlidingWindow*

@@ -1,0 +1,26 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by LeetCode number or custom order)
+# Order matches original document: 3 (base), 340, 76, 567, 438, 209
+problem_files = [
+    "0003_base.md",
+    "0340_k_distinct.md",
+    "0076_min_window.md",
+    "0567_permutation.md",
+    "0438_anagrams.md",
+    "0209_min_subarray.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
