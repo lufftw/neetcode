@@ -46,6 +46,68 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output contains all unique triplets summing to 0.
+    
+    Args:
+        actual: Program output (may be string with newlines or list)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated integers)
+    
+    Returns:
+        bool: True if all triplets are valid and complete
+    """
+    line = input_data.strip()
+    nums = list(map(int, line.split())) if line else []
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        lines = actual.strip().split('\n')
+        actual_triplets = []
+        for line in lines:
+            if line.strip():
+                triplet = list(map(int, line.strip().split()))
+                if len(triplet) == 3:
+                    actual_triplets.append(tuple(sorted(triplet)))
+    elif isinstance(actual, list):
+        actual_triplets = [tuple(sorted(t)) for t in actual if len(t) == 3]
+    else:
+        return False
+    
+    # Compute correct answer
+    correct_triplets = _brute_force_3sum(nums)
+    correct_set = set(tuple(sorted(t)) for t in correct_triplets)
+    actual_set = set(actual_triplets)
+    
+    # Check if sets match
+    return actual_set == correct_set and len(actual_triplets) == len(actual_set)
+
+
+def _brute_force_3sum(nums: List[int]) -> List[List[int]]:
+    """O(n³) brute force solution for verification."""
+    n = len(nums)
+    if n < 3:
+        return []
+    
+    result_set = set()
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                if nums[i] + nums[j] + nums[k] == 0:
+                    triplet = tuple(sorted([nums[i], nums[j], nums[k]]))
+                    result_set.add(triplet)
+    
+    return [list(t) for t in result_set]
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n²) Sort + Two Pointers
 # ============================================================================
 

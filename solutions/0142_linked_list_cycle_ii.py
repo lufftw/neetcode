@@ -61,6 +61,50 @@ class ListNode:
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct cycle start index.
+    
+    Args:
+        actual: Program output (integer as string or int, or -1 for no cycle)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: node values, Line 2: cycle position)
+    
+    Returns:
+        bool: True if correct cycle start index
+    """
+    lines = input_data.strip().split('\n')
+    values = list(map(int, lines[0].split())) if lines[0] else []
+    pos = int(lines[1]) if len(lines) > 1 else -1
+    
+    # Build linked list
+    if not values:
+        correct_pos = -1
+    else:
+        nodes = [ListNode(v) for v in values]
+        for i in range(len(nodes) - 1):
+            nodes[i].next = nodes[i + 1]
+        if pos >= 0 and pos < len(nodes):
+            nodes[-1].next = nodes[pos]
+            correct_pos = pos
+        else:
+            correct_pos = -1
+    
+    # Parse actual output
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct_pos
+    except (ValueError, TypeError):
+        return False
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Floyd's Algorithm (Two Phases)
 # ============================================================================
 

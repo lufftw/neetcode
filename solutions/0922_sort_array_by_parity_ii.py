@@ -48,6 +48,49 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output has even values at even indices, odd at odd indices.
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated integers)
+    
+    Returns:
+        bool: True if parity matches indices
+    """
+    line = input_data.strip()
+    nums = list(map(int, line.split())) if line else []
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_nums = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_nums = actual
+    else:
+        return False
+    
+    # Check parity constraint
+    for i, num in enumerate(actual_nums):
+        if i % 2 == 0:
+            if num % 2 != 0:
+                return False
+        else:
+            if num % 2 != 1:
+                return False
+    
+    # Check that all elements from original are present
+    return sorted(actual_nums) == sorted(nums)
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Two Independent Pointers
 # ============================================================================
 

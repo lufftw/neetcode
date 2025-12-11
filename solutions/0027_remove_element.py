@@ -44,6 +44,55 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output correctly removes all occurrences of val.
+    
+    Args:
+        actual: Program output (may be string with newlines or tuple)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: nums, Line 2: val)
+    
+    Returns:
+        bool: True if correct removal
+    """
+    lines = input_data.strip().split('\n')
+    nums = list(map(int, lines[0].split())) if lines[0] else []
+    val = int(lines[1]) if len(lines) > 1 else 0
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        lines_out = actual.strip().split('\n')
+        if len(lines_out) >= 2:
+            k = int(lines_out[0])
+            result_nums = list(map(int, lines_out[1].split())) if lines_out[1] else []
+        else:
+            return False
+    elif isinstance(actual, tuple) and len(actual) == 2:
+        k, result_nums = actual
+    else:
+        return False
+    
+    # Compute correct answer
+    correct_k, correct_nums = _brute_force_remove_element(nums, val)
+    
+    # Check count and values match
+    return k == correct_k and result_nums == correct_nums
+
+
+def _brute_force_remove_element(nums: List[int], val: int) -> tuple[int, List[int]]:
+    """Brute force element removal."""
+    result = [x for x in nums if x != val]
+    return len(result), result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Same-Direction Pointers
 # ============================================================================
 

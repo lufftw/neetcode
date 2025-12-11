@@ -54,6 +54,46 @@ class ListNode:
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the middle node values.
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated node values)
+    
+    Returns:
+        bool: True if correct middle node values
+    """
+    line = input_data.strip()
+    values = list(map(int, line.split())) if line else []
+    
+    if not values:
+        correct = []
+    else:
+        # Middle index for even length: second middle (len//2)
+        mid_idx = len(values) // 2
+        correct = values[mid_idx:]
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_vals = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_vals = actual
+    else:
+        return False
+    
+    return actual_vals == correct
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Fast-Slow Pointers
 # ============================================================================
 

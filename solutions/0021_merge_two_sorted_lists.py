@@ -57,6 +57,43 @@ class ListNode:
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is correctly merged sorted list.
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: list1, Line 2: list2)
+    
+    Returns:
+        bool: True if correctly merged
+    """
+    lines = input_data.strip().split('\n')
+    list1_vals = list(map(int, lines[0].split())) if lines[0].strip() else []
+    list2_vals = list(map(int, lines[1].split())) if len(lines) > 1 and lines[1].strip() else []
+    
+    # Compute correct answer
+    correct = sorted(list1_vals + list2_vals)
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_vals = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_vals = actual
+    else:
+        return False
+    
+    return actual_vals == correct
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(m + n) Iterative Merge
 # ============================================================================
 

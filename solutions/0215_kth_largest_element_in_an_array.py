@@ -52,6 +52,45 @@ import random
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the kth largest element.
+    
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: nums, Line 2: k)
+    
+    Returns:
+        bool: True if correct kth largest element
+    """
+    lines = input_data.strip().split('\n')
+    nums = list(map(int, lines[0].split())) if lines[0] else []
+    k = int(lines[1]) if len(lines) > 1 else 1
+    
+    # Compute correct answer
+    correct = _brute_force_kth_largest(nums, k)
+    
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _brute_force_kth_largest(nums: List[int], k: int) -> int:
+    """O(n log n) brute force solution for verification."""
+    sorted_nums = sorted(nums, reverse=True)
+    return sorted_nums[k - 1]
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Average Quickselect
 # ============================================================================
 

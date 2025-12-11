@@ -42,6 +42,51 @@ Space: O(1) - Only pointer indices used
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output correctly identifies valid palindrome with one skip.
+    
+    Args:
+        actual: Program output ("true" or "false" as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+    
+    Returns:
+        bool: True if correct validation
+    """
+    s = input_data.strip()
+    
+    # Compute correct answer using recursive check
+    correct = _can_be_palindrome(s, 0, len(s) - 1, 1)
+    
+    # Parse actual output
+    actual_str = str(actual).strip().lower()
+    actual_bool = actual_str == "true"
+    
+    return actual_bool == correct
+
+
+def _can_be_palindrome(s: str, left: int, right: int, skips: int) -> bool:
+    """Check if s[left:right+1] can be palindrome with at most skips deletions."""
+    while left < right:
+        if s[left] != s[right]:
+            if skips == 0:
+                return False
+            # Try skipping left or right
+            return (_can_be_palindrome(s, left + 1, right, skips - 1) or
+                    _can_be_palindrome(s, left, right - 1, skips - 1))
+        left += 1
+        right -= 1
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Opposite Pointers with Skip
 # ============================================================================
 

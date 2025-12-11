@@ -48,6 +48,61 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output correctly removes duplicates.
+    
+    Args:
+        actual: Program output (may be string with newlines or tuple)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated sorted integers)
+    
+    Returns:
+        bool: True if correct deduplication
+    """
+    line = input_data.strip()
+    nums = list(map(int, line.split())) if line else []
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        lines = actual.strip().split('\n')
+        if len(lines) >= 2:
+            k = int(lines[0])
+            result_nums = list(map(int, lines[1].split())) if lines[1] else []
+        else:
+            return False
+    elif isinstance(actual, tuple) and len(actual) == 2:
+        k, result_nums = actual
+    else:
+        return False
+    
+    # Compute correct answer
+    correct_k, correct_nums = _brute_force_remove_duplicates(nums)
+    
+    # Check count and values match
+    return k == correct_k and result_nums == correct_nums
+
+
+def _brute_force_remove_duplicates(nums: List[int]) -> tuple[int, List[int]]:
+    """Brute force deduplication."""
+    if not nums:
+        return 0, []
+    
+    unique = [nums[0]]
+    for i in range(1, len(nums)):
+        if nums[i] != nums[i - 1]:
+            unique.append(nums[i])
+    
+    return len(unique), unique
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Same-Direction Pointers
 # ============================================================================
 

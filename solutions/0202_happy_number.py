@@ -52,6 +52,48 @@ Space: O(1) - Only two number values stored
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output correctly identifies happy number.
+    
+    Args:
+        actual: Program output ("true" or "false" as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (integer n)
+    
+    Returns:
+        bool: True if correct happy number check
+    """
+    n = int(input_data.strip())
+    
+    # Compute correct answer using set to detect cycles
+    correct = _brute_force_happy(n)
+    
+    # Parse actual output
+    actual_str = str(actual).strip().lower()
+    actual_bool = actual_str == "true"
+    
+    return actual_bool == correct
+
+
+def _brute_force_happy(n: int) -> bool:
+    """Check if n is happy using set to detect cycles."""
+    seen = set()
+    
+    while n != 1 and n not in seen:
+        seen.add(n)
+        n = sum(int(d) ** 2 for d in str(n))
+    
+    return n == 1
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(log n) Fast-Slow Pointers
 # ============================================================================
 

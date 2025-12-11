@@ -44,6 +44,50 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output has all zeros moved to end.
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated integers)
+    
+    Returns:
+        bool: True if zeros are at end and relative order preserved
+    """
+    line = input_data.strip()
+    nums = list(map(int, line.split())) if line else []
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_nums = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_nums = actual
+    else:
+        return False
+    
+    # Compute correct answer
+    correct_nums = _brute_force_move_zeroes(nums.copy())
+    
+    # Check if arrays match
+    return actual_nums == correct_nums
+
+
+def _brute_force_move_zeroes(nums: List[int]) -> List[int]:
+    """Brute force move zeroes to end."""
+    non_zeros = [x for x in nums if x != 0]
+    zeros = [0] * (len(nums) - len(non_zeros))
+    return non_zeros + zeros
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Same-Direction with Fill
 # ============================================================================
 

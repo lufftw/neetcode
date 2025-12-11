@@ -56,6 +56,48 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is correctly merged sorted array.
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: nums1, Line 2: m, Line 3: nums2, Line 4: n)
+    
+    Returns:
+        bool: True if correctly merged
+    """
+    lines = input_data.strip().split('\n')
+    nums1 = list(map(int, lines[0].split())) if lines[0] else []
+    m = int(lines[1]) if len(lines) > 1 else 0
+    nums2 = list(map(int, lines[2].split())) if len(lines) > 2 and lines[2].strip() else []
+    n = int(lines[3]) if len(lines) > 3 else 0
+    
+    # Extract actual elements from nums1 (first m elements)
+    nums1_actual = nums1[:m] if m > 0 else []
+    
+    # Compute correct answer
+    correct = sorted(nums1_actual + nums2)
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_vals = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_vals = actual
+    else:
+        return False
+    
+    return actual_vals == correct
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(m + n) Merge from End
 # ============================================================================
 

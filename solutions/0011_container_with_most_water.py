@@ -46,6 +46,53 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the maximum area.
+    
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated heights)
+    
+    Returns:
+        bool: True if correct maximum area
+    """
+    line = input_data.strip()
+    height = list(map(int, line.split())) if line else []
+    
+    # Compute correct answer using brute force
+    correct = _brute_force_max_area(height)
+    
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _brute_force_max_area(height: List[int]) -> int:
+    """O(n²) brute force solution for verification."""
+    n = len(height)
+    if n < 2:
+        return 0
+    
+    max_area = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            area = min(height[i], height[j]) * (j - i)
+            max_area = max(max_area, area)
+    
+    return max_area
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Opposite Pointers
 # ============================================================================
 

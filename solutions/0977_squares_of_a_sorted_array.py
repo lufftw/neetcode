@@ -49,6 +49,42 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is correctly sorted squares.
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated sorted integers)
+    
+    Returns:
+        bool: True if correctly sorted squares
+    """
+    line = input_data.strip()
+    nums = list(map(int, line.split())) if line else []
+    
+    # Compute correct answer
+    correct = sorted(x * x for x in nums)
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_vals = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_vals = actual
+    else:
+        return False
+    
+    return actual_vals == correct
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Opposite Pointers (Write from End)
 # ============================================================================
 

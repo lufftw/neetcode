@@ -62,6 +62,49 @@ class ListNode:
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output correctly detects cycle.
+    
+    Args:
+        actual: Program output ("true" or "false" as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: node values, Line 2: cycle position)
+    
+    Returns:
+        bool: True if correct cycle detection
+    """
+    lines = input_data.strip().split('\n')
+    values = list(map(int, lines[0].split())) if lines[0] else []
+    pos = int(lines[1]) if len(lines) > 1 else -1
+    
+    # Build linked list
+    if not values:
+        has_cycle = False
+    else:
+        nodes = [ListNode(v) for v in values]
+        for i in range(len(nodes) - 1):
+            nodes[i].next = nodes[i + 1]
+        if pos >= 0 and pos < len(nodes):
+            nodes[-1].next = nodes[pos]
+            has_cycle = True
+        else:
+            has_cycle = False
+    
+    # Parse actual output
+    actual_str = str(actual).strip().lower()
+    actual_bool = actual_str == "true"
+    
+    return actual_bool == has_cycle
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Floyd's Cycle Detection
 # ============================================================================
 

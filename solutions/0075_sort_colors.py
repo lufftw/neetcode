@@ -50,6 +50,43 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is correctly sorted (0s, 1s, 2s).
+    
+    Args:
+        actual: Program output (space-separated integers as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (space-separated integers 0, 1, or 2)
+    
+    Returns:
+        bool: True if correctly sorted
+    """
+    line = input_data.strip()
+    nums = list(map(int, line.split())) if line else []
+    
+    # Parse actual output
+    if isinstance(actual, str):
+        actual_nums = list(map(int, actual.strip().split())) if actual.strip() else []
+    elif isinstance(actual, list):
+        actual_nums = actual
+    else:
+        return False
+    
+    # Compute correct answer (sorted)
+    correct_nums = sorted(nums)
+    
+    # Check if arrays match
+    return actual_nums == correct_nums
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Dutch National Flag Algorithm
 # ============================================================================
 

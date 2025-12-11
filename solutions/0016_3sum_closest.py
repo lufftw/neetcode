@@ -46,6 +46,60 @@ from typing import List
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the closest sum to target.
+    
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (Line 1: nums, Line 2: target)
+    
+    Returns:
+        bool: True if correct closest sum
+    """
+    lines = input_data.strip().split('\n')
+    nums = list(map(int, lines[0].split())) if lines[0] else []
+    target = int(lines[1]) if len(lines) > 1 else 0
+    
+    # Compute correct answer
+    correct = _brute_force_closest(nums, target)
+    
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _brute_force_closest(nums: List[int], target: int) -> int:
+    """O(n³) brute force solution for verification."""
+    n = len(nums)
+    if n < 3:
+        return sum(nums) if n == 3 else 0
+    
+    closest_sum = nums[0] + nums[1] + nums[2]
+    min_diff = abs(closest_sum - target)
+    
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                current_sum = nums[i] + nums[j] + nums[k]
+                diff = abs(current_sum - target)
+                if diff < min_diff:
+                    min_diff = diff
+                    closest_sum = current_sum
+    
+    return closest_sum
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n²) Sort + Two Pointers
 # ============================================================================
 

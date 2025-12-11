@@ -45,6 +45,44 @@ Space: O(1) - Only two pointer indices used
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output correctly identifies palindrome.
+    
+    Args:
+        actual: Program output ("true" or "false" as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+    
+    Returns:
+        bool: True if correct palindrome check
+    """
+    s = input_data.strip()
+    
+    # Compute correct answer
+    correct = _brute_force_palindrome(s)
+    
+    # Parse actual output
+    actual_str = str(actual).strip().lower()
+    actual_bool = actual_str == "true"
+    
+    return actual_bool == correct
+
+
+def _brute_force_palindrome(s: str) -> bool:
+    """Brute force palindrome check."""
+    # Filter to alphanumeric only
+    filtered = ''.join(c.lower() for c in s if c.isalnum())
+    return filtered == filtered[::-1]
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution - O(n) Opposite Pointers
 # ============================================================================
 
