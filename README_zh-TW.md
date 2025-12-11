@@ -24,7 +24,7 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 
 [📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/)
 
-[English](README.md) | [繁體中文](README_zh-TW.md)
+[English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
 ---
 
