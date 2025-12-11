@@ -22,7 +22,7 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 
 **一個可擴展的 Python 框架，將 LeetCode 風格的演算法練習轉化為知識圖譜驅動、資料驅動、可測試且高效能的工作流程 — 搭配 AI 心智圖、工業級測試與模式學習，幫助開發者更快成長、更深入理解演算法。**
 
-[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/mindmaps/neetcode_ontology_ai_en.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/)
+[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/)
 
 [English](README.md) | [繁體中文](README_zh-TW.md)
 
