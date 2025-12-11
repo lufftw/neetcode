@@ -215,17 +215,34 @@ python tools/generate_mindmaps.py --html --autoloader
    # Should see:
    # - neetcode_ontology_ai_en.html
    # - neetcode_ontology_ai_zh-TW.html
+   
+   # Check that prompt file was updated
+   ls tools/prompts/generated/mindmap_prompt.md
    ```
 
-4. **Commit and push:**
+4. **Review prompt file (optional but recommended):**
+   - The prompt used for generation is saved to `tools/prompts/generated/mindmap_prompt.md`
+   - This file is **tracked in Git** for traceability — you can always see which prompt generated each version of the AI mind maps
+   - Review the prompt to ensure it matches your expectations
+
+5. **Commit and push:**
    ```bash
    # Add AI mindmap HTML files (they are tracked in git)
    git add docs/pages/mindmaps/neetcode_ontology_ai_*.html
+   
+   # Also commit the prompt file for traceability
+   git add tools/prompts/generated/mindmap_prompt.md
+   
    git commit -m "docs: Update AI mind maps"
    git push
    ```
 
-5. **CI/CD will automatically deploy** the committed HTML files.
+6. **CI/CD will automatically deploy** the committed HTML files.
+
+**Why track the prompt file?**
+- **Traceability**: You can always see which prompt was used to generate each version of AI mind maps
+- **Reproducibility**: Others can understand how the mind maps were generated
+- **Transparency**: Makes the AI generation process transparent and auditable
 
 **Configuration:**
 - Edit `tools/mindmap_ai_config.toml` to customize:
@@ -238,6 +255,11 @@ python tools/generate_mindmaps.py --html --autoloader
 docs/pages/                    # Ignore all generated HTML
 !docs/pages/mindmaps/neetcode_ontology_ai_*.html  # But track AI mindmaps
 ```
+
+**Prompt File Tracking:**
+- The prompt file `tools/prompts/generated/mindmap_prompt.md` is **tracked in Git**
+- This ensures full traceability — you can always see which prompt generated each AI mind map version
+- The prompt file is automatically updated each time you run `generate_mindmaps_ai.py`
 
 ### 3.3 Preview Mind Maps Locally
 
@@ -456,8 +478,12 @@ After modifying `ontology/` or `meta/`, push to GitHub. GitHub Actions will auto
 **For AI-powered mind maps:**
 1. Generate locally with `python tools/generate_mindmaps_ai.py`
 2. Commit the generated HTML files (`docs/pages/mindmaps/neetcode_ontology_ai_*.html`)
-3. Push to GitHub
-4. CI/CD will automatically deploy the committed files
+3. Also commit the prompt file (`tools/prompts/generated/mindmap_prompt.md`) for traceability
+4. Push to GitHub
+5. CI/CD will automatically deploy the committed files
+
+**Why commit the prompt file?**
+The prompt file is tracked in Git so you can always see which prompt was used to generate each version of the AI mind maps. This provides full traceability and transparency.
 
 **Why manual for AI mindmaps?**
 - Requires OpenAI API key (not stored in CI/CD for security)

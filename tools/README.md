@@ -6,6 +6,7 @@ This directory contains code generation and documentation tools for the NeetCode
 
 The tools in this directory automate the generation of:
 - **Mind Maps**: Interactive visualizations of algorithm patterns and problem relationships
+- **AI-Powered Mind Maps**: AI-generated creative mind maps that synthesize ontology insights
 - **Pattern Documentation**: Comprehensive documentation for algorithmic patterns
 
 ## Tools
@@ -37,7 +38,58 @@ python tools/generate_mindmaps.py --list
 
 **See:** [`mindmaps/README.md`](mindmaps/README.md) for detailed documentation.
 
-### 2. Pattern Documentation Generator (`generate_pattern_docs.py`)
+### 2. AI-Powered Mind Map Generator (`generate_mindmaps_ai.py`)
+
+Generates creative, AI-synthesized mind maps using OpenAI's API. Analyzes the entire knowledge graph (API Kernels, Patterns, Algorithms, Data Structures, Problem Families) to discover non-obvious connections and generate insights.
+
+**Features:**
+- AI-powered deep pattern synthesis
+- Multi-language generation (English, 繁體中文)
+- Smart linking: Problems link to GitHub solutions (when available) or LeetCode
+- Configurable learning goals (interview prep, systematic learning, quick review, etc.)
+- Multiple output styles (creative, academic, practical, minimal, balanced)
+- Interactive mode for guided generation
+
+**Requirements:**
+- OpenAI API key (set `OPENAI_API_KEY` environment variable or enter interactively)
+- `openai` package: `pip install openai`
+
+**Quick Start:**
+```bash
+# Interactive mode (will prompt for API key and options)
+python tools/generate_mindmaps_ai.py
+
+# Use config file
+python tools/generate_mindmaps_ai.py --config mindmap_ai_config.toml
+
+# Quick options
+python tools/generate_mindmaps_ai.py --goal interview --topic sliding_window
+python tools/generate_mindmaps_ai.py --style creative --model gpt-4
+
+# Show current config
+python tools/generate_mindmaps_ai.py --list-config
+```
+
+**Configuration:**
+- Config file: `tools/mindmap_ai_config.toml`
+- Supports TOML-based configuration for ontology selection, problem filtering, generation goals, and output settings
+
+**Output:**
+- Markdown files: `docs/mindmaps/neetcode_ontology_ai_*.md`
+- HTML files: `docs/pages/mindmaps/neetcode_ontology_ai_*.html` (for GitHub Pages)
+
+**Prompt Generation:**
+- Prompts are automatically generated and saved to `tools/prompts/generated/mindmap_prompt.md`
+- The prompt file contains both system prompt and user prompt, ready for manual use
+- **Tracked in Git**: The prompt file is committed to the repository for **traceability** — you can always see which prompt was used to generate each AI mind map
+- If you don't have an API key, you can copy the generated prompt to ChatGPT/Claude web interface
+- Prompt is saved before API call, so you can use it even if API call fails
+
+**See:**
+- [`docs/GITHUB_PAGES_SETUP.md`](../docs/GITHUB_PAGES_SETUP.md) for manual generation workflow
+- [`prompts/README.md`](prompts/README.md) for detailed prompt usage guide
+
+### 3. Pattern Documentation Generator (`generate_pattern_docs.py`)
 
 Generates comprehensive pattern documentation by composing ontology definitions and per-problem markdown snippets.
 
@@ -66,14 +118,15 @@ python tools/generate_pattern_docs.py --list
 
 ## Architecture
 
-Both tools follow a modular architecture:
+The tools follow a modular architecture:
 
 ```
 tools/
-├── generate_mindmaps.py          # CLI entry point
+├── generate_mindmaps.py          # CLI entry point (rule-based)
+├── generate_mindmaps_ai.py       # CLI entry point (AI-powered)
 ├── generate_pattern_docs.py      # CLI entry point
 │
-├── mindmaps/                     # Mind map generation module
+├── mindmaps/                     # Mind map generation module (shared)
 │   ├── config.py                 # Configuration and constants
 │   ├── toml_parser.py            # TOML parsing
 │   ├── data.py                   # ProblemData class
@@ -105,7 +158,7 @@ tools/
 
 ## Testing
 
-Both tools have comprehensive test suites:
+The rule-based tools have comprehensive test suites:
 
 ```bash
 # Run all tool tests
@@ -115,9 +168,12 @@ python -m pytest .dev/tests/test_generate_mindmaps.py .dev/tests/test_generate_p
 python -m pytest .dev/tests/test_generate_mindmaps.py -v
 ```
 
+**Note:** AI-powered mind map generation (`generate_mindmaps_ai.py`) requires API access and is tested manually. See [`docs/GITHUB_PAGES_SETUP.md`](../docs/GITHUB_PAGES_SETUP.md) for manual generation workflow.
+
 ## Dependencies
 
-Both tools use only Python standard library (no external dependencies required).
+- **`generate_mindmaps.py`** and **`generate_pattern_docs.py`**: Python standard library only
+- **`generate_mindmaps_ai.py`**: Requires `openai` package (`pip install openai`)
 
 ## File Structure
 
@@ -129,8 +185,10 @@ Both tools use only Python standard library (no external dependencies required).
 
 ### Output Files
 
-- `docs/mindmaps/*.md` - Generated mind map Markdown files
+- `docs/mindmaps/*.md` - Generated mind map Markdown files (rule-based + AI)
 - `docs/pages/mindmaps/*.html` - Generated HTML mind maps (for GitHub Pages)
+  - Rule-based: `pattern_hierarchy.html`, `family_derivation.html`, etc.
+  - AI-powered: `neetcode_ontology_ai_*.html` (manually generated, tracked in Git)
 - `docs/patterns/*.md` - Generated pattern documentation
 
 ## Contributing
