@@ -43,6 +43,11 @@ name = "Sliding Window Mastery"
 summary = "Step-by-step path to master sliding window pattern."
 
 [[roadmaps]]
+id = "two_pointers_path"
+name = "Two Pointers Mastery"
+summary = "Step-by-step path to master all two pointers sub-patterns."
+
+[[roadmaps]]
 id = "graph_bfs_path"
 name = "BFS Mastery"
 summary = "Step-by-step path to master BFS patterns."

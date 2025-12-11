@@ -139,20 +139,112 @@ api_kernel = "LinkedListInPlaceReversal"
 summary = "Reverse portion of linked list between positions."
 
 # === Two Pointer Patterns ===
+
+# -- Opposite Pointers (Two-End) --
 [[patterns]]
 id = "two_pointer_opposite"
-api_kernel = "TwoPointerPartition"
-summary = "Two pointers moving towards each other."
+api_kernel = "TwoPointersTraversal"
+summary = "Two pointers moving towards each other from opposite ends."
 
 [[patterns]]
-id = "two_pointer_same_direction"
-api_kernel = "TwoPointerPartition"
-summary = "Two pointers moving in same direction (fast/slow)."
+id = "two_pointer_opposite_search"
+api_kernel = "TwoPointersTraversal"
+summary = "Opposite pointers for searching pairs in sorted array."
 
+[[patterns]]
+id = "two_pointer_opposite_palindrome"
+api_kernel = "TwoPointersTraversal"
+summary = "Opposite pointers for symmetric/palindrome checks."
+
+[[patterns]]
+id = "two_pointer_opposite_maximize"
+api_kernel = "TwoPointersTraversal"
+summary = "Opposite pointers to maximize a function (e.g., container area)."
+
+# -- Same-Direction (Writer Pattern) --
+[[patterns]]
+id = "two_pointer_same_direction"
+api_kernel = "TwoPointersTraversal"
+summary = "Two pointers moving in same direction (reader/writer)."
+
+[[patterns]]
+id = "two_pointer_writer_dedup"
+api_kernel = "TwoPointersTraversal"
+summary = "Reader/writer pattern for in-place deduplication."
+
+[[patterns]]
+id = "two_pointer_writer_remove"
+api_kernel = "TwoPointersTraversal"
+summary = "Reader/writer pattern for in-place element removal."
+
+[[patterns]]
+id = "two_pointer_writer_compact"
+api_kernel = "TwoPointersTraversal"
+summary = "Reader/writer pattern for array compaction (move zeroes)."
+
+# -- Fast-Slow Pointers (Cycle Detection) --
+[[patterns]]
+id = "fast_slow_cycle_detect"
+api_kernel = "FastSlowPointers"
+summary = "Floyd's algorithm Phase 1: detect cycle existence."
+
+[[patterns]]
+id = "fast_slow_cycle_start"
+api_kernel = "FastSlowPointers"
+summary = "Floyd's algorithm Phase 2: find cycle start node."
+
+[[patterns]]
+id = "fast_slow_midpoint"
+api_kernel = "FastSlowPointers"
+summary = "Fast-slow pointers to find midpoint of linked list."
+
+[[patterns]]
+id = "fast_slow_implicit_cycle"
+api_kernel = "FastSlowPointers"
+summary = "Cycle detection on implicit sequence (e.g., Happy Number)."
+
+# -- Partitioning / Dutch National Flag --
 [[patterns]]
 id = "dutch_flag_partition"
 api_kernel = "TwoPointerPartition"
 summary = "Three-way partition (Dutch national flag)."
+
+[[patterns]]
+id = "two_way_partition"
+api_kernel = "TwoPointerPartition"
+summary = "Two-way partition (even/odd, positive/negative)."
+
+[[patterns]]
+id = "quickselect_partition"
+api_kernel = "TwoPointerPartition"
+summary = "Partition-based selection for Kth element."
+
+# -- Dedup + Sorted Enumeration (Multi-Sum) --
+[[patterns]]
+id = "two_pointer_three_sum"
+api_kernel = "TwoPointersTraversal"
+summary = "Sorted array 3Sum with deduplication."
+
+[[patterns]]
+id = "two_pointer_k_sum"
+api_kernel = "TwoPointersTraversal"
+summary = "Generalized k-Sum using nested two-pointer search."
+
+# -- Merge Pattern --
+[[patterns]]
+id = "merge_two_sorted_lists"
+api_kernel = "MergeSortedSequences"
+summary = "Merge two sorted linked lists."
+
+[[patterns]]
+id = "merge_two_sorted_arrays"
+api_kernel = "MergeSortedSequences"
+summary = "Merge two sorted arrays (in-place or new array)."
+
+[[patterns]]
+id = "merge_sorted_from_ends"
+api_kernel = "MergeSortedSequences"
+summary = "Merge by comparing from ends (e.g., squares of sorted array)."
 
 # === DP Patterns ===
 [[patterns]]

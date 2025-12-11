@@ -122,6 +122,36 @@ parent = "two_pointers"
 summary = "Two pointers moving at different speeds (cycle detection)."
 
 [[algorithms]]
+id = "opposite_pointers"
+kind = "technique"
+parent = "two_pointers"
+summary = "Two pointers starting from opposite ends moving toward center."
+
+[[algorithms]]
+id = "reader_writer_pointers"
+kind = "technique"
+parent = "two_pointers"
+summary = "Same-direction pointers for in-place array modification."
+
+[[algorithms]]
+id = "dutch_national_flag"
+kind = "technique"
+parent = "two_pointers"
+summary = "Three-way partitioning using multiple pointers."
+
+[[algorithms]]
+id = "floyd_cycle_detection"
+kind = "core"
+parent = "two_pointers"
+summary = "Tortoise and hare algorithm for cycle detection."
+
+[[algorithms]]
+id = "quickselect"
+kind = "core"
+parent = "sorting"
+summary = "Selection algorithm using partition to find kth element."
+
+[[algorithms]]
 id = "prefix_sum"
 kind = "technique"
 parent = ""
