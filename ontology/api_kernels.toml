@@ -39,6 +39,18 @@ id = "TwoPointerPartition"
 summary = "Partition array using two pointers (Dutch flag, quick select)."
 
 [[api_kernels]]
+id = "TwoPointersTraversal"
+summary = "Traverse sequence with two coordinated pointers under invariant-preserving rules."
+
+[[api_kernels]]
+id = "FastSlowPointers"
+summary = "Two pointers at different speeds for cycle detection and midpoint finding."
+
+[[api_kernels]]
+id = "MergeSortedSequences"
+summary = "Merge two sorted sequences using two pointers."
+
+[[api_kernels]]
 id = "PrefixSumRangeQuery"
 summary = "Precomputed cumulative sums for O(1) range sum queries."
 

@@ -85,6 +85,30 @@ id = "array_partition"
 summary = "Problems partitioning arrays based on conditions."
 
 [[families]]
+id = "two_pointers_optimization"
+summary = "Problems using opposite pointers to optimize over sorted/symmetric data."
+
+[[families]]
+id = "in_place_array_modification"
+summary = "Problems requiring in-place array modification using reader/writer pointers."
+
+[[families]]
+id = "linked_list_cycle"
+summary = "Problems involving cycle detection or finding cycle start in linked structures."
+
+[[families]]
+id = "multi_sum_enumeration"
+summary = "Problems finding all unique tuples with target sum (3Sum, 4Sum, etc.)."
+
+[[families]]
+id = "sequence_merge"
+summary = "Problems merging sorted sequences using two-pointer technique."
+
+[[families]]
+id = "palindrome_validation"
+summary = "Problems validating or constructing palindromes."
+
+[[families]]
 id = "matrix_traversal"
 summary = "Problems traversing 2D matrices in various patterns."
 
