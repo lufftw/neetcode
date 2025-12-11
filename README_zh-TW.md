@@ -1,30 +1,76 @@
 # 🧩 NeetCode 練習框架
 
-<div class="badges-hero" markdown>
+<!-- 
+SEO: leetcode, algorithm, data structure, coding interview, FAANG, competitive programming, neetcode, 
+     blind 75, python, mind map, pattern, dynamic programming, interview preparation, knowledge graph
+AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智圖、工業級測試與模式學習，助你精通演算法。
+-->
 
 [![GitHub stars](https://img.shields.io/github/stars/lufftw/neetcode?style=for-the-badge&logo=github&color=gold)](https://github.com/lufftw/neetcode/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/lufftw/neetcode?style=for-the-badge&logo=github&color=silver)](https://github.com/lufftw/neetcode/network)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![VS Code](https://img.shields.io/badge/VS%20Code-Ready-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
-[![Tests](https://img.shields.io/badge/單元測試-150+-success?style=flat-square&logo=pytest&logoColor=white)](.dev/tests/)
-[![Mind Maps](https://img.shields.io/badge/心智圖-9%20種-ff69b4?style=flat-square&logo=markmap&logoColor=white)](https://lufftw.github.io/neetcode/mindmaps/)
+[![OpenAI](https://img.shields.io/badge/GPT--Powered-412991?style=flat-square&logo=openai&logoColor=white)](https://openai.com/)
+[![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
+[![pytest](https://img.shields.io/badge/150%2B%20Tests-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](.dev/tests/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-歡迎-brightgreen?style=flat-square&logo=git&logoColor=white)](https://github.com/lufftw/neetcode/pulls)
 
-</div>
+---
 
 ### 🎯 停止死背。開始工程化。
 
-*用生產級軟體的標準來練習演算法。*
+**一個可擴展的 Python 框架，將 LeetCode 風格的演算法練習轉化為知識圖譜驅動、資料驅動、可測試且高效能的工作流程 — 搭配 AI 心智圖、工業級測試與模式學習，幫助開發者更快成長、更深入理解演算法。**
 
-<div class="links-hero" markdown>
+[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/mindmaps/neetcode_ontology_ai_en.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/)
 
-[📚 線上文件](https://lufftw.github.io/neetcode/) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始)
+[English](README.md) | [繁體中文](README_zh-TW.md)
 
-**Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
+---
 
-</div>
+**Topics:** `knowledge-graph` `ai-powered` `mind-map` `pattern-recognition` `leetcode` `neetcode-150` `blind-75` `stress-testing` `algorithm-engineering` `performance-benchmarking` `data-driven-testing` `random-test-generation` `judge-function` `algorithm-debugging` `competitive-programming` `python` `vscode-integration` `test-automation` `coding-interview`
+
+---
+
+## 💎 核心理念
+
+> **「精通演算法不是死背 300 道題 — 而是內化 15 個核心模式，並精準知道何時應用每一個。」**
+
+本框架體現三大變革性原則：
+
+### 🧬 知識圖譜架構
+
+傳統 LeetCode 練習將問題視為孤立單元。我們建立了**互聯的本體論系統**：
+
+- **API 核心** 定義可重用的演算法基元（`SubstringSlidingWindow`、`GridBFS`、`BacktrackExplore`）
+- **模式** 將核心組合成更高層次的策略
+- **問題家族** 揭示 300+ 題目之間的結構關聯
+- **AI 合成** 發現人類遺漏的非顯性連結
+
+*這是專家的思維方式 — 用抽象思考，而非記憶解答。*
+
+### ⚙️ 生產級驗證
+
+你的解法通過了 LeetCode 測試。但它*正確*嗎？它*最優*嗎？我們提供 **ICPC/Codeforces 等級的測試基礎設施**：
+
+| 能力 | 驗證什麼 |
+|:-----|:---------|
+| 🎲 **帶 Seed 隨機生成** | 你的程式碼能處理你從未想過的測資 |
+| ⚖️ **自訂 Judge 函式** | 多個正確答案都能通過 |
+| 📊 **多解法效能比較** | 哪種方法*實際上*更快 |
+| 📈 **經驗複雜度估算** | 驗證你宣稱的 O(n log n) |
+
+*這是 Google 工程師的驗證方式 — 透過窮盡、可重現的測試。*
+
+### 🤖 AI 增強理解
+
+我們不只儲存知識 — 我們**合成洞見**：
+
+- AI 分析整個本體論，生成**創意、互聯的心智圖**
+- 多視角合成：架構師 × 教授 × 工程師 × 競賽選手
+- 問題連結到 **GitHub 解答**（如有）或 **LeetCode**（後備）
+
+*這是下一代的學習方式 — 以 AI 作為思考夥伴。*
 
 ---
 
@@ -46,13 +92,14 @@
 
 | 心智圖 | 說明 | 連結 |
 |:-------|:-----|:----:|
+| 🤖 **AI 本體論分析** | AI 深度模式合成 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 | 📐 **模式階層** | API 核心 → 模式 → 解法 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
 | 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
 | ⚡ **演算法使用** | 知道哪個演算法適用於哪裡 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
 | 🏢 **公司覆蓋** | 針對特定公司精準準備 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
 | 🗺️ **學習路線圖** | 遵循經過驗證的路徑 (NeetCode 150, Blind 75 等) | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
 
-**[→ 探索 9 種互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
+**[→ 探索 10+ 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
 
 ### ⚙️ 工業級測試能力
 
@@ -70,11 +117,13 @@
 
 ## 📑 目錄
 
+- [核心理念](#-核心理念)
 - [我們的獨特之處](#-我們的獨特之處)
 - [為什麼選擇這個框架？](#-為什麼選擇這個框架)
 - [快速開始](#-快速開始)
 - [核心功能](#-核心功能)
 - [互動式心智圖](#-互動式心智圖)
+- [AI 心智圖生成](#-ai-心智圖生成)
 - [模式文件](#-模式文件)
 - [使用指南](#-使用指南)
 - [進階功能](#-進階功能)
@@ -216,6 +265,27 @@ run_tests.bat 0001_two_sum
 ## 🧠 互動式心智圖
 
 視覺化演算法模式、問題關聯和學習路徑：
+
+### 🤖 AI 驅動的本體論分析（NEW！）
+
+> **「讓 AI 合成人類需要數年才能內化的知識。」**
+
+我們的 **AI 本體論分析器** 處理整個知識圖譜 — API 核心、模式、演算法、資料結構、問題家族 — 生成**創意、互聯的心智圖**，揭示人工策劃清單遺漏的洞見。
+
+| 語言 | 說明 | 連結 |
+|:-----|:-----|:-----|
+| **English** | AI 合成的模式關聯 | [靜態](docs/mindmaps/neetcode_ontology_ai_en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
+| **繁體中文** | AI 智能分析模式關聯 | [靜態](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
+
+**特色：**
+- 🧬 **深度模式合成** — AI 識別模式之間的非顯性連結
+- 🎯 **智能連結** — 問題連結到 GitHub 解答（如有）或 LeetCode
+- 🌐 **多語言** — 支援英文和繁體中文
+- ♻️ **可重新生成** — 執行 `python tools/generate_mindmaps_ai.py` 產生新洞見
+
+---
+
+### 📚 精選心智圖
 
 | 心智圖 | 說明 | 連結 |
 |:-------|:-----|:-----|

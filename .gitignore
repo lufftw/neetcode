@@ -46,5 +46,11 @@ Thumbs.db
 site/
 
 # Generated HTML mindmaps (use --html to regenerate)
-docs/pages/
+# Ignore all files in docs/pages/ except AI mindmaps
+docs/pages/**
+# But track AI-generated mindmaps (manually generated and committed)
+!docs/pages/mindmaps/
+!docs/pages/mindmaps/neetcode_ontology_ai_*.html
+# Track AI mindmap Markdown files
+!docs/mindmaps/neetcode_ontology_ai_*.md
 

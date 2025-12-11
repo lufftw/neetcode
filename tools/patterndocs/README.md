@@ -352,3 +352,4 @@ meta/patterns/binary_search/
 - [Test Suite](../../.dev/tests/test_generate_pattern_docs.py)
 - [Pattern Documentation Output](../../docs/patterns/)
 
+

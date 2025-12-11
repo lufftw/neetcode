@@ -10,6 +10,41 @@ Visual representations of algorithm patterns, data structures, and problem relat
 
 ---
 
+## 🤖 AI-Powered Ontology Analysis (NEW!)
+
+> **"Let AI synthesize what takes humans years to internalize."**
+
+Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernels, Patterns, Algorithms, Data Structures, Problem Families — and generates **creative, interconnected mind maps** that reveal insights human-curated lists miss.
+
+**What makes it special:**
+
+- 🧬 **Deep Pattern Synthesis** — AI identifies non-obvious connections between patterns
+- 🎯 **Smart Linking** — Problems link to GitHub solutions (when available) or LeetCode
+- 🌐 **Multi-language** — Generate in English and 繁體中文
+- ♻️ **Regeneratable** — Run `python tools/generate_mindmaps_ai.py` to create fresh insights
+
+### English Version
+
+AI-synthesized pattern relationships and learning insights.
+
+<div class="mindmap-container">
+  <iframe src="../pages/mindmaps/neetcode_ontology_ai_en.html" width="100%" height="500" frameborder="0"></iframe>
+</div>
+
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/neetcode_ontology_ai_en.html){ .md-button }
+
+### 繁體中文版
+
+AI 智能分析模式關聯與學習洞察。
+
+<div class="mindmap-container">
+  <iframe src="../pages/mindmaps/neetcode_ontology_ai_zh-TW.html" width="100%" height="500" frameborder="0"></iframe>
+</div>
+
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/neetcode_ontology_ai_zh-TW.html){ .md-button }
+
+---
+
 ## 📐 Pattern Hierarchy
 
 API Kernels → Patterns → Problems hierarchy. Understand how algorithmic building blocks relate to specific patterns and problems.

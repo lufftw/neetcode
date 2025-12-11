@@ -30,3 +30,4 @@ class PatternDocConfig:
     output_file: Path
     patterns: list[Pattern] = field(default_factory=list)
 
+

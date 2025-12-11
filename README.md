@@ -1,30 +1,77 @@
 # 🧩 NeetCode Practice Framework
 
-<div class="badges-hero" markdown>
+<!-- 
+SEO: leetcode, algorithm, data structure, coding interview, FAANG, competitive programming, neetcode, 
+     blind 75, python, mind map, pattern, dynamic programming, interview preparation, knowledge graph
+AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-powered mind maps,
+         industrial-strength testing, and pattern-based learning for algorithm mastery.
+-->
 
 [![GitHub stars](https://img.shields.io/github/stars/lufftw/neetcode?style=for-the-badge&logo=github&color=gold)](https://github.com/lufftw/neetcode/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/lufftw/neetcode?style=for-the-badge&logo=github&color=silver)](https://github.com/lufftw/neetcode/network)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![VS Code](https://img.shields.io/badge/VS%20Code-Ready-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
-[![Tests](https://img.shields.io/badge/Unit%20Tests-150+-success?style=flat-square&logo=pytest&logoColor=white)](.dev/tests/)
-[![Mind Maps](https://img.shields.io/badge/Mind%20Maps-9%20Types-ff69b4?style=flat-square&logo=markmap&logoColor=white)](https://lufftw.github.io/neetcode/mindmaps/)
+[![OpenAI](https://img.shields.io/badge/GPT--Powered-412991?style=flat-square&logo=openai&logoColor=white)](https://openai.com/)
+[![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
+[![pytest](https://img.shields.io/badge/150%2B%20Tests-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](.dev/tests/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square&logo=git&logoColor=white)](https://github.com/lufftw/neetcode/pulls)
 
-</div>
+---
 
 ### 🎯 Stop Memorizing. Start Engineering.
 
-*The algorithm practice framework that treats your code like production software.*
+**A scalable Python framework that transforms LeetCode-style algorithm practice into a knowledge-graph-driven, data-driven, testable, and high-performance workflow — with AI-powered mind maps, industrial-strength testing, and pattern-based learning to help developers grow faster and understand algorithms more deeply.**
 
-<div class="links-hero" markdown>
+[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/mindmaps/neetcode_ontology_ai_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/)
 
-[📚 Documentation](https://lufftw.github.io/neetcode/) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start)
+[English](README.md) | [繁體中文](README_zh-TW.md)
 
-**Language / 語言**: [English](README.md) | [繁體中文](README_zh-TW.md)
+---
 
-</div>
+**Topics:** `knowledge-graph` `ai-powered` `mind-map` `pattern-recognition` `leetcode` `neetcode-150` `blind-75` `stress-testing` `algorithm-engineering` `performance-benchmarking` `data-driven-testing` `random-test-generation` `judge-function` `algorithm-debugging` `competitive-programming` `python` `vscode-integration` `test-automation` `coding-interview`
+
+---
+
+## 💎 Core Philosophy
+
+> **"Algorithm mastery is not about memorizing 300 solutions — it's about internalizing 15 fundamental patterns and knowing precisely when to apply each one."**
+
+This framework embodies three transformative principles:
+
+### 🧬 Knowledge Graph Architecture
+
+Traditional LeetCode practice treats problems as isolated units. We built an **interconnected ontology system** where:
+
+- **API Kernels** define reusable algorithmic primitives (`SubstringSlidingWindow`, `GridBFS`, `BacktrackExplore`)
+- **Patterns** compose kernels into higher-level strategies
+- **Problem Families** reveal structural relationships across 300+ problems
+- **AI Synthesis** discovers non-obvious connections humans miss
+
+*This is how experts think — in abstractions, not in solutions.*
+
+### ⚙️ Production-Grade Validation
+
+Your solution passes LeetCode's tests. But is it *correct*? Is it *optimal*? We provide **ICPC/Codeforces-caliber testing infrastructure**:
+
+| Capability | What It Proves |
+|:-----------|:---------------|
+| 🎲 **Seeded Random Generation** | Your code handles cases you never imagined |
+| ⚖️ **Custom Judge Functions** | Multiple valid answers are all accepted |
+| 📊 **Multi-Solution Benchmarking** | Which approach is *actually* faster |
+| 📈 **Empirical Complexity Estimation** | Your O(n log n) claim is verified |
+
+*This is how Google engineers validate — through exhaustive, reproducible testing.*
+
+### 🤖 AI-Augmented Understanding
+
+We don't just store knowledge — we **synthesize insight**:
+
+- AI analyzes the entire ontology to generate **creative, interconnected mind maps**
+- Multi-perspective synthesis: Architect × Professor × Engineer × Competitor
+- Problems link to **GitHub solutions** (when available) or **LeetCode** (fallback)
+
+*This is how the next generation learns — with AI as a thinking partner.*
 
 ---
 
@@ -46,13 +93,14 @@ Most people practice algorithms in isolation. We built an **interconnected knowl
 
 | Mind Map | Description | Link |
 |:---------|:------------|:----:|
+| 🤖 **AI Ontology Analysis** | AI-powered deep pattern synthesis | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 | 📐 **Pattern Hierarchy** | API kernels → patterns → solutions | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
 | 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → derived variants | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
 | ⚡ **Algorithm Usage** | Know which algorithm applies where | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
 | 🏢 **Company Coverage** | Target preparation for specific companies | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
 | 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
 
-**[→ Explore 9 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
+**[→ Explore 10+ Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 
 ### ⚙️ Industrial-Strength Testing
 
@@ -75,6 +123,7 @@ Built on principles from **Codeforces, ICPC, and Google's engineering practices*
 - [Quick Start](#-quick-start)
 - [Key Features](#-key-features)
 - [Interactive Mind Maps](#-interactive-mind-maps)
+- [AI Mind Map Generation](#-ai-mind-map-generation)
 - [Pattern Documentation](#-pattern-documentation)
 - [Usage Guide](#-usage-guide)
 - [Advanced Features](#-advanced-features)
@@ -204,6 +253,7 @@ run_tests.bat 0001_two_sum
 
 | Feature | Description |
 |:--------|:------------|
+| 🤖 **AI Ontology Analysis** | AI-powered knowledge graph synthesis — discover pattern relationships humans miss |
 | 🧪 **Automated Testing** | Run multiple test cases automatically with clear pass/fail reporting and timing |
 | 🎲 **Random Test Generation** | Seeded generators for reproducibility, stress test with 1000+ cases, auto-save failing cases |
 | ⚖️ **Custom Judge Functions** | Validate multiple correct answers, ICPC-style validation, works without expected output |
@@ -216,6 +266,27 @@ run_tests.bat 0001_two_sum
 ## 🧠 Interactive Mind Maps
 
 Visualize algorithm patterns, problem relationships, and learning paths:
+
+### 🤖 AI-Powered Ontology Analysis (NEW!)
+
+> **"Let AI synthesize what takes humans years to internalize."**
+
+Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernels, Patterns, Algorithms, Data Structures, Problem Families — and generates **creative, interconnected mind maps** that reveal insights human-curated lists miss.
+
+| Language | Description | Links |
+|:---------|:------------|:------|
+| **English** | AI-synthesized pattern relationships | [Static](docs/mindmaps/neetcode_ontology_ai_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
+| **繁體中文** | AI 智能分析模式關聯 | [Static](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
+
+**What makes it special:**
+- 🧬 **Deep Pattern Synthesis** — AI identifies non-obvious connections between patterns
+- 🎯 **Smart Linking** — Problems link to GitHub solutions (when available) or LeetCode
+- 🌐 **Multi-language** — Generate in English and 繁體中文
+- ♻️ **Regeneratable** — Run `python tools/generate_mindmaps_ai.py` to create fresh insights
+
+---
+
+### 📚 Curated Mind Maps
 
 | Mind Map | Description | Links |
 |:---------|:------------|:------|
@@ -230,6 +301,121 @@ Visualize algorithm patterns, problem relationships, and learning paths:
 | 📊 **Difficulty × Topics** | Topics by difficulty | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty_topics.html) |
 
 👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
+
+---
+
+## 🤖 AI Mind Map Generation
+
+> **"The synthesis of a Software Architect's system thinking, an Algorithm Professor's pedagogical wisdom, a Principal Engineer's battle-tested experience, and a Competitive Programming Champion's pattern recognition — all unified through AI."**
+
+### The Vision
+
+Traditional algorithm learning resources present knowledge in isolation. Our **AI Ontology Analyzer** takes a fundamentally different approach:
+
+| Traditional Approach | Our AI Approach |
+|:---------------------|:----------------|
+| Static problem lists | Dynamic knowledge graph synthesis |
+| Manual categorization | AI-discovered pattern relationships |
+| Single perspective | Multi-perspective expert synthesis |
+| Memorize solutions | Understand interconnections |
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    KNOWLEDGE GRAPH INPUT                        │
+├─────────────────────────────────────────────────────────────────┤
+│  ontology/          │  meta/problems/     │  docs/patterns/     │
+│  ├── api_kernels    │  ├── 0001_*.toml    │  ├── sliding_window │
+│  ├── patterns       │  ├── 0003_*.toml    │  └── ...            │
+│  ├── algorithms     │  └── ...            │                     │
+│  └── ...            │                     │                     │
+└─────────────────────┴─────────────────────┴─────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    AI SYNTHESIS ENGINE                          │
+├─────────────────────────────────────────────────────────────────┤
+│  🏗️ Software Architect    → System-level pattern organization   │
+│  📚 Algorithm Professor   → Pedagogical structure & progression │
+│  ⚙️ Principal Engineer    → Practical applicability & trade-offs│
+│  🏆 Competitive Champion  → Pattern recognition shortcuts       │
+│  🎨 API Designer          → Clean knowledge interfaces          │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    INTELLIGENT OUTPUT                           │
+├─────────────────────────────────────────────────────────────────┤
+│  ✅ Smart Links: GitHub solution (if exists) → LeetCode fallback│
+│  ✅ Multi-language: EN / 繁體中文 / 简体中文                      │
+│  ✅ Markmap format: Interactive, collapsible, beautiful         │
+│  ✅ Custom goals: Interview prep / Systematic learning / Review │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Quick Start
+
+```bash
+# Interactive mode (recommended)
+python tools/generate_mindmaps_ai.py
+
+# Specific goals
+python tools/generate_mindmaps_ai.py --goal interview        # Interview preparation
+python tools/generate_mindmaps_ai.py --goal systematic       # Learning roadmap
+python tools/generate_mindmaps_ai.py --goal pattern_mastery  # Deep pattern analysis
+
+# Focus on specific topic
+python tools/generate_mindmaps_ai.py --topic sliding_window
+python tools/generate_mindmaps_ai.py --topic dynamic_programming
+
+# Multiple languages
+# Configure in tools/mindmap_ai_config.toml:
+# language = ["en", "zh-TW"]
+```
+
+### Configuration
+
+Edit `tools/mindmap_ai_config.toml` to customize:
+
+| Section | What You Can Configure |
+|:--------|:-----------------------|
+| `[model]` | LLM model, temperature, max tokens |
+| `[output]` | Directory, filename, HTML generation |
+| `[ontology]` | Which knowledge graph data to include |
+| `[problems]` | Problem filters (difficulty, topics, roadmaps) |
+| `[generation]` | Goal, style, custom instructions |
+| `[links]` | GitHub repo URL, branch, link format |
+| `[advanced]` | Output language(s), complexity inclusion |
+
+### The Intelligence Behind It
+
+The AI doesn't just reorganize data — it **synthesizes understanding** from multiple expert perspectives:
+
+| Perspective | Contribution to Mind Map |
+|:------------|:-------------------------|
+| 🏗️ **Software Architect** | Identifies abstraction layers, sees patterns as reusable components |
+| 📚 **Algorithm Professor** | Structures learning progression, explains "why" not just "how" |
+| ⚙️ **Principal Engineer** | Highlights production trade-offs, real-world applicability |
+| 🏆 **Competitive Champion** | Surfaces pattern-matching shortcuts, time-pressure optimizations |
+| 🎨 **API Designer** | Creates clean knowledge interfaces, consistent naming |
+| 👥 **Open Source Advocate** | Makes knowledge discoverable, contribution-friendly |
+
+### Output Examples
+
+**With Solution (links to GitHub):**
+```markdown
+- [LeetCode 3 - Longest Substring Without Repeating](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+```
+
+**Without Solution (links to LeetCode):**
+```markdown
+- [LeetCode 121 - Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+```
+
+### No API Key? No Problem
+
+The generator saves the complete prompt to `tools/prompts/generated/mindmap_prompt.md`. Copy and paste it into ChatGPT, Claude, or any LLM web interface.
 
 ---
 
@@ -614,10 +800,14 @@ neetcode/
 │   └── stylesheets/           # Custom CSS
 │
 ├── tools/                     # 🛠️ Utility scripts
-│   ├── generate_mindmaps.py   # Generate mind maps
-│   ├── generate_mindmaps.toml # Mind maps configuration
-│   ├── generate_pattern_docs.py # Generate pattern docs
-│   └── text_to_mindmap.py     # LLM text-to-mindmap converter
+│   ├── generate_mindmaps_ai.py   # 🤖 AI mind map generator
+│   ├── mindmap_ai_config.toml    # AI generation configuration
+│   ├── generate_mindmaps.py      # Rule-based mind map generator
+│   ├── generate_mindmaps.toml    # Rule-based configuration
+│   ├── generate_pattern_docs.py  # Generate pattern docs
+│   └── prompts/                  # AI prompt management
+│       ├── README.md             # Prompt documentation
+│       └── generated/            # Auto-generated prompts
 │
 ├── ontology/                  # 🧬 Algorithm ontology (TOML)
 │   ├── api_kernels.toml       # API kernel definitions
@@ -748,6 +938,24 @@ python -m pytest .dev/tests --cov=runner --cov-report=html
 ```
 
 ### Generate Mind Maps Locally
+
+**AI-Powered (Recommended):**
+
+```bash
+# Interactive mode
+python tools/generate_mindmaps_ai.py
+
+# With specific goal
+python tools/generate_mindmaps_ai.py --goal interview
+
+# Generate multiple languages
+# Edit tools/mindmap_ai_config.toml: language = ["en", "zh-TW"]
+python tools/generate_mindmaps_ai.py
+```
+
+Configuration: `tools/mindmap_ai_config.toml`
+
+**Rule-Based:**
 
 ```bash
 # Generate Markdown mind maps

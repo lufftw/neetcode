@@ -9,6 +9,7 @@ Usage:
     python tools/generate_mindmaps.py --html              # Generate MD + HTML
     python tools/generate_mindmaps.py --type pattern      # Generate specific type
     python tools/generate_mindmaps.py --list              # List available types
+    python tools/generate_mindmaps.py --convert file.md   # Convert MD to HTML
 """
 
 from __future__ import annotations
@@ -109,6 +110,38 @@ def generate_all_mindmaps(
     return results
 
 
+def convert_md_to_html(input_files: list[Path], output_dir: Path | None = None) -> None:
+    """Convert MD files to HTML."""
+    # Default output directory: docs/pages/mindmaps
+    if output_dir is None:
+        output_dir = PAGES_OUTPUT_DIR / "mindmaps"
+    
+    for input_file in input_files:
+        if not input_file.exists():
+            print(f"❌ File not found: {input_file}")
+            continue
+        
+        content = input_file.read_text(encoding="utf-8")
+        
+        # Extract title from frontmatter
+        title = input_file.stem.replace("_", " ").title()
+        if content.startswith("---"):
+            for line in content.split("\n"):
+                if line.startswith("title:"):
+                    title = line.replace("title:", "").strip().strip('"').strip("'")
+                    break
+                if line.strip() == "---" and line != content.split("\n")[0]:
+                    break
+        
+        html_content = generate_html_mindmap(title, content, use_autoloader=False)
+        
+        output_file = output_dir / input_file.with_suffix(".html").name
+        
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        output_file.write_text(html_content, encoding="utf-8")
+        print(f"✅ {input_file} → {output_file}")
+
+
 def generate_index(output_dir: Path, generated_types: list[str]) -> None:
     """Generate index file for all mindmaps."""
     lines = [
@@ -151,8 +184,16 @@ def main() -> int:
     parser.add_argument("--use-autoloader", action="store_true", help="Use markmap-autoloader")
     parser.add_argument("--pages-dir", type=Path, default=PAGES_OUTPUT_DIR)
     parser.add_argument("--list", "-l", action="store_true", help="List types")
+    parser.add_argument("--convert", "-c", nargs="+", type=Path, help="Convert MD file(s) to HTML")
 
     args = parser.parse_args()
+
+    # Convert mode
+    if args.convert:
+        # Use --output if specified, otherwise default to docs/pages/mindmaps
+        output_dir = args.output if args.output != DEFAULT_OUTPUT_DIR else None
+        convert_md_to_html(args.convert, output_dir)
+        return 0
 
     if args.list:
         print("Available mindmap types:")

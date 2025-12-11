@@ -104,6 +104,8 @@ nav:
     - 繁體中文: index_zh-TW.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
+    - AI Analysis (English): mindmaps/neetcode_ontology_ai_en.md
+    - AI Analysis (繁體中文): mindmaps/neetcode_ontology_ai_zh-TW.md
     - Pattern Hierarchy: mindmaps/pattern_hierarchy.md
     - Family Derivation: mindmaps/family_derivation.md
     - Algorithm Usage: mindmaps/algorithm_usage.md
