@@ -6,33 +6,14 @@ from pathlib import Path
 
 from .toml_parser import parse_toml_simple
 from .data import APIKernel, Pattern
+from .config import get_paths, PROJECT_ROOT
+from .mapping import get_kernel_id
 
-# Paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
-META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
-OUTPUT_DIR = PROJECT_ROOT / "docs" / "patterns"
-
-# Directory name to Kernel ID mapping
-KERNEL_MAPPING = {
-    "sliding_window": "SubstringSlidingWindow",
-    "bfs_grid": "GridBFSMultiSource",
-    "backtracking": "BacktrackingExploration",
-    "k_way_merge": "KWayMerge",
-    "binary_search": "BinarySearchBoundary",
-    "two_pointers": "TwoPointerPartition",
-    "linked_list_reversal": "LinkedListInPlaceReversal",
-    "monotonic_stack": "MonotonicStack",
-    "prefix_sum": "PrefixSumRangeQuery",
-    "tree_dfs": "TreeTraversalDFS",
-    "tree_bfs": "TreeTraversalBFS",
-    "dp_sequence": "DPSequence",
-    "dp_interval": "DPInterval",
-    "union_find": "UnionFindConnectivity",
-    "trie": "TriePrefixSearch",
-    "heap_top_k": "HeapTopK",
-    "topological_sort": "TopologicalSort",
-}
+# Initialize paths from config
+_paths = get_paths()
+ONTOLOGY_DIR = _paths["ontology_dir"]
+META_PATTERNS_DIR = _paths["meta_patterns_dir"]
+OUTPUT_DIR = _paths["output_dir"]
 
 
 def load_api_kernels() -> dict[str, APIKernel]:
@@ -81,6 +62,24 @@ def get_available_patterns() -> list[str]:
 
 
 def get_kernel_id_from_dir_name(dir_name: str) -> str:
-    """Convert directory name to API Kernel ID."""
-    return KERNEL_MAPPING.get(dir_name, dir_name)
+    """
+    Convert directory name to API Kernel ID.
+    
+    Priority:
+    1. Extract from _header.md file (if exists) - highest priority
+    2. Use unified mapping from mapping.py
+    3. Fallback to directory name
+    
+    All mappings are centrally managed in tools/patterndocs/mapping.py.
+    """
+    # Try to extract from _header.md first (highest priority)
+    header_file = META_PATTERNS_DIR / dir_name / "_header.md"
+    if header_file.exists():
+        from .kernel_extractor import extract_kernel_from_header
+        kernel_id = extract_kernel_from_header(header_file)
+        if kernel_id:
+            return kernel_id
+    
+    # Use unified mapping (primary source)
+    return get_kernel_id(dir_name)
 

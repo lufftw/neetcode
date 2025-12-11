@@ -1,0 +1,52 @@
+# Problem: Remove Element
+# https://leetcode.com/problems/remove-element/
+
+# ===== Problem Info =====
+id = "0027"
+slug = "0027_remove_element"
+title = "Remove Element"
+leetcode_id = 27
+url = "https://leetcode.com/problems/remove-element/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "two_pointers"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_remove"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0026", "0283"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0027_remove_element.py"
+generator = "generators/0027_remove_element.py"
+tests_dir = "tests/0027_remove_element/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "removeElement"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_remove"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0026", "0283"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0026#default"]
+delta      = "Remove specific value instead of duplicates. Array need not be sorted."
+complexity = "O(n) time, O(1) space"
+notes      = "Same-direction two-pointer pattern for removing specific elements in-place."
+

@@ -53,6 +53,24 @@ Simple TOML parser for ontology files:
 - `output_file` - Output file path
 - `patterns` - List of patterns for this kernel
 
+### Configuration (`config.py`)
+
+**Functions:**
+- `load_generator_config()` - Load global configuration from `config.toml`
+- `get_kernel_mapping()` - Get kernel mapping from config or defaults
+- `get_paths()` - Get path configuration from config or defaults
+
+**Configuration File:**
+Global configuration is stored in `tools/generate_pattern_docs.toml`:
+- `[kernel_mapping]` - Maps directory names to API Kernel IDs (only needed for non-auto-inferrable mappings)
+- `[default_file_order]` - Default header/footer file ordering
+- `[paths]` - Directory paths (optional, defaults to standard locations)
+
+**Auto-inference:**
+The `config.py` module automatically infers kernel mappings from `ontology/patterns.toml` by matching pattern IDs with directory names. Only mappings that cannot be automatically determined need to be specified in `generate_pattern_docs.toml`.
+
+**Note:** The Python module `config.py` loads configuration from `generate_pattern_docs.toml` and supplements it with auto-inferred mappings.
+
 ### Data Loading (`loader.py`)
 
 **Functions:**
@@ -62,34 +80,61 @@ Simple TOML parser for ontology files:
 - `get_kernel_id_from_dir_name(dir_name)` - Map directory name to kernel ID
 
 **Kernel ID Mapping:**
-The module maps directory names to API Kernel IDs:
+The module maps directory names to API Kernel IDs (configurable in `generate_pattern_docs.toml`):
 - `sliding_window` → `SubstringSlidingWindow`
 - `bfs_grid` → `GridBFSMultiSource`
 - `backtracking` → `BacktrackingExploration`
-- ... (see `KERNEL_MAPPING` in `loader.py`)
+- `two_pointers` → `TwoPointersTraversal`
+- ... (see `tools/generate_pattern_docs.toml` for full list)
 
 **Paths:**
-- `PROJECT_ROOT` - Project root directory
-- `ONTOLOGY_DIR` - Ontology files directory
-- `META_PATTERNS_DIR` - Pattern source files directory
-- `OUTPUT_DIR` - Output documentation directory
+- `PROJECT_ROOT` - Project root directory (auto-detected)
+- `ONTOLOGY_DIR` - Ontology files directory (from config or default: `ontology/`)
+- `META_PATTERNS_DIR` - Pattern source files directory (from config or default: `meta/patterns/`)
+- `OUTPUT_DIR` - Output documentation directory (from config or default: `docs/patterns/`)
 
 ### File Collection (`files.py`)
 
-Categorizes source files into three types:
+Categorizes source files into three types and applies ordering from `_config.toml`:
 
 **File Categories:**
 1. **Header files** (`_header.md`) - Introduction and core concepts
 2. **Problem files** (`0003_base.md`, `0076_variant.md`) - Problem examples
-3. **Footer files** (`_comparison.md`, `_decision.md`, `_templates.md`) - Additional sections
+3. **Footer files** (`_comparison.md`, `_decision.md`, `_mapping.md`, `_templates.md`) - Additional sections
 
 **Key Functions:**
+- `load_config(source_dir)` - Load file ordering from `_config.toml`
+  - Returns: Dictionary with `header_files`, `problem_files`, `footer_files` lists
+  - Returns empty dict if config file doesn't exist
 - `collect_source_files(source_dir)` - Collect and categorize files
+  - Reads `_config.toml` if present to determine file order
+  - Falls back to default ordering if config missing
   - Returns: `(header_files, problem_files, footer_files)`
 
 **Constants:**
-- `STRUCTURAL_FILES_ORDER` - Order for header files
-- `STRUCTURAL_FILES_FOOTER` - Order for footer files
+- `STRUCTURAL_FILES_ORDER` - Default order for header files
+- `STRUCTURAL_FILES_FOOTER` - Default order for footer files
+
+**Configuration File Format:**
+```toml
+# meta/patterns/<pattern_name>/_config.toml
+header_files = [
+    "_header.md"
+]
+
+problem_files = [
+    "0003_base.md",
+    "0076_variant.md",
+    "0209_another.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+```
 
 ### Section Numbering (`sections.py`)
 
@@ -204,11 +249,13 @@ Pattern documentation is organized in `meta/patterns/<pattern_name>/`:
 
 ```
 meta/patterns/sliding_window/
+├── _config.toml            # File ordering configuration (optional)
 ├── _header.md              # Introduction and core concepts
 ├── 0003_base.md            # Base template problem (LeetCode 3)
 ├── 0076_variant.md         # Variant problem (LeetCode 76)
-├── _comparison.md          # Pattern comparison
-├── _decision.md            # Decision tree
+├── _comparison.md          # Pattern comparison table
+├── _decision.md            # Decision guide (when to use)
+├── _mapping.md             # LeetCode problem mapping (optional)
 └── _templates.md           # Template code examples
 ```
 
@@ -216,14 +263,41 @@ meta/patterns/sliding_window/
 
 - **Header files**: Start with `_` (e.g., `_header.md`)
 - **Problem files**: Problem number prefix (e.g., `0003_base.md`)
-- **Footer files**: Start with `_` (e.g., `_comparison.md`)
+- **Footer files**: Start with `_` (e.g., `_comparison.md`, `_mapping.md`)
+- **Config file**: `_config.toml` (excluded from final document)
+
+### File Ordering Configuration
+
+Each pattern directory can include `_config.toml` to control the order of files in the final document. This is especially useful for:
+- Ordering problems by LeetCode number (instead of alphabetical)
+- Controlling footer section order
+- Ensuring consistent document structure
+
+**Example:**
+```toml
+# Order problems by LeetCode number: 3, 340, 76, 567, 438, 209
+problem_files = [
+    "0003_base.md",
+    "0340_k_distinct.md",
+    "0076_min_window.md",
+    "0567_permutation.md",
+    "0438_anagrams.md",
+    "0209_min_subarray.md"
+]
+```
 
 ### File Ordering
 
 Files are processed in this order:
-1. Header files (by `STRUCTURAL_FILES_ORDER`)
-2. Problem files (alphabetically by filename)
-3. Footer files (by `STRUCTURAL_FILES_FOOTER`)
+1. Header files (by `_config.toml` → `STRUCTURAL_FILES_ORDER` default)
+2. Problem files (by `_config.toml` → alphabetical default)
+3. Footer files (by `_config.toml` → `STRUCTURAL_FILES_FOOTER` default)
+
+**Configuration Priority:**
+- If `_config.toml` exists: Files are ordered exactly as specified
+- If `_config.toml` missing: Uses default ordering (alphabetical for problems)
+- Files listed in config but not found: Silently skipped
+- Files found but not in config: Appended at end (for problems) or after configured files (for header/footer)
 
 ## Output Format
 
@@ -289,10 +363,16 @@ Test coverage includes:
 ### Adding a New Pattern
 
 1. Create directory: `meta/patterns/<pattern_name>/`
-2. Add `_header.md` with introduction
+2. Add `_header.md` with introduction (required)
 3. Add problem files (e.g., `0003_base.md`)
-4. Optionally add footer files (`_comparison.md`, etc.)
-5. Run generator:
+4. Optionally add footer files (`_comparison.md`, `_decision.md`, `_mapping.md`, `_templates.md`)
+5. Optionally create `_config.toml` to control file order:
+   ```toml
+   header_files = ["_header.md"]
+   problem_files = ["0003_base.md", "0076_variant.md"]
+   footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+   ```
+6. Run generator:
    ```bash
    python tools/generate_pattern_docs.py --pattern <pattern_name>
    ```
@@ -301,12 +381,10 @@ Test coverage includes:
 
 If a new pattern directory name doesn't match the kernel ID:
 
-1. Add mapping to `KERNEL_MAPPING` in `loader.py`:
-   ```python
-   KERNEL_MAPPING = {
-       ...
-       "new_pattern": "NewKernelID",
-   }
+1. Add mapping to `tools/patterndocs/config.toml`:
+   ```toml
+   [kernel_mapping]
+   new_pattern = "NewKernelID"
    ```
 
 ### Customizing Section Numbering

@@ -5,12 +5,27 @@ Pattern Documentation Generator
 Generates comprehensive pattern documentation by composing:
 - Ontology definitions (api_kernels.toml, patterns.toml)
 - Per-problem markdown snippets (meta/patterns/<kernel>/*.md)
+- File ordering configuration (_config.toml)
+
+The generator automatically:
+- Numbers sections and generates table of contents
+- Orders files according to _config.toml (if present)
+- Composes header, problem, and footer sections
 
 Usage:
     python tools/generate_pattern_docs.py                    # Generate all
     python tools/generate_pattern_docs.py --pattern sliding_window
     python tools/generate_pattern_docs.py --validate         # Validate only
     python tools/generate_pattern_docs.py --list             # List available
+
+File Ordering:
+    Each pattern directory can include _config.toml to control file order:
+    
+    header_files = ["_header.md"]
+    problem_files = ["0003_base.md", "0076_variant.md", ...]
+    footer_files = ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
+    
+    If _config.toml is missing, uses default alphabetical ordering.
 """
 
 from __future__ import annotations
@@ -90,8 +105,7 @@ def generate_pattern_doc(pattern_name: str, dry_run: bool = False) -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate pattern documentation.")
-    parser.add_argument("--pattern", "-p", help="Generate specific pattern")
-    parser.add_argument("--all", "-a", action="store_true", help="Generate all patterns")
+    parser.add_argument("--pattern", "-p", help="Generate specific pattern (default: all)")
     parser.add_argument("--validate", "-v", action="store_true", help="Validate only")
     parser.add_argument("--list", "-l", action="store_true", help="List available patterns")
 

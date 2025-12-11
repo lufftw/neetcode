@@ -1,148 +1,151 @@
 # =============================================================================
 # AI Mind Map Generator Configuration
 # =============================================================================
-# 設定哪些資料要作為 LLM 輸入來生成 Markmap 心智圖
+# Configure which data sources to include as LLM input for generating Markmap mind maps
 # 
 # Usage:
 #   python tools/generate_mindmaps_ai.py --config tools/mindmap_ai_config.toml
 # =============================================================================
 
 [model]
-# 使用的 LLM 模型
-# GPT-5.1 系列: gpt-5.1, gpt-5.1-instant, gpt-5.1-thinking
-# GPT-4 系列: gpt-4o, gpt-4o-mini, gpt-4-turbo
-# 推理模型: o1, o1-mini, o3-mini
+# LLM model to use
+# GPT-5.1 series: gpt-5.1, gpt-5.1-instant, gpt-5.1-thinking
+# GPT-4 series: gpt-4o, gpt-4o-mini, gpt-4-turbo
+# Reasoning models: o1, o1-mini, o3-mini
 name = "gpt-5.1"
 temperature = 0.7
-# GPT-5.1 使用 max_completion_tokens（舊模型用 max_tokens）
-max_completion_tokens = 8000
+# GPT-5.1 uses max_completion_tokens (older models use max_tokens)
+max_completion_tokens = 10000
 
-# API Key: 執行時從環境變數 OPENAI_API_KEY 讀取，或互動輸入
-# API Base URL（可選，用於自訂 endpoint 或代理）
+# API Key: Read from OPENAI_API_KEY environment variable at runtime, or interactive input
+# API Base URL (optional, for custom endpoint or proxy)
 # api_base = "https://api.openai.com/v1"
 
 [output]
-# 輸出目錄
+# Output directory
 directory = "docs/mindmaps"
 
-# 固定檔名（方便在 README 引用）
+# Fixed filename (for easy reference in README)
 filename = "neetcode_ontology_ai.md"
 
-# 是否同時生成 HTML（可直接在瀏覽器開啟）
+# Whether to also generate HTML (can be opened directly in browser)
 generate_html = true
 html_directory = "docs/pages/mindmaps"
 
-# Prompt 儲存設定
+# Prompt saving settings
 [prompt]
-# 是否儲存 prompt（用於除錯或手動使用）
+# Whether to save prompt (for debugging or manual use)
 save = true
-# Prompt 儲存目錄（相對於專案根目錄）
+# Prompt storage directory (relative to project root)
 directory = "tools/prompts/generated"
-# Prompt 檔名（固定檔名，會覆蓋舊的）
+# Prompt filename (fixed filename, will overwrite old ones)
 filename = "mindmap_prompt"
 
 # =============================================================================
-# Ontology 資料選擇
+# Ontology Data Selection
 # =============================================================================
-# 選擇要包含哪些 ontology/*.toml 檔案作為知識圖譜輸入
-# true = 包含, false = 排除
+# Select which ontology/*.toml files to include as knowledge graph input
+# true = include, false = exclude
 
 [ontology]
-api_kernels = true       # 核心演算法機制（強烈建議開啟）
-patterns = true          # 解題模式（強烈建議開啟）
-algorithms = true        # 演算法與技巧
-data_structures = true   # 資料結構
-families = true          # 問題家族
-topics = true            # LeetCode 主題標籤
-difficulties = true      # 難度等級
-companies = true         # 公司列表
-roadmaps = true          # 學習路徑定義
+api_kernels = true       # Core algorithm mechanisms (strongly recommended)
+patterns = true          # Problem-solving patterns (strongly recommended)
+algorithms = true        # Algorithms and techniques
+data_structures = true   # Data structures
+families = true          # Problem families
+topics = true            # LeetCode topic tags
+difficulties = true      # Difficulty levels
+companies = true         # Company lists
+roadmaps = true          # Learning path definitions
 
 # =============================================================================
-# Pattern Documentation 資料選擇
+# Pattern Documentation Data Selection
 # =============================================================================
-# 選擇要包含哪些 docs/patterns/*.md 檔案
-# 這些是詳細的模式說明文件，包含程式碼範例和解釋
+# Select which docs/patterns/*.md files to include
+# These are detailed pattern guides with code examples and explanations
 
 [docs.patterns]
-# 是否包含 docs/patterns 的文件
+# Whether to include docs/patterns files
 enabled = true
 
-# 要包含的特定檔案（留空 = 包含全部）
-# 填入檔名（不含 .md）
+# Specific files to include
+# - Empty list [] = include all files
+# - Specify filenames without .md extension
+# - Examples: ["sliding_window"] or ["sliding_window", "two_pointers"]
 include = [
-    "sliding_window",    # Sliding Window 完整指南
-    # "bfs",               # BFS 模式（coming soon）
-    # "backtracking",      # Backtracking 模式（coming soon）
+    "sliding_window",    # Sliding Window complete guide
+    "two_pointers",      # Two Pointers complete guide
+    # "bfs",             # BFS pattern (coming soon)
+    # "backtracking",    # Backtracking pattern (coming soon)
 ]
 
-# 要排除的檔案
+# Files to exclude (always excluded regardless of include list)
 exclude = [
-    "README",  # 排除索引檔
+    "README",  # Exclude index file
 ]
 
 # =============================================================================
-# Meta Pattern Snippets 資料選擇
+# Meta Pattern Snippets Data Selection
 # =============================================================================
-# 選擇要包含哪些 meta/patterns/*/ 目錄中的 snippet 檔案
-# 這些是更細粒度的程式碼片段和說明
+# Select which snippet files from meta/patterns/*/ directories to include
+# These are more granular code snippets and explanations
 
 [meta.patterns]
-# 是否包含 meta/patterns 的資料
+# Whether to include meta/patterns data
 enabled = true
 
-# 要包含的 pattern 目錄（留空 = 包含全部）
+# Pattern directories to include (empty list [] = include all)
 include = [
     # "sliding_window",    # Sliding Window snippets
-    # "binary_search",     # Binary Search snippets（如果有的話）
+    # "binary_search",     # Binary Search snippets (if available)
 ]
 
-# 要包含的檔案類型
-include_headers = true      # _header.md - 核心概念
-include_comparisons = true  # _comparison.md - 比較表
-include_decisions = true    # _decision.md - 使用時機
-include_templates = true    # _templates.md - 程式碼模板
-include_problems = true     # XXXX_*.md - 題目 snippets
+# File types to include
+include_headers = true      # _header.md - Core concepts
+include_comparisons = true  # _comparison.md - Comparison tables
+include_decisions = true    # _decision.md - When to use
+include_templates = true    # _templates.md - Code templates
+include_problems = true     # XXXX_*.md - Problem snippets
 
 # =============================================================================
-# Problem Metadata 資料選擇
+# Problem Metadata Data Selection
 # =============================================================================
-# 選擇要包含哪些 meta/problems/*.toml 題目元資料
+# Select which meta/problems/*.toml problem metadata files to include
 
 [problems]
-# 是否包含題目資料
+# Whether to include problem data
 enabled = true
 
-# 最多包含幾題（0 = 無限制）
+# Maximum number of problems to include (0 = unlimited)
 limit = 50
 
-# 按難度篩選（留空 = 全部）
+# Filter by difficulty (empty list [] = all difficulties)
 difficulties = [
     # "easy",
     # "medium", 
     # "hard",
 ]
 
-# 按主題篩選（留空 = 全部）
+# Filter by topic (empty list [] = all topics)
 topics = [
     # "sliding_window",
     # "binary_search",
     # "dynamic_programming",
 ]
 
-# 按 API Kernel 篩選（留空 = 全部）
+# Filter by API Kernel (empty list [] = all kernels)
 api_kernels = [
     # "SubstringSlidingWindow",
     # "BinarySearchBoundary",
 ]
 
-# 按 Roadmap 篩選（留空 = 全部）
+# Filter by roadmap (empty list [] = all roadmaps)
 roadmaps = [
     # "neetcode_150",
     # "blind_75",
 ]
 
-# 指定特定題目 ID（留空 = 使用上面的篩選條件）
+# Specify specific problem IDs (empty list [] = use filters above)
 specific_ids = [
     # "0001",
     # "0003",
@@ -150,66 +153,66 @@ specific_ids = [
 ]
 
 # =============================================================================
-# 生成目標與風格
+# Generation Goal and Style
 # =============================================================================
 
 [generation]
-# 生成目標（選一個或自訂）
-# 可選: "面試準備", "系統學習", "快速複習", "模式掌握", "弱點加強", "自由發揮"
-goal = "自由發揮"
+# Generation goal (choose one or customize)
+# Options: "interview_prep", "systematic_learning", "quick_review", "pattern_mastery", "weakness_focus", "free_form"
+goal = "free_form"
 
-# 專注主題（可選，留空則不限定）
-# 例如: "sliding_window", "dp", "binary_search"
+# Focus topic (optional, empty = no restriction)
+# Examples: "sliding_window", "dp", "binary_search"
 focus_topic = ""
 
-# 風格
-# 可選: "creative", "academic", "practical", "minimal", "balanced"
+# Style
+# Options: "creative", "academic", "practical", "minimal", "balanced"
 style = "balanced"
 
-# 自訂指令（可選，會附加到 prompt 中）
+# Custom instructions (optional, will be appended to prompt)
 custom_instructions = """
 """
 
 # =============================================================================
-# 進階選項
+# Advanced Options
 # =============================================================================
 
 [advanced]
-# 是否在 prompt 中包含完整程式碼（從 docs/patterns）
+# Whether to include full code in prompt (from docs/patterns)
 include_full_code = true
 
-# 是否包含複雜度分析
+# Whether to include complexity analysis
 include_complexity = true
 
-# 是否包含 LeetCode 連結
+# Whether to include LeetCode links
 include_leetcode_links = true
 
-# 是否包含 GitHub 解答連結
+# Whether to include GitHub solution links
 include_solution_links = true
 
-# 輸出語言（Prompt 固定為英文，此設定控制生成的心智圖語言）
-# 可以是單一語言字串或語言列表（同時生成多個版本）
-language = ["en", "zh-TW"]  # "en", "zh-TW", "zh-CN" 或 ["en", "zh-TW"] 同時生成多個
+# Output language (Prompt is always in English, this controls the generated mind map language)
+# Can be a single language string or a list (to generate multiple versions simultaneously)
+language = ["en", "zh-TW"]  # "en", "zh-TW", "zh-CN" or ["en", "zh-TW"] to generate multiple versions
 
 # =============================================================================
-# 連結路徑設定
+# Link Path Configuration
 # =============================================================================
 
 [links]
-# LeetCode 題目連結基底路徑
-# 格式: https://leetcode.com/problems/{problem-slug}/
+# LeetCode problem link base path
+# Format: https://leetcode.com/problems/{problem-slug}/
 leetcode_base = "https://leetcode.com/problems"
 
-# 解答連結基底路徑（GitHub）
-# 格式: {github_repo}/blob/{branch}/solutions/{problem-slug}.py
+# Solution link base path (GitHub)
+# Format: {github_repo}/blob/{branch}/solutions/{problem-slug}.py
 github_repo = "https://github.com/lufftw/neetcode"
 github_branch = "main"
 solution_path_template = "solutions/{slug}.py"
 
-# 連結生成說明（會加入 prompt 中）
-# 題目連結格式: {leetcode_base}/{problem-slug}/
-# 解答連結格式: {github_repo}/blob/{branch}/{solution_path_template}
-# 範例:
-#   - 題目: https://leetcode.com/problems/two-sum/
-#   - 解答: https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py
+# Link generation instructions (will be added to prompt)
+# Problem link format: {leetcode_base}/{problem-slug}/
+# Solution link format: {github_repo}/blob/{branch}/{solution_path_template}
+# Examples:
+#   - Problem: https://leetcode.com/problems/two-sum/
+#   - Solution: https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py
 

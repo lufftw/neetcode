@@ -7,25 +7,9 @@ This document presents the **canonical two pointers template** and all its major
 
 ---
 
-## Table of Contents
+## Core Concepts
 
-1. [Core Concepts](#1-core-concepts)
-2. [Opposite Pointers (Two-End)](#2-opposite-pointers-two-end)
-3. [Same-Direction Pointers (Writer Pattern)](#3-same-direction-pointers-writer-pattern)
-4. [Fast–Slow Pointers (Cycle Detection)](#4-fast–slow-pointers-cycle-detection)
-5. [Partitioning / Dutch National Flag](#5-partitioning-dutch-national-flag)
-6. [Dedup + Sorted Two-Pointer Enumeration](#6-dedup-+-sorted-two-pointer-enumeration)
-7. [Merge Pattern](#7-merge-pattern)
-8. [Pattern Comparison Table](#8-pattern-comparison-table)
-9. [When to Use Two Pointers](#9-when-to-use-two-pointers)
-10. [LeetCode Problem Mapping](#10-leetcode-problem-mapping)
-11. [Template Quick Reference](#11-template-quick-reference)
-
----
-
-## 1. Core Concepts
-
-### 1.1 The Two Pointers Invariant
+### The Two Pointers Invariant
 
 Every two pointers algorithm maintains an **invariant** — a relationship between the pointers and the problem state that must always be true.
 
@@ -37,7 +21,7 @@ Two Pointers State:
 └───────────────────────────────────────────────────────────────┘
 ```
 
-### 1.2 Two Pointers Family Overview
+### Two Pointers Family Overview
 
 | Sub-Pattern | Pointer Movement | Primary Use Case |
 |-------------|-----------------|------------------|
@@ -48,7 +32,7 @@ Two Pointers State:
 | **Dedup Enumeration** | Nested with skip | Multi-sum problems (3Sum, 4Sum) |
 | **Merge Pattern** | `i→ j→ ... write→` | Merging sorted sequences |
 
-### 1.3 Universal Template Structure
+### Universal Template Structure
 
 ```python
 def two_pointers_template(sequence):
@@ -83,23 +67,23 @@ def two_pointers_template(sequence):
 
 ---
 
-## 2. Opposite Pointers (Two-End)
+## Opposite Pointers (Two-End)
 
 > **Strategy**: Start pointers at opposite ends, move toward center.  
 > **Invariant**: Valid solution space lies between `left` and `right`.  
 > **Termination**: `left >= right` (pointers meet or cross).
 
-### 2.1 When to Use
+### When to Use
 
 - Array is **sorted** and you need pairs with a target sum/property
 - Problem involves **symmetric** checks (palindromes)
 - Need to **maximize/minimize** a function of two positions (container area)
 
-### 2.2 Why It Works
+### Why It Works
 
 With sorted arrays, moving `left` right **increases** the left value, moving `right` left **decreases** the right value. This monotonicity enables efficient search without examining all O(n²) pairs.
 
-### 2.3 Template
+### Template
 
 ```python
 def opposite_pointers_template(arr, target):
@@ -128,7 +112,7 @@ def opposite_pointers_template(arr, target):
     return answer
 ```
 
-### 2.4 Complexity Notes
+### Complexity Notes
 
 | Aspect | Analysis |
 |--------|----------|
@@ -136,7 +120,7 @@ def opposite_pointers_template(arr, target):
 | Space | O(1) — only pointer indices stored |
 | Prerequisite | Array must be sorted (or problem has monotonic property) |
 
-### 2.5 LeetCode Problems
+### LeetCode Problems
 
 | ID | Problem | Key Insight |
 |----|---------|-------------|
@@ -150,24 +134,24 @@ def opposite_pointers_template(arr, target):
 
 ---
 
-## 3. Same-Direction Pointers (Writer Pattern)
+## Same-Direction Pointers (Writer Pattern)
 
 > **Strategy**: Both pointers move in the same direction; one "reads", one "writes".  
 > **Invariant**: `arr[0:write]` contains the valid/processed elements.  
 > **Termination**: Read pointer reaches end of array.
 
-### 3.1 When to Use
+### When to Use
 
 - **In-place** array modification required
 - Need to **remove** elements matching a condition
 - Need to **deduplicate** while preserving order
 - Memory constraints prohibit extra storage
 
-### 3.2 Why It Works
+### Why It Works
 
 The write pointer marks the boundary of "good" elements. The read pointer scans ahead, and only elements satisfying the condition are copied to the write position. Elements at `arr[write:]` are implicitly discarded.
 
-### 3.3 Template
+### Template
 
 ```python
 def same_direction_template(arr, condition):
@@ -189,7 +173,7 @@ def same_direction_template(arr, condition):
     return write_index  # New logical length
 ```
 
-### 3.4 Complexity Notes
+### Complexity Notes
 
 | Aspect | Analysis |
 |--------|----------|
@@ -197,7 +181,7 @@ def same_direction_template(arr, condition):
 | Space | O(1) — in-place modification, no auxiliary storage |
 | Property | Stable — preserves relative order of retained elements |
 
-### 3.5 LeetCode Problems
+### LeetCode Problems
 
 | ID | Problem | Condition |
 |----|---------|-----------|
@@ -208,20 +192,20 @@ def same_direction_template(arr, condition):
 
 ---
 
-## 4. Fast–Slow Pointers (Cycle Detection)
+## Fast–Slow Pointers (Cycle Detection)
 
 > **Strategy**: Two pointers at different speeds; fast moves 2×, slow moves 1×.  
 > **Invariant**: If cycle exists, fast will eventually catch slow inside the cycle.  
 > **Termination**: Fast reaches null (no cycle) or fast meets slow (cycle exists).
 
-### 4.1 When to Use
+### When to Use
 
 - **Cycle detection** in linked lists or sequences
 - Finding the **start of a cycle** (Floyd's algorithm phase 2)
 - Finding **middle element** of a linked list
 - **Happy number** and similar sequence convergence problems
 
-### 4.2 Why It Works (Floyd's Cycle Detection)
+### Why It Works (Floyd's Cycle Detection)
 
 If a cycle exists with length `C`:
 - When slow enters the cycle, fast is already inside
@@ -233,7 +217,7 @@ To find cycle start:
 - Move both at speed 1 — they meet at cycle start
 - Math: Meeting point is `λ` steps from cycle start; head is also `λ` steps from start
 
-### 4.3 Template
+### Template
 
 ```python
 def fast_slow_cycle_detection(head):
@@ -269,7 +253,7 @@ def fast_slow_cycle_detection(head):
     return slow  # Cycle start node
 ```
 
-### 4.4 Finding Middle Element
+### Finding Middle Element
 
 ```python
 def find_middle(head):
@@ -288,7 +272,7 @@ def find_middle(head):
     return slow
 ```
 
-### 4.5 Complexity Notes
+### Complexity Notes
 
 | Aspect | Analysis |
 |--------|----------|
@@ -296,7 +280,7 @@ def find_middle(head):
 | Space | O(1) — only two pointer references |
 | Application | Works on any sequence with a "next" function |
 
-### 4.6 LeetCode Problems
+### LeetCode Problems
 
 | ID | Problem | Variation |
 |----|---------|-----------|
@@ -308,19 +292,19 @@ def find_middle(head):
 
 ---
 
-## 5. Partitioning / Dutch National Flag
+## Partitioning / Dutch National Flag
 
 > **Strategy**: Multiple pointers divide array into regions by property.  
 > **Invariant**: Each region contains elements satisfying a specific condition.  
 > **Termination**: Unclassified region is exhausted.
 
-### 5.1 When to Use
+### When to Use
 
 - **Sort by categories** (e.g., 0s/1s/2s, even/odd)
 - **Partition** array around a pivot (quicksort)
 - **Rearrange** elements by property in-place
 
-### 5.2 Why It Works
+### Why It Works
 
 The Dutch National Flag algorithm maintains three regions:
 - `[0, low)`: Elements < pivot (e.g., all 0s)
@@ -330,7 +314,7 @@ The Dutch National Flag algorithm maintains three regions:
 
 Each element is examined once and placed in its final region.
 
-### 5.3 Template (Three-Way Partition)
+### Template (Three-Way Partition)
 
 ```python
 def dutch_national_flag(arr, pivot=1):
@@ -369,7 +353,7 @@ def dutch_national_flag(arr, pivot=1):
             mid += 1
 ```
 
-### 5.4 Two-Way Partition (Even/Odd)
+### Two-Way Partition (Even/Odd)
 
 ```python
 def partition_by_parity(arr):
@@ -388,7 +372,7 @@ def partition_by_parity(arr):
     return arr
 ```
 
-### 5.5 Complexity Notes
+### Complexity Notes
 
 | Aspect | Analysis |
 |--------|----------|
@@ -396,7 +380,7 @@ def partition_by_parity(arr):
 | Space | O(1) — in-place swaps only |
 | Stability | Not stable — relative order may change |
 
-### 5.6 LeetCode Problems
+### LeetCode Problems
 
 | ID | Problem | Partition Type |
 |----|---------|----------------|
@@ -407,26 +391,26 @@ def partition_by_parity(arr):
 
 ---
 
-## 6. Dedup + Sorted Two-Pointer Enumeration
+## Dedup + Sorted Two-Pointer Enumeration
 
 > **Strategy**: Nested loops with two-pointer inner search + duplicate skipping.  
 > **Invariant**: Each unique combination is processed exactly once.  
 > **Use Case**: Multi-sum problems (3Sum, 4Sum, kSum).
 
-### 6.1 When to Use
+### When to Use
 
 - Finding **all unique tuples** summing to target
 - Problem requires **no duplicate results**
 - Input is sorted or can be sorted
 
-### 6.2 Why It Works
+### Why It Works
 
 By sorting first, we can:
 1. Use opposite pointers to find pairs efficiently
 2. Skip duplicates by checking `if nums[i] == nums[i-1]: continue`
 3. Avoid revisiting the same combination
 
-### 6.3 Template (3Sum)
+### Template (3Sum)
 
 ```python
 def three_sum_template(nums, target=0):
@@ -485,7 +469,7 @@ def three_sum_template(nums, target=0):
     return result
 ```
 
-### 6.4 Complexity Notes
+### Complexity Notes
 
 | Aspect | Analysis |
 |--------|----------|
@@ -493,7 +477,7 @@ def three_sum_template(nums, target=0):
 | Space | O(1) extra space (excluding sorting and output) |
 | Key Insight | Sorting enables both two-pointer search and deduplication |
 
-### 6.5 LeetCode Problems
+### LeetCode Problems
 
 | ID | Problem | Variant |
 |----|---------|---------|
@@ -504,23 +488,23 @@ def three_sum_template(nums, target=0):
 
 ---
 
-## 7. Merge Pattern
+## Merge Pattern
 
 > **Strategy**: Two pointers on separate sorted sequences, merge into one.  
 > **Invariant**: Output contains smallest unprocessed element at each step.  
 > **Use Case**: Merging sorted arrays/lists.
 
-### 7.1 When to Use
+### When to Use
 
 - **Merging two sorted arrays** into one sorted result
 - **Merge step** of merge sort
 - Combining sorted linked lists
 
-### 7.2 Why It Works
+### Why It Works
 
 Both input sequences are sorted. At each step, the smallest remaining element is at one of the two pointer positions. Comparing and advancing the smaller one builds the merged result in sorted order.
 
-### 7.3 Template
+### Template
 
 ```python
 def merge_sorted_arrays(arr1, arr2):
@@ -548,7 +532,7 @@ def merge_sorted_arrays(arr1, arr2):
     return result
 ```
 
-### 7.4 In-Place Merge (LeetCode 88)
+### In-Place Merge (LeetCode 88)
 
 ```python
 def merge_in_place(nums1, m, nums2, n):
@@ -570,7 +554,7 @@ def merge_in_place(nums1, m, nums2, n):
         write -= 1
 ```
 
-### 7.5 Complexity Notes
+### Complexity Notes
 
 | Aspect | Analysis |
 |--------|----------|
@@ -578,7 +562,7 @@ def merge_in_place(nums1, m, nums2, n):
 | Space | O(1) for in-place, O(m + n) for new array |
 | Stability | Stable if ties favor left array |
 
-### 7.6 LeetCode Problems
+### LeetCode Problems
 
 | ID | Problem | Variant |
 |----|---------|---------|
@@ -586,192 +570,3 @@ def merge_in_place(nums1, m, nums2, n):
 | 88 | Merge Sorted Array | In-place, write from end |
 | 977 | Squares of a Sorted Array | Square then merge from ends |
 
----
-
-## 8. Pattern Comparison Table
-
-| Pattern | Pointer Init | Movement | Termination | Time | Space | Key Use Case |
-|---------|--------------|----------|-------------|------|-------|--------------|
-| Opposite | `0, n-1` | Toward center | `left >= right` | O(n) | O(1) | Sorted array pairs |
-| Same-Direction | `0, 0` | Both forward | `read >= n` | O(n) | O(1) | In-place modification |
-| Fast–Slow | `head, head` | Slow 1×, Fast 2× | Meet or null | O(n) | O(1) | Cycle detection |
-| Partitioning | `0, 0, n-1` | By element value | `mid > high` | O(n) | O(1) | Dutch flag, sorting |
-| Dedup Enum | `i, i+1, n-1` | Nested + opposite | All `i` processed | O(n²) | O(1) | Multi-sum problems |
-| Merge | `0, 0` | Advance smaller | Both exhausted | O(m+n) | O(1) | Merging sorted sequences |
-
----
-
-## 9. When to Use Two Pointers
-
-### 9.1 Problem Indicators
-
-✅ **Use two pointers when:**
-- Working with **sorted** arrays/lists
-- Need to find **pairs or tuples** with a target property
-- **In-place** modification is required
-- Need to detect **cycles** in sequences
-- **Merging** sorted sequences
-
-❌ **Don't use two pointers when:**
-- Array is unsorted and sorting is not allowed
-- Need all pairs regardless of order (use hash map)
-- Problem requires **non-contiguous** elements
-- Relationship between elements is not monotonic
-
-### 9.2 Decision Flowchart
-
-```
-Is the array sorted (or can be sorted)?
-├── No → Is it a linked list cycle problem?
-│        ├── Yes → Fast–Slow Pointers
-│        └── No → Consider hash map or other approach
-└── Yes → What's the goal?
-          ├── Find pair with target sum → Opposite Pointers
-          ├── Remove/deduplicate in-place → Same-Direction
-          ├── Partition by property → Dutch Flag
-          ├── Find all unique tuples → Dedup Enumeration
-          └── Merge two sequences → Merge Pattern
-```
-
----
-
-## 10. LeetCode Problem Mapping
-
-### 10.1 Opposite Pointers (Two-End)
-
-| ID | Problem Name | Difficulty |
-|----|--------------|------------|
-| 11 | Container With Most Water | Medium |
-| 15 | 3Sum | Medium |
-| 16 | 3Sum Closest | Medium |
-| 42 | Trapping Rain Water | Hard |
-| 125 | Valid Palindrome | Easy |
-| 167 | Two Sum II - Input Array Is Sorted | Medium |
-| 680 | Valid Palindrome II | Easy |
-
-### 10.2 Same-Direction Pointers (Writer)
-
-| ID | Problem Name | Difficulty |
-|----|--------------|------------|
-| 26 | Remove Duplicates from Sorted Array | Easy |
-| 27 | Remove Element | Easy |
-| 80 | Remove Duplicates from Sorted Array II | Medium |
-| 283 | Move Zeroes | Easy |
-
-### 10.3 Fast–Slow Pointers
-
-| ID | Problem Name | Difficulty |
-|----|--------------|------------|
-| 141 | Linked List Cycle | Easy |
-| 142 | Linked List Cycle II | Medium |
-| 202 | Happy Number | Easy |
-| 287 | Find the Duplicate Number | Medium |
-| 876 | Middle of the Linked List | Easy |
-
-### 10.4 Partitioning / Dutch Flag
-
-| ID | Problem Name | Difficulty |
-|----|--------------|------------|
-| 75 | Sort Colors | Medium |
-| 215 | Kth Largest Element in an Array | Medium |
-| 905 | Sort Array By Parity | Easy |
-| 922 | Sort Array By Parity II | Easy |
-
-### 10.5 Dedup + Sorted Enumeration
-
-| ID | Problem Name | Difficulty |
-|----|--------------|------------|
-| 15 | 3Sum | Medium |
-| 16 | 3Sum Closest | Medium |
-| 18 | 4Sum | Medium |
-| 167 | Two Sum II - Input Array Is Sorted | Medium |
-
-### 10.6 Merge Pattern
-
-| ID | Problem Name | Difficulty |
-|----|--------------|------------|
-| 21 | Merge Two Sorted Lists | Easy |
-| 88 | Merge Sorted Array | Easy |
-| 977 | Squares of a Sorted Array | Easy |
-
----
-
-## 11. Template Quick Reference
-
-### 11.1 Opposite Pointers
-
-```python
-def opposite_pointers(arr):
-    left, right = 0, len(arr) - 1
-    while left < right:
-        # Process arr[left] and arr[right]
-        if condition_move_left:
-            left += 1
-        else:
-            right -= 1
-```
-
-### 11.2 Same-Direction (Writer)
-
-```python
-def same_direction(arr):
-    write = 0
-    for read in range(len(arr)):
-        if should_keep(arr[read]):
-            arr[write] = arr[read]
-            write += 1
-    return write
-```
-
-### 11.3 Fast–Slow
-
-```python
-def fast_slow(head):
-    slow = fast = head
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-        if slow == fast:
-            return True  # Cycle
-    return False
-```
-
-### 11.4 Dutch Flag
-
-```python
-def dutch_flag(arr):
-    low, mid, high = 0, 0, len(arr) - 1
-    while mid <= high:
-        if arr[mid] < pivot:
-            arr[low], arr[mid] = arr[mid], arr[low]
-            low += 1
-            mid += 1
-        elif arr[mid] > pivot:
-            arr[mid], arr[high] = arr[high], arr[mid]
-            high -= 1
-        else:
-            mid += 1
-```
-
-### 11.5 Merge
-
-```python
-def merge(arr1, arr2):
-    i, j, result = 0, 0, []
-    while i < len(arr1) and j < len(arr2):
-        if arr1[i] <= arr2[j]:
-            result.append(arr1[i])
-            i += 1
-        else:
-            result.append(arr2[j])
-            j += 1
-    return result + arr1[i:] + arr2[j:]
-```
-
-
-
----
-
-
-
-*Document generated for NeetCode Practice Framework — API Kernel: TwoPointersTraversal*

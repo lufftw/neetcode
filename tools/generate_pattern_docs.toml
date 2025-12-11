@@ -1,0 +1,45 @@
+# Pattern Documentation Generator Configuration
+# Global configuration for pattern documentation generation
+
+# Directory name to API Kernel ID mapping
+# Maps pattern directory names to their corresponding API Kernel IDs in ontology
+# This is the single source of truth for directory-to-kernel mappings.
+[kernel_mapping]
+sliding_window = "SubstringSlidingWindow"
+bfs_grid = "GridBFSMultiSource"
+backtracking = "BacktrackingExploration"
+k_way_merge = "KWayMerge"
+binary_search = "BinarySearchBoundary"
+two_pointers = "TwoPointersTraversal"
+linked_list_reversal = "LinkedListInPlaceReversal"
+monotonic_stack = "MonotonicStack"
+prefix_sum = "PrefixSumRangeQuery"
+tree_dfs = "TreeTraversalDFS"
+tree_bfs = "TreeTraversalBFS"
+dp_sequence = "DPSequence"
+dp_interval = "DPInterval"
+union_find = "UnionFindConnectivity"
+trie = "TriePrefixSearch"
+heap_top_k = "HeapTopK"
+topological_sort = "TopologicalSort"
+
+# Default file ordering (used when _config.toml is missing in pattern directory)
+[default_file_order]
+header_files = [
+    "_header.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+
+# Paths configuration (relative to PROJECT_ROOT)
+# These are usually not changed, but can be customized if needed
+[paths]
+ontology_dir = "ontology"
+meta_patterns_dir = "meta/patterns"
+output_dir = "docs/patterns"
+

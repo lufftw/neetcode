@@ -1,0 +1,88 @@
+# Problem: Valid Palindrome II
+# https://leetcode.com/problems/valid-palindrome-ii/
+
+# ===== Problem Info =====
+id = "0680"
+slug = "0680_valid_palindrome_ii"
+title = "Valid Palindrome II"
+leetcode_id = 680
+url = "https://leetcode.com/problems/valid-palindrome-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["two_pointers", "string", "greedy"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+families         = ["palindrome_validation"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers", "greedy"]
+related_problems = ["0125"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0680_valid_palindrome_ii.py"
+generator = "generators/0680_valid_palindrome_ii.py"
+tests_dir = "tests/0680_valid_palindrome_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "validPalindrome"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+families         = ["palindrome_validation"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers", "greedy"]
+related_problems = ["0125"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0125#default"]
+delta      = "Allow one character skip. On mismatch, check both skip-left and skip-right options."
+complexity = "O(n) time, O(1) space"
+notes      = "Extension of palindrome check: allow one skip, try both directions on mismatch."
+
+[[solutions]]
+key    = "kskips"
+class  = "SolutionKSkips"
+method = "validPalindrome"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0680#default"]
+
+role       = "variant"
+variant    = "k_skips"
+based_on   = ["0680#default"]
+delta      = "Generalized to allow K skips (extensible version)."
+complexity = "O(n) time, O(1) space"
+notes      = "Generalized version supporting K character skips."
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterative"
+method = "validPalindrome"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0680#default"]
+
+role       = "variant"
+variant    = "iterative"
+based_on   = ["0680#default"]
+delta      = "Iterative helper function instead of recursive."
+complexity = "O(n) time, O(1) space"
+notes      = "Iterative implementation of palindrome check helper."
+

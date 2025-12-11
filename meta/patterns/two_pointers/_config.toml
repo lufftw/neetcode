@@ -1,0 +1,24 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by LeetCode number or custom order)
+# Note: Currently two_pointers uses pattern-based organization in _header.md
+# If you add individual problem files later, list them here
+problem_files = [
+    # Example: "0001_two_sum.md",
+    # Example: "0011_container_water.md",
+]
+
+# Footer files (appear last, typically comparison, decision, mapping, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+

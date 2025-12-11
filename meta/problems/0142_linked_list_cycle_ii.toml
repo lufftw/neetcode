@@ -1,0 +1,52 @@
+# Problem: Linked List Cycle II
+# https://leetcode.com/problems/linked-list-cycle-ii/
+
+# ===== Problem Info =====
+id = "0142"
+slug = "0142_linked_list_cycle_ii"
+title = "Linked List Cycle II"
+leetcode_id = 142
+url = "https://leetcode.com/problems/linked-list-cycle-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["linked_list", "two_pointers", "hash_table"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_start"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0141", "0202"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0142_linked_list_cycle_ii.py"
+generator = "generators/0142_linked_list_cycle_ii.py"
+tests_dir = "tests/0142_linked_list_cycle_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "detectCycle"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_start"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0141"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0141#default"]
+delta      = "Phase 2: Find cycle start node using mathematical property after detecting cycle."
+complexity = "O(n) time, O(1) space"
+notes      = "Floyd's algorithm Phase 2: After finding meeting point, move one pointer to head and both move at speed 1 to find cycle start."
+
