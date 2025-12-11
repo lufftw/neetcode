@@ -105,8 +105,7 @@ def generate_pattern_doc(pattern_name: str, dry_run: bool = False) -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate pattern documentation.")
-    parser.add_argument("--pattern", "-p", help="Generate specific pattern")
-    parser.add_argument("--all", "-a", action="store_true", help="Generate all patterns")
+    parser.add_argument("--pattern", "-p", help="Generate specific pattern (default: all)")
     parser.add_argument("--validate", "-v", action="store_true", help="Validate only")
     parser.add_argument("--list", "-l", action="store_true", help="List available patterns")
 

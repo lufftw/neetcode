@@ -3,14 +3,7 @@
 
 # Directory name to API Kernel ID mapping
 # Maps pattern directory names to their corresponding API Kernel IDs in ontology
-#
-# IMPORTANT: Manual configuration is recommended for clarity and maintainability.
-# Mapping relationships involve semantic decisions and should be explicitly defined.
-#
-# The system supports simple auto-inference for unambiguous cases (e.g., 
-# sliding_window -> sliding_window_* patterns), but manual configuration 
-# takes precedence and is the recommended approach.
-#
+# This is the single source of truth for directory-to-kernel mappings.
 [kernel_mapping]
 sliding_window = "SubstringSlidingWindow"
 bfs_grid = "GridBFSMultiSource"
