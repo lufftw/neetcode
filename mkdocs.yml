@@ -1,7 +1,7 @@
 # MkDocs Configuration for NeetCode Practice Framework
 site_name: NeetCode Practice Framework
 site_description: A high-performance Python LeetCode / algorithm practice framework
-site_url: https://yourusername.github.io/neetcode/
+site_url: https://lufftw.github.io/neetcode/
 repo_url: https://github.com/lufftw/neetcode
 repo_name: neetcode
 
@@ -102,6 +102,9 @@ nav:
   - 🏠 Home:
     - English: index.md
     - 繁體中文: index_zh-TW.md
+  - 📐 Patterns:
+    - Overview: patterns/README.md
+    - Sliding Window: patterns/sliding_window.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode_ontology_ai_en.md
@@ -115,6 +118,8 @@ nav:
     - Problem Relations: mindmaps/problem_relations.md
     - Solution Variants: mindmaps/solution_variants.md
     - Difficulty × Topics: mindmaps/difficulty_topics.md
+  - 🔧 Guides:
+    - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
 
 # Extra
 extra:
