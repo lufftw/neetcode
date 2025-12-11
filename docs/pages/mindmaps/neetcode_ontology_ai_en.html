@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sliding Window & Two Pointers – Unified Mastery Map - NeetCode Mind Maps</title>
+    <title>Sliding Window & Two Pointers – Unified Mind Map - NeetCode Mind Maps</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
@@ -60,481 +60,419 @@
             const { Transformer, Markmap } = window.markmap;
             const transformer = new Transformer();
             const markdown = `
-# Sliding Window & Two Pointers – Unified Mastery Map 🎯
+# Sliding Window & Two Pointers Master Map 🎯
 
-## 🔭 0. Big Picture
-
-- **Core Idea**
-  - Many "substring / subarray / pair / k-sum" problems reduce to:
-    - Maintain **pointers** over a sequence
-    - Maintain a small **state**
-    - Maintain an **invariant** until goal is reached
-- **API Kernels**
-  - \`SubstringSlidingWindow\` → 1D dynamic window, invariant on \`[L, R]\`
-  - \`TwoPointersTraversal\` → 2 pointers with structured movement
-- **You will learn**
-  - Patterns → Templates → Concrete LeetCode problems
-  - When to pick:
-    - Sliding window vs generic two pointers
-    - Hash map vs prefix sum vs sorting
+## Overview
+- **Core Techniques**
+  - Sliding Window (\`SubstringSlidingWindow\` API Kernel)
+  - Two Pointers (\`TwoPointersTraversal\` & \`FastSlowPointers\` & \`TwoPointerPartition\`)
+- **Use Cases**
+  - Substring / subarray optimization
+  - In-place array modification
+  - Pair / k-sum / palindrome / merge
+  - Cycle detection
 - **Roadmaps**
   - Sliding Window: \`sliding_window_path\`
   - Two Pointers: \`two_pointers_path\`
-  - Interview sets: \`neetcode_150\`, \`blind_75\`, \`grind_75\`, \`leetcode_top_100\`
+  - General: \`neetcode_150\`, \`blind_75\`, \`grind_75\`, \`leetcode_top_100\`
 
 ---
 
-## 🧠 1. API Kernel: \`SubstringSlidingWindow\`
+## Sliding Window Patterns 🔍
 
-- **Definition**
-  - 1D window state machine over sequences with dynamic invariants
-  - Always tracking a contiguous interval \`[left, right]\`
-- **Key Properties**
-  - Time: Typically \$O(n)\$
-  - Space: Usually \$O(\sigma)\$ or \$O(K)\$ for maps/counters
-  - Works when:
-    - Answer is a **contiguous** substring/subarray
-    - State can be updated in **O(1)** when expanding/shrinking
+### Core Concept
+- **API Kernel**: \`SubstringSlidingWindow\`
+- Maintain window \`[left, right]\` over sequence
+- **State**: hash map / counters / running sum
+- **Invariant**: property that must hold for current window
+- **Operations**
+  - Expand: \`right++\`
+  - Contract: \`left++\` while invariant violated (or while still valid, if minimizing)
+- Complexity
+  - Time: \$O(n)\$
+  - Space: typically \$O(\sigma)\$ or \$O(K)\$
 
-### 1.1 Core Template
-
+### Canonical Template
 \`\`\`python
 left = 0
 state = init_state()
 answer = init_answer()
 
 for right, x in enumerate(seq):
-    add(state, x)              # EXPAND
-
-    while invariant_violated(state):
-        remove(state, seq[left])  # CONTRACT
+    add(state, x)          # expand
+    
+    while invalid(state):  # or while valid(state) when minimizing
+        remove(state, seq[left])
         left += 1
-
+    
     answer = update(answer, left, right, state)
-
 return answer
 \`\`\`
 
-- Variants:
-  - **Maximize window** (longest length)
-  - **Minimize window** (shortest length)
-  - **Fixed-size window** (length = k)
+---
+
+### 1. Unique Characters Window (Base) 🎓
+- Pattern: \`sliding_window_unique\`
+- Invariant: all chars in window are **unique**
+- State: \`last_seen_index[char]\`
+- Optimization: **jump** \`left\` instead of while-loop
+- Problem:
+  - [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+- Snippet: \`0003_base.md\`
+- Family: \`substring_window\`
+- Topics: \`string\`, \`hash_table\`, \`sliding_window\`
+- Roadmaps: \`neetcode_150\`, \`blind_75\`, \`grind_75\`, \`leetcode_top_100\`, \`sliding_window_path\`
+- ✅ Best first sliding window problem
 
 ---
 
-## 🧩 2. Sliding Window Pattern Family
-
-<!-- markmap: fold -->
-
-### 2.1 Unique Characters Window (\`sliding_window_unique\`) 🔑
-
-- **Invariant**: All elements in window are unique
-- **State**: \`last_seen_index\` or frequency map
-- **Goal**: Maximize window length
-- **Canonical Problem**
-  - [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) ✅
-    - Topics: string, hash table, sliding window, two pointers
-    - Roadmaps: \`neetcode_150\`, \`blind_75\`, \`grind_75\`, \`leetcode_top_100\`, \`sliding_window_path\`
-- **Template Twist**
-  - Use **jumping left** optimization via \`last_seen_index[char] + 1\` instead of while-loop
-
-\`\`\`python
-last_seen = {}
-left = 0
-best = 0
-
-for right, ch in enumerate(s):
-    if ch in last_seen and last_seen[ch] >= left:
-        left = last_seen[ch] + 1
-    last_seen[ch] = right
-    best = max(best, right - left + 1)
-\`\`\`
-
----
-
-### 2.2 At Most K Distinct (\`sliding_window_at_most_k_distinct\`)
-
-- **Invariant**: \`distinct_chars_in_window <= K\`
-- **State**: \`Counter\` / map: char → freq
-- **Goal**: Maximize length
-- **Representative Problem**
+### 2. At Most K Distinct Characters
+- Pattern: \`sliding_window_at_most_k_distinct\`
+- Invariant: \`#distinct_chars(window) ≤ K\`
+- State: frequency map (\`char -> count\`)
+- Contract: **while** \`len(freq) > K\`
+- Problem:
   - [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-- **Key Point**
-  - Need **while-loop** contraction; cannot jump because multiple chars may need to be removed
-
-\`\`\`python
-freq = {}
-left = 0
-best = 0
-
-for right, ch in enumerate(s):
-    freq[ch] = freq.get(ch, 0) + 1
-    while len(freq) > k:
-        freq[s[left]] -= 1
-        if freq[s[left]] == 0:
-            del freq[s[left]]
-        left += 1
-    best = max(best, right - left + 1)
-\`\`\`
+- Snippet: \`0340_k_distinct.md\`
+- Family: \`substring_window\`
 
 ---
 
-### 2.3 Frequency Cover / “Have vs Need” (\`sliding_window_freq_cover\`) 🧮
-
-- **Invariant**: Window has all required characters with required frequencies
-- **State**
-  - \`need\`: required frequencies from pattern
-  - \`have\`: current window frequencies
-  - \`have_satisfied\`: count of chars where \`have[c] == need[c]\`
-- **Goals**
-  - Minimize length (min window that covers)
-  - Check existence / collect all windows with exact match
-- **Representative Problems**
-  - [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) (minimize window)
-  - [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) (collect all exact matches)
-  - [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) (existence of exact match)
-- **Key Variants**
-  - **Variable-size + minimize**: [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-  - **Fixed-size window**: [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py), [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-
----
-
-### 2.4 Cost-Bounded Window (\`sliding_window_cost_bounded\`)
-
-- **Invariant**: Numeric cost (e.g., sum) obeys constraint, like \`sum >= target\` or \`sum <= target\`
-- **State**: Single integer or small numeric state
-- **Goal**: Often **minimize** length given constraint
-- **Representative Problem**
-  - [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-- **Template**
-
-\`\`\`python
-left = 0
-window_sum = 0
-best = inf
-
-for right, num in enumerate(nums):
-    window_sum += num
-    while window_sum >= target:
-        best = min(best, right - left + 1)
-        window_sum -= nums[left]
-        left += 1
-return 0 if best == inf else best
-\`\`\`
-
----
-
-### 2.5 Fixed-Size Window (\`sliding_window_fixed_size\`)
-
-- **Invariant**: \`right - left + 1 == k\`
-- **State**: Sum, frequency map, or other O(1) update state
-- **Usage**
-  - Moving average, max/min over fixed window, fixed-length anagram checks
-- **Canonical Use in This Set**
+### 3. Frequency Cover (Min / Exact Cover) 🧬
+- Pattern: \`sliding_window_freq_cover\`
+- Invariants:
+  - **Cover**: window has *at least* required freq for each char in \`t\`
+  - Often **minimize** length once cover is achieved
+- State:
+  - \`need_frequency\` (from pattern string)
+  - \`have_frequency\` or \`window_frequency\`
+  - \`chars_satisfied\` vs \`chars_required\`
+- Problems:
+  - [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
+    - Min-length window containing all chars of \`t\`
   - [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+    - All positions where window is **an anagram** of \`p\`
   - [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+    - Boolean: does any permutation of \`s1\` appear in \`s2\`?
+- Snippets:
+  - \`0076_min_window.md\`
+  - \`0438_anagrams.md\`
+  - \`0567_permutation.md\`
+- Families: \`substring_window\`
+- Topics: \`string\`, \`hash_table\`, \`sliding_window\`
+
+#### Sub-Variants
+- **Fixed-size window** (anagram / permutation)
+  - Window size = \`len(pattern)\`
+  - Slide, maintain counts, compare or track \`chars_matched\`
+- **Variable-size window** (min window)
+  - Expand until all requirements met
+  - Then contract while still valid to minimize
 
 ---
 
-### 2.6 Sliding Window Comparison Table 📋
+### 4. Cost-Bounded / Sum-Bounded Window 💰
+- Pattern: \`sliding_window_cost_bounded\`
+- Invariant: numeric property (sum / cost) respects constraint
+- State: scalar sum or cost
+- Example:
+  - [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+    - Invariant: \`window_sum ≥ target\`
+    - Goal: minimize window length
+- Snippet: \`0209_min_subarray.md\`
+- Family: \`substring_window\`
+- Topics: \`array\`, \`sliding_window\`, \`prefix_sum\`, \`binary_search\` (alt solution)
+
+---
+
+### 5. Sliding Window Quick Comparison 📋
+<!-- markmap: fold -->
+- Snippet: \`_comparison.md\`
+- Table Summary
 
 | Problem | Invariant | State | Window Size | Goal |
 |--------|-----------|-------|-------------|------|
-| [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | All unique | last index map | Variable | Maximize |
-| [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | ≤ K distinct | freq map | Variable | Maximize |
-| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | Cover all of t | need/have maps | Variable | Minimize |
-| [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | Exact freq match | freq map | Fixed | Exists? |
-| [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | Exact freq match | freq map | Fixed | All positions |
-| [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | Sum ≥ target | integer sum | Variable | Minimize |
+| [LeetCode 3](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | All unique | last index map | Variable | Maximize |
+| [LeetCode 340](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | ≤ K distinct | freq map | Variable | Maximize |
+| [LeetCode 76](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | covers \`t\` | need/have maps | Variable | Minimize |
+| [LeetCode 567](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | exact match | freq map | Fixed | Exists? |
+| [LeetCode 438](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | exact match | freq map | Fixed | All positions |
+| [LeetCode 209](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | sum ≥ target | integer sum | Variable | Minimize |
 
 ---
 
-### 2.7 When to Use Sliding Window ❓
-
-- **Use sliding window when**
-  - Answer is a **contiguous subarray/substring**
-  - You can maintain **window state incrementally** in O(1)
-  - You need to **min/max** a property or check existence
-- **Avoid sliding window when**
-  - Subsequence is not contiguous → think DP / combinatorics
-  - State update is not local or O(1) → prefix sums, segment tree, etc.
+### 6. When to Use Sliding Window ❓
+- Snippet: \`_decision.md\`
+- ✅ Indicators
+  - Answer is a **contiguous** substring/subarray
+  - Want to **minimize/maximize** length/value
+  - Can **incrementally** update state when \`left/right\` move in \$O(1)\$
+- ❌ Avoid when
+  - Need **non-contiguous** selection → DP / combinatorics
+  - State depends on **global** information → prefix sums + binary search, etc.
+- Flow:
+  - Contiguous? → Yes → Incremental state? → Yes → Sliding window
+- Roadmap: \`sliding_window_path\`
 
 ---
 
-## 🧠 3. API Kernel: \`TwoPointersTraversal\`
+### 7. Sliding Window Templates Cheat Sheet
+- Snippet: \`_templates.md\`
+- **Maximize** variable window
+- **Minimize** variable window
+- **Fixed-size** window
 
-- **Definition**
-  - Traverse sequence with two coordinated pointers under invariant-preserving rules
-- **Sub-kernels in this graph**
-  - \`TwoPointersTraversal\` (general)
+---
+
+## Two Pointers Patterns ↔️
+
+### Core Concept
+- Algorithm: \`two_pointers\` (technique)
+- API Kernels:
+  - \`TwoPointersTraversal\`
   - \`FastSlowPointers\`
   - \`TwoPointerPartition\`
   - \`MergeSortedSequences\`
-- **Typical Time/Space**
-  - Time: \$O(n)\$ or \$O(n^2)\$ (for nested k-sum)
-  - Space: \$O(1)\$ (index-based)
+- Sub-Patterns
+  - Opposite pointers
+  - Same-direction (reader/writer)
+  - Fast–slow (cycle / midpoint)
+  - Partition / Dutch flag
+  - Multi-sum enumeration
+  - Merge two sorted sequences
 
 ---
 
-## 🧩 4. Two Pointers Pattern Family
-
-<!-- markmap: fold -->
-
-### 4.1 Opposite Pointers (\`two_pointer_opposite\`) ↔️
-
-- **Pointers**
-  - \`left = 0\`, \`right = n - 1\`
-  - Move towards each other
-- **Use Cases**
-  - Sorted arrays: find pair sum / difference / condition
-  - Symmetric checks: palindromes
-  - Max/min function of two indices
-- **Representative Problems (from mapping doc)**
-  - (Note: not in local JSON, so link to LeetCode directly)
-  - [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
-  - [LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/)
-  - [LeetCode 16 - 3Sum Closest](https://leetcode.com/problems/3sum-closest/)
-  - [LeetCode 42 - Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
-  - [LeetCode 125 - Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
-  - [LeetCode 167 - Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
-  - [LeetCode 680 - Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)
-- **In This Dataset**
-  - [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
-    - Classified under \`two_pointer_opposite\` pattern + hash map solution
-    - As a pattern: “pair with target” → two pointers if sorted, hash map if not
+### 1. Opposite Pointers (Two-End) ⬅️➡️
+- Patterns:
+  - \`two_pointer_opposite\`
+  - \`two_pointer_opposite_search\`
+  - \`two_pointer_opposite_palindrome\`
+  - \`two_pointer_opposite_maximize\`
+- Initialize: \`left = 0\`, \`right = n-1\`
+- Move:
+  - Based on comparison vs target or geometry
+  - Monotonic property required (often sorted array)
+- Use Cases:
+  - Two-sum on sorted array
+  - Palindrome checks
+  - Maximize/minimize function of pair (like area)
+- Problems:
+  - [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py) *(here: pattern tagged but typical optimal uses hash map; opposite pointers after sorting is a variant)*
+  - [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+  - [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py) (inner loop)
+  - [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
+  - [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+  - [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
+  - [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py) (from ends)
+- Families:
+  - \`two_pointers_optimization\`
+  - \`multi_sum_enumeration\`
+  - \`palindrome_validation\`
+  - \`sequence_merge\`
 
 ---
 
-### 4.2 Same-Direction / Writer Pattern (\`two_pointer_same_direction\` & writer variants) ✏️
-
-- **Pointers**
-  - \`read\` scans input
-  - \`write\` marks boundary of “kept” elements
-- **Invariant**
-  - \`arr[0:write]\` is always valid, processed region
-- **Use Cases**
-  - In-place:
-    - Remove elements
-    - Deduplicate sorted array
-    - Move zeroes, partition by condition
-- **Representative Problems**
-  - [LeetCode 26 - Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
-  - [LeetCode 27 - Remove Element](https://leetcode.com/problems/remove-element/)
-  - [LeetCode 80 - Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
-  - [LeetCode 283 - Move Zeroes](https://leetcode.com/problems/move-zeroes/)
-- **Key Pattern IDs**
+### 2. Same-Direction Pointers (Reader/Writer) ✏️
+- Patterns:
+  - \`two_pointer_same_direction\`
   - \`two_pointer_writer_dedup\`
   - \`two_pointer_writer_remove\`
   - \`two_pointer_writer_compact\`
+- Invariant: \`arr[0:write]\` holds all **kept** elements
+- Use Cases:
+  - In-place deduplication
+  - Remove elements by condition
+  - Compaction (e.g., move zeroes)
+- Problems:
+  - [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+  - [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+  - [LeetCode 80 - Remove Duplicates from Sorted Array II](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
+  - [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+- Family: \`in_place_array_modification\`
+- Topics: \`array\`, \`two_pointers\`
 
 ---
 
-### 4.3 Fast–Slow Pointers (\`FastSlowPointers\`) 🐢🐇
-
-- **Pointers**
-  - \`slow\` moves 1 step
-  - \`fast\` moves 2 steps
-- **Use Cases**
-  - Cycle detection in linked list / implicit sequence
-  - Find cycle start
-  - Find middle of linked list
-- **Pattern IDs**
+### 3. Fast–Slow Pointers (Cycle / Midpoint) 🐢🐇
+- API Kernel: \`FastSlowPointers\`
+- Patterns:
   - \`fast_slow_cycle_detect\`
   - \`fast_slow_cycle_start\`
   - \`fast_slow_midpoint\`
   - \`fast_slow_implicit_cycle\`
-- **Representative Problems**
-  - [LeetCode 141 - Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
-  - [LeetCode 142 - Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-  - [LeetCode 202 - Happy Number](https://leetcode.com/problems/happy-number/)
-  - [LeetCode 287 - Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
-  - [LeetCode 876 - Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+- Use Cases:
+  - Detect cycle in linked list
+  - Find start of cycle
+  - Find middle of list
+  - Implicit cycles in numeric sequences (e.g., happy number)
+- Problems:
+  - [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - [LeetCode 202 - Happy Number](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
+  - [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+- Families:
+  - \`linked_list_cycle\`
+  - \`linked_list_manipulation\`
+- Topics: \`linked_list\`, \`two_pointers\`, \`math\`
 
 ---
 
-### 4.4 Partition / Dutch Flag (\`TwoPointerPartition\`) 🎌
-
-- **Pointers**
-  - Usually 3 indices: \`low\`, \`mid\`, \`high\`
-- **Use Cases**
-  - Partition array by:
-    - Color (0/1/2)
-    - < pivot / == pivot / > pivot
-    - Even vs odd, positive vs negative
-  - Foundation of quicksort & quickselect
-- **Pattern IDs**
+### 4. Partitioning / Dutch National Flag 🚩
+- API Kernel: \`TwoPointerPartition\`
+- Patterns:
   - \`dutch_flag_partition\`
   - \`two_way_partition\`
   - \`quickselect_partition\`
-- **Representative Problems**
-  - [LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/)
-  - [LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
-  - [LeetCode 905 - Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
-  - [LeetCode 922 - Sort Array By Parity II](https://leetcode.com/problems/sort-array-by-parity-ii/)
+- Invariant:
+  - Maintain segments like \`< pivot | == pivot | > pivot\`
+  - Or separate by parity / sign
+- Use Cases:
+  - 3-way partition (colors)
+  - Partition by parity
+  - Quickselect for kth element
+- Problems:
+  - [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
+  - [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+  - [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+  - [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py) (quickselect variant)
+- Families:
+  - \`array_partition\`
+  - \`heap_priority\` (for heap alternative)
+- Topics: \`array\`, \`sorting\`, \`two_pointers\`, \`heap\`
 
 ---
 
-### 4.5 K-Sum / Multi-Sum (\`two_pointer_three_sum\`, \`two_pointer_k_sum\`) ➕➕➕
-
-- **Structure**
+### 5. Multi-Sum Enumeration (3Sum, 4Sum) ➕
+- Patterns:
+  - \`two_pointer_three_sum\`
+  - \`two_pointer_k_sum\`
+- Strategy:
   - Sort array
-  - Outer loop: fix first elements
-  - Inner: opposite pointers to find remaining elements
-- **Use Cases**
-  - 2-sum, 3-sum, 4-sum, k-sum
-- **Representative Problems**
-  - [LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/)
-  - [LeetCode 16 - 3Sum Closest](https://leetcode.com/problems/3sum-closest/)
-  - [LeetCode 18 - 4Sum](https://leetcode.com/problems/4sum/)
-  - [LeetCode 167 - Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
-- **Family**
-  - \`two_sum_variants\`
-  - \`multi_sum_enumeration\`
+  - Fix one or more indices with outer loops
+  - Use opposite pointers internally
+  - Deduplicate by skipping equal neighbors
+- Problems:
+  - [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
+  - [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
+- Family: \`multi_sum_enumeration\`
+- Topics: \`array\`, \`sorting\`, \`two_pointers\`
 
 ---
 
-### 4.6 Merge Pattern (\`MergeSortedSequences\`) 🔀
-
-- **Pointers**
-  - \`i\` over first sorted sequence
-  - \`j\` over second sorted sequence
-  - Optional \`k\` as write index
-- **Use Cases**
-  - Merge sorted arrays / lists
-  - Compute median of two sorted arrays (conceptually)
-  - Merge K sorted lists via pairwise merges
-- **Pattern IDs**
+### 6. Merge Sorted Sequences 🔀
+- API Kernel: \`MergeSortedSequences\`
+- Patterns:
   - \`merge_two_sorted_lists\`
   - \`merge_two_sorted_arrays\`
   - \`merge_sorted_from_ends\`
-- **Representative Problems in Dataset**
-  - [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
-    - Uses both \`merge_two_sorted\` pattern and \`binary_search_on_answer\`
-  - [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-    - \`merge_k_sorted_heap\` (min-heap)
-    - \`merge_k_sorted_divide\` (divide-and-conquer)
+- Use Cases:
+  - Merge two sorted linked lists
+  - Merge arrays in-place or into new array
+  - Merge from both ends (e.g., squares)
+- Problems:
+  - [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
+  - [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
+  - [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py) (merge-based intuition + binary search)
+- Families: \`sequence_merge\`, \`merge_sorted\`
+- Topics: \`linked_list\`, \`array\`, \`two_pointers\`
 
 ---
 
-### 4.7 Two Pointers Comparison Table 📋
+### 7. Two Pointers Comparison & Decision 📊
+<!-- markmap: fold -->
+- Snippets:
+  - \`_comparison.md\`
+  - \`_decision.md\`
+  - \`_templates.md\`
+  - \`_mapping.md\`
+- Comparison Table (summary)
 
-| Pattern | Init | Movement | Termination | Time | Space | Use Case |
-|--------|------|----------|-------------|------|-------|----------|
-| Opposite | \`0, n-1\` | toward center | \`l >= r\` | O(n) | O(1) | Sorted pairs, palindromes |
-| Same-Direction | \`0, 0\` | both forward | read end | O(n) | O(1) | In-place modification |
-| Fast–Slow | \`head, head\` | 1× vs 2× | meet or null | O(n) | O(1) | Cycle detection |
-| Partition | \`0, 0, n-1\` | by value | \`mid > high\` | O(n) | O(1) | Dutch flag, quickselect |
-| Dedup Enum | \`i, i+1, n-1\` | nested + opposite | all i done | O(n²) | O(1) | 3Sum/4Sum |
-| Merge | \`0, 0\` | advance smaller | both exhausted | O(m+n) | O(1) | Merge sorted sequences |
+| Pattern | Init | Movement | Use Case |
+|--------|------|----------|----------|
+| Opposite | \`0, n-1\` | inward | sorted pairs, palindromes, container |
+| Same-Direction | \`read, write\` | forward | in-place remove/dedup/compact |
+| Fast–Slow | \`slow=fast=head\` | 1× vs 2× | cycles, midpoints |
+| Partition | \`low, mid, high\` | by value | Dutch flag, parity, quickselect |
+| Merge | \`i, j\` | advance smaller | merge sorted sequences |
 
----
-
-## 🔗 5. Concrete Problems in This Dataset (with Patterns)
-
-### 5.1 Sliding Window Core Set 🌊
-
-- [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-  - Pattern: \`sliding_window_unique\`
-  - Kernel: \`SubstringSlidingWindow\`
-  - Family: \`substring_window\`
-- [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-  - Pattern: \`sliding_window_freq_cover\`
-- [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-  - Pattern: \`sliding_window_cost_bounded\`
-- [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-  - Pattern: \`sliding_window_at_most_k_distinct\`
-- [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-  - Pattern: \`sliding_window_freq_cover\`
-- [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-  - Pattern: \`sliding_window_freq_cover\`
+- Decision Hints
+  - Sorted & need pair/tuple? → Opposite / multi-sum
+  - In-place modification? → Same-direction writer
+  - Cycle / midpoint? → Fast–slow
+  - Partition by property? → Dutch flag / two-way partition
+  - Merge sorted data? → Merge pattern
 
 ---
 
-### 5.2 Two Pointers / Merge / Binary Search Highlights ⚙️
-
-- [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
-  - Family: \`two_sum_variants\`
-  - Algorithms: \`two_pointers\` (conceptual), plus hash map
-- [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
-  - Patterns: \`binary_search_on_answer\`, \`merge_two_sorted\`
-  - Kernels: \`BinarySearchBoundary\`, \`KWayMerge\`
-- [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - Patterns: \`merge_k_sorted_heap\`, \`merge_k_sorted_divide\`
-- [LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
-  - Pattern: \`linked_list_k_group_reversal\`
-  - Kernel: \`LinkedListInPlaceReversal\`
-- [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
-  - Pattern: \`backtracking_n_queens\`
-  - Kernel: \`BacktrackingExploration\`
-- [LeetCode 2 - Add Two Numbers](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
-  - Family: \`linked_list_manipulation\`, \`math_number_theory\`
-- [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
-  - Pattern: \`grid_bfs_propagation\`
-  - Kernel: \`GridBFSMultiSource\`
+## Linked List Manipulation (Bonus) 🔗
+- API Kernels:
+  - \`LinkedListInPlaceReversal\`
+  - \`FastSlowPointers\`
+- Key Patterns:
+  - \`linked_list_full_reversal\`
+  - \`linked_list_partial_reversal\`
+  - \`linked_list_k_group_reversal\`
+- Representative Problem:
+  - [LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
 
 ---
 
-## 🧭 6. Learning Path Recommendations
-
-### 6.1 Sliding Window Path (\`sliding_window_path\`) 📈
-
-- [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) — numeric sum, minimize window
-- [ ] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) — unique chars, maximize window
-- [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) — K distinct
-- [ ] [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) — fixed-size freq match
-- [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) — collect all matches
-- [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) — hardest, variable-size cover + minimize
+## BFS Grid Wavefront (Bonus Anchor) 🌊
+- API Kernel: \`GridBFSMultiSource\`
+- Pattern: \`grid_bfs_propagation\`
+- Problem:
+  - [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+- Family: \`graph_wavefront\`, \`matrix_traversal\`
+- Shows contrast: when **BFS** is more natural than two pointers/sliding window
 
 ---
 
-### 6.2 Two Pointers Path (\`two_pointers_path\`) 🚦
+## Learning Path Checklist ✅
 
-- **Stage 1: Opposite & Same-Direction**
-  - [ ] [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py) — pair sum concept (hash + two pointers idea)
-  - [ ] [LeetCode 167 - Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) — pure opposite pointers
-  - [ ] [LeetCode 283 - Move Zeroes](https://leetcode.com/problems/move-zeroes/) — writer pattern
-- **Stage 2: Partition & K-Sum**
-  - [ ] [LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/) — Dutch flag
-  - [ ] [LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/) — dedup + opposite pointers
-- **Stage 3: Merge & Advanced**
-  - [ ] [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py) — merge vs binary search on partition
-  - [ ] [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py) — K-way merge
+### Sliding Window Path
+- [x] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+- [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+- [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+- [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
+- [ ] [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+- [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+
+### Two Pointers Path
+- Opposite / Optimization
+  - [ ] [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+  - [ ] [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+  - [ ] [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
+- Same-Direction / In-place
+  - [ ] [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+  - [ ] [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+  - [ ] [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+- Fast–Slow
+  - [ ] [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - [ ] [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - [ ] [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+- Partition / Dutch Flag
+  - [ ] [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
+  - [ ] [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+  - [ ] [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+- Merge
+  - [ ] [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
+  - [ ] [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - [ ] [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
 
 ---
 
-## ✅ 7. Quick Decision Cheat Sheet
+## Interview-Oriented Highlights 💼
 
-- **Is answer a contiguous substring/subarray?**
-  - Yes → Can you maintain state in O(1) when moving L/R?
-    - Yes → **Sliding Window**
-    - No → Prefix sum / DP / other
-- **Is array sorted or can be sorted?**
-  - Yes → Need pairs/tuples? → **Opposite Pointers / K-Sum**
-  - Yes → Need in-place removal/dedup? → **Writer Pattern**
-  - Yes → Need partitioning? → **Dutch Flag / Quickselect**
-- **Is structure a linked list or implicit sequence with potential cycle?**
-  - Yes → **Fast–Slow Pointers**
-- **Need to merge sorted sequences?**
-  - Yes → **Merge Pattern / K-Way Merge**
-
----
-
-## 📌 8. Practice Checklist (Mark As You Go)
-
-- Sliding Window Core
-  - [ ] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-  - [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-  - [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-  - [ ] [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-  - [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-  - [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-- Two Pointers & Merge
-  - [ ] [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
-  - [ ] [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
-  - [ ] [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - [ ] [LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
-  - [ ] [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py) (backtracking, but good contrast with sliding window)
-  - [ ] [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py) (BFS, contrast with sliding window on grids)`;
+- Must-know Sliding Window:
+  - [LeetCode 3](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py), [LeetCode 209](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py), [LeetCode 76](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py), [LeetCode 567](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py), [LeetCode 438](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+- Must-know Two Pointers:
+  - Opposite: [LeetCode 11](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py), [LeetCode 15](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py), [LeetCode 125](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+  - Writer: [LeetCode 26](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py), [LeetCode 283](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+  - Fast–Slow: [LeetCode 141](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py), [LeetCode 142](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - Partition: [LeetCode 75](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py), [LeetCode 215](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+  - Merge: [LeetCode 21](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)`;
             const { root } = transformer.transform(markdown);
             const svg = d3.select('.markmap').append('svg');
             const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);

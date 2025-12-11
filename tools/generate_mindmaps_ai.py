@@ -273,6 +273,12 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     if isinstance(language, list):
         language = language[0] if language else "en"
     
+    # Get link configuration for GitHub repo and branch
+    links_config = config.get("links", {})
+    github_repo = links_config.get("github_repo", "https://github.com/lufftw/neetcode")
+    github_branch = links_config.get("github_branch", "main")
+    leetcode_base = links_config.get("leetcode_base", "https://leetcode.com/problems")
+    
     # Language instructions for output (prompt itself is always English)
     lang_instructions = {
         "en": "IMPORTANT: Generate the mind map content in English. All titles, labels, and descriptions should be in English.",
@@ -352,9 +358,9 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     1. Find the problem in the provided Problem Data JSON
     2. Check the `solution_file` field:
        - **If `solution_file` is NOT empty AND not null** → Link to GitHub solution
-         Format: `{github_repo}/blob/{github_branch}/{solution_file}`
+         Format: `{github_repo}/blob/{github_branch}/{{solution_file}}`
        - **If `solution_file` is empty, null, or missing** → Link to LeetCode problem page
-         Format: `{leetcode_base}/{slug}/`
+         Format: `{leetcode_base}/{{slug}}/`
     
     IMPORTANT: 
     - Check `solution_file` field value carefully - it must be a non-empty string
@@ -489,7 +495,7 @@ def build_user_prompt(
             "",
             "### Link Format in Markdown",
             "```markdown",
-            "[LeetCode {id} - {title}](URL)",
+            "[LeetCode {{id}} - {{title}}](URL)",
             "```",
             "",
             "### Examples from Problem Data",
