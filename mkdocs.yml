@@ -2,7 +2,7 @@
 site_name: NeetCode Practice Framework
 site_description: A high-performance Python LeetCode / algorithm practice framework
 site_url: https://yourusername.github.io/neetcode/
-repo_url: https://github.com/yourusername/neetcode
+repo_url: https://github.com/lufftw/neetcode
 repo_name: neetcode
 
 # Theme
@@ -120,7 +120,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/yourusername/neetcode
+      link: https://github.com/lufftw/neetcode
   generator: false
 
 extra_css:
