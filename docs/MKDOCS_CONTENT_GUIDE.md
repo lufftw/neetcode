@@ -78,6 +78,12 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 | `.dev/README.md` | Maintainer guide | `https://github.com/lufftw/neetcode/blob/main/.dev/README.md` |
 | `.dev/TESTING.md` | Testing documentation | `https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md` |
 
+**Note**: Maintainer documentation (`.dev/` directory) is **intentionally NOT** added to the website navigation (`nav` in `mkdocs.yml`) because:
+- These are maintainer-only documents (Target Audience: 🔧 Maintainers)
+- They are better suited for GitHub repository viewing rather than public website navigation
+- Adding them to nav would expose internal documentation to all website visitors
+- Badge links (e.g., `.dev/tests/`) should use GitHub absolute URLs since they point to code directories, not documentation pages
+
 ### 🐍 Environment Files
 
 | Directory/File | Description | Status |
@@ -172,6 +178,16 @@ A: It depends on the link type:
 A: For content not on the website, use GitHub absolute URLs. For content on the website, you can:
 1. Use relative paths (MkDocs handles this automatically)
 2. Or provide both GitHub and website links
+
+### Q: Why are `.dev/` documents not added to the website navigation?
+
+A: Maintainer documentation (`.dev/README.md`, `.dev/TESTING.md`) is intentionally kept out of the website navigation because:
+- **Target Audience**: These documents are for maintainers only (🔧 Maintainers), not general users
+- **Better Context**: Maintainer docs are better viewed in GitHub where they're alongside the code and tests
+- **Navigation Clarity**: Keeping internal documentation out of public website navigation keeps the site focused on user-facing content
+- **Badge Links**: Badge links pointing to `.dev/tests/` should use GitHub URLs since they reference code directories, not documentation pages
+
+If you need to access these documents, use the GitHub absolute URLs provided in README.md.
 
 ---
 
