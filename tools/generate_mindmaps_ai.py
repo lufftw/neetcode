@@ -2,7 +2,7 @@
 """
 AI-Powered Mind Map Generator for LeetCode Practice
 
-Automatically reads ontology data based on config and lets GPT-5.1 creatively
+Automatically reads ontology data based on config and lets GPT models creatively
 generate Markmap mind maps.
 
 Usage:
@@ -10,6 +10,16 @@ Usage:
     python tools/generate_mindmaps_ai.py --config mindmap_ai_config.toml
     python tools/generate_mindmaps_ai.py --goal interview
     python tools/generate_mindmaps_ai.py --topic sliding_window
+
+Prompt Options:
+    When an existing prompt is found, you can choose:
+    - [l] Load existing prompt (use as-is)
+    - [o] Optimize by AI (will overwrite)
+    - [r] Regenerate prompt from config (will overwrite)
+    
+    On first run (no existing prompt):
+    - [o] Generate prompt with AI (recommended)
+    - [r] Generate prompt from config (standard)
 
 Environment:
     OPENAI_API_KEY: Your OpenAI API key (required for API mode)
@@ -341,12 +351,21 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     Link Selection Logic (check Problem Data in user prompt):
     1. Find the problem in the provided Problem Data JSON
     2. Check the `solution_file` field:
-       - **If `solution_file` is NOT empty** → Link to GitHub solution
-       - **If `solution_file` is empty or problem not in data** → Link to LeetCode problem page
+       - **If `solution_file` is NOT empty AND not null** → Link to GitHub solution
+         Format: `{github_repo}/blob/{github_branch}/{solution_file}`
+       - **If `solution_file` is empty, null, or missing** → Link to LeetCode problem page
+         Format: `{leetcode_base}/{slug}/`
+    
+    IMPORTANT: 
+    - Check `solution_file` field value carefully - it must be a non-empty string
+    - Empty string `""` or `null` means NO solution file exists
+    - Only use GitHub link when `solution_file` has an actual file path value
 
     Examples:
-    - Problem WITH solution: `[LeetCode 3 - Longest Substring](https://github.com/.../solutions/0003_xxx.py)`
-    - Problem WITHOUT solution: `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/)`
+    - Problem WITH solution (solution_file = "solutions/0003_xxx.py"):
+      `[LeetCode 3 - Longest Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0003_xxx.py)`
+    - Problem WITHOUT solution (solution_file = "" or null):
+      `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/)`
 
     **Never mention a problem number without a link!**
 
@@ -659,21 +678,166 @@ def save_prompt(system_prompt: str, user_prompt: str, config: dict[str, Any]) ->
     return prompt_file
 
 
-def ask_use_existing_prompt(existing_prompt_file: Path | None) -> bool:
-    """Ask user if they want to use existing prompt."""
-    if not existing_prompt_file:
-        return False
+def optimize_prompt_with_ai(
+    existing_system_prompt: str,
+    existing_user_prompt: str,
+    config: dict[str, Any],
+) -> tuple[str, str]:
+    """Let AI optimize the existing prompt.
     
-    mtime = datetime.fromtimestamp(existing_prompt_file.stat().st_mtime)
-    print(f"\n📋 Found existing prompt: {existing_prompt_file.name}")
-    print(f"   Last modified: {mtime.strftime('%Y-%m-%d %H:%M:%S')}")
-    print("\nOptions:")
-    print("  [y] Use existing prompt")
-    print("  [n] Generate new prompt (will overwrite existing)")
+    Args:
+        existing_system_prompt: Current system prompt
+        existing_user_prompt: Current user prompt
+        config: Configuration dict
+        
+    Returns:
+        Tuple of (optimized_system_prompt, optimized_user_prompt)
+    """
+    if not HAS_OPENAI:
+        print("⚠️  OpenAI library not installed. Cannot optimize prompt.")
+        return existing_system_prompt, existing_user_prompt
     
-    choice = input("\nChoice [default: n]: ").strip().lower()
+    model_config = config.get("model", {})
+    model = model_config.get("name", DEFAULT_MODEL)
+    temperature = float(model_config.get("temperature", 0.7))
+    max_completion_tokens = int(model_config.get("max_completion_tokens", 8000))
+    api_base = model_config.get("api_base", "")
     
-    return choice == "y"
+    # Get API key
+    api_key = get_api_key()
+    if not api_key:
+        print("⚠️  No API key provided. Cannot optimize prompt.")
+        return existing_system_prompt, existing_user_prompt
+    
+    # Create client
+    client_kwargs = {"api_key": api_key}
+    if api_base:
+        client_kwargs["base_url"] = api_base
+    
+    client = OpenAI(**client_kwargs)
+    
+    # Build optimization prompt
+    optimization_system_prompt = dedent("""
+    You are an expert prompt engineer specializing in optimizing prompts for AI models.
+    Your task is to improve prompts to be more effective, clear, and structured while
+    maintaining their original intent and functionality.
+    
+    When optimizing prompts:
+    1. Enhance clarity and structure
+    2. Improve instructions and examples
+    3. Maintain all critical requirements and constraints
+    4. Keep the same format and output requirements
+    5. Make the prompt more effective for the target task
+    """).strip()
+    
+    # Extract instruction sections from user prompt (before data sections)
+    user_prompt_sections = existing_user_prompt.split("## 📊 Data Summary")
+    user_instructions = user_prompt_sections[0] if user_prompt_sections else existing_user_prompt[:2000]
+    
+    optimization_user_prompt = dedent(f"""
+    Please optimize the following prompt for generating LeetCode mind maps.
+    
+    The prompt consists of two parts:
+    1. System Prompt: Defines the AI's role and capabilities
+    2. User Prompt: Contains instructions and data for generating mind maps
+    
+    IMPORTANT: The User Prompt contains large JSON data sections that should NOT be modified.
+    Only optimize the instruction sections (before "## 📊 Data Summary").
+    
+    Please optimize both parts to be more effective while maintaining:
+    - All critical requirements (link rules, format requirements, etc.)
+    - The same structure and organization
+    - All data sections (JSON blocks) unchanged
+    
+    Return the optimized prompt in the same format:
+    - Start with "# System Prompt" followed by the optimized system prompt
+    - Then "---" separator  
+    - Then "# User Prompt" followed by ONLY the optimized instruction sections
+      (do NOT include the data sections - they will be appended separately)
+    
+    Current System Prompt:
+    {existing_system_prompt}
+    
+    ---
+    
+    Current User Prompt Instructions (to optimize):
+    {user_instructions}
+    
+    (Note: The actual data sections will be preserved and appended after optimization)
+    """).strip()
+    
+    try:
+        print("   🤖 Calling AI to optimize prompt...")
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": optimization_system_prompt},
+                {"role": "user", "content": optimization_user_prompt},
+            ],
+            temperature=temperature,
+            max_completion_tokens=max_completion_tokens,
+        )
+        
+        optimized_content = response.choices[0].message.content
+        
+        # Parse optimized prompt
+        if "---" in optimized_content:
+            parts = optimized_content.split("---", 1)
+            optimized_system = parts[0].replace("# System Prompt", "").strip()
+            optimized_user_instructions = parts[1].replace("# User Prompt", "").strip()
+            
+            # Reconstruct user prompt: optimized instructions + original data sections
+            if len(user_prompt_sections) > 1:
+                optimized_user = optimized_user_instructions + "\n\n## 📊 Data Summary" + "## 📊 Data Summary".join(user_prompt_sections[1:])
+            else:
+                optimized_user = optimized_user_instructions
+            
+            print("   ✅ Prompt optimized successfully!")
+            return optimized_system, optimized_user
+        else:
+            print("⚠️  Could not parse optimized prompt, using original.")
+            return existing_system_prompt, existing_user_prompt
+            
+    except Exception as e:
+        print(f"⚠️  Error optimizing prompt: {e}")
+        print("   Using original prompt instead.")
+        return existing_system_prompt, existing_user_prompt
+
+
+def ask_use_existing_prompt(existing_prompt_file: Path | None) -> str:
+    """Ask user what to do with prompt.
+    
+    Returns:
+        "load": Load and use existing prompt as-is (only if file exists)
+        "optimize": Optimize existing prompt with AI
+        "regenerate": Regenerate prompt from config and data
+        "regenerate_and_optimize": Regenerate from config, then optimize with AI
+    """
+    if existing_prompt_file:
+        mtime = datetime.fromtimestamp(existing_prompt_file.stat().st_mtime)
+        print(f"\n📋 Found existing prompt: {existing_prompt_file.name}")
+        print(f"   Last modified: {mtime.strftime('%Y-%m-%d %H:%M:%S')}")
+        print("\nOptions:")
+        print("  [l] Load existing prompt (use as-is)")
+        print("  [o] Optimize existing prompt by AI (will overwrite)")
+        print("  [r] Regenerate prompt from config (will overwrite)")
+        print("  [a] Regenerate from config + Optimize by AI (will overwrite)")
+    else:
+        print("\n📋 No existing prompt found.")
+        print("\nOptions:")
+        print("  [o] Generate prompt with AI (recommended)")
+        print("  [r] Generate prompt from config (standard)")
+    
+    choice = input("\nChoice [default: r]: ").strip().lower()
+    
+    if existing_prompt_file and choice == "l":
+        return "load"
+    elif choice == "a" and existing_prompt_file:
+        return "regenerate_and_optimize"
+    elif choice == "o":
+        return "optimize"
+    else:
+        return "regenerate"
 
 
 def generate_mindmap_ai(config: dict[str, Any]) -> str:
@@ -700,11 +864,11 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     prompt_filename = prompt_config.get("filename", "mindmap_prompt")
     existing_prompt_file = find_existing_prompt(prompt_dir, prompt_filename)
     
-    # Ask user if they want to use existing prompt
-    use_existing = ask_use_existing_prompt(existing_prompt_file)
+    # Ask user what to do with existing prompt
+    prompt_action = ask_use_existing_prompt(existing_prompt_file)
     
-    if use_existing and existing_prompt_file:
-        print(f"\n📄 Using existing prompt: {existing_prompt_file.name}")
+    if prompt_action == "load" and existing_prompt_file:
+        print(f"\n📄 Loading existing prompt: {existing_prompt_file.name}")
         prompt_content = existing_prompt_file.read_text(encoding="utf-8")
         
         # Parse prompt file
@@ -713,24 +877,94 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             system_prompt = parts[0].replace("# System Prompt", "").strip()
             user_prompt = parts[1].replace("# User Prompt", "").strip()
         else:
-            print("⚠️  Could not parse existing prompt, generating new one...")
+            print("⚠️  Could not parse existing prompt, regenerating...")
             system_prompt = build_system_prompt(config)
             user_prompt = build_user_prompt(
                 ontology_data, docs_patterns, meta_patterns, problems_data, config
             )
-            # Save new prompt (overwrites)
+            # Save regenerated prompt (overwrites)
             save_prompt(system_prompt, user_prompt, config)
-    else:
-        # Build new prompts
-        print("\n📝 Generating new prompt...")
+    elif prompt_action == "optimize":
+        # Optimize existing prompt with AI
+        if existing_prompt_file:
+            print(f"\n🤖 Optimizing existing prompt with AI...")
+            prompt_content = existing_prompt_file.read_text(encoding="utf-8")
+            
+            # Parse existing prompt
+            parts = prompt_content.split("\n---\n")
+            if len(parts) >= 2:
+                existing_system_prompt = parts[0].replace("# System Prompt", "").strip()
+                existing_user_prompt = parts[1].replace("# User Prompt", "").strip()
+                
+                # Let AI optimize the prompt
+                system_prompt, user_prompt = optimize_prompt_with_ai(
+                    existing_system_prompt, existing_user_prompt, config
+                )
+                # Save optimized prompt (overwrites existing)
+                prompt_file = save_prompt(system_prompt, user_prompt, config)
+                if prompt_file:
+                    print(f"📄 Optimized prompt saved: {prompt_file}")
+            else:
+                print("⚠️  Could not parse existing prompt, regenerating with AI instead...")
+                # Generate base prompt first, then optimize
+                base_system_prompt = build_system_prompt(config)
+                base_user_prompt = build_user_prompt(
+                    ontology_data, docs_patterns, meta_patterns, problems_data, config
+                )
+                # Optimize the base prompt
+                system_prompt, user_prompt = optimize_prompt_with_ai(
+                    base_system_prompt, base_user_prompt, config
+                )
+                prompt_file = save_prompt(system_prompt, user_prompt, config)
+                if prompt_file:
+                    print(f"📄 AI-generated prompt saved: {prompt_file}")
+        else:
+            # First time: Generate base prompt, then optimize with AI
+            print(f"\n🤖 Generating prompt with AI...")
+            print("   Step 1: Building base prompt from config...")
+            base_system_prompt = build_system_prompt(config)
+            base_user_prompt = build_user_prompt(
+                ontology_data, docs_patterns, meta_patterns, problems_data, config
+            )
+            
+            print("   Step 2: Optimizing with AI...")
+            # Let AI optimize the base prompt
+            system_prompt, user_prompt = optimize_prompt_with_ai(
+                base_system_prompt, base_user_prompt, config
+            )
+            # Save AI-optimized prompt
+            prompt_file = save_prompt(system_prompt, user_prompt, config)
+            if prompt_file:
+                print(f"📄 AI-generated prompt saved: {prompt_file}")
+    elif prompt_action == "regenerate_and_optimize":
+        # Regenerate from config, then optimize with AI
+        print("\n📝 Regenerating prompt from config and data...")
+        print("   Step 1: Building prompt from config...")
+        base_system_prompt = build_system_prompt(config)
+        base_user_prompt = build_user_prompt(
+            ontology_data, docs_patterns, meta_patterns, problems_data, config
+        )
+        
+        print("   Step 2: Optimizing with AI...")
+        # Let AI optimize the regenerated prompt
+        system_prompt, user_prompt = optimize_prompt_with_ai(
+            base_system_prompt, base_user_prompt, config
+        )
+        # Save AI-optimized prompt (overwrites existing)
+        prompt_file = save_prompt(system_prompt, user_prompt, config)
+        if prompt_file:
+            print(f"📄 Regenerated and optimized prompt saved: {prompt_file}")
+    else:  # regenerate
+        # Regenerate prompts from config and data
+        print("\n📝 Regenerating prompt from config and data...")
         system_prompt = build_system_prompt(config)
         user_prompt = build_user_prompt(
             ontology_data, docs_patterns, meta_patterns, problems_data, config
         )
-        # Save prompt (overwrites existing)
+        # Save regenerated prompt (overwrites existing)
         prompt_file = save_prompt(system_prompt, user_prompt, config)
         if prompt_file:
-            print(f"📄 Prompt saved: {prompt_file}")
+            print(f"📄 Regenerated prompt saved: {prompt_file}")
     
     # Get output config
     output_config = config.get("output", {})

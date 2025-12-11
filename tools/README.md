@@ -85,6 +85,21 @@ python tools/generate_mindmaps_ai.py --list-config
 - If you don't have an API key, you can copy the generated prompt to ChatGPT/Claude web interface
 - Prompt is saved before API call, so you can use it even if API call fails
 
+**Prompt Options:**
+When running the script, you'll be prompted with options for handling the prompt:
+
+- **First run** (no existing prompt):
+  - `[o]` Generate prompt with AI (recommended) - Creates base prompt, then optimizes it with AI
+  - `[r]` Generate prompt from config (standard) - Creates prompt directly from config and data
+
+- **Subsequent runs** (existing prompt found):
+  - `[l]` Load existing prompt - Use the saved prompt as-is (fastest)
+  - `[o]` Optimize existing prompt by AI - Let AI improve the existing prompt structure and clarity
+  - `[r]` Regenerate prompt from config - Rebuild prompt from current config and data
+  - `[a]` Regenerate from config + Optimize by AI - Rebuild from config, then optimize with AI (best of both worlds)
+
+The AI optimization option helps improve prompt clarity and effectiveness while preserving all critical requirements and data sections. The `[a]` option is useful when you've updated your config or data and want both fresh content and AI optimization.
+
 **See:**
 - [`docs/GITHUB_PAGES_SETUP.md`](../docs/GITHUB_PAGES_SETUP.md) for manual generation workflow
 - [`prompts/README.md`](prompts/README.md) for detailed prompt usage guide

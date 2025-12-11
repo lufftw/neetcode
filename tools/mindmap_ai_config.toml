@@ -15,7 +15,7 @@
 name = "gpt-5.1"
 temperature = 0.7
 # GPT-5.1 uses max_completion_tokens (older models use max_tokens)
-max_completion_tokens = 8000
+max_completion_tokens = 10000
 
 # API Key: Read from OPENAI_API_KEY environment variable at runtime, or interactive input
 # API Base URL (optional, for custom endpoint or proxy)
