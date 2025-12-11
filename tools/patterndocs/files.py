@@ -7,6 +7,30 @@ from pathlib import Path
 from .toml_parser import parse_toml_simple
 
 # Default file ordering (fallback if config not found)
+# These can be overridden by generate_pattern_docs.toml
+def get_default_file_order() -> tuple[list[str], list[str]]:
+    """Get default file ordering from config or return defaults."""
+    from .config import load_generator_config
+    
+    try:
+        config = load_generator_config()
+        default_order = config.get("default_file_order", {})
+        
+        header_files = default_order.get("header_files", ["_header.md"])
+        footer_files = default_order.get("footer_files", [
+            "_comparison.md",
+            "_decision.md",
+            "_mapping.md",
+            "_templates.md"
+        ])
+        
+        return header_files, footer_files
+    except Exception:
+        # Fallback to hardcoded defaults if config loading fails
+        return ["_header.md"], ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
+
+
+# For backward compatibility
 STRUCTURAL_FILES_ORDER = ["_header.md"]
 STRUCTURAL_FILES_FOOTER = ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
 
@@ -63,11 +87,14 @@ def collect_source_files(source_dir: Path) -> tuple[list[Path], list[Path], list
     
     header_files, footer_files, problem_files = [], [], []
 
+    # Get default file order from config
+    default_header_order, default_footer_order = get_default_file_order()
+    
     # Categorize files
     for name, file_path in all_files.items():
-        if name in STRUCTURAL_FILES_ORDER or name.startswith("_header"):
+        if name in default_header_order or name.startswith("_header"):
             header_files.append(file_path)
-        elif name in STRUCTURAL_FILES_FOOTER or (name.startswith("_") and name != "_config.toml"):
+        elif name in default_footer_order or (name.startswith("_") and name != "_config.toml"):
             footer_files.append(file_path)
         else:
             problem_files.append(file_path)
@@ -101,8 +128,8 @@ def collect_source_files(source_dir: Path) -> tuple[list[Path], list[Path], list
                 f.name
             ))
     
-    header_files = sort_by_config(header_files, "header_files", STRUCTURAL_FILES_ORDER)
-    footer_files = sort_by_config(footer_files, "footer_files", STRUCTURAL_FILES_FOOTER)
+    header_files = sort_by_config(header_files, "header_files", default_header_order)
+    footer_files = sort_by_config(footer_files, "footer_files", default_footer_order)
     
     # Problem files: use config order if available, otherwise sort by name
     if "problem_files" in config:

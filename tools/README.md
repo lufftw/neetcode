@@ -94,10 +94,10 @@ python tools/generate_mindmaps_ai.py --list-config
 Generates comprehensive pattern documentation by composing ontology definitions and per-problem markdown snippets.
 
 **Features:**
-- Automatic section numbering
-- Table of contents generation
-- Pattern-based organization
-- Support for multiple problem examples per pattern
+- Automatic section numbering and table of contents generation
+- Pattern-based organization with support for multiple problem examples
+- **File ordering configuration** via `_config.toml` files
+- Flexible composition: header → problems → footer sections
 
 **Quick Start:**
 ```bash
@@ -113,6 +113,18 @@ python tools/generate_pattern_docs.py --validate
 # List available patterns
 python tools/generate_pattern_docs.py --list
 ```
+
+**File Ordering Configuration:**
+Each pattern directory can include `_config.toml` to control file composition order:
+
+```toml
+# meta/patterns/<pattern_name>/_config.toml
+header_files = ["_header.md"]
+problem_files = ["0003_base.md", "0076_variant.md", ...]
+footer_files = ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
+```
+
+If `_config.toml` is missing, files are ordered alphabetically (default behavior).
 
 **See:** [`patterndocs/README.md`](patterndocs/README.md) for detailed documentation.
 
