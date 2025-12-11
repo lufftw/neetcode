@@ -428,6 +428,7 @@ Each API Kernel has a dedicated pattern guide with **base template**, **variatio
 | API Kernel | Guide | Problems |
 |:-----------|:-----:|:---------|
 | `SubstringSlidingWindow` | [📖](docs/patterns/sliding_window.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
+| `TwoPointersTraversal` | [📖](docs/patterns/two_pointers.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
 | `GridBFSMultiSource` | *soon* | LeetCode 994, 286, 542 |
 | `BacktrackingExploration` | *soon* | LeetCode 51, 52, 46, 78 |
 | `KWayMerge` | *soon* | LeetCode 23, 21, 88 |
