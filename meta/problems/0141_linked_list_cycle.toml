@@ -1,0 +1,52 @@
+# Problem: Linked List Cycle
+# https://leetcode.com/problems/linked-list-cycle/
+
+# ===== Problem Info =====
+id = "0141"
+slug = "0141_linked_list_cycle"
+title = "Linked List Cycle"
+leetcode_id = 141
+url = "https://leetcode.com/problems/linked-list-cycle/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["linked_list", "two_pointers", "hash_table"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_detect"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0142", "0202"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0141_linked_list_cycle.py"
+generator = "generators/0141_linked_list_cycle.py"
+tests_dir = "tests/0141_linked_list_cycle/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "hasCycle"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_detect"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0142"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Floyd's cycle detection algorithm (Tortoise and Hare). Fast pointer moves 2× speed of slow pointer."
+

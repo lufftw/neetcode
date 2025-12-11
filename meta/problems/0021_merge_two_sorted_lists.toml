@@ -1,0 +1,88 @@
+# Problem: Merge Two Sorted Lists
+# https://leetcode.com/problems/merge-two-sorted-lists/
+
+# ===== Problem Info =====
+id = "0021"
+slug = "0021_merge_two_sorted_lists"
+title = "Merge Two Sorted Lists"
+leetcode_id = 21
+url = "https://leetcode.com/problems/merge-two-sorted-lists/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["linked_list", "recursion"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "adobe", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75", "leetcode_top_100"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_lists"]
+families         = ["sequence_merge", "linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0023", "0088", "0977"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0021_merge_two_sorted_lists.py"
+generator = "generators/0021_merge_two_sorted_lists.py"
+tests_dir = "tests/0021_merge_two_sorted_lists/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "mergeTwoLists"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_lists"]
+families         = ["sequence_merge", "linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0023", "0088"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m + n) time, O(1) space"
+notes      = "Iterative merge using dummy head. Canonical merge pattern for two sorted sequences."
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "mergeTwoLists"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_lists"]
+data_structures  = ["linked_list"]
+algorithms       = ["recursion", "two_pointers"]
+related_problems = ["0023"]
+
+role       = "variant"
+variant    = "recursive"
+based_on   = ["0021#default"]
+delta      = "Recursive approach instead of iterative."
+complexity = "O(m + n) time, O(m + n) space"
+notes      = "Recursive merge pattern."
+
+[[solutions]]
+key    = "inplace"
+class  = "SolutionInPlace"
+method = "mergeTwoLists"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_lists"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021#default"]
+
+role       = "variant"
+variant    = "in_place"
+based_on   = ["0021#default"]
+delta      = "In-place merge without dummy node."
+complexity = "O(m + n) time, O(1) space"
+notes      = "Alternative in-place implementation without dummy head."
+

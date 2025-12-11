@@ -1,0 +1,52 @@
+# Problem: Merge Sorted Array
+# https://leetcode.com/problems/merge-sorted-array/
+
+# ===== Problem Info =====
+id = "0088"
+slug = "0088_merge_sorted_array"
+title = "Merge Sorted Array"
+leetcode_id = 88
+url = "https://leetcode.com/problems/merge-sorted-array/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "two_pointers", "sorting"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_arrays"]
+families         = ["sequence_merge"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021", "0977"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0088_merge_sorted_array.py"
+generator = "generators/0088_merge_sorted_array.py"
+tests_dir = "tests/0088_merge_sorted_array/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "merge"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_arrays"]
+families         = ["sequence_merge"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021", "0977"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0021#default"]
+delta      = "In-place merge writing from end to avoid overwriting unprocessed elements."
+complexity = "O(m + n) time, O(1) space"
+notes      = "Key insight: write from end to avoid overwriting nums1 elements before processing them."
+

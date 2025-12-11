@@ -1,0 +1,124 @@
+# Problem: Squares of a Sorted Array
+# https://leetcode.com/problems/squares-of-a-sorted-array/
+
+# ===== Problem Info =====
+id = "0977"
+slug = "0977_squares_of_a_sorted_array"
+title = "Squares of a Sorted Array"
+leetcode_id = 977
+url = "https://leetcode.com/problems/squares-of-a-sorted-array/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "two_pointers", "sorting"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_sorted_from_ends"]
+families         = ["sequence_merge"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021", "0088"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0977_squares_of_a_sorted_array.py"
+generator = "generators/0977_squares_of_a_sorted_array.py"
+tests_dir = "tests/0977_squares_of_a_sorted_array/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "sortedSquares"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_sorted_from_ends"]
+families         = ["sequence_merge"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021", "0088"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0021#default"]
+delta      = "Merge from ends: largest squares are at array ends. Write result from end."
+complexity = "O(n) time, O(n) space"
+notes      = "Key insight: largest squares are at ends. Merge two sorted sequences (negative reversed, positive forward) writing from end."
+
+[[solutions]]
+key    = "absolute"
+class  = "SolutionAbsolute"
+method = "sortedSquares"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_sorted_from_ends"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0977#default"]
+
+role       = "variant"
+variant    = "absolute_value"
+based_on   = ["0977#default"]
+delta      = "Compare absolute values instead of squares for efficiency."
+complexity = "O(n) time, O(n) space"
+notes      = "Compare absolute values to avoid squaring until writing."
+
+[[solutions]]
+key    = "split"
+class  = "SolutionSplit"
+method = "sortedSquares"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_sorted_from_ends"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0977#default"]
+
+role       = "variant"
+variant    = "split_merge"
+based_on   = ["0977#default"]
+delta      = "Explicitly split into negative and positive parts, then merge."
+complexity = "O(n) time, O(n) space"
+notes      = "Explicit split-then-merge approach."
+
+[[solutions]]
+key    = "sort"
+class  = "SolutionSort"
+method = "sortedSquares"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = []
+data_structures  = ["array"]
+algorithms       = ["sorting"]
+related_problems = ["0977#default"]
+
+role       = "variant"
+variant    = "sort"
+based_on   = ["0977#default"]
+delta      = "Square all elements then sort."
+complexity = "O(n log n) time, O(1) space"
+notes      = "Simple approach: square then sort."
+
+[[solutions]]
+key    = "deque"
+class  = "SolutionDeque"
+method = "sortedSquares"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_sorted_from_ends"]
+data_structures  = ["array", "deque"]
+algorithms       = ["two_pointers"]
+related_problems = ["0977#default"]
+
+role       = "variant"
+variant    = "deque"
+based_on   = ["0977#default"]
+delta      = "Use deque for O(1) append from both ends."
+complexity = "O(n) time, O(n) space"
+notes      = "Deque-based approach for efficient appending from both ends."
+

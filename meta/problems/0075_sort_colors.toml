@@ -1,0 +1,106 @@
+# Problem: Sort Colors
+# https://leetcode.com/problems/sort-colors/
+
+# ===== Problem Info =====
+id = "0075"
+slug = "0075_sort_colors"
+title = "Sort Colors"
+leetcode_id = 75
+url = "https://leetcode.com/problems/sort-colors/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "two_pointers", "sorting"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["dutch_flag_partition"]
+families         = ["array_partition"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0905", "0922"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0075_sort_colors.py"
+generator = "generators/0075_sort_colors.py"
+tests_dir = "tests/0075_sort_colors/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "sortColors"
+
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["dutch_flag_partition"]
+families         = ["array_partition"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0905"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Dutch National Flag algorithm. Three-way partition using three pointers (low, mid, high)."
+
+[[solutions]]
+key    = "counting"
+class  = "SolutionCounting"
+method = "sortColors"
+
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["dutch_flag_partition"]
+data_structures  = ["array"]
+algorithms       = ["counting"]
+related_problems = []
+
+role       = "variant"
+variant    = "counting_sort"
+based_on   = ["0075#default"]
+delta      = "Two-pass counting sort approach."
+complexity = "O(n) time, O(1) space"
+notes      = "Counting sort variant: count frequencies then fill array."
+
+[[solutions]]
+key    = "twopartition"
+class  = "SolutionTwoPartition"
+method = "sortColors"
+
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["two_way_partition"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0075#default"]
+
+role       = "variant"
+variant    = "two_pass_partition"
+based_on   = ["0075#default"]
+delta      = "Two-pass approach: first separate 0s, then separate 1s and 2s."
+complexity = "O(n) time, O(1) space"
+notes      = "Two-pass partitioning approach."
+
+[[solutions]]
+key    = "generic"
+class  = "SolutionGeneric"
+method = "sortColors"
+
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["dutch_flag_partition"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0075#default"]
+
+role       = "variant"
+variant    = "generic_k_way"
+based_on   = ["0075#default"]
+delta      = "Generic K-way partition (extensible to more colors)."
+complexity = "O(n) time, O(1) space"
+notes      = "Generalized version for K-way partition."
+

@@ -1,0 +1,88 @@
+# Problem: Valid Palindrome
+# https://leetcode.com/problems/valid-palindrome/
+
+# ===== Problem Info =====
+id = "0125"
+slug = "0125_valid_palindrome"
+title = "Valid Palindrome"
+leetcode_id = 125
+url = "https://leetcode.com/problems/valid-palindrome/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["two_pointers", "string"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+families         = ["palindrome_validation"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0680", "0005", "0125"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0125_valid_palindrome.py"
+generator = "generators/0125_valid_palindrome.py"
+tests_dir = "tests/0125_valid_palindrome/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "isPalindrome"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+families         = ["palindrome_validation"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0680"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Canonical opposite pointers pattern for symmetric/palindrome checking. Skip non-alphanumeric characters."
+
+[[solutions]]
+key    = "prefilter"
+class  = "SolutionPreFilter"
+method = "isPalindrome"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0125#default"]
+
+role       = "variant"
+variant    = "prefilter"
+based_on   = ["0125#default"]
+delta      = "Pre-filter string to remove non-alphanumeric characters."
+complexity = "O(n) time, O(n) space"
+notes      = "Two-pass approach: filter first, then check palindrome."
+
+[[solutions]]
+key    = "filtered"
+class  = "SolutionFilteredPointers"
+method = "isPalindrome"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0125#default"]
+
+role       = "variant"
+variant    = "filtered_pointers"
+based_on   = ["0125#default"]
+delta      = "Uses helper functions for character validation."
+complexity = "O(n) time, O(1) space"
+notes      = "Cleaner implementation with helper functions."
+

@@ -1,0 +1,106 @@
+# Problem: Move Zeroes
+# https://leetcode.com/problems/move-zeroes/
+
+# ===== Problem Info =====
+id = "0283"
+slug = "0283_move_zeroes"
+title = "Move Zeroes"
+leetcode_id = 283
+url = "https://leetcode.com/problems/move-zeroes/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "two_pointers"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg", "adobe"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_compact"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0027", "0026"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0283_move_zeroes.py"
+generator = "generators/0283_move_zeroes.py"
+tests_dir = "tests/0283_move_zeroes/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "moveZeroes"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_compact"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0027"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0027#default"]
+delta      = "Move non-zero elements to front, then fill remaining with zeros."
+complexity = "O(n) time, O(1) space"
+notes      = "Two-phase approach: compact non-zeros, then fill zeros."
+
+[[solutions]]
+key    = "swap"
+class  = "SolutionSwap"
+method = "moveZeroes"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_compact"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0283#default"]
+
+role       = "variant"
+variant    = "swap_based"
+based_on   = ["0283#default"]
+delta      = "Swap-based approach instead of overwrite + fill."
+complexity = "O(n) time, O(1) space"
+notes      = "Swap non-zero elements forward, preserving zeros in place."
+
+[[solutions]]
+key    = "optimized_swap"
+class  = "SolutionOptimizedSwap"
+method = "moveZeroes"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_compact"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0283#default"]
+
+role       = "variant"
+variant    = "optimized_swap"
+based_on   = ["0283#swap"]
+delta      = "Optimized swap with early termination."
+complexity = "O(n) time, O(1) space"
+notes      = "Optimized swap version with reduced operations."
+
+[[solutions]]
+key    = "snowball"
+class  = "SolutionSnowball"
+method = "moveZeroes"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_compact"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0283#default"]
+
+role       = "variant"
+variant    = "snowball"
+based_on   = ["0283#default"]
+delta      = "Snowball technique: accumulate zeros and swap with non-zero."
+complexity = "O(n) time, O(1) space"
+notes      = "Snowball approach: accumulate zeros, swap when encountering non-zero."
+
