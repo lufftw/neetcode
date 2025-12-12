@@ -41,6 +41,7 @@ TOOLS_DIR = Path(__file__).parent
 sys.path.insert(0, str(TOOLS_DIR))
 
 from mindmaps import load_ontology, load_problems, DEFAULT_OUTPUT_DIR
+from mindmaps.helpers import convert_tables_in_markmap
 from mindmaps.data import ProblemData
 from mindmaps.toml_parser import parse_toml_simple
 
@@ -346,9 +347,38 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     - **Checkboxes**: [ ] To-do, [x] Completed
     - **Math Formulas**: $O(n \\log n)$, $O(n^2)$
     - **Code Blocks**: ```python ... ```
-    - **Tables**: | A | B | ... |
     - **Fold**: <!-- markmap: fold -->
     - **Emoji**: For visual emphasis 🎯📚⚡🔥
+    
+    ## CRITICAL: Table Format Restriction
+    
+    **DO NOT use Markdown tables (| A | B |) in your output.**
+    
+    Markmap does NOT support tables as structured nodes - they are rendered as plain text,
+    making nodes too wide and reducing readability.
+    
+    Instead, convert table-like information into a hierarchical tree structure:
+    
+    ❌ BAD (Table format - will be rendered as plain text):
+    ```
+    | Problem | Invariant | State |
+    |---------|-----------|-------|
+    | LC 3    | Unique    | freq  |
+    | LC 76   | Cover     | maps  |
+    ```
+    
+    ✅ GOOD (Tree structure - will be properly visualized):
+    ```
+    - **Problem**: LC 3
+      - **Invariant**: Unique
+      - **State**: freq
+    - **Problem**: LC 76
+      - **Invariant**: Cover
+      - **State**: maps
+    ```
+    
+    For comparison tables (like Sliding Window pattern comparisons), use this tree format
+    where each row becomes a main node with its attributes as children.
 
     ## CRITICAL: Problem Links Rule
 
@@ -1036,6 +1066,10 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             
             # Generate content
             content = generate_with_openai(lang_system_prompt, lang_user_prompt, lang_config)
+            
+            # Convert Markdown tables to Markmap tree structure
+            # Markmap doesn't support tables as structured nodes - they're rendered as plain text
+            content = convert_tables_in_markmap(content)
             all_contents[lang] = content
             
             # Save with language suffix
