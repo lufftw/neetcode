@@ -124,6 +124,8 @@ nav:
     - Architecture Migration: ARCHITECTURE_MIGRATION.md
   - 🔧 Guides:
     - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
+    - Build Documentation Locally (Manual): BUILD_DOCS_MANUAL.md
+    - Run GitHub Actions Locally (Act): ACT_LOCAL_GITHUB_ACTIONS.md
 
 # Extra
 extra:
