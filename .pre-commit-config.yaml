@@ -1,0 +1,22 @@
+# Pre-commit configuration for NeetCode project
+# Install: pip install pre-commit
+# Setup: pre-commit install
+
+repos:
+  # Custom local hook for AI mind map generation
+  - repo: local
+    hooks:
+      - id: generate-ai-mindmaps
+        name: Generate AI Mind Maps
+        entry: python tools/hooks/generate_ai_mindmaps_hook.py
+        language: system
+        files: |
+          ^ontology/
+          ^meta/problems/
+          ^tools/generate_mindmaps\.py$
+        pass_filenames: false
+        stages: [pre-commit]
+        verbose: true
+        always_run: false
+
+

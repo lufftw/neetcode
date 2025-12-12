@@ -29,7 +29,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 ---
 
-**Topics:** `knowledge-graph` `ai-powered` `mind-map` `pattern-recognition` `leetcode` `neetcode-150` `blind-75` `stress-testing` `algorithm-engineering` `performance-benchmarking` `data-driven-testing` `random-test-generation` `judge-function` `algorithm-debugging` `competitive-programming` `python` `vscode-integration` `test-automation` `coding-interview`
+**Topics:** `knowledge-graph` `ai-powered` `mind-map` `pattern-recognition` `leetcode` `neetcode-150` `blind-75` `stress-testing` `algorithm-engineering` `performance-benchmarking` `data-driven-testing` `random-test-generation` `judge-function` `algorithm-debugging` `competitive-programming` `python` `vscode-integration` `test-automation` `pre-commit` `local-automation` `coding-interview`
 
 ---
 
@@ -209,7 +209,7 @@ source leetcode/bin/activate
 pip install -r requirements.txt
 
 # Make scripts executable
-chmod +x run_tests.sh run_case.sh new_problem.sh
+chmod +x scripts/run_tests.sh scripts/run_case.sh scripts/new_problem.sh
 ```
 
 </details>
@@ -218,10 +218,10 @@ chmod +x run_tests.sh run_case.sh new_problem.sh
 
 ```bash
 # Windows
-new_problem.bat 0001_two_sum
+scripts\new_problem.bat 0001_two_sum
 
 # Linux/macOS
-./new_problem.sh 0001_two_sum
+./scripts/new_problem.sh 0001_two_sum
 ```
 
 This creates:
@@ -233,10 +233,10 @@ This creates:
 
 ```bash
 # Windows
-run_tests.bat 0001_two_sum
+scripts\run_tests.bat 0001_two_sum
 
 # Linux/macOS
-./run_tests.sh 0001_two_sum
+./scripts/run_tests.sh 0001_two_sum
 ```
 
 ### 4. Debug in VS Code
@@ -373,6 +373,29 @@ python tools/generate_mindmaps_ai.py --topic dynamic_programming
 # Configure in tools/mindmap_ai_config.toml:
 # language = ["en", "zh-TW"]
 ```
+
+### 🔄 Automatic Generation (Local CI/CD)
+
+**Auto-generate AI mind maps on commit** using pre-commit hooks:
+
+```bash
+# Install pre-commit hooks
+pip install pre-commit
+pre-commit install
+```
+
+When you commit changes to `ontology/`, `meta/problems/`, or `tools/generate_mindmaps.py`, the hook automatically runs AI mind map generation.
+
+**Skip when needed:**
+```bash
+# Skip with commit message
+git commit -m "Update ontology [skip-ai]"
+
+# Skip with environment variable
+SKIP_AI_MINDMAPS=true git commit -m "Update ontology"
+```
+
+> 📖 See [tools/README.md](tools/README.md#-local-cicd-automation) for complete setup and usage guide.
 
 ### Configuration
 
@@ -629,7 +652,7 @@ greedy                  44.82ms   O(kN)           3/3
 ============================================================
 ```
 
-Create with template: `new_problem.bat 0023_merge_k_lists --multi`
+Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
 
 > 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema) for complete SOLUTIONS schema and validation rules.
 
@@ -845,7 +868,7 @@ neetcode/
 ├── .dev/                      # 🧪 Maintainer zone (unit tests)
 │   ├── tests/                 # Unit test suite (150+ cases)
 │   ├── tests_solutions/       # Solution validation tests
-│   ├── run_tests.bat/.sh      # Run runner unit tests
+│   ├── scripts/run_tests.bat/.sh  # Run runner unit tests
 │   ├── run_all_tests.bat/.sh  # Run all unit tests
 │   ├── run_tests_solutions.bat/.sh  # Run solution tests
 │   ├── TESTING.md             # Testing documentation
@@ -858,9 +881,11 @@ neetcode/
 │
 ├── leetcode/                  # 🐍 Python virtual environment (3.11)
 │
-├── run_tests.bat / .sh        # Run all tests for a problem
-├── run_case.bat / .sh         # Run single test case
-├── new_problem.bat / .sh      # Create new problem from template
+├── scripts/                   # 🔧 Utility scripts
+│   ├── new_problem.bat / .sh  # Create new problem from template
+│   ├── run_tests.bat / .sh    # Run all tests for a problem
+│   ├── run_case.bat / .sh     # Run single test case
+│   └── build_docs.bat / .sh   # Build documentation site
 │
 ├── requirements.txt           # Python dependencies
 ├── mkdocs.yml                 # MkDocs configuration
@@ -1003,13 +1028,48 @@ python tools/generate_mindmaps.py --html
 
 Configuration: `tools/generate_mindmaps.toml`
 
+### Build Documentation Locally
+
+> ⚠️ **Optional Feature:** Building documentation locally is **completely optional**. Core LeetCode practice functionality works without any documentation build setup.
+
+**Recommended Method (Simple):**
+
+The easiest way to build documentation locally is using the manual scripts:
+
+```bash
+# Windows
+scripts\build_docs.bat
+
+# Linux/macOS
+./scripts/build_docs.sh
+
+# Build and preview locally
+scripts\build_docs.bat --serve  # Windows
+./scripts/build_docs.sh --serve  # Linux/macOS
+```
+
+📖 **See [Building Documentation Locally (Manual Method)](docs/BUILD_DOCS_MANUAL.md)** for complete guide.
+
+**Advanced Option (Optional):**
+
+If you want to test the exact GitHub Actions workflow locally, you can use `act`:
+
+📖 **See [Running GitHub Actions Locally with Act](docs/ACT_LOCAL_GITHUB_ACTIONS.md)** — *Note: Requires Docker and act tool. Only needed if you want to test CI/CD workflows.*
+
 ### Documentation
 
+**Core Documentation:**
 - [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
 - [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
 - [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
 - [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
+
+**Local Documentation Build (Optional):**
+- [`docs/BUILD_DOCS_MANUAL.md`](docs/BUILD_DOCS_MANUAL.md) — ⭐ **Recommended:** Simple manual build method
+- [`docs/ACT_LOCAL_GITHUB_ACTIONS.md`](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — Advanced: Test CI/CD workflows locally with act (requires Docker)
+
+**Deployment:**
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 
 ---

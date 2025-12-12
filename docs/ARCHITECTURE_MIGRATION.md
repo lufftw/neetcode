@@ -424,7 +424,7 @@ SOLUTIONS = {
   - Updated `template_solution.py` to use `SOLUTIONS` + `get_solver()`
   - Updated `template_solution_multi.py` to use polymorphic pattern
   - Deleted deprecated `template_solution_wrapper.py`
-  - Updated `new_problem.bat` and `new_problem.sh` (removed `--wrapper` option)
-  - Updated `run_tests.bat` to pass all arguments
+  - Updated `scripts/new_problem.bat` and `scripts/new_problem.sh` (removed `--wrapper` option)
+  - Updated `scripts/run_tests.bat` to pass all arguments
   - Created `docs/SOLUTION_CONTRACT.md` as canonical specification
 

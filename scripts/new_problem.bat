@@ -21,7 +21,7 @@ if "%~1"=="" (
 )
 
 set PROBLEM=%~1
-set BASE_DIR=%~dp0
+set BASE_DIR=%~dp0..\
 set TEMPLATE=template_solution.py
 set TEMPLATE_TYPE=single
 

@@ -20,7 +20,7 @@ if [ -z "$1" ]; then
 fi
 
 PROBLEM="$1"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATE="template_solution.py"
 TEMPLATE_TYPE="single"
 

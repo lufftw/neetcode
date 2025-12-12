@@ -30,12 +30,15 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 | `docs/GENERATOR_CONTRACT.md` | Generator file specification | `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/` |
 | `docs/ARCHITECTURE_MIGRATION.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
 | `docs/GITHUB_PAGES_SETUP.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
+| `docs/BUILD_DOCS_MANUAL.md` | Local documentation build (manual method) | `https://lufftw.github.io/neetcode/BUILD_DOCS_MANUAL/` |
+| `docs/ACT_LOCAL_GITHUB_ACTIONS.md` | Run GitHub Actions locally with act | `https://lufftw.github.io/neetcode/ACT_LOCAL_GITHUB_ACTIONS/` |
 
 ### 📝 Special Notes
 
 - **README.md** and **README_zh-TW.md**: These files do **NOT** appear as separate pages on the website. Instead, they are included in `docs/index.md` and `docs/index_zh-TW.md` via the `include-markdown` plugin.
 - **docs/patterns/**: ✅ Now configured in `nav` and available on the website.
 - **docs/GITHUB_PAGES_SETUP.md**: ✅ Now configured in `nav` and available on the website.
+- **Local build guides**: ✅ `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) are now configured in `nav`.
 - **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, and `ARCHITECTURE_MIGRATION.md` are now configured in `nav`.
 - **Tools docs**: Developer tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (not on website, GitHub only).
 
@@ -78,6 +81,8 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 
 - `docs/patterns/` - Pattern documentation
 - `docs/GITHUB_PAGES_SETUP.md` - GitHub Pages setup guide
+- `docs/BUILD_DOCS_MANUAL.md` - Local documentation build (manual method, recommended)
+- `docs/ACT_LOCAL_GITHUB_ACTIONS.md` - Run GitHub Actions locally with act (optional, advanced)
 - `docs/SOLUTION_CONTRACT.md` - Solution file specification
 - `docs/GENERATOR_CONTRACT.md` - Generator file specification
 - `docs/ARCHITECTURE_MIGRATION.md` - Architecture migration guide
@@ -136,6 +141,8 @@ When linking to content in README.md, follow these strategies:
 <!-- Document in nav - can use relative paths -->
 - [📐 Patterns](docs/patterns/) — Pattern documentation
 - [GitHub Pages Setup](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
+- [Build Documentation Locally](docs/BUILD_DOCS_MANUAL.md) — Manual build method (recommended)
+- [Run GitHub Actions Locally](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — Act method (optional, advanced)
 
 <!-- Document NOT in nav - use GitHub URLs -->
 - [`docs/ONTOLOGY_DESIGN.md`](https://github.com/lufftw/neetcode/blob/main/docs/ONTOLOGY_DESIGN.md) — Ontology design documentation
@@ -221,6 +228,7 @@ If you need to access these documents, use the GitHub absolute URLs provided in 
 - **2025-01-XX**: Updated - Added `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` to website navigation
 - **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration
 - **2025-12-12**: Moved Tools documentation from `docs/TOOLS.md` to `tools/README.md` (developer docs belong with code)
+- **2025-01-XX**: Added local documentation build guides - `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) to Guides section
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---
