@@ -1,6 +1,9 @@
 # Unit Tests for NeetCode Runner System
 
-這個目錄包含了 neetcode runner 系統的**行為測試（Characterization Tests）**。
+這個目錄包含了 neetcode **runner 系統**的**行為測試（Characterization Tests）**。
+
+**注意**：此目錄測試的是 **runner 系統的功能**（test_runner, executor, module_loader 等），
+而非 solutions 本身。要測試所有 solutions，請使用 `.dev/tests_solutions/`。
 
 ## 目的
 
@@ -10,6 +13,13 @@
 2. **邊界條件驗證**：測試空輸入、錯誤輸入、大資料等邊界情況
 3. **整合測試**：驗證各個組件能正確協同工作
 4. **回歸測試**：防止未來的修改破壞現有功能
+
+## 測試分類
+
+| 測試類型 | 目錄 | 用途 |
+|---------|------|------|
+| **Runner 系統測試** | `.dev/tests/` | 測試 runner 框架功能 |
+| **Solutions 測試** | `.dev/tests_solutions/` | 測試所有 solution 檔案 |
 
 ## 測試結構
 
