@@ -31,11 +31,14 @@ SOLUTIONS = {
 }
 
 
+# ============================================
+# Solution 1: BFS (Breadth-First Search)
+# Time: O(m * n), Space: O(m * n)
+#   - BFS traversal from all initial rotten oranges
+#   - Queue stores positions of rotten oranges
+#   - Each minute processes one level of BFS
+# ============================================
 class Solution:
-    # ============================================
-    # Solution 1: BFS (Breadth-First Search)
-    # Time: O(m * n), Space: O(m * n)
-    # ============================================
     def orangesRotting(self, grid: List[List[int]]) -> int:
         # Dimensions of the grid
         rows, cols = len(grid), len(grid[0])

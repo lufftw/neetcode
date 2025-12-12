@@ -27,6 +27,12 @@ SOLUTIONS = {
 }
 
 
+# ============================================
+# Solution 1: Hash Map
+# Time: O(n), Space: O(n)
+#   - Single pass through array
+#   - Hash map stores seen numbers and their indices
+# ============================================
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         seen = {}
