@@ -222,51 +222,61 @@ class TestMultiSolutionIntegration:
         solutions_dir.mkdir()
         tests_dir.mkdir()
         
-        # Create solution with multiple methods
+        # Create solution with multiple methods (polymorphic pattern)
         solution_code = """#!/usr/bin/env python3
 import sys
 import os
 
 SOLUTIONS = {
+    'default': {
+        'class': 'SolutionOptimized',
+        'method': 'twoSum',
+        'complexity': 'O(n)',
+        'description': 'Hash table approach'
+    },
     'brute_force': {
-        'method': 'brute_force',
+        'class': 'SolutionBruteForce',
+        'method': 'twoSum',
         'complexity': 'O(n²)',
         'description': 'Brute force approach'
     },
     'optimized': {
-        'method': 'optimized',
+        'class': 'SolutionOptimized',
+        'method': 'twoSum',
         'complexity': 'O(n)',
         'description': 'Hash table approach'
     }
 }
 
-def solve_brute_force(nums, target):
-    for i in range(len(nums)):
-        for j in range(i + 1, len(nums)):
-            if nums[i] + nums[j] == target:
-                return [i, j]
-    return []
+class SolutionBruteForce:
+    def twoSum(self, nums, target):
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+        return []
 
-def solve_optimized(nums, target):
-    seen = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
-    return []
+class SolutionOptimized:
+    def twoSum(self, nums, target):
+        seen = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in seen:
+                return [seen[complement], i]
+            seen[num] = i
+        return []
 
 def solve():
     import ast
     nums = ast.literal_eval(sys.stdin.readline().strip())
     target = int(sys.stdin.readline().strip())
     
-    method = os.environ.get('SOLUTION_METHOD', 'optimized')
+    method_key = os.environ.get('SOLUTION_METHOD', 'default')
+    info = SOLUTIONS.get(method_key, SOLUTIONS['default'])
     
-    if method == 'brute_force':
-        result = solve_brute_force(nums, target)
-    else:
-        result = solve_optimized(nums, target)
+    # Polymorphic invocation
+    solver = globals()[info['class']]()
+    result = getattr(solver, info['method'])(nums, target)
     
     print(result)
 
@@ -287,7 +297,7 @@ if __name__ == "__main__":
         }
     
     def test_load_solutions_metadata(self, multi_solution_setup):
-        """Test loading SOLUTIONS metadata."""
+        """Test loading SOLUTIONS metadata (polymorphic format)."""
         env = multi_solution_setup
         
         original_cwd = os.getcwd()
@@ -298,9 +308,14 @@ if __name__ == "__main__":
             
             assert module is not None
             assert solutions_meta is not None
+            assert 'default' in solutions_meta
             assert 'brute_force' in solutions_meta
             assert 'optimized' in solutions_meta
+            # Verify polymorphic format
+            assert solutions_meta['brute_force']['class'] == 'SolutionBruteForce'
+            assert solutions_meta['brute_force']['method'] == 'twoSum'
             assert solutions_meta['brute_force']['complexity'] == 'O(n²)'
+            assert solutions_meta['optimized']['class'] == 'SolutionOptimized'
             assert solutions_meta['optimized']['complexity'] == 'O(n)'
         finally:
             os.chdir(original_cwd)

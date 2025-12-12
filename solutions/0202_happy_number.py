@@ -49,25 +49,29 @@ Space: O(1) - Only two number values stored
 
 ================================================================================
 """
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_floyd",
+        "class": "SolutionFloyd",
+        "method": "isHappy",
         "complexity": "O(log n) time, O(1) space",
         "description": "Floyd's cycle detection on number sequence",
     },
     "floyd": {
-        "method": "solve_floyd",
+        "class": "SolutionFloyd",
+        "method": "isHappy",
         "complexity": "O(log n) time, O(1) space",
         "description": "Floyd's cycle detection on number sequence",
     },
     "hashset": {
-        "method": "solve_hashset",
+        "class": "SolutionHashSet",
+        "method": "isHappy",
         "complexity": "O(log n) time, O(log n) space",
         "description": "Hash set to detect cycles in sequence",
     },
@@ -198,19 +202,6 @@ class SolutionHashSet:
         return current == 1
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_floyd(n: int) -> bool:
-    """Wrapper for SolutionFloyd."""
-    return SolutionFloyd().isHappy(n)
-
-
-def solve_hashset(n: int) -> bool:
-    """Wrapper for SolutionHashSet."""
-    return SolutionHashSet().isHappy(n)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -231,14 +222,9 @@ def solve():
     
     n = int(sys.stdin.read().strip())
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(n)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.isHappy(n)
     
     print("true" if result else "false")
 

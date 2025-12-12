@@ -1,192 +1,185 @@
-# Unit Tests for NeetCode Runner System
+# Component Tests
 
-這個目錄包含了 neetcode runner 系統的**行為測試（Characterization Tests）**。
+This directory contains **characterization tests** for the NeetCode **Runner system**.
 
-## 目的
+## Test Categories
 
-這些測試的主要目的是：
+This project's tests are divided into three main categories:
 
-1. **釘住現有行為**：確保重構時不會改變現有功能
-2. **邊界條件驗證**：測試空輸入、錯誤輸入、大資料等邊界情況
-3. **整合測試**：驗證各個組件能正確協同工作
-4. **回歸測試**：防止未來的修改破壞現有功能
+| Category | Directory | Purpose |
+|----------|-----------|---------|
+| **Format Compliance Tests** | `tools/tests/` | Solution format standards |
+| **Component Tests** | `.dev/tests/` ← This directory | Runner module functionality |
+| **Solution Correctness Tests** | `.dev/tests_solutions/` | Solution execution results |
 
-## 測試結構
+---
+
+## Purpose
+
+The main purposes of these tests are:
+
+1. **Lock down existing behavior** - Ensure refactoring doesn't change existing functionality
+2. **Edge case validation** - Test empty input, invalid input, large data, and other edge cases
+3. **Integration testing** - Verify that components work correctly together
+4. **Regression testing** - Prevent future changes from breaking existing functionality
+
+---
+
+## Test Structure
 
 ```
-tests_unit/
-├── test_util.py              # util.py 的行為測試
-├── test_case_runner.py       # case_runner.py 的行為測試
-├── test_test_runner.py       # test_runner.py 的行為測試
-├── test_complexity_estimator.py  # complexity_estimator.py 的行為測試
-├── test_edge_cases.py        # 邊界條件測試
-├── test_integration.py       # 整合測試（端到端）
-└── README.md                 # 本文件
+.dev/tests/
+├── __init__.py
+│
+│   # === Runner System Tests ===
+├── test_util.py                     # util.py tests (40+ tests)
+├── test_case_runner.py              # case_runner.py tests (15+ tests)
+├── test_test_runner.py              # test_runner.py tests (30+ tests)
+├── test_complexity_estimator.py     # complexity_estimator.py tests (25+ tests)
+├── test_edge_cases.py               # Edge case tests (40+ tests)
+├── test_integration.py              # Integration tests (20+ tests)
+│
+│   # === Tool Tests ===
+├── test_generate_mindmaps.py        # generate_mindmaps.py tests (50+ tests)
+├── test_generate_pattern_docs.py    # generate_pattern_docs.py tests (50+ tests)
+│
+└── README.md                        # This file
 ```
 
-## 如何運行測試
+---
 
-### 前置要求
+## How to Run Tests
 
-首先安裝測試依賴：
+### Quick Start
 
 ```bash
 # Windows
-python -m pip install pytest pytest-cov
+.dev\run_tests.bat
 
 # Linux/Mac
-python3 -m pip install pytest pytest-cov
+.dev/run_tests.sh
 ```
 
-### 運行所有測試
+### Using pytest
 
 ```bash
-# Windows
-run_unit_tests.bat
+# Run all component tests
+python -m pytest .dev/tests -v
 
-# Linux/Mac
-./run_unit_tests.sh
+# Run by marker
+python -m pytest .dev/tests -v -m unit
+python -m pytest .dev/tests -v -m integration
+python -m pytest .dev/tests -v -m edge_case
+
+# Run specific file
+python -m pytest .dev/tests/test_util.py -v
+
+# Run specific test class
+python -m pytest .dev/tests/test_util.py::TestNormalizeOutput -v
+
+# Generate coverage report
+python -m pytest .dev/tests --cov=runner --cov-report=html
 ```
 
-或直接使用 pytest：
+---
 
-```bash
-python -m pytest tests_unit -v
+## Test Coverage
+
+### runner/util.py
+
+- ✅ `normalize_output()` - Output normalization
+- ✅ `compare_outputs()` - Three comparison modes (exact/sorted/set)
+- ✅ `compare_result()` - JUDGE_FUNC support
+- ✅ `_compare_sorted()` - Sorted comparison
+- ✅ `_compare_set()` - Set comparison
+- ✅ Path helper functions
+- ✅ File operation functions
+
+### runner/case_runner.py
+
+- ✅ Command line argument handling
+- ✅ File path validation
+- ✅ Single test case execution
+- ✅ Error handling
+
+### runner/test_runner.py
+
+- ✅ Module loading (solution/generator)
+- ✅ Test case execution
+- ✅ Multiple solution support
+- ✅ Comparison modes (exact/sorted/set)
+- ✅ JUDGE_FUNC support
+- ✅ Failed case saving
+
+### runner/complexity_estimator.py
+
+- ✅ Availability checking
+- ✅ Complexity estimation
+- ✅ Mock stdin mechanism
+- ✅ Result formatting
+
+### Edge Case Tests
+
+- ✅ Empty input
+- ✅ Invalid input
+- ✅ Large data
+- ✅ Special characters (Unicode, emoji, CJK)
+- ✅ Malformed data
+
+### Integration Tests
+
+- ✅ End-to-end workflow
+- ✅ Multiple solution integration
+- ✅ Comparison mode integration
+- ✅ JUDGE_FUNC integration
+
+---
+
+## Test Markers
+
+```python
+@pytest.mark.unit          # Unit tests
+@pytest.mark.integration   # Integration tests
+@pytest.mark.edge_case     # Edge case tests
+@pytest.mark.slow          # Slow tests
+@pytest.mark.requires_big_o # Requires big-O package
 ```
 
-### 運行特定測試文件
+---
 
-```bash
-# 只運行 util.py 的測試
-python -m pytest tests_unit/test_util.py -v
+## Testing Principles
 
-# 只運行邊界測試
-python -m pytest tests_unit/test_edge_cases.py -v
+1. **Behavior testing first** - Test "what it does" not "how it does it"
+2. **Input/output verification** - Given the same input, ensure the same output
+3. **Edge case coverage** - Test extreme cases and error handling
+4. **Independence** - Each test should run independently
+5. **Reproducibility** - Test results should be deterministic
 
-# 只運行整合測試
-python -m pytest tests_unit/test_integration.py -v
-```
+---
 
-### 運行特定測試類別
+## Refactoring Guide
 
-```bash
-# 只運行單元測試
-python -m pytest tests_unit -v -m unit
+When refactoring the Runner system:
 
-# 只運行整合測試
-python -m pytest tests_unit -v -m integration
+1. **Run all tests first** - Ensure all tests pass in current state
+2. **Perform refactoring** - Modify implementation details
+3. **Run tests again** - Ensure behavior hasn't changed
+4. **If tests fail**:
+   - If behavior change is expected, update tests
+   - If it's unexpected breakage, fix code
 
-# 只運行邊界測試
-python -m pytest tests_unit -v -m edge_case
-```
+---
 
-### 生成覆蓋率報告
+## Known Limitations
 
-```bash
-# 生成覆蓋率報告
-python -m pytest tests_unit --cov=runner --cov-report=html
+- Some tests require the `big-O` package (marked with `@pytest.mark.requires_big_o`)
+- Integration tests create temporary files and directories
+- Some tests may have subtle differences across operating systems
 
-# 查看報告
-# Windows: start htmlcov/index.html
-# Linux/Mac: open htmlcov/index.html
-```
+---
 
-## 測試標記（Markers）
+## Related Links
 
-測試使用以下標記來分類：
-
-- `@pytest.mark.unit` - 單元測試
-- `@pytest.mark.integration` - 整合測試
-- `@pytest.mark.edge_case` - 邊界條件測試
-- `@pytest.mark.slow` - 運行時間較長的測試
-- `@pytest.mark.requires_big_o` - 需要 big-O 套件的測試
-
-## 測試覆蓋範圍
-
-### 1. util.py 測試
-
-- ✅ `normalize_output()` - 輸出正規化
-- ✅ `compare_outputs()` - 輸出比較（exact/sorted/set 模式）
-- ✅ `compare_result()` - 結果比較（支援 JUDGE_FUNC）
-- ✅ `_compare_sorted()` - 排序比較
-- ✅ `_compare_set()` - 集合比較
-- ✅ 路徑輔助函數
-- ✅ 檔案操作函數
-
-### 2. case_runner.py 測試
-
-- ✅ 命令列參數處理
-- ✅ 檔案路徑驗證
-- ✅ 單一測試案例執行
-- ✅ 錯誤處理
-
-### 3. test_runner.py 測試
-
-- ✅ 模組載入（solution/generator）
-- ✅ 測試案例執行
-- ✅ 多解法支援
-- ✅ 比較模式（exact/sorted/set）
-- ✅ JUDGE_FUNC 支援
-- ✅ 效能測試
-- ✅ 失敗案例保存
-
-### 4. complexity_estimator.py 測試
-
-- ✅ 可用性檢查
-- ✅ 複雜度估算
-- ✅ Mock stdin 機制
-- ✅ 結果格式化
-
-### 5. 邊界條件測試
-
-- ✅ 空輸入
-- ✅ 錯誤輸入
-- ✅ 大資料
-- ✅ 特殊字元（Unicode、emoji、CJK）
-- ✅ 格式錯誤的資料
-
-### 6. 整合測試
-
-- ✅ 端到端工作流程
-- ✅ 多解法整合
-- ✅ 比較模式整合
-- ✅ JUDGE_FUNC 整合
-
-## 測試原則
-
-1. **行為測試優先**：測試「做什麼」而不是「怎麼做」
-2. **輸入輸出驗證**：給定相同輸入，確保得到相同輸出
-3. **邊界條件覆蓋**：測試極端情況和錯誤處理
-4. **獨立性**：每個測試應該獨立運行，不依賴其他測試
-5. **可重複性**：測試結果應該是確定性的
-
-## 重構指南
-
-當你重構 runner 系統時：
-
-1. **先運行所有測試**：確保當前狀態下所有測試都通過
-2. **進行重構**：修改實作細節
-3. **再次運行測試**：確保行為沒有改變
-4. **如果測試失敗**：
-   - 如果是預期的行為改變，更新測試
-   - 如果是意外的破壞，修復代碼
-
-## 添加新測試
-
-當你添加新功能時：
-
-1. 在對應的測試文件中添加測試
-2. 使用適當的測試標記
-3. 確保測試覆蓋正常情況和邊界情況
-4. 更新本 README
-
-## 已知限制
-
-- 某些測試需要 `big-O` 套件（標記為 `@pytest.mark.requires_big_o`）
-- 整合測試會創建臨時檔案和目錄
-- 某些測試可能在不同作業系統上有細微差異（路徑分隔符等）
-
-## 聯絡資訊
-
-如有問題或建議，請聯絡測試負責人：luffdev
-
+- [../TESTING.md](../TESTING.md) - Complete testing documentation
+- [../tests_solutions/README.md](../tests_solutions/README.md) - Solution correctness tests
+- [../../tools/FORMAT_CHECKING.md](../../tools/FORMAT_CHECKING.md) - Format checking description

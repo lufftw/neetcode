@@ -42,30 +42,35 @@ Space: O(1) - Only two pointer indices used
 
 ================================================================================
 """
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "isPalindrome",
         "complexity": "O(n) time, O(1) space",
         "description": "Two pointers from both ends with inline filtering",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "isPalindrome",
         "complexity": "O(n) time, O(1) space",
         "description": "Two pointers from both ends with inline filtering",
     },
     "filtered": {
-        "method": "solve_filtered",
+        "class": "SolutionFiltered",
+        "method": "isPalindrome",
         "complexity": "O(n) time, O(n) space",
         "description": "Pre-filter string then check palindrome",
     },
     "filtered_pointers": {
-        "method": "solve_filtered_pointers",
+        "class": "SolutionFilteredPointers",
+        "method": "isPalindrome",
         "complexity": "O(n) time, O(n) space",
         "description": "Filter first, then use two pointers on filtered string",
     },
@@ -212,24 +217,6 @@ class SolutionFilteredPointers:
         return True
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(s: str) -> bool:
-    """Wrapper for SolutionTwoPointers."""
-    return SolutionTwoPointers().isPalindrome(s)
-
-
-def solve_filtered(s: str) -> bool:
-    """Wrapper for SolutionFiltered."""
-    return SolutionFiltered().isPalindrome(s)
-
-
-def solve_filtered_pointers(s: str) -> bool:
-    """Wrapper for SolutionFilteredPointers."""
-    return SolutionFilteredPointers().isPalindrome(s)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -250,14 +237,9 @@ def solve():
     
     s = sys.stdin.read().strip()
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(s)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.isPalindrome(s)
     
     print("true" if result else "false")
 

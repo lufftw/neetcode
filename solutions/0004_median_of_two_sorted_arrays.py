@@ -15,6 +15,21 @@ Constraints:
 - -10^6 <= nums1[i], nums2[i] <= 10^6
 """
 from typing import List
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "findMedianSortedArrays",
+        "complexity": "O(m+n) time, O(1) space",
+        "description": "Two pointer merge approach",
+    },
+}
 
 
 # ============================================
@@ -81,7 +96,10 @@ JUDGE_FUNC = judge
 
 
 # ============================================
-# Solution - O(m+n) Two Pointer Merge
+# Solution 1: Two Pointer Merge
+# Time: O(m+n), Space: O(1)
+#   - Merge two sorted arrays using two pointers
+#   - Track median position during merge
 # ============================================
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
@@ -141,8 +159,9 @@ def solve():
     nums1 = _parse_array(lines[0])
     nums2 = _parse_array(lines[1]) if len(lines) > 1 else []
     
-    sol = Solution()
-    result = sol.findMedianSortedArrays(nums1, nums2)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.findMedianSortedArrays(nums1, nums2)
     
     print(result)
 

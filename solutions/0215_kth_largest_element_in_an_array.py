@@ -49,25 +49,29 @@ To guarantee O(n) worst case: use median-of-medians for pivot selection.
 """
 from typing import List
 import random
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_quickselect",
+        "class": "SolutionQuickselect",
+        "method": "findKthLargest",
         "complexity": "O(n) average time, O(1) space",
         "description": "Quickselect algorithm with random pivot",
     },
     "quickselect": {
-        "method": "solve_quickselect",
+        "class": "SolutionQuickselect",
+        "method": "findKthLargest",
         "complexity": "O(n) average time, O(1) space",
         "description": "Quickselect algorithm with random pivot",
     },
     "heap": {
-        "method": "solve_heap",
+        "class": "SolutionHeap",
+        "method": "findKthLargest",
         "complexity": "O(n log k) time, O(k) space",
         "description": "Min-heap of size k to maintain k largest elements",
     },
@@ -214,19 +218,6 @@ class SolutionHeap:
         return min_heap[0]
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_quickselect(nums: List[int], k: int) -> int:
-    """Wrapper for SolutionQuickselect."""
-    return SolutionQuickselect().findKthLargest(nums, k)
-
-
-def solve_heap(nums: List[int], k: int) -> int:
-    """Wrapper for SolutionHeap."""
-    return SolutionHeap().findKthLargest(nums, k)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -252,14 +243,9 @@ def solve():
     nums = list(map(int, lines[0].split()))
     k = int(lines[1])
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(nums, k)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.findKthLargest(nums, k)
     
     print(result)
 

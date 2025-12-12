@@ -45,7 +45,7 @@ Space: O(1) - In-place modification, only two indices
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
@@ -53,17 +53,20 @@ import os
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Reader/writer pointer pattern for in-place deduplication",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Reader/writer pointer pattern for in-place deduplication",
     },
     "enumerate": {
-        "method": "solve_enumerate",
+        "class": "SolutionEnumerate",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Using enumerate for cleaner iteration",
     },
@@ -126,7 +129,7 @@ JUDGE_FUNC = judge
 
 
 # ============================================
-# Solution: Reader/Writer Two Pointers
+# Solution 1: Reader/Writer Two Pointers
 # Time: O(n), Space: O(1)
 #   - Single pass through array
 #   - In-place modification with two indices
@@ -198,19 +201,6 @@ class SolutionEnumerate:
         return write_index
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(nums: List[int]) -> int:
-    """Wrapper for SolutionTwoPointers."""
-    return SolutionTwoPointers().removeDuplicates(nums)
-
-
-def solve_enumerate(nums: List[int]) -> int:
-    """Wrapper for SolutionEnumerate."""
-    return SolutionEnumerate().removeDuplicates(nums)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -239,14 +229,9 @@ def solve():
     
     nums = list(map(int, line.split()))
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    k = method_func(nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    k = solver.removeDuplicates(nums)
     
     print(k)
     if k > 0:

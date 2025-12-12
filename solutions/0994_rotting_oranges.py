@@ -14,13 +14,31 @@ If this is impossible, return -1.
 """
 from typing import List
 from collections import deque
+from _runner import get_solver
 
 
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "orangesRotting",
+        "complexity": "O(m*n) time, O(m*n) space",
+        "description": "BFS approach",
+    },
+}
+
+
+# ============================================
+# Solution 1: BFS (Breadth-First Search)
+# Time: O(m * n), Space: O(m * n)
+#   - BFS traversal from all initial rotten oranges
+#   - Queue stores positions of rotten oranges
+#   - Each minute processes one level of BFS
+# ============================================
 class Solution:
-    # ============================================
-    # Solution 1: BFS (Breadth-First Search)
-    # Time: O(m * n), Space: O(m * n)
-    # ============================================
     def orangesRotting(self, grid: List[List[int]]) -> int:
         # Dimensions of the grid
         rows, cols = len(grid), len(grid[0])
@@ -97,8 +115,9 @@ def solve():
         row = list(map(int, lines[i].split(',')))
         grid.append(row)
 
-    sol = Solution()
-    result = sol.orangesRotting(grid)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.orangesRotting(grid)
 
     print(result)
 

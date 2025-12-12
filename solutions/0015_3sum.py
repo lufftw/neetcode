@@ -43,25 +43,29 @@ Space: O(1) extra (excluding output and sorting space)
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "threeSum",
         "complexity": "O(n²) time, O(1) extra space",
         "description": "Sort + two pointers with duplicate skipping",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "threeSum",
         "complexity": "O(n²) time, O(1) extra space",
         "description": "Sort + two pointers with duplicate skipping",
     },
     "hashset": {
-        "method": "solve_hashset",
+        "class": "SolutionHashSet",
+        "method": "threeSum",
         "complexity": "O(n²) time, O(n) space for set",
         "description": "Sort + two pointers using set for deduplication",
     },
@@ -257,19 +261,6 @@ class SolutionHashSet:
         return [list(triplet) for triplet in result_set]
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(nums: List[int]) -> List[List[int]]:
-    """Wrapper for SolutionTwoPointers."""
-    return SolutionTwoPointers().threeSum(nums)
-
-
-def solve_hashset(nums: List[int]) -> List[List[int]]:
-    """Wrapper for SolutionHashSet."""
-    return SolutionHashSet().threeSum(nums)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -293,14 +284,9 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split()))
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.threeSum(nums)
     
     for triplet in result:
         print(' '.join(map(str, triplet)))

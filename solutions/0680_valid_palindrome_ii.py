@@ -39,30 +39,35 @@ Space: O(1) - Only pointer indices used
 
 ================================================================================
 """
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "validPalindrome",
         "complexity": "O(n) time, O(1) space",
         "description": "Two pointers with skip option on mismatch",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "validPalindrome",
         "complexity": "O(n) time, O(1) space",
         "description": "Two pointers with skip option on mismatch",
     },
     "recursive": {
-        "method": "solve_recursive",
+        "class": "SolutionRecursive",
+        "method": "validPalindrome",
         "complexity": "O(n) time, O(n) space for recursion stack",
         "description": "Recursive helper function approach",
     },
     "iterative": {
-        "method": "solve_iterative",
+        "class": "SolutionIterative",
+        "method": "validPalindrome",
         "complexity": "O(n) time, O(1) space",
         "description": "Fully iterative solution avoiding recursion",
     },
@@ -247,24 +252,6 @@ class SolutionIterative:
         return True
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(s: str) -> bool:
-    """Wrapper for SolutionTwoPointers."""
-    return SolutionTwoPointers().validPalindrome(s)
-
-
-def solve_recursive(s: str) -> bool:
-    """Wrapper for SolutionRecursive."""
-    return SolutionRecursive().validPalindrome(s)
-
-
-def solve_iterative(s: str) -> bool:
-    """Wrapper for SolutionIterative."""
-    return SolutionIterative().validPalindrome(s)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -285,14 +272,9 @@ def solve():
     
     s = sys.stdin.read().strip()
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(s)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.validPalindrome(s)
     
     print("true" if result else "false")
 

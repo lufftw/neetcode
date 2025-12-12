@@ -46,25 +46,29 @@ Space: O(n) - Output array (or O(1) if output doesn't count)
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "sortedSquares",
         "complexity": "O(n) time, O(n) space",
         "description": "Two pointers from ends merging largest squares first",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "sortedSquares",
         "complexity": "O(n) time, O(n) space",
         "description": "Two pointers from ends merging largest squares first",
     },
     "sort": {
-        "method": "solve_sort",
+        "class": "SolutionSort",
+        "method": "sortedSquares",
         "complexity": "O(n log n) time, O(n) space",
         "description": "Square all elements then sort (suboptimal)",
     },
@@ -176,19 +180,6 @@ class SolutionSort:
         return sorted(x * x for x in nums)
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(nums: List[int]) -> List[int]:
-    """Wrapper for SolutionTwoPointers."""
-    return SolutionTwoPointers().sortedSquares(nums)
-
-
-def solve_sort(nums: List[int]) -> List[int]:
-    """Wrapper for SolutionSort."""
-    return SolutionSort().sortedSquares(nums)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -210,14 +201,9 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split())) if line else []
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.sortedSquares(nums)
     
     print(' '.join(map(str, result)))
 

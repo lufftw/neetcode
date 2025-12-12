@@ -41,35 +41,41 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "moveZeroes",
         "complexity": "O(n) time, O(1) space",
         "description": "Reader/writer pattern with zero-fill phase",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "moveZeroes",
         "complexity": "O(n) time, O(1) space",
         "description": "Reader/writer pattern with zero-fill phase",
     },
     "swap": {
-        "method": "solve_swap",
+        "class": "SolutionSwap",
+        "method": "moveZeroes",
         "complexity": "O(n) time, O(1) space",
         "description": "Swap-based approach in single pass",
     },
     "optimized_swap": {
-        "method": "solve_optimized_swap",
+        "class": "SolutionOptimizedSwap",
+        "method": "moveZeroes",
         "complexity": "O(n) time, O(1) space",
         "description": "Optimized swap avoiding unnecessary self-swaps",
     },
     "snowball": {
-        "method": "solve_snowball",
+        "class": "SolutionSnowball",
+        "method": "moveZeroes",
         "complexity": "O(n) time, O(1) space",
         "description": "Snowball method tracking zeros rolling through array",
     },
@@ -239,29 +245,6 @@ class SolutionSnowball:
                 nums[i - snowball_size], nums[i] = nums[i], nums[i - snowball_size]
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(nums: List[int]) -> None:
-    """Wrapper for SolutionTwoPointers."""
-    SolutionTwoPointers().moveZeroes(nums)
-
-
-def solve_swap(nums: List[int]) -> None:
-    """Wrapper for SolutionSwap."""
-    SolutionSwap().moveZeroes(nums)
-
-
-def solve_optimized_swap(nums: List[int]) -> None:
-    """Wrapper for SolutionOptimizedSwap."""
-    SolutionOptimizedSwap().moveZeroes(nums)
-
-
-def solve_snowball(nums: List[int]) -> None:
-    """Wrapper for SolutionSnowball."""
-    SolutionSnowball().moveZeroes(nums)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -286,14 +269,9 @@ def solve():
     
     nums = list(map(int, line.split()))
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    method_func(nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    solver.moveZeroes(nums)
     
     print(' '.join(map(str, nums)))
 

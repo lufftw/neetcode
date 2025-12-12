@@ -45,6 +45,21 @@ Space: O(1) - Only tracking sum and pointers
 ================================================================================
 """
 from typing import List
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "minSubArrayLen",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Sliding window approach",
+    },
+}
 
 
 # ============================================================================
@@ -93,7 +108,10 @@ JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution - O(n) Sliding Window
+# Solution 1: Sliding Window
+# Time: O(n), Space: O(1)
+#   - Each element added and removed at most once
+#   - Only tracking sum and pointers
 # ============================================================================
 
 class Solution:
@@ -156,8 +174,9 @@ def solve():
     target = int(lines[0])
     nums = list(map(int, lines[1].split())) if len(lines) > 1 else []
     
-    solution = Solution()
-    result = solution.minSubArrayLen(target, nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.minSubArrayLen(target, nums)
     
     print(result)
 

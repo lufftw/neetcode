@@ -45,6 +45,33 @@ Space: O(min(n, σ)) - Where σ is the alphabet size (128 for ASCII)
 ================================================================================
 """
 from typing import Dict
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "lengthOfLongestSubstring",
+        "complexity": "O(n) time, O(min(n,σ)) space",
+        "description": "Sliding window with jump optimization",
+    },
+    "dict": {
+        "class": "SolutionDict",
+        "method": "lengthOfLongestSubstring",
+        "complexity": "O(n) time, O(min(n,σ)) space",
+        "description": "Sliding window using dictionary for Unicode support",
+    },
+    "set": {
+        "class": "SolutionWithSet",
+        "method": "lengthOfLongestSubstring",
+        "complexity": "O(n) time, O(min(n,σ)) space",
+        "description": "Sliding window using set with while-loop contraction",
+    },
+}
 
 
 # ============================================================================
@@ -95,7 +122,11 @@ JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution - O(n) Sliding Window (Optimized with Jump)
+# Solution 1: Sliding Window (Optimized with Jump)
+# Time: O(n), Space: O(min(n, σ))
+#   - Each character visited at most twice
+#   - Uses last-seen-index array for O(1) duplicate detection
+#   - Direct position jumping instead of incremental contraction
 # ============================================================================
 
 class Solution:
@@ -224,8 +255,9 @@ def solve():
     lines = sys.stdin.read().strip().split('\n')
     s = lines[0] if lines else ""
     
-    solution = Solution()
-    result = solution.lengthOfLongestSubstring(s)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.lengthOfLongestSubstring(s)
     
     print(result)
 
