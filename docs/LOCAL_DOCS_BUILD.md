@@ -29,10 +29,10 @@ This guide provides an overview of different methods to build documentation loca
 **Quick Start:**
 ```bash
 # Windows
-build_docs.bat --serve
+scripts\build_docs.bat --serve
 
 # Linux/macOS
-./build_docs.sh --serve
+./scripts/build_docs.sh --serve
 ```
 
 📖 **[Full Guide →](BUILD_DOCS_MANUAL.md)**
@@ -98,8 +98,8 @@ act -P ubuntu-latest=catthehacker/ubuntu:act-latest -j build
 ```bash
 # 1. No installation needed (just use existing Python venv)
 # 2. Run script
-build_docs.bat --serve    # Windows
-./build_docs.sh --serve   # Linux/macOS
+scripts\build_docs.bat --serve    # Windows
+./scripts/build_docs.sh --serve   # Linux/macOS
 # 3. Done! Visit http://127.0.0.1:8000
 ```
 

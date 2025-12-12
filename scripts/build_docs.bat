@@ -3,13 +3,15 @@ chcp 65001 >nul
 REM ============================================
 REM  Build Documentation Locally
 REM  Usage: 
-REM    build_docs.bat              (build only)
-REM    build_docs.bat --serve      (build and serve locally)
-REM    build_docs.bat --clean      (clean build directory first)
+REM    scripts\build_docs.bat              (build only)
+REM    scripts\build_docs.bat --serve      (build and serve locally)
+REM    scripts\build_docs.bat --clean      (clean build directory first)
 REM ============================================
 
-set BASE_DIR=%~dp0
-set VENV_PYTHON=%BASE_DIR%leetcode\Scripts\python.exe
+REM Get project root directory (parent of scripts/)
+set SCRIPT_DIR=%~dp0
+set PROJECT_ROOT=%SCRIPT_DIR%..
+set VENV_PYTHON=%PROJECT_ROOT%\leetcode\Scripts\python.exe
 
 REM Check if virtual environment exists
 if not exist "%VENV_PYTHON%" (
@@ -25,6 +27,7 @@ REM Check if requirements are installed
 "%VENV_PYTHON%" -c "import mkdocs" >nul 2>&1
 if errorlevel 1 (
     echo Installing dependencies...
+    cd /d "%PROJECT_ROOT%"
     "%VENV_PYTHON%" -m pip install -r requirements.txt
     if errorlevel 1 (
         echo Error: Failed to install dependencies
@@ -32,11 +35,14 @@ if errorlevel 1 (
     )
 )
 
+REM Change to project root directory
+cd /d "%PROJECT_ROOT%"
+
 REM Clean build directory if requested
 if "%~1"=="--clean" (
     echo Cleaning build directory...
-    if exist "%BASE_DIR%site" (
-        rmdir /s /q "%BASE_DIR%site"
+    if exist "%PROJECT_ROOT%\site" (
+        rmdir /s /q "%PROJECT_ROOT%\site"
     )
     shift
 )
@@ -73,11 +79,11 @@ if errorlevel 1 (
 
 REM Step 4: Copy mind map HTML files
 echo [4/4] Copying mind map HTML files...
-if exist "%BASE_DIR%docs\pages\mindmaps" (
-    xcopy /E /I /Y "%BASE_DIR%docs\pages\mindmaps" "%BASE_DIR%site\pages\mindmaps" >nul
+if exist "%PROJECT_ROOT%\docs\pages\mindmaps" (
+    xcopy /E /I /Y "%PROJECT_ROOT%\docs\pages\mindmaps" "%PROJECT_ROOT%\site\pages\mindmaps" >nul
 )
-if exist "%BASE_DIR%docs\pages\assets" (
-    xcopy /E /I /Y "%BASE_DIR%docs\pages\assets" "%BASE_DIR%site\pages\assets" >nul 2>nul
+if exist "%PROJECT_ROOT%\docs\pages\assets" (
+    xcopy /E /I /Y "%PROJECT_ROOT%\docs\pages\assets" "%PROJECT_ROOT%\site\pages\assets" >nul 2>nul
 )
 
 echo.
@@ -85,7 +91,7 @@ echo ============================================
 echo Build Complete!
 echo ============================================
 echo.
-echo Output directory: %BASE_DIR%site
+echo Output directory: %PROJECT_ROOT%\site
 echo.
 
 REM Serve locally if requested

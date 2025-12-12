@@ -2,14 +2,15 @@
 # ============================================
 #  Build Documentation Locally
 #  Usage: 
-#    ./build_docs.sh              (build only)
-#    ./build_docs.sh --serve      (build and serve locally)
-#    ./build_docs.sh --clean      (clean build directory first)
+#    ./scripts/build_docs.sh              (build only)
+#    ./scripts/build_docs.sh --serve      (build and serve locally)
+#    ./scripts/build_docs.sh --clean      (clean build directory first)
 # ============================================
 
-# Get the directory where the script is located
+# Get script directory and project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VENV_PYTHON="${SCRIPT_DIR}/leetcode/bin/python"
+PROJECT_ROOT="$SCRIPT_DIR/.."
+VENV_PYTHON="$PROJECT_ROOT/leetcode/bin/python"
 
 # Check if virtual environment exists
 if [ ! -f "$VENV_PYTHON" ]; then
@@ -24,6 +25,7 @@ fi
 # Check if requirements are installed
 if ! "$VENV_PYTHON" -c "import mkdocs" 2>/dev/null; then
     echo "Installing dependencies..."
+    cd "$PROJECT_ROOT"
     "$VENV_PYTHON" -m pip install -r requirements.txt
     if [ $? -ne 0 ]; then
         echo "Error: Failed to install dependencies"
@@ -31,10 +33,13 @@ if ! "$VENV_PYTHON" -c "import mkdocs" 2>/dev/null; then
     fi
 fi
 
+# Change to project root directory
+cd "$PROJECT_ROOT"
+
 # Clean build directory if requested
 if [ "$1" = "--clean" ]; then
     echo "Cleaning build directory..."
-    rm -rf "${SCRIPT_DIR}/site"
+    rm -rf "$PROJECT_ROOT/site"
     shift
 fi
 
@@ -70,11 +75,11 @@ fi
 
 # Step 4: Copy mind map HTML files
 echo "[4/4] Copying mind map HTML files..."
-if [ -d "${SCRIPT_DIR}/docs/pages/mindmaps" ]; then
-    cp -r "${SCRIPT_DIR}/docs/pages/mindmaps" "${SCRIPT_DIR}/site/pages/" 2>/dev/null || true
+if [ -d "$PROJECT_ROOT/docs/pages/mindmaps" ]; then
+    cp -r "$PROJECT_ROOT/docs/pages/mindmaps" "$PROJECT_ROOT/site/pages/" 2>/dev/null || true
 fi
-if [ -d "${SCRIPT_DIR}/docs/pages/assets" ]; then
-    cp -r "${SCRIPT_DIR}/docs/pages/assets" "${SCRIPT_DIR}/site/pages/" 2>/dev/null || true
+if [ -d "$PROJECT_ROOT/docs/pages/assets" ]; then
+    cp -r "$PROJECT_ROOT/docs/pages/assets" "$PROJECT_ROOT/site/pages/" 2>/dev/null || true
 fi
 
 echo ""
@@ -82,7 +87,7 @@ echo "============================================"
 echo "Build Complete!"
 echo "============================================"
 echo ""
-echo "Output directory: ${SCRIPT_DIR}/site"
+echo "Output directory: $PROJECT_ROOT/site"
 echo ""
 
 # Serve locally if requested

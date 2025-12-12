@@ -40,20 +40,20 @@ This guide shows you how to build documentation locally using simple batch/shell
 
 ```bash
 # Windows
-build_docs.bat
+scripts\build_docs.bat
 
 # Linux/macOS
-./build_docs.sh
+./scripts/build_docs.sh
 ```
 
 **Build and preview locally:**
 
 ```bash
 # Windows
-build_docs.bat --serve
+scripts\build_docs.bat --serve
 
 # Linux/macOS
-./build_docs.sh --serve
+./scripts/build_docs.sh --serve
 ```
 
 Then visit http://127.0.0.1:8000 in your browser.
@@ -85,10 +85,10 @@ Build the documentation site:
 
 ```bash
 # Windows
-build_docs.bat
+scripts\build_docs.bat
 
 # Linux/macOS
-./build_docs.sh
+./scripts/build_docs.sh
 ```
 
 **Output:** The built site will be in the `site/` directory.
@@ -99,10 +99,10 @@ Build and start a local server to preview:
 
 ```bash
 # Windows
-build_docs.bat --serve
+scripts\build_docs.bat --serve
 
 # Linux/macOS
-./build_docs.sh --serve
+./scripts/build_docs.sh --serve
 ```
 
 Then open http://127.0.0.1:8000 in your browser.
@@ -115,18 +115,18 @@ Remove the existing `site/` directory before building:
 
 ```bash
 # Windows
-build_docs.bat --clean
+scripts\build_docs.bat --clean
 
 # Linux/macOS
-./build_docs.sh --clean
+./scripts/build_docs.sh --clean
 ```
 
 ### Combined Options
 
 ```bash
 # Clean build and serve
-build_docs.bat --clean --serve
-./build_docs.sh --clean --serve
+scripts\build_docs.bat --clean --serve
+./scripts/build_docs.sh --clean --serve
 ```
 
 ---
