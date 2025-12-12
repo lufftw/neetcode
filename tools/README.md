@@ -13,6 +13,7 @@ Developer tools for checking, validating, and generating project content.
 | **Generation** | [`generate_mindmaps.py`](#generate_mindmapspy) | Rule-based mind map generation |
 | | [`generate_mindmaps_ai.py`](#generate_mindmaps_aipy) | AI-powered mind map generation |
 | | [`generate_pattern_docs.py`](#generate_pattern_docspy) | Pattern documentation generation |
+| **Automation** | [Pre-commit Hooks](#-local-cicd-automation) | Auto-generate AI mind maps on commit |
 | **Utilities** | [`text_to_mindmap.py`](#text_to_mindmappy) | Convert text to mind map format |
 | | [`prepare_llm_input.py`](#prepare_llm_inputpy) | Prepare LLM input data |
 
@@ -55,6 +56,9 @@ tools/
 │
 ├── text_to_mindmap.py             # Text to mind map converter
 ├── prepare_llm_input.py           # LLM input preparation
+│
+├── hooks/                         # Pre-commit hooks
+│   └── generate_ai_mindmaps_hook.py  # AI mind map generation hook
 │
 ├── mindmaps/                      # Mind map generation module
 │   └── README.md                  # 📖 Detailed technical docs
@@ -295,6 +299,90 @@ neetcode/
 .dev\run_all_tests.bat    # Windows
 .dev/run_all_tests.sh     # Linux/Mac
 ```
+
+---
+
+## 🔄 Local CI/CD Automation
+
+### Pre-commit Hooks
+
+The project uses [pre-commit](https://pre-commit.com/) framework to automatically generate AI mind maps when relevant files are modified.
+
+#### Setup
+
+```bash
+# Install pre-commit (if not already installed)
+pip install pre-commit
+
+# Install Git hooks
+pre-commit install
+```
+
+#### How It Works
+
+When you commit changes to:
+- `ontology/` directory
+- `meta/problems/` directory  
+- `tools/generate_mindmaps.py`
+
+The hook automatically runs `tools/generate_mindmaps_ai.py` to generate AI-powered mind maps.
+
+#### Usage
+
+**Normal workflow (automatic):**
+
+```bash
+# Modify relevant files and commit
+git add ontology/some_file.json
+git commit -m "Update ontology"
+# Hook automatically runs, prompts for API key, generates mind maps
+```
+
+**Skip AI generation:**
+
+```bash
+# Method 1: Use commit message tag
+git commit -m "Update ontology [skip-ai]"
+
+# Method 2: Use environment variable
+# PowerShell
+$env:SKIP_AI_MINDMAPS = "true"
+git commit -m "Update ontology"
+
+# CMD
+set SKIP_AI_MINDMAPS=true
+git commit -m "Update ontology"
+
+# Method 3: Skip all hooks
+git commit --no-verify -m "Update ontology"
+```
+
+**Manual testing:**
+
+```bash
+# Test all hooks
+pre-commit run --all-files
+
+# Test specific hook
+pre-commit run generate-ai-mindmaps --all-files
+```
+
+#### Configuration
+
+- **Config file**: `.pre-commit-config.yaml`
+- **Hook script**: `tools/hooks/generate_ai_mindmaps_hook.py`
+- **API Key**: Interactive input (not stored in any file)
+- **Branch support**: Works on all branches
+
+#### Features
+
+| Feature | Description |
+|---------|-------------|
+| **Auto-detection** | Detects changes in `ontology/`, `meta/problems/`, `tools/generate_mindmaps.py` |
+| **API Key** | Interactive input, never stored |
+| **Skip options** | Multiple ways to skip when needed |
+| **Branch support** | Works on all branches |
+| **Docker Act compatible** | Doesn't interfere with local GitHub Actions testing |
 
 ---
 

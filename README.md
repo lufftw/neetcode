@@ -29,7 +29,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 ---
 
-**Topics:** `knowledge-graph` `ai-powered` `mind-map` `pattern-recognition` `leetcode` `neetcode-150` `blind-75` `stress-testing` `algorithm-engineering` `performance-benchmarking` `data-driven-testing` `random-test-generation` `judge-function` `algorithm-debugging` `competitive-programming` `python` `vscode-integration` `test-automation` `coding-interview`
+**Topics:** `knowledge-graph` `ai-powered` `mind-map` `pattern-recognition` `leetcode` `neetcode-150` `blind-75` `stress-testing` `algorithm-engineering` `performance-benchmarking` `data-driven-testing` `random-test-generation` `judge-function` `algorithm-debugging` `competitive-programming` `python` `vscode-integration` `test-automation` `pre-commit` `local-automation` `coding-interview`
 
 ---
 
@@ -373,6 +373,29 @@ python tools/generate_mindmaps_ai.py --topic dynamic_programming
 # Configure in tools/mindmap_ai_config.toml:
 # language = ["en", "zh-TW"]
 ```
+
+### 🔄 Automatic Generation (Local CI/CD)
+
+**Auto-generate AI mind maps on commit** using pre-commit hooks:
+
+```bash
+# Install pre-commit hooks
+pip install pre-commit
+pre-commit install
+```
+
+When you commit changes to `ontology/`, `meta/problems/`, or `tools/generate_mindmaps.py`, the hook automatically runs AI mind map generation.
+
+**Skip when needed:**
+```bash
+# Skip with commit message
+git commit -m "Update ontology [skip-ai]"
+
+# Skip with environment variable
+SKIP_AI_MINDMAPS=true git commit -m "Update ontology"
+```
+
+> 📖 See [tools/README.md](tools/README.md#-local-cicd-automation) for complete setup and usage guide.
 
 ### Configuration
 

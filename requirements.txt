@@ -24,3 +24,6 @@ mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 # anthropic>=0.18.0    # Anthropic API client (for Claude models)
 # requests>=2.31.0     # HTTP library (for Ollama local LLM)
 
+# Pre-commit hooks framework (for local CI/CD automation):
+pre-commit>=3.5.0      # Git hooks framework for pre-commit checks
+
