@@ -954,6 +954,8 @@ Configuration: `tools/generate_mindmaps.toml`
 
 - [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
 - [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
+- [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC, generators)
+- [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 
 ---
