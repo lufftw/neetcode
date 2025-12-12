@@ -427,41 +427,53 @@ if __name__ == "__main__":
 
 ### 🚀 多解法效能比較
 
-比較同一題目的多種解法：
+使用**多型模式**比較同一題目的多種解法：
 
 ```python
 # solutions/0023_merge_k_sorted_lists.py
+from _runner import get_solver
 
 SOLUTIONS = {
     "default": {
-        "method": "mergeKLists_heap",
+        "class": "SolutionHeap",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "最小堆方法"
     },
     "divide": {
-        "method": "mergeKLists_divide",
+        "class": "SolutionDivideConquer",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "分治法"
     },
     "greedy": {
-        "method": "mergeKLists_greedy",
+        "class": "SolutionGreedy",
+        "method": "mergeKLists",
         "complexity": "O(kN)",
         "description": "貪婪比較"
     },
 }
 
-class Solution:
-    def mergeKLists_heap(self, lists):
+class SolutionHeap:
+    def mergeKLists(self, lists):
         # 堆實作
         pass
-    
-    def mergeKLists_divide(self, lists):
+
+class SolutionDivideConquer:
+    def mergeKLists(self, lists):
         # 分治實作
         pass
-    
-    def mergeKLists_greedy(self, lists):
+
+class SolutionGreedy:
+    def mergeKLists(self, lists):
         # 貪婪實作
         pass
+
+def solve():
+    # ... 解析輸入 ...
+    solver = get_solver(SOLUTIONS)
+    result = solver.mergeKLists(lists)
+    print(result)
 ```
 
 **執行指令：**
@@ -488,36 +500,7 @@ greedy                  44.82ms   O(kN)           3/3
 ============================================================
 ```
 
-<details>
-<summary><strong>進階：Wrapper 模式（多個類別使用相同方法名）</strong></summary>
-
-當需要多個類別使用相同方法名稱時：
-
-```python
-class SolutionRecursive:
-    def reverseKGroup(self, head, k):
-        pass  # 遞迴實作
-
-class SolutionIterative:
-    def reverseKGroup(self, head, k):
-        pass  # 迭代實作
-
-# Wrapper 函式
-def solve_recursive(head, k):
-    return SolutionRecursive().reverseKGroup(head, k)
-
-def solve_iterative(head, k):
-    return SolutionIterative().reverseKGroup(head, k)
-
-SOLUTIONS = {
-    "default": {"method": "solve_iterative", ...},
-    "recursive": {"method": "solve_recursive", ...},
-}
-```
-
-使用模板建立：`new_problem.bat 0025_reverse_nodes --wrapper`
-
-</details>
+使用模板建立：`new_problem.bat 0023_merge_k_lists --multi`
 
 ### 🔀 彈性輸出驗證
 
@@ -668,8 +651,7 @@ neetcode/
 │
 ├── templates/                 # 📄 題目模板
 │   ├── template_solution.py          # 單一解法
-│   ├── template_solution_multi.py    # 多解法（單一類別）
-│   └── template_solution_wrapper.py  # 多解法（Wrapper 模式）
+│   └── template_solution_multi.py    # 多解法（多型模式）
 │
 ├── .vscode/                   # 🔧 VS Code 整合
 │   ├── settings.json          # Python 環境設定
