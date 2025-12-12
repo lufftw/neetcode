@@ -5,19 +5,19 @@
 #
 # This script runs three categories of tests:
 #
-# 1. Component Tests (.dev/tests/)
+# 1. Solution Format Tests (tools/tests/)
+#    - Pure Polymorphic Architecture compliance
+#    - Solution comment format
+#    - Complexity comments
+#
+# 2. Component Tests (.dev/tests/)
 #    - Runner module unit tests
 #    - Integration tests
 #    - Edge case tests
 #
-# 2. Solution Correctness Tests (.dev/tests_solutions/)
+# 3. Solution Correctness Tests (.dev/tests_solutions/)
 #    - Static test cases (from tests/ directory)
 #    - Generated test cases (if available)
-#
-# 3. Solution Format Tests (tools/tests/)
-#    - Pure Polymorphic Architecture compliance
-#    - Solution comment format
-#    - Complexity comments
 #
 # Exit Codes:
 #   0 - All tests passed
@@ -61,7 +61,9 @@ fi
 # Change to project root directory
 cd "$PROJECT_ROOT"
 
-TOTAL_FAILED=0
+FORMAT_RESULT=0
+COMPONENT_RESULT=0
+SOLUTION_RESULT=0
 
 # ============================================================================
 # 1. Solution Format Tests
@@ -85,7 +87,7 @@ echo ""
 if [ $? -ne 0 ]; then
     echo ""
     echo "[FAIL] Solution format tests failed!"
-    ((TOTAL_FAILED++))
+    FORMAT_RESULT=1
 else
     echo ""
     echo "[PASS] Solution format tests passed"
@@ -106,7 +108,7 @@ echo ""
 if [ $? -ne 0 ]; then
     echo ""
     echo "[FAIL] Component tests failed!"
-    ((TOTAL_FAILED++))
+    COMPONENT_RESULT=1
 else
     echo ""
     echo "[PASS] Component tests passed"
@@ -127,7 +129,7 @@ echo ""
 if [ $? -ne 0 ]; then
     echo ""
     echo "[FAIL] Solution correctness tests failed!"
-    ((TOTAL_FAILED++))
+    SOLUTION_RESULT=1
 else
     echo ""
     echo "[PASS] Solution correctness tests passed"
@@ -142,6 +144,8 @@ echo "                                TEST SUMMARY"
 echo "================================================================================"
 echo ""
 
+TOTAL_FAILED=$((FORMAT_RESULT + COMPONENT_RESULT + SOLUTION_RESULT))
+
 if [ $TOTAL_FAILED -eq 0 ]; then
     echo "  [OK] All test categories passed!"
     echo ""
@@ -154,9 +158,24 @@ if [ $TOTAL_FAILED -eq 0 ]; then
 else
     echo "  [FAILED] $TOTAL_FAILED test category(ies) failed!"
     echo ""
+    if [ $FORMAT_RESULT -eq 1 ]; then
+        echo "  - Solution Format Tests:      FAILED"
+    else
+        echo "  - Solution Format Tests:      PASSED"
+    fi
+    if [ $COMPONENT_RESULT -eq 1 ]; then
+        echo "  - Component Tests:            FAILED"
+    else
+        echo "  - Component Tests:            PASSED"
+    fi
+    if [ $SOLUTION_RESULT -eq 1 ]; then
+        echo "  - Solution Correctness Tests: FAILED"
+    else
+        echo "  - Solution Correctness Tests: PASSED"
+    fi
+    echo ""
     echo "  Please review the output above for details."
     echo ""
     echo "================================================================================"
     exit 1
 fi
-

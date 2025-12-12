@@ -1,58 +1,58 @@
-# 開發者與維護者專區
+# Developer & Maintainer Area
 
-> ⚠️ **注意**: 此資料夾專為專案維護者使用，包含單元測試、開發文檔和維護工具。  
-> 一般使用者請參考根目錄的 [README.md](../README.md)
+> ⚠️ **Note**: This folder is for project maintainers only, containing unit tests, development documentation, and maintenance tools.  
+> For general users, please refer to the root [README.md](../README.md)
 
 ---
 
-## 📁 資料夾結構
+## 📁 Folder Structure
 
 ```
 .dev/
-├── tests/                          # 元件功能測試（Runner 模組）
-│   ├── test_util.py                # util.py 測試 (40+ tests)
-│   ├── test_case_runner.py         # case_runner.py 測試 (15+ tests)
-│   ├── test_test_runner.py         # test_runner.py 測試 (30+ tests)
-│   ├── test_complexity_estimator.py # complexity_estimator.py 測試 (25+ tests)
-│   ├── test_edge_cases.py          # 邊界條件測試 (40+ tests)
-│   ├── test_integration.py         # 整合測試 (20+ tests)
-│   ├── test_generate_mindmaps.py   # mindmap 生成器測試 (50+ tests)
-│   ├── test_generate_pattern_docs.py # pattern doc 生成器測試 (50+ tests)
+├── tests/                          # Component tests (Runner modules)
+│   ├── test_util.py                # util.py tests (40+ tests)
+│   ├── test_case_runner.py         # case_runner.py tests (15+ tests)
+│   ├── test_test_runner.py         # test_runner.py tests (30+ tests)
+│   ├── test_complexity_estimator.py # complexity_estimator.py tests (25+ tests)
+│   ├── test_edge_cases.py          # Edge case tests (40+ tests)
+│   ├── test_integration.py         # Integration tests (20+ tests)
+│   ├── test_generate_mindmaps.py   # mindmap generator tests (50+ tests)
+│   ├── test_generate_pattern_docs.py # pattern doc generator tests (50+ tests)
 │   └── README.md
 │
-├── tests_solutions/                # 測資正確性測試
-│   ├── test_all_solutions.py       # 所有 Solution 測試 (~99 tests)
+├── tests_solutions/                # Solution correctness tests
+│   ├── test_all_solutions.py       # All Solution tests (~99 tests)
 │   └── README.md
 │
-├── run_tests.bat                   # Windows - 元件測試
-├── run_tests.sh                    # Linux/Mac - 元件測試
-├── run_tests_solutions.bat         # Windows - 測資測試
-├── run_tests_solutions.sh          # Linux/Mac - 測資測試
-├── run_all_tests.bat               # ★ Windows - 全專案測試
-├── run_all_tests.sh                # ★ Linux/Mac - 全專案測試
+├── run_tests.bat                   # Windows - Component tests
+├── run_tests.sh                    # Linux/Mac - Component tests
+├── run_tests_solutions.bat         # Windows - Solution tests
+├── run_tests_solutions.sh          # Linux/Mac - Solution tests
+├── run_all_tests.bat               # ★ Windows - Full project tests
+├── run_all_tests.sh                # ★ Linux/Mac - Full project tests
 │
-├── TESTING.md                      # 完整測試文檔
-├── VIRTUAL_ENV_SETUP.md            # 虛擬環境設定指南
-└── README.md                       # 本文件
+├── TESTING.md                      # Complete testing documentation
+├── VIRTUAL_ENV_SETUP.md            # Virtual environment setup guide
+└── README.md                       # This file
 ```
 
 ---
 
-## 🎯 測試分類
+## 🎯 Test Categories
 
-本專案的測試分為**三大類別**：
+This project's tests are divided into **three main categories**:
 
-| 類別 | 目錄 | 用途 | 數量 |
-|------|------|------|------|
-| **格式合規測試** | `tools/tests/` | Solution 格式規範 | ~10 |
-| **元件功能測試** | `.dev/tests/` | Runner 模組功能 | ~273 |
-| **測資正確性測試** | `.dev/tests_solutions/` | Solution 執行結果 | ~99 |
+| Category | Directory | Purpose | Count |
+|----------|-----------|---------|-------|
+| **Format Compliance Tests** | `tools/tests/` | Solution format standards | ~10 |
+| **Component Tests** | `.dev/tests/` | Runner module functionality | ~273 |
+| **Solution Correctness Tests** | `.dev/tests_solutions/` | Solution execution results | ~99 |
 
 ---
 
-## 🚀 快速開始
+## 🚀 Quick Start
 
-### 1. 確保虛擬環境已建立
+### 1. Ensure Virtual Environment is Set Up
 
 ```bash
 # Windows
@@ -64,13 +64,13 @@ python -m venv leetcode
 source leetcode/bin/activate
 ```
 
-### 2. 安裝測試依賴
+### 2. Install Test Dependencies
 
 ```bash
 pip install pytest pytest-cov
 ```
 
-### 3. 運行全部測試（推薦）
+### 3. Run All Tests (Recommended)
 
 ```bash
 # Windows
@@ -80,27 +80,27 @@ pip install pytest pytest-cov
 .dev/run_all_tests.sh
 ```
 
-這會依序執行：
-1. ✅ Solution 格式合規測試
-2. ✅ Runner 元件功能測試
-3. ✅ Solution 測資正確性測試
+This will execute in order:
+1. ✅ Solution format compliance tests
+2. ✅ Runner component tests
+3. ✅ Solution correctness tests
 
-### 4. 分別運行各類測試
+### 4. Run Tests Separately
 
 ```bash
-# === 格式合規測試 ===
+# === Format Compliance Tests ===
 # Windows
 tools\run_format_tests.bat
 # Linux/Mac
 tools/run_format_tests.sh
 
-# === 元件功能測試 ===
+# === Component Tests ===
 # Windows
 .dev\run_tests.bat
 # Linux/Mac
 .dev/run_tests.sh
 
-# === 測資正確性測試 ===
+# === Solution Correctness Tests ===
 # Windows
 .dev\run_tests_solutions.bat
 # Linux/Mac
@@ -109,127 +109,127 @@ tools/run_format_tests.sh
 
 ---
 
-## 📊 測試統計
+## 📊 Test Statistics
 
-| 項目 | 數量 |
-|------|------|
-| 測試檔案 | 10 |
-| 測試類別 | 70+ |
-| 測試案例 | 380+ |
-| 代碼覆蓋率 | 80-100% |
+| Item | Count |
+|------|-------|
+| Test Files | 10 |
+| Test Classes | 70+ |
+| Test Cases | 380+ |
+| Code Coverage | 80-100% |
 
-### 測試覆蓋範圍
+### Test Coverage
 
-- ✅ `runner/util.py` - 100% 覆蓋
-- ✅ `runner/case_runner.py` - 90% 覆蓋
-- ✅ `runner/test_runner.py` - 85% 覆蓋
-- ✅ `runner/complexity_estimator.py` - 80% 覆蓋
-- ✅ `solutions/*.py` - 格式合規驗證
-
----
-
-## 📚 文檔索引
-
-### 核心文檔
-
-| 文檔 | 說明 |
-|------|------|
-| [TESTING.md](TESTING.md) | 完整測試文檔（策略、原則、工作流程） |
-| [VIRTUAL_ENV_SETUP.md](VIRTUAL_ENV_SETUP.md) | 虛擬環境設定指南 |
-| [tests/README.md](tests/README.md) | 元件測試詳細說明 |
-| [tests_solutions/README.md](tests_solutions/README.md) | 測資測試詳細說明 |
-| [../tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) | 格式檢查工具說明 |
+- ✅ `runner/util.py` - 100% coverage
+- ✅ `runner/case_runner.py` - 90% coverage
+- ✅ `runner/test_runner.py` - 85% coverage
+- ✅ `runner/complexity_estimator.py` - 80% coverage
+- ✅ `solutions/*.py` - Format compliance validation
 
 ---
 
-## 🔧 開發工作流程
+## 📚 Documentation Index
 
-### 添加新 Solution
+### Core Documentation
 
-1. 確保遵循格式規範
+| Document | Description |
+|----------|-------------|
+| [TESTING.md](TESTING.md) | Complete testing documentation (strategy, principles, workflow) |
+| [VIRTUAL_ENV_SETUP.md](VIRTUAL_ENV_SETUP.md) | Virtual environment setup guide |
+| [tests/README.md](tests/README.md) | Component tests detailed description |
+| [tests_solutions/README.md](tests_solutions/README.md) | Solution tests detailed description |
+| [../tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) | Format checking tools description |
+
+---
+
+## 🔧 Development Workflow
+
+### Adding New Solutions
+
+1. Ensure compliance with format standards
    ```bash
    python tools/check_solutions.py --verbose
    ```
-2. 添加測試案例到 `tests/` 目錄
-3. 運行測試驗證
+2. Add test cases to `tests/` directory
+3. Run tests to verify
    ```bash
-   python -m pytest .dev/tests_solutions -v -k "問題編號"
+   python -m pytest .dev/tests_solutions -v -k "problem_number"
    ```
-4. 提交代碼
+4. Commit code
 
-### 修改 Runner 模組
+### Modifying Runner Modules
 
-1. 先運行現有測試確保通過
-2. 進行修改
-3. 再次運行測試
+1. Run existing tests to ensure they pass
+2. Make modifications
+3. Run tests again
    ```bash
    python -m pytest .dev/tests -v
    ```
-4. 提交代碼
+4. Commit code
 
-### 重構代碼
+### Refactoring Code
 
-1. 運行全部測試建立基線
+1. Run all tests to establish baseline
    ```bash
    .dev\run_all_tests.bat
    ```
-2. 進行重構
-3. 再次運行全部測試確保行為一致
-4. 提交代碼
+2. Perform refactoring
+3. Run all tests again to ensure consistent behavior
+4. Commit code
 
 ---
 
-## 📈 測試命令參考
+## 📈 Test Command Reference
 
 ```bash
-# === 全專案測試 ===
+# === Full Project Tests ===
 .dev\run_all_tests.bat                    # Windows
 .dev/run_all_tests.sh                     # Linux/Mac
 
-# === 格式測試 ===
-python tools/check_solutions.py           # 快速檢查
-python tools/check_solutions.py --verbose # 顯示建議
-python -m pytest tools/tests -v           # 單元測試
+# === Format Tests ===
+python tools/check_solutions.py           # Quick check
+python tools/check_solutions.py --verbose # Show suggestions
+python -m pytest tools/tests -v           # Unit tests
 
-# === 元件測試 ===
-python -m pytest .dev/tests -v            # 全部
-python -m pytest .dev/tests -v -m unit    # 按標記
+# === Component Tests ===
+python -m pytest .dev/tests -v            # All
+python -m pytest .dev/tests -v -m unit    # By marker
 
-# === 測資測試 ===
-python -m pytest .dev/tests_solutions -v  # 全部
-python -m pytest .dev/tests_solutions -v -k "0023"  # 特定問題
+# === Solution Tests ===
+python -m pytest .dev/tests_solutions -v  # All
+python -m pytest .dev/tests_solutions -v -k "0023"  # Specific problem
 
-# === 覆蓋率報告 ===
+# === Coverage Report ===
 python -m pytest .dev/tests --cov=runner --cov-report=html
 ```
 
 ---
 
-## 🎓 測試原則
+## 🎓 Testing Principles
 
-1. **行為測試優先** - 測試「做什麼」而不是「怎麼做」
-2. **獨立性** - 每個測試獨立運行，不依賴其他測試
-3. **可重複性** - 測試結果是確定性的
-4. **清晰性** - 測試易於理解和維護
-5. **完整性** - 覆蓋正常情況和邊界情況
-
----
-
-## 📞 聯絡資訊
-
-**測試負責人**: luffdev  
-**建立日期**: 2025-12-08  
-**最後更新**: 2025-12-12
+1. **Behavior Testing First** - Test "what it does" not "how it does it"
+2. **Independence** - Each test runs independently, not relying on other tests
+3. **Reproducibility** - Test results are deterministic
+4. **Clarity** - Tests are easy to understand and maintain
+5. **Completeness** - Cover normal cases and edge cases
 
 ---
 
-## 🔗 相關連結
+## 📞 Contact Information
 
-- [專案主 README](../README.md) - 專案整體說明
-- [根目錄 pytest.ini](../pytest.ini) - pytest 配置文件
-- [requirements.txt](../requirements.txt) - 專案依賴
-- [tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) - 格式檢查說明
+**Test Lead**: luffdev  
+**Created**: 2025-12-08  
+**Last Updated**: 2025-12-12
 
 ---
 
-**注意**: 此資料夾的內容專為維護者使用，一般使用者無需關注。
+## 🔗 Related Links
+
+- [Project Main README](../README.md) - Project overview
+- [Root pytest.ini](../pytest.ini) - pytest configuration file
+- [requirements.txt](../requirements.txt) - Project dependencies
+- [tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) - Format checking description
+
+---
+
+**Note**: This folder's contents are for maintainers only; general users need not be concerned.

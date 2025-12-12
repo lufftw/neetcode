@@ -1,131 +1,106 @@
-# Solutions Test Suite
+# Solution Correctness Tests
+
+This directory contains correctness tests for all **Solution files**.
+
+## Test Categories
+
+This project's tests are divided into three main categories:
+
+| Category | Directory | Purpose |
+|----------|-----------|---------|
+| **Format Compliance Tests** | `tools/tests/` | Solution format standards |
+| **Component Tests** | `.dev/tests/` | Runner module functionality |
+| **Solution Correctness Tests** | `.dev/tests_solutions/` ← This directory | Solution execution results |
+
+---
 
 ## Overview
 
-This directory contains tests for **all solution files** in the `solutions/` directory.
+`test_all_solutions.py` provides comprehensive test coverage for all Solution files.
 
-**Note**: This is separate from `.dev/tests/` which tests the **runner system functionality**.
-The runner tests verify that the testing framework works correctly, while these tests verify
-that the actual solutions work correctly.
+**Note**: This is different from `.dev/tests/`:
+- `.dev/tests/` tests **Runner system functionality** (whether the testing framework works properly)
+- `.dev/tests_solutions/` tests **Solution execution results** (whether solutions are correct)
 
-`test_all_solutions.py` provides comprehensive test coverage for all solution files.
+---
 
 ## Test Types
 
 ### 1. Static Tests (`test_static_tests`)
-- Tests all solutions with static test cases from `tests/` directory
-- Skips solutions without static test files
-- Supports both legacy and polymorphic solution patterns
+
+- Uses static test data from `tests/` directory
+- Skips Solutions without test data
+- Supports legacy and polymorphic modes
 
 ### 2. Generated Tests (`test_generated_tests`)
-- Tests solutions with generated test cases (if generator available)
-- **Requires**: Generator module (`generators/{problem}.py`) AND `JUDGE_FUNC` in solution
-- Skips gracefully if generator or JUDGE_FUNC missing
+
+- Uses generators to produce test data
+- **Requires**: Generator module (`generators/{problem}.py`) AND `JUDGE_FUNC`
+- Auto-skips when generator or JUDGE_FUNC is missing
 - Uses fixed seed (42) for reproducibility
 
 ### 3. Combined Tests (`test_combined_static_and_generated`)
-- Tests solutions with both static and generated test cases
-- Best coverage when both are available
-- Skips if no tests available at all
 
-## Usage
+- Uses both static and generated test data
+- Provides best coverage when both are available
+
+---
+
+## How to Run Tests
 
 ### Quick Start (Recommended)
 
-**Windows:**
-```batch
-# Double-click or run from command prompt
-.dev\run_tests_solutions.bat
-```
-
-**Linux/Mac:**
 ```bash
-# First time: make script executable
-chmod +x .dev/run_tests_solutions.sh
+# Windows
+.dev\run_tests_solutions.bat
 
-# Run the script
+# Linux/Mac
 .dev/run_tests_solutions.sh
 ```
 
-The batch files automatically:
-- Check for virtual environment
-- Check for pytest installation
-- Run all solution tests with verbose output
-- Show clear success/failure messages
+The script will automatically:
+- Check virtual environment
+- Check pytest installation
+- Run all Solution tests
+- Display clear success/failure messages
 
-### Run All Tests (Manual)
-```bash
-python -m pytest .dev/tests_solutions/ -v
-```
+### Using pytest
 
-### Run Specific Test Type
 ```bash
-# Static tests only
+# Run all Solution tests
+python -m pytest .dev/tests_solutions -v
+
+# Run specific test type
 python -m pytest .dev/tests_solutions/test_all_solutions.py::TestAllSolutions::test_static_tests -v
-
-# Generated tests only
 python -m pytest .dev/tests_solutions/test_all_solutions.py::TestAllSolutions::test_generated_tests -v
 
-# Combined tests
-python -m pytest .dev/tests_solutions/test_all_solutions.py::TestAllSolutions::test_combined_static_and_generated -v
-```
-
-### Run Tests for Specific Problem
-```bash
 # Test specific problem
-python -m pytest .dev/tests_solutions/ -v -k "0023"
-
-# Test multiple problems
-python -m pytest .dev/tests_solutions/ -v -k "0023 or 0027"
+python -m pytest .dev/tests_solutions -v -k "0023"
+python -m pytest .dev/tests_solutions -v -k "0023 or 0027"
 ```
 
-### Run Tests for All Solutions (CI Mode)
-```bash
-# Quick check (static tests only, no generated)
-python -m pytest .dev/tests_solutions/test_all_solutions.py::TestAllSolutions::test_static_tests -v --tb=short
-```
-
-## Separation from Runner Tests
-
-| Test Suite | Location | Purpose | Test Count |
-|-----------|----------|---------|------------|
-| **Runner Tests** | `.dev/tests/` | Test the runner system functionality (test_runner, executor, etc.) | ~273 tests |
-| **Solutions Tests** | `.dev/tests_solutions/` | Test all solution files work correctly | ~99 tests |
-
-Run them separately:
-```bash
-# Test runner system
-# Windows: .dev\run_tests.bat
-# Linux/Mac: .dev/run_tests.sh
-python -m pytest .dev/tests/ -v
-
-# Test all solutions
-# Windows: .dev\run_tests_solutions.bat
-# Linux/Mac: .dev/run_tests_solutions.sh
-python -m pytest .dev/tests_solutions/ -v
-
-# Test both
-python -m pytest .dev/tests/ .dev/tests_solutions/ -v
-```
+---
 
 ## Test Behavior
 
-### Skipping Logic
+### Skip Conditions
 
-Tests automatically skip when:
-- Solution module cannot be loaded
-- No static test files found (for static tests)
-- No generator found (for generated tests)
-- No JUDGE_FUNC (for generated tests - required for validation)
-- No tests available at all (for combined tests)
+Tests will automatically skip:
+- Solution modules that cannot be loaded
+- Problems without static test data (static tests)
+- Problems without generators (generated tests)
+- Problems without JUDGE_FUNC (required for generated tests)
+- Problems without any available tests (combined tests)
 
 ### Failure Reporting
 
-When a test fails, it shows:
-- Problem name and method (if multi-solution)
+When tests fail, displays:
+- Problem name and method (for multiple solutions)
 - Test case name
 - Expected vs actual output (truncated)
 - For generated tests: input data that caused failure
+
+---
 
 ## Example Output
 
@@ -139,9 +114,45 @@ test_generated_tests[0027_remove_element] FAILED
   Failed: 0027_remove_element (default): Generated case 3 failed
 ```
 
+---
+
+## Comparison with Other Tests
+
+| Test Suite | Location | Purpose | Test Count |
+|------------|----------|---------|------------|
+| **Format Tests** | `tools/tests/` | Test Solution format standards | ~10 |
+| **Component Tests** | `.dev/tests/` | Test Runner system functionality | ~273 |
+| **Solution Tests** | `.dev/tests_solutions/` | Test Solution execution results | ~99 |
+
+Run separately:
+```bash
+# Format tests
+python -m pytest tools/tests -v
+
+# Component tests
+python -m pytest .dev/tests -v
+
+# Solution tests
+python -m pytest .dev/tests_solutions -v
+
+# All tests
+.dev\run_all_tests.bat  # Windows
+.dev/run_all_tests.sh   # Linux/Mac
+```
+
+---
+
 ## Notes
 
-- Generated tests use a small number of cases (5 for `test_generated_tests`, 3 for combined) for CI speed
-- Fixed seed (42) ensures reproducible failures
-- Tests support both legacy solutions (no SOLUTIONS dict) and polymorphic solutions
-- Multi-solution problems test the "default" method only in these tests
+- Generated tests use a small number of cases (5) to speed up CI
+- Fixed seed (42) ensures failures are reproducible
+- Supports both legacy and polymorphic Solution modes
+- Multiple solution problems only test "default" method
+
+---
+
+## Related Links
+
+- [../TESTING.md](../TESTING.md) - Complete testing documentation
+- [../tests/README.md](../tests/README.md) - Component tests
+- [../../tools/FORMAT_CHECKING.md](../../tools/FORMAT_CHECKING.md) - Format checking description

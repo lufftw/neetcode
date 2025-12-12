@@ -6,19 +6,19 @@ REM ============================================================================
 REM
 REM This script runs three categories of tests:
 REM
-REM 1. Component Tests (.dev/tests/)
+REM 1. Solution Format Tests (tools/tests/)
+REM    - Pure Polymorphic Architecture compliance
+REM    - Solution comment format
+REM    - Complexity comments
+REM
+REM 2. Component Tests (.dev/tests/)
 REM    - Runner module unit tests
 REM    - Integration tests
 REM    - Edge case tests
 REM
-REM 2. Solution Correctness Tests (.dev/tests_solutions/)
+REM 3. Solution Correctness Tests (.dev/tests_solutions/)
 REM    - Static test cases (from tests/ directory)
 REM    - Generated test cases (if available)
-REM
-REM 3. Solution Format Tests (tools/tests/)
-REM    - Pure Polymorphic Architecture compliance
-REM    - Solution comment format
-REM    - Complexity comments
 REM
 REM Exit Codes:
 REM   0 - All tests passed
@@ -59,7 +59,9 @@ if %errorlevel% neq 0 (
 REM Change to project root directory
 cd /d "%~dp0.."
 
-set TOTAL_FAILED=0
+set FORMAT_RESULT=0
+set COMPONENT_RESULT=0
+set SOLUTION_RESULT=0
 
 REM ============================================================================
 REM 1. Solution Format Tests
@@ -83,7 +85,7 @@ echo.
 if %errorlevel% neq 0 (
     echo.
     echo [FAIL] Solution format tests failed!
-    set /a TOTAL_FAILED+=1
+    set FORMAT_RESULT=1
 ) else (
     echo.
     echo [PASS] Solution format tests passed
@@ -104,7 +106,7 @@ echo.
 if %errorlevel% neq 0 (
     echo.
     echo [FAIL] Component tests failed!
-    set /a TOTAL_FAILED+=1
+    set COMPONENT_RESULT=1
 ) else (
     echo.
     echo [PASS] Component tests passed
@@ -125,7 +127,7 @@ echo.
 if %errorlevel% neq 0 (
     echo.
     echo [FAIL] Solution correctness tests failed!
-    set /a TOTAL_FAILED+=1
+    set SOLUTION_RESULT=1
 ) else (
     echo.
     echo [PASS] Solution correctness tests passed
@@ -140,6 +142,8 @@ echo                                 TEST SUMMARY
 echo ================================================================================
 echo.
 
+set /a TOTAL_FAILED=%FORMAT_RESULT%+%COMPONENT_RESULT%+%SOLUTION_RESULT%
+
 if %TOTAL_FAILED% equ 0 (
     echo   [OK] All test categories passed!
     echo.
@@ -152,9 +156,24 @@ if %TOTAL_FAILED% equ 0 (
 ) else (
     echo   [FAILED] %TOTAL_FAILED% test category(ies) failed!
     echo.
+    if %FORMAT_RESULT% equ 1 (
+        echo   - Solution Format Tests:      FAILED
+    ) else (
+        echo   - Solution Format Tests:      PASSED
+    )
+    if %COMPONENT_RESULT% equ 1 (
+        echo   - Component Tests:            FAILED
+    ) else (
+        echo   - Component Tests:            PASSED
+    )
+    if %SOLUTION_RESULT% equ 1 (
+        echo   - Solution Correctness Tests: FAILED
+    ) else (
+        echo   - Solution Correctness Tests: PASSED
+    )
+    echo.
     echo   Please review the output above for details.
     echo.
     echo ================================================================================
     exit /b 1
 )
-
