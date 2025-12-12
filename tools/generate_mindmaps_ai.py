@@ -58,7 +58,7 @@ ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
 DEFAULT_CONFIG = TOOLS_DIR / "mindmap_ai_config.toml"
-DEFAULT_MODEL = "gpt-5.2"
+DEFAULT_MODEL = "gpt-5.1-codex"
 
 
 def load_config(config_path: Path | None = None) -> dict[str, Any]:
@@ -1003,7 +1003,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     
     if not HAS_OPENAI:
         print("\n⚠️  OpenAI library not installed.")
-        print("   Copy the prompt above to GPT-5.2 manually.")
+        print("   Copy the prompt above to GPT-5.1-codex manually.")
         return ""
     
     # Get languages (support both string and list)
