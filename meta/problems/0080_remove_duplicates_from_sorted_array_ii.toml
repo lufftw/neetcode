@@ -33,8 +33,8 @@ tests_dir = "tests/0080_remove_duplicates_from_sorted_array_ii/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "removeDuplicates"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_writer_dedup"]
@@ -49,4 +49,59 @@ based_on   = ["0026#default"]
 delta      = "Allow up to 2 copies instead of 1. Check nums[write-2] instead of nums[write-1]."
 complexity = "O(n) time, O(1) space"
 notes      = "Generalized deduplication: allow K copies by checking nums[write-K]. K=2 for this problem."
+
+[[solutions]]
+key    = "two_pointers"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_dedup"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0026"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0026#default"]
+delta      = "Allow up to 2 copies instead of 1. Check nums[write-2] instead of nums[write-1]."
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Reader/writer pattern with K=2 lookback check."
+
+[[solutions]]
+key    = "k_copies"
+class  = "SolutionKCopies"
+method = "solve_k_copies"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_dedup"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0080#default"]
+
+role       = "variant"
+variant    = "generalized_k"
+based_on   = ["0080#default"]
+delta      = "Generalized solution allowing up to K copies (default K=2)."
+complexity = "O(n) time, O(1) space"
+notes      = "Generalized solution allowing up to K copies (default K=2)."
+
+[[solutions]]
+key    = "counter"
+class  = "SolutionCounter"
+method = "solve_counter"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_dedup"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0080#default"]
+
+role       = "variant"
+variant    = "explicit_counter"
+based_on   = ["0080#default"]
+delta      = "Explicit counter tracking approach."
+complexity = "O(n) time, O(1) space"
+notes      = "Explicit counter tracking approach."
 

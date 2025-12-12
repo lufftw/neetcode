@@ -33,8 +33,8 @@ tests_dir = "tests/0075_sort_colors/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "sortColors"
+class  = "SolutionDutchFlag"
+method = "solve_dutch_flag"
 
 api_kernels      = ["TwoPointerPartition"]
 patterns         = ["dutch_flag_partition"]
@@ -51,9 +51,28 @@ complexity = "O(n) time, O(1) space"
 notes      = "Dutch National Flag algorithm. Three-way partition using three pointers (low, mid, high)."
 
 [[solutions]]
+key    = "dutch_flag"
+class  = "SolutionDutchFlag"
+method = "solve_dutch_flag"
+
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["dutch_flag_partition"]
+families         = ["array_partition"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0905"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Dutch National Flag algorithm (one-pass three-way partition)."
+
+[[solutions]]
 key    = "counting"
 class  = "SolutionCounting"
-method = "sortColors"
+method = "solve_counting"
 
 api_kernels      = ["TwoPointerPartition"]
 patterns         = ["dutch_flag_partition"]
@@ -66,41 +85,5 @@ variant    = "counting_sort"
 based_on   = ["0075#default"]
 delta      = "Two-pass counting sort approach."
 complexity = "O(n) time, O(1) space"
-notes      = "Counting sort variant: count frequencies then fill array."
-
-[[solutions]]
-key    = "twopartition"
-class  = "SolutionTwoPartition"
-method = "sortColors"
-
-api_kernels      = ["TwoPointerPartition"]
-patterns         = ["two_way_partition"]
-data_structures  = ["array"]
-algorithms       = ["two_pointers"]
-related_problems = ["0075#default"]
-
-role       = "variant"
-variant    = "two_pass_partition"
-based_on   = ["0075#default"]
-delta      = "Two-pass approach: first separate 0s, then separate 1s and 2s."
-complexity = "O(n) time, O(1) space"
-notes      = "Two-pass partitioning approach."
-
-[[solutions]]
-key    = "generic"
-class  = "SolutionGeneric"
-method = "sortColors"
-
-api_kernels      = ["TwoPointerPartition"]
-patterns         = ["dutch_flag_partition"]
-data_structures  = ["array"]
-algorithms       = ["two_pointers"]
-related_problems = ["0075#default"]
-
-role       = "variant"
-variant    = "generic_k_way"
-based_on   = ["0075#default"]
-delta      = "Generic K-way partition (extensible to more colors)."
-complexity = "O(n) time, O(1) space"
-notes      = "Generalized version for K-way partition."
+notes      = "Two-pass counting sort approach."
 

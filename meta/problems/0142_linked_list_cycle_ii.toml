@@ -33,8 +33,8 @@ tests_dir = "tests/0142_linked_list_cycle_ii/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "detectCycle"
+class  = "SolutionFloyd"
+method = "solve_floyd"
 
 api_kernels      = ["FastSlowPointers"]
 patterns         = ["fast_slow_cycle_start"]
@@ -49,4 +49,42 @@ based_on   = ["0141#default"]
 delta      = "Phase 2: Find cycle start node using mathematical property after detecting cycle."
 complexity = "O(n) time, O(1) space"
 notes      = "Floyd's algorithm Phase 2: After finding meeting point, move one pointer to head and both move at speed 1 to find cycle start."
+
+[[solutions]]
+key    = "floyd"
+class  = "SolutionFloyd"
+method = "solve_floyd"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_start"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0141"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0141#default"]
+delta      = "Phase 2: Find cycle start node using mathematical property after detecting cycle."
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Floyd's algorithm with two phases."
+
+[[solutions]]
+key    = "hashset"
+class  = "SolutionHashSet"
+method = "solve_hashset"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_start"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list", "hash_set"]
+algorithms       = []
+related_problems = ["0142#default"]
+
+role       = "variant"
+variant    = "hash_set"
+based_on   = ["0142#default"]
+delta      = "Use hash set to find first revisited node (cycle start)."
+complexity = "O(n) time, O(n) space"
+notes      = "Hash set to find first revisited node."
 

@@ -49,6 +49,29 @@ Space: O(1) - Only two number values stored
 
 ================================================================================
 """
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_floyd",
+        "complexity": "O(log n) time, O(1) space",
+        "description": "Floyd's cycle detection on number sequence",
+    },
+    "floyd": {
+        "method": "solve_floyd",
+        "complexity": "O(log n) time, O(1) space",
+        "description": "Floyd's cycle detection on number sequence",
+    },
+    "hashset": {
+        "method": "solve_hashset",
+        "complexity": "O(log n) time, O(log n) space",
+        "description": "Hash set to detect cycles in sequence",
+    },
+}
 
 
 # ============================================================================
@@ -93,11 +116,14 @@ def _brute_force_happy(n: int) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(log n) Fast-Slow Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Floyd's Cycle Detection
+# Time: O(log n), Space: O(1)
+#   - Treats number sequence as implicit linked list
+#   - Fast pointer moves 2 steps, slow moves 1 step
+#   - Only two number values stored
+# ============================================
+class SolutionFloyd:
     """
     Optimal solution using fast-slow pointers on the implicit sequence.
     
@@ -138,10 +164,13 @@ class Solution:
         return fast == 1
 
 
-# ============================================================================
-# Alternative: Using Hash Set (O(log n) Space)
-# ============================================================================
-
+# ============================================
+# Solution 2: HashSet Approach
+# Time: O(log n), Space: O(log n)
+#   - Stores all visited numbers in a set
+#   - If we see a repeat, there's a cycle
+#   - If we reach 1 first, n is happy
+# ============================================
 class SolutionHashSet:
     """
     Alternative using a hash set to detect cycles.
@@ -169,60 +198,17 @@ class SolutionHashSet:
         return current == 1
 
 
-# ============================================================================
-# Alternative: Hardcoded Cycle Detection
-# ============================================================================
-
-class SolutionHardcoded:
-    """
-    Alternative using known mathematical property.
-    
-    For unhappy numbers, the sequence always enters a specific cycle
-    containing these numbers: 4, 16, 37, 58, 89, 145, 42, 20.
-    We can detect unhappiness by checking for 4.
-    """
-    
-    def isHappy(self, n: int) -> bool:
-        def sum_of_squares(num: int) -> int:
-            total = 0
-            while num > 0:
-                digit = num % 10
-                total += digit * digit
-                num //= 10
-            return total
-        
-        current = n
-        
-        # All unhappy sequences eventually reach 4
-        while current != 1 and current != 4:
-            current = sum_of_squares(current)
-        
-        return current == 1
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_floyd(n: int) -> bool:
+    """Wrapper for SolutionFloyd."""
+    return SolutionFloyd().isHappy(n)
 
 
-# ============================================================================
-# Alternative: Using String Conversion
-# ============================================================================
-
-class SolutionString:
-    """
-    Alternative using string conversion for digit extraction.
-    
-    Slightly slower due to string operations but more readable.
-    """
-    
-    def isHappy(self, n: int) -> bool:
-        def sum_of_squares(num: int) -> int:
-            return sum(int(d) ** 2 for d in str(num))
-        
-        slow = n
-        fast = sum_of_squares(n)
-        
-        while fast != 1 and slow != fast:
-            slow = sum_of_squares(slow)
-            fast = sum_of_squares(sum_of_squares(fast))
-        
-        return fast == 1
+def solve_hashset(n: int) -> bool:
+    """Wrapper for SolutionHashSet."""
+    return SolutionHashSet().isHappy(n)
 
 
 # ============================================================================
@@ -245,12 +231,17 @@ def solve():
     
     n = int(sys.stdin.read().strip())
     
-    solution = Solution()
-    result = solution.isHappy(n)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(n)
     
     print("true" if result else "false")
 
 
 if __name__ == "__main__":
     solve()
-

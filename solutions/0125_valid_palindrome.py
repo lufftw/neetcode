@@ -42,6 +42,34 @@ Space: O(1) - Only two pointer indices used
 
 ================================================================================
 """
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers from both ends with inline filtering",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers from both ends with inline filtering",
+    },
+    "filtered": {
+        "method": "solve_filtered",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Pre-filter string then check palindrome",
+    },
+    "filtered_pointers": {
+        "method": "solve_filtered_pointers",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Filter first, then use two pointers on filtered string",
+    },
+}
 
 
 # ============================================================================
@@ -82,11 +110,14 @@ def _brute_force_palindrome(s: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Opposite Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Two Pointers with Inline Filtering
+# Time: O(n), Space: O(1)
+#   - Each character visited at most once
+#   - No extra space for filtered string
+#   - Most space-efficient approach
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using opposite pointers for palindrome verification.
     
@@ -127,11 +158,14 @@ class Solution:
         return True
 
 
-# ============================================================================
-# Alternative: Pre-Filter Approach
-# ============================================================================
-
-class SolutionPreFilter:
+# ============================================
+# Solution 2: Pre-Filter Approach
+# Time: O(n), Space: O(n)
+#   - Two passes: filter then check
+#   - Uses O(n) space for filtered string
+#   - Clearer logic but less space-efficient
+# ============================================
+class SolutionFiltered:
     """
     Alternative that first filters the string, then checks palindrome.
     
@@ -147,10 +181,13 @@ class SolutionPreFilter:
         return filtered == filtered[::-1]
 
 
-# ============================================================================
-# Alternative: Using Two Pointers on Filtered String
-# ============================================================================
-
+# ============================================
+# Solution 3: Filtered String with Two Pointers
+# Time: O(n), Space: O(n)
+#   - Filter first, then use two pointers
+#   - Demonstrates separation of concerns
+#   - Same space as SolutionFiltered but different approach
+# ============================================
 class SolutionFilteredPointers:
     """
     Hybrid approach: filter first, then use two pointers.
@@ -175,6 +212,24 @@ class SolutionFilteredPointers:
         return True
 
 
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(s: str) -> bool:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().isPalindrome(s)
+
+
+def solve_filtered(s: str) -> bool:
+    """Wrapper for SolutionFiltered."""
+    return SolutionFiltered().isPalindrome(s)
+
+
+def solve_filtered_pointers(s: str) -> bool:
+    """Wrapper for SolutionFilteredPointers."""
+    return SolutionFilteredPointers().isPalindrome(s)
+
+
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -195,12 +250,17 @@ def solve():
     
     s = sys.stdin.read().strip()
     
-    solution = Solution()
-    result = solution.isPalindrome(s)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(s)
     
     print("true" if result else "false")
 
 
 if __name__ == "__main__":
     solve()
-

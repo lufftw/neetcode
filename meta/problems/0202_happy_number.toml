@@ -33,8 +33,8 @@ tests_dir = "tests/0202_happy_number/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "isHappy"
+class  = "SolutionFloyd"
+method = "solve_floyd"
 
 api_kernels      = ["FastSlowPointers"]
 patterns         = ["fast_slow_implicit_cycle"]
@@ -51,14 +51,33 @@ complexity = "O(log n) iterations, O(log n) per iteration"
 notes      = "Fast-slow pointers on implicit linked list formed by sum-of-squares sequence. Cycle detection for number sequences."
 
 [[solutions]]
+key    = "floyd"
+class  = "SolutionFloyd"
+method = "solve_floyd"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_implicit_cycle"]
+families         = ["linked_list_cycle"]
+data_structures  = []
+algorithms       = ["two_pointers", "math"]
+related_problems = ["0141"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0141#default"]
+delta      = "Apply fast-slow cycle detection to number sequence (implicit linked list)."
+complexity = "O(log n) time, O(1) space"
+notes      = "Same as default. Floyd's cycle detection on number sequence."
+
+[[solutions]]
 key    = "hashset"
 class  = "SolutionHashSet"
-method = "isHappy"
+method = "solve_hashset"
 
 api_kernels      = ["FastSlowPointers"]
 patterns         = ["fast_slow_implicit_cycle"]
 data_structures  = ["hash_set"]
-algorithms       = ["two_pointers"]
+algorithms       = []
 related_problems = ["0202#default"]
 
 role       = "variant"
@@ -66,41 +85,5 @@ variant    = "hash_set"
 based_on   = ["0202#default"]
 delta      = "Use hash set to track seen numbers instead of fast-slow pointers."
 complexity = "O(log n) time, O(log n) space"
-notes      = "Hash set approach: store seen numbers, detect cycle when number repeats."
-
-[[solutions]]
-key    = "hardcoded"
-class  = "SolutionHardcoded"
-method = "isHappy"
-
-api_kernels      = ["FastSlowPointers"]
-patterns         = ["fast_slow_implicit_cycle"]
-data_structures  = []
-algorithms       = ["math"]
-related_problems = ["0202#default"]
-
-role       = "variant"
-variant    = "hardcoded_cycle"
-based_on   = ["0202#default"]
-delta      = "Hardcode known cycle values (4, 16, 37, 58, 89, 145, 42, 20)."
-complexity = "O(log n) time, O(1) space"
-notes      = "Optimization: check if sequence enters known cycle (4 → 16 → ... → 4)."
-
-[[solutions]]
-key    = "string"
-class  = "SolutionString"
-method = "isHappy"
-
-api_kernels      = ["FastSlowPointers"]
-patterns         = ["fast_slow_implicit_cycle"]
-data_structures  = ["string"]
-algorithms       = ["math"]
-related_problems = ["0202#default"]
-
-role       = "variant"
-variant    = "string_conversion"
-based_on   = ["0202#default"]
-delta      = "Convert number to string to extract digits."
-complexity = "O(log n) time, O(log n) space"
-notes      = "String-based digit extraction approach."
+notes      = "Hash set to detect cycles in sequence."
 

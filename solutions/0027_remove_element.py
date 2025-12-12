@@ -41,6 +41,29 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pointer pattern for in-place removal",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pointer pattern for in-place removal",
+    },
+    "two_ends": {
+        "method": "solve_two_ends",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Opposite pointers swapping from both ends (efficient when val is rare)",
+    },
+}
 
 
 # ============================================================================
@@ -92,11 +115,14 @@ def _brute_force_remove_element(nums: List[int], val: int) -> tuple[int, List[in
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Same-Direction Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Reader/Writer Two Pointers
+# Time: O(n), Space: O(1)
+#   - Single pass through array
+#   - In-place modification
+#   - Optimal when val appears frequently
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using reader/writer pointer pattern.
     
@@ -128,10 +154,13 @@ class Solution:
         return write_index
 
 
-# ============================================================================
-# Alternative: Two-Pointer from Both Ends
-# ============================================================================
-
+# ============================================
+# Solution 2: Two Pointers from Both Ends
+# Time: O(n), Space: O(1)
+#   - More efficient when val is rare
+#   - Swaps val elements with elements from end
+#   - Minimizes total writes
+# ============================================
 class SolutionTwoEnds:
     """
     Alternative using pointers from both ends.
@@ -160,27 +189,17 @@ class SolutionTwoEnds:
         return left
 
 
-# ============================================================================
-# Alternative: Functional Style with Filter
-# ============================================================================
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int], val: int) -> int:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().removeElement(nums, val)
 
-class SolutionFunctional:
-    """
-    Functional-style solution using list comprehension.
-    
-    Note: This creates a new list, so it doesn't strictly satisfy the
-    "in-place" requirement. Shown for comparison purposes.
-    """
-    
-    def removeElement(self, nums: List[int], val: int) -> int:
-        # Create filtered list
-        kept = [x for x in nums if x != val]
-        
-        # Copy back (to satisfy interface requirements)
-        for i, x in enumerate(kept):
-            nums[i] = x
-        
-        return len(kept)
+
+def solve_two_ends(nums: List[int], val: int) -> int:
+    """Wrapper for SolutionTwoEnds."""
+    return SolutionTwoEnds().removeElement(nums, val)
 
 
 # ============================================================================
@@ -211,8 +230,14 @@ def solve():
     nums = list(map(int, lines[0].split())) if lines[0] else []
     val = int(lines[1])
     
-    solution = Solution()
-    k = solution.removeElement(nums, val)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    k = method_func(nums, val)
     
     print(k)
     if k > 0:
@@ -221,4 +246,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

@@ -33,8 +33,8 @@ tests_dir = "tests/0876_middle_of_the_linked_list/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "middleNode"
+class  = "SolutionFastSlow"
+method = "solve_fast_slow"
 
 api_kernels      = ["FastSlowPointers"]
 patterns         = ["fast_slow_midpoint"]
@@ -51,9 +51,28 @@ complexity = "O(n) time, O(1) space"
 notes      = "Fast-slow pointer pattern: when fast reaches end, slow is at middle. Returns second middle for even-length lists."
 
 [[solutions]]
-key    = "twopass"
+key    = "fast_slow"
+class  = "SolutionFastSlow"
+method = "solve_fast_slow"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_midpoint"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0141"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Fast-slow pointers for midpoint finding."
+
+[[solutions]]
+key    = "two_pass"
 class  = "SolutionTwoPass"
-method = "middleNode"
+method = "solve_two_pass"
 
 api_kernels      = ["FastSlowPointers"]
 patterns         = ["fast_slow_midpoint"]
@@ -66,41 +85,5 @@ variant    = "two_pass"
 based_on   = ["0876#default"]
 delta      = "Two-pass approach: count length first, then traverse to middle."
 complexity = "O(n) time, O(1) space"
-notes      = "Two-pass approach: first count nodes, then traverse to middle."
-
-[[solutions]]
-key    = "array"
-class  = "SolutionArray"
-method = "middleNode"
-
-api_kernels      = ["FastSlowPointers"]
-patterns         = ["fast_slow_midpoint"]
-data_structures  = ["linked_list", "array"]
-algorithms       = []
-related_problems = ["0876#default"]
-
-role       = "variant"
-variant    = "array_storage"
-based_on   = ["0876#default"]
-delta      = "Store nodes in array, return middle element."
-complexity = "O(n) time, O(n) space"
-notes      = "Store all nodes in array, return middle element."
-
-[[solutions]]
-key    = "firstmiddle"
-class  = "SolutionFirstMiddle"
-method = "middleNode"
-
-api_kernels      = ["FastSlowPointers"]
-patterns         = ["fast_slow_midpoint"]
-data_structures  = ["linked_list"]
-algorithms       = ["two_pointers"]
-related_problems = ["0876#default"]
-
-role       = "variant"
-variant    = "first_middle"
-based_on   = ["0876#default"]
-delta      = "Returns first middle node for even-length lists (different termination condition)."
-complexity = "O(n) time, O(1) space"
-notes      = "Variant that returns first middle node for even-length lists."
+notes      = "Two-pass: count nodes then find middle."
 

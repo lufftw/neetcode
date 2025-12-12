@@ -41,6 +41,39 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pattern with zero-fill phase",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pattern with zero-fill phase",
+    },
+    "swap": {
+        "method": "solve_swap",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Swap-based approach in single pass",
+    },
+    "optimized_swap": {
+        "method": "solve_optimized_swap",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Optimized swap avoiding unnecessary self-swaps",
+    },
+    "snowball": {
+        "method": "solve_snowball",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Snowball method tracking zeros rolling through array",
+    },
+}
 
 
 # ============================================================================
@@ -87,11 +120,14 @@ def _brute_force_move_zeroes(nums: List[int]) -> List[int]:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Same-Direction with Fill
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Reader/Writer with Fill
+# Time: O(n), Space: O(1)
+#   - Phase 1: Move non-zeros to front O(n)
+#   - Phase 2: Fill remaining with zeros O(n)
+#   - Minimizes writes when zeros are sparse
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using reader/writer pattern with zero-fill phase.
     
@@ -121,10 +157,13 @@ class Solution:
             nums[i] = 0
 
 
-# ============================================================================
-# Alternative: Swap-Based Approach
-# ============================================================================
-
+# ============================================
+# Solution 2: Swap-Based Approach
+# Time: O(n), Space: O(1)
+#   - Single pass with swaps
+#   - Zeros naturally accumulate at end
+#   - More writes when zeros are sparse
+# ============================================
 class SolutionSwap:
     """
     Alternative using swaps instead of overwrite + fill.
@@ -147,10 +186,13 @@ class SolutionSwap:
                 write_index += 1
 
 
-# ============================================================================
-# Alternative: Optimized Swap (Avoid Self-Swap)
-# ============================================================================
-
+# ============================================
+# Solution 3: Optimized Swap (Avoid Self-Swap)
+# Time: O(n), Space: O(1)
+#   - Avoids unnecessary self-swaps
+#   - Better when zeros are rare
+#   - Checks if swap is needed before swapping
+# ============================================
 class SolutionOptimizedSwap:
     """
     Optimized swap version that avoids unnecessary self-swaps.
@@ -169,10 +211,13 @@ class SolutionOptimizedSwap:
                 write_index += 1
 
 
-# ============================================================================
-# Alternative: Snowball Method (Count Zeros)
-# ============================================================================
-
+# ============================================
+# Solution 4: Snowball Method
+# Time: O(n), Space: O(1)
+#   - Tracks "snowball" of zeros rolling through array
+#   - Conceptually different but equivalent to swap approach
+#   - As zeros accumulate, snowball grows; swap non-zero with front
+# ============================================
 class SolutionSnowball:
     """
     Snowball method: track the "snowball" of zeros rolling through the array.
@@ -192,6 +237,29 @@ class SolutionSnowball:
             elif snowball_size > 0:
                 # Swap current element with front of snowball
                 nums[i - snowball_size], nums[i] = nums[i], nums[i - snowball_size]
+
+
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int]) -> None:
+    """Wrapper for SolutionTwoPointers."""
+    SolutionTwoPointers().moveZeroes(nums)
+
+
+def solve_swap(nums: List[int]) -> None:
+    """Wrapper for SolutionSwap."""
+    SolutionSwap().moveZeroes(nums)
+
+
+def solve_optimized_swap(nums: List[int]) -> None:
+    """Wrapper for SolutionOptimizedSwap."""
+    SolutionOptimizedSwap().moveZeroes(nums)
+
+
+def solve_snowball(nums: List[int]) -> None:
+    """Wrapper for SolutionSnowball."""
+    SolutionSnowball().moveZeroes(nums)
 
 
 # ============================================================================
@@ -218,12 +286,17 @@ def solve():
     
     nums = list(map(int, line.split()))
     
-    solution = Solution()
-    solution.moveZeroes(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    method_func(nums)
     
     print(' '.join(map(str, nums)))
 
 
 if __name__ == "__main__":
     solve()
-

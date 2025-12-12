@@ -47,6 +47,29 @@ Space: O(1) - In-place swaps only
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_dutch_flag",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Dutch National Flag algorithm (one-pass three-way partition)",
+    },
+    "dutch_flag": {
+        "method": "solve_dutch_flag",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Dutch National Flag algorithm (one-pass three-way partition)",
+    },
+    "counting": {
+        "method": "solve_counting",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two-pass counting sort approach",
+    },
+}
 
 
 # ============================================================================
@@ -86,11 +109,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Dutch National Flag Algorithm
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Dutch National Flag Algorithm
+# Time: O(n), Space: O(1)
+#   - Each element examined once
+#   - In-place swaps only
+#   - Optimal one-pass solution
+# ============================================
+class SolutionDutchFlag:
     """
     Optimal one-pass solution using Dutch National Flag algorithm.
     
@@ -134,10 +160,13 @@ class Solution:
                 mid += 1
 
 
-# ============================================================================
-# Alternative: Two-Pass Counting Sort
-# ============================================================================
-
+# ============================================
+# Solution 2: Counting Sort Approach
+# Time: O(n), Space: O(1)
+#   - Two passes: count then overwrite
+#   - Simpler logic but requires two passes
+#   - Uses O(1) space for count array (only 3 values)
+# ============================================
 class SolutionCounting:
     """
     Alternative using counting sort approach.
@@ -160,55 +189,17 @@ class SolutionCounting:
                 index += 1
 
 
-# ============================================================================
-# Alternative: Two-Pointer Partition (Two Passes)
-# ============================================================================
-
-class SolutionTwoPartition:
-    """
-    Alternative using two separate partition passes.
-    
-    First partition around 1 to separate 0s from {1,2}.
-    Then partition the right part around 2 to separate 1s from 2s.
-    """
-    
-    def sortColors(self, nums: List[int]) -> None:
-        # First partition: move all 0s to the front
-        write = 0
-        for i in range(len(nums)):
-            if nums[i] == 0:
-                nums[write], nums[i] = nums[i], nums[write]
-                write += 1
-        
-        # Second partition: move all 1s after the 0s
-        for i in range(write, len(nums)):
-            if nums[i] == 1:
-                nums[write], nums[i] = nums[i], nums[write]
-                write += 1
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_dutch_flag(nums: List[int]) -> None:
+    """Wrapper for SolutionDutchFlag."""
+    SolutionDutchFlag().sortColors(nums)
 
 
-# ============================================================================
-# Alternative: Generic K-Way Partition
-# ============================================================================
-
-class SolutionGeneric:
-    """
-    Generalized version that works for any number of distinct values.
-    
-    Uses counting sort approach, adaptable to more than 3 colors.
-    """
-    
-    def sortColors(self, nums: List[int], k: int = 3) -> None:
-        """Sort array with values in range [0, k-1]."""
-        count = [0] * k
-        for num in nums:
-            count[num] += 1
-        
-        index = 0
-        for value in range(k):
-            for _ in range(count[value]):
-                nums[index] = value
-                index += 1
+def solve_counting(nums: List[int]) -> None:
+    """Wrapper for SolutionCounting."""
+    SolutionCounting().sortColors(nums)
 
 
 # ============================================================================
@@ -232,12 +223,17 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split())) if line else []
     
-    solution = Solution()
-    solution.sortColors(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    method_func(nums)
     
     print(' '.join(map(str, nums)))
 
 
 if __name__ == "__main__":
     solve()
-

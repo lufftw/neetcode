@@ -33,8 +33,8 @@ tests_dir = "tests/0088_merge_sorted_array/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "merge"
+class  = "SolutionBackward"
+method = "solve_backward"
 
 api_kernels      = ["MergeSortedSequences"]
 patterns         = ["merge_two_sorted_arrays"]
@@ -49,4 +49,42 @@ based_on   = ["0021#default"]
 delta      = "In-place merge writing from end to avoid overwriting unprocessed elements."
 complexity = "O(m + n) time, O(1) space"
 notes      = "Key insight: write from end to avoid overwriting nums1 elements before processing them."
+
+[[solutions]]
+key    = "backward"
+class  = "SolutionBackward"
+method = "solve_backward"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_arrays"]
+families         = ["sequence_merge"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0021", "0977"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0021#default"]
+delta      = "In-place merge writing from end to avoid overwriting unprocessed elements."
+complexity = "O(m+n) time, O(1) space"
+notes      = "Same as default. Merge from end to avoid overwriting unprocessed elements."
+
+[[solutions]]
+key    = "forward"
+class  = "SolutionForward"
+method = "solve_forward"
+
+api_kernels      = ["MergeSortedSequences"]
+patterns         = ["merge_two_sorted_arrays"]
+families         = ["sequence_merge"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0088#default"]
+
+role       = "variant"
+variant    = "forward_merge"
+based_on   = ["0088#default"]
+delta      = "Forward merge requiring extra space for nums1 copy."
+complexity = "O(m+n) time, O(m) space"
+notes      = "Forward merge requiring extra space for nums1 copy."
 

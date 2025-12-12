@@ -43,6 +43,34 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pattern with K=2 lookback check",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pattern with K=2 lookback check",
+    },
+    "k_copies": {
+        "method": "solve_k_copies",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Generalized solution allowing up to K copies (default K=2)",
+    },
+    "counter": {
+        "method": "solve_counter",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Explicit counter tracking approach",
+    },
+}
 
 
 # ============================================================================
@@ -107,11 +135,14 @@ def _brute_force_remove_duplicates_ii(nums: List[int]) -> tuple[int, List[int]]:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Same-Direction Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution: Reader/Writer with K-Allowance
+# Time: O(n), Space: O(1)
+#   - Single pass through array
+#   - Checks nums[write-2] to allow at most 2 copies
+#   - Generalizes to any K by changing lookback distance
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution allowing at most 2 copies of each element.
     
@@ -147,10 +178,13 @@ class Solution:
         return write_index
 
 
-# ============================================================================
-# Alternative: Generalized K-Copies Solution
-# ============================================================================
-
+# ============================================
+# Solution 2: Generalized K-Copies Solution
+# Time: O(n), Space: O(1)
+#   - Generalizes to any K by parameter
+#   - Template for K=1 case (original problem) and K=2 case
+#   - Single parameter change adapts to different K values
+# ============================================
 class SolutionKCopies:
     """
     Generalized solution that allows up to K copies of each element.
@@ -185,10 +219,13 @@ class SolutionKCopies:
         return write_index
 
 
-# ============================================================================
-# Alternative: Explicit Counter Approach
-# ============================================================================
-
+# ============================================
+# Solution 3: Explicit Counter Approach
+# Time: O(n), Space: O(1)
+#   - Uses explicit count tracking
+#   - More verbose but clearer for understanding logic
+#   - Tracks consecutive duplicates explicitly
+# ============================================
 class SolutionCounter:
     """
     Alternative using explicit count tracking.
@@ -215,6 +252,24 @@ class SolutionCounter:
                 write_index += 1
         
         return write_index
+
+
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int]) -> int:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().removeDuplicates(nums)
+
+
+def solve_k_copies(nums: List[int]) -> int:
+    """Wrapper for SolutionKCopies."""
+    return SolutionKCopies().removeDuplicates(nums, 2)
+
+
+def solve_counter(nums: List[int]) -> int:
+    """Wrapper for SolutionCounter."""
+    return SolutionCounter().removeDuplicates(nums)
 
 
 # ============================================================================
@@ -245,8 +300,14 @@ def solve():
     
     nums = list(map(int, line.split()))
     
-    solution = Solution()
-    k = solution.removeDuplicates(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    k = method_func(nums)
     
     print(k)
     if k > 0:
@@ -255,4 +316,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

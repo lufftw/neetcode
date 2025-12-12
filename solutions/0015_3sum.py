@@ -43,6 +43,29 @@ Space: O(1) extra (excluding output and sorting space)
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n²) time, O(1) extra space",
+        "description": "Sort + two pointers with duplicate skipping",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n²) time, O(1) extra space",
+        "description": "Sort + two pointers with duplicate skipping",
+    },
+    "hashset": {
+        "method": "solve_hashset",
+        "complexity": "O(n²) time, O(n) space for set",
+        "description": "Sort + two pointers using set for deduplication",
+    },
+}
 
 
 # ============================================================================
@@ -107,11 +130,14 @@ def _brute_force_3sum(nums: List[int]) -> List[List[int]]:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n²) Sort + Two Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Sort + Two Pointers with Deduplication
+# Time: O(n²), Space: O(1) extra
+#   - O(n log n) sorting + O(n²) nested iteration
+#   - In-place duplicate skipping without extra space
+#   - Most efficient space usage
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using sorting and two-pointer technique.
     
@@ -188,11 +214,14 @@ class Solution:
         return result
 
 
-# ============================================================================
-# Alternative: Using Set for Deduplication
-# ============================================================================
-
-class SolutionWithSet:
+# ============================================
+# Solution 2: Sort + Two Pointers with HashSet Deduplication
+# Time: O(n²), Space: O(n) for set
+#   - Uses set to handle deduplication automatically
+#   - Simpler logic but higher space usage
+#   - Useful when duplicate-skipping logic is error-prone
+# ============================================
+class SolutionHashSet:
     """
     Alternative using a set to handle deduplication.
     
@@ -228,6 +257,19 @@ class SolutionWithSet:
         return [list(triplet) for triplet in result_set]
 
 
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int]) -> List[List[int]]:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().threeSum(nums)
+
+
+def solve_hashset(nums: List[int]) -> List[List[int]]:
+    """Wrapper for SolutionHashSet."""
+    return SolutionHashSet().threeSum(nums)
+
+
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -251,8 +293,14 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split()))
     
-    solution = Solution()
-    result = solution.threeSum(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nums)
     
     for triplet in result:
         print(' '.join(map(str, triplet)))
@@ -260,4 +308,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

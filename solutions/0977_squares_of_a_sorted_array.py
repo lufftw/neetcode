@@ -46,6 +46,29 @@ Space: O(n) - Output array (or O(1) if output doesn't count)
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Two pointers from ends merging largest squares first",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Two pointers from ends merging largest squares first",
+    },
+    "sort": {
+        "method": "solve_sort",
+        "complexity": "O(n log n) time, O(n) space",
+        "description": "Square all elements then sort (suboptimal)",
+    },
+}
 
 
 # ============================================================================
@@ -84,11 +107,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Opposite Pointers (Write from End)
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Two Pointers from Ends
+# Time: O(n), Space: O(n)
+#   - Compares absolute values at both ends
+#   - Writes larger square to result from back to front
+#   - Optimal single-pass approach
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using opposite pointers.
     
@@ -132,88 +158,13 @@ class Solution:
         return result
 
 
-# ============================================================================
-# Alternative: Using Absolute Values (Equivalent Logic)
-# ============================================================================
-
-class SolutionAbsolute:
-    """
-    Alternative using absolute values for comparison.
-    
-    Equivalent to comparing squares, but may be clearer for understanding.
-    """
-    
-    def sortedSquares(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        result = [0] * n
-        
-        left, right = 0, n - 1
-        write = n - 1
-        
-        while left <= right:
-            if abs(nums[left]) > abs(nums[right]):
-                result[write] = nums[left] ** 2
-                left += 1
-            else:
-                result[write] = nums[right] ** 2
-                right -= 1
-            write -= 1
-        
-        return result
-
-
-# ============================================================================
-# Alternative: Find Split Point Then Merge
-# ============================================================================
-
-class SolutionSplit:
-    """
-    Alternative: find where negatives end, then merge two sequences.
-    
-    More explicit about the "merge two sorted sequences" structure.
-    """
-    
-    def sortedSquares(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        
-        # Find the split point (first non-negative number)
-        split = 0
-        while split < n and nums[split] < 0:
-            split += 1
-        
-        # Two pointers: left goes backward through negatives, right goes forward
-        left = split - 1
-        right = split
-        result = []
-        
-        # Merge: smaller squares first
-        while left >= 0 and right < n:
-            left_sq = nums[left] ** 2
-            right_sq = nums[right] ** 2
-            
-            if left_sq <= right_sq:
-                result.append(left_sq)
-                left -= 1
-            else:
-                result.append(right_sq)
-                right += 1
-        
-        # Remaining elements
-        while left >= 0:
-            result.append(nums[left] ** 2)
-            left -= 1
-        
-        while right < n:
-            result.append(nums[right] ** 2)
-            right += 1
-        
-        return result
-
-
-# ============================================================================
-# Alternative: Simple Sort (Suboptimal)
-# ============================================================================
-
+# ============================================
+# Solution 2: Square Then Sort
+# Time: O(n log n), Space: O(n)
+#   - Simple approach: square all then sort
+#   - O(n log n) instead of O(n)
+#   - Useful for comparison or when simplicity is prioritized
+# ============================================
 class SolutionSort:
     """
     Simple sorting approach.
@@ -225,32 +176,17 @@ class SolutionSort:
         return sorted(x * x for x in nums)
 
 
-# ============================================================================
-# Alternative: Using Deque for Bidirectional Building
-# ============================================================================
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int]) -> List[int]:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().sortedSquares(nums)
 
-class SolutionDeque:
-    """
-    Alternative using deque for bidirectional insertion.
-    
-    Builds result by appending to the end (largest squares first).
-    """
-    
-    def sortedSquares(self, nums: List[int]) -> List[int]:
-        from collections import deque
-        
-        result = deque()
-        left, right = 0, len(nums) - 1
-        
-        while left <= right:
-            if abs(nums[left]) > abs(nums[right]):
-                result.appendleft(nums[left] ** 2)
-                left += 1
-            else:
-                result.appendleft(nums[right] ** 2)
-                right -= 1
-        
-        return list(result)
+
+def solve_sort(nums: List[int]) -> List[int]:
+    """Wrapper for SolutionSort."""
+    return SolutionSort().sortedSquares(nums)
 
 
 # ============================================================================
@@ -274,12 +210,17 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split())) if line else []
     
-    solution = Solution()
-    result = solution.sortedSquares(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nums)
     
     print(' '.join(map(str, result)))
 
 
 if __name__ == "__main__":
     solve()
-

@@ -33,8 +33,8 @@ tests_dir = "tests/0905_sort_array_by_parity/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "sortArrayByParity"
+class  = "SolutionOppositePointers"
+method = "solve_opposite_pointers"
 
 api_kernels      = ["TwoPointerPartition"]
 patterns         = ["two_way_partition"]
@@ -51,9 +51,28 @@ complexity = "O(n) time, O(1) space"
 notes      = "Two-way partition: separate evens and odds. Opposite pointers approach."
 
 [[solutions]]
+key    = "opposite_pointers"
+class  = "SolutionOppositePointers"
+method = "solve_opposite_pointers"
+
+api_kernels      = ["TwoPointerPartition"]
+patterns         = ["two_way_partition"]
+families         = ["array_partition"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0075"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0075#default"]
+delta      = "Two-way partition (even/odd) instead of three-way."
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Opposite pointers swapping evens and odds."
+
+[[solutions]]
 key    = "writer"
 class  = "SolutionWriter"
-method = "sortArrayByParity"
+method = "solve_writer"
 
 api_kernels      = ["TwoPointerPartition"]
 patterns         = ["two_way_partition"]
@@ -66,41 +85,5 @@ variant    = "same_direction"
 based_on   = ["0905#default"]
 delta      = "Same-direction writer pattern: move evens to front."
 complexity = "O(n) time, O(1) space"
-notes      = "Reader/writer pattern: write evens to front positions."
-
-[[solutions]]
-key    = "newarray"
-class  = "SolutionNewArray"
-method = "sortArrayByParity"
-
-api_kernels      = ["TwoPointerPartition"]
-patterns         = ["two_way_partition"]
-data_structures  = ["array"]
-algorithms       = []
-related_problems = ["0905#default"]
-
-role       = "variant"
-variant    = "new_array"
-based_on   = ["0905#default"]
-delta      = "Create new array instead of in-place partition."
-complexity = "O(n) time, O(n) space"
-notes      = "Two-pass approach: collect evens then odds into new array."
-
-[[solutions]]
-key    = "sort"
-class  = "SolutionSort"
-method = "sortArrayByParity"
-
-api_kernels      = ["TwoPointerPartition"]
-patterns         = ["two_way_partition"]
-data_structures  = ["array"]
-algorithms       = ["sorting"]
-related_problems = ["0905#default"]
-
-role       = "variant"
-variant    = "sort"
-based_on   = ["0905#default"]
-delta      = "Sort by parity using custom comparator."
-complexity = "O(n log n) time, O(1) space"
-notes      = "Sorting approach: sort by (num % 2)."
+notes      = "Same-direction reader/writer pattern."
 

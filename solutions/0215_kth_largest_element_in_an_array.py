@@ -49,6 +49,29 @@ To guarantee O(n) worst case: use median-of-medians for pivot selection.
 """
 from typing import List
 import random
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_quickselect",
+        "complexity": "O(n) average time, O(1) space",
+        "description": "Quickselect algorithm with random pivot",
+    },
+    "quickselect": {
+        "method": "solve_quickselect",
+        "complexity": "O(n) average time, O(1) space",
+        "description": "Quickselect algorithm with random pivot",
+    },
+    "heap": {
+        "method": "solve_heap",
+        "complexity": "O(n log k) time, O(k) space",
+        "description": "Min-heap of size k to maintain k largest elements",
+    },
+}
 
 
 # ============================================================================
@@ -90,11 +113,14 @@ def _brute_force_kth_largest(nums: List[int], k: int) -> int:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Average Quickselect
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Quickselect Algorithm
+# Time: O(n) average, O(n²) worst, Space: O(1)
+#   - Uses partition scheme from quicksort
+#   - Random pivot selection for expected O(n) performance
+#   - In-place partitioning
+# ============================================
+class SolutionQuickselect:
     """
     Optimal solution using Quickselect algorithm.
     
@@ -155,10 +181,13 @@ class Solution:
         return nums[left]  # Should never reach here
 
 
-# ============================================================================
-# Alternative: Heap-Based Solution
-# ============================================================================
-
+# ============================================
+# Solution 2: Heap-Based Solution
+# Time: O(n log k), Space: O(k)
+#   - Maintains min-heap of size k
+#   - Root is the kth largest element
+#   - Better when k is small relative to n
+# ============================================
 class SolutionHeap:
     """
     Alternative using a min-heap of size k.
@@ -185,59 +214,17 @@ class SolutionHeap:
         return min_heap[0]
 
 
-# ============================================================================
-# Alternative: Sort-Based Solution
-# ============================================================================
-
-class SolutionSort:
-    """
-    Simple sorting approach.
-    
-    Sort the array and return the kth element from the end.
-    
-    Time: O(n log n)
-    Space: O(1) or O(n) depending on sort implementation
-    """
-    
-    def findKthLargest(self, nums: List[int], k: int) -> int:
-        nums.sort(reverse=True)
-        return nums[k - 1]
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_quickselect(nums: List[int], k: int) -> int:
+    """Wrapper for SolutionQuickselect."""
+    return SolutionQuickselect().findKthLargest(nums, k)
 
 
-# ============================================================================
-# Alternative: Counting Sort (When Values Bounded)
-# ============================================================================
-
-class SolutionCounting:
-    """
-    Counting approach for bounded value ranges.
-    
-    If values are bounded (e.g., -10^4 to 10^4), count occurrences
-    and find kth element by counting down from max.
-    
-    Time: O(n + range)
-    Space: O(range)
-    """
-    
-    def findKthLargest(self, nums: List[int], k: int) -> int:
-        min_val = min(nums)
-        max_val = max(nums)
-        
-        # Shift values to be non-negative
-        offset = -min_val
-        count = [0] * (max_val - min_val + 1)
-        
-        for num in nums:
-            count[num + offset] += 1
-        
-        # Count from largest to find kth
-        remaining = k
-        for val in range(max_val, min_val - 1, -1):
-            remaining -= count[val + offset]
-            if remaining <= 0:
-                return val
-        
-        return min_val
+def solve_heap(nums: List[int], k: int) -> int:
+    """Wrapper for SolutionHeap."""
+    return SolutionHeap().findKthLargest(nums, k)
 
 
 # ============================================================================
@@ -265,12 +252,17 @@ def solve():
     nums = list(map(int, lines[0].split()))
     k = int(lines[1])
     
-    solution = Solution()
-    result = solution.findKthLargest(nums, k)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nums, k)
     
     print(result)
 
 
 if __name__ == "__main__":
     solve()
-

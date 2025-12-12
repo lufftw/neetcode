@@ -39,6 +39,34 @@ Space: O(1) - Only pointer indices used
 
 ================================================================================
 """
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers with skip option on mismatch",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers with skip option on mismatch",
+    },
+    "recursive": {
+        "method": "solve_recursive",
+        "complexity": "O(n) time, O(n) space for recursion stack",
+        "description": "Recursive helper function approach",
+    },
+    "iterative": {
+        "method": "solve_iterative",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Fully iterative solution avoiding recursion",
+    },
+}
 
 
 # ============================================================================
@@ -86,11 +114,14 @@ def _can_be_palindrome(s: str, left: int, right: int, skips: int) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Opposite Pointers with Skip
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Two Pointers with Skip Option
+# Time: O(n), Space: O(1)
+#   - Main pass O(n) to find mismatch
+#   - At most one helper check O(n) for palindrome validation
+#   - No extra space beyond pointers
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using opposite pointers with one allowed skip.
     
@@ -136,23 +167,22 @@ class Solution:
         return True
 
 
-# ============================================================================
-# Alternative: Generalized K-Skip Solution
-# ============================================================================
-
-class SolutionKSkips:
+# ============================================
+# Solution 2: Recursive Helper Approach
+# Time: O(n), Space: O(n) recursion stack
+#   - Recursive structure makes skip logic explicit
+#   - O(n) stack space in worst case (all mismatches at end)
+#   - More intuitive for understanding the problem
+# ============================================
+class SolutionRecursive:
     """
-    Generalized solution that can handle up to k character removals.
+    Recursive solution with explicit skip tracking.
     
-    For this problem k=1, but the structure supports arbitrary k.
-    Note: For large k, this approach becomes exponential; DP would be needed.
+    Uses a helper function that tracks remaining skips.
+    More intuitive but uses O(n) stack space.
     """
     
-    def validPalindrome(self, s: str, k: int = 1) -> bool:
-        """
-        Check if s can become a palindrome by removing at most k characters.
-        """
-        
+    def validPalindrome(self, s: str) -> bool:
         def check(left: int, right: int, remaining_skips: int) -> bool:
             while left < right:
                 if s[left] != s[right]:
@@ -165,13 +195,16 @@ class SolutionKSkips:
                 right -= 1
             return True
         
-        return check(0, len(s) - 1, k)
+        return check(0, len(s) - 1, 1)
 
 
-# ============================================================================
-# Alternative: Iterative with Explicit State
-# ============================================================================
-
+# ============================================
+# Solution 3: Fully Iterative Approach
+# Time: O(n), Space: O(1)
+#   - Avoids recursion completely
+#   - Uses explicit tracking of skip state
+#   - Same time complexity but no stack overhead
+# ============================================
 class SolutionIterative:
     """
     Fully iterative solution avoiding recursion.
@@ -214,6 +247,24 @@ class SolutionIterative:
         return True
 
 
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(s: str) -> bool:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().validPalindrome(s)
+
+
+def solve_recursive(s: str) -> bool:
+    """Wrapper for SolutionRecursive."""
+    return SolutionRecursive().validPalindrome(s)
+
+
+def solve_iterative(s: str) -> bool:
+    """Wrapper for SolutionIterative."""
+    return SolutionIterative().validPalindrome(s)
+
+
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -234,12 +285,17 @@ def solve():
     
     s = sys.stdin.read().strip()
     
-    solution = Solution()
-    result = solution.validPalindrome(s)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(s)
     
     print("true" if result else "false")
 
 
 if __name__ == "__main__":
     solve()
-

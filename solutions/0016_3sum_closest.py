@@ -43,6 +43,29 @@ Space: O(1) extra (excluding sorting space)
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n²) time, O(1) extra space",
+        "description": "Sort + two pointers tracking closest sum",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n²) time, O(1) extra space",
+        "description": "Sort + two pointers tracking closest sum",
+    },
+    "optimized": {
+        "method": "solve_optimized",
+        "complexity": "O(n²) time, O(1) extra space",
+        "description": "Two pointers with additional pruning strategies",
+    },
+}
 
 
 # ============================================================================
@@ -99,11 +122,14 @@ def _brute_force_closest(nums: List[int], target: int) -> int:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n²) Sort + Two Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Sort + Two Pointers
+# Time: O(n²), Space: O(1) extra
+#   - O(n log n) sorting + O(n²) nested iteration
+#   - Tracks closest sum seen so far
+#   - No deduplication needed (single value result)
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution tracking the closest sum using two pointers.
     
@@ -163,11 +189,14 @@ class Solution:
         return closest_sum
 
 
-# ============================================================================
-# Alternative: With Additional Pruning
-# ============================================================================
-
-class SolutionOptimized:
+# ============================================
+# Solution 2: Two Pointers with Additional Pruning
+# Time: O(n²), Space: O(1) extra
+#   - Same time complexity with bounds checking
+#   - May skip iterations that cannot improve closest sum
+#   - Better constant factors in practice
+# ============================================
+class SolutionTwoPointersOptimized:
     """
     Optimized version with additional pruning strategies.
     
@@ -221,6 +250,19 @@ class SolutionOptimized:
         return closest_sum
 
 
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int], target: int) -> int:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().threeSumClosest(nums, target)
+
+
+def solve_optimized(nums: List[int], target: int) -> int:
+    """Wrapper for SolutionTwoPointersOptimized."""
+    return SolutionTwoPointersOptimized().threeSumClosest(nums, target)
+
+
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -246,12 +288,17 @@ def solve():
     nums = list(map(int, lines[0].split()))
     target = int(lines[1])
     
-    solution = Solution()
-    result = solution.threeSumClosest(nums, target)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nums, target)
     
     print(result)
 
 
 if __name__ == "__main__":
     solve()
-
