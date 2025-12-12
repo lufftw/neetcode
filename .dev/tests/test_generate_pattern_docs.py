@@ -229,7 +229,7 @@ class TestKernelIdMapping:
             "backtracking": "BacktrackingExploration",
             "k_way_merge": "KWayMerge",
             "binary_search": "BinarySearchBoundary",
-            "two_pointers": "TwoPointerPartition",
+            "two_pointers": "TwoPointersTraversal",
             "linked_list_reversal": "LinkedListInPlaceReversal",
             "monotonic_stack": "MonotonicStack",
             "prefix_sum": "PrefixSumRangeQuery",
