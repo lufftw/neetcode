@@ -12,6 +12,7 @@ def parse_toml_simple(content: str) -> dict[str, Any]:
     current_item: dict[str, str] = {}
     current_array_key: str | None = None
     current_array_items: list[str] = []
+    current_section: str | None = None
     in_multiline_array = False
 
     lines = content.splitlines()
@@ -22,6 +23,16 @@ def parse_toml_simple(content: str) -> dict[str, Any]:
         
         # Skip empty lines and comments
         if not line or line.startswith("#"):
+            i += 1
+            continue
+
+        # Section header: [section_name]
+        if line.startswith("[") and line.endswith("]") and not line.startswith("[["):
+            current_section = line[1:-1].strip()
+            # Initialize section if it doesn't exist
+            if current_section not in result:
+                result[current_section] = {}
+            current_array_name = None  # Reset array context
             i += 1
             continue
 
@@ -77,6 +88,9 @@ def parse_toml_simple(content: str) -> dict[str, Any]:
             
             if current_array_name:
                 current_item[key] = parsed_value
+            elif current_section:
+                # Add to current section
+                result[current_section][key] = parsed_value
             else:
                 result[key] = parsed_value
             i += 1
@@ -87,7 +101,10 @@ def parse_toml_simple(content: str) -> dict[str, Any]:
             # Check for array end: ]
             if line == "]":
                 if current_array_key:
-                    result[current_array_key] = current_array_items
+                    if current_section:
+                        result[current_section][current_array_key] = current_array_items
+                    else:
+                        result[current_array_key] = current_array_items
                 current_array_key = None
                 in_multiline_array = False
                 i += 1
