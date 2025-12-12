@@ -60,7 +60,7 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 | Directory/File | Description | GitHub Link Format |
 |:---------------|:------------|:-------------------|
 | `tools/*.py` | Tool scripts (code only) | `https://github.com/lufftw/neetcode/blob/main/tools/...` |
-| `tools/README.md` | Original tools readme | ✅ Documented at [docs/TOOLS.md](https://lufftw.github.io/neetcode/TOOLS/) |
+| `tools/README.md` | Quick start guide | References [docs/TOOLS.md](https://lufftw.github.io/neetcode/TOOLS/) |
 | `ontology/` | Algorithm ontology data (TOML) | `https://github.com/lufftw/neetcode/blob/main/ontology/...` |
 | `meta/` | Problem and pattern metadata | `https://github.com/lufftw/neetcode/blob/main/meta/...` |
 | `roadmaps/` | Learning path definitions | `https://github.com/lufftw/neetcode/blob/main/roadmaps/...` |
