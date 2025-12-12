@@ -136,6 +136,76 @@ def table_to_markmap_tree(markdown_content: str) -> str:
     return '\n'.join(result_lines)
 
 
+def fix_table_links(markdown_content: str) -> str:
+    """
+    Ensure links in Markdown tables are properly formatted.
+    
+    This function validates and fixes link formats in table cells to ensure they're clickable.
+    It handles cases where URLs might not be in proper Markdown link format [Text](URL).
+    
+    Args:
+        markdown_content: Markdown content that may contain tables with links
+        
+    Returns:
+        Content with table links validated/fixed (returns original if already correct)
+    """
+    import re
+    
+    lines = markdown_content.split('\n')
+    result_lines = []
+    i = 0
+    in_code_block = False
+    
+    while i < len(lines):
+        line = lines[i]
+        
+        # Track code block state
+        if line.strip().startswith('```'):
+            in_code_block = not in_code_block
+            result_lines.append(line)
+            i += 1
+            continue
+        
+        # Don't process tables inside code blocks
+        if in_code_block:
+            result_lines.append(line)
+            i += 1
+            continue
+        
+        # Check if this line is part of a table (has | characters and not a separator)
+        if '|' in line and not re.match(r'^\|[\s\-:]+\|', line.strip()):
+            # Process table cells to ensure links are properly formatted
+            # Split by | but preserve the structure
+            parts = line.split('|')
+            fixed_parts = []
+            
+            for part in parts:
+                part = part  # Keep original spacing
+                
+                # Check for bare URLs that should be converted to links
+                # Pattern: http:// or https:// URL not already in link format
+                url_pattern = r'(?<!\]\()https?://[^\s\)\|]+'
+                urls = re.findall(url_pattern, part)
+                
+                for url in urls:
+                    # Only convert if not already in [text](url) format
+                    if f'({url})' not in part:
+                        # Convert bare URL to link format
+                        part = part.replace(url, f'[{url}]({url})', 1)
+                
+                fixed_parts.append(part)
+            
+            # Reconstruct line preserving | separators
+            fixed_line = '|'.join(fixed_parts)
+            result_lines.append(fixed_line)
+            i += 1
+        else:
+            result_lines.append(line)
+            i += 1
+    
+    return '\n'.join(result_lines)
+
+
 def convert_tables_in_markmap(markdown_content: str) -> str:
     """
     Convert all Markdown tables in Markmap content to tree structure.

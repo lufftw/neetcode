@@ -1,394 +1,168 @@
 ---
-title: 兩大核心技巧總覽：Sliding Window 與 Two Pointers 知識地圖
+title: 🎯 LeetCode 核心模式地圖（以 API Kernel 串起 Sliding Window / Two Pointers / BFS / Merge / Partition / Heap）
 markmap:
   colorFreezeLevel: 2
   maxWidth: 300
 ---
 
-# 🎯 兩大核心技巧總覽：Sliding Window ＆ Two Pointers
-
-## 🧠 核心 API Kernel
-
-- **SubstringSlidingWindow**
-  - 一維序列上的動態視窗狀態機
-  - 關鍵：維護 `[left, right]` 上的「==不變量 invariant==」
-- **TwoPointersTraversal**
-  - 兩指標在序列上協同移動
-  - 關鍵：利用排序/對稱/已處理區間的性質減少搜尋
-- **FastSlowPointers**
-  - 快慢指標偵測循環 / 找中點
-- **TwoPointerPartition**
-  - 以指標分區實作 Quickselect / Dutch Flag
-- **MergeSortedSequences**
-  - 兩個已排序序列的合併（含「從兩端合併」）
+## 📚 總覽：從「API Kernel」到「可複用模板」
+- **API Kernel = 可重用的狀態機/框架**（面試時先選 Kernel，再挑 Pattern）
+- 你手上的 33 題主要覆蓋：
+  - **SubstringSlidingWindow**（字串/陣列的連續窗口狀態機）
+  - **TwoPointersTraversal / TwoPointerPartition / FastSlowPointers**
+  - **MergeSortedSequences / KWayMerge**
+  - **GridBFSMultiSource**
+  - **HeapTopK**
+  - **BinarySearchBoundary**（在資料中與少數題連動）
 
 ---
 
-## 🪟 Sliding Window 視窗技巧
+## 🪟 SubstringSlidingWindow（滑動視窗）— 連續子字串/子陣列最佳化
+- **Kernel**：`SubstringSlidingWindow`  
+  - 核心：維護窗口 `[L,R]` + *Invariant*（不變量）+ 可 $O(1)$ 更新的 state
+  - 複雜度常見：時間 $O(n)$、空間 $O(\Sigma)$ 或 $O(K)$
 
-> API Kernel：`SubstringSlidingWindow`  
-> 核心：維護動態視窗 `[L, R]`，同時維持某個條件成立
+### 🎯 Pattern 對照表（建議背「Invariant」）
+| 題目 | Invariant（不變量） | State（狀態） | Window | 目標 |
+|---|---|---|---|---|
+| [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | 全部唯一 | `last_seen_index` | 變動 | 最大 |
+| [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | distinct ≤ K | `freq map` | 變動 | 最大 |
+| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | 覆蓋 t 的需求頻次 | `need/have + satisfied` | 變動 | 最小 |
+| [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | 頻次完全相等 | `freq + matched` | 固定 | 是否存在 |
+| [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | 頻次完全相等 | `freq + matched` | 固定 | 全部位置 |
+| [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | sum ≥ target | `window_sum` | 變動 | 最小 |
 
-### 1️⃣ Sliding Window 核心概念
-
-- **不變量 (Invariant)**
-  - 視窗內：
-    - 字元皆唯一
-    - 至多 / 至少 K 種字元
-    - 覆蓋所有需求字元頻率
-    - 視窗和 / cost 滿足某條件
-- **三大元素**
-  - `state`：視窗狀態（hash map / 計數 / running sum）
-  - `expand`：`right++` 不斷擴張
-  - `contract`：條件被破壞時 `left++` 收縮
-- **三種目標**
-  - 最長合法視窗（maximize length）
-  - 最短合法視窗（minimize length）
-  - 是否存在 / 找出所有位置（exist / collect all）
-
-#### 通用模板
-
-```python
-left = 0
-state = init_state()
-answer = init_answer()
-
-for right, x in enumerate(seq):
-    add(state, x)                 # 擴張
-
-    while violate(state):         # 視窗不合法就收縮
-        remove(state, seq[left])
-        left += 1
-
-    if valid(state):              # 視窗合法時更新答案
-        answer = update(answer, left, right)
-```
+### <!-- markmap: fold -->
+### 🧠 模板心法（面試口條）
+- **最大化窗口**：`R` 一直擴，==違反 invariant 才縮 L==，每步更新答案  
+- **最小化窗口**：`R` 擴到==滿足 invariant==，再 while 縮 `L` 找更小  
+- **固定窗口**：窗口大小固定 `k`，每次移動做 add/remove，檢查是否 valid
 
 ---
 
-### 2️⃣ 基礎模板：所有字元唯一 🎓
+## 👉 TwoPointersTraversal（雙指針遍歷）— 不連續也可用，但常靠單調性/不變量
+- **Kernel**：`TwoPointersTraversal`
+- 子家族：Opposite / Writer / Dedup Enumeration / Merge（部分 merge 也可視為獨立 kernel）
 
-- Pattern：`sliding_window_unique`
-- Family：`substring_window`
-- Invariant：視窗內**所有字元唯一**
-- 常用資料結構：`hash_map` / 最近出現位置
+### 🔁 Opposite Pointers（兩端夾逼）
+- 適用：排序、回文、最大化函數（單調性/剪枝）
+- 題目：
+  - [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)（==移動較短邊==）
+  - [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+  - [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)（允許刪 1 次：分支檢查）
+  - [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)（資料標了 opposite，但實務多用 hash；排序版請對照 [LeetCode 167 - Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/167-two-sum-ii-input-array-is-sorted/)）
 
-- 📌 代表題：
-  - [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-    - Topic：`string`, `hash_table`, `sliding_window`
-    - Algorithm：`sliding_window`, `two_pointers`
-    - Roadmap：NeetCode 150 / Blind 75 / Grind 75 / Top 100 / Sliding Window Path
+### ✍️ Same Direction / Writer（讀寫指針：原地改陣列）
+- Invariant：`[0..write)` 永遠是「保留後的乾淨區」
+- 題目：
+  - [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+  - [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+  - [LeetCode 80 - Remove Duplicates from Sorted Array II](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
+  - [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
 
-- ✨ 技巧重點
-  - 用 `last_seen_index[char]` 直接 **跳動 left**
-  - 每個字元最多進出視窗一次 → $O(n)$
-
----
-
-### 3️⃣ 變形一：至多 K 種字元
-
-- Pattern：`sliding_window_at_most_k_distinct`
-- Invariant：視窗內**不同字元數 ≤ K**
-- State：`char -> freq` map，利用 `len(map)` 追蹤 distinct 數量
-- 📌 代表題：
-  - [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-- 與基礎模板差異：
-  - 無法用「跳 left」，必須 while 一步步收縮
-  - 目標仍是「最長」合法視窗
+### 🧩 Dedup + Sorted Enumeration（多和問題）
+- 典型：先排序，再外層固定 i，內層用 opposite pointers + 跳重
+- 題目：
+  - [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
+  - [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
 
 ---
 
-### 4️⃣ 變形二：覆蓋頻率 / Anagram / Permutation
-
-- Pattern：`sliding_window_freq_cover`
-- 共通 invariant：視窗內字元頻率 **滿足需求**
-
-#### (a) 最短覆蓋子字串
-
-- 📌 題目：
-  - [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-- Invariant：
-  - `have_frequency[c] >= need_frequency[c]` 對所有 `c`
-- 目標：**最短**合法視窗
-- 技巧：
-  - `chars_satisfied == chars_required` 時開始收縮
-
-#### (b) 是否存在某 permutation
-
-- 📌 題目：
-  - [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-- 特徵：
-  - **固定視窗長度** = `len(s1)`
-  - 視窗頻率 == pattern 頻率 → 回傳 True
-- State：
-  - 兩個頻率 map + `chars_matched`
-
-#### (c) 找出所有 anagram 起點
-
-- 📌 題目：
-  - [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-- 與 567 差異：
-  - 視窗同為固定長度
-  - 不回傳 True/False，而是**收集所有起點 index**
+## 🐢🐇 FastSlowPointers（快慢指針）— Floyd Cycle / 中點
+- **Kernel**：`FastSlowPointers`
+- Pattern：
+  - cycle detect / cycle start / midpoint / implicit cycle
+- 題目：
+  - [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+  - [LeetCode 202 - Happy Number](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)（==隱式序列==也能 Floyd）
 
 ---
 
-### 5️⃣ 變形三：和 / cost 受限（數值視窗）
-
-- Pattern：`sliding_window_cost_bounded`
-- Invariant：視窗和 / cost 滿足條件（如 ≥ target）
-- State：單一整數 `window_sum`
-
-- 📌 代表題：
-  - [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-    - Topics：`array`, `binary_search`, `sliding_window`, `prefix_sum`
-    - Family：`substring_window`
-- 目標：**最短**長度，使得 sum ≥ target
-- 技巧：
-  - 每次 sum ≥ target 就 while 收縮，更新最小長度
+## 🧱 TwoPointerPartition（分割 / 荷蘭國旗 / Quickselect）
+- **Kernel**：`TwoPointerPartition`
+- Pattern：
+  - `dutch_flag_partition`（三向分割）
+  - `two_way_partition`（兩向分割）
+  - `quickselect_partition`（選第 K）
+- 題目：
+  - [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)（low/mid/high）
+  - [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+  - [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+  - [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)（Quickselect vs Heap）
 
 ---
 
-### 6️⃣ Sliding Window 學習路線 🎯
+## 🔀 MergeSortedSequences / KWayMerge（合併有序序列）
+### 🔗 MergeSortedSequences（兩路合併）
+- 題目：
+  - [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
+  - [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)（常用==從尾端寫入==）
+  - [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)（兩端比較平方，反向填）
 
-- Roadmap：`sliding_window_path`
-  - ✅ [LeetCode 3](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) — 基礎唯一字元模板
-  - ✅ [LeetCode 340](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) — ≤ K distinct
-  - ✅ [LeetCode 209](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) — 數值和 + 最短
-  - ✅ [LeetCode 567](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) — 固定視窗 + 是否存在
-  - ✅ [LeetCode 438](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) — 固定視窗 + 收集所有
-  - ✅ [LeetCode 76](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) — 綜合應用（經典 hard）
-
----
-
-## 🧍‍♂️🧍 Two Pointers 兩指標家族
-
-> API Kernel：`TwoPointersTraversal`  
-> 核心：兩個索引在序列上依規則移動，維持某種「已處理區間」不變量
-
-### 1️⃣ Two Pointers 全貌
-
-- 技巧分類（`algorithms.two_pointers`）
-  - `sliding_window`：同向指標 + 視窗不變量
-  - `fast_slow_pointers`：快慢指標
-  - `opposite_pointers`：首尾指標
-  - `reader_writer_pointers`：讀寫指標
-  - `dutch_national_flag`：多指標分區
-- 相關 API Kernels
-  - `TwoPointersTraversal`
-  - `FastSlowPointers`
-  - `TwoPointerPartition`
-  - `MergeSortedSequences`
+### 🧺 KWayMerge（K 路合併：Heap 或分治）
+- 題目：
+  - [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)  
+    - Heap：$O(N \log K)$  
+    - Divide & Conquer：$O(N \log K)$（常數不同，實務可更快）
 
 ---
 
-### 2️⃣ 對撞指標：Opposite Pointers
-
-- Patterns：
-  - `two_pointer_opposite`
-  - `two_pointer_opposite_search`
-  - `two_pointer_opposite_palindrome`
-  - `two_pointer_opposite_maximize`
-- 前提：通常需要**排序**或**對稱結構**
-
-#### (a) 最大化某函數（容器裝水）
-
-- 📌 [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-  - Family：`two_pointers_optimization`
-  - Invariant：最佳解一定在 `[left, right]` 之間
-  - 規則：移動較低的那一側，因為高度瓶頸在較低邊
-
-#### (b) 迴文檢查
-
-- 📌 [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
-- 📌 [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
-  - Pattern：`two_pointer_opposite_palindrome`
-  - Family：`palindrome_validation`
-  - 技巧：遇到不相等時，嘗試跳過左或右一次，檢查剩下是否為 palindrome
-
-#### (c) 多數和問題（3Sum / k-Sum）
-
-- Pattern：`two_pointer_three_sum`, `two_pointer_k_sum`
-- 📌 [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
-- 📌 [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
-- 思路：
-  - 排序 + 外層枚舉一個數，內層用對撞指標找 pair
-  - 注意**去重 dedup**：跳過相同的數
-
----
-
-### 3️⃣ 同向讀寫指標：In-place 修改
-
-- Patterns：
-  - `two_pointer_same_direction`
-  - `two_pointer_writer_dedup`
-  - `two_pointer_writer_remove`
-  - `two_pointer_writer_compact`
-- Family：`in_place_array_modification`
-
-#### (a) 去除重複（有序陣列）
-
-- 📌 [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
-- 📌 [LeetCode 80 - Remove Duplicates from Sorted Array II](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
-  - Invariant：`nums[:write]` 為處理後合法區間
-  - 規則：
-    - 26：允許每個值出現一次 → 比較 `nums[read] != nums[write-1]`
-    - 80：允許每個值出現兩次 → 比較 `nums[read] != nums[write-2]`
-
-#### (b) 刪除特定元素 / 壓縮非零
-
-- 📌 [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
-  - 保留 `nums[read] != val`
-- 📌 [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
-  - 先把非 0 寫到前面，再把剩餘位置填 0
-
----
-
-### 4️⃣ 快慢指標：Fast–Slow Pointers
-
-- Patterns：
-  - `fast_slow_cycle_detect`
-  - `fast_slow_cycle_start`
-  - `fast_slow_midpoint`
-  - `fast_slow_implicit_cycle`
-- API Kernel：`FastSlowPointers`
-- Family：`linked_list_cycle`, `linked_list_manipulation`
-
-#### (a) 鏈結串列是否有環
-
-- 📌 [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
-  - 快指標每次走 2 步，慢指標走 1 步
-  - 若存在環，最終會相遇
-
-#### (b) 找出環的起點
-
-- 📌 [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
-  - Phase 1：先用 141 檢測是否有環並找到相遇點
-  - Phase 2：一個指標從 head 出發，一個從相遇點出發，每次都走 1 步，相遇點即為環起點
-
-#### (c) 數字序列中的隱含環
-
-- 📌 [LeetCode 202 - Happy Number](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
-  - Family 仍歸在 `linked_list_cycle`，但實際是「數值序列」
-  - 將「每次把數字替換為其各位平方和」看作一條隱含鏈結串列
-
-#### (d) 找中間節點
-
-- 📌 [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
-  - 快指標走兩步，慢指標走一步，快指標到尾時慢指標在中點
-
----
-
-### 5️⃣ 分區與 Dutch Flag：TwoPointerPartition
-
-- API Kernel：`TwoPointerPartition`
-- Patterns：
-  - `dutch_flag_partition`
-  - `two_way_partition`
-  - `quickselect_partition`
-- Family：`array_partition`, `heap_priority`（部分）
-
-#### (a) 三色旗排序（0/1/2）
-
-- 📌 [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
-  - `low`, `mid`, `high` 三指標
-  - Invariant：
-    - `[0, low)` → 0
-    - `[low, mid)` → 1
-    - `(high, end]` → 2
-
-#### (b) 依 parity 分區
-
-- 📌 [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
-- 📌 [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
-  - `two_way_partition`：依條件（奇偶）分成兩區
-
-#### (c) Quickselect：第 K 大元素
-
-- 📌 [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-  - Pattern：`quickselect_partition`
-  - 透過 partition 決定 pivot 的排序位置，只遞迴到一側
-
----
-
-### 6️⃣ 合併已排序序列：MergeSortedSequences
-
-- API Kernel：`MergeSortedSequences`
-- Patterns：
-  - `merge_two_sorted_lists`
-  - `merge_two_sorted_arrays`
-  - `merge_sorted_from_ends`
-- Family：`sequence_merge`
-
-#### (a) 合併兩條排序鍊結串列
-
-- 📌 [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
-
-#### (b) 合併兩個排序陣列（就地寫回）
-
-- 📌 [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
-  - 從**尾端**開始寫入，避免覆蓋未處理元素
-
-#### (c) 從兩端合併（平方後仍排序）
-
-- 📌 [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
-  - 因為負數平方後可能變大，需用對撞指標從兩端選較大的平方，從結果陣列尾端往前填
-
----
-
-## 📚 與其他概念的連結
-
-### 1️⃣ 與 Families 的關係
-
-- `substring_window`
-  - [LeetCode 3](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py), [LeetCode 76](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py), [LeetCode 209](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py), [LeetCode 340](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py), [LeetCode 438](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py), [LeetCode 567](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-- `two_sum_variants` / `multi_sum_enumeration`
-  - [LeetCode 1 - Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)（hash + 兩指標思維）
-  - [LeetCode 15](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py), [LeetCode 16](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
-- `linked_list_cycle`
-  - [LeetCode 141](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py), [LeetCode 142](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py), [LeetCode 202](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
-- `array_partition`
-  - [LeetCode 75](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py), [LeetCode 905](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py), [LeetCode 922](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py), [LeetCode 215](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-- `sequence_merge`
-  - [LeetCode 21](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py), [LeetCode 977](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
-
----
-
-## 🧭 面試導向學習建議
-
-- **第一階段：基礎掌握**
-  - Sliding Window：3 → 209 → 340
-  - Two Pointers：26 → 27 → 283 → 125 → 11
-- **第二階段：鏈結串列與快慢指標**
-  - 141 → 142 → 876 → 202
-- **第三階段：高頻經典 Hard**
-  - Sliding Window：76, 209 深入理解 invariant
-  - Two Pointers：75, 215（分區 + Quickselect 思維）
-- **Roadmaps**
-  - `neetcode_150` / `blind_75` / `grind_75`：多數上述題目皆在清單中
-  - 專門路線：`sliding_window_path`, `two_pointers_path`
-
----
-
-## ✅ 自我檢查 Checklist
-
-- [ ] 能寫出通用 Sliding Window 模板（含「最長」「最短」「固定長度」三種）
-- [ ] 能解釋 [LeetCode 3](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) 中為何可以「跳 left」
-- [ ] 能把 76 / 438 / 567 三題的差異說清楚（需求 / 視窗大小 / 目標）
-- [ ] 能區分 Opposite / Reader-Writer / Fast-Slow 三種 Two Pointers 型態
-- [ ] 能手寫 26 / 27 / 283 三題的 in-place 模板
-- [ ] 能說出 Floyd Cycle Detection 兩個階段的數學直覺（141/142）
-- [ ] 能畫出 75 的 Dutch Flag 三指標區間不變量
-
----
-
-## 🔍 延伸：BFS / Grid 與 Sliding Window 對比（簡略）
-
-- `GridBFSMultiSource` vs `SubstringSlidingWindow`
-  - Sliding Window：線性序列 + 視窗區間
-  - BFS：圖 / 網格 + 階層擴散
-- 📌 練習：
+## 🌊 GridBFSMultiSource（多源 BFS 波前擴散）
+- **Kernel**：`GridBFSMultiSource`
+- 核心：把==所有源點一起入隊==，逐層擴散（wavefront）
+- 題目：
   - [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
-    - Family：`graph_wavefront`, `matrix_traversal`
-    - Algorithm：`bfs`
-    - 對照 Sliding Window：「波前擴散」 vs 「區間滑動」兩種不同的 state 演化模式
+- 面試必講：
+  - queue 初始放所有爛橘子
+  - BFS 層數 = 分鐘數
+  - 計數新感染，最後檢查是否仍有新鮮
+
+---
+
+## 🧠 HeapTopK（TopK / 第 K）
+- **Kernel**：`HeapTopK`
+- 題目：
+  - [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+- 選型：
+  - Quickselect：平均 $O(n)$、最壞 $O(n^2)$（可隨機 pivot）
+  - Heap：$O(n \log k)$，穩定好寫
+
+---
+
+## 🧮 BinarySearchBoundary（邊界二分 / 答案二分）
+- **Kernel**：`BinarySearchBoundary`
+- 題目：
+  - [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)（二分切割點；也可視為答案空間/邊界變形）
+
+---
+
+## ♟️ BacktrackingExploration（回溯探索）
+- **Kernel**：`BacktrackingExploration`
+- 題目：
+  - [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
+- 面試要點：
+  - state：列/對角線佔用（hash set）
+  - pruning：一旦衝突立刻回退
+  - 複雜度：指數級（但剪枝決定實際表現）
+
+---
+
+## 🔧 LinkedListInPlaceReversal（鏈結串列原地反轉）
+- **Kernel**：`LinkedListInPlaceReversal`
+- 題目：
+  - [LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
+  - [LeetCode 2 - Add Two Numbers](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)（鏈表操作 + 進位；非反轉但同屬 linked list manipulation）
+
+---
+
+## ✅ 建議練習路線（用 checkbox 追蹤）
+- [ ] 滑動視窗基礎：先做 [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) → 再做 [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+- [ ] 覆蓋/最小化窗口： [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
+- [ ] 固定窗口頻次匹配： [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) + [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+- [ ] 雙指針原地改陣列： [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py) → [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+- [ ] 快慢指針： [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py) → [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+- [ ] BFS 波前： [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+- [ ] TopK： [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+- [ ] 回溯： [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)

@@ -41,7 +41,7 @@ TOOLS_DIR = Path(__file__).parent
 sys.path.insert(0, str(TOOLS_DIR))
 
 from mindmaps import load_ontology, load_problems, DEFAULT_OUTPUT_DIR
-from mindmaps.helpers import convert_tables_in_markmap
+from mindmaps.helpers import fix_table_links
 from mindmaps.data import ProblemData
 from mindmaps.toml_parser import parse_toml_simple
 
@@ -58,7 +58,7 @@ ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
 DEFAULT_CONFIG = TOOLS_DIR / "mindmap_ai_config.toml"
-DEFAULT_MODEL = "gpt-5.1"
+DEFAULT_MODEL = "gpt-5.2"
 
 
 def load_config(config_path: Path | None = None) -> dict[str, Any]:
@@ -347,38 +347,30 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     - **Checkboxes**: [ ] To-do, [x] Completed
     - **Math Formulas**: $O(n \\log n)$, $O(n^2)$
     - **Code Blocks**: ```python ... ```
+    - **Tables**: | A | B | ... | - Tables are supported for comparison information
     - **Fold**: <!-- markmap: fold -->
     - **Emoji**: For visual emphasis 🎯📚⚡🔥
     
-    ## CRITICAL: Table Format Restriction
+    ## Table Format Guidelines
     
-    **DO NOT use Markdown tables (| A | B |) in your output.**
+    **Tables are encouraged for comparison information** (like Sliding Window pattern comparisons).
     
-    Markmap does NOT support tables as structured nodes - they are rendered as plain text,
-    making nodes too wide and reducing readability.
-    
-    Instead, convert table-like information into a hierarchical tree structure:
-    
-    ❌ BAD (Table format - will be rendered as plain text):
+    ✅ GOOD (Table format with proper links):
     ```
-    | Problem | Invariant | State |
-    |---------|-----------|-------|
-    | LC 3    | Unique    | freq  |
-    | LC 76   | Cover     | maps  |
+    | Problem | Invariant | State | Window Size | Goal |
+    |---------|-----------|-------|-------------|------|
+    | [LeetCode 3 - Longest Substring](URL) | All unique | freq map | Variable | Max length |
+    | [LeetCode 76 - Minimum Window](URL) | Covers all | maps | Variable | Min length |
     ```
     
-    ✅ GOOD (Tree structure - will be properly visualized):
-    ```
-    - **Problem**: LC 3
-      - **Invariant**: Unique
-      - **State**: freq
-    - **Problem**: LC 76
-      - **Invariant**: Cover
-      - **State**: maps
-    ```
+    **Important**: When using tables:
+    1. **Always use proper Markdown link format**: `[Text](URL)` inside table cells
+    2. **Keep table rows concise** - avoid very long text that makes nodes too wide
+    3. **Use tables for comparison** - they're great for showing differences between patterns/problems
+    4. **Ensure links are clickable** - test that links work correctly in the rendered Markmap
     
-    For comparison tables (like Sliding Window pattern comparisons), use this tree format
-    where each row becomes a main node with its attributes as children.
+    Tables will be displayed as text nodes in Markmap, but they're useful for structured comparison
+    information. Make sure all links in tables use the proper `[Text](URL)` format.
 
     ## CRITICAL: Problem Links Rule
 
@@ -648,7 +640,7 @@ def generate_with_openai(
     client = OpenAI(**client_kwargs)
     
     try:
-        # GPT-5.1 and newer models use max_completion_tokens
+        # GPT-5.2 and newer models use max_completion_tokens
         response = client.chat.completions.create(
             model=model,
             messages=[
@@ -1011,7 +1003,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     
     if not HAS_OPENAI:
         print("\n⚠️  OpenAI library not installed.")
-        print("   Copy the prompt above to GPT-5.1 manually.")
+        print("   Copy the prompt above to GPT-5.2 manually.")
         return ""
     
     # Get languages (support both string and list)
@@ -1067,9 +1059,8 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             # Generate content
             content = generate_with_openai(lang_system_prompt, lang_user_prompt, lang_config)
             
-            # Convert Markdown tables to Markmap tree structure
-            # Markmap doesn't support tables as structured nodes - they're rendered as plain text
-            content = convert_tables_in_markmap(content)
+            # Fix link formats in tables to ensure they're clickable
+            content = fix_table_links(content)
             all_contents[lang] = content
             
             # Save with language suffix
