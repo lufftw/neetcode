@@ -367,6 +367,8 @@ f"{nums1}\n{nums2}".replace(' ', '')  # -> "[1,2,3]\n[4,5,6]"
 
 ## F. JUDGE_FUNC Requirement
 
+> **Full Specification**: See [`SOLUTION_CONTRACT.md`](SOLUTION_CONTRACT.md#c-judge--validation-contract) for complete JUDGE_FUNC documentation.
+
 ### F.1 Why JUDGE_FUNC is Required
 
 Generated test cases have **no expected output** (`.out` file). The solution MUST validate correctness using `JUDGE_FUNC`:
@@ -375,52 +377,35 @@ Generated test cases have **no expected output** (`.out` file). The solution MUS
 Generator → Input only → Solution → Output → JUDGE_FUNC validates
 ```
 
-### F.2 Solution Setup
+### F.2 Generator-Specific Considerations
+
+When `JUDGE_FUNC` is used with generators (judge-only mode):
+
+| Parameter | Value | Implication |
+|-----------|-------|-------------|
+| `actual` | Solution output | Parsed via `ast.literal_eval()` if valid |
+| `expected` | `None` | No `.out` file exists |
+| `input_data` | Raw input string | Use to validate correctness |
+
+The `JUDGE_FUNC` MUST be able to validate using **only** `actual` and `input_data` when `expected` is `None`.
+
+### F.3 Example Pattern
 
 ```python
-# solutions/{problem}.py
-
 def judge(actual, expected, input_data: str) -> bool:
-    """
-    Validate solution output.
-    
-    For generated tests: expected is None
-    Must validate using only actual and input_data
-    """
-    # Parse input
-    # Validate actual output against problem requirements
-    return is_valid
-
-JUDGE_FUNC = judge
-```
-
-### F.3 Example (N-Queens)
-
-```python
-def judge(actual: list, expected, input_data: str) -> bool:
-    """Validate N-Queens solution."""
+    # Parse input to understand problem constraints
     n = int(input_data.strip())
     
-    # Known solution counts
-    KNOWN_COUNTS = {1: 1, 2: 0, 3: 0, 4: 2, 5: 10, 6: 4, 7: 40, 8: 92, 9: 352}
-    
-    # 1. Verify each board is valid
-    for board in actual:
-        if not _is_valid_board(board, n):
-            return False
-    
-    # 2. Check no duplicates
-    unique = set(tuple(row for row in board) for board in actual)
-    if len(unique) != len(actual):
+    # Validate actual output against problem requirements
+    if not _is_valid_output(actual, n):
         return False
     
-    # 3. Check count (judge-only mode)
+    # For judge-only mode: use known answers or algorithmic validation
     if expected is None:
-        expected_count = KNOWN_COUNTS.get(n)
-        if expected_count is not None:
-            return len(actual) == expected_count
+        return _validate_without_expected(actual, n)
     
-    return True
+    # For static tests: compare with expected
+    return actual == expected
 
 JUDGE_FUNC = judge
 ```
@@ -585,6 +570,8 @@ python runner/test_runner.py {problem} --estimate
 
 ### Related Documentation
 
-- [`SOLUTION_CONTRACT.md`](SOLUTION_CONTRACT.md) — Solution file specification
+- [`SOLUTION_CONTRACT.md`](SOLUTION_CONTRACT.md) — Solution file specification  
+  - Section C: JUDGE_FUNC and COMPARE_MODE specifications
+  - Section D: Test file format and static tests
 - [`ARCHITECTURE_MIGRATION.md`](ARCHITECTURE_MIGRATION.md) — Polymorphic pattern guide
 
