@@ -68,59 +68,48 @@ neetcode/
 
 ## 🚀 Quick Start: Local Development
 
-### Option 1: Makefile (Recommended)
+### Option 1: `act` - Run GitHub Actions Locally (Recommended)
 
-Simple and universal - works on Linux/macOS, Windows with Git Bash or WSL:
+`act` runs the **exact same workflow** as GitHub Actions locally using Docker. This ensures 100% consistency between local and CI/CD builds.
+
+**Install act:**
 
 ```bash
-make          # Build site (same as CI/CD)
-make serve    # Build and serve locally
-make clean    # Clean generated files
-make ai       # Generate AI mindmaps
-make test     # Run tests
-make help     # Show all commands
+# Windows (winget)
+winget install nektos.act
+
+# Windows (Chocolatey)
+choco install act-cli
+
+# Windows (Scoop)
+scoop install act
+
+# macOS
+brew install act
+
+# Linux
+curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 ```
 
-### Option 2: `act` - Run GitHub Actions Locally
-
-Run the actual CI/CD workflow locally (requires Docker):
+**Usage:**
 
 ```bash
-# Install act
-# Windows: scoop install act / choco install act-cli
-# macOS: brew install act
-# Linux: curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
-
-# Run CI/CD workflow locally
+# Run the build job (same as CI/CD)
 act -j build
+
+# List all available jobs
+act -l
+
+# Run with smaller Docker image (faster)
+act -j build -P ubuntu-latest=catthehacker/ubuntu:act-latest
 ```
 
-### Option 3: Build Scripts
+**What `act` does:**
+1. Reads `.github/workflows/deploy-pages.yml`
+2. Runs in Docker container (same Ubuntu environment as GitHub)
+3. Executes the exact same steps as CI/CD
 
-Platform-specific scripts that mirror CI/CD:
-
-```bash
-# Windows
-build.bat           # Build only
-build.bat serve     # Build and serve locally
-build.bat clean     # Clean generated files
-build.bat ai        # Generate AI mindmaps
-
-# Linux/macOS
-chmod +x build.sh   # First time only
-./build.sh          # Build only
-./build.sh serve    # Build and serve locally
-./build.sh clean    # Clean generated files
-./build.sh ai       # Generate AI mindmaps
-```
-
-**What the build process does:**
-1. Generate Markdown mindmaps (`python tools/generate_mindmaps.py`)
-2. Generate HTML mindmaps (`python tools/generate_mindmaps.py --html`)
-3. Build MkDocs site (`mkdocs build`)
-4. Copy HTML files to site directory
-
-### Option 4: Manual Steps
+### Option 2: Manual Steps
 
 ```bash
 # 1. Activate virtual environment
