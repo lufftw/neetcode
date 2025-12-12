@@ -631,6 +631,8 @@ greedy                  44.82ms   O(kN)           3/3
 
 Create with template: `new_problem.bat 0023_merge_k_lists --multi`
 
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema) for complete SOLUTIONS schema and validation rules.
+
 ### 🔀 Flexible Output Validation
 
 For problems with multiple valid answers ("return in any order"):
@@ -671,6 +673,8 @@ JUDGE_FUNC = judge
 ```python
 COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 ```
+
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#c-judge--validation-contract) for complete JUDGE_FUNC signature and validation rules.
 
 ### 🎲 Random Test Generation
 
@@ -714,6 +718,8 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 # Save failing cases
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
+
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §D](docs/SOLUTION_CONTRACT.md#d-static-tests--dynamic-tests--generators-contract) for generator contract and test file specifications.
 
 ### 📈 Time Complexity Estimation
 
