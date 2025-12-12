@@ -118,6 +118,11 @@ nav:
     - Problem Relations: mindmaps/problem_relations.md
     - Solution Variants: mindmaps/solution_variants.md
     - Difficulty × Topics: mindmaps/difficulty_topics.md
+  - 📚 Reference:
+    - Solution Contract: SOLUTION_CONTRACT.md
+    - Generator Contract: GENERATOR_CONTRACT.md
+    - Architecture Migration: ARCHITECTURE_MIGRATION.md
+    - Tools: TOOLS.md
   - 🔧 Guides:
     - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
 
