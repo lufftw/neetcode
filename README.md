@@ -785,8 +785,9 @@ neetcode/
 │   └── util.py                # Re-exports (backward compatible)
 │
 ├── templates/                 # 📄 Problem templates
-│   ├── template_solution.py          # Single solution
-│   └── template_solution_multi.py    # Multi-solution (polymorphic)
+│   ├── template_solution.py       # Single solution template
+│   ├── template_solution_multi.py # Multi-solution (polymorphic)
+│   └── template_test.txt          # Test case template
 │
 ├── .vscode/                   # 🔧 VS Code integration
 │   ├── settings.json          # Python environment settings
@@ -802,14 +803,22 @@ neetcode/
 │   └── stylesheets/           # Custom CSS
 │
 ├── tools/                     # 🛠️ Utility scripts
-│   ├── generate_mindmaps_ai.py   # 🤖 AI mind map generator
-│   ├── mindmap_ai_config.toml    # AI generation configuration
-│   ├── generate_mindmaps.py      # Rule-based mind map generator
-│   ├── generate_mindmaps.toml    # Rule-based configuration
-│   ├── generate_pattern_docs.py  # Generate pattern docs
-│   └── prompts/                  # AI prompt management
-│       ├── README.md             # Prompt documentation
-│       └── generated/            # Auto-generated prompts
+│   ├── generate_mindmaps_ai.py    # 🤖 AI mind map generator
+│   ├── mindmap_ai_config.toml     # AI generation configuration
+│   ├── generate_mindmaps.py       # Rule-based mind map generator
+│   ├── generate_mindmaps.toml     # Rule-based configuration
+│   ├── generate_pattern_docs.py   # Generate pattern docs
+│   ├── generate_pattern_docs.toml # Pattern docs configuration
+│   ├── check_solutions.py         # Solution validation tool
+│   ├── prepare_llm_input.py       # Prepare LLM input data
+│   ├── text_to_mindmap.py         # Convert text to mindmap
+│   ├── mindmaps/                  # Mind map generator modules
+│   ├── patterndocs/               # Pattern docs generator modules
+│   ├── shared/                    # Shared utilities
+│   ├── prompts/                   # AI prompt management
+│   │   ├── README.md              # Prompt documentation
+│   │   └── generated/             # Auto-generated prompts
+│   └── tests/                     # Format validation tests
 │
 ├── ontology/                  # 🧬 Algorithm ontology (TOML)
 │   ├── api_kernels.toml       # API kernel definitions
@@ -835,8 +844,12 @@ neetcode/
 │
 ├── .dev/                      # 🧪 Maintainer zone (unit tests)
 │   ├── tests/                 # Unit test suite (150+ cases)
-│   ├── run_tests.bat/.sh      # Run unit tests
+│   ├── tests_solutions/       # Solution validation tests
+│   ├── run_tests.bat/.sh      # Run runner unit tests
+│   ├── run_all_tests.bat/.sh  # Run all unit tests
+│   ├── run_tests_solutions.bat/.sh  # Run solution tests
 │   ├── TESTING.md             # Testing documentation
+│   ├── VIRTUAL_ENV_SETUP.md   # Virtual environment guide
 │   └── README.md              # Maintainer guide
 │
 ├── .github/                   # 🚀 GitHub configuration
