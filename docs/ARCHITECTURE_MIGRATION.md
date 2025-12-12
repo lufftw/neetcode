@@ -410,7 +410,7 @@ SOLUTIONS = {
 | Phase 1 | Runner infrastructure | ✅ Completed |
 | Phase 2 | Example migrations | ✅ Completed |
 | Phase 3 | Full migration | Pending (scan remaining solutions) |
-| Phase 4 | Documentation | ✅ Completed |
+| Phase 4 | Documentation & Templates | ✅ Completed |
 
 ### Completed Items
 
@@ -419,5 +419,12 @@ SOLUTIONS = {
   - `0027_remove_element.py` - Polymorphic pattern with `SolutionTwoPointers`, `SolutionTwoEnds`
   - `0025_reverse_nodes_in_k_group.py` - Polymorphic pattern with `SolutionIterative`, `SolutionRecursive`
   - `0023_merge_k_sorted_lists.py` - Split into `SolutionHeap`, `SolutionDivideConquer`, `SolutionGreedy`
-- **Phase 4**: Updated test fixtures in `.dev/tests/` to use polymorphic format
+- **Phase 4**: 
+  - Updated test fixtures in `.dev/tests/` to use polymorphic format
+  - Updated `template_solution.py` to use `SOLUTIONS` + `get_solver()`
+  - Updated `template_solution_multi.py` to use polymorphic pattern
+  - Deleted deprecated `template_solution_wrapper.py`
+  - Updated `new_problem.bat` and `new_problem.sh` (removed `--wrapper` option)
+  - Updated `run_tests.bat` to pass all arguments
+  - Created `docs/solution_contract.md` as canonical specification
 

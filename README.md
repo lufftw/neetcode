@@ -543,41 +543,53 @@ if __name__ == "__main__":
 
 ### 🚀 Multi-Solution Benchmarking
 
-Compare multiple approaches for the same problem:
+Compare multiple approaches for the same problem using the **polymorphic pattern**:
 
 ```python
 # solutions/0023_merge_k_sorted_lists.py
+from _runner import get_solver
 
 SOLUTIONS = {
     "default": {
-        "method": "mergeKLists_heap",
+        "class": "SolutionHeap",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "Min Heap approach"
     },
     "divide": {
-        "method": "mergeKLists_divide",
+        "class": "SolutionDivideConquer",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "Divide and Conquer"
     },
     "greedy": {
-        "method": "mergeKLists_greedy",
+        "class": "SolutionGreedy",
+        "method": "mergeKLists",
         "complexity": "O(kN)",
         "description": "Greedy comparison"
     },
 }
 
-class Solution:
-    def mergeKLists_heap(self, lists):
+class SolutionHeap:
+    def mergeKLists(self, lists):
         # Heap implementation
         pass
-    
-    def mergeKLists_divide(self, lists):
+
+class SolutionDivideConquer:
+    def mergeKLists(self, lists):
         # Divide & Conquer implementation
         pass
-    
-    def mergeKLists_greedy(self, lists):
+
+class SolutionGreedy:
+    def mergeKLists(self, lists):
         # Greedy implementation
         pass
+
+def solve():
+    # ... parse input ...
+    solver = get_solver(SOLUTIONS)
+    result = solver.mergeKLists(lists)
+    print(result)
 ```
 
 **Run commands:**
@@ -604,36 +616,7 @@ greedy                  44.82ms   O(kN)           3/3
 ============================================================
 ```
 
-<details>
-<summary><strong>Advanced: Wrapper Pattern for Multiple Classes</strong></summary>
-
-When you need separate classes with the same method name:
-
-```python
-class SolutionRecursive:
-    def reverseKGroup(self, head, k):
-        pass  # Recursive implementation
-
-class SolutionIterative:
-    def reverseKGroup(self, head, k):
-        pass  # Iterative implementation
-
-# Wrapper functions
-def solve_recursive(head, k):
-    return SolutionRecursive().reverseKGroup(head, k)
-
-def solve_iterative(head, k):
-    return SolutionIterative().reverseKGroup(head, k)
-
-SOLUTIONS = {
-    "default": {"method": "solve_iterative", ...},
-    "recursive": {"method": "solve_recursive", ...},
-}
-```
-
-Create with template: `new_problem.bat 0025_reverse_nodes --wrapper`
-
-</details>
+Create with template: `new_problem.bat 0023_merge_k_lists --multi`
 
 ### 🔀 Flexible Output Validation
 
@@ -784,8 +767,7 @@ neetcode/
 │
 ├── templates/                 # 📄 Problem templates
 │   ├── template_solution.py          # Single solution
-│   ├── template_solution_multi.py    # Multi-solution (one class)
-│   └── template_solution_wrapper.py  # Multi-solution (wrapper pattern)
+│   └── template_solution_multi.py    # Multi-solution (polymorphic)
 │
 ├── .vscode/                   # 🔧 VS Code integration
 │   ├── settings.json          # Python environment settings

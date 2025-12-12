@@ -3,48 +3,59 @@
 Problem: [Problem Name]
 Link: https://leetcode.com/problems/xxx/
 
-Multi-solution template - Supports --all and --method parameters
+Multi-solution template using polymorphic architecture.
+- Multiple classes, each implementing the SAME method name
+- Supports --all and --method parameters for testing
 """
 from typing import List, Optional
-import os
+from _runner import get_solver
+
 
 # ============================================
-# SOLUTIONS Definition (Required)
-# Tells test_runner which solutions are available
+# SOLUTIONS metadata (REQUIRED)
+# Each entry MUST have 'class' and 'method' fields
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_optimal",      # Corresponding method name below
-        "complexity": "O(n)",           # Time complexity
-        "description": "Optimal solution using hash map"
+        "class": "SolutionOptimal",
+        "method": "solve",              # TODO: Use LeetCode method name
+        "complexity": "O(n)",
+        "description": "Optimal solution using hash map",
     },
     "bruteforce": {
-        "method": "solve_bruteforce",
+        "class": "SolutionBruteforce",
+        "method": "solve",              # Same method name (polymorphism)
         "complexity": "O(n²)",
-        "description": "Brute force approach"
+        "description": "Brute force approach",
     },
     # Add more solutions as needed...
 }
 
 
-class Solution:
-    # ============================================
-    # Solution 1: Optimal
-    # ============================================
-    def solve_optimal(self, *args):
+# ============================================
+# Solution 1: Optimal
+# Time: O(n), Space: O(n)
+# ============================================
+class SolutionOptimal:
+    def solve(self, *args):
         """
         TODO: Implement optimal solution
-        Time: O(n), Space: O(n)
+        
+        Rename this method to match the LeetCode method name.
         """
         pass
-    
-    # ============================================
-    # Solution 2: Brute Force
-    # ============================================
-    def solve_bruteforce(self, *args):
+
+
+# ============================================
+# Solution 2: Brute Force
+# Time: O(n²), Space: O(1)
+# ============================================
+class SolutionBruteforce:
+    def solve(self, *args):
         """
         TODO: Implement brute force solution
-        Time: O(n²), Space: O(1)
+        
+        Use the SAME method name as SolutionOptimal (polymorphism).
         """
         pass
 
@@ -54,26 +65,21 @@ def solve():
     Parse input from stdin, select solution based on SOLUTION_METHOD env var.
     """
     import sys
-    
-    # Read environment variable to determine which solution to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    
-    # Get the corresponding method name
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS.get('default'))
-    method_func_name = method_info['method']
-    
-    # Parse input
     data = sys.stdin.read().strip().split('\n')
+    
     # TODO: Parse input according to problem format
+    # Example:
+    # nums = list(map(int, data[0].split(',')))
+    # target = int(data[1])
     
-    sol = Solution()
+    # Get solver instance (auto-selects based on SOLUTION_METHOD env var)
+    solver = get_solver(SOLUTIONS)
     
-    # Dynamically call the corresponding solution
-    method_func = getattr(sol, method_func_name)
-    result = method_func()  # TODO: Pass parsed parameters
+    # Call method naturally - all classes use the same method name
+    # result = solver.solve(...)  # TODO: Change to actual method name
     
-    # Print the result
-    print(result)
+    # TODO: Print the result
+    # print(result)
 
 
 if __name__ == "__main__":
