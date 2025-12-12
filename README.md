@@ -209,7 +209,7 @@ source leetcode/bin/activate
 pip install -r requirements.txt
 
 # Make scripts executable
-chmod +x run_tests.sh run_case.sh new_problem.sh
+chmod +x scripts/run_tests.sh scripts/run_case.sh scripts/new_problem.sh
 ```
 
 </details>
@@ -218,10 +218,10 @@ chmod +x run_tests.sh run_case.sh new_problem.sh
 
 ```bash
 # Windows
-new_problem.bat 0001_two_sum
+scripts\new_problem.bat 0001_two_sum
 
 # Linux/macOS
-./new_problem.sh 0001_two_sum
+./scripts/new_problem.sh 0001_two_sum
 ```
 
 This creates:
@@ -233,10 +233,10 @@ This creates:
 
 ```bash
 # Windows
-run_tests.bat 0001_two_sum
+scripts\run_tests.bat 0001_two_sum
 
 # Linux/macOS
-./run_tests.sh 0001_two_sum
+./scripts/run_tests.sh 0001_two_sum
 ```
 
 ### 4. Debug in VS Code
@@ -652,7 +652,7 @@ greedy                  44.82ms   O(kN)           3/3
 ============================================================
 ```
 
-Create with template: `new_problem.bat 0023_merge_k_lists --multi`
+Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
 
 > 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema) for complete SOLUTIONS schema and validation rules.
 
@@ -868,7 +868,7 @@ neetcode/
 ├── .dev/                      # 🧪 Maintainer zone (unit tests)
 │   ├── tests/                 # Unit test suite (150+ cases)
 │   ├── tests_solutions/       # Solution validation tests
-│   ├── run_tests.bat/.sh      # Run runner unit tests
+│   ├── scripts/run_tests.bat/.sh  # Run runner unit tests
 │   ├── run_all_tests.bat/.sh  # Run all unit tests
 │   ├── run_tests_solutions.bat/.sh  # Run solution tests
 │   ├── TESTING.md             # Testing documentation
@@ -881,9 +881,11 @@ neetcode/
 │
 ├── leetcode/                  # 🐍 Python virtual environment (3.11)
 │
-├── run_tests.bat / .sh        # Run all tests for a problem
-├── run_case.bat / .sh         # Run single test case
-├── new_problem.bat / .sh      # Create new problem from template
+├── scripts/                   # 🔧 Utility scripts
+│   ├── new_problem.bat / .sh  # Create new problem from template
+│   ├── run_tests.bat / .sh    # Run all tests for a problem
+│   ├── run_case.bat / .sh     # Run single test case
+│   └── build_docs.bat / .sh   # Build documentation site
 │
 ├── requirements.txt           # Python dependencies
 ├── mkdocs.yml                 # MkDocs configuration

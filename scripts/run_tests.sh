@@ -12,8 +12,8 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Get the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the directory where the script is located (parent directory)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Use virtual environment Python
 "${SCRIPT_DIR}/leetcode/bin/python" "${SCRIPT_DIR}/runner/test_runner.py" "$@"

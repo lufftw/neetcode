@@ -8,6 +8,20 @@ This directory contains utility scripts for project maintenance and development.
 
 ## 📋 Available Scripts
 
+### Problem Management Scripts
+
+| Script | Purpose | Usage |
+|:-------|:--------|:------|
+| `new_problem.bat` / `new_problem.sh` | Create new problem from template | `scripts\new_problem.bat 0001_two_sum` (Windows)<br>`./scripts/new_problem.sh 0001_two_sum` (Linux/macOS) |
+| `run_tests.bat` / `run_tests.sh` | Run all tests for a problem | `scripts\run_tests.bat 0001_two_sum` (Windows)<br>`./scripts/run_tests.sh 0001_two_sum` (Linux/macOS) |
+| `run_case.bat` / `run_case.sh` | Run single test case | `scripts\run_case.bat 0001_two_sum 1` (Windows)<br>`./scripts/run_case.sh 0001_two_sum 1` (Linux/macOS) |
+
+**Features:**
+- ✅ Create problems from templates (single or multi-solution)
+- ✅ Run all test cases or individual cases
+- ✅ Support for benchmarking and multiple solutions
+- ✅ Cross-platform (Windows/Linux/macOS)
+
 ### Documentation Build Scripts
 
 | Script | Purpose | Usage |
@@ -25,6 +39,36 @@ This directory contains utility scripts for project maintenance and development.
 ---
 
 ## 🎯 Usage
+
+### Create New Problem
+
+```bash
+# Windows
+scripts\new_problem.bat 0001_two_sum
+scripts\new_problem.bat 0023_merge_k_lists --multi
+
+# Linux/macOS
+./scripts/new_problem.sh 0001_two_sum
+./scripts/new_problem.sh 0023_merge_k_lists --multi
+```
+
+### Run Tests
+
+```bash
+# Windows - Run all tests
+scripts\run_tests.bat 0001_two_sum
+scripts\run_tests.bat 0001_two_sum --all --benchmark
+
+# Windows - Run single test case
+scripts\run_case.bat 0001_two_sum 1
+
+# Linux/macOS - Run all tests
+./scripts/run_tests.sh 0001_two_sum
+./scripts/run_tests.sh 0001_two_sum --all --benchmark
+
+# Linux/macOS - Run single test case
+./scripts/run_case.sh 0001_two_sum 1
+```
 
 ### Build Documentation
 

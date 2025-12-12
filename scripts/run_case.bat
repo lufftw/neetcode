@@ -18,4 +18,4 @@ if "%~2"=="" (
 )
 
 REM Use virtual environment Python
-"%~dp0leetcode\Scripts\python.exe" runner/case_runner.py %1 %2
+"%~dp0..\leetcode\Scripts\python.exe" "%~dp0..\runner\case_runner.py" %1 %2

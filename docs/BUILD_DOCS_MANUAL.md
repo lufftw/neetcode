@@ -12,7 +12,7 @@ This guide shows you how to build documentation locally using simple batch/shell
 > 
 > **Core LeetCode practice functionality does NOT require this:**
 > - ✅ Solving problems (`solutions/`, `generators/`)
-> - ✅ Running tests (`run_tests.bat/sh`, `run_case.bat/sh`)
+> - ✅ Running tests (`scripts/run_tests.bat/sh`, `scripts/run_case.bat/sh`)
 > - ✅ Using the runner framework (`runner/`)
 > - ✅ All core practice features work without any documentation build setup
 > 

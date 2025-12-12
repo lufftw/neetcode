@@ -12,7 +12,7 @@ This guide shows you how to use `act` to run GitHub Actions workflows locally wi
 > 
 > **Core LeetCode practice functionality does NOT require this:**
 > - ✅ Solving problems (`solutions/`, `generators/`)
-> - ✅ Running tests (`run_tests.bat/sh`, `run_case.bat/sh`)
+> - ✅ Running tests (`scripts/run_tests.bat/sh`, `scripts/run_case.bat/sh`)
 > - ✅ Using the runner framework (`runner/`)
 > - ✅ All core practice features work without any CI/CD setup
 > 

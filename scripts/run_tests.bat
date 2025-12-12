@@ -17,4 +17,4 @@ if "%~1"=="" (
 )
 
 REM Use virtual environment Python, pass all arguments
-"%~dp0leetcode\Scripts\python.exe" runner/test_runner.py %*
+"%~dp0..\leetcode\Scripts\python.exe" "%~dp0..\runner\test_runner.py" %*

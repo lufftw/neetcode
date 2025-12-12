@@ -209,7 +209,7 @@ source leetcode/bin/activate
 pip install -r requirements.txt
 
 # 設定腳本執行權限
-chmod +x run_tests.sh run_case.sh new_problem.sh
+chmod +x scripts/run_tests.sh scripts/run_case.sh scripts/new_problem.sh
 ```
 
 </details>
@@ -218,10 +218,10 @@ chmod +x run_tests.sh run_case.sh new_problem.sh
 
 ```bash
 # Windows
-new_problem.bat 0001_two_sum
+scripts\new_problem.bat 0001_two_sum
 
 # Linux/macOS
-./new_problem.sh 0001_two_sum
+./scripts/new_problem.sh 0001_two_sum
 ```
 
 這會自動建立：
@@ -233,10 +233,10 @@ new_problem.bat 0001_two_sum
 
 ```bash
 # Windows
-run_tests.bat 0001_two_sum
+scripts\run_tests.bat 0001_two_sum
 
 # Linux/macOS
-./run_tests.sh 0001_two_sum
+./scripts/run_tests.sh 0001_two_sum
 ```
 
 ### 4. 在 VS Code 中除錯
@@ -604,7 +604,7 @@ greedy                  44.82ms   O(kN)           3/3
 ============================================================
 ```
 
-使用模板建立：`new_problem.bat 0023_merge_k_lists --multi`
+使用模板建立：`scripts\new_problem.bat 0023_merge_k_lists --multi`
 
 > 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema)。
 
@@ -820,7 +820,7 @@ neetcode/
 ├── .dev/                      # 🧪 維護者專區（單元測試）
 │   ├── tests/                 # 單元測試套件（150+ 案例）
 │   ├── tests_solutions/       # 解答驗證測試
-│   ├── run_tests.bat/.sh      # 執行 runner 單元測試
+│   ├── scripts/run_tests.bat/.sh  # 執行 runner 單元測試
 │   ├── run_all_tests.bat/.sh  # 執行所有單元測試
 │   ├── run_tests_solutions.bat/.sh  # 執行解答測試
 │   ├── TESTING.md             # 測試文件
@@ -833,9 +833,11 @@ neetcode/
 │
 ├── leetcode/                  # 🐍 Python 虛擬環境（3.11）
 │
-├── run_tests.bat / .sh        # 執行某題目的所有測試
-├── run_case.bat / .sh         # 執行單一測資
-├── new_problem.bat / .sh      # 從模板建立新題目
+├── scripts/                   # 🔧 工具腳本
+│   ├── new_problem.bat / .sh  # 從模板建立新題目
+│   ├── run_tests.bat / .sh    # 執行某題目的所有測試
+│   ├── run_case.bat / .sh     # 執行單一測資
+│   └── build_docs.bat / .sh   # 建置文件網站
 │
 ├── requirements.txt           # Python 相依套件
 ├── mkdocs.yml                 # MkDocs 配置
