@@ -1,0 +1,40 @@
+# Pre-commit hooks configuration
+# Install: pip install pre-commit && pre-commit install
+# Manual run: pre-commit run --all-files
+#
+# This ensures mindmaps are regenerated before each commit
+# when ontology or meta files change.
+
+repos:
+  # Standard hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.md$'
+      - id: end-of-file-fixer
+        exclude: '\.md$'
+      - id: check-yaml
+      - id: check-toml
+
+  # Local hooks for mindmap generation
+  - repo: local
+    hooks:
+      # Regenerate mindmaps when source files change
+      - id: generate-mindmaps
+        name: Generate Mindmaps
+        entry: leetcode/Scripts/python.exe tools/generate_mindmaps.py
+        language: system
+        files: ^(ontology/|meta/problems/|tools/generate_mindmaps\.py)
+        pass_filenames: false
+        stages: [commit]
+
+      # Run solution format check
+      - id: check-solutions
+        name: Check Solution Format
+        entry: leetcode/Scripts/python.exe tools/check_solutions.py
+        language: system
+        files: ^solutions/.*\.py$
+        pass_filenames: false
+        stages: [commit]
+
