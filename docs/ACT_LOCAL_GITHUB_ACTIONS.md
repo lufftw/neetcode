@@ -2,6 +2,8 @@
 
 This guide shows you how to use `act` to run GitHub Actions workflows locally without pushing to GitHub.
 
+> 📖 **Looking for other options?** See [Local Documentation Build Options](LOCAL_DOCS_BUILD.md) for a comparison of all available methods, including a simpler manual script method that doesn't require Docker.
+
 > ⚠️ **Important: This is an Optional Feature**
 > 
 > This documentation is **completely optional** and is intended for:
