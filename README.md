@@ -490,6 +490,16 @@ python runner/test_runner.py <problem_name> --estimate
 ```python
 # solutions/0001_two_sum.py
 from typing import List
+from _runner import get_solver
+
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "twoSum",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Single pass with hash map",
+    },
+}
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -509,13 +519,16 @@ def solve():
     nums = list(map(int, lines[0].split(',')))
     target = int(lines[1])
     
-    # Run solution
-    result = Solution().twoSum(nums, target)
+    # Run solution (polymorphic dispatch)
+    solver = get_solver(SOLUTIONS)
+    result = solver.twoSum(nums, target)
     print(result)
 
 if __name__ == "__main__":
     solve()
 ```
+
+> 📖 See [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) for the complete specification.
 
 ### 📋 Test File Format
 
