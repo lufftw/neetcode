@@ -887,6 +887,27 @@ neetcode/
 
 > **📝 Note:** Files in `docs/mindmaps/`, `docs/patterns/`, and `docs/pages/` are auto-generated. Edit the source files in `ontology/`, `meta/`, and `tools/` instead.
 
+### Documentation Guide
+
+Documentation is organized by **target audience**:
+
+| Location | Purpose | Audience |
+|:---------|:--------|:---------|
+| `docs/` | User documentation (published to website) | ✅ Users |
+| `tools/README.md` | Developer tools reference | 🔧 Contributors |
+| `tools/*/README.md` | Module technical details | 🔧 Contributors |
+| `.dev/` | Maintainer documentation | 🔧 Maintainers |
+
+**Key Documentation Files:**
+
+| Document | Description |
+|:---------|:------------|
+| [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | Solution file specification |
+| [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | Generator file specification |
+| [`tools/README.md`](tools/README.md) | Complete tools reference |
+| [`.dev/README.md`](.dev/README.md) | Maintainer guide |
+| [`.dev/DOCUMENTATION_ARCHITECTURE.md`](.dev/DOCUMENTATION_ARCHITECTURE.md) | Documentation structure |
+
 ---
 
 ## ❓ Frequently Asked Questions

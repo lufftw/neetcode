@@ -862,6 +862,27 @@ neetcode/
 
 > **📝 注意：** `docs/mindmaps/`、`docs/patterns/`、`docs/pages/` 中的檔案都是自動生成的。請編輯 `ontology/`、`meta/`、`tools/` 中的來源檔案。
 
+### 文件指南
+
+文件依**目標讀者**組織：
+
+| 位置 | 用途 | 對象 |
+|:-----|:-----|:-----|
+| `docs/` | 使用者文件（發布到網站） | ✅ 使用者 |
+| `tools/README.md` | 開發者工具參考 | 🔧 貢獻者 |
+| `tools/*/README.md` | 模組技術細節 | 🔧 貢獻者 |
+| `.dev/` | 維護者文件 | 🔧 維護者 |
+
+**主要文件：**
+
+| 文件 | 說明 |
+|:-----|:-----|
+| [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | 解答檔案規格 |
+| [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | 生成器檔案規格 |
+| [`tools/README.md`](tools/README.md) | 完整工具參考 |
+| [`.dev/README.md`](.dev/README.md) | 維護者指南 |
+| [`.dev/DOCUMENTATION_ARCHITECTURE.md`](.dev/DOCUMENTATION_ARCHITECTURE.md) | 文件架構說明 |
+
 ---
 
 ## ❓ 常見問題
