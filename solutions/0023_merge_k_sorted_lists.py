@@ -7,30 +7,35 @@ You are given an array of k linked-lists lists, each linked-list is sorted in as
 Merge all the linked-lists into one sorted linked-list and return it.
 """
 from typing import List, Optional
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS definition - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "mergeKListsPriorityQueue",
+        "class": "SolutionHeap",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "Priority Queue (Min Heap) approach"
     },
     "heap": {
-        "method": "mergeKListsPriorityQueue",
+        "class": "SolutionHeap",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "Priority Queue (Min Heap) approach"
     },
     "divide": {
-        "method": "mergeKListsDivideAndConquer",
+        "class": "SolutionDivideConquer",
+        "method": "mergeKLists",
         "complexity": "O(N log k)",
         "description": "Divide and Conquer approach"
     },
     "greedy": {
-        "method": "mergeKListsGreedy",
+        "class": "SolutionGreedy",
+        "method": "mergeKLists",
         "complexity": "O(kN)",
         "description": "Greedy comparison - compare all k heads each time"
     },
@@ -86,13 +91,23 @@ class ListNode:
         self.val = val
         self.next = next
 
+
 import heapq
-class Solution:
-    # ============================================
-    # Solution 1: Min Heap (Priority Queue)
-    # Time: O(N log k), Space: O(k)
-    # ============================================
-    def mergeKListsPriorityQueue(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+
+
+# ============================================
+# Solution 1: Min Heap (Priority Queue)
+# Time: O(N log k), Space: O(k)
+# ============================================
+class SolutionHeap:
+    """
+    Merge k sorted lists using a min-heap (priority queue).
+    
+    Each list head is pushed to the heap. We repeatedly pop the smallest,
+    attach it to the result, and push its successor.
+    """
+    
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         # Edge case: empty input
         if not lists:
             return None
@@ -127,11 +142,19 @@ class Solution:
         return dummy.next
 
 
-    # ============================================
-    # Solution 2: Divide and Conquer (merge lists in pairs)
-    # Time: O(N log k), Space: O(1)
-    # ============================================
-    def mergeKListsDivideAndConquer(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+# ============================================
+# Solution 2: Divide and Conquer (merge lists in pairs)
+# Time: O(N log k), Space: O(1)
+# ============================================
+class SolutionDivideConquer:
+    """
+    Merge k sorted lists by repeatedly merging pairs.
+    
+    In each round, we merge adjacent pairs of lists, halving the count.
+    After log(k) rounds, only one list remains.
+    """
+    
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         # Base case
         if not lists:
             return None
@@ -144,16 +167,16 @@ class Solution:
             for i in range(0, k, 2):
                 list1 = lists[i]
                 list2 = lists[i + 1] if i + 1 < k else None
-                merged.append(self.mergeTwoLists(list1, list2))
+                merged.append(self._mergeTwoLists(list1, list2))
 
             lists = merged
- 
+
         return lists[0]
 
-
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    def _mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """Merge two sorted linked lists."""
         dummy = ListNode()
-        tail = dummy 
+        tail = dummy
 
         # Standard merge two sorted lists
         while list1 and list2:
@@ -171,11 +194,18 @@ class Solution:
         return dummy.next
 
 
-    # ============================================
-    # Solution 3: Greedy (compare all k heads each round)
-    # Time: O(kN), Space: O(1)
-    # ============================================
-    def mergeKListsGreedy(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+# ============================================
+# Solution 3: Greedy (compare all k heads each round)
+# Time: O(kN), Space: O(1)
+# ============================================
+class SolutionGreedy:
+    """
+    Merge k sorted lists by comparing all k heads each time.
+    
+    Simple but O(kN) time - not optimal for large k.
+    """
+    
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         k = len(lists)
 
         # Base case
@@ -246,11 +276,6 @@ def solve():
     """
     import sys
 
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
     # Parse input
     lines = sys.stdin.read().strip().split('\n')
     k = int(lines[0])
@@ -263,11 +288,9 @@ def solve():
         else:
             lists.append(None)
 
-    sol = Solution()
-    
-    # Dynamically call the selected solution method
-    method_func = getattr(sol, method_func_name)
-    result = method_func(lists)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.mergeKLists(lists)
 
     # Output result as list
     print(linkedlist_to_list(result))

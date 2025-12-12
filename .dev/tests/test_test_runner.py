@@ -83,17 +83,22 @@ class TestLoadSolutionModule:
             os.chdir(original_cwd)
     
     def test_solutions_metadata(self, tmp_path):
-        """Test loading SOLUTIONS metadata."""
-        # Create solution with SOLUTIONS metadata
+        """Test loading SOLUTIONS metadata (polymorphic format)."""
+        # Create solution with SOLUTIONS metadata using polymorphic pattern
         solution_dir = tmp_path / "solutions"
         solution_dir.mkdir()
         solution_file = solution_dir / "test_problem.py"
         solution_code = """
 SOLUTIONS = {
-    'default': {'method': 'default', 'complexity': 'O(n)'},
-    'optimized': {'method': 'optimized', 'complexity': 'O(log n)'}
+    'default': {'class': 'Solution', 'method': 'solve', 'complexity': 'O(n)'},
+    'optimized': {'class': 'SolutionOptimized', 'method': 'solve', 'complexity': 'O(log n)'}
 }
-def solve(): pass
+
+class Solution:
+    def solve(self): pass
+
+class SolutionOptimized:
+    def solve(self): pass
 """
         solution_file.write_text(solution_code)
         
@@ -104,6 +109,8 @@ def solve(): pass
             assert solutions_meta is not None
             assert 'default' in solutions_meta
             assert 'optimized' in solutions_meta
+            assert solutions_meta['default']['class'] == 'Solution'
+            assert solutions_meta['optimized']['class'] == 'SolutionOptimized'
         finally:
             os.chdir(original_cwd)
 

@@ -72,6 +72,8 @@ def solve():
 All solutions use **multiple classes implementing the same method name**.
 
 ```python
+from _runner import get_solver
+
 SOLUTIONS = {
     "default": {
         "class": "SolutionTwoPointers",   # Required: class name
@@ -98,13 +100,86 @@ class SolutionTwoEnds:
 # No wrapper functions
 
 def solve():
-    method_key = os.environ.get('SOLUTION_METHOD', 'default')
-    info = SOLUTIONS.get(method_key, SOLUTIONS['default'])
+    nums = [...]
+    val = ...
     
-    # Direct polymorphic invocation
-    solver = globals()[info['class']]()
-    result = getattr(solver, info['method'])(nums, val)
+    # Clean polymorphic invocation (like LeetCode style)
+    solver = get_solver(SOLUTIONS)
+    k = solver.removeElement(nums, val)
+    
+    print(k)
 ```
+
+---
+
+## Runtime Helper: `get_solver()`
+
+### Why `get_solver()` Instead of Direct Dispatch?
+
+| Pattern | Code | Readability |
+|---------|------|-------------|
+| ❌ Direct dispatch | `getattr(globals()[info['class']](), info['method'])(nums, val)` | Poor |
+| ❌ `invoke_solution` | `invoke_solution(SOLUTIONS, globals(), nums, val)` | Medium |
+| ✅ `get_solver` | `solver.removeElement(nums, val)` | **Excellent** |
+
+The `get_solver()` pattern:
+1. Returns the correct class instance based on `SOLUTION_METHOD` env var
+2. User calls method naturally (like LeetCode)
+3. No need to pass `globals()` (uses `inspect` internally)
+
+### Usage
+
+```python
+from _runner import get_solver
+
+def solve():
+    # Parse input
+    nums = list(map(int, input().split()))
+    val = int(input())
+    
+    # Get solver instance (auto-selects based on SOLUTION_METHOD)
+    solver = get_solver(SOLUTIONS)
+    
+    # Call method naturally - exactly like LeetCode!
+    k = solver.removeElement(nums, val)
+    
+    print(k)
+```
+
+### Implementation
+
+Located in `solutions/_runner.py`:
+
+```python
+import inspect
+import os
+
+def get_solver(solutions_meta):
+    """
+    Get the solver instance for the currently selected solution method.
+    
+    Returns:
+        An instance of the selected solution class.
+    
+    Example:
+        solver = get_solver(SOLUTIONS)
+        result = solver.twoSum(nums, target)  # Natural method call
+    """
+    # Auto-capture caller's globals (no need to pass explicitly)
+    caller_globals = inspect.currentframe().f_back.f_globals
+    
+    method_key = os.environ.get('SOLUTION_METHOD', 'default')
+    info = solutions_meta.get(method_key, solutions_meta['default'])
+    
+    return caller_globals[info['class']]()
+```
+
+### Benefits
+
+1. **LeetCode-style calls** - `solver.methodName(args)` is natural
+2. **No `globals()` pollution** - Framework handles it via `inspect`
+3. **IDE autocomplete works** - After `solver = get_solver(...)`, IDE can suggest methods
+4. **Explicit method call** - User sees which method is being called
 
 ---
 
@@ -117,6 +192,7 @@ def solve():
 | One class with multiple differently-named methods | **DEPRECATED** | Unclear semantics for AI analysis |
 | `globals()[method_name]` for wrappers | **DEPRECATED** | Use `class` + `method` fields |
 | `SOLUTIONS` without `class` field | **DEPRECATED** | Must specify class explicitly |
+| `invoke_solution(SOLUTIONS, globals(), ...)` | **DEPRECATED** | Poor readability, use `get_solver()` |
 
 ### Clarification: Single Solution Problems
 
@@ -331,8 +407,17 @@ SOLUTIONS = {
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| Phase 1 | Runner infrastructure | Pending |
-| Phase 2 | Example migrations | Pending |
-| Phase 3 | Full migration | Pending |
-| Phase 4 | Documentation | Pending |
+| Phase 1 | Runner infrastructure | ✅ Completed |
+| Phase 2 | Example migrations | ✅ Completed |
+| Phase 3 | Full migration | Pending (scan remaining solutions) |
+| Phase 4 | Documentation | ✅ Completed |
+
+### Completed Items
+
+- **Phase 1**: Added `validate_solutions_meta()` to `runner/module_loader.py`
+- **Phase 2**: Migrated example solutions:
+  - `0027_remove_element.py` - Polymorphic pattern with `SolutionTwoPointers`, `SolutionTwoEnds`
+  - `0025_reverse_nodes_in_k_group.py` - Polymorphic pattern with `SolutionIterative`, `SolutionRecursive`
+  - `0023_merge_k_sorted_lists.py` - Split into `SolutionHeap`, `SolutionDivideConquer`, `SolutionGreedy`
+- **Phase 4**: Updated test fixtures in `.dev/tests/` to use polymorphic format
 

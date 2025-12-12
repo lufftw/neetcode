@@ -11,7 +11,7 @@ If the number of nodes is not a multiple of k then left-out nodes, in the end,
 should remain as it is.
 """
 from typing import List, Optional
-import os
+from _runner import get_solver
 
 
 class ListNode:
@@ -22,20 +22,24 @@ class ListNode:
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_iterative",
+        "class": "SolutionIterative",
+        "method": "reverseKGroup",
         "complexity": "O(N) time, O(1) space",
         "description": "Iterative in-place k-group reversal using pointer manipulation",
     },
     "iterative": {
-        "method": "solve_iterative",
+        "class": "SolutionIterative",
+        "method": "reverseKGroup",
         "complexity": "O(N) time, O(1) space",
         "description": "Iterative in-place k-group reversal using pointer manipulation",
     },
     "recursive": {
-        "method": "solve_recursive",
+        "class": "SolutionRecursive",
+        "method": "reverseKGroup",
         "complexity": "O(N) time, O(N) space",
         "description": "Recursive k-group reversal using a helper to reverse exactly k nodes",
     },
@@ -211,19 +215,6 @@ class SolutionIterative:
 
 
 # ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_recursive(head: Optional[ListNode], k: int) -> Optional[ListNode]:
-    """Wrapper for SolutionRecursive."""
-    return SolutionRecursive().reverseKGroup(head, k)
-
-
-def solve_iterative(head: Optional[ListNode], k: int) -> Optional[ListNode]:
-    """Wrapper for SolutionIterative."""
-    return SolutionIterative().reverseKGroup(head, k)
-
-
-# ============================================
 # Helper functions for LinkedList conversion
 # ============================================
 def list_to_linkedlist(lst: List[int]) -> Optional[ListNode]:
@@ -259,20 +250,15 @@ def solve():
     """
     import sys
 
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-
     # Parse input
     lines = sys.stdin.read().strip().split('\n')
     values = list(map(int, lines[0].split(',')))
     head = list_to_linkedlist(values)
     k = int(lines[1])
 
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(head, k)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.reverseKGroup(head, k)
 
     # Output result as list
     print(linkedlist_to_list(result))
