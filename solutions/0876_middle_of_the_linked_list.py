@@ -89,7 +89,7 @@ def judge(actual, expected, input_data: str) -> bool:
     Validate result: check if actual output is the middle node values.
     
     Args:
-        actual: Program output (space-separated integers as string)
+        actual: Program output (space-separated integers as string, list, or single int)
         expected: Expected output (None if from generator)
         input_data: Raw input string (space-separated node values)
     
@@ -106,8 +106,10 @@ def judge(actual, expected, input_data: str) -> bool:
         mid_idx = len(values) // 2
         correct = values[mid_idx:]
     
-    # Parse actual output
-    if isinstance(actual, str):
+    # Parse actual output - handle int (from ast.literal_eval), str, or list
+    if isinstance(actual, int):
+        actual_vals = [actual]
+    elif isinstance(actual, str):
         actual_vals = list(map(int, actual.strip().split())) if actual.strip() else []
     elif isinstance(actual, list):
         actual_vals = actual

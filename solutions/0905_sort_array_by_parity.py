@@ -79,7 +79,7 @@ def judge(actual, expected, input_data: str) -> bool:
     Validate result: check if actual output has evens before odds.
     
     Args:
-        actual: Program output (space-separated integers as string)
+        actual: Program output (space-separated integers as string, list, or single int)
         expected: Expected output (None if from generator)
         input_data: Raw input string (space-separated integers)
     
@@ -89,8 +89,10 @@ def judge(actual, expected, input_data: str) -> bool:
     line = input_data.strip()
     nums = list(map(int, line.split())) if line else []
     
-    # Parse actual output
-    if isinstance(actual, str):
+    # Parse actual output - handle int (from ast.literal_eval), str, or list
+    if isinstance(actual, int):
+        actual_nums = [actual]
+    elif isinstance(actual, str):
         actual_nums = list(map(int, actual.strip().split())) if actual.strip() else []
     elif isinstance(actual, list):
         actual_nums = actual

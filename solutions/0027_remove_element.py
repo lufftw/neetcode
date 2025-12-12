@@ -79,7 +79,7 @@ def judge(actual, expected, input_data: str) -> bool:
     Validate result: check if actual output correctly removes all occurrences of val.
     
     Args:
-        actual: Program output (may be string with newlines or tuple)
+        actual: Program output (may be string with newlines, tuple, or int when k=0)
         expected: Expected output (None if from generator)
         input_data: Raw input string (Line 1: nums, Line 2: val)
     
@@ -90,14 +90,19 @@ def judge(actual, expected, input_data: str) -> bool:
     nums = list(map(int, lines[0].split())) if lines[0] else []
     val = int(lines[1]) if len(lines) > 1 else 0
     
-    # Parse actual output
-    if isinstance(actual, str):
+    # Parse actual output - handle various formats
+    if isinstance(actual, int):
+        # ast.literal_eval parsed single number (k=0 case, no second line)
+        k = actual
+        result_nums = []
+    elif isinstance(actual, str):
         lines_out = actual.strip().split('\n')
-        if len(lines_out) >= 2:
-            k = int(lines_out[0])
-            result_nums = list(map(int, lines_out[1].split())) if lines_out[1] else []
+        k = int(lines_out[0])
+        if len(lines_out) >= 2 and lines_out[1]:
+            result_nums = list(map(int, lines_out[1].split()))
         else:
-            return False
+            # k=0 case: no elements remaining
+            result_nums = []
     elif isinstance(actual, tuple) and len(actual) == 2:
         k, result_nums = actual
     else:
