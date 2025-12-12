@@ -719,7 +719,7 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
-> 📖 See [`docs/SOLUTION_CONTRACT.md` §D](docs/SOLUTION_CONTRACT.md#d-static-tests--dynamic-tests--generators-contract) for generator contract and test file specifications.
+> 📖 See [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) for complete generator specification and best practices.
 
 ### 📈 Time Complexity Estimation
 
@@ -973,7 +973,8 @@ Configuration: `tools/generate_mindmaps.toml`
 
 - [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
 - [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
-- [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC, generators)
+- [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
+- [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 
