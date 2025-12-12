@@ -29,7 +29,6 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 | `docs/SOLUTION_CONTRACT.md` | Solution file specification | `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/` |
 | `docs/GENERATOR_CONTRACT.md` | Generator file specification | `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/` |
 | `docs/ARCHITECTURE_MIGRATION.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
-| `docs/TOOLS.md` | Tools reference documentation | `https://lufftw.github.io/neetcode/TOOLS/` |
 | `docs/GITHUB_PAGES_SETUP.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
 
 ### 📝 Special Notes
@@ -37,7 +36,8 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 - **README.md** and **README_zh-TW.md**: These files do **NOT** appear as separate pages on the website. Instead, they are included in `docs/index.md` and `docs/index_zh-TW.md` via the `include-markdown` plugin.
 - **docs/patterns/**: ✅ Now configured in `nav` and available on the website.
 - **docs/GITHUB_PAGES_SETUP.md**: ✅ Now configured in `nav` and available on the website.
-- **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, `ARCHITECTURE_MIGRATION.md`, and `TOOLS.md` are now configured in `nav`.
+- **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, and `ARCHITECTURE_MIGRATION.md` are now configured in `nav`.
+- **Tools docs**: Developer tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (not on website, GitHub only).
 
 ---
 
@@ -60,7 +60,7 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 | Directory/File | Description | GitHub Link Format |
 |:---------------|:------------|:-------------------|
 | `tools/*.py` | Tool scripts (code only) | `https://github.com/lufftw/neetcode/blob/main/tools/...` |
-| `tools/README.md` | Quick start guide | References [docs/TOOLS.md](https://lufftw.github.io/neetcode/TOOLS/) |
+| `tools/README.md` | Comprehensive tools reference | `https://github.com/lufftw/neetcode/blob/main/tools/README.md` |
 | `ontology/` | Algorithm ontology data (TOML) | `https://github.com/lufftw/neetcode/blob/main/ontology/...` |
 | `meta/` | Problem and pattern metadata | `https://github.com/lufftw/neetcode/blob/main/meta/...` |
 | `roadmaps/` | Learning path definitions | `https://github.com/lufftw/neetcode/blob/main/roadmaps/...` |
@@ -81,7 +81,6 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 - `docs/SOLUTION_CONTRACT.md` - Solution file specification
 - `docs/GENERATOR_CONTRACT.md` - Generator file specification
 - `docs/ARCHITECTURE_MIGRATION.md` - Architecture migration guide
-- `docs/TOOLS.md` - Tools reference documentation
 
 See [Content Included in Website](#content-included-in-website) section above.
 
@@ -188,7 +187,8 @@ A: ✅ Yes! The "📚 Reference" section is now configured in `nav` and includes
 - Solution Contract at `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/`
 - Generator Contract at `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/`
 - Architecture Migration at `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/`
-- Tools documentation at `https://lufftw.github.io/neetcode/TOOLS/`
+
+**Note**: Tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (GitHub only, not on website).
 
 ### Q: Do links in README.md work in both GitHub and the website?
 
@@ -219,7 +219,8 @@ If you need to access these documents, use the GitHub absolute URLs provided in 
 
 - **2025-01-XX**: Initial version
 - **2025-01-XX**: Updated - Added `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` to website navigation
-- **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration, and Tools documentation
+- **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration
+- **2025-12-12**: Moved Tools documentation from `docs/TOOLS.md` to `tools/README.md` (developer docs belong with code)
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---
