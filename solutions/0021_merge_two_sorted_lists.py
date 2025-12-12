@@ -44,6 +44,29 @@ Space: O(1) iterative, O(m + n) recursive (call stack)
 ================================================================================
 """
 from typing import Optional
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_iterative",
+        "complexity": "O(m+n) time, O(1) space",
+        "description": "Iterative merge using dummy head",
+    },
+    "iterative": {
+        "method": "solve_iterative",
+        "complexity": "O(m+n) time, O(1) space",
+        "description": "Iterative merge using dummy head",
+    },
+    "recursive": {
+        "method": "solve_recursive",
+        "complexity": "O(m+n) time, O(m+n) space for recursion stack",
+        "description": "Recursive merge choosing smaller head",
+    },
+}
 
 
 # ============================================================================
@@ -93,11 +116,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(m + n) Iterative Merge
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Iterative Merge
+# Time: O(m+n), Space: O(1)
+#   - Each node visited once
+#   - Only pointer references needed
+#   - Optimal space complexity
+# ============================================
+class SolutionIterative:
     """
     Optimal iterative solution using dummy head pattern.
     
@@ -139,10 +165,13 @@ class Solution:
         return dummy.next
 
 
-# ============================================================================
-# Alternative: Recursive Merge
-# ============================================================================
-
+# ============================================
+# Solution 2: Recursive Merge
+# Time: O(m+n), Space: O(m+n) recursion stack
+#   - Conceptually elegant recursive structure
+#   - O(m+n) stack space due to recursion depth
+#   - Useful for understanding the problem
+# ============================================
 class SolutionRecursive:
     """
     Recursive solution.
@@ -170,40 +199,17 @@ class SolutionRecursive:
             return list2
 
 
-# ============================================================================
-# Alternative: In-Place Merge (Reusing Nodes)
-# ============================================================================
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_iterative(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    """Wrapper for SolutionIterative."""
+    return SolutionIterative().mergeTwoLists(list1, list2)
 
-class SolutionInPlace:
-    """
-    Explicit in-place merge that reuses existing nodes.
-    
-    Same approach as main solution but with clearer variable naming
-    showing that we're splicing existing nodes.
-    """
-    
-    def mergeTwoLists(self, list1: Optional[ListNode], 
-                       list2: Optional[ListNode]) -> Optional[ListNode]:
-        # Sentinel node to start the merged list
-        sentinel = ListNode(-1)
-        prev = sentinel
-        
-        # Two pointers for the input lists
-        ptr1, ptr2 = list1, list2
-        
-        while ptr1 and ptr2:
-            if ptr1.val <= ptr2.val:
-                prev.next = ptr1  # Link to existing node
-                ptr1 = ptr1.next
-            else:
-                prev.next = ptr2
-                ptr2 = ptr2.next
-            prev = prev.next
-        
-        # Attach remaining list
-        prev.next = ptr1 or ptr2
-        
-        return sentinel.next
+
+def solve_recursive(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    """Wrapper for SolutionRecursive."""
+    return SolutionRecursive().mergeTwoLists(list1, list2)
 
 
 # ============================================================================
@@ -243,8 +249,14 @@ def solve():
     list1 = build_list(values1)
     list2 = build_list(values2)
     
-    solution = Solution()
-    result = solution.mergeTwoLists(list1, list2)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(list1, list2)
     
     # Output merged list
     output = []
@@ -257,4 +269,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

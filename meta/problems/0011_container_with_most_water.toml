@@ -33,8 +33,8 @@ tests_dir = "tests/0011_container_with_most_water/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "maxArea"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_maximize"]
@@ -49,4 +49,42 @@ based_on   = []
 delta      = ""
 complexity = "O(n) time, O(1) space"
 notes      = "Opposite pointers pattern for maximizing area. Greedily move the pointer with shorter height."
+
+[[solutions]]
+key    = "two_pointers"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_maximize"]
+families         = ["two_pointers_optimization"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers", "greedy"]
+related_problems = ["0042", "0167"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Two pointers from both ends with greedy movement."
+
+[[solutions]]
+key    = "optimized"
+class  = "SolutionTwoPointersOptimized"
+method = "solve_optimized"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_maximize"]
+families         = ["two_pointers_optimization"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers", "greedy"]
+related_problems = ["0011#default"]
+
+role       = "variant"
+variant    = "skip_optimization"
+based_on   = ["0011#default"]
+delta      = "Skips consecutive heights that cannot improve answer."
+complexity = "O(n) time, O(1) space"
+notes      = "Two pointers with skip optimization for consecutive smaller heights."
 

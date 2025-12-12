@@ -41,6 +41,29 @@ Space: O(1) - Only two pointer references
 ================================================================================
 """
 from typing import Optional
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_fast_slow",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Fast-slow pointers for midpoint finding",
+    },
+    "fast_slow": {
+        "method": "solve_fast_slow",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Fast-slow pointers for midpoint finding",
+    },
+    "two_pass": {
+        "method": "solve_two_pass",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two-pass: count nodes then find middle",
+    },
+}
 
 
 # ============================================================================
@@ -93,11 +116,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Fast-Slow Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Fast-Slow Pointers
+# Time: O(n), Space: O(1)
+#   - Single pass with fast moving 2× speed
+#   - When fast reaches end, slow is at middle
+#   - Optimal single-pass approach
+# ============================================
+class SolutionFastSlow:
     """
     Optimal solution using fast-slow pointers for midpoint finding.
     
@@ -128,10 +154,13 @@ class Solution:
         return slow
 
 
-# ============================================================================
-# Alternative: Two-Pass Solution
-# ============================================================================
-
+# ============================================
+# Solution 2: Two-Pass Approach
+# Time: O(n), Space: O(1)
+#   - First pass: count nodes O(n)
+#   - Second pass: find middle O(n)
+#   - More straightforward but requires two traversals
+# ============================================
 class SolutionTwoPass:
     """
     Alternative using two passes: count nodes, then find middle.
@@ -156,52 +185,17 @@ class SolutionTwoPass:
         return current
 
 
-# ============================================================================
-# Alternative: Array-Based (O(n) Space)
-# ============================================================================
-
-class SolutionArray:
-    """
-    Alternative storing all nodes in an array.
-    
-    Simple and allows direct indexing, but uses O(n) extra space.
-    """
-    
-    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        nodes = []
-        current = head
-        
-        while current:
-            nodes.append(current)
-            current = current.next
-        
-        return nodes[len(nodes) // 2]
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_fast_slow(head: Optional[ListNode]) -> Optional[ListNode]:
+    """Wrapper for SolutionFastSlow."""
+    return SolutionFastSlow().middleNode(head)
 
 
-# ============================================================================
-# Alternative: First Middle Node Variant
-# ============================================================================
-
-class SolutionFirstMiddle:
-    """
-    Variant that returns the FIRST middle node for even-length lists.
-    
-    Achieved by initializing fast one step ahead.
-    """
-    
-    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        """Return first middle node if there are two."""
-        if not head or not head.next:
-            return head
-        
-        slow = head
-        fast = head.next  # Start fast one ahead
-        
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
-        
-        return slow
+def solve_two_pass(head: Optional[ListNode]) -> Optional[ListNode]:
+    """Wrapper for SolutionTwoPass."""
+    return SolutionTwoPass().middleNode(head)
 
 
 # ============================================================================
@@ -233,8 +227,14 @@ def solve():
     for i in range(len(nodes) - 1):
         nodes[i].next = nodes[i + 1]
     
-    solution = Solution()
-    result = solution.middleNode(nodes[0])
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nodes[0])
     
     # Output remaining values from middle to end
     output = []
@@ -247,4 +247,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

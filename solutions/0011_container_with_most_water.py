@@ -43,6 +43,29 @@ Space: O(1) - Only two pointer indices stored
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers from both ends with greedy movement",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers from both ends with greedy movement",
+    },
+    "optimized": {
+        "method": "solve_optimized",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two pointers with skip optimization for consecutive smaller heights",
+    },
+}
 
 
 # ============================================================================
@@ -92,11 +115,14 @@ def _brute_force_max_area(height: List[int]) -> int:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Opposite Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Two Pointers Greedy
+# Time: O(n), Space: O(1)
+#   - Each pointer moves at most n times
+#   - Only two pointer indices stored
+#   - Greedy choice: always move the shorter pointer
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using opposite pointers with greedy movement.
     
@@ -141,11 +167,14 @@ class Solution:
         return max_area
 
 
-# ============================================================================
-# Alternative: With Skip Optimization
-# ============================================================================
-
-class SolutionOptimized:
+# ============================================
+# Solution 2: Two Pointers with Skip Optimization
+# Time: O(n), Space: O(1)
+#   - Same time complexity as basic two pointers
+#   - Skips consecutive heights that cannot improve answer
+#   - May reduce constant factors in practice
+# ============================================
+class SolutionTwoPointersOptimized:
     """
     Optimized version that skips lines that cannot improve the answer.
     
@@ -176,6 +205,19 @@ class SolutionOptimized:
         return max_area
 
 
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(height: List[int]) -> int:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().maxArea(height)
+
+
+def solve_optimized(height: List[int]) -> int:
+    """Wrapper for SolutionTwoPointersOptimized."""
+    return SolutionTwoPointersOptimized().maxArea(height)
+
+
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -197,12 +239,17 @@ def solve():
     line = sys.stdin.read().strip()
     height = list(map(int, line.split()))
     
-    solution = Solution()
-    result = solution.maxArea(height)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(height)
     
     print(result)
 
 
 if __name__ == "__main__":
     solve()
-

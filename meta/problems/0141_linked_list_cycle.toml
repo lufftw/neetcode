@@ -33,8 +33,8 @@ tests_dir = "tests/0141_linked_list_cycle/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "hasCycle"
+class  = "SolutionFloyd"
+method = "solve_floyd"
 
 api_kernels      = ["FastSlowPointers"]
 patterns         = ["fast_slow_cycle_detect"]
@@ -49,4 +49,42 @@ based_on   = []
 delta      = ""
 complexity = "O(n) time, O(1) space"
 notes      = "Floyd's cycle detection algorithm (Tortoise and Hare). Fast pointer moves 2× speed of slow pointer."
+
+[[solutions]]
+key    = "floyd"
+class  = "SolutionFloyd"
+method = "solve_floyd"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_detect"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0142"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Floyd's cycle detection (fast-slow pointers)."
+
+[[solutions]]
+key    = "hashset"
+class  = "SolutionHashSet"
+method = "solve_hashset"
+
+api_kernels      = ["FastSlowPointers"]
+patterns         = ["fast_slow_cycle_detect"]
+families         = ["linked_list_cycle"]
+data_structures  = ["linked_list", "hash_set"]
+algorithms       = []
+related_problems = ["0141#default"]
+
+role       = "variant"
+variant    = "hash_set"
+based_on   = ["0141#default"]
+delta      = "Use hash set to track visited nodes instead of fast-slow pointers."
+complexity = "O(n) time, O(n) space"
+notes      = "Hash set to track visited nodes."
 

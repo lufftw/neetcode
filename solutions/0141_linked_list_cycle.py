@@ -49,6 +49,29 @@ Space: O(1) - Only two pointer references
 ================================================================================
 """
 from typing import Optional
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_floyd",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Floyd's cycle detection (fast-slow pointers)",
+    },
+    "floyd": {
+        "method": "solve_floyd",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Floyd's cycle detection (fast-slow pointers)",
+    },
+    "hashset": {
+        "method": "solve_hashset",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Hash set to track visited nodes",
+    },
+}
 
 
 # ============================================================================
@@ -104,11 +127,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Floyd's Cycle Detection
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Floyd's Cycle Detection
+# Time: O(n), Space: O(1)
+#   - Fast pointer traverses at most 2n nodes
+#   - Only two pointer references needed
+#   - Optimal space complexity
+# ============================================
+class SolutionFloyd:
     """
     Optimal solution using Floyd's Tortoise and Hare algorithm.
     
@@ -147,10 +173,13 @@ class Solution:
         return False
 
 
-# ============================================================================
-# Alternative: Using Hash Set (O(n) Space)
-# ============================================================================
-
+# ============================================
+# Solution 2: HashSet Approach
+# Time: O(n), Space: O(n)
+#   - Tracks all visited nodes in a set
+#   - Simpler logic but uses O(n) extra space
+#   - Useful for understanding the problem
+# ============================================
 class SolutionHashSet:
     """
     Alternative using a hash set to track visited nodes.
@@ -172,29 +201,17 @@ class SolutionHashSet:
         return False
 
 
-# ============================================================================
-# Alternative: Destructive Marking (Not Recommended)
-# ============================================================================
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_floyd(head: Optional[ListNode]) -> bool:
+    """Wrapper for SolutionFloyd."""
+    return SolutionFloyd().hasCycle(head)
 
-class SolutionDestructive:
-    """
-    Alternative that marks visited nodes by modifying them.
-    
-    Warning: This modifies the original list, which may not be acceptable.
-    Shown for educational purposes only.
-    """
-    
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
-        VISITED_MARKER = float('inf')
-        current = head
-        
-        while current:
-            if current.val == VISITED_MARKER:
-                return True
-            current.val = VISITED_MARKER
-            current = current.next
-        
-        return False
+
+def solve_hashset(head: Optional[ListNode]) -> bool:
+    """Wrapper for SolutionHashSet."""
+    return SolutionHashSet().hasCycle(head)
 
 
 # ============================================================================
@@ -235,12 +252,17 @@ def solve():
     if pos >= 0 and pos < len(nodes):
         nodes[-1].next = nodes[pos]
     
-    solution = Solution()
-    result = solution.hasCycle(nodes[0])
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nodes[0])
     
     print("true" if result else "false")
 
 
 if __name__ == "__main__":
     solve()
-

@@ -45,6 +45,29 @@ Space: O(1) - In-place modification, only two indices
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pointer pattern for in-place deduplication",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Reader/writer pointer pattern for in-place deduplication",
+    },
+    "enumerate": {
+        "method": "solve_enumerate",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Using enumerate for cleaner iteration",
+    },
+}
 
 
 # ============================================================================
@@ -102,11 +125,14 @@ def _brute_force_remove_duplicates(nums: List[int]) -> tuple[int, List[int]]:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Same-Direction Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution: Reader/Writer Two Pointers
+# Time: O(n), Space: O(1)
+#   - Single pass through array
+#   - In-place modification with two indices
+#   - Optimal for sorted array deduplication
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using reader/writer pointer pattern.
     
@@ -144,10 +170,13 @@ class Solution:
         return write_index
 
 
-# ============================================================================
-# Alternative: Using Enumerate (Slightly More Pythonic)
-# ============================================================================
-
+# ============================================
+# Solution 2: Using Enumerate
+# Time: O(n), Space: O(1)
+#   - Functionally identical to SolutionTwoPointers
+#   - Uses enumerate for cleaner iteration
+#   - May be more readable for some developers
+# ============================================
 class SolutionEnumerate:
     """
     Alternative using enumerate for cleaner iteration.
@@ -169,34 +198,17 @@ class SolutionEnumerate:
         return write_index
 
 
-# ============================================================================
-# Alternative: Generic Template Form
-# ============================================================================
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int]) -> int:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().removeDuplicates(nums)
 
-class SolutionTemplate:
-    """
-    Template-based solution showing the general pattern structure.
-    
-    This form can be easily adapted for similar problems by changing
-    the keep_condition function.
-    """
-    
-    def removeDuplicates(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
-        
-        def should_keep(read_idx: int, write_idx: int) -> bool:
-            """Condition: keep element if it's different from last written."""
-            return nums[read_idx] != nums[write_idx - 1]
-        
-        write_index: int = 1  # First element always kept
-        
-        for read_index in range(1, len(nums)):
-            if should_keep(read_index, write_index):
-                nums[write_index] = nums[read_index]
-                write_index += 1
-        
-        return write_index
+
+def solve_enumerate(nums: List[int]) -> int:
+    """Wrapper for SolutionEnumerate."""
+    return SolutionEnumerate().removeDuplicates(nums)
 
 
 # ============================================================================
@@ -227,8 +239,14 @@ def solve():
     
     nums = list(map(int, line.split()))
     
-    solution = Solution()
-    k = solution.removeDuplicates(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    k = method_func(nums)
     
     print(k)
     if k > 0:
@@ -237,4 +255,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

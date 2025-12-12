@@ -8,7 +8,7 @@ Problem: You are given two integer arrays nums1 and nums2, sorted in non-decreas
          order, and two integers m and n, representing the number of elements in
          nums1 and nums2 respectively.
          
-         Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+         Merge nums2 into nums1 into a single array sorted in non-decreasing order.
          The final sorted array should be stored inside nums1.
          
          nums1 has length m + n, where the last n elements are 0 and should be ignored.
@@ -53,6 +53,29 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_backward",
+        "complexity": "O(m+n) time, O(1) space",
+        "description": "Merge from end to avoid overwriting unprocessed elements",
+    },
+    "backward": {
+        "method": "solve_backward",
+        "complexity": "O(m+n) time, O(1) space",
+        "description": "Merge from end to avoid overwriting unprocessed elements",
+    },
+    "forward": {
+        "method": "solve_forward",
+        "complexity": "O(m+n) time, O(m) space",
+        "description": "Forward merge requiring extra space for nums1 copy",
+    },
+}
 
 
 # ============================================================================
@@ -97,11 +120,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(m + n) Merge from End
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Merge from End
+# Time: O(m+n), Space: O(1)
+#   - Write largest elements first from the end
+#   - Never overwrites unprocessed elements
+#   - Optimal space complexity
+# ============================================
+class SolutionBackward:
     """
     Optimal in-place merge by writing from the end.
     
@@ -140,60 +166,13 @@ class Solution:
         # Note: If i >= 0 after loop, remaining nums1 elements are already in place
 
 
-# ============================================================================
-# Alternative: Explicit While Loops
-# ============================================================================
-
-class SolutionExplicit:
-    """
-    Alternative with explicit handling of both exhaustion cases.
-    
-    More verbose but clearer about all cases.
-    """
-    
-    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-        i, j, write = m - 1, n - 1, m + n - 1
-        
-        # Merge while both arrays have elements
-        while i >= 0 and j >= 0:
-            if nums1[i] > nums2[j]:
-                nums1[write] = nums1[i]
-                i -= 1
-            else:
-                nums1[write] = nums2[j]
-                j -= 1
-            write -= 1
-        
-        # Copy remaining elements from nums2 (if any)
-        # No need to copy from nums1 - elements are already in place
-        while j >= 0:
-            nums1[write] = nums2[j]
-            j -= 1
-            write -= 1
-
-
-# ============================================================================
-# Alternative: Using Slice Assignment
-# ============================================================================
-
-class SolutionSlice:
-    """
-    Pythonic solution using slicing.
-    
-    Less efficient due to sorting, but very concise.
-    """
-    
-    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-        # Copy nums2 to the empty space in nums1
-        nums1[m:m + n] = nums2
-        # Sort the entire array
-        nums1.sort()
-
-
-# ============================================================================
-# Alternative: Two-Pointer Forward (Requires Extra Space)
-# ============================================================================
-
+# ============================================
+# Solution 2: Forward Merge with Extra Space
+# Time: O(m+n), Space: O(m)
+#   - Requires copy of nums1's actual elements
+#   - Standard forward merge like merge sort
+#   - Simpler logic but uses extra space
+# ============================================
 class SolutionForward:
     """
     Forward merge requiring extra space.
@@ -230,6 +209,19 @@ class SolutionForward:
             write += 1
 
 
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_backward(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+    """Wrapper for SolutionBackward."""
+    SolutionBackward().merge(nums1, m, nums2, n)
+
+
+def solve_forward(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+    """Wrapper for SolutionForward."""
+    SolutionForward().merge(nums1, m, nums2, n)
+
+
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -261,12 +253,17 @@ def solve():
     nums2 = list(map(int, lines[2].split())) if lines[2].strip() else []
     n = int(lines[3])
     
-    solution = Solution()
-    solution.merge(nums1, m, nums2, n)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    method_func(nums1, m, nums2, n)
     
     print(' '.join(map(str, nums1)))
 
 
 if __name__ == "__main__":
     solve()
-

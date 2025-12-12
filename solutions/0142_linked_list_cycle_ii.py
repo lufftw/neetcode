@@ -48,6 +48,29 @@ Space: O(1) - Only pointer references
 ================================================================================
 """
 from typing import Optional
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_floyd",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Floyd's algorithm with two phases",
+    },
+    "floyd": {
+        "method": "solve_floyd",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Floyd's algorithm with two phases",
+    },
+    "hashset": {
+        "method": "solve_hashset",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Hash set to find first revisited node",
+    },
+}
 
 
 # ============================================================================
@@ -104,11 +127,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Floyd's Algorithm (Two Phases)
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Floyd's Algorithm (Two Phases)
+# Time: O(n), Space: O(1)
+#   - Phase 1: Detect cycle and find meeting point O(n)
+#   - Phase 2: Find cycle start O(n)
+#   - Only pointer references needed
+# ============================================
+class SolutionFloyd:
     """
     Optimal solution using Floyd's algorithm with two phases.
     
@@ -154,10 +180,13 @@ class Solution:
         return finder
 
 
-# ============================================================================
-# Alternative: Using Hash Set (O(n) Space)
-# ============================================================================
-
+# ============================================
+# Solution 2: HashSet Approach
+# Time: O(n), Space: O(n)
+#   - Tracks visited nodes in a set
+#   - Returns first node seen twice (cycle start)
+#   - Simpler logic but uses O(n) extra space
+# ============================================
 class SolutionHashSet:
     """
     Alternative using a hash set to track visited nodes.
@@ -179,46 +208,17 @@ class SolutionHashSet:
         return None
 
 
-# ============================================================================
-# Alternative: Detailed Phase 1 with Early Exit
-# ============================================================================
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_floyd(head: Optional[ListNode]) -> Optional[ListNode]:
+    """Wrapper for SolutionFloyd."""
+    return SolutionFloyd().detectCycle(head)
 
-class SolutionDetailed:
-    """
-    More explicit version with clear phase separation.
-    
-    Includes early termination checks and detailed comments.
-    """
-    
-    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        # Edge cases
-        if not head or not head.next:
-            return None
-        
-        # Phase 1: Find meeting point
-        slow, fast = head, head
-        has_cycle = False
-        
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
-            
-            if slow == fast:
-                has_cycle = True
-                break
-        
-        if not has_cycle:
-            return None
-        
-        # Phase 2: Find entry point
-        # Key insight: distance from head to entry = distance from meeting to entry
-        entry_finder = head
-        
-        while entry_finder != slow:
-            entry_finder = entry_finder.next
-            slow = slow.next
-        
-        return entry_finder
+
+def solve_hashset(head: Optional[ListNode]) -> Optional[ListNode]:
+    """Wrapper for SolutionHashSet."""
+    return SolutionHashSet().detectCycle(head)
 
 
 # ============================================================================
@@ -259,8 +259,14 @@ def solve():
     if pos >= 0 and pos < len(nodes):
         nodes[-1].next = nodes[pos]
     
-    solution = Solution()
-    result = solution.detectCycle(nodes[0])
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nodes[0])
     
     # Find index of result node
     if result is None:
@@ -274,4 +280,3 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-

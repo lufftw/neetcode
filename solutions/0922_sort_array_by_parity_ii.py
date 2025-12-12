@@ -45,6 +45,24 @@ Space: O(1) - In-place swaps
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two independent pointers for even and odd positions",
+    },
+    "two_pointers": {
+        "method": "solve_two_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Two independent pointers for even and odd positions",
+    },
+}
 
 
 # ============================================================================
@@ -90,11 +108,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Two Independent Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution: Two Independent Pointers
+# Time: O(n), Space: O(1)
+#   - Find misplaced elements at even and odd positions
+#   - Swap them when both found
+#   - Optimal single-pass approach
+# ============================================
+class SolutionTwoPointers:
     """
     Optimal solution using two pointers for even and odd positions.
     
@@ -135,85 +156,12 @@ class Solution:
         return nums
 
 
-# ============================================================================
-# Alternative: Single Pass with Two Pointers
-# ============================================================================
-
-class SolutionSinglePass:
-    """
-    Alternative single-pass approach.
-    
-    Process even indices; when finding an odd number, find an even number
-    at an odd position to swap with.
-    """
-    
-    def sortArrayByParityII(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        odd_ptr = 1  # Pointer to search for even numbers at odd positions
-        
-        for even_ptr in range(0, n, 2):
-            # Check if current even position has odd number
-            if nums[even_ptr] % 2 == 1:
-                # Find even number at odd position
-                while nums[odd_ptr] % 2 == 1:
-                    odd_ptr += 2
-                
-                # Swap
-                nums[even_ptr], nums[odd_ptr] = nums[odd_ptr], nums[even_ptr]
-        
-        return nums
-
-
-# ============================================================================
-# Alternative: New Array Approach
-# ============================================================================
-
-class SolutionNewArray:
-    """
-    Alternative creating a new array.
-    
-    Uses O(n) extra space but simpler logic.
-    """
-    
-    def sortArrayByParityII(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        result = [0] * n
-        
-        even_idx = 0
-        odd_idx = 1
-        
-        for num in nums:
-            if num % 2 == 0:
-                result[even_idx] = num
-                even_idx += 2
-            else:
-                result[odd_idx] = num
-                odd_idx += 2
-        
-        return result
-
-
-# ============================================================================
-# Alternative: Two-Pass Segregate Then Interleave
-# ============================================================================
-
-class SolutionTwoPass:
-    """
-    Alternative: first segregate evens/odds, then interleave.
-    
-    Less efficient but conceptually simple.
-    """
-    
-    def sortArrayByParityII(self, nums: List[int]) -> List[int]:
-        evens = [x for x in nums if x % 2 == 0]
-        odds = [x for x in nums if x % 2 == 1]
-        
-        result = []
-        for i in range(len(evens)):
-            result.append(evens[i])
-            result.append(odds[i])
-        
-        return result
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_two_pointers(nums: List[int]) -> List[int]:
+    """Wrapper for SolutionTwoPointers."""
+    return SolutionTwoPointers().sortArrayByParityII(nums)
 
 
 # ============================================================================
@@ -237,12 +185,17 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split())) if line else []
     
-    solution = Solution()
-    result = solution.sortArrayByParityII(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nums)
     
     print(' '.join(map(str, result)))
 
 
 if __name__ == "__main__":
     solve()
-

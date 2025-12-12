@@ -33,8 +33,8 @@ tests_dir = "tests/0680_valid_palindrome_ii/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "validPalindrome"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_palindrome"]
@@ -51,27 +51,46 @@ complexity = "O(n) time, O(1) space"
 notes      = "Extension of palindrome check: allow one skip, try both directions on mismatch."
 
 [[solutions]]
-key    = "kskips"
-class  = "SolutionKSkips"
-method = "validPalindrome"
+key    = "two_pointers"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+families         = ["palindrome_validation"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers", "greedy"]
+related_problems = ["0125"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0125#default"]
+delta      = "Allow one character skip. On mismatch, check both skip-left and skip-right options."
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Two pointers with skip option on mismatch."
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "solve_recursive"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_palindrome"]
 data_structures  = ["string"]
-algorithms       = ["two_pointers"]
+algorithms       = ["two_pointers", "recursion"]
 related_problems = ["0680#default"]
 
 role       = "variant"
-variant    = "k_skips"
+variant    = "recursive"
 based_on   = ["0680#default"]
-delta      = "Generalized to allow K skips (extensible version)."
-complexity = "O(n) time, O(1) space"
-notes      = "Generalized version supporting K character skips."
+delta      = "Recursive helper function with explicit skip tracking."
+complexity = "O(n) time, O(n) space for recursion stack"
+notes      = "Recursive helper function approach."
 
 [[solutions]]
 key    = "iterative"
 class  = "SolutionIterative"
-method = "validPalindrome"
+method = "solve_iterative"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_palindrome"]
@@ -82,7 +101,7 @@ related_problems = ["0680#default"]
 role       = "variant"
 variant    = "iterative"
 based_on   = ["0680#default"]
-delta      = "Iterative helper function instead of recursive."
+delta      = "Fully iterative solution avoiding recursion."
 complexity = "O(n) time, O(1) space"
-notes      = "Iterative implementation of palindrome check helper."
+notes      = "Fully iterative solution avoiding recursion."
 

@@ -33,8 +33,8 @@ tests_dir = "tests/0125_valid_palindrome/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "isPalindrome"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_palindrome"]
@@ -51,14 +51,33 @@ complexity = "O(n) time, O(1) space"
 notes      = "Canonical opposite pointers pattern for symmetric/palindrome checking. Skip non-alphanumeric characters."
 
 [[solutions]]
-key    = "prefilter"
-class  = "SolutionPreFilter"
-method = "isPalindrome"
+key    = "two_pointers"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite_palindrome"]
+families         = ["palindrome_validation"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0680"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Two pointers from both ends with inline filtering."
+
+[[solutions]]
+key    = "filtered"
+class  = "SolutionFiltered"
+method = "solve_filtered"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_palindrome"]
 data_structures  = ["string"]
-algorithms       = ["two_pointers"]
+algorithms       = []
 related_problems = ["0125#default"]
 
 role       = "variant"
@@ -69,9 +88,9 @@ complexity = "O(n) time, O(n) space"
 notes      = "Two-pass approach: filter first, then check palindrome."
 
 [[solutions]]
-key    = "filtered"
+key    = "filtered_pointers"
 class  = "SolutionFilteredPointers"
-method = "isPalindrome"
+method = "solve_filtered_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_opposite_palindrome"]
@@ -82,7 +101,7 @@ related_problems = ["0125#default"]
 role       = "variant"
 variant    = "filtered_pointers"
 based_on   = ["0125#default"]
-delta      = "Uses helper functions for character validation."
-complexity = "O(n) time, O(1) space"
-notes      = "Cleaner implementation with helper functions."
+delta      = "Filter first, then use two pointers on filtered string."
+complexity = "O(n) time, O(n) space"
+notes      = "Hybrid approach: filter first, then use two pointers."
 

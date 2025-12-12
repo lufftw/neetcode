@@ -41,6 +41,29 @@ Space: O(1) - In-place swaps
 ================================================================================
 """
 from typing import List
+import os
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "method": "solve_opposite_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Opposite pointers swapping evens and odds",
+    },
+    "opposite_pointers": {
+        "method": "solve_opposite_pointers",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Opposite pointers swapping evens and odds",
+    },
+    "writer": {
+        "method": "solve_writer",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Same-direction reader/writer pattern",
+    },
+}
 
 
 # ============================================================================
@@ -101,11 +124,14 @@ def judge(actual, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 
 
-# ============================================================================
-# Solution - O(n) Opposite Pointers
-# ============================================================================
-
-class Solution:
+# ============================================
+# Solution 1: Opposite Pointers
+# Time: O(n), Space: O(1)
+#   - Even numbers migrate to left, odd to right
+#   - In-place swaps
+#   - Optimal single-pass approach
+# ============================================
+class SolutionOppositePointers:
     """
     Optimal solution using opposite pointers.
     
@@ -143,10 +169,13 @@ class Solution:
         return nums
 
 
-# ============================================================================
-# Alternative: Same-Direction (Writer Pattern)
-# ============================================================================
-
+# ============================================
+# Solution 2: Same-Direction Writer Pattern
+# Time: O(n), Space: O(1)
+#   - Move all even numbers to front by swapping
+#   - Single pass with write pointer
+#   - Alternative approach with same complexity
+# ============================================
 class SolutionWriter:
     """
     Alternative using same-direction reader/writer pattern.
@@ -166,38 +195,17 @@ class SolutionWriter:
         return nums
 
 
-# ============================================================================
-# Alternative: New Array (Non-In-Place)
-# ============================================================================
-
-class SolutionNewArray:
-    """
-    Alternative creating a new array.
-    
-    Simpler logic but uses O(n) extra space.
-    """
-    
-    def sortArrayByParity(self, nums: List[int]) -> List[int]:
-        evens = [x for x in nums if x % 2 == 0]
-        odds = [x for x in nums if x % 2 == 1]
-        return evens + odds
+# ============================================
+# Wrapper functions for test_runner integration
+# ============================================
+def solve_opposite_pointers(nums: List[int]) -> List[int]:
+    """Wrapper for SolutionOppositePointers."""
+    return SolutionOppositePointers().sortArrayByParity(nums)
 
 
-# ============================================================================
-# Alternative: Sort with Custom Key
-# ============================================================================
-
-class SolutionSort:
-    """
-    Alternative using Python's sort with custom key.
-    
-    Elegant one-liner but O(n log n) instead of O(n).
-    Key function: even numbers map to 0, odd to 1, so evens come first.
-    """
-    
-    def sortArrayByParity(self, nums: List[int]) -> List[int]:
-        nums.sort(key=lambda x: x % 2)
-        return nums
+def solve_writer(nums: List[int]) -> List[int]:
+    """Wrapper for SolutionWriter."""
+    return SolutionWriter().sortArrayByParity(nums)
 
 
 # ============================================================================
@@ -221,12 +229,17 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split())) if line else []
     
-    solution = Solution()
-    result = solution.sortArrayByParity(nums)
+    # Read environment variable to select which solution method to use
+    method_name = os.environ.get('SOLUTION_METHOD', 'default')
+    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
+    method_func_name = method_info['method']
+    
+    # Dynamically call the selected solution method
+    method_func = globals()[method_func_name]
+    result = method_func(nums)
     
     print(' '.join(map(str, result)))
 
 
 if __name__ == "__main__":
     solve()
-

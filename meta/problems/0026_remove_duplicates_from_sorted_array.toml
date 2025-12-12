@@ -33,8 +33,8 @@ tests_dir = "tests/0026_remove_duplicates_from_sorted_array/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "removeDuplicates"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_writer_dedup"]
@@ -51,9 +51,28 @@ complexity = "O(n) time, O(1) space"
 notes      = "Canonical same-direction two-pointer pattern for in-place deduplication. Reader/writer pattern."
 
 [[solutions]]
+key    = "two_pointers"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_dedup"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0027", "0080"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Reader/writer pointer pattern for in-place deduplication."
+
+[[solutions]]
 key    = "enumerate"
 class  = "SolutionEnumerate"
-method = "removeDuplicates"
+method = "solve_enumerate"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_writer_dedup"]
@@ -64,25 +83,7 @@ related_problems = ["0026#default"]
 role       = "variant"
 variant    = "enumerate"
 based_on   = ["0026#default"]
-delta      = "Uses enumerate for cleaner indexing."
+delta      = "Uses enumerate for cleaner iteration."
 complexity = "O(n) time, O(1) space"
 notes      = "Alternative implementation using enumerate."
-
-[[solutions]]
-key    = "template"
-class  = "SolutionTemplate"
-method = "removeDuplicates"
-
-api_kernels      = ["TwoPointersTraversal"]
-patterns         = ["two_pointer_writer_dedup"]
-data_structures  = ["array"]
-algorithms       = ["two_pointers"]
-related_problems = ["0026#default"]
-
-role       = "variant"
-variant    = "template"
-based_on   = ["0026#default"]
-delta      = "Template-based approach for clarity."
-complexity = "O(n) time, O(1) space"
-notes      = "Template version demonstrating the pattern structure."
 

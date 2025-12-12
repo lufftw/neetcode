@@ -33,8 +33,8 @@ tests_dir = "tests/0027_remove_element/"
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "Solution"
-method = "removeElement"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
 
 api_kernels      = ["TwoPointersTraversal"]
 patterns         = ["two_pointer_writer_remove"]
@@ -49,4 +49,41 @@ based_on   = ["0026#default"]
 delta      = "Remove specific value instead of duplicates. Array need not be sorted."
 complexity = "O(n) time, O(1) space"
 notes      = "Same-direction two-pointer pattern for removing specific elements in-place."
+
+[[solutions]]
+key    = "two_pointers"
+class  = "SolutionTwoPointers"
+method = "solve_two_pointers"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_remove"]
+families         = ["in_place_array_modification"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0026", "0283"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0026#default"]
+delta      = "Remove specific value instead of duplicates. Array need not be sorted."
+complexity = "O(n) time, O(1) space"
+notes      = "Same as default. Reader/writer pointer pattern for in-place removal."
+
+[[solutions]]
+key    = "two_ends"
+class  = "SolutionTwoEnds"
+method = "solve_two_ends"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_writer_remove"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+related_problems = ["0027#default"]
+
+role       = "variant"
+variant    = "opposite_pointers"
+based_on   = ["0027#default"]
+delta      = "Opposite pointers swapping from both ends. Efficient when val is rare."
+complexity = "O(n) time, O(1) space"
+notes      = "Opposite pointers swapping from both ends (efficient when val is rare)."
 
