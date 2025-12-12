@@ -1028,13 +1028,48 @@ python tools/generate_mindmaps.py --html
 
 Configuration: `tools/generate_mindmaps.toml`
 
+### Build Documentation Locally
+
+> ⚠️ **Optional Feature:** Building documentation locally is **completely optional**. Core LeetCode practice functionality works without any documentation build setup.
+
+**Recommended Method (Simple):**
+
+The easiest way to build documentation locally is using the manual scripts:
+
+```bash
+# Windows
+scripts\build_docs.bat
+
+# Linux/macOS
+./scripts/build_docs.sh
+
+# Build and preview locally
+scripts\build_docs.bat --serve  # Windows
+./scripts/build_docs.sh --serve  # Linux/macOS
+```
+
+📖 **See [Building Documentation Locally (Manual Method)](docs/BUILD_DOCS_MANUAL.md)** for complete guide.
+
+**Advanced Option (Optional):**
+
+If you want to test the exact GitHub Actions workflow locally, you can use `act`:
+
+📖 **See [Running GitHub Actions Locally with Act](docs/ACT_LOCAL_GITHUB_ACTIONS.md)** — *Note: Requires Docker and act tool. Only needed if you want to test CI/CD workflows.*
+
 ### Documentation
 
+**Core Documentation:**
 - [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
 - [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
 - [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
 - [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
+
+**Local Documentation Build (Optional):**
+- [`docs/BUILD_DOCS_MANUAL.md`](docs/BUILD_DOCS_MANUAL.md) — ⭐ **Recommended:** Simple manual build method
+- [`docs/ACT_LOCAL_GITHUB_ACTIONS.md`](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — Advanced: Test CI/CD workflows locally with act (requires Docker)
+
+**Deployment:**
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 
 ---
