@@ -37,7 +37,7 @@ def generate_family_derivation(ontology: OntologyData, problems: dict[str, Probl
         if base.solutions:
             notes = base.solutions[0].get("notes", "")
             if notes:
-                lines.extend([f"> {notes}", ""])
+                lines.extend([notes, ""])
         
         lines.extend(["### Derived Problems", ""])
         for derived_id in base.derived_problems:
