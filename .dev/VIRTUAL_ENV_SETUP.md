@@ -243,6 +243,12 @@ pytest-cov>=4.1.0       # Coverage reporting
 
 # Optional packages (for complexity estimation):
 big-O>=0.10.0           # Time complexity estimation
+
+# Documentation generation (MkDocs):
+mkdocs>=1.6.0           # MkDocs static site generator
+mkdocs-material>=9.5.0  # Material theme for MkDocs
+mkdocs-minify-plugin>=0.7.0  # Minify HTML output
+mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 ```
 
 ---

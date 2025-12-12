@@ -136,9 +136,10 @@ tools/run_format_tests.sh
 |----------|-------------|
 | [TESTING.md](TESTING.md) | Complete testing documentation (strategy, principles, workflow) |
 | [VIRTUAL_ENV_SETUP.md](VIRTUAL_ENV_SETUP.md) | Virtual environment setup guide |
+| [DOCUMENTATION_ARCHITECTURE.md](DOCUMENTATION_ARCHITECTURE.md) | Documentation structure and best practices |
 | [tests/README.md](tests/README.md) | Component tests detailed description |
 | [tests_solutions/README.md](tests_solutions/README.md) | Solution tests detailed description |
-| [../tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) | Format checking tools description |
+| [../tools/README.md](../tools/README.md) | Developer tools reference |
 
 ---
 

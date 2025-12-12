@@ -40,8 +40,9 @@ jobs:
         run: |
           pip install -r requirements.txt
       
-      - name: Generate Mind Maps (HTML)
+      - name: Generate Mind Maps (Markdown + HTML)
         run: |
+          python tools/generate_mindmaps.py
           python tools/generate_mindmaps.py --html
       
       - name: Build MkDocs site

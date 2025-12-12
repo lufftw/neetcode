@@ -490,6 +490,16 @@ python runner/test_runner.py <problem_name> --estimate
 ```python
 # solutions/0001_two_sum.py
 from typing import List
+from _runner import get_solver
+
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "twoSum",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Single pass with hash map",
+    },
+}
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -509,13 +519,16 @@ def solve():
     nums = list(map(int, lines[0].split(',')))
     target = int(lines[1])
     
-    # Run solution
-    result = Solution().twoSum(nums, target)
+    # Run solution (polymorphic dispatch)
+    solver = get_solver(SOLUTIONS)
+    result = solver.twoSum(nums, target)
     print(result)
 
 if __name__ == "__main__":
     solve()
 ```
+
+> 📖 See [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) for the complete specification.
 
 ### 📋 Test File Format
 
@@ -618,6 +631,8 @@ greedy                  44.82ms   O(kN)           3/3
 
 Create with template: `new_problem.bat 0023_merge_k_lists --multi`
 
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema) for complete SOLUTIONS schema and validation rules.
+
 ### 🔀 Flexible Output Validation
 
 For problems with multiple valid answers ("return in any order"):
@@ -658,6 +673,8 @@ JUDGE_FUNC = judge
 ```python
 COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 ```
+
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#c-judge--validation-contract) for complete JUDGE_FUNC signature and validation rules.
 
 ### 🎲 Random Test Generation
 
@@ -701,6 +718,8 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 # Save failing cases
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
+
+> 📖 See [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) for complete generator specification and best practices.
 
 ### 📈 Time Complexity Estimation
 
@@ -766,8 +785,9 @@ neetcode/
 │   └── util.py                # Re-exports (backward compatible)
 │
 ├── templates/                 # 📄 Problem templates
-│   ├── template_solution.py          # Single solution
-│   └── template_solution_multi.py    # Multi-solution (polymorphic)
+│   ├── template_solution.py       # Single solution template
+│   ├── template_solution_multi.py # Multi-solution (polymorphic)
+│   └── template_test.txt          # Test case template
 │
 ├── .vscode/                   # 🔧 VS Code integration
 │   ├── settings.json          # Python environment settings
@@ -783,14 +803,22 @@ neetcode/
 │   └── stylesheets/           # Custom CSS
 │
 ├── tools/                     # 🛠️ Utility scripts
-│   ├── generate_mindmaps_ai.py   # 🤖 AI mind map generator
-│   ├── mindmap_ai_config.toml    # AI generation configuration
-│   ├── generate_mindmaps.py      # Rule-based mind map generator
-│   ├── generate_mindmaps.toml    # Rule-based configuration
-│   ├── generate_pattern_docs.py  # Generate pattern docs
-│   └── prompts/                  # AI prompt management
-│       ├── README.md             # Prompt documentation
-│       └── generated/            # Auto-generated prompts
+│   ├── generate_mindmaps_ai.py    # 🤖 AI mind map generator
+│   ├── mindmap_ai_config.toml     # AI generation configuration
+│   ├── generate_mindmaps.py       # Rule-based mind map generator
+│   ├── generate_mindmaps.toml     # Rule-based configuration
+│   ├── generate_pattern_docs.py   # Generate pattern docs
+│   ├── generate_pattern_docs.toml # Pattern docs configuration
+│   ├── check_solutions.py         # Solution validation tool
+│   ├── prepare_llm_input.py       # Prepare LLM input data
+│   ├── text_to_mindmap.py         # Convert text to mindmap
+│   ├── mindmaps/                  # Mind map generator modules
+│   ├── patterndocs/               # Pattern docs generator modules
+│   ├── shared/                    # Shared utilities
+│   ├── prompts/                   # AI prompt management
+│   │   ├── README.md              # Prompt documentation
+│   │   └── generated/             # Auto-generated prompts
+│   └── tests/                     # Format validation tests
 │
 ├── ontology/                  # 🧬 Algorithm ontology (TOML)
 │   ├── api_kernels.toml       # API kernel definitions
@@ -816,8 +844,12 @@ neetcode/
 │
 ├── .dev/                      # 🧪 Maintainer zone (unit tests)
 │   ├── tests/                 # Unit test suite (150+ cases)
-│   ├── run_tests.bat/.sh      # Run unit tests
+│   ├── tests_solutions/       # Solution validation tests
+│   ├── run_tests.bat/.sh      # Run runner unit tests
+│   ├── run_all_tests.bat/.sh  # Run all unit tests
+│   ├── run_tests_solutions.bat/.sh  # Run solution tests
 │   ├── TESTING.md             # Testing documentation
+│   ├── VIRTUAL_ENV_SETUP.md   # Virtual environment guide
 │   └── README.md              # Maintainer guide
 │
 ├── .github/                   # 🚀 GitHub configuration
@@ -854,6 +886,27 @@ neetcode/
 | `.dev/` | Unit tests (150+ cases) | 🔧 Maintainers |
 
 > **📝 Note:** Files in `docs/mindmaps/`, `docs/patterns/`, and `docs/pages/` are auto-generated. Edit the source files in `ontology/`, `meta/`, and `tools/` instead.
+
+### Documentation Guide
+
+Documentation is organized by **target audience**:
+
+| Location | Purpose | Audience |
+|:---------|:--------|:---------|
+| `docs/` | User documentation (published to website) | ✅ Users |
+| `tools/README.md` | Developer tools reference | 🔧 Contributors |
+| `tools/*/README.md` | Module technical details | 🔧 Contributors |
+| `.dev/` | Maintainer documentation | 🔧 Maintainers |
+
+**Key Documentation Files:**
+
+| Document | Description |
+|:---------|:------------|
+| [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | Solution file specification |
+| [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | Generator file specification |
+| [`tools/README.md`](tools/README.md) | Complete tools reference |
+| [`.dev/README.md`](.dev/README.md) | Maintainer guide |
+| [`.dev/DOCUMENTATION_ARCHITECTURE.md`](.dev/DOCUMENTATION_ARCHITECTURE.md) | Documentation structure |
 
 ---
 
@@ -954,6 +1007,9 @@ Configuration: `tools/generate_mindmaps.toml`
 
 - [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
 - [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
+- [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
+- [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
+- [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 
 ---

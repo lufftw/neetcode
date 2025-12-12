@@ -420,7 +420,7 @@ The runner reports validation mode for each test case:
 
 ---
 
-## D. Static Tests / Dynamic Tests / Generators Contract
+## D. Test Files Contract
 
 ### D.1 Directory Conventions
 
@@ -477,135 +477,42 @@ tests/{problem_id}_{slug}_{case_number}.{in|out}
 
 ### D.3 Generator Requirements
 
-#### File Location
+> 📖 **Full Specification**: See [`GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md) for complete generator documentation.
 
-```
-generators/{problem_id}_{slug}.py
-```
+#### Overview
 
-#### Required Function
+Generators enable dynamic test case generation for stress testing and edge case discovery.
 
-```python
-def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
-    """
-    Generate random test case inputs.
-    
-    Args:
-        count: Number of test cases to generate
-        seed: Random seed for reproducibility (optional)
-    
-    Yields:
-        str: Test input in the same format as .in files
-    """
-```
+| Requirement | Description |
+|-------------|-------------|
+| File location | `generators/{problem_id}_{slug}.py` |
+| Required function | `generate(count: int, seed: Optional[int]) -> Iterator[str]` |
+| JUDGE_FUNC | Solutions using generators MUST define `JUDGE_FUNC` |
 
-#### Generator Contract
+#### Key Rules
 
-1. **Yield format**: Each yield MUST be a valid `.in` file content string
-2. **Reproducibility**: If `seed` is provided, output MUST be deterministic
-3. **Edge cases first**: Yield known edge cases before random cases
-4. **Constraint compliance**: Generated cases MUST respect LeetCode constraints
-5. **JUDGE_FUNC required**: Solutions using generators MUST have `JUDGE_FUNC`
-
-#### Example Generator
-
-```python
-import random
-from typing import Iterator, Optional
-
-def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
-    """Generate test cases for Two Sum."""
-    if seed is not None:
-        random.seed(seed)
-    
-    # Edge cases first
-    edge_cases = [
-        "2,7,11,15\n9",   # Classic example
-        "3,2,4\n6",       # Answer not first element
-        "3,3\n6",         # Duplicate values
-    ]
-    
-    for edge in edge_cases:
-        yield edge
-        count -= 1
-        if count <= 0:
-            return
-    
-    # Random cases
-    for _ in range(count):
-        size = random.randint(2, 5000)
-        nums = [random.randint(-10**6, 10**6) for _ in range(size)]
-        i, j = random.sample(range(size), 2)
-        target = nums[i] + nums[j]
-        yield f"{','.join(map(str, nums))}\n{target}"
-```
-
-#### Optional: Complexity Estimation Function
-
-```python
-def generate_for_complexity(n: int) -> str:
-    """
-    Generate test case with specific input size for complexity estimation.
-    
-    Args:
-        n: Target input size
-    
-    Returns:
-        str: Test input with size approximately n
-    """
-```
+1. Generator output MUST match `.in` file format
+2. Same `seed` MUST produce identical output (reproducibility)
+3. Edge cases should be yielded before random cases
 
 ### D.4 Running Tests
 
-#### Static Tests Only
+#### Static Tests
 
 ```bash
 python runner/test_runner.py 0001_two_sum
 ```
 
-#### Static + Generated Tests
+#### With Generated Tests
+
+> 📖 **Full CLI Reference**: See [`GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md#g-running-generated-tests) for all generator options.
 
 ```bash
+# Static + N generated tests
 python runner/test_runner.py 0001_two_sum --generate 10
-```
 
-#### Generated Tests Only
-
-```bash
-python runner/test_runner.py 0001_two_sum --generate-only 10
-```
-
-#### Reproducible Generation
-
-```bash
+# Reproducible with seed
 python runner/test_runner.py 0001_two_sum --generate 10 --seed 12345
-```
-
-### D.5 Failure Reproduction
-
-#### Seed-Based Reproduction
-
-When a generated test fails:
-
-```
-gen_7: ❌ FAIL [generated]
-   ┌─ Input ─────────────────────────────────
-   │ 5,3,8,1,2
-   │ 11
-   └─────────────────────────────────────────
-
-💡 To reproduce: python runner/test_runner.py 0001 --generate 10 --seed 12345
-```
-
-#### Save Failed Cases
-
-```bash
-python runner/test_runner.py 0001 --generate 10 --save-failed
-```
-
-Failed cases are saved to:
-```
-tests/{problem_id}_failed_{n}.in
 ```
 
 ---
@@ -768,34 +675,6 @@ if __name__ == "__main__":
     solve()
 ```
 
-### Generator Template
-
-```python
-# generators/{problem_id}_{slug}.py
-import random
-from typing import Iterator, Optional
-
-def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
-    if seed is not None:
-        random.seed(seed)
-    
-    # Edge cases
-    edge_cases = ["..."]
-    for edge in edge_cases:
-        yield edge
-        count -= 1
-        if count <= 0:
-            return
-    
-    # Random cases
-    for _ in range(count):
-        yield _generate_case()
-
-def _generate_case() -> str:
-    # Generate valid input matching .in format
-    ...
-```
-
 ### CLI Reference
 
 ```bash
@@ -805,13 +684,15 @@ python runner/test_runner.py {problem} --method X   # Specific solution
 python runner/test_runner.py {problem} --all        # All solutions
 python runner/test_runner.py {problem} --benchmark  # With timing
 
-# Generator
+# Generator (see GENERATOR_CONTRACT.md for full options)
 python runner/test_runner.py {problem} --generate N          # Static + N generated
-python runner/test_runner.py {problem} --generate-only N     # Only generated
 python runner/test_runner.py {problem} --generate N --seed S # Reproducible
-python runner/test_runner.py {problem} --generate N --save-failed
-
-# Complexity estimation
-python runner/test_runner.py {problem} --estimate
 ```
 
+### Related Documentation
+
+- [`GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md) — Generator file specification
+  - Full `generate()` function spec
+  - Generator design patterns
+  - Complexity estimation
+  - Running generated tests CLI

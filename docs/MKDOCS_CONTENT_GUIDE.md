@@ -26,6 +26,9 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 | `docs/patterns/*.md` | Pattern documentation | `https://lufftw.github.io/neetcode/patterns/...` |
 | `docs/mindmaps/*.md` | All mind map Markdown files | `https://lufftw.github.io/neetcode/mindmaps/...` |
 | `docs/pages/mindmaps/*.html` | Interactive mind map HTML files | `https://lufftw.github.io/neetcode/pages/mindmaps/...` |
+| `docs/SOLUTION_CONTRACT.md` | Solution file specification | `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/` |
+| `docs/GENERATOR_CONTRACT.md` | Generator file specification | `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/` |
+| `docs/ARCHITECTURE_MIGRATION.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
 | `docs/GITHUB_PAGES_SETUP.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
 
 ### 📝 Special Notes
@@ -33,6 +36,8 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 - **README.md** and **README_zh-TW.md**: These files do **NOT** appear as separate pages on the website. Instead, they are included in `docs/index.md` and `docs/index_zh-TW.md` via the `include-markdown` plugin.
 - **docs/patterns/**: ✅ Now configured in `nav` and available on the website.
 - **docs/GITHUB_PAGES_SETUP.md**: ✅ Now configured in `nav` and available on the website.
+- **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, and `ARCHITECTURE_MIGRATION.md` are now configured in `nav`.
+- **Tools docs**: Developer tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (not on website, GitHub only).
 
 ---
 
@@ -54,7 +59,8 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 
 | Directory/File | Description | GitHub Link Format |
 |:---------------|:------------|:-------------------|
-| `tools/` | Utility scripts | `https://github.com/lufftw/neetcode/blob/main/tools/...` |
+| `tools/*.py` | Tool scripts (code only) | `https://github.com/lufftw/neetcode/blob/main/tools/...` |
+| `tools/README.md` | Comprehensive tools reference | `https://github.com/lufftw/neetcode/blob/main/tools/README.md` |
 | `ontology/` | Algorithm ontology data (TOML) | `https://github.com/lufftw/neetcode/blob/main/ontology/...` |
 | `meta/` | Problem and pattern metadata | `https://github.com/lufftw/neetcode/blob/main/meta/...` |
 | `roadmaps/` | Learning path definitions | `https://github.com/lufftw/neetcode/blob/main/roadmaps/...` |
@@ -68,7 +74,15 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 | `docs/ONTOLOGY_DESIGN.md` | Ontology design documentation | `https://github.com/lufftw/neetcode/blob/main/docs/ONTOLOGY_DESIGN.md` |
 | `docs/MKDOCS_CONTENT_GUIDE.md` | This file | `https://github.com/lufftw/neetcode/blob/main/docs/MKDOCS_CONTENT_GUIDE.md` |
 
-**Note**: `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` are now included in the website navigation. See [Content Included in Website](#content-included-in-website) section above.
+**Note**: The following docs are now configured in `nav` and available on the website:
+
+- `docs/patterns/` - Pattern documentation
+- `docs/GITHUB_PAGES_SETUP.md` - GitHub Pages setup guide
+- `docs/SOLUTION_CONTRACT.md` - Solution file specification
+- `docs/GENERATOR_CONTRACT.md` - Generator file specification
+- `docs/ARCHITECTURE_MIGRATION.md` - Architecture migration guide
+
+See [Content Included in Website](#content-included-in-website) section above.
 
 ### 🔧 Maintainer Documentation
 
@@ -166,6 +180,16 @@ A: Check the `nav` configuration in `mkdocs.yml`. Only files listed in `nav` app
 
 A: ✅ Yes! `docs/patterns/` is now configured in `nav` and available on the website at `https://lufftw.github.io/neetcode/patterns/`. You can use relative paths in README.md to link to it.
 
+### Q: Are Reference docs on the website?
+
+A: ✅ Yes! The "📚 Reference" section is now configured in `nav` and includes:
+
+- Solution Contract at `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/`
+- Generator Contract at `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/`
+- Architecture Migration at `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/`
+
+**Note**: Tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (GitHub only, not on website).
+
 ### Q: Do links in README.md work in both GitHub and the website?
 
 A: It depends on the link type:
@@ -195,6 +219,8 @@ If you need to access these documents, use the GitHub absolute URLs provided in 
 
 - **2025-01-XX**: Initial version
 - **2025-01-XX**: Updated - Added `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` to website navigation
+- **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration
+- **2025-12-12**: Moved Tools documentation from `docs/TOOLS.md` to `tools/README.md` (developer docs belong with code)
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---
@@ -208,7 +234,7 @@ Before adding links in README.md, confirm:
 - [ ] Is the file in `mkdocs.yml` `nav`?
   - ✅ Yes → Can use relative paths or website URLs
   - ❌ No → Use GitHub absolute URLs
-- [ ] Is the file in `.dev/`, `solutions/`, `tests/`, or other code directories?
+- [ ] Is the file in `.dev/`, `solutions/`, `tests/`, `tools/*.py`, or other code directories?
   - ✅ Yes → Use GitHub absolute URLs
 - [ ] Is the file in `docs/` directory but not in `nav`?
   - ✅ Yes → Use GitHub absolute URLs, or add it to `nav` first
