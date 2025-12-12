@@ -33,6 +33,7 @@ This directory contains utility scripts for project maintenance and development.
 - ✅ No external tools required
 - ✅ Simple one-command build
 - ✅ Fast execution
+- ✅ Interactive prompt for AI mind map generation (optional, requires OPENAI_API_KEY)
 
 📖 **[Full Documentation →](../docs/BUILD_DOCS_MANUAL.md)**
 
@@ -72,6 +73,13 @@ scripts\run_case.bat 0001_two_sum 1
 
 ### Build Documentation
 
+The build script will:
+1. Generate standard mind maps (Markdown)
+2. Generate mind maps (HTML)
+3. **Ask if you want to generate AI-powered mind maps** (requires OPENAI_API_KEY)
+4. Build MkDocs site
+5. Copy mind map files
+
 ```bash
 # Windows
 scripts\build_docs.bat
@@ -79,6 +87,8 @@ scripts\build_docs.bat
 # Linux/macOS
 ./scripts/build_docs.sh
 ```
+
+> **Note:** AI mind map generation is optional. The script will prompt you during the build process. You can skip it if you don't have an OpenAI API key configured.
 
 ### Build and Preview Locally
 

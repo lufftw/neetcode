@@ -50,7 +50,7 @@ echo "============================================"
 echo ""
 
 # Step 1: Generate Mind Maps (Markdown)
-echo "[1/4] Generating mind maps (Markdown)..."
+echo "[1/5] Generating mind maps (Markdown)..."
 "$VENV_PYTHON" tools/generate_mindmaps.py
 if [ $? -ne 0 ]; then
     echo "Error: Failed to generate mind maps"
@@ -58,23 +58,42 @@ if [ $? -ne 0 ]; then
 fi
 
 # Step 2: Generate Mind Maps (HTML)
-echo "[2/4] Generating mind maps (HTML)..."
+echo "[2/5] Generating mind maps (HTML)..."
 "$VENV_PYTHON" tools/generate_mindmaps.py --html
 if [ $? -ne 0 ]; then
     echo "Error: Failed to generate HTML mind maps"
     exit 1
 fi
 
-# Step 3: Build MkDocs site
-echo "[3/4] Building MkDocs site..."
+# Step 3: Ask if user wants to generate AI mind maps
+echo ""
+echo "[3/5] Generate AI-powered mind maps?"
+echo "Note: This requires OPENAI_API_KEY environment variable"
+echo ""
+read -p "Generate AI mind maps? (y/N): " GENERATE_AI
+if [ "$GENERATE_AI" = "y" ] || [ "$GENERATE_AI" = "Y" ]; then
+    echo "Generating AI mind maps..."
+    "$VENV_PYTHON" tools/generate_mindmaps_ai.py
+    if [ $? -ne 0 ]; then
+        echo "Warning: Failed to generate AI mind maps (may need OPENAI_API_KEY)"
+        echo "Continuing with build..."
+    else
+        echo "AI mind maps generated successfully."
+    fi
+else
+    echo "Skipping AI mind map generation."
+fi
+
+# Step 4: Build MkDocs site
+echo "[4/5] Building MkDocs site..."
 "$VENV_PYTHON" -m mkdocs build
 if [ $? -ne 0 ]; then
     echo "Error: Failed to build MkDocs site"
     exit 1
 fi
 
-# Step 4: Copy mind map HTML files
-echo "[4/4] Copying mind map HTML files..."
+# Step 5: Copy mind map HTML files
+echo "[5/5] Copying mind map HTML files..."
 if [ -d "$PROJECT_ROOT/docs/pages/mindmaps" ]; then
     cp -r "$PROJECT_ROOT/docs/pages/mindmaps" "$PROJECT_ROOT/site/pages/" 2>/dev/null || true
 fi
