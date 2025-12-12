@@ -1,234 +1,107 @@
-# NeetCode Tools
+# Solution Tools
 
-This directory contains code generation and documentation tools for the NeetCode Practice Framework.
-
-## Overview
-
-The tools in this directory automate the generation of:
-- **Mind Maps**: Interactive visualizations of algorithm patterns and problem relationships
-- **AI-Powered Mind Maps**: AI-generated creative mind maps that synthesize ontology insights
-- **Pattern Documentation**: Comprehensive documentation for algorithmic patterns
+Tools for checking and validating solution files.
 
 ## Tools
 
-### 1. Mind Map Generator (`generate_mindmaps.py`)
+### `check_solutions.py`
 
-Generates Markmap-compatible mind maps from ontology and problem metadata.
+Main checker for solution file compliance with Pure Polymorphic Architecture.
 
-**Features:**
-- 9 different mind map types (pattern hierarchy, family derivation, algorithm usage, etc.)
-- Markdown output for VS Code markmap extension
-- HTML output for GitHub Pages deployment
-- Configurable GitHub repository links
+**Checks:**
+1. SOLUTIONS dictionary exists
+2. SOLUTIONS contains 'class' field
+3. No wrapper functions (solve_*)
+4. solve() uses get_solver()
+5. Imports _runner.get_solver
+6. Solution comment format: "Solution 1:" not "Solution:" or "Solution -"
+7. Solution classes have Time and Space complexity comments
 
-**Quick Start:**
+**Usage:**
 ```bash
-# Generate all mind maps (Markdown only)
-python tools/generate_mindmaps.py
-
-# Generate Markdown + HTML for GitHub Pages
-python tools/generate_mindmaps.py --html
-
-# Generate specific type
-python tools/generate_mindmaps.py --type pattern_hierarchy
-
-# List available types
-python tools/generate_mindmaps.py --list
+python tools/check_solutions.py
 ```
 
-**See:** [`mindmaps/README.md`](mindmaps/README.md) for detailed documentation.
+### `run_format_tests.py`
 
-### 2. AI-Powered Mind Map Generator (`generate_mindmaps_ai.py`)
+Standalone script to run format checking unit tests.
 
-Generates creative, AI-synthesized mind maps using OpenAI's API. Analyzes the entire knowledge graph (API Kernels, Patterns, Algorithms, Data Structures, Problem Families) to discover non-obvious connections and generate insights.
-
-**Features:**
-- AI-powered deep pattern synthesis
-- Multi-language generation (English, 繁體中文)
-- Smart linking: Problems link to GitHub solutions (when available) or LeetCode
-- Configurable learning goals (interview prep, systematic learning, quick review, etc.)
-- Multiple output styles (creative, academic, practical, minimal, balanced)
-- Interactive mode for guided generation
-
-**Requirements:**
-- OpenAI API key (set `OPENAI_API_KEY` environment variable or enter interactively)
-- `openai` package: `pip install openai`
-
-**Quick Start:**
+**Usage:**
 ```bash
-# Interactive mode (will prompt for API key and options)
-python tools/generate_mindmaps_ai.py
+# Direct execution
+python tools/run_format_tests.py
 
-# Use config file
-python tools/generate_mindmaps_ai.py --config mindmap_ai_config.toml
+# With verbose output
+python tools/run_format_tests.py --verbose
 
-# Quick options
-python tools/generate_mindmaps_ai.py --goal interview --topic sliding_window
-python tools/generate_mindmaps_ai.py --style creative --model gpt-4
+# Using shell scripts (recommended)
+# Windows
+tools\run_format_tests.bat
 
-# Show current config
-python tools/generate_mindmaps_ai.py --list-config
+# Linux/Mac
+tools/run_format_tests.sh
 ```
 
-**Configuration:**
-- Config file: `tools/mindmap_ai_config.toml`
-- Supports TOML-based configuration for ontology selection, problem filtering, generation goals, and output settings
+## Tests
 
-**Output:**
-- Markdown files: `docs/mindmaps/neetcode_ontology_ai_*.md`
-- HTML files: `docs/pages/mindmaps/neetcode_ontology_ai_*.html` (for GitHub Pages)
+### `tests/test_solution_format.py`
 
-**Prompt Generation:**
-- Prompts are automatically generated and saved to `tools/prompts/generated/mindmap_prompt.md`
-- The prompt file contains both system prompt and user prompt, ready for manual use
-- **Tracked in Git**: The prompt file is committed to the repository for **traceability** — you can always see which prompt was used to generate each AI mind map
-- If you don't have an API key, you can copy the generated prompt to ChatGPT/Claude web interface
-- Prompt is saved before API call, so you can use it even if API call fails
+Unit tests for solution file format:
 
-**Prompt Options:**
-When running the script, you'll be prompted with options for handling the prompt:
+- `test_solution_comment_format()` - Validates Solution comment format
+- `test_complexity_comments()` - Checks Time/Space complexity presence
+- `test_solutions_dictionary_structure()` - Validates SOLUTIONS structure
+- `test_no_wrapper_functions()` - Ensures no wrapper functions exist
+- `test_uses_get_solver()` - Verifies get_solver() usage
 
-- **First run** (no existing prompt):
-  - `[o]` Generate prompt with AI (recommended) - Creates base prompt, then optimizes it with AI
-  - `[r]` Generate prompt from config (standard) - Creates prompt directly from config and data
+## Architecture Requirements
 
-- **Subsequent runs** (existing prompt found):
-  - `[l]` Load existing prompt - Use the saved prompt as-is (fastest)
-  - `[o]` Optimize existing prompt by AI - Let AI improve the existing prompt structure and clarity
-  - `[r]` Regenerate prompt from config - Rebuild prompt from current config and data
-  - `[a]` Regenerate from config + Optimize by AI - Rebuild from config, then optimize with AI (best of both worlds)
+All solution files must follow the Pure Polymorphic Architecture:
 
-The AI optimization option helps improve prompt clarity and effectiveness while preserving all critical requirements and data sections. The `[a]` option is useful when you've updated your config or data and want both fresh content and AI optimization.
+1. **SOLUTIONS Dictionary** (required):
+   ```python
+   SOLUTIONS = {
+       "default": {
+           "class": "SolutionTwoPointers",
+           "method": "removeElement",
+           "complexity": "O(n) time, O(1) space",
+           "description": "Reader/writer pointer pattern",
+       },
+   }
+   ```
 
-**See:**
-- [`docs/GITHUB_PAGES_SETUP.md`](../docs/GITHUB_PAGES_SETUP.md) for manual generation workflow
-- [`prompts/README.md`](prompts/README.md) for detailed prompt usage guide
+2. **Solution Classes** (polymorphic):
+   ```python
+   class SolutionTwoPointers:
+       def removeElement(self, nums: List[int], val: int) -> int:
+           ...
+   ```
 
-### 3. Pattern Documentation Generator (`generate_pattern_docs.py`)
+3. **Solution Comments** (format):
+   ```python
+   # ============================================
+   # Solution 1: Description
+   # Time: O(n), Space: O(1)
+   #   - Additional details
+   # ============================================
+   ```
 
-Generates comprehensive pattern documentation by composing ontology definitions and per-problem markdown snippets.
+4. **solve() Function**:
+   ```python
+   def solve():
+       solver = get_solver(SOLUTIONS)
+       result = solver.methodName(args)
+   ```
 
-**Features:**
-- Automatic section numbering and table of contents generation
-- Pattern-based organization with support for multiple problem examples
-- **File ordering configuration** via `_config.toml` files
-- Flexible composition: header → problems → footer sections
+## Documentation
 
-**Quick Start:**
-```bash
-# Generate all pattern documentation
-python tools/generate_pattern_docs.py
+- `FORMAT_CHECKING.md` - Detailed documentation for format checking tools
+- `MIGRATION_GUIDE.md` - Guide for migrating to Pure Polymorphic Architecture
 
-# Generate specific pattern
-python tools/generate_pattern_docs.py --pattern sliding_window
+## Deprecated Tools
 
-# Validate without writing files
-python tools/generate_pattern_docs.py --validate
-
-# List available patterns
-python tools/generate_pattern_docs.py --list
-```
-
-**File Ordering Configuration:**
-Each pattern directory can include `_config.toml` to control file composition order:
-
-```toml
-# meta/patterns/<pattern_name>/_config.toml
-header_files = ["_header.md"]
-problem_files = ["0003_base.md", "0076_variant.md", ...]
-footer_files = ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
-```
-
-If `_config.toml` is missing, files are ordered alphabetically (default behavior).
-
-**See:** [`patterndocs/README.md`](patterndocs/README.md) for detailed documentation.
-
-## Architecture
-
-The tools follow a modular architecture:
-
-```
-tools/
-├── generate_mindmaps.py          # CLI entry point (rule-based)
-├── generate_mindmaps_ai.py       # CLI entry point (AI-powered)
-├── generate_pattern_docs.py      # CLI entry point
-│
-├── mindmaps/                     # Mind map generation module (shared)
-│   ├── config.py                 # Configuration and constants
-│   ├── toml_parser.py            # TOML parsing
-│   ├── data.py                   # ProblemData class
-│   ├── loader.py                 # Data loading
-│   ├── helpers.py                # Helper functions
-│   ├── html.py                   # HTML generation
-│   ├── templates.py              # HTML/CSS templates
-│   └── generators/               # Mind map generators
-│       ├── pattern.py
-│       ├── family.py
-│       ├── algorithm.py
-│       └── ...
-│
-└── patterndocs/                  # Pattern documentation module
-    ├── toml_parser.py            # TOML parsing
-    ├── data.py                   # Data classes
-    ├── loader.py                 # Ontology loading
-    ├── files.py                  # File collection
-    ├── sections.py               # Section numbering
-    └── composer.py               # Document composition
-```
-
-## Design Principles
-
-1. **Modularity**: Each tool is split into focused modules (< 100 lines each)
-2. **Independence**: Tools are completely decoupled (no shared dependencies)
-3. **Testability**: Each module can be tested independently
-4. **Maintainability**: Clear separation of concerns
-
-## Testing
-
-The rule-based tools have comprehensive test suites:
-
-```bash
-# Run all tool tests
-python -m pytest .dev/tests/test_generate_mindmaps.py .dev/tests/test_generate_pattern_docs.py -v
-
-# Run specific test file
-python -m pytest .dev/tests/test_generate_mindmaps.py -v
-```
-
-**Note:** AI-powered mind map generation (`generate_mindmaps_ai.py`) requires API access and is tested manually. See [`docs/GITHUB_PAGES_SETUP.md`](../docs/GITHUB_PAGES_SETUP.md) for manual generation workflow.
-
-## Dependencies
-
-- **`generate_mindmaps.py`** and **`generate_pattern_docs.py`**: Python standard library only
-- **`generate_mindmaps_ai.py`**: Requires `openai` package (`pip install openai`)
-
-## File Structure
-
-### Input Files
-
-- `ontology/*.toml` - Ontology definitions (API kernels, patterns, algorithms, etc.)
-- `meta/problems/*.toml` - Problem metadata
-- `meta/patterns/<pattern>/*.md` - Pattern documentation source files
-
-### Output Files
-
-- `docs/mindmaps/*.md` - Generated mind map Markdown files (rule-based + AI)
-- `docs/pages/mindmaps/*.html` - Generated HTML mind maps (for GitHub Pages)
-  - Rule-based: `pattern_hierarchy.html`, `family_derivation.html`, etc.
-  - AI-powered: `neetcode_ontology_ai_*.html` (manually generated, tracked in Git)
-- `docs/patterns/*.md` - Generated pattern documentation
-
-## Contributing
-
-When adding new features:
-
-1. **Keep modules small**: Aim for < 100 lines per file
-2. **Maintain independence**: Don't create shared dependencies between tools
-3. **Add tests**: Update test files in `.dev/tests/`
-4. **Update documentation**: Keep README files current
-
-## See Also
-
-- [Mind Maps Module Documentation](mindmaps/README.md)
-- [Pattern Docs Module Documentation](patterndocs/README.md)
-- [Testing Documentation](../.dev/TESTING.md)
+The following tools have been removed or consolidated:
+- `auto_migrate.py` - Migration completed, no longer needed
+- `batch_migrate_remaining.py` - Migration completed, no longer needed
+- `check_migration.py` - Replaced by `check_solutions.py`
+- `check_solution_format.py` - Merged into `check_solutions.py`

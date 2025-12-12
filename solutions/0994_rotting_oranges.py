@@ -14,6 +14,21 @@ If this is impossible, return -1.
 """
 from typing import List
 from collections import deque
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "orangesRotting",
+        "complexity": "O(m*n) time, O(m*n) space",
+        "description": "BFS approach",
+    },
+}
 
 
 class Solution:
@@ -97,8 +112,9 @@ def solve():
         row = list(map(int, lines[i].split(',')))
         grid.append(row)
 
-    sol = Solution()
-    result = sol.orangesRotting(grid)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.orangesRotting(grid)
 
     print(result)
 

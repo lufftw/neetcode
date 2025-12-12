@@ -47,7 +47,7 @@ Space: O(1) - In-place swaps only
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
@@ -55,17 +55,20 @@ import os
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_dutch_flag",
+        "class": "SolutionDutchFlag",
+        "method": "sortColors",
         "complexity": "O(n) time, O(1) space",
         "description": "Dutch National Flag algorithm (one-pass three-way partition)",
     },
     "dutch_flag": {
-        "method": "solve_dutch_flag",
+        "class": "SolutionDutchFlag",
+        "method": "sortColors",
         "complexity": "O(n) time, O(1) space",
         "description": "Dutch National Flag algorithm (one-pass three-way partition)",
     },
     "counting": {
-        "method": "solve_counting",
+        "class": "SolutionCounting",
+        "method": "sortColors",
         "complexity": "O(n) time, O(1) space",
         "description": "Two-pass counting sort approach",
     },
@@ -189,19 +192,6 @@ class SolutionCounting:
                 index += 1
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_dutch_flag(nums: List[int]) -> None:
-    """Wrapper for SolutionDutchFlag."""
-    SolutionDutchFlag().sortColors(nums)
-
-
-def solve_counting(nums: List[int]) -> None:
-    """Wrapper for SolutionCounting."""
-    SolutionCounting().sortColors(nums)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -223,14 +213,9 @@ def solve():
     line = sys.stdin.read().strip()
     nums = list(map(int, line.split())) if line else []
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    method_func(nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    solver.sortColors(nums)
     
     print(' '.join(map(str, nums)))
 

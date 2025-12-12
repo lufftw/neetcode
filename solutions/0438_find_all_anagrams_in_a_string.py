@@ -39,6 +39,21 @@ Space: O(1) for frequency maps (bounded by alphabet size)
 """
 from typing import List, Dict
 from collections import Counter
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "findAnagrams",
+        "complexity": "O(|s| + |p|) time, O(|p|) space",
+        "description": "Sliding window with frequency tracking",
+    },
+}
 
 
 # ============================================================================
@@ -116,7 +131,11 @@ JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution - O(|s| + |p|) Sliding Window
+# Solution 1: Sliding Window
+# Time: O(|s| + |p|), Space: O(|p|)
+#   - Build pattern frequency + single pass over s
+#   - Frequency maps bounded by p's unique characters
+#   - Uses matched counter for efficient validity check
 # ============================================================================
 
 class Solution:
@@ -197,8 +216,9 @@ def solve():
     s = lines[0]
     p = lines[1] if len(lines) > 1 else ""
     
-    solution = Solution()
-    result = solution.findAnagrams(s, p)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.findAnagrams(s, p)
     
     print(result)
 

@@ -10,6 +10,21 @@ Time Complexity: O(n) - single pass with hash map
 Space Complexity: O(n) - hash map storage
 """
 from typing import List
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "twoSum",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Single pass with hash map",
+    },
+}
 
 
 class Solution:
@@ -42,8 +57,9 @@ def solve():
     # Parse target
     target = int(lines[1])
     
-    sol = Solution()
-    result = sol.twoSum(nums, target)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.twoSum(nums, target)
     
     # Output format: [0, 1]
     print(result)

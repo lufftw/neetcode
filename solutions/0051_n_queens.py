@@ -9,7 +9,7 @@ such that no two queens attack each other.
 Given an integer n, return all distinct solutions to the n-queens puzzle.
 """
 from typing import List, Set
-import os
+from _runner import get_solver
 
 
 # ============================================
@@ -107,20 +107,24 @@ JUDGE_FUNC = judge  # Tell test_runner to use custom validation function
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_backtrack_sets",
+        "class": "SolutionBacktrackSets",
+        "method": "solveNQueens",
         "complexity": "O(N!) time, O(N) space",
         "description": "Backtracking with hash sets for O(1) conflict detection",
     },
     "sets": {
-        "method": "solve_backtrack_sets",
+        "class": "SolutionBacktrackSets",
+        "method": "solveNQueens",
         "complexity": "O(N!) time, O(N) space",
         "description": "Backtracking with hash sets for O(1) conflict detection",
     },
     "bitmask": {
-        "method": "solve_backtrack_bitmask",
+        "class": "SolutionBacktrackBitmask",
+        "method": "solveNQueens",
         "complexity": "O(N!) time, O(N) space",
         "description": "Backtracking with bitmask for ultra-fast conflict detection",
     },
@@ -346,19 +350,6 @@ class SolutionBacktrackBitmask:
 
 
 # ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_backtrack_sets(n: int) -> List[List[str]]:
-    """Wrapper for SolutionBacktrackSets."""
-    return SolutionBacktrackSets().solveNQueens(n)
-
-
-def solve_backtrack_bitmask(n: int) -> List[List[str]]:
-    """Wrapper for SolutionBacktrackBitmask."""
-    return SolutionBacktrackBitmask().solveNQueens(n)
-
-
-# ============================================
 # Local runner integration
 # ============================================
 def solve():
@@ -371,18 +362,13 @@ def solve():
     """
     import sys
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
     # Parse input
     lines = sys.stdin.read().strip().split('\n')
     n = int(lines[0])
     
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(n)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.solveNQueens(n)
     
     # Output result
     # Note: JUDGE_FUNC handles order-independent validation

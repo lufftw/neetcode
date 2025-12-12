@@ -48,25 +48,29 @@ Space: O(1) - Only pointer references
 ================================================================================
 """
 from typing import Optional
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_floyd",
+        "class": "SolutionFloyd",
+        "method": "detectCycle",
         "complexity": "O(n) time, O(1) space",
         "description": "Floyd's algorithm with two phases",
     },
     "floyd": {
-        "method": "solve_floyd",
+        "class": "SolutionFloyd",
+        "method": "detectCycle",
         "complexity": "O(n) time, O(1) space",
         "description": "Floyd's algorithm with two phases",
     },
     "hashset": {
-        "method": "solve_hashset",
+        "class": "SolutionHashSet",
+        "method": "detectCycle",
         "complexity": "O(n) time, O(n) space",
         "description": "Hash set to find first revisited node",
     },
@@ -208,19 +212,6 @@ class SolutionHashSet:
         return None
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_floyd(head: Optional[ListNode]) -> Optional[ListNode]:
-    """Wrapper for SolutionFloyd."""
-    return SolutionFloyd().detectCycle(head)
-
-
-def solve_hashset(head: Optional[ListNode]) -> Optional[ListNode]:
-    """Wrapper for SolutionHashSet."""
-    return SolutionHashSet().detectCycle(head)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -259,14 +250,9 @@ def solve():
     if pos >= 0 and pos < len(nodes):
         nodes[-1].next = nodes[pos]
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(nodes[0])
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.detectCycle(nodes[0])
     
     # Find index of result node
     if result is None:

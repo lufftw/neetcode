@@ -44,7 +44,7 @@ Space: O(1) iterative, O(m + n) recursive (call stack)
 ================================================================================
 """
 from typing import Optional
-import os
+from _runner import get_solver
 
 
 # ============================================
@@ -52,17 +52,20 @@ import os
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_iterative",
+        "class": "SolutionIterative",
+        "method": "mergeTwoLists",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Iterative merge using dummy head",
     },
     "iterative": {
-        "method": "solve_iterative",
+        "class": "SolutionIterative",
+        "method": "mergeTwoLists",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Iterative merge using dummy head",
     },
     "recursive": {
-        "method": "solve_recursive",
+        "class": "SolutionRecursive",
+        "method": "mergeTwoLists",
         "complexity": "O(m+n) time, O(m+n) space for recursion stack",
         "description": "Recursive merge choosing smaller head",
     },
@@ -199,19 +202,6 @@ class SolutionRecursive:
             return list2
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_iterative(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-    """Wrapper for SolutionIterative."""
-    return SolutionIterative().mergeTwoLists(list1, list2)
-
-
-def solve_recursive(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-    """Wrapper for SolutionRecursive."""
-    return SolutionRecursive().mergeTwoLists(list1, list2)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -249,14 +239,9 @@ def solve():
     list1 = build_list(values1)
     list2 = build_list(values2)
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(list1, list2)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.mergeTwoLists(list1, list2)
     
     # Output merged list
     output = []

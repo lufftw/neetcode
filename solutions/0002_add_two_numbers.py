@@ -11,6 +11,21 @@ Time Complexity: O(max(m, n)) - single pass through both lists
 Space Complexity: O(max(m, n)) - for the result list
 """
 from typing import Optional, List
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "addTwoNumbers",
+        "complexity": "O(max(m,n)) time, O(max(m,n)) space",
+        "description": "Single pass with carry handling",
+    },
+}
 
 
 class ListNode:
@@ -83,7 +98,10 @@ JUDGE_FUNC = judge
 
 
 # ============================================
-# Solution - O(max(m,n)) Single Pass
+# Solution 1: Single Pass
+# Time: O(max(m,n)), Space: O(max(m,n))
+#   - Single pass through both lists
+#   - Result list has at most max(m,n) + 1 nodes
 # ============================================
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
@@ -149,8 +167,9 @@ def solve():
     l1 = list_to_linkedlist(l1_values)
     l2 = list_to_linkedlist(l2_values)
 
-    sol = Solution()
-    result = sol.addTwoNumbers(l1, l2)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.addTwoNumbers(l1, l2)
 
     # Output format: [7, 0, 8]
     print(linkedlist_to_list(result))

@@ -42,6 +42,21 @@ Space: O(K) - At most K+1 entries in the frequency map
 ================================================================================
 """
 from typing import Dict
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "lengthOfLongestSubstringKDistinct",
+        "complexity": "O(n) time, O(k) space",
+        "description": "Sliding window with frequency tracking",
+    },
+}
 
 
 # ============================================================================
@@ -93,7 +108,10 @@ JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution - O(n) Sliding Window
+# Solution 1: Sliding Window
+# Time: O(n), Space: O(k)
+#   - Each character visited at most twice
+#   - Frequency map bounded by k distinct characters
 # ============================================================================
 
 class Solution:
@@ -191,8 +209,9 @@ def solve():
     s = lines[0]
     k = int(lines[1]) if len(lines) > 1 else 0
     
-    solution = Solution()
-    result = solution.lengthOfLongestSubstringKDistinct(s, k)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.lengthOfLongestSubstringKDistinct(s, k)
     
     print(result)
 

@@ -45,6 +45,21 @@ Space: O(1) - At most 26 lowercase letters in frequency maps
 """
 from typing import Dict
 from collections import Counter
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "checkInclusion",
+        "complexity": "O(|s1| + |s2|) time, O(|s1|) space",
+        "description": "Sliding window with frequency tracking",
+    },
+}
 
 
 # ============================================================================
@@ -108,7 +123,11 @@ JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution - O(|s1| + |s2|) Sliding Window
+# Solution 1: Sliding Window
+# Time: O(|s1| + |s2|), Space: O(|s1|)
+#   - Build pattern frequency + single pass over s2
+#   - Fixed window size = len(s1)
+#   - Frequency maps bounded by s1's unique characters
 # ============================================================================
 
 class Solution:
@@ -187,8 +206,9 @@ def solve():
     s1 = lines[0]
     s2 = lines[1] if len(lines) > 1 else ""
     
-    solution = Solution()
-    result = solution.checkInclusion(s1, s2)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.checkInclusion(s1, s2)
     
     print("true" if result else "false")
 

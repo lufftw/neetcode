@@ -39,6 +39,21 @@ Space: O(|t|) - Frequency maps bounded by t's unique characters
 """
 from typing import Dict
 from collections import Counter
+from _runner import get_solver
+
+
+# ============================================
+# SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "minWindow",
+        "complexity": "O(|s| + |t|) time, O(|t|) space",
+        "description": "Sliding window with frequency tracking",
+    },
+}
 
 
 # ============================================================================
@@ -129,7 +144,11 @@ JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution - O(|s| + |t|) Sliding Window
+# Solution 1: Sliding Window
+# Time: O(|s| + |t|), Space: O(|t|)
+#   - Linear scan through s with sliding window
+#   - Frequency maps bounded by t's unique characters
+#   - Uses satisfied counter for efficient validity check
 # ============================================================================
 
 class Solution:
@@ -213,8 +232,9 @@ def solve():
     s = lines[0]
     t = lines[1] if len(lines) > 1 else ""
     
-    solution = Solution()
-    result = solution.minWindow(s, t)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.minWindow(s, t)
     
     print(result)
 

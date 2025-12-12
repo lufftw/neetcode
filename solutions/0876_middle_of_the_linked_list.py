@@ -41,25 +41,29 @@ Space: O(1) - Only two pointer references
 ================================================================================
 """
 from typing import Optional
-import os
+from _runner import get_solver
 
 
 # ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
+# Polymorphic pattern: each entry specifies class + method
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_fast_slow",
+        "class": "SolutionFastSlow",
+        "method": "middleNode",
         "complexity": "O(n) time, O(1) space",
         "description": "Fast-slow pointers for midpoint finding",
     },
     "fast_slow": {
-        "method": "solve_fast_slow",
+        "class": "SolutionFastSlow",
+        "method": "middleNode",
         "complexity": "O(n) time, O(1) space",
         "description": "Fast-slow pointers for midpoint finding",
     },
     "two_pass": {
-        "method": "solve_two_pass",
+        "class": "SolutionTwoPass",
+        "method": "middleNode",
         "complexity": "O(n) time, O(1) space",
         "description": "Two-pass: count nodes then find middle",
     },
@@ -185,19 +189,6 @@ class SolutionTwoPass:
         return current
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_fast_slow(head: Optional[ListNode]) -> Optional[ListNode]:
-    """Wrapper for SolutionFastSlow."""
-    return SolutionFastSlow().middleNode(head)
-
-
-def solve_two_pass(head: Optional[ListNode]) -> Optional[ListNode]:
-    """Wrapper for SolutionTwoPass."""
-    return SolutionTwoPass().middleNode(head)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -227,14 +218,9 @@ def solve():
     for i in range(len(nodes) - 1):
         nodes[i].next = nodes[i + 1]
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    result = method_func(nodes[0])
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    result = solver.middleNode(nodes[0])
     
     # Output remaining values from middle to end
     output = []

@@ -53,7 +53,7 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
@@ -61,17 +61,20 @@ import os
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_backward",
+        "class": "SolutionBackward",
+        "method": "merge",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Merge from end to avoid overwriting unprocessed elements",
     },
     "backward": {
-        "method": "solve_backward",
+        "class": "SolutionBackward",
+        "method": "merge",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Merge from end to avoid overwriting unprocessed elements",
     },
     "forward": {
-        "method": "solve_forward",
+        "class": "SolutionForward",
+        "method": "merge",
         "complexity": "O(m+n) time, O(m) space",
         "description": "Forward merge requiring extra space for nums1 copy",
     },
@@ -209,19 +212,6 @@ class SolutionForward:
             write += 1
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_backward(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-    """Wrapper for SolutionBackward."""
-    SolutionBackward().merge(nums1, m, nums2, n)
-
-
-def solve_forward(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-    """Wrapper for SolutionForward."""
-    SolutionForward().merge(nums1, m, nums2, n)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -253,14 +243,9 @@ def solve():
     nums2 = list(map(int, lines[2].split())) if lines[2].strip() else []
     n = int(lines[3])
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    method_func(nums1, m, nums2, n)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    solver.merge(nums1, m, nums2, n)
     
     print(' '.join(map(str, nums1)))
 

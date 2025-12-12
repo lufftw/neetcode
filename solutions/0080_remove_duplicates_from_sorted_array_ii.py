@@ -43,7 +43,7 @@ Space: O(1) - In-place modification
 ================================================================================
 """
 from typing import List
-import os
+from _runner import get_solver
 
 
 # ============================================
@@ -51,22 +51,26 @@ import os
 # ============================================
 SOLUTIONS = {
     "default": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Reader/writer pattern with K=2 lookback check",
     },
     "two_pointers": {
-        "method": "solve_two_pointers",
+        "class": "SolutionTwoPointers",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Reader/writer pattern with K=2 lookback check",
     },
     "k_copies": {
-        "method": "solve_k_copies",
+        "class": "SolutionKCopies",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Generalized solution allowing up to K copies (default K=2)",
     },
     "counter": {
-        "method": "solve_counter",
+        "class": "SolutionCounter",
+        "method": "removeDuplicates",
         "complexity": "O(n) time, O(1) space",
         "description": "Explicit counter tracking approach",
     },
@@ -136,7 +140,7 @@ JUDGE_FUNC = judge
 
 
 # ============================================
-# Solution: Reader/Writer with K-Allowance
+# Solution 1: Reader/Writer with K-Allowance
 # Time: O(n), Space: O(1)
 #   - Single pass through array
 #   - Checks nums[write-2] to allow at most 2 copies
@@ -254,24 +258,6 @@ class SolutionCounter:
         return write_index
 
 
-# ============================================
-# Wrapper functions for test_runner integration
-# ============================================
-def solve_two_pointers(nums: List[int]) -> int:
-    """Wrapper for SolutionTwoPointers."""
-    return SolutionTwoPointers().removeDuplicates(nums)
-
-
-def solve_k_copies(nums: List[int]) -> int:
-    """Wrapper for SolutionKCopies."""
-    return SolutionKCopies().removeDuplicates(nums, 2)
-
-
-def solve_counter(nums: List[int]) -> int:
-    """Wrapper for SolutionCounter."""
-    return SolutionCounter().removeDuplicates(nums)
-
-
 # ============================================================================
 # STDIN/STDOUT Interface for Testing Framework
 # ============================================================================
@@ -300,14 +286,9 @@ def solve():
     
     nums = list(map(int, line.split()))
     
-    # Read environment variable to select which solution method to use
-    method_name = os.environ.get('SOLUTION_METHOD', 'default')
-    method_info = SOLUTIONS.get(method_name, SOLUTIONS['default'])
-    method_func_name = method_info['method']
-    
-    # Dynamically call the selected solution method
-    method_func = globals()[method_func_name]
-    k = method_func(nums)
+    # Get solver and call method naturally (like LeetCode)
+    solver = get_solver(SOLUTIONS)
+    k = solver.removeDuplicates(nums)
     
     print(k)
     if k > 0:
