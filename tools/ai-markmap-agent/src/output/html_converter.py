@@ -123,7 +123,10 @@ class MarkMapHTMLConverter:
     
     def handle_reset_mode(self) -> bool:
         """
-        Handle reset mode: prompt user and delete old versions if confirmed.
+        Handle reset mode: prompt user for confirmation.
+        
+        Note: Actual deletion happens at the end when saving outputs,
+        so if the pipeline fails, old versions are preserved.
         
         Returns:
             True if reset confirmed (or no versions exist), False if user cancelled
@@ -131,7 +134,7 @@ class MarkMapHTMLConverter:
         existing = self._get_existing_versions()
         
         if not existing:
-            print("  No existing versions found. Starting fresh.")
+            print("  No existing versions found. Will start fresh with v1.")
             return True
         
         version_names = [d.name for d in existing]
@@ -140,10 +143,11 @@ class MarkMapHTMLConverter:
         print("🔄 Reset Mode")
         print("=" * 60)
         print(f"\n  Found {len(existing)} existing version(s): {', '.join(version_names)}")
-        print("\n  This will DELETE all versions and start fresh from baseline.")
+        print("\n  Old versions will be replaced with v1 after pipeline completes.")
+        print("  (If pipeline fails, old versions are preserved)")
         
         if self.prompt_on_reset:
-            print("\n  Delete all existing versions? [Y/N]: ", end="")
+            print("\n  Continue with reset? [Y/N]: ", end="")
             try:
                 response = input().strip().upper()
             except (EOFError, KeyboardInterrupt):
@@ -154,14 +158,17 @@ class MarkMapHTMLConverter:
                 print("\n  Reset cancelled. Exiting without changes.")
                 return False
         
-        # Delete all version directories
+        print(f"\n  ✓ Reset confirmed. Will output as v1 when complete.")
+        return True
+    
+    def _cleanup_old_versions(self) -> None:
+        """Delete all existing versions (called after successful pipeline completion)."""
         import shutil
+        existing = self._get_existing_versions()
+        
         for version_dir in existing:
             shutil.rmtree(version_dir)
-            print(f"  🗑️ Deleted: {version_dir.name}")
-        
-        print(f"\n  ✓ All versions deleted. Starting fresh with v1.")
-        return True
+            print(f"  🗑️ Deleted old: {version_dir.name}")
     
     def _default_template(self) -> str:
         """Return a minimal default template matching the main template format."""
@@ -347,7 +354,13 @@ class MarkMapHTMLConverter:
         # Get version directory if versioning is enabled
         version_subdir = None
         if self.versioning_enabled:
-            version_name = self._get_next_version()
+            # For reset mode, delete old versions first, then start with v1
+            if self.versioning_mode == "reset":
+                self._cleanup_old_versions()
+                version_name = "v1"
+            else:
+                version_name = self._get_next_version()
+            
             version_subdir = self.version_dir / version_name
             version_subdir.mkdir(parents=True, exist_ok=True)
             print(f"  📁 Version: {version_name}")

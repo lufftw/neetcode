@@ -399,9 +399,9 @@ output:
 | 模式 | 行為 |
 |------|------|
 | `continue` | 從最新版本 (vN) 繼續精進，產生 vN+1 |
-| `reset` | 刪除所有版本，從 `input.baseline.path` 重新開始，產生 v1 |
+| `reset` | 從 `input.baseline.path` 重新開始，產生 v1 |
 
-**Reset 模式**會在刪除前詢問確認。
+**Reset 模式**會先詢問確認。舊版本在 pipeline 完成後才刪除（安全機制：如果 pipeline 失敗，舊版本保留）。
 
 ---
 

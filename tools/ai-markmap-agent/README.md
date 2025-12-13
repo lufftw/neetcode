@@ -399,9 +399,9 @@ output:
 | Mode | Behavior |
 |------|----------|
 | `continue` | Load from latest version (vN), produce vN+1 |
-| `reset` | Delete all versions, start fresh from `input.baseline.path`, produce v1 |
+| `reset` | Start fresh from `input.baseline.path`, produce v1 |
 
-**Reset mode** prompts for confirmation before deleting existing versions.
+**Reset mode** prompts for confirmation. Old versions are deleted only after the pipeline completes successfully (safe: if pipeline fails, old versions are preserved).
 
 ---
 

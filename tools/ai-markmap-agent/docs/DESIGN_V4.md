@@ -888,11 +888,14 @@ versioning:
 現有版本: v1, v2, v3
 
 執行流程:
-1. 程式詢問：「確定要刪除 v1, v2, v3 嗎？[Y/N]」
-2. Y → 刪除所有版本，從 input.baseline.path 重新開始
+1. 程式詢問：「確定要 reset 嗎？[Y/N]」
+2. Y → 從 input.baseline.path 開始執行 pipeline
 3. N → 程式結束，不做任何事
-4. 產生新的 v1
+4. Pipeline 完成後，刪除舊版本 (v1, v2, v3)，儲存新的 v1
+5. 如果 pipeline 失敗，舊版本保留不受影響
 ```
+
+**安全機制**：舊版本在 pipeline 完成後才刪除，確保失敗時不會遺失資料。
 
 ### 使用場景
 

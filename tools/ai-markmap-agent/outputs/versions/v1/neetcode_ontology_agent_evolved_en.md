@@ -15,31 +15,18 @@ markmap:
 
 ---
 
-## 🧭 Quick Access Index
-- [SubstringSlidingWindow](#substring-sliding-window)
-- [TwoPointersTraversal](#two-pointers-traversal)
-- [TwoPointerPartition](#two-pointer-partition)
-- [FastSlowPointers](#fast-slow-pointers)
-- [MergeSortedSequences](#merge-sorted-sequences)
-- [KWayMerge](#k-way-merge)
-- [HeapTopK](#heap-top-k)
-- [LinkedListInPlaceReversal](#linked-list-in-place-reversal)
-- [BacktrackingExploration](#backtracking-exploration)
-- [GridBFSMultiSource](#grid-bfs-multi-source)
-
----
-
 ## 🧠 API Kernels (the “engines”)
 ### SubstringSlidingWindow — *1D window state machine*
 - ==Core invariant==: window `[L,R]` stays valid by **expand right** + **contract left**
-- Complexity: typically $O(n)$ time, $O(n)$ space in worst case due to frequency map size
+- Complexity: typically $O(n)$ time, $O(\Sigma)$ space (alphabet / distinct keys)
 
+<!-- markmap: fold -->
 #### Pattern cheat sheet (from docs)
 | Problem | Invariant | State | Window Size | Goal |
 |---------|-----------|-------|-------------|------|
 | [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | All unique | last index map | Variable | Max |
 | [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | ≤K distinct | freq map | Variable | Max |
-| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | window contains all characters of `t` with at least the required frequency | need/have | Variable | Min |
+| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | covers `t` | need/have | Variable | Min |
 | [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | exact freq match | freq + matches | Fixed | Exists |
 | [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | exact freq match | freq + matches | Fixed | All |
 | [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | sum ≥ target | integer sum | Variable | Min |
@@ -63,17 +50,6 @@ markmap:
     - [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
   - Typical requirement: positives → monotone contraction works
 
-#### Real-world Application
-- **Example**: Network packet analysis where you need to find the longest sequence of packets without repetition.
-
-#### Problem-Solving Strategy
-1. Identify the invariant condition for the window.
-2. Use a frequency map to manage state.
-3. Expand and contract the window to maintain the invariant.
-
-#### See Also
-- TwoPointersTraversal for similar problems involving sequence traversal.
-
 ---
 
 ### TwoPointersTraversal — *pointer choreography on sequences*
@@ -83,7 +59,7 @@ markmap:
 #### Pattern comparison (from docs)
 | Pattern | Pointer Init | Movement | Termination | Time | Space | Key Use Case |
 |---------|--------------|----------|-------------|------|-------|--------------|
-| Opposite | `0, n-1` | toward center | `L>=R` | $O(n)$ | $O(1)$ | sorted pairs / palindrome / optimize |
+| Opposite | `0, n-1` | toward center | `L>=R` | $O(n)$ | $O(1)$ | sorted pairs / palindrome / maximize |
 | Same-direction | `write, read` | forward | `read==n` | $O(n)$ | $O(1)$ | in-place modify |
 | Fast–Slow | `slow, fast` | 1× / 2× | meet or null | $O(n)$ | $O(1)$ | cycle / midpoint |
 | Dedup enum | `i` + `L,R` | nested | done | $O(n^2)$ | $O(1)$ | 3Sum/4Sum |
@@ -113,43 +89,6 @@ markmap:
   - 🎯 Problems
     - [ ] [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
 
-#### When to Use Opposite vs. Same-Direction
-- **Opposite Pointers**: Best for problems where elements are compared or combined from both ends (e.g., finding pairs).
-- **Same-Direction Pointers**: Suitable for in-place modifications or when a single pass is needed.
-
-#### Complexity Note
-- Understand the difference between average-case and worst-case complexities, especially for inputs that may lead to different performance characteristics.
-
-#### See Also
-- Sliding Window techniques for problems involving dynamic window management.
-
----
-
-### TwoPointerPartition — *in-place partitioning “mini quicksort”*
-- ==Core invariant==: elements are rearranged such that all elements satisfying the partition property precede those that do not
-
-#### Patterns
-- **dutch_flag_partition**
-  - 🎯 Problems
-    - [ ] [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
-- **two_way_partition**
-  - 🎯 Problems
-    - [ ] [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
-    - [ ] [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
-- **quickselect_partition** *(selection via partition)*
-  - 🎯 Problems
-    - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-
-#### Real-world Application
-- **Example**: Efficiently organizing data such as segregating even and odd numbers in a dataset.
-
-#### Problem-Solving Strategy
-1. Choose a pivot or condition for partitioning.
-2. Rearrange elements around the pivot to satisfy the partition property.
-
-#### See Also
-- FastSlowPointers for more advanced pointer manipulations.
-
 ---
 
 ### FastSlowPointers — *Floyd + midpoints + implicit sequences*
@@ -164,20 +103,23 @@ markmap:
   - **fast_slow_implicit_cycle**
     - [ ] [LeetCode 202 - Happy Number](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
 
-#### Real-world Application
-- **Example**: Detecting cycles in network routing or data processing pipelines.
+---
 
-#### Problem-Solving Strategy
-1. Use two pointers with different speeds.
-2. Detect cycle presence and locate cycle start if needed.
-
-#### See Also
-- TwoPointerPartition for simpler partitioning tasks.
+### TwoPointerPartition — *in-place partitioning “mini quicksort”*
+- ==Core invariant==: regions are partitioned by property
+- Patterns
+  - **dutch_flag_partition**
+    - [ ] [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
+  - **two_way_partition**
+    - [ ] [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+    - [ ] [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+  - **quickselect_partition** *(selection via partition)*
+    - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
 
 ---
 
 ### MergeSortedSequences — *merge two sorted sequences*
-- ==Core invariant==: at each step, the smallest unmerged element is added to the output, maintaining sorted order
+- ==Core invariant==: output prefix is fully sorted
 - Patterns
   - **merge_two_sorted_lists**
     - [ ] [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
@@ -185,16 +127,6 @@ markmap:
     - [ ] [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
   - **merge_sorted_from_ends**
     - [ ] [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
-
-#### Real-world Application
-- **Example**: Merging sorted data streams or logs in real-time analytics systems.
-
-#### Problem-Solving Strategy
-1. Compare elements from the start of each sequence.
-2. Append the smallest to the result and advance the pointer.
-
-#### See Also
-- KWayMerge for merging multiple sequences.
 
 ---
 
@@ -206,32 +138,12 @@ markmap:
   - [ ] [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
   - Related “hybrid thinking”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
 
-#### Real-world Application
-- **Example**: Combining multiple sorted data feeds into a single sorted output.
-
-#### Problem-Solving Strategy
-1. Use a min-heap to efficiently track the smallest elements.
-2. Continuously extract and insert elements to maintain order.
-
-#### See Also
-- MergeSortedSequences for simpler two-sequence merging.
-
 ---
 
 ### HeapTopK — *keep best K under streaming updates*
 - Patterns
   - **heap_kth_element**
     - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-
-#### Real-world Application
-- **Example**: Real-time leaderboard updates where only the top scores are maintained.
-
-#### Problem-Solving Strategy
-1. Use a min-heap to track the top K elements.
-2. Insert new elements and remove the smallest when exceeding K.
-
-#### See Also
-- KWayMerge for merging top elements from multiple lists.
 
 ---
 
@@ -242,38 +154,12 @@ markmap:
 - Also core linked list arithmetic
   - [ ] [LeetCode 2 - Add Two Numbers](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
 
-#### Edge Cases
-- Handle empty lists or lists with fewer nodes than the reversal group size.
-
-#### Real-world Application
-- **Example**: Reversing segments of data in network packets for reordering.
-
-#### Problem-Solving Strategy
-1. Identify groups of nodes to reverse.
-2. Use pointers to reverse nodes in place.
-
-#### See Also
-- FastSlowPointers for cycle detection in linked lists.
-
 ---
 
 ### BacktrackingExploration — *search tree with pruning*
 - Pattern
   - **backtracking_n_queens**
     - [ ] [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
-
-#### Pruning Efficiency
-- Pruning reduces the search space and improves efficiency by eliminating impossible paths early.
-
-#### Real-world Application
-- **Example**: Solving constraint satisfaction problems like Sudoku or N-Queens.
-
-#### Problem-Solving Strategy
-1. Explore all potential configurations.
-2. Use pruning to eliminate invalid paths early.
-
-#### See Also
-- GridBFSMultiSource for exploring grid-based problems.
 
 ---
 
@@ -283,15 +169,32 @@ markmap:
     - [ ] [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
 - Implementation invariant: queue holds frontier of current “minute/level”
 
-#### Real-world Application
-- **Example**: Simulating the spread of information or disease in a network.
+---
 
-#### Problem-Solving Strategy
-1. Initialize the queue with all sources.
-2. Propagate the wavefront level by level.
+## 🧭 Roadmap slices (what to do next)
+### Sliding Window Mastery 📚
+- [ ] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+- [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+- [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+- [ ] [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+- [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+- [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) 🔥
 
-#### See Also
-- BacktrackingExploration for exhaustive search techniques.
+### Two Pointers Mastery ⚡
+- Opposite pointers
+  - [ ] [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+  - [ ] [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+  - [ ] [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
+- Writer pointers (in-place)
+  - [ ] [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+  - [ ] [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+  - [ ] [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+  - [ ] [LeetCode 80 - Remove Duplicates from Sorted Array II](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
+- Fast–slow
+  - [ ] [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - [ ] [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - [ ] [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+  - [ ] [LeetCode 202 - Happy Number](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
 
 ---
 
@@ -314,21 +217,20 @@ def max_window(seq):
     L = 0
     ans = 0
     for R, x in enumerate(seq):
-        add(state, x)  # Add current element to the state
-        while invalid(state):  # While the state is invalid
-            remove(state, seq[L])  # Remove the leftmost element from the state
-            L += 1  # Move the left pointer right
-        ans = max(ans, R - L + 1)  # Update the answer with the maximum window size
+        add(state, x)
+        while invalid(state):
+            remove(state, seq[L]); L += 1
+        ans = max(ans, R - L + 1)
     return ans
 
 # Two pointers (opposite)
 def opposite(arr):
     L, R = 0, len(arr) - 1
     while L < R:
-        if should_move_left(arr, L, R):  # Determine if left pointer should move
+        if should_move_left(arr, L, R):
             L += 1
         else:
-            R -= 1  # Otherwise, move the right pointer
+            R -= 1
 ```
 
 ---
