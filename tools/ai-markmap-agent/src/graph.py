@@ -1,8 +1,12 @@
 # =============================================================================
-# LangGraph Pipeline
+# LangGraph Pipeline V2
 # =============================================================================
 # Main workflow orchestration using LangGraph.
-# Coordinates all agents through the multi-agent pipeline.
+# V2 Features:
+#   - Draft mode for baselines (no links)
+#   - Multi-round debate between judges
+#   - Dedicated Writer for final output with links
+#   - Post-processing (LC → LeetCode)
 # =============================================================================
 
 from __future__ import annotations
@@ -12,18 +16,26 @@ from typing import Any, TypedDict
 
 from langgraph.graph import StateGraph, END
 
-from .agents.generator import GeneralistAgent, SpecialistAgent, TranslatorAgent, create_generators, create_translators
+from .agents.generator import (
+    GeneralistAgent,
+    SpecialistAgent,
+    TranslatorAgent,
+    create_generators,
+    create_translators,
+)
 from .agents.optimizer import OptimizerAgent, create_optimizers
 from .agents.summarizer import SummarizerAgent
-from .agents.judge import JudgeAgent, create_judges, aggregate_votes
+from .agents.judge import JudgeAgent, create_judges, aggregate_votes, run_debate
+from .agents.writer import WriterAgent, create_writer
 from .compression.compressor import get_compressor
 from .memory.stm import update_stm, get_recent_stm
 from .output.html_converter import MarkMapHTMLConverter, save_all_markmaps
+from .post_processing import PostProcessor, apply_post_processing
 from .config_loader import ConfigLoader
 
 
 class WorkflowState(TypedDict, total=False):
-    """State schema for the LangGraph workflow."""
+    """State schema for the LangGraph workflow V2."""
     
     # Input data
     ontology: dict[str, Any]
@@ -31,16 +43,16 @@ class WorkflowState(TypedDict, total=False):
     patterns: dict[str, Any]
     roadmaps: dict[str, Any]
     
-    # Baseline outputs (for "generate" mode languages only)
+    # Baseline outputs (Draft mode - no links)
     baseline_general_en: str
-    baseline_general_zh_TW: str  # Note: - replaced with _ for valid Python
+    baseline_general_zh_TW: str
     baseline_specialist_en: str
     baseline_specialist_zh_TW: str
     
     # Current state for optimization
     current_markmap: str
-    current_type: str  # "general" or "specialist"
-    current_language: str  # "en" or "zh-TW"
+    current_type: str
+    current_language: str
     current_round: int
     total_rounds: int
     
@@ -55,14 +67,24 @@ class WorkflowState(TypedDict, total=False):
     markmap_round_2: str
     markmap_round_3: str
     
-    # Final outputs
-    candidates: dict[str, str]  # Only "generate" mode outputs (for optimization)
-    translated_outputs: dict[str, str]  # "translate" mode outputs
-    judge_evaluations: dict[str, dict]
-    final_outputs: dict[str, str]  # All outputs (generated + translated)
+    # Candidates (optimized outputs)
+    candidates: dict[str, str]
     
-    # Translation config
+    # Judge evaluation results (V2)
+    judge_evaluations: dict[str, dict]
+    selected_markmap: dict[str, str]  # Per output_key: selected draft
+    judge_feedback: dict[str, list[dict]]  # Per output_key: feedback list
+    consensus_suggestions: dict[str, list[str]]  # Per output_key: suggestions
+    
+    # Writer outputs (V2)
+    writer_outputs: dict[str, str]  # Final markmaps with links
+    
+    # Translation outputs
+    translated_outputs: dict[str, str]
     translator_configs: list[dict]
+    
+    # Final outputs (after post-processing)
+    final_outputs: dict[str, str]
     
     # Metadata
     messages: list[str]
@@ -71,16 +93,16 @@ class WorkflowState(TypedDict, total=False):
 
 def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     """
-    Build the LangGraph workflow for Markmap generation.
+    Build the LangGraph workflow V2 for Markmap generation.
     
-    The workflow:
-    1. Generate baselines (parallel: 2 types × 2 languages = 4)
-    2. For each baseline:
-       a. Run optimization rounds
-       b. Optimizers debate and suggest improvements
-       c. Summarizer consolidates suggestions
-    3. Judges evaluate final outputs
-    4. Save all 4 final files
+    V2 Workflow:
+    1. Generate baselines (Draft mode - no links)
+    2. Optimization rounds (structure, naming, organization)
+    3. Judge evaluation & debate (select best, provide feedback)
+    4. Writer (apply feedback, add links, format)
+    5. Translation (if needed)
+    6. Post-processing (LC → LeetCode)
+    7. Save outputs
     
     Args:
         config: Configuration dictionary
@@ -92,14 +114,22 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     workflow_config = config.get("workflow", {})
     naming_config = config.get("output", {}).get("naming", {})
     
-    # Get languages and types from config
-    languages = naming_config.get("languages", ["en", "zh-TW"])
+    # Get languages config
+    languages_config = naming_config.get("languages", {})
+    if isinstance(languages_config, list):
+        # Old format compatibility
+        languages_config = {lang: {"mode": "generate"} for lang in languages_config}
+    
+    # Get types config
     types_config = naming_config.get("types", {
         "general": {"generator": "generalist"},
         "specialist": {"generator": "specialist"},
     })
     
     total_rounds = workflow_config.get("optimization_rounds", 3)
+    enable_debate = workflow_config.get("enable_debate", True)
+    max_debate_rounds = workflow_config.get("max_debate_rounds", 3)
+    consensus_threshold = workflow_config.get("debate_consensus_threshold", 0.8)
     
     # Create the state graph
     graph = StateGraph(WorkflowState)
@@ -115,18 +145,28 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         state["optimization_history"] = []
         state["messages"] = []
         state["errors"] = []
+        state["candidates"] = {}
         state["final_outputs"] = {}
         state["translated_outputs"] = {}
+        state["writer_outputs"] = {}
+        state["selected_markmap"] = {}
+        state["judge_feedback"] = {}
+        state["consensus_suggestions"] = {}
         
-        # Store translator configs for later use
+        # Store translator configs
         state["translator_configs"] = create_translators(config)
         
-        update_stm("Workflow initialized", category="system")
+        update_stm("Workflow V2 initialized", category="system")
         return state
     
     def generate_baselines(state: WorkflowState) -> WorkflowState:
-        """Generate all 4 baseline Markmaps in parallel."""
-        print("\n[Phase 1] Generating baselines...")
+        """
+        Phase 1: Generate baseline Markmaps in Draft mode.
+        
+        Draft mode means no concrete links - just structure and problem IDs.
+        Links are added later by the Writer.
+        """
+        print("\n[Phase 1] Generating baselines (Draft mode)...")
         
         generators = create_generators(config)
         
@@ -134,7 +174,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             try:
                 state = agent.process(state)
                 print(f"  ✓ {agent_id} completed")
-                update_stm(f"Baseline generated: {agent_id}", category="generation")
+                update_stm(f"Draft baseline: {agent_id}", category="generation")
             except Exception as e:
                 error_msg = f"Error in {agent_id}: {e}"
                 state["errors"].append(error_msg)
@@ -144,13 +184,19 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     
     def prepare_optimization(state: WorkflowState) -> WorkflowState:
         """Prepare state for optimization rounds."""
-        # Get the list of baselines to optimize
         baselines = {}
         
         for output_type in types_config.keys():
-            for lang in languages:
+            for lang, lang_config in languages_config.items():
+                # Only include "generate" mode languages
+                if lang_config.get("mode", "generate") != "generate":
+                    continue
+                if not lang_config.get("enabled", True):
+                    continue
+                
                 lang_key = lang.replace("-", "_")
                 baseline_key = f"baseline_{output_type}_{lang_key}"
+                
                 if baseline_key in state and state[baseline_key]:
                     output_key = f"{output_type}_{lang}"
                     baselines[output_key] = state[baseline_key]
@@ -159,7 +205,12 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         return state
     
     def run_optimization_round(state: WorkflowState) -> WorkflowState:
-        """Run a single optimization round with all optimizers."""
+        """
+        Phase 2: Run optimization round.
+        
+        Optimizers suggest structural improvements.
+        Summarizer consolidates suggestions.
+        """
         current_round = state.get("current_round", 0) + 1
         state["current_round"] = current_round
         
@@ -168,14 +219,10 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         optimizers = create_optimizers(config)
         summarizer = SummarizerAgent(config)
         
-        # Process each candidate
         for output_key, markmap in state.get("candidates", {}).items():
             print(f"  Optimizing: {output_key}")
             
-            # Set current markmap for this candidate
             state["current_markmap"] = markmap
-            
-            # Get suggestions from all optimizers
             suggestions_key = f"suggestions_round_{current_round}"
             state[suggestions_key] = []
             
@@ -186,12 +233,9 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 except Exception as e:
                     print(f"    ✗ {optimizer.name}: {e}")
             
-            # Summarizer consolidates suggestions
             try:
                 state = summarizer.process(state)
                 print(f"    ✓ Summarizer consolidated")
-                
-                # Update the candidate with improved version
                 state["candidates"][output_key] = state["current_markmap"]
             except Exception as e:
                 print(f"    ✗ Summarizer: {e}")
@@ -209,12 +253,23 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         return "judge"
     
     def run_judging(state: WorkflowState) -> WorkflowState:
-        """Run judges to evaluate final candidates."""
-        print("\n[Phase 3] Judging...")
+        """
+        Phase 3: Judge evaluation and debate.
+        
+        Judges evaluate candidates, debate to reach consensus,
+        and provide structured feedback for the Writer.
+        """
+        print("\n[Phase 3] Evaluation & Debate...")
         
         judges = create_judges(config)
-        state["judge_evaluations"] = {}
+        candidates = state.get("candidates", {})
         
+        if not judges:
+            print("  ⚠ No judges configured")
+            return state
+        
+        # Initial evaluation
+        state["judge_evaluations"] = {}
         for judge in judges:
             try:
                 state = judge.process(state)
@@ -222,29 +277,100 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             except Exception as e:
                 print(f"  ✗ {judge.name}: {e}")
         
-        # Enable debate if configured
-        if workflow_config.get("enable_debate", False):
-            print("  Running judge debate...")
-            for judge in judges:
-                try:
-                    for candidate, markmap in state.get("candidates", {}).items():
-                        result = judge.debate(markmap, state.get("judge_evaluations", {}))
-                        state["judge_evaluations"][judge.agent_id][candidate].update(result)
-                except Exception as e:
-                    print(f"    ✗ Debate error: {e}")
+        # Run debate if enabled
+        if enable_debate and len(judges) >= 2:
+            print("  Running debate...")
+            
+            debate_result = run_debate(
+                judges=judges,
+                candidates=candidates,
+                evaluations=state.get("judge_evaluations", {}),
+                max_rounds=max_debate_rounds,
+                consensus_threshold=consensus_threshold,
+            )
+            
+            # Store results for each candidate
+            for output_key in candidates.keys():
+                state["selected_markmap"][output_key] = candidates[output_key]
+                state["judge_feedback"][output_key] = debate_result.get("judge_feedback", [])
+                state["consensus_suggestions"][output_key] = debate_result.get("consensus_suggestions", [])
+            
+            print(f"  ✓ Debate completed ({debate_result.get('debate_rounds', 0)} rounds)")
+            print(f"  ✓ Consensus score: {debate_result.get('winning_score', 0):.1f}/100")
+        else:
+            # No debate - use initial evaluations
+            winner, score, details = aggregate_votes(state.get("judge_evaluations", {}))
+            print(f"  ✓ Evaluation score: {score:.1f}/100")
+            
+            for output_key in candidates.keys():
+                state["selected_markmap"][output_key] = candidates[output_key]
+                # Collect feedback from all judges
+                feedback = []
+                for judge_id, judge_evals in state.get("judge_evaluations", {}).items():
+                    if output_key in judge_evals:
+                        feedback.append({
+                            "judge_id": judge_id,
+                            "score": judge_evals[output_key].get("score", 0),
+                            "strengths": judge_evals[output_key].get("strengths", []),
+                            "improvements": judge_evals[output_key].get("improvements", []),
+                        })
+                state["judge_feedback"][output_key] = feedback
+                state["consensus_suggestions"][output_key] = []
         
+        update_stm("Judging completed", category="evaluation")
+        return state
+    
+    def run_writer(state: WorkflowState) -> WorkflowState:
+        """
+        Phase 4: Final Markmap Writing.
+        
+        Writer takes the selected structure, applies judge feedback,
+        adds proper links (GitHub/LeetCode), and formats output.
+        """
+        print("\n[Phase 4] Writing final Markmaps...")
+        
+        writer = create_writer(config)
+        selected = state.get("selected_markmap", {})
+        problems = state.get("problems", {})
+        
+        writer_outputs = {}
+        
+        for output_key, markmap in selected.items():
+            print(f"  Writing: {output_key}")
+            
+            try:
+                # Prepare state for writer
+                writer_state = {
+                    "selected_markmap": markmap,
+                    "judge_feedback": state.get("judge_feedback", {}).get(output_key, []),
+                    "consensus_suggestions": state.get("consensus_suggestions", {}).get(output_key, []),
+                    "problems": problems,
+                }
+                
+                writer_state = writer.process(writer_state)
+                writer_outputs[output_key] = writer_state.get("final_markmap", markmap)
+                print(f"    ✓ {output_key} written")
+                
+            except Exception as e:
+                print(f"    ✗ Writer error for {output_key}: {e}")
+                writer_outputs[output_key] = markmap  # Fallback to draft
+        
+        state["writer_outputs"] = writer_outputs
+        update_stm("Writer completed", category="writing")
         return state
     
     def run_translations(state: WorkflowState) -> WorkflowState:
-        """Translate optimized outputs for translate-mode languages."""
+        """
+        Phase 5: Translate outputs for translate-mode languages.
+        """
         translator_configs = state.get("translator_configs", [])
         
         if not translator_configs:
             return state
         
-        print("\n[Phase 4] Translating outputs...")
+        print("\n[Phase 5] Translating outputs...")
         
-        candidates = state.get("candidates", {})
+        writer_outputs = state.get("writer_outputs", {})
         translated = {}
         
         for tr_config in translator_configs:
@@ -259,56 +385,58 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 config=config,
             )
             
-            # Translate each output type (general, specialist)
             for output_type in types_config.keys():
                 source_key = f"{output_type}_{source_lang}"
                 target_key = f"{output_type}_{target_lang}"
                 
-                if source_key in candidates:
+                if source_key in writer_outputs:
                     try:
                         translated_content = translator.translate(
-                            candidates[source_key],
+                            writer_outputs[source_key],
                             output_type,
                         )
                         translated[target_key] = translated_content
                         print(f"  ✓ Translated: {source_key} → {target_key}")
                     except Exception as e:
-                        print(f"  ✗ Translation failed {source_key} → {target_key}: {e}")
+                        print(f"  ✗ Translation failed: {e}")
                         state["errors"].append(f"Translation error: {e}")
         
         state["translated_outputs"] = translated
         update_stm("Translations completed", category="translation")
         return state
     
-    def finalize_outputs(state: WorkflowState) -> WorkflowState:
-        """Finalize and prepare outputs for saving."""
-        print("\n[Phase 5] Finalizing outputs...")
+    def run_post_processing(state: WorkflowState) -> WorkflowState:
+        """
+        Phase 6: Post-processing.
         
-        # Merge generated (optimized) and translated outputs
+        Apply text transformations (e.g., LC → LeetCode) by code,
+        ensuring 100% consistency.
+        """
+        print("\n[Phase 6] Post-processing...")
+        
+        processor = PostProcessor(config)
+        
+        # Merge writer outputs and translations
+        all_outputs = {}
+        all_outputs.update(state.get("writer_outputs", {}))
+        all_outputs.update(state.get("translated_outputs", {}))
+        
+        # Apply post-processing
         final_outputs = {}
-        
-        # Add optimized outputs (from generate mode)
-        for key, content in state.get("candidates", {}).items():
-            final_outputs[key] = content
-        
-        # Add translated outputs (from translate mode)
-        for key, content in state.get("translated_outputs", {}).items():
-            final_outputs[key] = content
+        for key, content in all_outputs.items():
+            processed = processor.process(content)
+            final_outputs[key] = processed
+            print(f"  ✓ Processed: {key}")
         
         state["final_outputs"] = final_outputs
-        
-        # Log final scores if available
-        if state.get("judge_evaluations"):
-            winner, score, details = aggregate_votes(state["judge_evaluations"])
-            print(f"  Judge consensus score: {score:.1f}/100")
-            update_stm(f"Final score: {score:.1f}/100", category="evaluation")
-        
-        update_stm("Outputs finalized", category="system")
+        update_stm("Post-processing completed", category="post_processing")
         return state
     
     def save_outputs(state: WorkflowState) -> WorkflowState:
-        """Save all final outputs to files."""
-        print("\n[Phase 6] Saving outputs...")
+        """
+        Phase 7: Save all outputs to files.
+        """
+        print("\n[Phase 7] Saving outputs...")
         
         final_outputs = state.get("final_outputs", {})
         
@@ -337,12 +465,13 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     graph.add_node("prepare_optimization", prepare_optimization)
     graph.add_node("optimize", run_optimization_round)
     graph.add_node("judge", run_judging)
-    graph.add_node("translate", run_translations)  # New: translate after judging
-    graph.add_node("finalize", finalize_outputs)
+    graph.add_node("write", run_writer)
+    graph.add_node("translate", run_translations)
+    graph.add_node("post_process", run_post_processing)
     graph.add_node("save", save_outputs)
     
     # Add edges
-    # Flow: initialize → generate → prepare → optimize (loop) → judge → translate → finalize → save
+    # V2 Flow: init → generate → prepare → optimize (loop) → judge → write → translate → post_process → save
     graph.set_entry_point("initialize")
     graph.add_edge("initialize", "generate_baselines")
     graph.add_edge("generate_baselines", "prepare_optimization")
@@ -358,9 +487,10 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         }
     )
     
-    graph.add_edge("judge", "translate")  # After judging, translate
-    graph.add_edge("translate", "finalize")
-    graph.add_edge("finalize", "save")
+    graph.add_edge("judge", "write")
+    graph.add_edge("write", "translate")
+    graph.add_edge("translate", "post_process")
+    graph.add_edge("post_process", "save")
     graph.add_edge("save", END)
     
     return graph.compile()
@@ -371,7 +501,7 @@ async def run_pipeline_async(
     config: dict[str, Any] | None = None,
 ) -> WorkflowState:
     """
-    Run the pipeline asynchronously.
+    Run the V2 pipeline asynchronously.
     
     Args:
         data: Input data with ontology, problems, patterns, roadmaps
@@ -398,7 +528,7 @@ def run_pipeline(
     config: dict[str, Any] | None = None,
 ) -> WorkflowState:
     """
-    Run the pipeline synchronously.
+    Run the V2 pipeline synchronously.
     
     Args:
         data: Input data with ontology, problems, patterns, roadmaps
@@ -418,4 +548,3 @@ def run_pipeline(
     
     result = graph.invoke(initial_state)
     return result
-

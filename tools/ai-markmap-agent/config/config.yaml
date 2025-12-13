@@ -370,7 +370,7 @@ workflow:
   enable_debate: true  # Recommended: true for production
   
   # Maximum debate rounds before forcing a decision
-  max_debate_rounds: 3  # Production: 2-3
+  max_debate_rounds: 1  # Production: 2-3
   
   # Consensus threshold (0.0-1.0)
   # If judges agree above this threshold, debate ends early
