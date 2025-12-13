@@ -2,13 +2,20 @@
 # Translator Agent
 # =============================================================================
 # Translates Markmap content between languages.
+# Prompts are loaded from prompts/translator/*.md files.
 # =============================================================================
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from .base_agent import BaseAgent
+
+# Prompt file paths (relative to project root)
+PROMPT_DIR = Path(__file__).parent.parent.parent / "prompts" / "translator"
+ZH_TW_PROMPT_FILE = PROMPT_DIR / "zh_tw_translator_behavior.md"
+GENERIC_PROMPT_FILE = PROMPT_DIR / "generic_translator_behavior.md"
 
 
 class TranslatorAgent(BaseAgent):
@@ -16,6 +23,7 @@ class TranslatorAgent(BaseAgent):
     Translator agent for converting Markmaps between languages.
     
     Translates the content while preserving structure, links, and formatting.
+    Prompts are loaded from external .md files for easy customization.
     """
     
     def __init__(
@@ -45,6 +53,10 @@ class TranslatorAgent(BaseAgent):
             "max_tokens": 8192,
         }
         
+        # Initialize prompt cache BEFORE super().__init__() 
+        # because parent class may call _load_prompt
+        self._prompt_cache: dict[str, str] = {}
+        
         super().__init__(
             agent_id=f"translator_{source_language}_to_{target_language}",
             model_config=model_config,
@@ -65,6 +77,16 @@ class TranslatorAgent(BaseAgent):
         # Actual translation is done via the translate() method
         return state
     
+    def _load_translation_prompt(self, prompt_file: Path) -> str:
+        """Load translation prompt from file with caching."""
+        key = str(prompt_file)
+        if key not in self._prompt_cache:
+            if prompt_file.exists():
+                self._prompt_cache[key] = prompt_file.read_text(encoding="utf-8")
+            else:
+                raise FileNotFoundError(f"Prompt file not found: {prompt_file}")
+        return self._prompt_cache[key]
+    
     def translate(self, content: str, output_type: str) -> str:
         """
         Translate Markmap content from source to target language.
@@ -76,25 +98,22 @@ class TranslatorAgent(BaseAgent):
         Returns:
             Translated markdown content
         """
-        target_name = "繁體中文" if self.target_language == "zh-TW" else self.target_language
+        # Load appropriate prompt based on target language
+        if self.target_language == "zh-TW":
+            prompt_template = self._load_translation_prompt(ZH_TW_PROMPT_FILE)
+        else:
+            prompt_template = self._load_translation_prompt(GENERIC_PROMPT_FILE)
+            prompt_template = prompt_template.replace(
+                "the target language",
+                self.target_language
+            )
         
-        prompt = f"""Translate the following Markmap markdown content from English to {target_name}.
+        # Build full prompt with content
+        prompt = f"""{prompt_template}
 
-CRITICAL RULES:
-1. Preserve ALL markdown formatting exactly (headers, lists, links, checkboxes, code blocks)
-2. DO NOT translate:
-   - URLs (keep all links exactly as-is)
-   - Code/variable names inside backticks
-   - Problem IDs (e.g., "LC 125", "0003")
-   - Technical terms that are commonly kept in English (e.g., "Two Pointers", "Sliding Window" - but add Chinese translation in parentheses)
-3. Translate:
-   - Section headings
-   - Descriptions and explanations
-   - Comments
-4. Keep the same tree structure and indentation
-5. Output ONLY the translated markdown, no explanations
+---
 
-Content to translate:
+## Content to Translate
 
 {content}"""
         
