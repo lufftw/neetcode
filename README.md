@@ -93,7 +93,7 @@ Most people practice algorithms in isolation. We built an **interconnected knowl
 
 | Mind Map | Description | Link |
 |:---------|:------------|:----:|
-| 🤖 **AI Ontology Analysis (Evolved)** | Advanced AI-powered pattern synthesis with routing guides | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
+| 🤖 **AI Ontology Analysis (Evolved)** | Generated via a multi-agent pipeline | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
 | 🤖 **AI Ontology Analysis** | AI-powered deep pattern synthesis | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 | 📐 **Pattern Hierarchy** | API kernels → patterns → solutions | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
 | 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → derived variants | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
@@ -276,8 +276,8 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 | Language | Description | Links |
 |:---------|:------------|:------|
-| **English (Evolved)** | Advanced AI synthesis with routing guides & pattern cheat sheets | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) |
-| **繁體中文 (Evolved)** | 進階 AI 智能分析，含導航指南與模式速查表 | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
+| **English (Evolved)** | Generated via a multi-agent pipeline | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) |
+| **繁體中文 (Evolved)** | 由多代理（multi-agent）流程產生 | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
 | **English** | AI-synthesized pattern relationships | [Static](docs/mindmaps/neetcode_ontology_ai_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
 | **繁體中文** | AI 智能分析模式關聯 | [Static](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 

@@ -92,12 +92,13 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 
 | 心智圖 | 說明 | 連結 |
 |:-------|:-----|:----:|
+| 🤖 **AI 本體論分析 (Evolved)** | 由多代理（multi-agent）流程產生 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
 | 🤖 **AI 本體論分析** | AI 深度模式合成 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 | 📐 **模式階層** | API 核心 → 模式 → 解法 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
 | 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
 | ⚡ **演算法使用** | 知道哪個演算法適用於哪裡 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
 | 🏢 **公司覆蓋** | 針對特定公司精準準備 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
-| 🗺️ **學習路線圖** | 遵循經過驗證的路徑 (NeetCode 150, Blind 75 等) | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
+| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
 
 **[→ 探索 10+ 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -275,6 +276,8 @@ scripts\run_tests.bat 0001_two_sum
 
 | 語言 | 說明 | 連結 |
 |:-----|:-----|:-----|
+| **English (Evolved)** | Generated via a multi-agent pipeline | [靜態](docs/mindmaps/neetcode_ontology_agent_evolved_en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) |
+| **繁體中文 (Evolved)** | 由多代理（multi-agent）流程產生 | [靜態](docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
 | **English** | AI 合成的模式關聯 | [靜態](docs/mindmaps/neetcode_ontology_ai_en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
 | **繁體中文** | AI 智能分析模式關聯 | [靜態](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 
@@ -306,91 +309,33 @@ scripts\run_tests.bat 0001_two_sum
 
 ## 🤖 AI 心智圖生成
 
-> **「軟體架構師的系統思維、演算法教授的教學智慧、資深工程師的實戰經驗，以及競程冠軍的模式識別能力 — 透過 AI 統一合成。」**
+> **「讓 AI 合成人類需要數年才能內化的知識。」**
 
-### 願景
+### 兩種生成模式
 
-傳統演算法學習資源孤立呈現知識。我們的 **AI 本體論分析器** 採用根本不同的方法：
+| 模式 | 說明 | 快速開始 |
+|:-----|:-----|:---------|
+| **🤖 Evolved Agent** | 多專家精煉與共識投票 | `cd tools/ai-markmap-agent && python main.py` |
+| **🤖 Basic AI** | 從知識圖譜單次合成 | `python tools/generate_mindmaps_ai.py` |
 
-| 傳統方法 | 我們的 AI 方法 |
-|:---------|:---------------|
-| 靜態題目清單 | 動態知識圖譜合成 |
-| 手動分類 | AI 發現模式關聯 |
-| 單一視角 | 多視角專家合成 |
-| 背誦解法 | 理解互聯關係 |
+### 主要特色
 
-### 運作原理
+- 🧬 **多專家合成** — 架構師 + 教授 + 工程師視角
+- 🎯 **智能連結** — GitHub 解答（如有）→ LeetCode 後備
+- 🌐 **多語言** — EN / 繁體中文
+- ♻️ **可重新生成** — 版本歷史自動遞增
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    知識圖譜輸入                                   │
-├─────────────────────────────────────────────────────────────────┤
-│  ontology/          │  meta/problems/     │  docs/patterns/     │
-│  ├── api_kernels    │  ├── 0001_*.toml    │  ├── sliding_window │
-│  ├── patterns       │  ├── 0003_*.toml    │  └── ...            │
-│  ├── algorithms     │  └── ...            │                     │
-│  └── ...            │                     │                     │
-└─────────────────────┴─────────────────────┴─────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    AI 合成引擎                                   │
-├─────────────────────────────────────────────────────────────────┤
-│  🏗️ 軟體架構師      → 系統級模式組織                             │
-│  📚 演算法教授      → 教學結構與進程                             │
-│  ⚙️ 資深工程師      → 實用性與權衡分析                           │
-│  🏆 競程冠軍        → 模式識別捷徑                               │
-│  🎨 API 設計師      → 清晰的知識介面                             │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    智能輸出                                      │
-├─────────────────────────────────────────────────────────────────┤
-│  ✅ 智能連結：GitHub 解答（如有）→ LeetCode 後備                  │
-│  ✅ 多語言：EN / 繁體中文 / 简体中文                              │
-│  ✅ Markmap 格式：互動式、可摺疊、美觀                           │
-│  ✅ 自訂目標：面試準備 / 系統學習 / 複習                         │
-└─────────────────────────────────────────────────────────────────┘
-```
+### 輸出檔案
 
-### 快速開始
+| 類型 | 輸出路徑 |
+|:-----|:---------|
+| **Evolved** | `docs/mindmaps/neetcode_ontology_agent_evolved_{lang}.md` |
+| **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
+| **HTML** | `docs/pages/mindmaps/*.html` |
 
-```bash
-# 互動模式（推薦）
-python tools/generate_mindmaps_ai.py
-
-# 指定目標
-python tools/generate_mindmaps_ai.py --goal interview        # 面試準備
-python tools/generate_mindmaps_ai.py --goal systematic       # 學習路線圖
-python tools/generate_mindmaps_ai.py --goal pattern_mastery  # 深度模式分析
-
-# 聚焦特定主題
-python tools/generate_mindmaps_ai.py --topic sliding_window
-python tools/generate_mindmaps_ai.py --topic dynamic_programming
-
-# 多語言
-# 在 tools/mindmap_ai_config.toml 中配置：
-# language = ["en", "zh-TW"]
-```
-
-### 配置
-
-編輯 `tools/mindmap_ai_config.toml` 進行自訂：
-
-| 區段 | 可配置內容 |
-|:-----|:-----------|
-| `[model]` | LLM 模型、temperature、max tokens |
-| `[output]` | 目錄、檔名、HTML 生成 |
-| `[ontology]` | 包含哪些知識圖譜資料 |
-| `[problems]` | 問題篩選（難度、主題、路線圖） |
-| `[generation]` | 目標、風格、自訂指令 |
-| `[links]` | GitHub repo URL、分支、連結格式 |
-| `[advanced]` | 輸出語言、複雜度包含 |
-
-### 沒有 API Key？沒問題
-
-生成器會將完整提示詞儲存到 `tools/prompts/generated/mindmap_prompt.md`。複製並貼到 ChatGPT、Claude 或任何 LLM 網頁介面。
+> 📖 **Evolved Agent**：詳見 [`tools/ai-markmap-agent/README.md`](tools/ai-markmap-agent/README.md) 了解架構、專家角色與配置。
+>
+> 📖 **Basic AI**：詳見 [`tools/README.md`](tools/README.md) 了解配置選項。
 
 ---
 
@@ -980,13 +925,48 @@ python tools/generate_mindmaps.py --html
 
 配置檔：`tools/generate_mindmaps.toml`
 
+### 本地建置文件
+
+> ⚠️ **選擇性功能：** 本地建置文件是**完全選擇性**的。核心 LeetCode 練習功能無需任何文件建置設定即可運作。
+
+**推薦方法（簡單）：**
+
+最簡單的本地建置文件方式是使用手動腳本：
+
+```bash
+# Windows
+scripts\build_docs.bat
+
+# Linux/macOS
+./scripts/build_docs.sh
+
+# 建置並本地預覽
+scripts\build_docs.bat --serve  # Windows
+./scripts/build_docs.sh --serve  # Linux/macOS
+```
+
+📖 **詳見 [本地建置文件（手動方法）](docs/BUILD_DOCS_MANUAL.md)** 完整指南。
+
+**進階選項（選擇性）：**
+
+如果你想在本地測試完全相同的 GitHub Actions 工作流程，可以使用 `act`：
+
+📖 **詳見 [使用 Act 在本地執行 GitHub Actions](docs/ACT_LOCAL_GITHUB_ACTIONS.md)** — *注意：需要 Docker 和 act 工具。只有在你想測試 CI/CD 工作流程時才需要。*
+
 ### 文件
 
+**核心文件：**
 - [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — 維護者指南
 - [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — 測試文件
 - [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
 - [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — 生成器檔案規格（generate(), edge cases, complexity）
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — 多型架構遷移指南
+
+**本地文件建置（選擇性）：**
+- [`docs/BUILD_DOCS_MANUAL.md`](docs/BUILD_DOCS_MANUAL.md) — ⭐ **推薦：** 簡單的手動建置方法
+- [`docs/ACT_LOCAL_GITHUB_ACTIONS.md`](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — 進階：使用 act 在本地測試 CI/CD 工作流程（需要 Docker）
+
+**部署：**
 - [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — 部署指南
 
 ---
