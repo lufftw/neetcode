@@ -33,7 +33,7 @@ prompt_max_completion_tokens = 10000
 #   - This is the main generation task and consumes more tokens
 #
 # Recommended: Models good at creative generation and long text output (e.g., gpt-5.1-codex, gpt-5.2, gpt-5.1)
-mindmap_model = "gpt-5.1-codex"
+mindmap_model = "gpt-5-codex"
 mindmap_temperature = 0.7
 # GPT-5.1-codex uses max_completion_tokens (older models use max_tokens)
 mindmap_max_completion_tokens = 10000

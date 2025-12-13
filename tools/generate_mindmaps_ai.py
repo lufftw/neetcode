@@ -58,7 +58,10 @@ ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
 DEFAULT_CONFIG = TOOLS_DIR / "mindmap_ai_config.toml"
-DEFAULT_MODEL = "gpt-5.1-codex"
+# Use a chat model that is available via /v1/chat/completions by default.
+# Older Codex-style completion models (e.g., gpt-5.1-codex) are no longer
+# served by the public API and will raise "model not supported" errors.
+DEFAULT_MODEL = "gpt-4.1"
 
 
 def load_config(config_path: Path | None = None) -> dict[str, Any]:
@@ -633,6 +636,11 @@ def build_user_prompt(
 _cached_api_key: str | None = None
 
 
+def is_codex_model(model_name: str) -> bool:
+    """Return True when using a Codex-style model that now requires Responses API."""
+    return "codex" in model_name.lower()
+
+
 def is_chat_model(model_name: str) -> bool:
     """
     Determine if a model is a chat model or completion model.
@@ -649,9 +657,7 @@ def is_chat_model(model_name: str) -> bool:
     model_lower = model_name.lower()
     
     # Completion models (use /v1/completions) - check these first (more specific)
-    # Codex models (e.g., gpt-5.1-codex, gpt-5.2-codex) are completion models
     completion_model_patterns = [
-        "codex",            # gpt-5.1-codex, gpt-5.2-codex, etc. (use /v1/completions)
         "text-",            # text-davinci-003, text-curie-001, etc.
         "davinci",          # davinci-003, etc.
         "curie",            # curie-001, etc.
@@ -668,7 +674,7 @@ def is_chat_model(model_name: str) -> bool:
     chat_model_patterns = [
         "gpt-4",           # gpt-4, gpt-4o, gpt-4-turbo, gpt-4o-mini
         "gpt-3.5",         # gpt-3.5-turbo
-        "gpt-5",           # gpt-5.2, gpt-5.1 (but NOT gpt-5.1-codex - handled above)
+        "gpt-5",           # gpt-5.2, gpt-5.1 (but NOT gpt-5.1-codex - handled separately)
         "o1",              # o1, o1-mini, o3-mini
         "o3",              # o3-mini
         "claude",          # Claude models
@@ -733,10 +739,22 @@ def generate_with_openai(
     client = OpenAI(**client_kwargs)
     
     try:
-        # Determine if model is chat or completion model
-        use_chat_api = is_chat_model(model)
+        is_codex = is_codex_model(model)
+        use_chat_api = is_chat_model(model) and not is_codex
         
-        if use_chat_api:
+        if is_codex:
+            # Codex models are now served via the Responses API
+            response = client.responses.create(
+                model=model,
+                input=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                # Some Codex models reject temperature; rely on defaults.
+                max_output_tokens=max_completion_tokens,
+            )
+            return response.output_text
+        elif use_chat_api:
             # Chat models use /v1/chat/completions
             response = client.chat.completions.create(
                 model=model,
@@ -766,6 +784,13 @@ def generate_with_openai(
             return response.choices[0].text
     except Exception as e:
         error_msg = str(e)
+        # Provide a clearer hint when an unsupported completion model is used
+        if "model is not supported" in error_msg.lower():
+            raise ValueError(
+                f"Model '{model}' is not supported on the current endpoint. "
+                "Codex-style models (e.g., gpt-5.1-codex) now require the Responses API. "
+                "Use Responses API for Codex models or a chat model such as gpt-4.1, gpt-4o, or o1 via /v1/chat/completions."
+            ) from e
         if "Connection" in error_msg or "getaddrinfo" in error_msg:
             print("\n❌ Network connection error!")
             print("   Possible causes:")
@@ -911,9 +936,21 @@ def optimize_prompt_with_ai(
         print("   🤖 Calling AI to optimize prompt...")
         
         # Determine if model is chat or completion model
-        use_chat_api = is_chat_model(model)
+        is_codex = is_codex_model(model)
+        use_chat_api = is_chat_model(model) and not is_codex
         
-        if use_chat_api:
+        if is_codex:
+            response = client.responses.create(
+                model=model,
+                input=[
+                    {"role": "system", "content": optimization_system_prompt},
+                    {"role": "user", "content": optimization_user_prompt},
+                ],
+                # Some Codex models reject temperature; rely on defaults.
+                max_output_tokens=max_completion_tokens,
+            )
+            optimized_content = response.output_text
+        elif use_chat_api:
             # Chat models use /v1/chat/completions
             response = client.chat.completions.create(
                 model=model,
