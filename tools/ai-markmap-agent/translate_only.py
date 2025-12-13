@@ -50,6 +50,18 @@ def find_latest_english_output(config: dict) -> Path | None:
     if final_path.exists():
         return final_path
     
+    # Try old format filenames (for backwards compatibility)
+    old_formats = [
+        f"{prefix}_general_ai_en.md",
+        f"{prefix}_specialist_ai_en.md",
+        f"{prefix}_ontology_ai_en.md",
+    ]
+    for old_filename in old_formats:
+        old_path = md_dir / old_filename
+        if old_path.exists():
+            print(f"  ⚠ Found old format file: {old_filename}")
+            return old_path
+    
     return None
 
 
@@ -172,10 +184,12 @@ def main() -> int:
         if args.output:
             output_path = Path(args.output)
         else:
-            # Replace language in filename
+            # Replace language suffix in filename (only at the end!)
             stem = input_path.stem
-            if f"_{args.source}" in stem:
-                new_stem = stem.replace(f"_{args.source}", f"_{args.target}")
+            suffix = f"_{args.source}"
+            if stem.endswith(suffix):
+                # Only replace if it's at the END of the filename
+                new_stem = stem[:-len(suffix)] + f"_{args.target}"
             else:
                 new_stem = f"{stem}_{args.target}"
             output_path = input_path.parent / f"{new_stem}.md"
