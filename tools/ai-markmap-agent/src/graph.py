@@ -31,7 +31,15 @@ from .consensus import (
     get_adopted_suggestions,
     ConsensusResult,
 )
-from .output.html_converter import save_all_markmaps
+from .output.html_converter import save_all_markmaps, MarkMapHTMLConverter
+
+__all__ = [
+    "run_pipeline",
+    "run_pipeline_async",
+    "build_markmap_graph",
+    "load_baseline_markmap",
+    "handle_versioning_mode",
+]
 from .post_processing import PostProcessor
 from .debug_output import get_debug_manager, reset_debug_manager
 from .config_loader import ConfigLoader
@@ -80,6 +88,10 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
     """
     Load the baseline Markmap from file.
     
+    Behavior depends on versioning mode:
+    - continue: Load from latest version (vN) if exists, else fall back to baseline.path
+    - reset: Load from baseline.path (original source)
+    
     Args:
         config: Configuration dictionary
         
@@ -90,8 +102,25 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
     baseline_config = input_config.get("baseline", {})
     baseline_path = baseline_config.get("path", "neetcode_ontology_ai_en.md")
     
-    # Resolve path relative to docs/mindmaps/
+    # Check versioning mode
+    versioning = config.get("output", {}).get("versioning", {})
+    versioning_enabled = versioning.get("enabled", False)
+    versioning_mode = versioning.get("mode", "continue")
+    
     base_dir = Path(__file__).parent.parent.parent.parent  # Go to neetcode root
+    
+    # For continue mode, try to load from latest version first
+    if versioning_enabled and versioning_mode == "continue":
+        converter = MarkMapHTMLConverter(config)
+        latest_path = converter._get_latest_version_path("en")
+        
+        if latest_path and latest_path.exists():
+            print(f"  📂 Continue mode: Loading from {latest_path.parent.name}/{latest_path.name}")
+            return latest_path.read_text(encoding="utf-8")
+        else:
+            print("  📂 Continue mode: No previous version found, using baseline")
+    
+    # Load from configured baseline path
     full_path = base_dir / "docs" / "mindmaps" / baseline_path
     
     if full_path.exists():
@@ -114,6 +143,39 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
         return ""
     
     raise FileNotFoundError(f"Baseline Markmap not found: {full_path}")
+
+
+def handle_versioning_mode(config: dict[str, Any]) -> bool:
+    """
+    Handle versioning mode before running the pipeline.
+    
+    For reset mode, prompts user to confirm deletion of old versions.
+    
+    Args:
+        config: Configuration dictionary
+        
+    Returns:
+        True to continue, False to abort (user cancelled reset)
+    """
+    versioning = config.get("output", {}).get("versioning", {})
+    versioning_enabled = versioning.get("enabled", False)
+    versioning_mode = versioning.get("mode", "continue")
+    
+    if not versioning_enabled:
+        return True
+    
+    if versioning_mode == "reset":
+        converter = MarkMapHTMLConverter(config)
+        return converter.handle_reset_mode()
+    
+    # Continue mode - just show info
+    converter = MarkMapHTMLConverter(config)
+    existing = converter._get_existing_versions()
+    if existing:
+        print(f"  📂 Continue mode: {len(existing)} existing version(s)")
+        print(f"      Latest: {existing[-1].name}")
+    
+    return True
 
 
 def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:

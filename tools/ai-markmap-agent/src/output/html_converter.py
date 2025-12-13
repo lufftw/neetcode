@@ -54,6 +54,8 @@ class MarkMapHTMLConverter:
         versioning = output_config.get("versioning", {})
         self.versioning_enabled = versioning.get("enabled", False)
         self.version_dir = (base_dir / versioning.get("directory", "outputs/versions")).resolve()
+        self.versioning_mode = versioning.get("mode", "continue")
+        self.prompt_on_reset = versioning.get("prompt_on_reset", True)
         
         # Ensure directories exist
         self.md_output_dir.mkdir(parents=True, exist_ok=True)
@@ -73,21 +75,93 @@ class MarkMapHTMLConverter:
         # Fallback to default template
         return Template(self._default_template())
     
+    def _get_existing_versions(self) -> list[Path]:
+        """Get list of existing version directories, sorted by version number."""
+        if not self.version_dir.exists():
+            return []
+        
+        return sorted(
+            [d for d in self.version_dir.iterdir() if d.is_dir() and d.name.startswith("v") and d.name[1:].isdigit()],
+            key=lambda x: int(x.name[1:])
+        )
+    
     def _get_next_version(self) -> str:
         """Get next version number (v1, v2, ...)."""
-        if not self.version_dir.exists():
-            return "v1"
-        
-        existing = sorted(
-            [d for d in self.version_dir.iterdir() if d.is_dir() and d.name.startswith("v")],
-            key=lambda x: int(x.name[1:]) if x.name[1:].isdigit() else 0
-        )
+        existing = self._get_existing_versions()
         
         if not existing:
             return "v1"
         
         last_num = int(existing[-1].name[1:])
         return f"v{last_num + 1}"
+    
+    def _get_latest_version_path(self, lang: str = "en") -> Path | None:
+        """
+        Get path to the latest version's markdown file for continue mode.
+        
+        Args:
+            lang: Language code (e.g., "en", "zh-TW")
+            
+        Returns:
+            Path to latest version file, or None if no versions exist
+        """
+        existing = self._get_existing_versions()
+        if not existing:
+            return None
+        
+        latest_dir = existing[-1]
+        naming = self.config.get("output", {}).get("naming", {})
+        prefix = naming.get("prefix", "neetcode")
+        template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
+        filename = template.format(prefix=prefix, lang=lang) + ".md"
+        
+        latest_file = latest_dir / filename
+        if latest_file.exists():
+            return latest_file
+        
+        return None
+    
+    def handle_reset_mode(self) -> bool:
+        """
+        Handle reset mode: prompt user and delete old versions if confirmed.
+        
+        Returns:
+            True if reset confirmed (or no versions exist), False if user cancelled
+        """
+        existing = self._get_existing_versions()
+        
+        if not existing:
+            print("  No existing versions found. Starting fresh.")
+            return True
+        
+        version_names = [d.name for d in existing]
+        
+        print("\n" + "=" * 60)
+        print("🔄 Reset Mode")
+        print("=" * 60)
+        print(f"\n  Found {len(existing)} existing version(s): {', '.join(version_names)}")
+        print("\n  This will DELETE all versions and start fresh from baseline.")
+        
+        if self.prompt_on_reset:
+            print("\n  Delete all existing versions? [Y/N]: ", end="")
+            try:
+                response = input().strip().upper()
+            except (EOFError, KeyboardInterrupt):
+                print("\n  Cancelled.")
+                return False
+            
+            if response != "Y":
+                print("\n  Reset cancelled. Exiting without changes.")
+                return False
+        
+        # Delete all version directories
+        import shutil
+        for version_dir in existing:
+            shutil.rmtree(version_dir)
+            print(f"  🗑️ Deleted: {version_dir.name}")
+        
+        print(f"\n  ✓ All versions deleted. Starting fresh with v1.")
+        return True
     
     def _default_template(self) -> str:
         """Return a minimal default template matching the main template format."""

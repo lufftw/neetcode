@@ -383,6 +383,26 @@ outputs/versions/
 
 版本號自動遞增：`v1`、`v2`、`v3`...
 
+### 版本控制模式
+
+在 `config/config.yaml` 設定：
+
+```yaml
+output:
+  versioning:
+    enabled: true
+    directory: "outputs/versions"
+    mode: "continue"      # continue | reset
+    prompt_on_reset: true
+```
+
+| 模式 | 行為 |
+|------|------|
+| `continue` | 從最新版本 (vN) 繼續精進，產生 vN+1 |
+| `reset` | 刪除所有版本，從 `input.baseline.path` 重新開始，產生 v1 |
+
+**Reset 模式**會在刪除前詢問確認。
+
 ---
 
 ## 模組職責

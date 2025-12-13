@@ -383,6 +383,26 @@ outputs/versions/
 
 Version numbers auto-increment: `v1`, `v2`, `v3`, ...
 
+### Versioning Modes
+
+Configure in `config/config.yaml`:
+
+```yaml
+output:
+  versioning:
+    enabled: true
+    directory: "outputs/versions"
+    mode: "continue"      # continue | reset
+    prompt_on_reset: true
+```
+
+| Mode | Behavior |
+|------|----------|
+| `continue` | Load from latest version (vN), produce vN+1 |
+| `reset` | Delete all versions, start fresh from `input.baseline.path`, produce v1 |
+
+**Reset mode** prompts for confirmation before deleting existing versions.
+
 ---
 
 ## Module Responsibilities

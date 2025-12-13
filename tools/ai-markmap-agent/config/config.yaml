@@ -128,7 +128,7 @@ experts:
     architect:
       name: "Top Software Architect"
       emoji: "🏗️"
-      model: "gpt-4o"
+      model: "gpt-5.2"
       persona_prompt: "prompts/experts/architect_persona.md"
       behavior_prompt: "prompts/experts/architect_behavior.md"
       temperature: 0.6
@@ -143,7 +143,7 @@ experts:
     professor:
       name: "Distinguished Algorithm Professor"
       emoji: "📚"
-      model: "gpt-4o"
+      model: "gpt-5.2"
       persona_prompt: "prompts/experts/professor_persona.md"
       behavior_prompt: "prompts/experts/professor_behavior.md"
       temperature: 0.5
@@ -158,7 +158,7 @@ experts:
     engineer:
       name: "Senior Principal Engineer"
       emoji: "⚙️"
-      model: "gpt-4o"
+      model: "gpt-5.2"
       persona_prompt: "prompts/experts/engineer_persona.md"
       behavior_prompt: "prompts/experts/engineer_behavior.md"
       temperature: 0.6
@@ -261,12 +261,12 @@ workflow:
 # Writer Configuration
 # -----------------------------------------------------------------------------
 writer:
-  model: "gpt-4o"  # 128K context for full markmap
+  model: "gpt-5.2"  # 128K context for full markmap
   persona_prompt: "prompts/writer/writer_persona.md"
   behavior_prompt: "prompts/writer/writer_behavior.md"
   format_guide: "prompts/writer/markmap_format_guide.md"
   temperature: 0.4
-  max_tokens: 8192
+  max_tokens: 12000
   
   # Writer behavior settings
   preserve_baseline_quality: true  # Don't degrade existing good content
@@ -313,7 +313,15 @@ output:
   versioning:
     enabled: true
     directory: "outputs/versions"
-    # Auto-increment: v1, v2, v3, ...
+    
+    # Execution mode:
+    #   continue - Read from latest version (vN), produce vN+1
+    #   reset    - Delete all versions, start fresh from input.baseline.path, produce v1
+    mode: "reset"
+    
+    # When mode=reset, prompt before deleting old versions
+    # Set to false to auto-delete without confirmation
+    prompt_on_reset: true
   
   final_dirs:
     markdown: "../../docs/mindmaps"

@@ -31,7 +31,7 @@ from src.config_loader import (
     request_api_keys,
 )
 from src.data_sources import DataSourcesLoader
-from src.graph import run_pipeline, load_baseline_markmap
+from src.graph import run_pipeline, load_baseline_markmap, handle_versioning_mode
 
 
 def print_banner() -> None:
@@ -178,7 +178,13 @@ def main() -> int:
         else:
             print("Skipping API key input (--no-openai and/or --no-anthropic specified)\n")
         
-        # Step 3: Load baseline Markmap
+        # Step 3: Handle versioning mode (reset prompts here)
+        print("\nChecking versioning mode...")
+        if not handle_versioning_mode(config):
+            # User cancelled reset
+            return 0
+        
+        # Step 4: Load baseline Markmap
         print("\nLoading baseline Markmap...")
         if args.baseline:
             baseline_path = Path(args.baseline)
@@ -201,7 +207,7 @@ def main() -> int:
                 print(f"  ⚠ {e}")
                 baseline_markmap = ""
         
-        # Step 4: Load data sources
+        # Step 5: Load data sources
         print("\nLoading reference data...")
         loader = DataSourcesLoader(config)
         data = loader.load_all()
@@ -212,18 +218,18 @@ def main() -> int:
         # Print summary
         print_data_summary(loader.get_summary())
         
-        # Step 5: If dry-run, stop here
+        # Step 6: If dry-run, stop here
         if args.dry_run:
             print("\n[DRY RUN] Data sources loaded successfully. Exiting.")
             return 0
         
-        # Step 6: Check required API keys
+        # Step 7: Check required API keys
         if not args.no_openai and not ConfigLoader.has_api_key("openai"):
             print("\n❌ Error: OpenAI API key is required but not provided.")
             print("   Use --no-openai to skip if not needed.")
             return 1
         
-        # Step 7: Build and run the LangGraph pipeline
+        # Step 8: Build and run the LangGraph pipeline
         print("\n" + "=" * 60)
         print("Starting Markmap Refinement Pipeline")
         print("=" * 60)

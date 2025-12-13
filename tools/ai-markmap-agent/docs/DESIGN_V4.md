@@ -497,6 +497,19 @@ output:
   naming:
     template: "neetcode_ontology_agent_evolved_{lang}"
     # Produces: neetcode_ontology_agent_evolved_en.md
+  
+  # Version history
+  versioning:
+    enabled: true
+    directory: "outputs/versions"
+    
+    # Execution mode:
+    #   continue - Load from latest version (vN), produce vN+1
+    #   reset    - Delete all versions, start from baseline.path, produce v1
+    mode: "continue"
+    
+    # When mode=reset, prompt before deleting
+    prompt_on_reset: true
 
 # -----------------------------------------------------------------------------
 # Expert Configuration (Scalable)
@@ -839,6 +852,56 @@ Version history:
   outputs/versions/v1/neetcode_ontology_agent_evolved_en.md
   outputs/versions/v1/neetcode_ontology_agent_evolved_zh-TW.md
 ```
+
+---
+
+## Versioning Modes
+
+### Continue Mode (預設)
+
+持續精進，從最新版本繼續：
+
+```yaml
+versioning:
+  mode: "continue"
+```
+
+```
+現有版本: v1, v2, v3
+
+執行流程:
+1. 讀取 v3 的輸出作為 baseline
+2. 專家精進
+3. 產生 v4
+```
+
+### Reset Mode
+
+重新開始，從原始 baseline 出發：
+
+```yaml
+versioning:
+  mode: "reset"
+```
+
+```
+現有版本: v1, v2, v3
+
+執行流程:
+1. 程式詢問：「確定要刪除 v1, v2, v3 嗎？[Y/N]」
+2. Y → 刪除所有版本，從 input.baseline.path 重新開始
+3. N → 程式結束，不做任何事
+4. 產生新的 v1
+```
+
+### 使用場景
+
+| 場景 | 使用模式 |
+|------|---------|
+| 日常迭代精進 | `continue` |
+| 切換新的 baseline 來源 | `reset` |
+| 版本歷史太亂想重來 | `reset` |
+| 測試新的專家配置 | `reset` |
 
 ---
 
