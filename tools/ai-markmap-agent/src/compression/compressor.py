@@ -257,3 +257,75 @@ def compress_if_needed(
         return compressor.compress(content, target_ratio)
     return content
 
+
+def compress_data_for_agent(
+    problems: dict[str, Any],
+    agent_type: str = "planner",
+    config: dict[str, Any] | None = None,
+) -> str:
+    """
+    Compress problem data for efficient transmission to agents.
+    
+    V3: Produces minimal problem representations for Structure Spec generation.
+    
+    Args:
+        problems: Full problem metadata dictionary
+        agent_type: Type of agent ("planner", "strategist", "writer")
+        config: Configuration dictionary
+        
+    Returns:
+        Compressed string representation
+    """
+    config = config or {}
+    compression_config = config.get("data_compression", {})
+    
+    # Fields to include based on agent type
+    if agent_type == "planner":
+        # Planner needs: id, title, patterns, difficulty, has_solution
+        fields = ["id", "title", "patterns", "difficulty", "has_solution"]
+    elif agent_type == "strategist":
+        # Strategist only needs problem IDs (already in spec)
+        fields = ["id", "patterns"]
+    elif agent_type == "writer":
+        # Writer needs full metadata for link generation
+        fields = ["id", "title", "slug", "patterns", "difficulty", 
+                  "solution_file", "has_solution", "time_complexity", "space_complexity"]
+    else:
+        fields = compression_config.get("problem_fields", ["id", "title", "patterns"])
+    
+    lines = []
+    
+    for key, problem in problems.items():
+        if not isinstance(problem, dict):
+            continue
+        
+        # Extract only needed fields
+        entry = {}
+        for field in fields:
+            if field in problem:
+                entry[field] = problem[field]
+            elif field == "has_solution":
+                entry[field] = bool(problem.get("solution_file", ""))
+        
+        if entry:
+            # Compact representation
+            if agent_type == "planner":
+                # Single line format for efficiency
+                pid = entry.get("id", key)
+                title = entry.get("title", "Unknown")
+                diff = entry.get("difficulty", "?")
+                patterns = ",".join(entry.get("patterns", [])[:3])
+                solved = "✓" if entry.get("has_solution") else "○"
+                lines.append(f"{pid} | {title} | {diff} | [{patterns}] | {solved}")
+            else:
+                # JSON-like for writer
+                import json
+                lines.append(json.dumps(entry, ensure_ascii=False))
+    
+    if agent_type == "planner":
+        header = "ID | Title | Difficulty | Patterns | Solved"
+        separator = "-" * 60
+        return f"{header}\n{separator}\n" + "\n".join(lines)
+    
+    return "\n".join(lines)
+
