@@ -124,7 +124,7 @@ prompt_mode:
   mode: "static"
   
   # Model to use for generating dynamic prompts (only used when mode="dynamic")
-  generator_model: "gpt-5"
+  generator_model: "gpt-5.2"
   
   # Meta-prompts for dynamic generation
   meta_prompts:
@@ -143,13 +143,13 @@ models:
   # Generalist - Broad understanding, knowledge organization
   generalist:
     en:
-      model: "gpt-5"
+      model: "gpt-5.2"
       persona_prompt: "prompts/generators/generalist_persona.md"
       behavior_prompt: "prompts/generators/generalist_behavior.md"
       temperature: 0.7
       max_tokens: 4096
     zh:
-      model: "gpt-5"
+      model: "gpt-5.2"
       persona_prompt: "prompts/generators/generalist_persona.md"
       behavior_prompt: "prompts/generators/generalist_behavior.md"
       temperature: 0.7
@@ -158,13 +158,13 @@ models:
   # Specialist - Engineering details, structural rigor
   specialist:
     en:
-      model: "gpt-5"
+      model: "gpt-5.2"
       persona_prompt: "prompts/generators/specialist_persona.md"
       behavior_prompt: "prompts/generators/specialist_behavior.md"
       temperature: 0.5
       max_tokens: 4096
     zh:
-      model: "gpt-5"
+      model: "gpt-5.2"
       persona_prompt: "prompts/generators/specialist_persona.md"
       behavior_prompt: "prompts/generators/specialist_behavior.md"
       temperature: 0.5
@@ -176,7 +176,7 @@ models:
     - id: "optimizer_architect"
       name: "The Software Architect"
       persona_name: "Dr. Alexander Chen"
-      model: "gpt-5"
+      model: "gpt-5.1"
       persona_prompt: "prompts/optimizers/optimizer_architect_persona.md"
       behavior_prompt: "prompts/optimizers/optimizer_architect_behavior.md"
       temperature: 0.6
@@ -208,7 +208,7 @@ models:
     - id: "optimizer_apidesigner"
       name: "The Technical API Architect"
       persona_name: "James Patterson"
-      model: "gpt-5.2"
+      model: "gpt-5.1"
       persona_prompt: "prompts/optimizers/optimizer_apidesigner_persona.md"
       behavior_prompt: "prompts/optimizers/optimizer_apidesigner_behavior.md"
       temperature: 0.7
@@ -266,7 +266,9 @@ models:
 # -----------------------------------------------------------------------------
 workflow:
   # Number of optimization rounds
-  optimization_rounds: 3
+  # NOTE: Recommended setting is 3 rounds for production quality
+  # Currently set to 1 for faster iteration during development
+  optimization_rounds: 1  # Production: 3
   
   # Number of optimizers (must match models.optimizer count)
   optimizer_count: 3
@@ -281,10 +283,12 @@ workflow:
   parallel_baseline_generation: true
   
   # Enable debate between judges
-  enable_debate: true
+  # NOTE: Recommended true for production quality
+  enable_debate: false  # Production: true
   
   # Maximum debate rounds
-  max_debate_rounds: 2
+  # NOTE: Recommended 2 for production
+  max_debate_rounds: 1  # Production: 2
 
 # -----------------------------------------------------------------------------
 # Memory Configuration
