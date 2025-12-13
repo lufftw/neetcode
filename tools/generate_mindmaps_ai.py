@@ -590,6 +590,54 @@ def build_user_prompt(
 _cached_api_key: str | None = None
 
 
+def is_chat_model(model_name: str) -> bool:
+    """
+    Determine if a model is a chat model or completion model.
+    
+    Chat models use /v1/chat/completions endpoint.
+    Completion models use /v1/completions endpoint.
+    
+    Args:
+        model_name: Model name (e.g., "gpt-4o", "gpt-5.1-codex", "o1")
+        
+    Returns:
+        True if chat model, False if completion model
+    """
+    model_lower = model_name.lower()
+    
+    # Completion models (use /v1/completions) - check these first (more specific)
+    # Note: GPT-5.x-codex models are chat models, not completion models
+    completion_model_patterns = [
+        "text-",            # text-davinci-003, text-curie-001, etc.
+        "davinci",          # davinci-003, etc.
+        "curie",            # curie-001, etc.
+        "babbage",          # babbage-001, etc.
+        "ada",              # ada-001, etc.
+    ]
+    
+    for pattern in completion_model_patterns:
+        if pattern in model_lower:
+            return False
+    
+    # Chat models (use /v1/chat/completions)
+    # GPT-5.x series (including gpt-5.1-codex, gpt-5.2-codex) are chat models
+    chat_model_patterns = [
+        "gpt-4",           # gpt-4, gpt-4o, gpt-4-turbo, gpt-4o-mini
+        "gpt-3.5",         # gpt-3.5-turbo
+        "gpt-5",           # gpt-5.2, gpt-5.1, gpt-5.1-codex, gpt-5.2-codex, etc.
+        "o1",              # o1, o1-mini, o3-mini
+        "o3",              # o3-mini
+        "claude",          # Claude models
+    ]
+    
+    for pattern in chat_model_patterns:
+        if pattern in model_lower:
+            return True
+    
+    # Default: assume chat model for unknown models (most modern models are chat)
+    return True
+
+
 def get_api_key() -> str | None:
     """Get API key from environment or interactive input (cached)."""
     global _cached_api_key
@@ -640,18 +688,37 @@ def generate_with_openai(
     client = OpenAI(**client_kwargs)
     
     try:
-        # GPT-5.2 and newer models use max_completion_tokens
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            temperature=temperature,
-            max_completion_tokens=max_completion_tokens,
-        )
+        # Determine if model is chat or completion model
+        use_chat_api = is_chat_model(model)
         
-        return response.choices[0].message.content
+        if use_chat_api:
+            # Chat models use /v1/chat/completions
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                temperature=temperature,
+                max_completion_tokens=max_completion_tokens,
+            )
+            return response.choices[0].message.content
+        else:
+            # Completion models use /v1/completions
+            # Combine system and user prompts
+            full_prompt = f"{system_prompt}\n\n{user_prompt}"
+            
+            # Completion API uses max_tokens instead of max_completion_tokens
+            # Use max_tokens if available, otherwise use max_completion_tokens
+            max_tokens = model_config.get("max_tokens", max_completion_tokens)
+            
+            response = client.completions.create(
+                model=model,
+                prompt=full_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            return response.choices[0].text
     except Exception as e:
         error_msg = str(e)
         if "Connection" in error_msg or "getaddrinfo" in error_msg:
@@ -796,17 +863,34 @@ def optimize_prompt_with_ai(
     
     try:
         print("   🤖 Calling AI to optimize prompt...")
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": optimization_system_prompt},
-                {"role": "user", "content": optimization_user_prompt},
-            ],
-            temperature=temperature,
-            max_completion_tokens=max_completion_tokens,
-        )
         
-        optimized_content = response.choices[0].message.content
+        # Determine if model is chat or completion model
+        use_chat_api = is_chat_model(model)
+        
+        if use_chat_api:
+            # Chat models use /v1/chat/completions
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": optimization_system_prompt},
+                    {"role": "user", "content": optimization_user_prompt},
+                ],
+                temperature=temperature,
+                max_completion_tokens=max_completion_tokens,
+            )
+            optimized_content = response.choices[0].message.content
+        else:
+            # Completion models use /v1/completions
+            full_prompt = f"{optimization_system_prompt}\n\n{optimization_user_prompt}"
+            max_tokens = model_config.get("max_tokens", max_completion_tokens)
+            
+            response = client.completions.create(
+                model=model,
+                prompt=full_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            optimized_content = response.choices[0].text
         
         # Parse optimized prompt
         if "---" in optimized_content:
