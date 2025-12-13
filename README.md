@@ -93,6 +93,7 @@ Most people practice algorithms in isolation. We built an **interconnected knowl
 
 | Mind Map | Description | Link |
 |:---------|:------------|:----:|
+| 🤖 **AI Ontology Analysis (Evolved)** | Advanced AI-powered pattern synthesis with routing guides | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
 | 🤖 **AI Ontology Analysis** | AI-powered deep pattern synthesis | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 | 📐 **Pattern Hierarchy** | API kernels → patterns → solutions | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
 | 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → derived variants | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
@@ -275,6 +276,8 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 | Language | Description | Links |
 |:---------|:------------|:------|
+| **English (Evolved)** | Advanced AI synthesis with routing guides & pattern cheat sheets | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) |
+| **繁體中文 (Evolved)** | 進階 AI 智能分析，含導航指南與模式速查表 | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
 | **English** | AI-synthesized pattern relationships | [Static](docs/mindmaps/neetcode_ontology_ai_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
 | **繁體中文** | AI 智能分析模式關聯 | [Static](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
 
@@ -306,139 +309,33 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 ## 🤖 AI Mind Map Generation
 
-> **"The synthesis of a Software Architect's system thinking, an Algorithm Professor's pedagogical wisdom, a Principal Engineer's battle-tested experience, and a Competitive Programming Champion's pattern recognition — all unified through AI."**
+> **"Let AI synthesize what takes humans years to internalize."**
 
-### The Vision
+### Two Generation Modes
 
-Traditional algorithm learning resources present knowledge in isolation. Our **AI Ontology Analyzer** takes a fundamentally different approach:
+| Mode | Description | Quick Start |
+|:-----|:------------|:------------|
+| **🤖 Evolved Agent** | Multi-expert refinement with consensus voting | `cd tools/ai-markmap-agent && python main.py` |
+| **🤖 Basic AI** | Single-pass synthesis from knowledge graph | `python tools/generate_mindmaps_ai.py` |
 
-| Traditional Approach | Our AI Approach |
-|:---------------------|:----------------|
-| Static problem lists | Dynamic knowledge graph synthesis |
-| Manual categorization | AI-discovered pattern relationships |
-| Single perspective | Multi-perspective expert synthesis |
-| Memorize solutions | Understand interconnections |
+### Key Features
 
-### How It Works
+- 🧬 **Multi-Expert Synthesis** — Architect + Professor + Engineer perspectives
+- 🎯 **Smart Linking** — GitHub solution (if exists) → LeetCode fallback
+- 🌐 **Multi-language** — EN / 繁體中文
+- ♻️ **Regeneratable** — Version history with auto-increment
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    KNOWLEDGE GRAPH INPUT                        │
-├─────────────────────────────────────────────────────────────────┤
-│  ontology/          │  meta/problems/     │  docs/patterns/     │
-│  ├── api_kernels    │  ├── 0001_*.toml    │  ├── sliding_window │
-│  ├── patterns       │  ├── 0003_*.toml    │  └── ...            │
-│  ├── algorithms     │  └── ...            │                     │
-│  └── ...            │                     │                     │
-└─────────────────────┴─────────────────────┴─────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    AI SYNTHESIS ENGINE                          │
-├─────────────────────────────────────────────────────────────────┤
-│  🏗️ Software Architect    → System-level pattern organization   │
-│  📚 Algorithm Professor   → Pedagogical structure & progression │
-│  ⚙️ Principal Engineer    → Practical applicability & trade-offs│
-│  🏆 Competitive Champion  → Pattern recognition shortcuts       │
-│  🎨 API Designer          → Clean knowledge interfaces          │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    INTELLIGENT OUTPUT                           │
-├─────────────────────────────────────────────────────────────────┤
-│  ✅ Smart Links: GitHub solution (if exists) → LeetCode fallback│
-│  ✅ Multi-language: EN / 繁體中文 / 简体中文                      │
-│  ✅ Markmap format: Interactive, collapsible, beautiful         │
-│  ✅ Custom goals: Interview prep / Systematic learning / Review │
-└─────────────────────────────────────────────────────────────────┘
-```
+### Output Files
 
-### Quick Start
+| Type | Output Path |
+|:-----|:------------|
+| **Evolved** | `docs/mindmaps/neetcode_ontology_agent_evolved_{lang}.md` |
+| **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
+| **HTML** | `docs/pages/mindmaps/*.html` |
 
-```bash
-# Interactive mode (recommended)
-python tools/generate_mindmaps_ai.py
-
-# Specific goals
-python tools/generate_mindmaps_ai.py --goal interview        # Interview preparation
-python tools/generate_mindmaps_ai.py --goal systematic       # Learning roadmap
-python tools/generate_mindmaps_ai.py --goal pattern_mastery  # Deep pattern analysis
-
-# Focus on specific topic
-python tools/generate_mindmaps_ai.py --topic sliding_window
-python tools/generate_mindmaps_ai.py --topic dynamic_programming
-
-# Multiple languages
-# Configure in tools/mindmap_ai_config.toml:
-# language = ["en", "zh-TW"]
-```
-
-### 🔄 Automatic Generation (Local CI/CD)
-
-**Auto-generate AI mind maps on commit** using pre-commit hooks:
-
-```bash
-# Install pre-commit hooks
-pip install pre-commit
-pre-commit install
-```
-
-When you commit changes to `ontology/`, `meta/problems/`, or `tools/generate_mindmaps.py`, the hook automatically runs AI mind map generation.
-
-**Skip when needed:**
-```bash
-# Skip with commit message
-git commit -m "Update ontology [skip-ai]"
-
-# Skip with environment variable
-SKIP_AI_MINDMAPS=true git commit -m "Update ontology"
-```
-
-> 📖 See [tools/README.md](tools/README.md#-local-cicd-automation) for complete setup and usage guide.
-
-### Configuration
-
-Edit `tools/mindmap_ai_config.toml` to customize:
-
-| Section | What You Can Configure |
-|:--------|:-----------------------|
-| `[model]` | LLM model, temperature, max tokens |
-| `[output]` | Directory, filename, HTML generation |
-| `[ontology]` | Which knowledge graph data to include |
-| `[problems]` | Problem filters (difficulty, topics, roadmaps) |
-| `[generation]` | Goal, style, custom instructions |
-| `[links]` | GitHub repo URL, branch, link format |
-| `[advanced]` | Output language(s), complexity inclusion |
-
-### The Intelligence Behind It
-
-The AI doesn't just reorganize data — it **synthesizes understanding** from multiple expert perspectives:
-
-| Perspective | Contribution to Mind Map |
-|:------------|:-------------------------|
-| 🏗️ **Software Architect** | Identifies abstraction layers, sees patterns as reusable components |
-| 📚 **Algorithm Professor** | Structures learning progression, explains "why" not just "how" |
-| ⚙️ **Principal Engineer** | Highlights production trade-offs, real-world applicability |
-| 🏆 **Competitive Champion** | Surfaces pattern-matching shortcuts, time-pressure optimizations |
-| 🎨 **API Designer** | Creates clean knowledge interfaces, consistent naming |
-| 👥 **Open Source Advocate** | Makes knowledge discoverable, contribution-friendly |
-
-### Output Examples
-
-**With Solution (links to GitHub):**
-```markdown
-- [LeetCode 3 - Longest Substring Without Repeating](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-```
-
-**Without Solution (links to LeetCode):**
-```markdown
-- [LeetCode 121 - Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
-```
-
-### No API Key? No Problem
-
-The generator saves the complete prompt to `tools/prompts/generated/mindmap_prompt.md`. Copy and paste it into ChatGPT, Claude, or any LLM web interface.
+> 📖 **Evolved Agent**: See [`tools/ai-markmap-agent/README.md`](tools/ai-markmap-agent/README.md) for architecture, expert roles, and configuration.
+>
+> 📖 **Basic AI**: See [`tools/README.md`](tools/README.md) for configuration options.
 
 ---
 
