@@ -5,7 +5,7 @@ Prepare Ontology Data for LLM Mind Map Generation
 Formats your ontology data into a clean, LLM-friendly format that can be
 copied and pasted into your prompt.
 
-Recommended Model: GPT-5.1 (default) for best Markmap syntax understanding.
+Recommended Model: GPT-5.1-codex (default) for best Markmap syntax understanding.
 
 Usage:
     python tools/prepare_llm_input.py                    # Full output
@@ -266,7 +266,7 @@ def generate_llm_input(
     
     Below is my knowledge graph data. Please use this to generate a Markmap mind map.
     
-    > **Target Model**: GPT-5.1 (recommended for best Markmap syntax understanding)
+    > **Target Model**: GPT-5.1-codex (recommended for best Markmap syntax understanding)
     
     ---
     """).strip())

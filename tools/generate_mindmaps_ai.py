@@ -41,6 +41,7 @@ TOOLS_DIR = Path(__file__).parent
 sys.path.insert(0, str(TOOLS_DIR))
 
 from mindmaps import load_ontology, load_problems, DEFAULT_OUTPUT_DIR
+from mindmaps.helpers import fix_table_links
 from mindmaps.data import ProblemData
 from mindmaps.toml_parser import parse_toml_simple
 
@@ -57,7 +58,10 @@ ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
 DEFAULT_CONFIG = TOOLS_DIR / "mindmap_ai_config.toml"
-DEFAULT_MODEL = "gpt-5.1"
+# Use a chat model that is available via /v1/chat/completions by default.
+# Older Codex-style completion models (e.g., gpt-5.1-codex) are no longer
+# served by the public API and will raise "model not supported" errors.
+DEFAULT_MODEL = "gpt-4.1"
 
 
 def load_config(config_path: Path | None = None) -> dict[str, Any]:
@@ -72,10 +76,53 @@ def load_config(config_path: Path | None = None) -> dict[str, Any]:
     return parse_toml_simple(config_path.read_text(encoding="utf-8"))
 
 
+def get_model_config(config: dict[str, Any], model_type: str = "mindmap") -> dict[str, Any]:
+    """
+    Get model configuration for a specific type (prompt or mindmap).
+    
+    Args:
+        config: Full configuration dict
+        model_type: "prompt" or "mindmap"
+        
+    Returns:
+        Dict with model configuration (name, temperature, max_completion_tokens, api_base)
+    """
+    model_config = config.get("model", {})
+    
+    # Support new separate model configs
+    if model_type == "prompt":
+        model_name = model_config.get("prompt_model") or model_config.get("name", DEFAULT_MODEL)
+        temperature = float(model_config.get("prompt_temperature", model_config.get("temperature", 0.7)))
+        max_tokens = int(model_config.get("prompt_max_completion_tokens", model_config.get("max_completion_tokens", 8000)))
+    else:  # mindmap
+        model_name = model_config.get("mindmap_model") or model_config.get("name", DEFAULT_MODEL)
+        temperature = float(model_config.get("mindmap_temperature", model_config.get("temperature", 0.7)))
+        max_tokens = int(model_config.get("mindmap_max_completion_tokens", model_config.get("max_completion_tokens", 8000)))
+    
+    api_base = model_config.get("api_base", "")
+    
+    return {
+        "name": model_name,
+        "temperature": temperature,
+        "max_completion_tokens": max_tokens,
+        "api_base": api_base,
+    }
+
+
 def get_default_config() -> dict[str, Any]:
     """Return default configuration."""
     return {
-        "model": {"name": DEFAULT_MODEL, "temperature": 0.7, "max_completion_tokens": 8000},
+        "model": {
+            "name": DEFAULT_MODEL, 
+            "temperature": 0.7, 
+            "max_completion_tokens": 8000,
+            "prompt_model": "gpt-4o",
+            "prompt_temperature": 0.7,
+            "prompt_max_completion_tokens": 8000,
+            "mindmap_model": DEFAULT_MODEL,
+            "mindmap_temperature": 0.7,
+            "mindmap_max_completion_tokens": 8000,
+        },
         "output": {"directory": "docs/mindmaps", "prefix": "ai_generated"},
         "ontology": {
             "api_kernels": True, "patterns": True, "algorithms": True,
@@ -346,9 +393,30 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     - **Checkboxes**: [ ] To-do, [x] Completed
     - **Math Formulas**: $O(n \\log n)$, $O(n^2)$
     - **Code Blocks**: ```python ... ```
-    - **Tables**: | A | B | ... |
+    - **Tables**: | A | B | ... | - Tables are supported for comparison information
     - **Fold**: <!-- markmap: fold -->
     - **Emoji**: For visual emphasis 🎯📚⚡🔥
+    
+    ## Table Format Guidelines
+    
+    **Tables are encouraged for comparison information** (like Sliding Window pattern comparisons).
+    
+    ✅ GOOD (Table format with proper links):
+    ```
+    | Problem | Invariant | State | Window Size | Goal |
+    |---------|-----------|-------|-------------|------|
+    | [LeetCode 3 - Longest Substring](URL) | All unique | freq map | Variable | Max length |
+    | [LeetCode 76 - Minimum Window](URL) | Covers all | maps | Variable | Min length |
+    ```
+    
+    **Important**: When using tables:
+    1. **Always use proper Markdown link format**: `[Text](URL)` inside table cells
+    2. **Keep table rows concise** - avoid very long text that makes nodes too wide
+    3. **Use tables for comparison** - they're great for showing differences between patterns/problems
+    4. **Ensure links are clickable** - test that links work correctly in the rendered Markmap
+    
+    Tables will be displayed as text nodes in Markmap, but they're useful for structured comparison
+    information. Make sure all links in tables use the proper `[Text](URL)` format.
 
     ## CRITICAL: Problem Links Rule
 
@@ -568,6 +636,58 @@ def build_user_prompt(
 _cached_api_key: str | None = None
 
 
+def is_codex_model(model_name: str) -> bool:
+    """Return True when using a Codex-style model that now requires Responses API."""
+    return "codex" in model_name.lower()
+
+
+def is_chat_model(model_name: str) -> bool:
+    """
+    Determine if a model is a chat model or completion model.
+    
+    Chat models use /v1/chat/completions endpoint.
+    Completion models use /v1/completions endpoint.
+    
+    Args:
+        model_name: Model name (e.g., "gpt-4o", "gpt-5.1-codex", "o1")
+        
+    Returns:
+        True if chat model, False if completion model
+    """
+    model_lower = model_name.lower()
+    
+    # Completion models (use /v1/completions) - check these first (more specific)
+    completion_model_patterns = [
+        "text-",            # text-davinci-003, text-curie-001, etc.
+        "davinci",          # davinci-003, etc.
+        "curie",            # curie-001, etc.
+        "babbage",          # babbage-001, etc.
+        "ada",              # ada-001, etc.
+    ]
+    
+    for pattern in completion_model_patterns:
+        if pattern in model_lower:
+            return False
+    
+    # Chat models (use /v1/chat/completions)
+    # GPT-5.x series (excluding codex variants) are chat models
+    chat_model_patterns = [
+        "gpt-4",           # gpt-4, gpt-4o, gpt-4-turbo, gpt-4o-mini
+        "gpt-3.5",         # gpt-3.5-turbo
+        "gpt-5",           # gpt-5.2, gpt-5.1 (but NOT gpt-5.1-codex - handled separately)
+        "o1",              # o1, o1-mini, o3-mini
+        "o3",              # o3-mini
+        "claude",          # Claude models
+    ]
+    
+    for pattern in chat_model_patterns:
+        if pattern in model_lower:
+            return True
+    
+    # Default: assume chat model for unknown models (most modern models are chat)
+    return True
+
+
 def get_api_key() -> str | None:
     """Get API key from environment or interactive input (cached)."""
     global _cached_api_key
@@ -599,11 +719,12 @@ def generate_with_openai(
     config: dict[str, Any],
 ) -> str:
     """Call OpenAI API to generate mind map."""
-    model_config = config.get("model", {})
-    model = model_config.get("name", DEFAULT_MODEL)
-    temperature = float(model_config.get("temperature", 0.7))
-    max_completion_tokens = int(model_config.get("max_completion_tokens", 8000))
-    api_base = model_config.get("api_base", "")
+    # Use mindmap model configuration
+    model_config = get_model_config(config, "mindmap")
+    model = model_config["name"]
+    temperature = model_config["temperature"]
+    max_completion_tokens = model_config["max_completion_tokens"]
+    api_base = model_config["api_base"]
     
     # Get API key
     api_key = get_api_key()
@@ -618,20 +739,58 @@ def generate_with_openai(
     client = OpenAI(**client_kwargs)
     
     try:
-        # GPT-5.1 and newer models use max_completion_tokens
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            temperature=temperature,
-            max_completion_tokens=max_completion_tokens,
-        )
+        is_codex = is_codex_model(model)
+        use_chat_api = is_chat_model(model) and not is_codex
         
-        return response.choices[0].message.content
+        if is_codex:
+            # Codex models are now served via the Responses API
+            response = client.responses.create(
+                model=model,
+                input=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                # Some Codex models reject temperature; rely on defaults.
+                max_output_tokens=max_completion_tokens,
+            )
+            return response.output_text
+        elif use_chat_api:
+            # Chat models use /v1/chat/completions
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                temperature=temperature,
+                max_completion_tokens=max_completion_tokens,
+            )
+            return response.choices[0].message.content
+        else:
+            # Completion models use /v1/completions
+            # Combine system and user prompts
+            full_prompt = f"{system_prompt}\n\n{user_prompt}"
+            
+            # Completion API uses max_tokens instead of max_completion_tokens
+            # Use max_tokens if available, otherwise use max_completion_tokens
+            max_tokens = model_config.get("max_tokens", max_completion_tokens)
+            
+            response = client.completions.create(
+                model=model,
+                prompt=full_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            return response.choices[0].text
     except Exception as e:
         error_msg = str(e)
+        # Provide a clearer hint when an unsupported completion model is used
+        if "model is not supported" in error_msg.lower():
+            raise ValueError(
+                f"Model '{model}' is not supported on the current endpoint. "
+                "Codex-style models (e.g., gpt-5.1-codex) now require the Responses API. "
+                "Use Responses API for Codex models or a chat model such as gpt-4.1, gpt-4o, or o1 via /v1/chat/completions."
+            ) from e
         if "Connection" in error_msg or "getaddrinfo" in error_msg:
             print("\n❌ Network connection error!")
             print("   Possible causes:")
@@ -703,11 +862,12 @@ def optimize_prompt_with_ai(
         print("⚠️  OpenAI library not installed. Cannot optimize prompt.")
         return existing_system_prompt, existing_user_prompt
     
-    model_config = config.get("model", {})
-    model = model_config.get("name", DEFAULT_MODEL)
-    temperature = float(model_config.get("temperature", 0.7))
-    max_completion_tokens = int(model_config.get("max_completion_tokens", 8000))
-    api_base = model_config.get("api_base", "")
+    # Use prompt model configuration
+    model_config = get_model_config(config, "prompt")
+    model = model_config["name"]
+    temperature = model_config["temperature"]
+    max_completion_tokens = model_config["max_completion_tokens"]
+    api_base = model_config["api_base"]
     
     # Get API key
     api_key = get_api_key()
@@ -774,17 +934,46 @@ def optimize_prompt_with_ai(
     
     try:
         print("   🤖 Calling AI to optimize prompt...")
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": optimization_system_prompt},
-                {"role": "user", "content": optimization_user_prompt},
-            ],
-            temperature=temperature,
-            max_completion_tokens=max_completion_tokens,
-        )
         
-        optimized_content = response.choices[0].message.content
+        # Determine if model is chat or completion model
+        is_codex = is_codex_model(model)
+        use_chat_api = is_chat_model(model) and not is_codex
+        
+        if is_codex:
+            response = client.responses.create(
+                model=model,
+                input=[
+                    {"role": "system", "content": optimization_system_prompt},
+                    {"role": "user", "content": optimization_user_prompt},
+                ],
+                # Some Codex models reject temperature; rely on defaults.
+                max_output_tokens=max_completion_tokens,
+            )
+            optimized_content = response.output_text
+        elif use_chat_api:
+            # Chat models use /v1/chat/completions
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": optimization_system_prompt},
+                    {"role": "user", "content": optimization_user_prompt},
+                ],
+                temperature=temperature,
+                max_completion_tokens=max_completion_tokens,
+            )
+            optimized_content = response.choices[0].message.content
+        else:
+            # Completion models use /v1/completions
+            full_prompt = f"{optimization_system_prompt}\n\n{optimization_user_prompt}"
+            max_tokens = model_config.get("max_tokens", max_completion_tokens)
+            
+            response = client.completions.create(
+                model=model,
+                prompt=full_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            optimized_content = response.choices[0].text
         
         # Parse optimized prompt
         if "---" in optimized_content:
@@ -893,7 +1082,8 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     elif prompt_action == "optimize":
         # Optimize existing prompt with AI
         if existing_prompt_file:
-            print(f"\n🤖 Optimizing existing prompt with AI...")
+            prompt_model_config = get_model_config(config, "prompt")
+            print(f"\n🤖 Optimizing existing prompt with AI (using {prompt_model_config['name']})...")
             prompt_content = existing_prompt_file.read_text(encoding="utf-8")
             
             # Parse existing prompt
@@ -926,7 +1116,8 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
                     print(f"📄 AI-generated prompt saved: {prompt_file}")
         else:
             # First time: Generate base prompt, then optimize with AI
-            print(f"\n🤖 Generating prompt with AI...")
+            prompt_model_config = get_model_config(config, "prompt")
+            print(f"\n🤖 Generating prompt with AI (using {prompt_model_config['name']})...")
             print("   Step 1: Building base prompt from config...")
             base_system_prompt = build_system_prompt(config)
             base_user_prompt = build_user_prompt(
@@ -944,6 +1135,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
                 print(f"📄 AI-generated prompt saved: {prompt_file}")
     elif prompt_action == "regenerate_and_optimize":
         # Regenerate from config, then optimize with AI
+        prompt_model_config = get_model_config(config, "prompt")
         print("\n📝 Regenerating prompt from config and data...")
         print("   Step 1: Building prompt from config...")
         base_system_prompt = build_system_prompt(config)
@@ -951,7 +1143,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             ontology_data, docs_patterns, meta_patterns, problems_data, config
         )
         
-        print("   Step 2: Optimizing with AI...")
+        print(f"   Step 2: Optimizing with AI (using {prompt_model_config['name']})...")
         # Let AI optimize the regenerated prompt
         system_prompt, user_prompt = optimize_prompt_with_ai(
             base_system_prompt, base_user_prompt, config
@@ -976,12 +1168,17 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     output_config = config.get("output", {})
     output_dir = Path(output_config.get("directory", "docs/mindmaps"))
     
-    model_name = config.get("model", {}).get("name", DEFAULT_MODEL)
-    print(f"\n🤖 Generating with {model_name}...")
+    # Show which models are being used
+    prompt_model_config = get_model_config(config, "prompt")
+    mindmap_model_config = get_model_config(config, "mindmap")
+    
+    print(f"\n🤖 Model Configuration:")
+    print(f"   📝 Prompt optimization: {prompt_model_config['name']}")
+    print(f"   🗺️  Mind map generation: {mindmap_model_config['name']}")
     
     if not HAS_OPENAI:
         print("\n⚠️  OpenAI library not installed.")
-        print("   Copy the prompt above to GPT-5.1 manually.")
+        print("   Copy the prompt above to GPT-5.1-codex manually.")
         return ""
     
     # Get languages (support both string and list)
@@ -1022,6 +1219,10 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     for lang in languages:
         print(f"\n🌐 Generating {lang} version...")
         
+        # Show which model is being used for this generation
+        current_mindmap_model = get_model_config(config, "mindmap")
+        print(f"   🤖 Using model: {current_mindmap_model['name']}")
+        
         try:
             # Create language-specific config
             lang_config = config.copy()
@@ -1036,6 +1237,9 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             
             # Generate content
             content = generate_with_openai(lang_system_prompt, lang_user_prompt, lang_config)
+            
+            # Fix link formats in tables to ensure they're clickable
+            content = fix_table_links(content)
             all_contents[lang] = content
             
             # Save with language suffix
@@ -1178,7 +1382,11 @@ def main() -> int:
     if args.style:
         config.setdefault("generation", {})["style"] = args.style
     if args.model:
+        # If --model is specified, set both prompt and mindmap models to the same value
+        # User can still override individually in config file
         config.setdefault("model", {})["name"] = args.model
+        config.setdefault("model", {})["prompt_model"] = args.model
+        config.setdefault("model", {})["mindmap_model"] = args.model
     
     # Show config if requested
     if args.list_config:
