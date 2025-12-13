@@ -1,0 +1,273 @@
+# =============================================================================
+# AI Markmap Agent Configuration
+# =============================================================================
+# 本檔案包含所有可配置的參數，包括模型選擇、Agent 數量、Prompt 路徑、流程輪數等。
+# This file contains all configurable parameters for the AI Markmap Agent system.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 模型配置 (Model Configuration)
+# -----------------------------------------------------------------------------
+models:
+  # 通才模型 - 優化目標：廣泛理解、知識組織、全局視角
+  # Generalist models - Focus: broad understanding, knowledge organization
+  generalist:
+    en:
+      model: "gpt-5"
+      persona_prompt: "prompts/generators/generalist_persona.md"
+      behavior_prompt: "prompts/generators/generalist_behavior.md"
+      temperature: 0.7
+      max_tokens: 4096
+    zh:
+      model: "gpt-5"
+      persona_prompt: "prompts/generators/generalist_persona.md"
+      behavior_prompt: "prompts/generators/generalist_behavior.md"
+      temperature: 0.7
+      max_tokens: 4096
+
+  # 專才模型 - 優化目標：工程細節、結構嚴謹、實作導向
+  # Specialist models - Focus: engineering details, structural rigor
+  specialist:
+    en:
+      model: "gpt-5"
+      persona_prompt: "prompts/generators/specialist_persona.md"
+      behavior_prompt: "prompts/generators/specialist_behavior.md"
+      temperature: 0.5
+      max_tokens: 4096
+    zh:
+      model: "gpt-5"
+      persona_prompt: "prompts/generators/specialist_persona.md"
+      behavior_prompt: "prompts/generators/specialist_behavior.md"
+      temperature: 0.5
+      max_tokens: 4096
+
+  # 優化者/辯論者 - 三個不同角色，各自有獨特的視角與立場
+  # Optimizer/Debater agents - Three distinct personas for debate
+  optimizer:
+    # 結構主義者（林博士）- 嚴謹、重視邏輯、追求簡潔
+    - id: "optimizer_structure"
+      name: "結構主義者 (The Structuralist)"
+      persona_name: "林博士"
+      model: "gpt-5"
+      persona_prompt: "prompts/optimizers/optimizer_structure_persona.md"
+      behavior_prompt: "prompts/optimizers/optimizer_structure_behavior.md"
+      temperature: 0.6
+      max_tokens: 4096
+      focus: "node_structure"
+    
+    # 語義學者（陳教授）- 學術、重視術語準確性、本體論專家
+    - id: "optimizer_semantic"
+      name: "語義學者 (The Semanticist)"
+      persona_name: "陳教授"
+      model: "gpt-5.1"
+      persona_prompt: "prompts/optimizers/optimizer_semantic_persona.md"
+      behavior_prompt: "prompts/optimizers/optimizer_semantic_behavior.md"
+      temperature: 0.6
+      max_tokens: 4096
+      focus: "semantic_consistency"
+    
+    # 實用主義者（王經理）- 務實、重視用戶體驗、產品思維
+    - id: "optimizer_pragmatic"
+      name: "實用主義者 (The Pragmatist)"
+      persona_name: "王經理"
+      model: "gpt-5.2"
+      persona_prompt: "prompts/optimizers/optimizer_pragmatic_persona.md"
+      behavior_prompt: "prompts/optimizers/optimizer_pragmatic_behavior.md"
+      temperature: 0.7
+      max_tokens: 4096
+      focus: "user_experience"
+
+  # 總結者 - 彙整每輪討論，產出共識 Markmap
+  # Summarizer - Consolidates each round's discussion
+  summarizer:
+    model: "gpt-5.2"
+    persona_prompt: "prompts/summarizer/summarizer_persona.md"
+    behavior_prompt: "prompts/summarizer/summarizer_behavior.md"
+    temperature: 0.5
+    max_tokens: 4096
+
+  # 評斷者 - 最終評估與選擇
+  # Judges - Final evaluation and selection
+  judges:
+    # 品質評斷者 - 關注結構品質與命名一致性
+    - id: "judge_quality"
+      name: "品質評斷者 (Quality Judge)"
+      model: "gpt-4"
+      persona_prompt: "prompts/judges/judge_quality_persona.md"
+      behavior_prompt: "prompts/judges/judge_quality_behavior.md"
+      temperature: 0.4
+      max_tokens: 4096
+      criteria:
+        - "structure_quality"
+        - "naming_consistency"
+        - "technical_accuracy"
+    
+    # 完整性評斷者 - 關注知識覆蓋與實用價值
+    - id: "judge_completeness"
+      name: "完整性評斷者 (Completeness Judge)"
+      model: "gpt-4"
+      persona_prompt: "prompts/judges/judge_completeness_persona.md"
+      behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
+      temperature: 0.4
+      max_tokens: 4096
+      criteria:
+        - "knowledge_coverage"
+        - "practical_value"
+        - "depth_balance"
+
+  # 壓縮模型 - 用於長內容摘要（使用較便宜的模型）
+  # Compressor model - For summarizing long content (use cheaper models)
+  compressor:
+    model: "gpt-3.5-turbo"
+    behavior_prompt: "prompts/compressor/compressor_behavior.md"
+    temperature: 0.3
+    max_tokens: 2048
+
+# -----------------------------------------------------------------------------
+# 流程配置 (Workflow Configuration)
+# -----------------------------------------------------------------------------
+workflow:
+  # 優化輪數 - 每輪包含：壓縮 → 優化 → 總結
+  # Optimization rounds - Each round: compress → optimize → summarize
+  optimization_rounds: 3
+  
+  # 優化者數量（應與 models.optimizer 數量一致）
+  # Number of optimizers (should match models.optimizer count)
+  optimizer_count: 3
+  
+  # 評斷者數量（應與 models.judges 數量一致）
+  # Number of judges (should match models.judges count)
+  judge_count: 2
+  
+  # 觸發壓縮的 token 閾值
+  # Token threshold to trigger compression
+  max_tokens_before_compress: 8000
+  
+  # 是否啟用並行生成（第一階段）
+  # Enable parallel generation (Phase 1)
+  parallel_baseline_generation: true
+  
+  # 是否啟用辯論（若關閉，評斷者直接投票不辯論）
+  # Enable debate (if disabled, judges vote without debating)
+  enable_debate: true
+  
+  # 辯論最大輪數
+  # Maximum debate rounds
+  max_debate_rounds: 2
+
+# -----------------------------------------------------------------------------
+# 記憶配置 (Memory Configuration)
+# -----------------------------------------------------------------------------
+memory:
+  # 短期記憶 (STM) - 當前會話上下文
+  # Short-term memory - Current session context
+  stm:
+    enabled: true
+    max_items: 50  # 最多保留的記憶項目數
+  
+  # 長期記憶 (LTM) - 跨會話持久化
+  # Long-term memory - Cross-session persistence
+  ltm:
+    enabled: true
+    vector_store: "chromadb"  # 可選: chromadb, pinecone, faiss
+    collection_name: "markmap_decisions"
+    embedding_model: "text-embedding-3-small"
+    
+    # ChromaDB 配置
+    chromadb:
+      persist_directory: "./data/chromadb"
+    
+    # Pinecone 配置（若使用）
+    # pinecone:
+    #   api_key: "${PINECONE_API_KEY}"
+    #   environment: "us-west1-gcp"
+    #   index_name: "markmap-ltm"
+    
+    # 檢索配置
+    retrieval:
+      k: 5  # 檢索的相關文件數量
+      score_threshold: 0.7  # 最低相似度閾值
+
+# -----------------------------------------------------------------------------
+# 輸出配置 (Output Configuration)
+# -----------------------------------------------------------------------------
+output:
+  # 是否保存中間產物
+  # Whether to save intermediate artifacts
+  save_intermediate: true
+  
+  # 中間產物目錄
+  # Directory for intermediate artifacts
+  intermediate_dir: "outputs/intermediate"
+  
+  # 最終輸出目錄
+  # Directory for final output
+  final_dir: "outputs/final"
+  
+  # 輸出檔案命名格式
+  # Output file naming format
+  naming:
+    baseline: "markmap_{type}_{lang}.md"  # e.g., markmap_general_en.md
+    round: "markmap_round_{n}.md"         # e.g., markmap_round_1.md
+    final_md: "markmap_final.md"
+    final_html: "markmap_final.html"
+  
+  # HTML 輸出配置
+  # HTML output configuration
+  html:
+    template: "templates/markmap.html"
+    include_styles: true
+    include_scripts: true
+    title: "AI Generated Markmap"
+
+# -----------------------------------------------------------------------------
+# API 配置 (API Configuration)
+# -----------------------------------------------------------------------------
+api:
+  # OpenAI
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    organization: "${OPENAI_ORG_ID}"  # 可選
+    base_url: null  # 自訂 base URL（若使用代理）
+  
+  # Anthropic (預留，目前未使用)
+  # anthropic:
+  #   api_key: "${ANTHROPIC_API_KEY}"
+  
+  # 重試配置
+  # Retry configuration
+  retry:
+    max_retries: 3
+    retry_delay: 1.0  # 秒
+    exponential_backoff: true
+
+# -----------------------------------------------------------------------------
+# 日誌配置 (Logging Configuration)
+# -----------------------------------------------------------------------------
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/ai_markmap_agent.log"
+  console: true
+  
+  # 是否記錄完整的 LLM 請求/回應
+  # Whether to log full LLM requests/responses
+  log_llm_calls: false
+
+# -----------------------------------------------------------------------------
+# 開發配置 (Development Configuration)
+# -----------------------------------------------------------------------------
+dev:
+  # 是否啟用除錯模式
+  # Enable debug mode
+  debug: false
+  
+  # 是否使用模擬 LLM（用於測試）
+  # Use mock LLM for testing
+  use_mock_llm: false
+  
+  # LangGraph Studio 配置
+  # LangGraph Studio configuration
+  langgraph_studio:
+    enabled: true
+    port: 8123

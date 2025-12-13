@@ -61,3 +61,25 @@ docs/mindmaps/*.md
 !docs/mindmaps/README.md
 !docs/mindmaps/neetcode_ontology_ai_*.md
 
+# =============================================================================
+# AI Markmap Agent (tools/ai-markmap-agent/)
+# =============================================================================
+
+# AI Markmap Agent - Output files
+tools/ai-markmap-agent/outputs/intermediate/*.md
+tools/ai-markmap-agent/outputs/intermediate/*.html
+tools/ai-markmap-agent/outputs/final/*.md
+tools/ai-markmap-agent/outputs/final/*.html
+
+# AI Markmap Agent - Data & persistence
+tools/ai-markmap-agent/data/chromadb/
+tools/ai-markmap-agent/data/*.json
+tools/ai-markmap-agent/data/*.yaml
+
+# AI Markmap Agent - Logs
+tools/ai-markmap-agent/logs/*.log
+
+# AI Markmap Agent - Environment (if not using root .env)
+tools/ai-markmap-agent/.env
+tools/ai-markmap-agent/.env.local
+

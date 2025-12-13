@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title | default('AI Generated Markmap') }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        #markmap {
+            width: 100%;
+            height: 100vh;
+        }
+        
+        /* Toolbar */
+        .toolbar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .toolbar button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #4a5568;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        .toolbar button:hover {
+            background: #2d3748;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+    </style>
+    <!-- Markmap dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+</head>
+<body>
+    <div class="toolbar">
+        <button onclick="mm.fit()">Fit</button>
+        <button onclick="mm.rescale(1.25)">Zoom In</button>
+        <button onclick="mm.rescale(0.8)">Zoom Out</button>
+        <button onclick="expandAll()">Expand All</button>
+        <button onclick="collapseAll()">Collapse All</button>
+    </div>
+    
+    <div class="info-panel">
+        <strong>{{ title | default('AI Markmap') }}</strong><br>
+        Generated: {{ generated_at | default('N/A') }}<br>
+        Source: {{ source | default('AI Markmap Agent') }}
+    </div>
+    
+    <svg id="markmap"></svg>
+    
+    <script>
+        // Markmap content (injected during generation)
+        const markdownContent = `{{ markdown_content | safe }}`;
+        
+        // Initialize markmap
+        const { Markmap, loadCSS, loadJS } = markmap;
+        const { Transformer } = markmapLib;
+        
+        const transformer = new Transformer();
+        const { root, features } = transformer.transform(markdownContent);
+        
+        const { styles, scripts } = transformer.getUsedAssets(features);
+        if (styles) loadCSS(styles);
+        if (scripts) loadJS(scripts, { getMarkmap: () => markmap });
+        
+        const mm = Markmap.create('#markmap', {
+            autoFit: true,
+            duration: 500,
+            maxWidth: 300,
+            paddingX: 20,
+        }, root);
+        
+        // Helper functions
+        function expandAll() {
+            const walk = (node) => {
+                node.payload = { ...node.payload, fold: 0 };
+                if (node.children) node.children.forEach(walk);
+            };
+            walk(root);
+            mm.setData(root);
+            mm.fit();
+        }
+        
+        function collapseAll() {
+            const walk = (node, depth = 0) => {
+                if (depth > 1) {
+                    node.payload = { ...node.payload, fold: 1 };
+                }
+                if (node.children) node.children.forEach(n => walk(n, depth + 1));
+            };
+            walk(root);
+            mm.setData(root);
+            mm.fit();
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' || e.key === 'F') mm.fit();
+            if (e.key === '+' || e.key === '=') mm.rescale(1.25);
+            if (e.key === '-') mm.rescale(0.8);
+            if (e.key === 'e' || e.key === 'E') expandAll();
+            if (e.key === 'c' || e.key === 'C') collapseAll();
+        });
+    </script>
+</body>
+</html>
+
