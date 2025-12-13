@@ -8,19 +8,50 @@
 # =============================================================================
 
 [model]
-# LLM model to use
+# =============================================================================
+# Model Configuration
+# =============================================================================
+# You can separately configure models for prompt generation/optimization and mind map generation
+
+# -----------------------------------------------------------------------------
+# Prompt Generation/Optimization Model
+# -----------------------------------------------------------------------------
+# This model is used for:
+#   - Optimizing existing prompts (when selecting [o] Optimize option)
+#   - First-time prompt generation (when selecting [o] Generate prompt with AI option)
+#
+# Recommended: Models good at understanding and optimizing text (e.g., GPT-4 series)
+prompt_model = "gpt-4o"
+prompt_temperature = 0.7
+prompt_max_completion_tokens = 8000
+
+# -----------------------------------------------------------------------------
+# Mind Map Generation Model
+# -----------------------------------------------------------------------------
+# This model is used for:
+#   - Generating final mind map content based on prompts
+#   - This is the main generation task and consumes more tokens
+#
+# Recommended: Models good at creative generation and long text output (e.g., GPT-5.1-codex, GPT-5.2)
+mindmap_model = "gpt-5.1-codex"
+mindmap_temperature = 0.7
+# GPT-5.1-codex uses max_completion_tokens (older models use max_tokens)
+mindmap_max_completion_tokens = 10000
+
+# -----------------------------------------------------------------------------
+# Common Configuration
+# -----------------------------------------------------------------------------
+# API Key: Read from OPENAI_API_KEY environment variable at runtime, or interactive input
+# API Base URL (optional, for custom endpoint or proxy)
+# api_base = "https://api.openai.com/v1"
+
+# -----------------------------------------------------------------------------
+# Model Series Notes
+# -----------------------------------------------------------------------------
 # GPT-5.2 series: gpt-5.2, gpt-5.2-coding, gpt-5.2-instant, gpt-5.2-thinking
 # GPT-5.1 series: gpt-5.1, gpt-5.1-codex, gpt-5.1-instant, gpt-5.1-thinking
 # GPT-4 series: gpt-4o, gpt-4o-mini, gpt-4-turbo
 # Reasoning models: o1, o1-mini, o3-mini
-name = "gpt-5.1-codex"
-temperature = 0.7
-# GPT-5.1-codex uses max_completion_tokens (older models use max_tokens)
-max_completion_tokens = 10000
-
-# API Key: Read from OPENAI_API_KEY environment variable at runtime, or interactive input
-# API Base URL (optional, for custom endpoint or proxy)
-# api_base = "https://api.openai.com/v1"
 
 [output]
 # Output directory

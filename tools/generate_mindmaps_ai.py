@@ -73,10 +73,53 @@ def load_config(config_path: Path | None = None) -> dict[str, Any]:
     return parse_toml_simple(config_path.read_text(encoding="utf-8"))
 
 
+def get_model_config(config: dict[str, Any], model_type: str = "mindmap") -> dict[str, Any]:
+    """
+    Get model configuration for a specific type (prompt or mindmap).
+    
+    Args:
+        config: Full configuration dict
+        model_type: "prompt" or "mindmap"
+        
+    Returns:
+        Dict with model configuration (name, temperature, max_completion_tokens, api_base)
+    """
+    model_config = config.get("model", {})
+    
+    # Support new separate model configs
+    if model_type == "prompt":
+        model_name = model_config.get("prompt_model") or model_config.get("name", DEFAULT_MODEL)
+        temperature = float(model_config.get("prompt_temperature", model_config.get("temperature", 0.7)))
+        max_tokens = int(model_config.get("prompt_max_completion_tokens", model_config.get("max_completion_tokens", 8000)))
+    else:  # mindmap
+        model_name = model_config.get("mindmap_model") or model_config.get("name", DEFAULT_MODEL)
+        temperature = float(model_config.get("mindmap_temperature", model_config.get("temperature", 0.7)))
+        max_tokens = int(model_config.get("mindmap_max_completion_tokens", model_config.get("max_completion_tokens", 8000)))
+    
+    api_base = model_config.get("api_base", "")
+    
+    return {
+        "name": model_name,
+        "temperature": temperature,
+        "max_completion_tokens": max_tokens,
+        "api_base": api_base,
+    }
+
+
 def get_default_config() -> dict[str, Any]:
     """Return default configuration."""
     return {
-        "model": {"name": DEFAULT_MODEL, "temperature": 0.7, "max_completion_tokens": 8000},
+        "model": {
+            "name": DEFAULT_MODEL, 
+            "temperature": 0.7, 
+            "max_completion_tokens": 8000,
+            "prompt_model": "gpt-4o",
+            "prompt_temperature": 0.7,
+            "prompt_max_completion_tokens": 8000,
+            "mindmap_model": DEFAULT_MODEL,
+            "mindmap_temperature": 0.7,
+            "mindmap_max_completion_tokens": 8000,
+        },
         "output": {"directory": "docs/mindmaps", "prefix": "ai_generated"},
         "ontology": {
             "api_kernels": True, "patterns": True, "algorithms": True,
@@ -669,11 +712,12 @@ def generate_with_openai(
     config: dict[str, Any],
 ) -> str:
     """Call OpenAI API to generate mind map."""
-    model_config = config.get("model", {})
-    model = model_config.get("name", DEFAULT_MODEL)
-    temperature = float(model_config.get("temperature", 0.7))
-    max_completion_tokens = int(model_config.get("max_completion_tokens", 8000))
-    api_base = model_config.get("api_base", "")
+    # Use mindmap model configuration
+    model_config = get_model_config(config, "mindmap")
+    model = model_config["name"]
+    temperature = model_config["temperature"]
+    max_completion_tokens = model_config["max_completion_tokens"]
+    api_base = model_config["api_base"]
     
     # Get API key
     api_key = get_api_key()
@@ -792,11 +836,12 @@ def optimize_prompt_with_ai(
         print("⚠️  OpenAI library not installed. Cannot optimize prompt.")
         return existing_system_prompt, existing_user_prompt
     
-    model_config = config.get("model", {})
-    model = model_config.get("name", DEFAULT_MODEL)
-    temperature = float(model_config.get("temperature", 0.7))
-    max_completion_tokens = int(model_config.get("max_completion_tokens", 8000))
-    api_base = model_config.get("api_base", "")
+    # Use prompt model configuration
+    model_config = get_model_config(config, "prompt")
+    model = model_config["name"]
+    temperature = model_config["temperature"]
+    max_completion_tokens = model_config["max_completion_tokens"]
+    api_base = model_config["api_base"]
     
     # Get API key
     api_key = get_api_key()
@@ -999,7 +1044,8 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     elif prompt_action == "optimize":
         # Optimize existing prompt with AI
         if existing_prompt_file:
-            print(f"\n🤖 Optimizing existing prompt with AI...")
+            prompt_model_config = get_model_config(config, "prompt")
+            print(f"\n🤖 Optimizing existing prompt with AI (using {prompt_model_config['name']})...")
             prompt_content = existing_prompt_file.read_text(encoding="utf-8")
             
             # Parse existing prompt
@@ -1032,7 +1078,8 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
                     print(f"📄 AI-generated prompt saved: {prompt_file}")
         else:
             # First time: Generate base prompt, then optimize with AI
-            print(f"\n🤖 Generating prompt with AI...")
+            prompt_model_config = get_model_config(config, "prompt")
+            print(f"\n🤖 Generating prompt with AI (using {prompt_model_config['name']})...")
             print("   Step 1: Building base prompt from config...")
             base_system_prompt = build_system_prompt(config)
             base_user_prompt = build_user_prompt(
@@ -1050,6 +1097,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
                 print(f"📄 AI-generated prompt saved: {prompt_file}")
     elif prompt_action == "regenerate_and_optimize":
         # Regenerate from config, then optimize with AI
+        prompt_model_config = get_model_config(config, "prompt")
         print("\n📝 Regenerating prompt from config and data...")
         print("   Step 1: Building prompt from config...")
         base_system_prompt = build_system_prompt(config)
@@ -1057,7 +1105,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             ontology_data, docs_patterns, meta_patterns, problems_data, config
         )
         
-        print("   Step 2: Optimizing with AI...")
+        print(f"   Step 2: Optimizing with AI (using {prompt_model_config['name']})...")
         # Let AI optimize the regenerated prompt
         system_prompt, user_prompt = optimize_prompt_with_ai(
             base_system_prompt, base_user_prompt, config
@@ -1082,8 +1130,13 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     output_config = config.get("output", {})
     output_dir = Path(output_config.get("directory", "docs/mindmaps"))
     
-    model_name = config.get("model", {}).get("name", DEFAULT_MODEL)
-    print(f"\n🤖 Generating with {model_name}...")
+    # Show which models are being used
+    prompt_model_config = get_model_config(config, "prompt")
+    mindmap_model_config = get_model_config(config, "mindmap")
+    
+    print(f"\n🤖 Model Configuration:")
+    print(f"   📝 Prompt optimization: {prompt_model_config['name']}")
+    print(f"   🗺️  Mind map generation: {mindmap_model_config['name']}")
     
     if not HAS_OPENAI:
         print("\n⚠️  OpenAI library not installed.")
@@ -1127,6 +1180,10 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     # Generate for each language
     for lang in languages:
         print(f"\n🌐 Generating {lang} version...")
+        
+        # Show which model is being used for this generation
+        current_mindmap_model = get_model_config(config, "mindmap")
+        print(f"   🤖 Using model: {current_mindmap_model['name']}")
         
         try:
             # Create language-specific config
@@ -1287,7 +1344,11 @@ def main() -> int:
     if args.style:
         config.setdefault("generation", {})["style"] = args.style
     if args.model:
+        # If --model is specified, set both prompt and mindmap models to the same value
+        # User can still override individually in config file
         config.setdefault("model", {})["name"] = args.model
+        config.setdefault("model", {})["prompt_model"] = args.model
+        config.setdefault("model", {})["mindmap_model"] = args.model
     
     # Show config if requested
     if args.list_config:
