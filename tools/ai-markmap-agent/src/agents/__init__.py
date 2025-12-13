@@ -1,67 +1,43 @@
 """
-Agent modules for AI Markmap generation and optimization.
+Agent modules for AI Markmap generation and refinement.
 
-V3 Agents (Structure Specification based):
-- PlannerAgent: Structure Specification generators
-- StrategistAgent: Content strategy optimization
-- IntegratorAgent: Suggestion integration
-- EvaluatorAgent: Structure evaluation
-- WriterAgentV3: Final Markmap rendering
+Refinement Mode Agents:
+- ExpertAgent: Domain-specific experts (Architect, Professor, Engineer)
+- WriterAgent: Applies improvements to baseline Markmap
 - TranslatorAgent: Language translation
 """
 
 from .base_agent import BaseAgent
 
-# V3 Agents
-from .planner import (
-    StructurePlannerAgent,
-    GeneralistPlannerAgent,
-    SpecialistPlannerAgent,
-    create_planners,
+# Expert Agents (Refinement Mode)
+from .expert import (
+    ExpertAgent,
+    ArchitectExpert,
+    ProfessorExpert,
+    EngineerExpert,
+    Suggestion,
+    Vote,
+    AdoptionList,
+    create_experts,
 )
-from .strategist import (
-    ContentStrategistAgent,
-    ArchitectStrategist,
-    ProfessorStrategist,
-    UXStrategist,
-    create_strategists,
-)
-from .integrator import (
-    IntegratorAgent,
-    create_integrator,
-    calculate_consensus,
-)
-from .evaluator import (
-    EvaluatorAgent,
-    StructureEvaluator,
-    ContentEvaluator,
-    create_evaluators,
-    aggregate_evaluations,
-)
+
+# Writer and Translator
 from .writer import WriterAgent, create_writer
 from .translator import TranslatorAgent, create_translators
 
 __all__ = [
     # Base
     "BaseAgent",
-    # V3 Agents
-    "StructurePlannerAgent",
-    "GeneralistPlannerAgent",
-    "SpecialistPlannerAgent",
-    "create_planners",
-    "ContentStrategistAgent",
-    "ArchitectStrategist",
-    "ProfessorStrategist",
-    "UXStrategist",
-    "create_strategists",
-    "IntegratorAgent",
-    "create_integrator",
-    "calculate_consensus",
-    "EvaluatorAgent",
-    "StructureEvaluator",
-    "ContentEvaluator",
-    "create_evaluators",
-    "aggregate_evaluations",
+    # Expert Agents
+    "ExpertAgent",
+    "ArchitectExpert",
+    "ProfessorExpert",
+    "EngineerExpert",
+    "Suggestion",
+    "Vote",
+    "AdoptionList",
+    "create_experts",
+    # Writer and Translator
     "WriterAgent",
     "create_writer",
     "TranslatorAgent",

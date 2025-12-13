@@ -1,71 +1,49 @@
 # =============================================================================
 # AI Markmap Agent Configuration
 # =============================================================================
-# All parameters are configurable: models, prompts, agent counts, rounds, etc.
+# Refinement Mode: Start from a high-quality baseline and improve it
+# through expert review and consensus-based discussion.
 # =============================================================================
+
+# -----------------------------------------------------------------------------
+# Input Configuration
+# -----------------------------------------------------------------------------
+input:
+  # Baseline Markmap to refine (relative to docs/mindmaps/)
+  baseline:
+    path: "neetcode_ontology_ai_en.md"
+    # If baseline doesn't exist, fall back to generating from scratch
+    fallback_to_generate: true
+  
+  # Reference data for validation and enrichment
+  reference_data:
+    ontology: true
+    problems: true
+    patterns: true
+    roadmaps: true
 
 # -----------------------------------------------------------------------------
 # URL Templates Configuration
 # -----------------------------------------------------------------------------
-# Configure external URLs for problem links in generated Markmaps
 urls:
-  # GitHub repository for solutions
   github:
     base: "https://github.com/lufftw/neetcode"
-    # Template for solution file links: {solution_file} from problem data
     solution_template: "https://github.com/lufftw/neetcode/blob/main/{solution_file}"
   
-  # LeetCode problem links
   leetcode:
     base: "https://leetcode.com"
-    # Template for problem page: {slug} from problem data
     problem_template: "https://leetcode.com/problems/{slug}/"
-  
-  # Link selection logic:
-  # 1. If problem has solution_file (non-empty) → use github.solution_template
-  # 2. Otherwise → use leetcode.problem_template
-
-# -----------------------------------------------------------------------------
-# Data Compression Configuration
-# -----------------------------------------------------------------------------
-# Token-efficient data transmission to LLM
-data_compression:
-  enabled: true
-  
-  # Compression format for problem data
-  # Options: "compact_json", "tabular", "minimal"
-  format: "compact_json"
-  
-  # Fields to include in compressed problem data
-  # These are the minimal fields needed for Markmap generation
-  problem_fields:
-    - "id"              # Problem ID (e.g., "0003")
-    - "title"           # Problem title
-    - "difficulty"      # easy/medium/hard
-    - "patterns"        # Algorithm patterns used
-    - "has_solution"    # Boolean: true if solution_file exists
-    - "topics"          # LeetCode topics
-  
-  # Fields to extract from ontology (reduce verbosity)
-  ontology_summary: true
-  
-  # Maximum problems per batch (for very large datasets)
-  max_problems_per_batch: 200
 
 # -----------------------------------------------------------------------------
 # Data Sources Configuration
 # -----------------------------------------------------------------------------
-# Define which data sources to read from for Markmap generation
-# Set enabled: true/false to include/exclude each source
 data_sources:
-  # Base paths (relative to config/ directory: 3 levels up to reach project root)
   base_paths:
     ontology: "../../../ontology"
     problems: "../../../meta/problems"
     patterns: "../../../meta/patterns"
     roadmaps: "../../../roadmaps"
 
-  # Ontology files - taxonomy definitions
   ontology:
     enabled: true
     files:
@@ -87,55 +65,19 @@ data_sources:
       - name: "topics"
         path: "topics.toml"
         enabled: true
-      - name: "difficulties"
-        path: "difficulties.toml"
-        enabled: false
-      - name: "companies"
-        path: "companies.toml"
-        enabled: false
       - name: "roadmaps"
         path: "roadmaps.toml"
         enabled: true
 
-  # Problem metadata files (from meta/problems/*.toml)
   problems:
     enabled: true
-    
-    # Load mode determines HOW to select which problem files to load:
-    #
-    # "all"     - Load ALL .toml files in the problems directory
-    #             Simple but may load more than needed.
-    #
-    # "list"    - Load ONLY files explicitly listed in 'files' array below.
-    #             Use when you want precise control over which problems to process.
-    #             Example: files: ["0003_longest_substring.toml", "0076_min_window.toml"]
-    #
-    # "pattern" - Load files matching glob patterns in 'patterns' array.
-    #             Flexible middle ground between "all" and "list".
-    #             Example: patterns: ["0003_*.toml", "00[0-7][0-9]_*.toml"]
-    #
     load_mode: "all"
-    
-    # For load_mode: "list" - Explicitly list files to load
-    # Example:
-    #   files:
-    #     - "0003_longest_substring_without_repeating_characters.toml"
-    #     - "0076_minimum_window_substring.toml"
     files: []
-    
-    # For load_mode: "pattern" - Glob patterns to match files
-    # Common patterns:
-    #   "*.toml"              - All TOML files
-    #   "0003_*.toml"         - Only problem 0003
-    #   "00[0-9][0-9]_*.toml" - Problems 0000-0099
     patterns:
       - "*.toml"
-    
-    # Exclude patterns (applied regardless of load_mode)
     exclude:
       - "README.md"
 
-  # Pattern documentation directories
   patterns:
     enabled: true
     directories:
@@ -148,7 +90,6 @@ data_sources:
         enabled: true
         config_file: "_config.toml"
 
-  # Roadmap learning paths
   roadmaps:
     enabled: true
     files:
@@ -163,320 +104,292 @@ data_sources:
         enabled: false
 
 # -----------------------------------------------------------------------------
-# Prompt Mode Configuration
+# Expert Configuration
 # -----------------------------------------------------------------------------
-# Choose between static (pre-defined) prompts or dynamic (AI-generated) prompts
-prompt_mode:
-  # "static" = Use pre-defined prompts in prompts/ directory
-  # "dynamic" = Generate prompts using AI at runtime
-  mode: "static"
-  
-  # Model to use for generating dynamic prompts (only used when mode="dynamic")
-  generator_model: "gpt-4"
-  
-  # Meta-prompts for dynamic generation
-  meta_prompts:
-    persona_generator: "prompts/meta/generate_optimizer_persona.md"
-    behavior_generator: "prompts/meta/generate_optimizer_behavior.md"
-    role_suggester: "prompts/meta/suggest_optimizer_roles.md"
-  
-  # Cache generated prompts (recommended for consistency across runs)
-  cache_generated: true
-  cache_dir: "prompts/generated"
+# Domain-specific experts who review and suggest improvements.
+# Each expert brings a unique perspective to the refinement process.
 
-# -----------------------------------------------------------------------------
-# Model Configuration
-# -----------------------------------------------------------------------------
-models:
-  # Planners - Structure Specification generators
-  generalist_planner:
-    en:
+experts:
+  # Enabled experts for this run
+  enabled:
+    - "architect"
+    - "professor"
+    - "engineer"
+  
+  # Suggestion limits per expert
+  suggestions:
+    min_per_expert: 5
+    max_per_expert: 10
+    # Encourage more suggestions for specific focus areas
+    encourage_focus_areas: true
+  
+  # Expert definitions
+  definitions:
+    architect:
+      name: "Top Software Architect"
+      emoji: "🏗️"
       model: "gpt-4o"
-      persona_prompt: "prompts/planners/generalist_planner_persona.md"
-      behavior_prompt: "prompts/planners/generalist_planner_behavior.md"
-      temperature: 0.7
-      max_tokens: 4096
-    zh:
-      model: "gpt-4o"
-      persona_prompt: "prompts/planners/generalist_planner_persona.md"
-      behavior_prompt: "prompts/planners/generalist_planner_behavior.md"
-      temperature: 0.7
-      max_tokens: 4096
-
-  specialist_planner:
-    en:
-      model: "gpt-4o"
-      persona_prompt: "prompts/planners/specialist_planner_persona.md"
-      behavior_prompt: "prompts/planners/specialist_planner_behavior.md"
-      temperature: 0.5
-      max_tokens: 4096
-    zh:
-      model: "gpt-4o"
-      persona_prompt: "prompts/planners/specialist_planner_persona.md"
-      behavior_prompt: "prompts/planners/specialist_planner_behavior.md"
-      temperature: 0.5
-      max_tokens: 4096
-
-  # Content Strategists - Three distinct expert perspectives for discussion
-  # Uses Structure Spec (YAML), not Markdown
-  content_strategist:
-    - id: "architect_strategist"
-      name: "Architecture Strategist"
-      model: "gpt-4"
-      persona_prompt: "prompts/strategists/architect_strategist_persona.md"
-      behavior_prompt: "prompts/strategists/architect_strategist_behavior.md"
+      persona_prompt: "prompts/experts/architect_persona.md"
+      behavior_prompt: "prompts/experts/architect_behavior.md"
       temperature: 0.6
       max_tokens: 4096
-      focus: "structure_modularity"
+      focus: "api_kernel_design"
+      focus_areas:
+        - "API Kernel abstraction and composability"
+        - "Pattern relationships and modularity"
+        - "Code template reusability"
+        - "System design mapping"
     
-    - id: "professor_strategist"
-      name: "Academic Strategist"
-      model: "gpt-4"
-      persona_prompt: "prompts/strategists/professor_strategist_persona.md"
-      behavior_prompt: "prompts/strategists/professor_strategist_behavior.md"
+    professor:
+      name: "Distinguished Algorithm Professor"
+      emoji: "📚"
+      model: "gpt-4o"
+      persona_prompt: "prompts/experts/professor_persona.md"
+      behavior_prompt: "prompts/experts/professor_behavior.md"
+      temperature: 0.5
+      max_tokens: 4096
+      focus: "correctness_pedagogy"
+      focus_areas:
+        - "Concept accuracy and precision"
+        - "Learning progression and cognitive load"
+        - "Complexity analysis correctness"
+        - "Invariant descriptions"
+    
+    engineer:
+      name: "Senior Principal Engineer"
+      emoji: "⚙️"
+      model: "gpt-4o"
+      persona_prompt: "prompts/experts/engineer_persona.md"
+      behavior_prompt: "prompts/experts/engineer_behavior.md"
       temperature: 0.6
       max_tokens: 4096
-      focus: "correctness_completeness"
+      focus: "practical_value"
+      focus_areas:
+        - "Interview frequency and importance"
+        - "Real-world engineering applications"
+        - "Trade-off explanations"
+        - "Knowledge discoverability"
     
-    - id: "ux_strategist"
-      name: "UX Strategist"
-      model: "gpt-4"
-      persona_prompt: "prompts/strategists/ux_strategist_persona.md"
-      behavior_prompt: "prompts/strategists/ux_strategist_behavior.md"
-      temperature: 0.7
-      max_tokens: 4096
-      focus: "user_experience"
-
-  # Integrator - Consolidates strategist suggestions
-  integrator:
-    model: "gpt-4o"
-    persona_prompt: "prompts/integrator/integrator_persona.md"
-    behavior_prompt: "prompts/integrator/integrator_behavior.md"
-    temperature: 0.5
-    max_tokens: 4096
-
-  # Evaluators - Structure Specification evaluation
-  # Uses Structure Spec (YAML), not Markdown
-  evaluator:
-    - id: "structure_evaluator"
-      name: "Structure Evaluator"
-      model: "gpt-4"
-      behavior_prompt: "prompts/evaluators/structure_evaluator_behavior.md"
-      temperature: 0.4
-      max_tokens: 4096
-      criteria:
-        - "logical_organization"
-        - "appropriate_depth"
-        - "balanced_sections"
+    # === Future experts (uncomment to enable) ===
     
-    - id: "content_evaluator"
-      name: "Content Evaluator"
-      model: "gpt-4"
-      behavior_prompt: "prompts/evaluators/content_evaluator_behavior.md"
-      temperature: 0.4
-      max_tokens: 4096
-      criteria:
-        - "coverage"
-        - "learning_progression"
-        - "practical_value"
+    # learner:
+    #   name: "Advanced Learner Representative"
+    #   emoji: "🎓"
+    #   model: "gpt-4o"
+    #   persona_prompt: "prompts/experts/learner_persona.md"
+    #   behavior_prompt: "prompts/experts/learner_behavior.md"
+    #   temperature: 0.7
+    #   max_tokens: 4096
+    #   focus: "learning_experience"
+    #   focus_areas:
+    #     - "Entry difficulty and prerequisites"
+    #     - "Common confusion points"
+    #     - "Practice problem progression"
+    #     - "Concept connections"
+    
+    # competitive:
+    #   name: "Competitive Programming Champion"
+    #   emoji: "🏆"
+    #   model: "gpt-4o"
+    #   persona_prompt: "prompts/experts/competitive_persona.md"
+    #   behavior_prompt: "prompts/experts/competitive_behavior.md"
+    #   temperature: 0.5
+    #   max_tokens: 4096
+    #   focus: "optimization_tricks"
+    #   focus_areas:
+    #     - "Edge case handling"
+    #     - "Performance optimizations"
+    #     - "Quick pattern recognition"
+    #     - "Contest-specific techniques"
 
-  # Writer - Final Markmap generation
-  # Responsible for:
-  #   1. Applying evaluator feedback and suggestions
-  #   2. Generating proper links (GitHub/LeetCode)
-  #   3. Applying Markmap formatting (checkboxes, KaTeX, fold, etc.)
-  writer:
-    model: "gpt-4o"  # 128K context window
-    persona_prompt: "prompts/writer/writer_persona.md"
-    behavior_prompt: "prompts/writer/writer_behavior.md"
-    format_guide: "prompts/writer/markmap_format_guide.md"
-    temperature: 0.5
-    max_tokens: 8192
+# -----------------------------------------------------------------------------
+# Refinement Scope Configuration
+# -----------------------------------------------------------------------------
+# Control what aspects of the Markmap can be modified.
+# This allows focused improvement on specific areas.
 
-  # Translator - For translate mode languages
-  translator:
-    model: "gpt-4o"  # 128K context window (gpt-4 only has 8K)
-    temperature: 0.3
-    max_tokens: 8192
-
-  # Compressor - For summarizing long content (use cheaper model)
-  compressor:
-    model: "gpt-3.5-turbo"
-    behavior_prompt: "prompts/compressor/compressor_behavior.md"
-    temperature: 0.3
-    max_tokens: 2048
+refinement_scope:
+  # What types of changes are allowed
+  allowed_changes:
+    structure:
+      enabled: true          # Allow reorganizing sections
+      max_depth_change: 1    # Max levels to add/remove
+    content:
+      add_content: true      # Allow adding new content
+      remove_content: true   # Allow removing existing content
+      modify_content: true   # Allow modifying existing content
+    problems:
+      add_problems: true     # Allow adding new problems
+      remove_problems: false # Prevent removing problems (conservative)
+      reorder_problems: true # Allow reordering within sections
+    formatting:
+      enabled: true          # Allow formatting changes
+      preserve_style: true   # Keep consistent with baseline style
+    links:
+      validate_links: true   # Verify all links are correct
+      fix_broken_links: true # Auto-fix broken links
+  
+  # Focus areas for this refinement run
+  # Set to empty list [] to allow all areas
+  focus_sections: []
+  # Example: focus_sections: ["sliding_window", "two_pointers"]
+  
+  # Exclude specific sections from modification
+  protected_sections: []
+  # Example: protected_sections: ["progress_summary"]
 
 # -----------------------------------------------------------------------------
 # Workflow Configuration
 # -----------------------------------------------------------------------------
 workflow:
-  # Maximum discussion rounds for strategists
-  max_discussion_rounds: 3
+  # Fixed 2-round discussion
+  discussion_rounds: 2
   
-  # Consensus threshold (0.0-1.0)
-  # If strategists agree above this threshold, discussion ends early
-  consensus_threshold: 0.8
+  # Enable parallel execution of expert reviews
+  parallel_execution: true
   
-  # Token threshold to trigger compression
-  max_tokens_before_compress: 8000
+  # Consensus threshold for adopting improvements
+  # N=3: 0.67 means 2/3 agreement required
+  # N=5: 0.60 means 3/5 agreement required
+  consensus_threshold: 0.67
   
-  # Enable parallel structure generation (Phase 1)
-  parallel_generation: true
-  
-  # ---------------------------------------------------------------------------
-  # Post-Processing Settings (applied by program, not LLM)
-  # ---------------------------------------------------------------------------
-  post_processing:
-    # Text replacements applied to final output
-    # These are done by code, reducing LLM prompt burden
-    text_replacements:
-      # Replace "LC" abbreviation with full "LeetCode"
-      - pattern: "\\bLC[-\\s]?(\\d+)"
-        replacement: "LeetCode \\1"
-      # Ensure consistent spacing
-      - pattern: "LeetCode(\\d+)"
-        replacement: "LeetCode \\1"
+  # Minimum votes required (absolute, not percentage)
+  # Set to null to use only percentage threshold
+  min_votes: null
 
 # -----------------------------------------------------------------------------
-# Debug Output Configuration
+# Writer Configuration
 # -----------------------------------------------------------------------------
-# Configure intermediate output saving for debugging and verification
-debug_output:
-  # Master switch for debug outputs
-  enabled: true
+writer:
+  model: "gpt-4o"  # 128K context for full markmap
+  persona_prompt: "prompts/writer/writer_persona.md"
+  behavior_prompt: "prompts/writer/writer_behavior.md"
+  format_guide: "prompts/writer/markmap_format_guide.md"
+  temperature: 0.4
+  max_tokens: 8192
   
-  # Base directory for debug outputs
-  output_dir: "outputs/debug"
-  
-  # Save LLM inputs and outputs for debugging
-  # This saves the FULL prompt sent to each LLM call
-  llm_calls:
-    enabled: true                    # Save LLM call details
-    save_input: true                 # Save full prompt/input to LLM
-    save_output: true                # Save LLM response
-    save_as_single_file: false       # true = one file per call, false = append to log
-    format: "md"                     # "md" for readable, "json" for structured
-  
-  # Save outputs for each phase
-  phases:
-    # Phase 1: Structure generation
-    baseline:
-      enabled: true
-      save_each_generator: true    # Save output from each planner
-    
-    # Phase 2: Strategy discussion rounds
-    optimization:
-      enabled: true
-      save_each_round: true        # Save structure after each round
-      save_strategist_suggestions: true  # Save each strategist's suggestions
-      save_integrator_output: true # Save integrator's consolidated output
-    
-    # Phase 3: Evaluation
-    evaluation:
-      enabled: true
-      save_evaluations: true       # Save each evaluator's assessment
-      save_final_consensus: true   # Save final consensus
-    
-    # Phase 4: Writer
-    writer:
-      enabled: true
-      save_writer_input: true      # Save input to writer (structure + feedback)
-      save_writer_output: true     # Save writer's final output
-    
-    # Phase 5: Translation
-    translation:
-      enabled: true
-      save_before_translation: true  # Save English version before translation
-      save_after_translation: true   # Save translated versions
-    
-    # Phase 6: Post-processing
-    post_processing:
-      enabled: true
-      save_before_processing: true   # Save before LC → LeetCode replacement
-      save_after_processing: true    # Save after post-processing
-  
-  # Output format settings
-  format:
-    # Include timestamps in filenames
-    include_timestamp: true
-    # Include phase number in filename (e.g., "01_baseline_generalist_en.md")
-    include_phase_number: true
-    # Filename template: {phase}_{agent}_{lang}_{timestamp}.md
-    template: "{phase_num:02d}_{phase}_{agent}_{lang}"
+  # Writer behavior settings
+  preserve_baseline_quality: true  # Don't degrade existing good content
+  apply_only_adopted: true         # Only apply consensus improvements
+  validate_output: true            # Validate output before saving
 
 # -----------------------------------------------------------------------------
-# Memory Configuration
+# Post-Processing Configuration
 # -----------------------------------------------------------------------------
-memory:
-  stm:
+post_processing:
+  # Link validation (code-based)
+  link_validator:
     enabled: true
-    max_items: 50
+    fix_broken_links: true
   
-  ltm:
+  # Text replacements (code-based)
+  text_replacements:
+    - pattern: "\\bLC[-\\s]?(\\d+)"
+      replacement: "LeetCode \\1"
+    - pattern: "LeetCode(\\d+)"
+      replacement: "LeetCode \\1"
+  
+  # Translation
+  translation:
     enabled: true
-    vector_store: "chromadb"
-    collection_name: "markmap_decisions"
-    embedding_model: "text-embedding-3-small"
-    chromadb:
-      persist_directory: "./data/chromadb"
-    retrieval:
-      k: 5
-      score_threshold: 0.7
+    languages:
+      - target: "zh-TW"
+        source: "en"
+        model: "gpt-4o"
+  
+  # HTML generation
+  html_generation:
+    enabled: true
+    template: "templates/markmap.html"
 
 # -----------------------------------------------------------------------------
 # Output Configuration
 # -----------------------------------------------------------------------------
 output:
-  # Intermediate outputs (during processing)
   save_intermediate: true
   intermediate_dir: "outputs/intermediate"
   
-  # Final output directories (relative to project root or absolute)
   final_dirs:
-    markdown: "../../docs/mindmaps"        # .md files
-    html: "../../docs/pages/mindmaps"      # .html files
+    markdown: "../../docs/mindmaps"
+    html: "../../docs/pages/mindmaps"
   
-  # Naming convention
-  # Output files: neetcode_{type}_ai_{lang}.md / .html
   naming:
     prefix: "neetcode"
     
-    # Languages to generate
-    # Each language can use one of two modes:
-    #   "generate"  - Run full pipeline from scratch (slow)
-    #   "translate" - Translate from another language's output (fast)
-    #
     languages:
       en:
         enabled: true
-        mode: "generate"       # Primary language: run full pipeline
+        mode: "generate"
       
       zh-TW:
         enabled: true
-        mode: "translate"      # Translate from English (fast)
-        source_lang: "en"      # Source language to translate from
-        translator_model: "gpt-4o"  # 128K context (gpt-4 only has 8K)
+        mode: "translate"
+        source_lang: "en"
+        translator_model: "gpt-4o"
     
-    # Output types
-    types:
-      general:
-        description: "Broad understanding, knowledge organization"
-        generator: "generalist"
-    
-    # File naming template: {prefix}_{type}_ai_{lang}.{ext}
-    # Examples:
-    #   neetcode_general_ai_en.md
-    #   neetcode_general_ai_zh-TW.html
-    template: "{prefix}_{type}_ai_{lang}"
-    
-    # Intermediate files
-    round: "{prefix}_{type}_ai_{lang}_round_{n}.md"
+    # Output template: {prefix}_ontology_evolved_{lang}.{ext}
+    # Example: neetcode_ontology_evolved_en.md
+    template: "{prefix}_ontology_evolved_{lang}"
   
   html:
     template: "templates/markmap.html"
     include_styles: true
     include_scripts: true
-    title: "AI Generated Markmap"
+    title: "AI Evolved Markmap"
+
+# -----------------------------------------------------------------------------
+# Debug Output Configuration
+# -----------------------------------------------------------------------------
+debug_output:
+  enabled: true
+  output_dir: "outputs/debug"
+  
+  llm_calls:
+    enabled: true
+    save_input: true
+    save_output: true
+    save_as_single_file: false
+    format: "md"
+  
+  phases:
+    baseline:
+      enabled: true
+      save_loaded_baseline: true
+    
+    expert_review:
+      enabled: true
+      save_each_expert: true
+      save_all_suggestions: true
+    
+    discussion:
+      enabled: true
+      save_votes: true
+      save_adoption_lists: true
+    
+    consensus:
+      enabled: true
+      save_final_consensus: true
+      save_rejected_suggestions: true
+    
+    writer:
+      enabled: true
+      save_writer_input: true
+      save_writer_output: true
+    
+    translation:
+      enabled: true
+      save_before_translation: true
+      save_after_translation: true
+    
+    post_processing:
+      enabled: true
+      save_before_processing: true
+      save_after_processing: true
+  
+  format:
+    include_timestamp: true
+    include_phase_number: true
+    template: "{phase_num:02d}_{phase}_{agent}_{lang}"
 
 # -----------------------------------------------------------------------------
 # API Configuration
@@ -507,6 +420,3 @@ logging:
 dev:
   debug: false
   use_mock_llm: false
-  langgraph_studio:
-    enabled: true
-    port: 8123

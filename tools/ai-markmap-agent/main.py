@@ -2,9 +2,13 @@
 # =============================================================================
 # AI Markmap Agent - Main Entry Point
 # =============================================================================
+# Refinement Mode: Start from a high-quality baseline Markmap and improve it
+# through multi-expert review and consensus-based discussion.
+#
 # Usage:
-#   python main.py                    # Run pipeline
+#   python main.py                    # Run refinement pipeline
 #   python main.py --config path/to/config.yaml
+#   python main.py --baseline path/to/markmap.md
 #   python main.py --no-openai        # Skip OpenAI API key request
 #   python main.py --dry-run          # Load data but don't run pipeline
 #
@@ -25,10 +29,9 @@ from src.config_loader import (
     ConfigLoader,
     load_config,
     request_api_keys,
-    get_api_key,
 )
-from src.data_sources import DataSourcesLoader, load_data_sources
-from src.graph import run_pipeline, build_markmap_graph
+from src.data_sources import DataSourcesLoader
+from src.graph import run_pipeline, load_baseline_markmap
 
 
 def print_banner() -> None:
@@ -37,16 +40,17 @@ def print_banner() -> None:
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                         AI Markmap Agent                                  ║
 ║                                                                           ║
-║  Multi-Agent Collaborative System for Markmap Generation                  ║
+║  Multi-Expert Refinement System for Markmap Improvement                   ║
 ║                                                                           ║
-║  Features:                                                                ║
-║    • Structure Specification (YAML) based workflow                        ║
-║    • Content Strategists discuss concepts, not formatting                 ║
-║    • Writer is the ONLY agent producing final Markdown                    ║
+║  Workflow:                                                                ║
+║    1. Load baseline Markmap                                               ║
+║    2. Expert Review (Round 1) - Independent suggestions                   ║
+║    3. Full Discussion (Round 2) - Vote on all suggestions                 ║
+║    4. Consensus Calculation - Majority voting (code, not AI)              ║
+║    5. Writer - Apply adopted improvements                                 ║
+║    6. Post-processing and translation                                     ║
 ║                                                                           ║
-║  Outputs:                                                                 ║
-║    • neetcode_general_ai_en.md / .html                                    ║
-║    • neetcode_general_ai_zh-TW.md / .html                                 ║
+║  API Calls: 2N + 1 (N = number of experts, typically 3)                   ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
     """)
 
@@ -75,17 +79,31 @@ def print_data_summary(summary: dict) -> None:
 def print_workflow_summary(config: dict) -> None:
     """Print workflow configuration summary."""
     workflow = config.get("workflow", {})
+    experts = config.get("experts", {})
     naming = config.get("output", {}).get("naming", {})
     
+    enabled_experts = experts.get("enabled", ["architect", "professor", "engineer"])
+    definitions = experts.get("definitions", {})
+    
     print("\n" + "=" * 60)
-    print("Workflow Configuration")
+    print("Refinement Configuration")
     print("=" * 60)
-    print(f"  Optimization rounds: {workflow.get('optimization_rounds', 3)}")
-    print(f"  Optimizer count: {workflow.get('optimizer_count', 3)}")
-    print(f"  Judge count: {workflow.get('judge_count', 2)}")
-    print(f"  Enable debate: {workflow.get('enable_debate', False)}")
-    print(f"\n  Languages: {', '.join(naming.get('languages', ['en', 'zh-TW']))}")
-    print(f"  Types: {', '.join(naming.get('types', {}).keys())}")
+    print(f"\n  Experts ({len(enabled_experts)}):")
+    for expert_id in enabled_experts:
+        expert_def = definitions.get(expert_id, {})
+        emoji = expert_def.get("emoji", "•")
+        name = expert_def.get("name", expert_id)
+        print(f"    {emoji} {name}")
+    
+    print(f"\n  Discussion rounds: {workflow.get('discussion_rounds', 2)}")
+    print(f"  Consensus threshold: {workflow.get('consensus_threshold', 0.67):.0%}")
+    
+    # Calculate API calls
+    n_experts = len(enabled_experts)
+    api_calls = 2 * n_experts + 1
+    print(f"  API calls: {api_calls} (2×{n_experts} + 1)")
+    
+    print(f"\n  Languages: {', '.join(naming.get('languages', {}).keys())}")
     print("=" * 60)
 
 
@@ -98,13 +116,19 @@ def main() -> int:
     """
     # Parse command line arguments
     parser = argparse.ArgumentParser(
-        description="AI Markmap Agent - Multi-Agent Markmap Generation System"
+        description="AI Markmap Agent - Multi-Expert Refinement System"
     )
     parser.add_argument(
         "--config",
         type=str,
         default=None,
         help="Path to configuration file (default: config/config.yaml)"
+    )
+    parser.add_argument(
+        "--baseline",
+        type=str,
+        default=None,
+        help="Path to baseline Markmap file (overrides config)"
     )
     parser.add_argument(
         "--no-openai",
@@ -154,43 +178,69 @@ def main() -> int:
         else:
             print("Skipping API key input (--no-openai and/or --no-anthropic specified)\n")
         
-        # Step 3: Load data sources
-        print("\nLoading data sources...")
+        # Step 3: Load baseline Markmap
+        print("\nLoading baseline Markmap...")
+        if args.baseline:
+            baseline_path = Path(args.baseline)
+            if baseline_path.exists():
+                baseline_markmap = baseline_path.read_text(encoding="utf-8")
+                print(f"  ✓ Loaded from {args.baseline}")
+            else:
+                print(f"  ✗ Baseline file not found: {args.baseline}")
+                return 1
+        else:
+            try:
+                baseline_markmap = load_baseline_markmap(config)
+                if baseline_markmap:
+                    lines = len(baseline_markmap.splitlines())
+                    print(f"  ✓ Loaded ({lines} lines, {len(baseline_markmap)} chars)")
+                else:
+                    print("  ⚠ No baseline found - will need reference data")
+                    baseline_markmap = ""
+            except FileNotFoundError as e:
+                print(f"  ⚠ {e}")
+                baseline_markmap = ""
+        
+        # Step 4: Load data sources
+        print("\nLoading reference data...")
         loader = DataSourcesLoader(config)
         data = loader.load_all()
+        
+        # Add baseline to data
+        data["baseline_markmap"] = baseline_markmap
         
         # Print summary
         print_data_summary(loader.get_summary())
         
-        # Step 4: If dry-run, stop here
+        # Step 5: If dry-run, stop here
         if args.dry_run:
             print("\n[DRY RUN] Data sources loaded successfully. Exiting.")
             return 0
         
-        # Step 5: Check required API keys
+        # Step 6: Check required API keys
         if not args.no_openai and not ConfigLoader.has_api_key("openai"):
             print("\n❌ Error: OpenAI API key is required but not provided.")
             print("   Use --no-openai to skip if not needed.")
             return 1
         
-        # Step 6: Build and run the LangGraph pipeline
+        # Step 7: Build and run the LangGraph pipeline
         print("\n" + "=" * 60)
-        print("Starting Markmap Generation Pipeline")
+        print("Starting Markmap Refinement Pipeline")
         print("=" * 60)
         
-        print("\n📋 Workflow:")
-        print("  1. Generate Structure Specifications (Planners)")
-        print("  2. Optimize content strategy (Strategists + Integrator)")
-        print("  3. Evaluate structure quality (Evaluators)")
-        print("  4. Render final Markmap (Writer)")
-        print("  5. Translate if needed")
-        print("  6. Post-process and save")
         result = run_pipeline(data, config)
         
         # Report results
         print("\n" + "=" * 60)
         print("Pipeline Complete")
         print("=" * 60)
+        
+        # Print consensus summary
+        consensus = result.get("consensus_result")
+        if consensus:
+            print(f"\n📊 Consensus Summary:")
+            print(f"   Adopted: {len(consensus.adopted)} improvements")
+            print(f"   Rejected: {len(consensus.rejected)} suggestions")
         
         if result.get("errors"):
             print("\n⚠ Warnings/Errors:")

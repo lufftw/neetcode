@@ -1,6 +1,6 @@
 # AI Markmap Agent
 
-> A configurable, extensible multi-agent AI system for generating and optimizing Markmaps using LangGraph.
+> A multi-expert refinement system for Markmap improvement using LangGraph.
 
 [![LangGraph](https://img.shields.io/badge/LangGraph-v1.0.4-blue)](https://github.com/langchain-ai/langgraph)
 [![Python](https://img.shields.io/badge/Python-3.10+-green)](https://python.org)
@@ -9,169 +9,160 @@
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Core Philosophy](#core-philosophy)
 - [Architecture](#architecture)
-- [Workflow Phases](#workflow-phases)
+- [Workflow](#workflow)
 - [Installation](#installation)
-- [Configuration](#configuration)
 - [Usage](#usage)
-- [Agent Capabilities](#agent-capabilities)
-- [Memory System](#memory-system)
+- [Configuration](#configuration)
+- [Expert Roles](#expert-roles)
 - [Project Structure](#project-structure)
 
 ---
 
 ## Overview
 
-This system orchestrates multiple AI agents to collaboratively generate, optimize, debate, and select the best Markmap from metadata and ontology inputs. It leverages **LangGraph**'s State + Graph paradigm for controllable agent orchestration.
+This system refines existing high-quality Markmaps through multi-expert review and consensus-based discussion. Instead of generating from scratch, it starts with a baseline Markmap and improves it through domain-specific expert analysis.
 
 ### Key Features
 
 | Feature | Description |
 |---------|-------------|
-| **Multi-Model Support** | Configure different LLMs for each agent role |
-| **Multi-Language** | Generate Markmaps in English and Traditional Chinese |
-| **Iterative Optimization** | Configurable N-round optimization with debate |
-| **Memory System** | Short-term (STM) and Long-term Memory (LTM) support |
-| **Content Compression** | Auto-summarize when content exceeds thresholds |
-| **Configurable Workflow** | All parameters adjustable via YAML config |
+| **Refinement Mode** | Start from a high-quality baseline, not from scratch |
+| **Domain Experts** | Architect, Professor, Engineer perspectives |
+| **Consensus Voting** | Programmatic majority voting (2/3 required) |
+| **Natural Language** | Suggestions in natural language, not rigid formats |
+| **Efficient API Calls** | Only 2N + 1 calls (N = number of experts) |
+
+---
+
+## Core Philosophy
+
+### "Refinement, Not Creation"
+
+| Old Approach | New Approach |
+|--------------|--------------|
+| Create structure from data | Start from high-quality baseline |
+| YAML intermediate format | Work directly with Markmap |
+| Generic strategist roles | Domain-specific experts |
+| AI-based integration | Programmatic consensus |
+
+### Why Refinement is Better
+
+1. **Quality Preservation** - Don't reinvent what already works well
+2. **Focused Discussion** - Experts discuss "what to improve", not "what to create"
+3. **Natural Language** - AI excels at understanding and generating natural text
+4. **Efficient** - Fewer API calls, faster iteration
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        AI Markmap Agent System                      │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
-│  │ Generalist  │    │ Specialist  │    │  Optimizer  │             │
-│  │   Agents    │    │   Agents    │    │   Agents    │             │
-│  │  (EN / ZH)  │    │  (EN / ZH)  │    │  (2-3 roles)│             │
-│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘             │
-│         │                  │                  │                     │
-│         └──────────────────┼──────────────────┘                     │
-│                            ▼                                        │
-│                   ┌─────────────────┐                               │
-│                   │   Summarizer    │                               │
-│                   └────────┬────────┘                               │
-│                            ▼                                        │
-│                   ┌─────────────────┐                               │
-│                   │     Judges      │                               │
-│                   │   (Evaluators)  │                               │
-│                   └────────┬────────┘                               │
-│                            ▼                                        │
-│                   ┌─────────────────┐                               │
-│                   │  Final Output   │                               │
-│                   │  (Markmap HTML) │                               │
-│                   └─────────────────┘                               │
-│                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐  │
-│  │                     Shared Components                         │  │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │  │
-│  │  │   STM    │  │   LTM    │  │ Compress │  │   Config     │  │  │
-│  │  │ (Memory) │  │ (Vector) │  │ (Summary)│  │   Loader     │  │  │
-│  │  └──────────┘  └──────────┘  └──────────┘  └──────────────┘  │  │
-│  └──────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        AI Markmap Agent                                      │
+│                   Refinement Mode — 2-Round Discussion                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 0: Load Baseline                                                     │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                                                                             │
+│  ┌─────────────────────────────────┐                                        │
+│  │ Baseline Markmap                │                                        │
+│  │ (e.g., neetcode_ontology_ai.md) │                                        │
+│  └───────────┬─────────────────────┘                                        │
+│              │                                                              │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 1: Independent Review (N parallel API calls)                         │
+│  ════════════════════════════════════════════════════════════════════════  │
+│              │                                                              │
+│   ┌──────────┴──────────┬──────────────────┐                               │
+│   ▼                     ▼                  ▼                               │
+│   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                 │
+│   │ 🏗️ Architect │    │ 📚 Professor │    │ ⚙️ Engineer  │                 │
+│   │ 5-10 ideas   │    │ 5-10 ideas   │    │ 5-10 ideas   │                 │
+│   └──────┬───────┘    └──────┬───────┘    └──────┬───────┘                 │
+│          │                   │                   │                         │
+│          └───────────────────┼───────────────────┘                         │
+│                              │                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 2: Full Discussion (N parallel API calls)                            │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                              │                                             │
+│   Each expert sees ALL suggestions, votes: ✅ / ⚠️ / ❌                    │
+│   Each expert outputs their Final Adoption List                            │
+│                              │                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 3: Consensus Calculation (Code, not AI)                              │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                              │                                             │
+│   Majority voting: 2/3 (≥67%) agreement required                           │
+│   ✅ Adopted: A1, A3, P1, E1, E4                                           │
+│   ❌ Rejected: A2, P2, P3, E2, E3                                          │
+│                              │                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 4: Writer (1 API call)                                               │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                              │                                             │
+│   Apply adopted improvements to baseline → Refined Markmap                 │
+│                              │                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 5-6: Translation & Post-Processing                                   │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
+
+### API Call Efficiency
+
+| Experts (N) | API Calls | Sequential Batches |
+|-------------|-----------|-------------------|
+| 3 (default) | 7         | 3 (fixed)         |
+| 5           | 11        | 3 (fixed)         |
+| 7           | 15        | 3 (fixed)         |
 
 ---
 
-## Workflow Phases
+## Workflow
 
-### Phase 1: Baseline Generation
+### Phase 0: Load Baseline
 
-Generate 4 initial Markmaps in parallel:
+Load an existing high-quality Markmap as the starting point.
 
-| Agent Type | Language | Model (Configurable) | Output File |
-|------------|----------|---------------------|-------------|
-| Generalist | English | `gpt-4-turbo` | `markmap_general_en.md` |
-| Generalist | 繁體中文 | `gpt-4-turbo` | `markmap_general_zh.md` |
-| Specialist | English | `gpt-4-turbo` | `markmap_specialist_en.md` |
-| Specialist | 繁體中文 | `gpt-4-turbo` | `markmap_specialist_zh.md` |
+### Phase 1: Independent Review
 
-- **Generalist**: Optimized for broad understanding, knowledge organization, global perspective
-- **Specialist**: Optimized for engineering details, structural rigor, implementation-oriented
+Each expert independently reviews the baseline and suggests 5-10 improvements:
+- No group influence
+- Natural language suggestions
+- Focus on their domain expertise
 
-### Phase 2: Iterative Optimization & Debate
+### Phase 2: Full Discussion
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Optimization Loop (N rounds)                 │
-│                                                                 │
-│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐       │
-│  │ Optimizer 1 │ ←→  │ Optimizer 2 │ ←→  │ Optimizer 3 │       │
-│  │ (Structure) │     │ (Semantic)  │     │(Readability)│       │
-│  └──────┬──────┘     └──────┬──────┘     └──────┬──────┘       │
-│         │                   │                   │               │
-│         └───────────────────┼───────────────────┘               │
-│                             ▼                                   │
-│                    All opinions visible                         │
-│                    to each other                                │
-│                             │                                   │
-│                             ▼                                   │
-│                   ┌─────────────────┐                           │
-│                   │   Summarizer    │                           │
-│                   │ (Round Summary) │                           │
-│                   └─────────────────┘                           │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+Each expert:
+1. Sees all suggestions from all experts
+2. Votes on each suggestion (✅ Agree / ⚠️ Modify / ❌ Disagree)
+3. Outputs their final adoption list
 
-**Key Features:**
-- 2-3 optimizer agents (configurable)
-- Each agent can use a different model
-- All agents can see each other's discussion
-- First round receives full metadata; subsequent rounds receive only:
-  - Previous round's Markmap
-  - Discussion history
-  - Summary
+### Phase 3: Consensus Calculation
 
-### Phase 3: Round Summarization
+**Programmatic, not AI:**
+- Count votes for each suggestion
+- Adopt if ≥67% (2/3) agreement
+- Reject otherwise
 
-After each optimization round:
-- **Summarizer Agent** consolidates all optimization and debate content
-- Outputs:
-  - Updated Markmap for that round
-  - Decision summary (for next round)
+### Phase 4: Writer
 
-### Phase 4: Final Evaluation & Selection
+Apply adopted improvements surgically to the baseline:
+- Minimal changes
+- Preserve existing quality
+- Verify links and formatting
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                       Final Evaluation                          │
-│                                                                 │
-│  ┌─────────────┐              ┌─────────────┐                  │
-│  │   Judge 1   │    Debate    │   Judge 2   │                  │
-│  │  (Quality)  │ ←──────────→ │(Completeness│                  │
-│  └──────┬──────┘              └──────┬──────┘                  │
-│         │                            │                          │
-│         └────────────┬───────────────┘                          │
-│                      ▼                                          │
-│             ┌─────────────────┐                                 │
-│             │  Vote / Decide  │                                 │
-│             │  Final Winner   │                                 │
-│             └─────────────────┘                                 │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+### Phase 5-6: Post-Processing
 
-**Inputs:**
-- All candidate Markmaps
-- All round summaries
-
-**Evaluation Criteria:**
-- Structure quality
-- Knowledge completeness
-- Readability
-- Practicality
-
-### Phase 5: Final Output
-
-- Convert selected Markmap to `markmap.html`
-- Other versions saved as historical records (optional)
+- Translation (en → zh-TW)
+- Link validation
+- HTML generation
 
 ---
 
@@ -191,268 +182,134 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Requirements
-
-```
-langgraph>=1.0.4
-langchain>=0.3.0
-langchain-openai>=0.2.0
-langchain-anthropic>=0.2.0
-langchain-community>=0.3.0
-chromadb>=0.4.0
-pyyaml>=6.0
-tiktoken>=0.5.0
-tomli>=2.0.0  # For Python < 3.11
-```
-
----
-
-## API Key Handling
-
-> ⚠️ **Important Security Design**: API keys are entered once at runtime and **NEVER stored**.
-
-### Runtime Input
-
-```bash
-# When starting the program, you'll be prompted for API keys
-python main.py
-
-# Example output:
-# ============================================================
-# API Key Input
-# ============================================================
-# Enter your API keys below.
-# Keys are NOT stored and will be cleared when program exits.
-# ============================================================
-#
-# Enter OPENAI API Key: ********
-#   ✓ OPENAI API key accepted
-```
-
-### Security Features
-
-| Feature | Description |
-|---------|-------------|
-| **Not Stored** | Keys exist only in memory, never written to any file |
-| **Secure Input** | Uses `getpass` to hide input |
-| **Auto-Clear on Exit** | Registered with `atexit` to clear on program termination |
-| **Manual Clear** | Call `ConfigLoader.clear_api_keys()` anytime |
-
-### Command Line Options
-
-```bash
-# Skip OpenAI key input
-python main.py --no-openai
-
-# Skip Anthropic key input
-python main.py --no-anthropic
-
-# Dry run - load data sources only
-python main.py --dry-run
-
-# Verbose output
-python main.py -v
-```
-
----
-
-## Configuration
-
-All settings are managed in `config/config.yaml`.
-
-### Data Sources Configuration
-
-Configure which data sources to read in the `data_sources` section:
-
-```yaml
-# ===== Data Sources Configuration =====
-data_sources:
-  # Base paths (relative to project root)
-  base_paths:
-    ontology: "../../ontology"
-    problems: "../../meta/problems"
-    patterns: "../../meta/patterns"
-    roadmaps: "../../roadmaps"
-
-  # Ontology files - taxonomy definitions
-  ontology:
-    enabled: true
-    files:
-      - name: "algorithms"
-        path: "algorithms.toml"
-        enabled: true
-      - name: "patterns"
-        path: "patterns.toml"
-        enabled: true
-      # Set enabled: false to disable specific files
-      - name: "companies"
-        path: "companies.toml"
-        enabled: false
-
-  # Problem metadata files
-  problems:
-    enabled: true
-    load_mode: "pattern"  # "all" | "list" | "pattern"
-    patterns:
-      - "*.toml"
-    exclude:
-      - "README.md"
-
-  # Pattern documentation directories
-  patterns:
-    enabled: true
-    directories:
-      - name: "sliding_window"
-        path: "sliding_window"
-        enabled: true
-      - name: "two_pointers"
-        path: "two_pointers"
-        enabled: true
-
-  # Roadmap learning paths
-  roadmaps:
-    enabled: true
-    files:
-      - name: "sliding_window_path"
-        path: "sliding_window_path.toml"
-        enabled: true
-```
-
-### Model Configuration
-
-```yaml
-# ===== Model Configuration =====
-models:
-  generalist:
-    en: "gpt-4-turbo"
-    zh: "gpt-4-turbo"
-  specialist:
-    en: "gpt-4-turbo"
-    zh: "gpt-4-turbo"
-  optimizer:
-    - model: "gpt-4-turbo"
-      prompt_path: "prompts/optimizer_structure.txt"
-    - model: "claude-3-opus"
-      prompt_path: "prompts/optimizer_semantic.txt"
-  summarizer:
-    model: "gpt-4-turbo"
-    prompt_path: "prompts/summarizer.txt"
-  judges:
-    - model: "gpt-4-turbo"
-      prompt_path: "prompts/judge_quality.txt"
-    - model: "claude-3-opus"
-      prompt_path: "prompts/judge_completeness.txt"
-  compressor:
-    model: "gpt-3.5-turbo"
-
-# ===== Workflow Configuration =====
-workflow:
-  optimization_rounds: 3
-  optimizer_count: 3
-  judge_count: 2
-  max_tokens_before_compress: 8000
-
-# ===== Memory Configuration =====
-memory:
-  stm_enabled: true
-  ltm_enabled: true
-  ltm_vector_store: "chromadb"
-  ltm_collection_name: "markmap_decisions"
-
-# ===== Output Configuration =====
-output:
-  save_intermediate: true
-  intermediate_dir: "outputs/intermediate"
-  final_dir: "outputs/final"
-```
-
 ---
 
 ## Usage
 
 ### Basic Usage
 
-```python
-from src.graph import build_markmap_graph
+```bash
+# Run with default baseline
+python main.py
 
-# Build the graph
-graph = build_markmap_graph()
+# Specify a baseline file
+python main.py --baseline path/to/markmap.md
 
-# Prepare initial input
-initial_state = {
-    "metadata": your_metadata_dict,
-    "ontology": your_ontology_dict,
-}
-
-# Run the workflow
-result = graph.invoke(
-    initial_state,
-    config={"configurable": {"thread_id": "session-1"}}
-)
-
-# Access results
-print(result["final_selection"])  # Final Markmap
-print(result["final_html"])       # HTML output path
+# Dry run (load data only)
+python main.py --dry-run
 ```
 
-### CLI Usage
+### API Keys
+
+API keys are entered at runtime and **never stored**:
 
 ```bash
-python main.py --metadata data/metadata.json --ontology data/ontology.json
+python main.py
+
+# You'll be prompted:
+# Enter OPENAI API Key: ********
+#   ✓ OPENAI API key accepted
+```
+
+Skip API key prompts:
+
+```bash
+python main.py --no-openai
+python main.py --no-anthropic
 ```
 
 ---
 
-## Agent Capabilities
+## Configuration
 
-Each Optimizer/Debater agent implements these cognitive modules:
+All settings in `config/config.yaml`.
 
-### 🧠 Planning
-- Define optimization goals (structure, hierarchy, naming, abstraction level)
+### Expert Configuration
 
-### 🧩 Subgoal & Decomposition
-- Break down Markmap improvements into:
-  - Node structure
-  - Classification hierarchy
-  - Semantic consistency
-  - Engineering readability
+```yaml
+experts:
+  enabled:
+    - "architect"
+    - "professor"
+    - "engineer"
+  
+  suggestions:
+    min_per_expert: 5
+    max_per_expert: 10
+  
+  definitions:
+    architect:
+      name: "Top Software Architect"
+      emoji: "🏗️"
+      model: "gpt-4o"
+      focus_areas:
+        - "API Kernel abstraction"
+        - "Pattern relationships"
+        - "Code template reusability"
+```
 
-### 🔁 Reflection & Refinement
-- Evaluate previous round results
-- Adjust strategies to avoid repeated mistakes
+### Refinement Scope
 
-### 🧠 Memory System
+Control what can be changed:
 
-| Type | Scope | Implementation |
-|------|-------|----------------|
-| **STM** | Current round dialogue, current Markmap state | In-memory dict |
-| **LTM** | Optimization principles, historical decisions | Vector Store (ChromaDB) |
+```yaml
+refinement_scope:
+  allowed_changes:
+    structure:
+      enabled: true
+      max_depth_change: 1
+    content:
+      add_content: true
+      remove_content: true
+      modify_content: true
+    problems:
+      add_problems: true
+      remove_problems: false  # Conservative
+      reorder_problems: true
+```
+
+### Workflow Settings
+
+```yaml
+workflow:
+  discussion_rounds: 2
+  parallel_execution: true
+  consensus_threshold: 0.67  # 2/3 required
+```
 
 ---
 
-## Memory System
+## Expert Roles
 
-### Short-Term Memory (STM)
+### 🏗️ Top Software Architect
 
-Maintains context within the current session:
-- Current round dialogue
-- Current Markmap state
-- Recent decisions
+**Focus**: API design, modularity, system mapping
 
-### Long-Term Memory (LTM)
+**Reviews for**:
+- Clean API Kernel abstractions
+- Pattern composability
+- Code template reusability
+- System design connections
 
-Persists across sessions using Vector Store:
-- Optimization principles
-- Historical decision summaries
-- Retrieved via semantic search for relevant context
+### 📚 Distinguished Algorithm Professor
 
-```python
-# LTM Query Example
-relevant_decisions = query_ltm(
-    query="How to structure algorithm complexity nodes?",
-    k=5
-)
-```
+**Focus**: Correctness, pedagogy, theory
+
+**Reviews for**:
+- Concept accuracy
+- Learning progression
+- Complexity analysis
+- Invariant descriptions
+
+### ⚙️ Senior Principal Engineer
+
+**Focus**: Practical value, interviews, trade-offs
+
+**Reviews for**:
+- Interview frequency
+- Real-world applications
+- Trade-off explanations
+- Knowledge discoverability
 
 ---
 
@@ -461,66 +318,45 @@ relevant_decisions = query_ltm(
 ```
 ai-markmap-agent/
 ├── config/
-│   └── config.yaml              # Global configuration
+│   └── config.yaml              # Main configuration
 ├── prompts/
-│   ├── generalist_en.txt        # Generalist prompt (EN)
-│   ├── generalist_zh.txt        # Generalist prompt (ZH)
-│   ├── specialist_en.txt        # Specialist prompt (EN)
-│   ├── specialist_zh.txt        # Specialist prompt (ZH)
-│   ├── optimizer_structure.txt  # Structure optimizer prompt
-│   ├── optimizer_semantic.txt   # Semantic optimizer prompt
-│   ├── optimizer_readability.txt# Readability optimizer prompt
-│   ├── summarizer.txt           # Summarizer prompt
-│   ├── judge_quality.txt        # Quality judge prompt
-│   └── judge_completeness.txt   # Completeness judge prompt
+│   ├── experts/                 # Expert prompts
+│   │   ├── architect_persona.md
+│   │   ├── architect_behavior.md
+│   │   ├── professor_persona.md
+│   │   ├── professor_behavior.md
+│   │   ├── engineer_persona.md
+│   │   ├── engineer_behavior.md
+│   │   └── discussion_behavior.md
+│   └── writer/
+│       ├── writer_persona.md
+│       ├── writer_behavior.md
+│       └── markmap_format_guide.md
 ├── src/
-│   ├── __init__.py
-│   ├── config_loader.py         # Configuration loader
-│   ├── state.py                 # State definition (TypedDict)
-│   ├── graph.py                 # Main Graph construction
 │   ├── agents/
-│   │   ├── __init__.py
 │   │   ├── base_agent.py        # Base agent class
-│   │   ├── generator.py         # Generalist/Specialist generators
-│   │   ├── optimizer.py         # Optimizer/Debater agents
-│   │   ├── summarizer.py        # Summarizer agent
-│   │   └── judge.py             # Judge/Evaluator agents
-│   ├── memory/
-│   │   ├── __init__.py
-│   │   ├── stm.py               # Short-term memory
-│   │   └── ltm.py               # Long-term memory (Vector Store)
-│   ├── compression/
-│   │   └── compressor.py        # Long content compression
-│   └── output/
-│       └── html_converter.py    # Markmap → HTML converter
-├── outputs/
-│   ├── intermediate/            # Intermediate artifacts
-│   └── final/                   # Final output
-├── tests/
-│   └── ...                      # Test files
-├── requirements.txt
+│   │   ├── expert.py            # Expert agents
+│   │   ├── writer.py            # Writer agent
+│   │   └── translator.py        # Translator agent
+│   ├── consensus.py             # Consensus calculation (code)
+│   ├── graph.py                 # LangGraph workflow
+│   ├── config_loader.py         # Configuration loading
+│   └── ...
 ├── main.py                      # Entry point
-├── README.md                    # This file
-└── README_zh-TW.md             # 繁體中文文件
+└── README.md
 ```
 
 ---
 
 ## Module Responsibilities
 
-| Module | Lines | Responsibility |
-|--------|-------|----------------|
-| `config_loader.py` | ~50 | Load and validate YAML configuration |
-| `state.py` | ~60 | Define shared state TypedDict |
-| `graph.py` | ~150 | Build LangGraph StateGraph |
-| `generator.py` | ~120 | Generalist/Specialist Markmap generation |
-| `optimizer.py` | ~200 | Optimization, planning, reflection |
-| `summarizer.py` | ~80 | Round summarization |
-| `judge.py` | ~150 | Final evaluation and voting |
-| `stm.py` | ~40 | Short-term memory operations |
-| `ltm.py` | ~100 | Long-term memory with Vector Store |
-| `compressor.py` | ~60 | Content compression/summarization |
-| `html_converter.py` | ~50 | Markmap MD → HTML conversion |
+| Module | Responsibility |
+|--------|----------------|
+| `expert.py` | Domain-specific expert agents |
+| `consensus.py` | Programmatic majority voting |
+| `writer.py` | Refinement-mode writer |
+| `graph.py` | LangGraph workflow orchestration |
+| `config_loader.py` | Configuration management |
 
 ---
 
@@ -530,19 +366,8 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests: `python -m pytest tests/ -q`
-5. Submit a pull request
-
----
-
 ## Related
 
 - [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
 - [LangChain Documentation](https://python.langchain.com/)
 - [Markmap](https://markmap.js.org/)
-
