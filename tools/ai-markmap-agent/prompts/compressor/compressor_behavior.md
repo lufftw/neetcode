@@ -1,176 +1,175 @@
-# 角色行為：壓縮者（The Compressor）
+# Behavior: The Compressor
 
-## 任務說明
+## Task
 
-當討論紀錄或內容過長時，將其壓縮為精簡摘要，同時保留關鍵資訊。
-
----
-
-## 觸發條件
-
-當以下情況發生時啟用壓縮：
-- 討論紀錄超過 {max_tokens} tokens
-- Markmap 節點數超過閾值
-- 需要向後續輪次傳遞精簡上下文
+When discussion records or content become too long, compress them into concise summaries while preserving key information.
 
 ---
 
-## 輸入資料
+## Trigger Conditions
 
-### 原始內容
+Activate compression when:
+- Discussion records exceed {max_tokens} tokens
+- Markmap node count exceeds threshold
+- Need to pass concise context to subsequent rounds
+
+---
+
+## Input
+
+### Original Content
 ```
 {original_content}
 ```
 
-### 內容類型
+### Content Type
 {content_type}  <!-- discussion | markmap | metadata -->
 
-### 目標長度
+### Target Length
 {target_tokens} tokens
 
-### 優先保留主題（若有）
+### Priority Topics (if any)
 {priority_topics}
 
 ---
 
-## 壓縮原則
+## Compression Principles
 
-### 🔴 必須保留（Critical）
+### 🔴 Must Preserve (Critical)
 
-| 類型 | 範例 |
-|------|------|
-| 最終決策 | 「決定採用方案 A」 |
-| 關鍵理由 | 「因為結構更平衡」 |
-| 共識點 | 「三位優化者都同意...」 |
-| 未解決問題 | 「命名規範待下輪討論」 |
+| Type | Example |
+|------|---------|
+| Final decisions | "Decided to adopt Solution A" |
+| Key rationales | "Because the structure is more balanced" |
+| Consensus points | "All three optimizers agree that..." |
+| Unresolved issues | "Naming convention to be discussed next round" |
 
-### 🟡 盡量保留（Important）
+### 🟡 Preserve If Possible (Important)
 
-| 類型 | 範例 |
-|------|------|
-| 主要分歧 | 「A 認為 X，B 認為 Y」 |
-| 權衡考量 | 「犧牲了 Z 以換取 W」 |
-| 關鍵範例 | 「如節點 ABC 的處理」 |
+| Type | Example |
+|------|---------|
+| Major disagreements | "A thinks X, B thinks Y" |
+| Trade-off considerations | "Sacrificed Z to gain W" |
+| Key examples | "Like the handling of node ABC" |
 
-### 🟢 可以省略（Optional）
+### 🟢 Can Omit (Optional)
 
-| 類型 | 範例 |
-|------|------|
-| 冗長解釋 | 詳細的推理過程 |
-| 重複論述 | 多次表達相同觀點 |
-| 次要細節 | 不影響決策的討論 |
-| 禮貌用語 | 「我認為」「可能」 |
-
----
-
-## 壓縮格式
-
-### 討論紀錄壓縮
-
-```markdown
-## 討論摘要
-
-### 決策
-1. [決策1]: [簡短理由]
-2. [決策2]: [簡短理由]
-
-### 分歧
-- [議題]: A主張X / B主張Y → 採納 [結果]
-
-### 共識
-- [共識點1]
-- [共識點2]
-
-### 待處理
-- [問題1]
-- [問題2]
-```
-
-### Markmap 壓縮
-
-保留結構框架，省略末端細節：
-
-```markdown
-## Markmap 摘要
-
-### 結構概覽
-- 根節點: [名稱]
-- 一級節點: [列表]
-- 總深度: [數字]
-- 總節點數: [數字]
-
-### 關鍵區域
-1. [區域1]: [主要內容概述]
-2. [區域2]: [主要內容概述]
-
-### 完整 Markmap
-[僅保留到第2-3層的簡化版]
-```
-
-### Metadata 壓縮
-
-提取核心資訊：
-
-```markdown
-## Metadata 摘要
-
-### 核心概念
-- [概念1]
-- [概念2]
-- [概念3]
-
-### 主要關係
-- [關係1]
-- [關係2]
-
-### 關鍵約束
-- [約束1]
-```
+| Type | Example |
+|------|---------|
+| Lengthy explanations | Detailed reasoning process |
+| Repeated statements | Multiple expressions of same point |
+| Minor details | Discussion not affecting decisions |
+| Polite phrases | "I think", "perhaps" |
 
 ---
 
-## 輸出格式
+## Compression Formats
+
+### Discussion Record Compression
 
 ```markdown
-# 壓縮報告
+## Discussion Summary
 
-## 壓縮後內容
+### Decisions
+1. [Decision 1]: [Brief rationale]
+2. [Decision 2]: [Brief rationale]
 
-[壓縮後的內容]
+### Disagreements
+- [Issue]: A proposed X / B proposed Y → Adopted [Result]
 
----
+### Consensus
+- [Consensus point 1]
+- [Consensus point 2]
 
-## 壓縮統計
-- 原始長度: ~{original_tokens} tokens
-- 壓縮後長度: ~{compressed_tokens} tokens
-- 壓縮率: {ratio}%
+### Pending
+- [Issue 1]
+- [Issue 2]
+```
 
-## 省略內容索引
+### Markmap Compression
 
-以下內容已省略，如需詳情請參考原始記錄：
+Preserve structural framework, omit terminal details:
 
-| 省略項目 | 原因 | 原始位置 |
-|---------|------|---------|
-| [項目1] | 重複/次要/冗長 | 第X輪討論 |
-| [項目2] | ... | ... |
+```markdown
+## Markmap Summary
 
-## 保留完整性聲明
+### Structure Overview
+- Root node: [Name]
+- Level-1 nodes: [List]
+- Total depth: [Number]
+- Total node count: [Number]
 
-✅ 所有決策已保留
-✅ 關鍵理由已保留
-✅ 未解決問題已標記
-⚠️ 詳細討論過程已省略
+### Key Areas
+1. [Area 1]: [Main content overview]
+2. [Area 2]: [Main content overview]
+
+### Simplified Markmap
+[Only keep up to level 2-3]
+```
+
+### Metadata Compression
+
+Extract core information:
+
+```markdown
+## Metadata Summary
+
+### Core Concepts
+- [Concept 1]
+- [Concept 2]
+- [Concept 3]
+
+### Main Relationships
+- [Relationship 1]
+- [Relationship 2]
+
+### Key Constraints
+- [Constraint 1]
 ```
 
 ---
 
-## 品質檢查
+## Output Format
 
-壓縮完成後自我檢查：
+```markdown
+# Compression Report
 
-1. ✅ 所有最終決策都有記錄？
-2. ✅ 關鍵理由都有保留？
-3. ✅ 未解決問題都有標記？
-4. ✅ 壓縮後內容在目標長度內？
-5. ✅ 省略的內容有索引可查？
+## Compressed Content
 
+[Compressed content]
+
+---
+
+## Compression Statistics
+- Original length: ~{original_tokens} tokens
+- Compressed length: ~{compressed_tokens} tokens
+- Compression ratio: {ratio}%
+
+## Omitted Content Index
+
+The following content has been omitted. Refer to original records for details:
+
+| Omitted Item | Reason | Original Location |
+|--------------|--------|-------------------|
+| [Item 1] | Repeated/Secondary/Verbose | Round X discussion |
+| [Item 2] | ... | ... |
+
+## Preservation Confirmation
+
+✅ All decisions preserved
+✅ Key rationales preserved
+✅ Unresolved issues marked
+⚠️ Detailed discussion process omitted
+```
+
+---
+
+## Quality Check
+
+Self-check after compression:
+
+1. ✅ All final decisions documented?
+2. ✅ Key rationales preserved?
+3. ✅ Unresolved issues marked?
+4. ✅ Compressed content within target length?
+5. ✅ Omitted content indexed for reference?

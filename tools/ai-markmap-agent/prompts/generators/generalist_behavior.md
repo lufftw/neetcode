@@ -1,12 +1,12 @@
-# 角色行為：通才（The Generalist）
+# Behavior: The Generalist
 
-## 任務說明
+## Task
 
-根據提供的 metadata 和 ontology，生成一份結構清晰、內容完整的 Markmap。
+Generate a well-structured, comprehensive Markmap based on the provided metadata and ontology.
 
 ---
 
-## 輸入資料
+## Input
 
 ### Metadata
 ```
@@ -18,70 +18,69 @@
 {ontology}
 ```
 
-### 語言
-{language}  <!-- "en" 或 "zh-TW" -->
+### Language
+{language}  <!-- "en" or "zh-TW" -->
 
 ---
 
-## 生成步驟
+## Generation Process
 
-### 第一步：分析輸入
-1. 識別主要主題/領域
-2. 找出核心概念和關係
-3. 確定目標受眾的知識水平
+### Step 1: Analyze Input
+1. Identify main topics/domains
+2. Find core concepts and relationships
+3. Determine target audience's knowledge level
 
-### 第二步：設計結構
-1. 確定根節點（主題名稱）
-2. 規劃 3-7 個一級分類
-3. 每個分類下設計子類別
-4. 控制深度在 3-4 層內
+### Step 2: Design Structure
+1. Determine root node (topic name)
+2. Plan 3-7 level-1 categories
+3. Design subcategories under each
+4. Keep depth within 3-4 levels
 
-### 第三步：填充內容
-1. 為每個節點選擇清晰的標籤
-2. 確保同層級項目的抽象程度一致
-3. 添加必要的細節節點
+### Step 3: Fill Content
+1. Choose clear labels for each node
+2. Ensure consistent abstraction levels within same hierarchy
+3. Add necessary detail nodes
 
-### 第四步：檢查與優化
-1. 檢查結構是否平衡
-2. 確認沒有遺漏重要概念
-3. 驗證標籤是否直觀易懂
+### Step 4: Review & Optimize
+1. Check if structure is balanced
+2. Confirm no important concepts are missing
+3. Verify labels are intuitive and understandable
 
 ---
 
-## 輸出格式
+## Output Format
 
 ```markdown
-# {主題名稱}
+# {Topic Name}
 
-## {類別 1}
-### {子類別 1.1}
-- {細節 A}
-- {細節 B}
-### {子類別 1.2}
-- {細節 C}
+## {Category 1}
+### {Subcategory 1.1}
+- {Detail A}
+- {Detail B}
+### {Subcategory 1.2}
+- {Detail C}
 
-## {類別 2}
-### {子類別 2.1}
-- {細節 D}
+## {Category 2}
+### {Subcategory 2.1}
+- {Detail D}
 
-## {類別 3}
+## {Category 3}
 ...
 ```
 
 ---
 
-## 品質標準
+## Quality Standards
 
-| 維度 | 要求 |
-|------|------|
-| 完整性 | 涵蓋 metadata 中的所有主要概念 |
-| 結構性 | 層級清晰，分類合理 |
-| 平衡性 | 各分支深度相近 |
-| 可讀性 | 標籤直觀，無需額外解釋 |
+| Dimension | Requirement |
+|-----------|-------------|
+| Completeness | Cover all major concepts from metadata |
+| Structure | Clear hierarchy, logical classification |
+| Balance | Similar depth across branches |
+| Readability | Intuitive labels, no extra explanation needed |
 
 ---
 
-## 輸出
+## Output
 
-請直接輸出 Markmap 的 Markdown 內容，不需要額外說明。
-
+Generate only the Markmap in Markdown format. No additional explanations needed.

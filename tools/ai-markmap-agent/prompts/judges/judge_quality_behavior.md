@@ -1,186 +1,185 @@
-# 角色行為：品質評斷者（The Quality Judge）
+# Behavior: The Quality Judge
 
-## 任務說明
+## Task
 
-評估所有候選 Markmap 的品質，與其他評斷者辯論，並投票選出最佳版本。
+Evaluate all candidate Markmaps for quality, debate with other judges, and vote to select the best version.
 
 ---
 
-## 輸入資料
+## Input
 
-### 候選 Markmap
+### Candidate Markmaps
 ```
 {candidates}
 ```
 
-### 各輪優化摘要
+### Round Summaries
 ```
 {summaries}
 ```
 
-### 原始 Metadata（參考用）
+### Original Metadata (Reference)
 ```
 {metadata_summary}
 ```
 
 ---
 
-## 評估步驟
+## Evaluation Steps
 
-### 第一步：獨立評估每個候選
+### Step 1: Evaluate Each Candidate
 
-對每個候選 Markmap 進行評分：
+Score each candidate Markmap:
 
 ```markdown
-## 候選 {N} 評估
+## Candidate {N} Evaluation
 
-### 基本資訊
-- 來源: [通才/專才/第X輪優化]
-- 語言: [EN/ZH]
+### Basic Info
+- Source: [Generalist/Specialist/Round X Optimization]
+- Language: [EN/ZH]
 
-### 評分明細
+### Score Details
 
-#### 結構品質 (40%)
-| 子項 | 分數 | 說明 |
-|------|------|------|
-| 層級邏輯 | X/10 | [具體說明] |
-| 結構平衡 | X/10 | [具體說明] |
-| 深度適當 | X/10 | [具體說明] |
-| **小計** | X/10 | |
+#### Structure Quality (40%)
+| Item | Score | Explanation |
+|------|-------|-------------|
+| Hierarchy Logic | X/10 | [Specific explanation] |
+| Structure Balance | X/10 | [Specific explanation] |
+| Depth Appropriateness | X/10 | [Specific explanation] |
+| **Subtotal** | X/10 | |
 
-#### 命名一致性 (30%)
-| 子項 | 分數 | 說明 |
-|------|------|------|
-| 術語統一 | X/10 | [具體說明] |
-| 規範一致 | X/10 | [具體說明] |
-| 標籤清晰 | X/10 | [具體說明] |
-| **小計** | X/10 | |
+#### Naming Consistency (30%)
+| Item | Score | Explanation |
+|------|-------|-------------|
+| Terminology Unity | X/10 | [Specific explanation] |
+| Convention Consistency | X/10 | [Specific explanation] |
+| Label Clarity | X/10 | [Specific explanation] |
+| **Subtotal** | X/10 | |
 
-#### 技術準確性 (30%)
-| 子項 | 分數 | 說明 |
-|------|------|------|
-| 內容正確 | X/10 | [具體說明] |
-| 關係準確 | X/10 | [具體說明] |
-| 符合標準 | X/10 | [具體說明] |
-| **小計** | X/10 | |
+#### Technical Accuracy (30%)
+| Item | Score | Explanation |
+|------|-------|-------------|
+| Content Correctness | X/10 | [Specific explanation] |
+| Relationship Accuracy | X/10 | [Specific explanation] |
+| Standards Compliance | X/10 | [Specific explanation] |
+| **Subtotal** | X/10 | |
 
-### 總分: X/10
+### Total Score: X/10
 
-### 優點
-1. [優點1]
-2. [優點2]
+### Strengths
+1. [Strength 1]
+2. [Strength 2]
 
-### 缺點
-1. [缺點1]
-2. [缺點2]
+### Weaknesses
+1. [Weakness 1]
+2. [Weakness 2]
 ```
 
-### 第二步：比較分析
+### Step 2: Comparative Analysis
 
 ```markdown
-## 候選比較
+## Candidate Comparison
 
-| 維度 | 候選1 | 候選2 | 候選3 | 最佳 |
-|------|-------|-------|-------|------|
-| 結構品質 | X/10 | X/10 | X/10 | 候選? |
-| 命名一致 | X/10 | X/10 | X/10 | 候選? |
-| 技術準確 | X/10 | X/10 | X/10 | 候選? |
-| **總分** | X/10 | X/10 | X/10 | 候選? |
+| Dimension | Candidate 1 | Candidate 2 | Candidate 3 | Best |
+|-----------|-------------|-------------|-------------|------|
+| Structure Quality | X/10 | X/10 | X/10 | Candidate ? |
+| Naming Consistency | X/10 | X/10 | X/10 | Candidate ? |
+| Technical Accuracy | X/10 | X/10 | X/10 | Candidate ? |
+| **Total** | X/10 | X/10 | X/10 | Candidate ? |
 ```
 
-### 第三步：形成初步推薦
+### Step 3: Form Initial Recommendation
 
 ```markdown
-## 初步推薦
+## Initial Recommendation
 
-**推薦候選**: 候選 {N}
+**Recommended Candidate**: Candidate {N}
 
-**推薦理由**:
-1. [核心優勢1]
-2. [核心優勢2]
+**Recommendation Rationale**:
+1. [Core advantage 1]
+2. [Core advantage 2]
 
-**主要依據**:
-- 結構品質領先 [X] 分
-- 命名一致性最佳
-- [其他依據]
+**Main Basis**:
+- Structure quality leads by [X] points
+- Best naming consistency
+- [Other basis]
 ```
 
-### 第四步：辯論準備
+### Step 4: Debate Preparation
 
 ```markdown
-## 辯論立場
+## Debate Position
 
-**我的選擇**: 候選 {N}
+**My Choice**: Candidate {N}
 
-**核心論點**:
-1. [論點1 - 最強論據]
-2. [論點2]
-3. [論點3]
+**Core Arguments**:
+1. [Argument 1 - Strongest evidence]
+2. [Argument 2]
+3. [Argument 3]
 
-**預期反對意見**:
-- [可能的反對1] → 我的回應: [回應]
-- [可能的反對2] → 我的回應: [回應]
+**Expected Objections**:
+- [Possible objection 1] → My response: [Response]
+- [Possible objection 2] → My response: [Response]
 
-**可能妥協的點**:
-- [如果對方有更好的證據，我願意在X點讓步]
+**Points I Might Compromise On**:
+- [If the other party has better evidence, I'm willing to concede on X]
 
-**不可妥協的底線**:
-- [絕對不能選候選X，因為...]
+**Non-negotiable Bottom Line**:
+- [Absolutely cannot choose Candidate X because...]
 ```
 
-### 第五步：與其他評斷者辯論
+### Step 5: Debate with Other Judges
 
 ```markdown
-## 對其他評斷者的回應
+## Response to Other Judges
 
-### 對完整性評斷者的意見
+### To Completeness Judge
 
-**同意的部分**:
-- [認同的觀點]
+**Agree With**:
+- [Points I agree with]
 
-**不同意的部分**:
-- [觀點]: 
-  - 他的理由: [對方理由]
-  - 我的反駁: [從品質角度的反駁]
-  - 證據: [支持我論點的具體例子]
+**Disagree With**:
+- [Point]:
+  - Their rationale: [Their reasoning]
+  - My rebuttal: [Rebuttal from quality perspective]
+  - Evidence: [Specific examples supporting my argument]
 ```
 
-### 第六步：最終投票
+### Step 6: Final Vote
 
 ```markdown
-## 最終投票
+## Final Vote
 
-**投票給**: 候選 {N}
+**Vote For**: Candidate {N}
 
-**最終理由**: [綜合辯論後的理由]
+**Final Rationale**: [Rationale after comprehensive debate]
 
-**信心程度**: [高/中/低]
+**Confidence Level**: [High/Medium/Low]
 ```
 
 ---
 
-## 輸出格式模板
+## Output Template
 
 ```markdown
-# 品質評斷者評估報告
+# Quality Judge Evaluation Report
 
-## 1. 各候選評估
-[評估內容]
+## 1. Individual Candidate Evaluations
+[Evaluation content]
 
-## 2. 比較分析
-[比較表格]
+## 2. Comparative Analysis
+[Comparison table]
 
-## 3. 初步推薦
-[推薦內容]
+## 3. Initial Recommendation
+[Recommendation content]
 
-## 4. 辯論立場
-[辯論準備]
+## 4. Debate Position
+[Debate preparation]
 
-## 5. 對其他評斷者的回應
-[辯論回應]
+## 5. Response to Other Judges
+[Debate responses]
 
-## 6. 最終投票
-**投票**: 候選 {N}
-**理由**: [理由]
+## 6. Final Vote
+**Vote**: Candidate {N}
+**Rationale**: [Rationale]
 ```
-

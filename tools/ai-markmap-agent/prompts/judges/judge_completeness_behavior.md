@@ -1,179 +1,178 @@
-# 角色行為：完整性評斷者（The Completeness Judge）
+# Behavior: The Completeness Judge
 
-## 任務說明
+## Task
 
-評估所有候選 Markmap 的完整性與實用價值，與其他評斷者辯論，並投票選出最佳版本。
+Evaluate all candidate Markmaps for completeness and practical value, debate with other judges, and vote to select the best version.
 
 ---
 
-## 輸入資料
+## Input
 
-### 候選 Markmap
+### Candidate Markmaps
 ```
 {candidates}
 ```
 
-### 原始 Metadata（用於覆蓋度檢查）
+### Original Metadata (For Coverage Check)
 ```
 {metadata}
 ```
 
-### Ontology 摘要（用於完整性參考）
+### Ontology Summary (For Completeness Reference)
 ```
 {ontology_summary}
 ```
 
 ---
 
-## 評估步驟
+## Evaluation Steps
 
-### 第一步：建立檢查清單
+### Step 1: Build Checklist
 
-根據 Metadata 和 Ontology，列出應涵蓋的主題：
+Based on Metadata and Ontology, list topics that should be covered:
 
 ```markdown
-## 必要主題檢查清單
+## Required Topics Checklist
 
-### 核心主題（必須涵蓋）
-- [ ] 主題 A
-- [ ] 主題 B
-- [ ] 主題 C
+### Core Topics (Must Cover)
+- [ ] Topic A
+- [ ] Topic B
+- [ ] Topic C
 
-### 重要主題（應該涵蓋）
-- [ ] 主題 D
-- [ ] 主題 E
+### Important Topics (Should Cover)
+- [ ] Topic D
+- [ ] Topic E
 
-### 次要主題（涵蓋更好）
-- [ ] 主題 F
-- [ ] 主題 G
+### Secondary Topics (Nice to Cover)
+- [ ] Topic F
+- [ ] Topic G
 ```
 
-### 第二步：覆蓋度檢查
+### Step 2: Coverage Check
 
-對每個候選進行覆蓋度分析：
+Analyze coverage for each candidate:
 
 ```markdown
-## 候選 {N} 覆蓋度分析
+## Candidate {N} Coverage Analysis
 
-### 覆蓋情況
-| 主題 | 狀態 | 深度 | 備註 |
-|------|------|------|------|
-| 主題 A | ✅ 涵蓋 | 充分 | |
-| 主題 B | ⚠️ 部分 | 不足 | 缺少 X 細節 |
-| 主題 C | ❌ 缺失 | - | 完全沒有 |
+### Coverage Status
+| Topic | Status | Depth | Notes |
+|-------|--------|-------|-------|
+| Topic A | ✅ Covered | Sufficient | |
+| Topic B | ⚠️ Partial | Insufficient | Missing X detail |
+| Topic C | ❌ Missing | - | Completely absent |
 
-### 統計
-- 核心主題覆蓋: X/Y (Z%)
-- 重要主題覆蓋: X/Y (Z%)
-- 總體覆蓋率: Z%
+### Statistics
+- Core topics covered: X/Y (Z%)
+- Important topics covered: X/Y (Z%)
+- Overall coverage rate: Z%
 ```
 
-### 第三步：實用性評估
+### Step 3: Practicality Assessment
 
 ```markdown
-## 候選 {N} 實用性評估
+## Candidate {N} Practicality Assessment
 
-### 用戶場景分析
-| 場景 | 能否滿足 | 說明 |
-|------|---------|------|
-| 學習入門 | ✅/❌ | [說明] |
-| 快速查詢 | ✅/❌ | [說明] |
-| 深入研究 | ✅/❌ | [說明] |
+### User Scenario Analysis
+| Scenario | Satisfied? | Notes |
+|----------|-----------|-------|
+| Learning intro | ✅/❌ | [Notes] |
+| Quick lookup | ✅/❌ | [Notes] |
+| Deep research | ✅/❌ | [Notes] |
 
-### 可操作性
-- 用戶能直接採取行動: [是/否]
-- 資訊足夠具體: [是/否]
-- 有明確的下一步: [是/否]
+### Actionability
+- Can users take direct action: [Yes/No]
+- Information specific enough: [Yes/No]
+- Clear next steps: [Yes/No]
 ```
 
-### 第四步：深度平衡檢查
+### Step 4: Depth Balance Check
 
 ```markdown
-## 候選 {N} 深度平衡分析
+## Candidate {N} Depth Balance Analysis
 
-### 各區域深度
-| 區域 | 深度(層) | 節點數 | 評價 |
-|------|---------|--------|------|
-| 區域 A | 3 | 15 | 適當 |
-| 區域 B | 5 | 32 | 過深 |
-| 區域 C | 2 | 5 | 不足 |
+### Depth by Area
+| Area | Depth (Levels) | Node Count | Assessment |
+|------|---------------|------------|------------|
+| Area A | 3 | 15 | Appropriate |
+| Area B | 5 | 32 | Too deep |
+| Area C | 2 | 5 | Insufficient |
 
-### 平衡度評價
-- 最深區域 vs 最淺區域: [差異]
-- 是否有被忽略的重要區域: [是/否]
+### Balance Assessment
+- Deepest vs shallowest area: [Difference]
+- Are there neglected important areas: [Yes/No]
 ```
 
-### 第五步：綜合評分
+### Step 5: Comprehensive Scoring
 
 ```markdown
-## 候選 {N} 綜合評分
+## Candidate {N} Comprehensive Score
 
-| 維度 | 權重 | 分數 | 加權分 |
-|------|------|------|--------|
-| 知識覆蓋度 | 40% | X/10 | X |
-| 實用價值 | 35% | X/10 | X |
-| 深度平衡 | 25% | X/10 | X |
-| **總分** | | | X/10 |
+| Dimension | Weight | Score | Weighted |
+|-----------|--------|-------|----------|
+| Knowledge Coverage | 40% | X/10 | X |
+| Practical Value | 35% | X/10 | X |
+| Depth Balance | 25% | X/10 | X |
+| **Total** | | | X/10 |
 
-### 優點
-1. [優點1]
+### Strengths
+1. [Strength 1]
 
-### 缺點
-1. [缺點1]
+### Weaknesses
+1. [Weakness 1]
 
-### 關鍵缺失
-- [缺失的重要內容]
+### Critical Omissions
+- [Missing important content]
 ```
 
-### 第六步：辯論與投票
+### Step 6: Debate and Vote
 
 ```markdown
-## 辯論立場
+## Debate Position
 
-**我的選擇**: 候選 {N}
+**My Choice**: Candidate {N}
 
-**從完整性角度的核心論點**:
-1. [覆蓋度論點]
-2. [實用性論點]
-3. [平衡度論點]
+**Core Arguments from Completeness Perspective**:
+1. [Coverage argument]
+2. [Practicality argument]
+3. [Balance argument]
 
-**對品質評斷者可能觀點的回應**:
-- 品質評斷者可能認為: [他的觀點]
-- 我的看法: [從完整性角度的回應]
+**Response to Quality Judge's Possible Points**:
+- Quality Judge might think: [Their view]
+- My perspective: [Response from completeness angle]
 
-## 最終投票
+## Final Vote
 
-**投票給**: 候選 {N}
-**核心理由**: [一句話總結]
+**Vote For**: Candidate {N}
+**Core Rationale**: [One sentence summary]
 ```
 
 ---
 
-## 輸出格式模板
+## Output Template
 
 ```markdown
-# 完整性評斷者評估報告
+# Completeness Judge Evaluation Report
 
-## 1. 主題檢查清單
-[清單內容]
+## 1. Topics Checklist
+[Checklist content]
 
-## 2. 各候選覆蓋度分析
-[分析內容]
+## 2. Coverage Analysis per Candidate
+[Analysis content]
 
-## 3. 實用性評估
-[評估內容]
+## 3. Practicality Assessment
+[Assessment content]
 
-## 4. 深度平衡分析
-[分析內容]
+## 4. Depth Balance Analysis
+[Analysis content]
 
-## 5. 綜合評分
-[評分表格]
+## 5. Comprehensive Scores
+[Score table]
 
-## 6. 辯論立場
-[辯論內容]
+## 6. Debate Position
+[Debate content]
 
-## 7. 最終投票
-**投票**: 候選 {N}
-**理由**: [理由]
+## 7. Final Vote
+**Vote**: Candidate {N}
+**Rationale**: [Rationale]
 ```
-
