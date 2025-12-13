@@ -49,17 +49,41 @@ data_sources:
         path: "roadmaps.toml"
         enabled: true
 
-  # Problem metadata files
+  # Problem metadata files (from meta/problems/*.toml)
   problems:
     enabled: true
-    # Load mode: "all" | "list" | "pattern"
-    load_mode: "pattern"
-    # For load_mode: "list" - specific files to load
+    
+    # Load mode determines HOW to select which problem files to load:
+    #
+    # "all"     - Load ALL .toml files in the problems directory
+    #             Simple but may load more than needed.
+    #
+    # "list"    - Load ONLY files explicitly listed in 'files' array below.
+    #             Use when you want precise control over which problems to process.
+    #             Example: files: ["0003_longest_substring.toml", "0076_min_window.toml"]
+    #
+    # "pattern" - Load files matching glob patterns in 'patterns' array.
+    #             Flexible middle ground between "all" and "list".
+    #             Example: patterns: ["0003_*.toml", "00[0-7][0-9]_*.toml"]
+    #
+    load_mode: "all"
+    
+    # For load_mode: "list" - Explicitly list files to load
+    # Example:
+    #   files:
+    #     - "0003_longest_substring_without_repeating_characters.toml"
+    #     - "0076_minimum_window_substring.toml"
     files: []
-    # For load_mode: "pattern" - glob patterns
+    
+    # For load_mode: "pattern" - Glob patterns to match files
+    # Common patterns:
+    #   "*.toml"              - All TOML files
+    #   "0003_*.toml"         - Only problem 0003
+    #   "00[0-9][0-9]_*.toml" - Problems 0000-0099
     patterns:
       - "*.toml"
-    # Exclude patterns (always applied)
+    
+    # Exclude patterns (applied regardless of load_mode)
     exclude:
       - "README.md"
 
