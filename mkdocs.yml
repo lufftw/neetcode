@@ -105,10 +105,13 @@ nav:
   - 📐 Patterns:
     - Overview: patterns/README.md
     - Sliding Window: patterns/sliding_window.md
+    - Two Pointers: patterns/two_pointers.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode_ontology_ai_en.md
     - AI Analysis (繁體中文): mindmaps/neetcode_ontology_ai_zh-TW.md
+    - Agent Evolved (English): mindmaps/neetcode_ontology_agent_evolved_en.md
+    - Agent Evolved (繁體中文): mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
     - Pattern Hierarchy: mindmaps/pattern_hierarchy.md
     - Family Derivation: mindmaps/family_derivation.md
     - Algorithm Usage: mindmaps/algorithm_usage.md
@@ -122,10 +125,13 @@ nav:
     - Solution Contract: SOLUTION_CONTRACT.md
     - Generator Contract: GENERATOR_CONTRACT.md
     - Architecture Migration: ARCHITECTURE_MIGRATION.md
+    - Ontology Design: ONTOLOGY_DESIGN.md
   - 🔧 Guides:
     - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
     - Build Documentation Locally (Manual): BUILD_DOCS_MANUAL.md
+    - Local Docs Build Options: LOCAL_DOCS_BUILD.md
     - Run GitHub Actions Locally (Act): ACT_LOCAL_GITHUB_ACTIONS.md
+    - MkDocs Content Guide: MKDOCS_CONTENT_GUIDE.md
 
 # Extra
 extra:

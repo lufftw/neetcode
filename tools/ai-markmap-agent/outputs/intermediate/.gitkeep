@@ -1,0 +1,8 @@
+# This directory stores intermediate Markmap artifacts
+# Files generated here:
+# - markmap_general_en.md
+# - markmap_general_zh.md
+# - markmap_specialist_en.md
+# - markmap_specialist_zh.md
+# - markmap_round_N.md (for each optimization round)
+

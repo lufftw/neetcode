@@ -1,0 +1,436 @@
+# =============================================================================
+# AI Markmap Agent Configuration
+# =============================================================================
+# Refinement Mode: Start from a high-quality baseline and improve it
+# through expert review and consensus-based discussion.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Input Configuration
+# -----------------------------------------------------------------------------
+input:
+  # Baseline Markmap to refine (relative to docs/mindmaps/)
+  baseline:
+    path: "neetcode_ontology_ai_en.md"
+    # If baseline doesn't exist, fall back to generating from scratch
+    fallback_to_generate: true
+  
+  # Reference data for validation and enrichment
+  reference_data:
+    ontology: true
+    problems: true
+    patterns: true
+    roadmaps: true
+
+# -----------------------------------------------------------------------------
+# URL Templates Configuration
+# -----------------------------------------------------------------------------
+urls:
+  github:
+    base: "https://github.com/lufftw/neetcode"
+    solution_template: "https://github.com/lufftw/neetcode/blob/main/{solution_file}"
+  
+  leetcode:
+    base: "https://leetcode.com"
+    problem_template: "https://leetcode.com/problems/{slug}/"
+
+# -----------------------------------------------------------------------------
+# Data Sources Configuration
+# -----------------------------------------------------------------------------
+data_sources:
+  base_paths:
+    ontology: "../../../ontology"
+    problems: "../../../meta/problems"
+    patterns: "../../../meta/patterns"
+    roadmaps: "../../../roadmaps"
+
+  ontology:
+    enabled: true
+    files:
+      - name: "algorithms"
+        path: "algorithms.toml"
+        enabled: true
+      - name: "api_kernels"
+        path: "api_kernels.toml"
+        enabled: true
+      - name: "data_structures"
+        path: "data_structures.toml"
+        enabled: true
+      - name: "patterns"
+        path: "patterns.toml"
+        enabled: true
+      - name: "families"
+        path: "families.toml"
+        enabled: true
+      - name: "topics"
+        path: "topics.toml"
+        enabled: true
+      - name: "roadmaps"
+        path: "roadmaps.toml"
+        enabled: true
+
+  problems:
+    enabled: true
+    load_mode: "all"
+    files: []
+    patterns:
+      - "*.toml"
+    exclude:
+      - "README.md"
+
+  patterns:
+    enabled: true
+    directories:
+      - name: "sliding_window"
+        path: "sliding_window"
+        enabled: true
+        config_file: "_config.toml"
+      - name: "two_pointers"
+        path: "two_pointers"
+        enabled: true
+        config_file: "_config.toml"
+
+  roadmaps:
+    enabled: true
+    files:
+      - name: "sliding_window_path"
+        path: "sliding_window_path.toml"
+        enabled: true
+      - name: "neetcode_150"
+        path: "neetcode_150.toml"
+        enabled: false
+      - name: "blind_75"
+        path: "blind_75.toml"
+        enabled: false
+
+# -----------------------------------------------------------------------------
+# Expert Configuration
+# -----------------------------------------------------------------------------
+# Domain-specific experts who review and suggest improvements.
+# Each expert brings a unique perspective to the refinement process.
+
+experts:
+  # Enabled experts for this run
+  enabled:
+    - "architect"
+    - "professor"
+    - "engineer"
+  
+  # Suggestion limits per expert
+  suggestions:
+    min_per_expert: 5
+    max_per_expert: 10
+    # Encourage more suggestions for specific focus areas
+    encourage_focus_areas: true
+  
+  # Expert definitions
+  definitions:
+    architect:
+      name: "Top Software Architect"
+      emoji: "🏗️"
+      model: "gpt-5.2"
+      persona_prompt: "prompts/experts/architect_persona.md"
+      behavior_prompt: "prompts/experts/architect_behavior.md"
+      temperature: 0.6
+      max_tokens: 4096
+      focus: "api_kernel_design"
+      focus_areas:
+        - "API Kernel abstraction and composability"
+        - "Pattern relationships and modularity"
+        - "Code template reusability"
+        - "System design mapping"
+    
+    professor:
+      name: "Distinguished Algorithm Professor"
+      emoji: "📚"
+      model: "gpt-5.2"
+      persona_prompt: "prompts/experts/professor_persona.md"
+      behavior_prompt: "prompts/experts/professor_behavior.md"
+      temperature: 0.5
+      max_tokens: 4096
+      focus: "correctness_pedagogy"
+      focus_areas:
+        - "Concept accuracy and precision"
+        - "Learning progression and cognitive load"
+        - "Complexity analysis correctness"
+        - "Invariant descriptions"
+    
+    engineer:
+      name: "Senior Principal Engineer"
+      emoji: "⚙️"
+      model: "gpt-5.2"
+      persona_prompt: "prompts/experts/engineer_persona.md"
+      behavior_prompt: "prompts/experts/engineer_behavior.md"
+      temperature: 0.6
+      max_tokens: 4096
+      focus: "practical_value"
+      focus_areas:
+        - "Interview frequency and importance"
+        - "Real-world engineering applications"
+        - "Trade-off explanations"
+        - "Knowledge discoverability"
+    
+    # === Future experts (uncomment to enable) ===
+    
+    # learner:
+    #   name: "Advanced Learner Representative"
+    #   emoji: "🎓"
+    #   model: "gpt-4o"
+    #   persona_prompt: "prompts/experts/learner_persona.md"
+    #   behavior_prompt: "prompts/experts/learner_behavior.md"
+    #   temperature: 0.7
+    #   max_tokens: 4096
+    #   focus: "learning_experience"
+    #   focus_areas:
+    #     - "Entry difficulty and prerequisites"
+    #     - "Common confusion points"
+    #     - "Practice problem progression"
+    #     - "Concept connections"
+    
+    # competitive:
+    #   name: "Competitive Programming Champion"
+    #   emoji: "🏆"
+    #   model: "gpt-4o"
+    #   persona_prompt: "prompts/experts/competitive_persona.md"
+    #   behavior_prompt: "prompts/experts/competitive_behavior.md"
+    #   temperature: 0.5
+    #   max_tokens: 4096
+    #   focus: "optimization_tricks"
+    #   focus_areas:
+    #     - "Edge case handling"
+    #     - "Performance optimizations"
+    #     - "Quick pattern recognition"
+    #     - "Contest-specific techniques"
+
+# -----------------------------------------------------------------------------
+# Refinement Scope Configuration
+# -----------------------------------------------------------------------------
+# Control what aspects of the Markmap can be modified.
+# This allows focused improvement on specific areas.
+
+refinement_scope:
+  # What types of changes are allowed
+  allowed_changes:
+    structure:
+      enabled: true          # Allow reorganizing sections
+      max_depth_change: 1    # Max levels to add/remove
+    content:
+      add_content: true      # Allow adding new content
+      remove_content: true   # Allow removing existing content
+      modify_content: true   # Allow modifying existing content
+    problems:
+      add_problems: true     # Allow adding new problems
+      remove_problems: false # Prevent removing problems (conservative)
+      reorder_problems: true # Allow reordering within sections
+    formatting:
+      enabled: true          # Allow formatting changes
+      preserve_style: true   # Keep consistent with baseline style
+    links:
+      validate_links: true   # Verify all links are correct
+      fix_broken_links: true # Auto-fix broken links
+  
+  # Focus areas for this refinement run
+  # Set to empty list [] to allow all areas
+  focus_sections: []
+  # Example: focus_sections: ["sliding_window", "two_pointers"]
+  
+  # Exclude specific sections from modification
+  protected_sections: []
+  # Example: protected_sections: ["progress_summary"]
+
+# -----------------------------------------------------------------------------
+# Workflow Configuration
+# -----------------------------------------------------------------------------
+workflow:
+  # Fixed 2-round discussion
+  discussion_rounds: 2
+  
+  # Enable parallel execution of expert reviews
+  parallel_execution: true
+  
+  # Consensus threshold for adopting improvements
+  # N=3: 0.67 means 2/3 agreement required
+  # N=5: 0.60 means 3/5 agreement required
+  consensus_threshold: 0.67
+  
+  # Minimum votes required (absolute, not percentage)
+  # Set to null to use only percentage threshold
+  min_votes: null
+
+# -----------------------------------------------------------------------------
+# Writer Configuration
+# -----------------------------------------------------------------------------
+writer:
+  model: "gpt-5.2"  # 128K context for full markmap
+  persona_prompt: "prompts/writer/writer_persona.md"
+  behavior_prompt: "prompts/writer/writer_behavior.md"
+  format_guide: "prompts/writer/markmap_format_guide.md"
+  temperature: 0.4
+  max_tokens: 12000
+  
+  # Writer behavior settings
+  preserve_baseline_quality: true  # Don't degrade existing good content
+  apply_only_adopted: true         # Only apply consensus improvements
+  validate_output: true            # Validate output before saving
+
+# -----------------------------------------------------------------------------
+# Post-Processing Configuration
+# -----------------------------------------------------------------------------
+post_processing:
+  # Link validation (code-based)
+  link_validator:
+    enabled: true
+    fix_broken_links: true
+  
+  # Text replacements (code-based)
+  text_replacements:
+    - pattern: "\\bLC[-\\s]?(\\d+)"
+      replacement: "LeetCode \\1"
+    - pattern: "LeetCode(\\d+)"
+      replacement: "LeetCode \\1"
+  
+  # Translation
+  translation:
+    enabled: true
+    languages:
+      - target: "zh-TW"
+        source: "en"
+        model: "gpt-4o"
+  
+  # HTML generation
+  html_generation:
+    enabled: true
+    template: "templates/markmap.html"
+
+# -----------------------------------------------------------------------------
+# Output Configuration
+# -----------------------------------------------------------------------------
+output:
+  save_intermediate: true
+  intermediate_dir: "outputs/intermediate"
+  
+  # Version history for tracking changes
+  versioning:
+    enabled: true
+    directory: "outputs/versions"
+    
+    # Execution mode:
+    #   continue - Read from latest version (vN), produce vN+1
+    #   reset    - Delete all versions, start fresh from input.baseline.path, produce v1
+    mode: "reset"
+    
+    # When mode=reset, prompt before deleting old versions
+    # Set to false to auto-delete without confirmation
+    prompt_on_reset: true
+  
+  final_dirs:
+    markdown: "../../docs/mindmaps"
+    html: "../../docs/pages/mindmaps"
+  
+  naming:
+    prefix: "neetcode"
+    
+    languages:
+      en:
+        enabled: true
+        mode: "generate"
+      
+      zh-TW:
+        enabled: true
+        mode: "translate"
+        source_lang: "en"
+        translator_model: "gpt-4o"
+    
+    # Output template: {prefix}_ontology_agent_evolved_{lang}.{ext}
+    # Example: neetcode_ontology_agent_evolved_en.md
+    template: "{prefix}_ontology_agent_evolved_{lang}"
+  
+  html:
+    template: "templates/markmap.html"
+    include_styles: true
+    include_scripts: true
+    title: "AI Evolved Markmap"
+
+# -----------------------------------------------------------------------------
+# Debug Output Configuration
+# -----------------------------------------------------------------------------
+debug_output:
+  enabled: true
+  output_dir: "outputs/debug"
+  
+  llm_calls:
+    enabled: true
+    save_input: true
+    save_output: true
+    save_as_single_file: false
+    format: "md"
+  
+  phases:
+    baseline:
+      enabled: true
+      save_loaded_baseline: true
+    
+    expert_review:
+      enabled: true
+      save_each_expert: true
+      save_all_suggestions: true
+    
+    discussion:
+      enabled: true
+      save_votes: true
+      save_adoption_lists: true
+    
+    consensus:
+      enabled: true
+      save_final_consensus: true
+      save_rejected_suggestions: true
+    
+    writer:
+      enabled: true
+      save_writer_input: true
+      save_writer_output: true
+    
+    translation:
+      enabled: true
+      save_before_translation: true
+      save_after_translation: true
+    
+    post_processing:
+      enabled: true
+      save_before_processing: true
+      save_after_processing: true
+  
+  format:
+    include_timestamp: true
+    include_phase_number: true
+    template: "{phase_num:02d}_{phase}_{agent}_{lang}"
+
+# -----------------------------------------------------------------------------
+# API Configuration
+# -----------------------------------------------------------------------------
+api:
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    organization: "${OPENAI_ORG_ID}"
+    base_url: null
+  retry:
+    max_retries: 3
+    retry_delay: 1.0
+    exponential_backoff: true
+
+# -----------------------------------------------------------------------------
+# Logging Configuration
+# -----------------------------------------------------------------------------
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/ai_markmap_agent.log"
+  console: true
+  log_llm_calls: false
+
+# -----------------------------------------------------------------------------
+# Development Configuration
+# -----------------------------------------------------------------------------
+dev:
+  debug: false
+  use_mock_llm: false
