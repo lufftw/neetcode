@@ -130,8 +130,11 @@ def clean_translated_content(content: str) -> str:
     Removes:
     - Leading/trailing whitespace
     - Multiple consecutive empty lines
-    - Standalone --- separators at start/end
     - Markdown code fence wrappers if present
+    
+    Preserves:
+    - YAML frontmatter (--- at start if followed by title/markmap)
+    - Internal --- separators (section dividers)
     
     Args:
         content: Raw translated content from LLM
@@ -150,16 +153,35 @@ def clean_translated_content(content: str) -> str:
     if content.endswith("```"):
         content = content[:-3].strip()
     
-    # Remove standalone --- at start or end
     lines = content.split("\n")
     
-    # Remove leading empty lines and ---
-    while lines and (lines[0].strip() == "" or lines[0].strip() == "---"):
+    # Remove leading empty lines only (not ---)
+    while lines and lines[0].strip() == "":
         lines.pop(0)
     
-    # Remove trailing empty lines and ---
-    while lines and (lines[-1].strip() == "" or lines[-1].strip() == "---"):
+    # Check if content has YAML frontmatter (starts with --- followed by key:)
+    has_frontmatter = False
+    if lines:
+        first_line = lines[0].strip()
+        if first_line == "---":
+            has_frontmatter = True
+        elif ":" in first_line and not first_line.startswith("#"):
+            # Content starts with YAML key (e.g., "title:") but missing ---
+            # Add the opening --- back
+            lines.insert(0, "---")
+            has_frontmatter = True
+    
+    # Remove trailing empty lines and standalone ---
+    while lines and lines[-1].strip() == "":
         lines.pop()
+    # Only remove trailing --- if it's truly standalone (not closing frontmatter)
+    while lines and lines[-1].strip() == "---":
+        # Check if this is a section separator or just trailing artifact
+        # If the line before is empty or another ---, it's an artifact
+        if len(lines) >= 2 and lines[-2].strip() in ("", "---"):
+            lines.pop()
+        else:
+            break
     
     # Collapse multiple empty lines into single empty line
     result = []
