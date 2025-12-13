@@ -70,6 +70,7 @@ tools/ai-markmap-agent/outputs/intermediate/*.md
 tools/ai-markmap-agent/outputs/intermediate/*.html
 tools/ai-markmap-agent/outputs/final/*.md
 tools/ai-markmap-agent/outputs/final/*.html
+tools/ai-markmap-agent/outputs/debug/
 
 # AI Markmap Agent - Data & persistence
 tools/ai-markmap-agent/data/chromadb/

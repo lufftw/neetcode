@@ -60,6 +60,7 @@ outputs/intermediate/*.md
 outputs/intermediate/*.html
 outputs/final/*.md
 outputs/final/*.html
+outputs/debug/
 !outputs/**/.gitkeep
 
 # -----------------------------------------------------------------------------
