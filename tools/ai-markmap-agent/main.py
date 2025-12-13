@@ -3,8 +3,7 @@
 # AI Markmap Agent - Main Entry Point
 # =============================================================================
 # Usage:
-#   python main.py                    # Run V3 pipeline (default)
-#   python main.py --v2               # Run V2 pipeline
+#   python main.py                    # Run pipeline
 #   python main.py --config path/to/config.yaml
 #   python main.py --no-openai        # Skip OpenAI API key request
 #   python main.py --dry-run          # Load data but don't run pipeline
@@ -29,26 +28,21 @@ from src.config_loader import (
     get_api_key,
 )
 from src.data_sources import DataSourcesLoader, load_data_sources
-
-# V2 Pipeline
-from src.graph import run_pipeline, build_markmap_graph
-
-# V3 Pipeline
 from src.graph_v3 import run_pipeline_v3, build_markmap_graph_v3
 
 
-def print_banner(version: str = "V3") -> None:
+def print_banner() -> None:
     """Print application banner."""
-    print(f"""
+    print("""
 ╔═══════════════════════════════════════════════════════════════════════════╗
-║                      AI Markmap Agent {version}                              ║
+║                         AI Markmap Agent                                  ║
 ║                                                                           ║
 ║  Multi-Agent Collaborative System for Markmap Generation                  ║
 ║                                                                           ║
-║  {version} Features:                                                          ║
-{"║    • Structure Specification (YAML) based workflow                        ║" if version == "V3" else "║    • Markdown-based workflow                                              ║"}
-{"║    • Content Strategists discuss concepts, not formatting                 ║" if version == "V3" else "║    • Optimizers debate full Markdown drafts                              ║"}
-{"║    • Writer is the ONLY agent producing final Markdown                    ║" if version == "V3" else "║    • Judges evaluate complete Markmaps                                   ║"}
+║  Features:                                                                ║
+║    • Structure Specification (YAML) based workflow                        ║
+║    • Content Strategists discuss concepts, not formatting                 ║
+║    • Writer is the ONLY agent producing final Markdown                    ║
 ║                                                                           ║
 ║  Outputs:                                                                 ║
 ║    • neetcode_general_ai_en.md / .html                                    ║
@@ -113,11 +107,6 @@ def main() -> int:
         help="Path to configuration file (default: config/config.yaml)"
     )
     parser.add_argument(
-        "--v2",
-        action="store_true",
-        help="Use V2 pipeline (Markdown-based, default is V3)"
-    )
-    parser.add_argument(
         "--no-openai",
         action="store_true",
         help="Skip OpenAI API key request"
@@ -141,13 +130,9 @@ def main() -> int:
     
     args = parser.parse_args()
     
-    # Determine pipeline version
-    use_v3 = not args.v2
-    pipeline_version = "V3" if use_v3 else "V2"
-    
     try:
         # Print banner
-        print_banner(pipeline_version)
+        print_banner()
         
         # Step 1: Load configuration
         print("Loading configuration...")
@@ -156,7 +141,6 @@ def main() -> int:
         
         # Print workflow summary
         print_workflow_summary(config)
-        print(f"\n  Pipeline: {pipeline_version}" + (" (use --v2 for V2)" if use_v3 else " (default is V3)"))
         
         # Step 2: Request API keys at runtime (NOT STORED)
         providers = []
@@ -191,28 +175,17 @@ def main() -> int:
         
         # Step 6: Build and run the LangGraph pipeline
         print("\n" + "=" * 60)
-        print(f"Starting Markmap Generation Pipeline ({pipeline_version})")
+        print("Starting Markmap Generation Pipeline")
         print("=" * 60)
         
-        # Run the appropriate pipeline
-        if use_v3:
-            print("\n📋 V3 Workflow:")
-            print("  1. Generate Structure Specifications (Planners)")
-            print("  2. Optimize content strategy (Strategists + Integrator)")
-            print("  3. Evaluate structure quality (Evaluators)")
-            print("  4. Render final Markmap (Writer)")
-            print("  5. Translate if needed")
-            print("  6. Post-process and save")
-            result = run_pipeline_v3(data, config)
-        else:
-            print("\n📋 V2 Workflow:")
-            print("  1. Generate baselines (Draft mode)")
-            print("  2. Optimization rounds (Optimizers)")
-            print("  3. Evaluate and debate (Judges)")
-            print("  4. Write final output (Writer)")
-            print("  5. Translate if needed")
-            print("  6. Post-process and save")
-            result = run_pipeline(data, config)
+        print("\n📋 Workflow:")
+        print("  1. Generate Structure Specifications (Planners)")
+        print("  2. Optimize content strategy (Strategists + Integrator)")
+        print("  3. Evaluate structure quality (Evaluators)")
+        print("  4. Render final Markmap (Writer)")
+        print("  5. Translate if needed")
+        print("  6. Post-process and save")
+        result = run_pipeline_v3(data, config)
         
         # Report results
         print("\n" + "=" * 60)
