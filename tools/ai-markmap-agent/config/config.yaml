@@ -376,9 +376,21 @@ output:
     prefix: "neetcode"
     
     # Languages to generate
+    # Each language can use one of two modes:
+    #   "generate"  - Run full optimization pipeline from scratch (slow)
+    #   "translate" - Translate from another language's output (fast, DEFAULT for non-primary)
+    #
     languages:
-      - "en"
-      - "zh-TW"
+      en:
+        enabled: true
+        mode: "generate"       # Primary language: run full pipeline
+      
+      zh-TW:
+        enabled: true
+        mode: "translate"      # DEFAULT: translate from English (fast)
+        # mode: "generate"     # Alternative: run full pipeline independently (slow)
+        source_lang: "en"      # Source language to translate from
+        translator_model: "gpt-4o"  # Model for translation
     
     # Output types
     types:
