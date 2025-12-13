@@ -8,10 +8,15 @@ Generate a technically precise, engineering-oriented Markmap based on the provid
 
 ## Input
 
-### Metadata
+### Problem Data (Compressed Format)
 ```
 {metadata}
 ```
+
+**Data Format Explanation:**
+- Compact JSON with short keys: `i`=id, `t`=title, `d`=difficulty, `p`=patterns, `s`=has_solution, `sf`=solution_file, `tp`=topics
+- Difficulty: `E`=Easy, `M`=Medium, `H`=Hard
+- `s`=true means we have a solution (link to GitHub), `s`=false means no solution yet (link to LeetCode)
 
 ### Ontology
 ```
@@ -23,9 +28,31 @@ Generate a technically precise, engineering-oriented Markmap based on the provid
 
 ---
 
+## Link Generation Rules
+
+**IMPORTANT: Use correct URLs based on solution status**
+
+1. **If problem has solution (`s: true`):**
+   - Link to GitHub: `https://github.com/lufftw/neetcode/blob/main/{sf}`
+   - Format: `[Problem Title](github_url)` ✓
+
+2. **If problem has no solution (`s: false`):**
+   - Link to LeetCode: `https://leetcode.com/problems/{slug}/`
+   - Format: `[Problem Title](leetcode_url)` ○
+
+**Example:**
+```markdown
+### Binary Search
+- [Binary Search](https://github.com/lufftw/neetcode/blob/main/solutions/0704_binary_search.py) ✓
+  - Time: $O(\log n)$
+- [Search in Rotated Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) ○
+```
+
+---
+
 ## Markmap Format Guide
 
-Markmap supports rich Markdown features. Use them for technical precision:
+Use rich Markdown features for technical precision:
 
 ### Supported Features
 
@@ -42,14 +69,15 @@ Markmap supports rich Markdown features. Use them for technical precision:
 
 ```markdown
 ### QuickSort
-- Time: $O(n \log n)$ avg, $O(n^2)$ worst
-- Space: $O(\log n)$
-- Stability: **Unstable**
-- [Implementation](url)
+- [Sort Colors](https://github.com/...) ✓
+  - Time: $O(n \log n)$ avg, $O(n^2)$ worst
+  - Space: $O(\log n)$
+  - Stability: **Unstable**
 
 ### Binary Search
 - **Prerequisite**: Sorted array
 - Variants: `lower_bound`, `upper_bound`
+- [Search Insert Position](https://leetcode.com/problems/...) ○
 ```
 
 ### Complexity Notation (KaTeX)
@@ -67,9 +95,9 @@ Markmap supports rich Markdown features. Use them for technical precision:
 ## Generation Process
 
 ### Step 1: Technical Analysis
-1. Identify core algorithms and data structures
-2. Analyze dependencies between concepts
-3. Determine complexity characteristics
+1. Parse the compressed problem data format
+2. Identify core algorithms and data structures from patterns
+3. Group by technical classification (complexity, pattern type)
 
 ### Step 2: Design Structure
 1. Organize by technical classification (not learning order)
@@ -79,12 +107,12 @@ Markmap supports rich Markdown features. Use them for technical precision:
 ### Step 3: Precise Annotation
 1. Add complexity for every algorithm: `$O(n)$`
 2. Include prerequisites and dependencies
-3. Link to canonical problems: `[LC XXX](url)`
-4. Use code formatting for implementations
+3. Link to problems with correct URL (GitHub if solved, LeetCode if not)
+4. Mark solved with ✓, unsolved with ○
 
 ### Step 4: Technical Validation
 1. Verify complexity annotations are correct
-2. Check terminology follows conventions
+2. Check all links use correct URL pattern
 3. Confirm relationships are accurate
 
 ---
@@ -99,7 +127,7 @@ Markmap supports rich Markdown features. Use them for technical precision:
 - **Algorithm**: `FunctionName`
 - Time: $O(n \log n)$
 - Space: $O(n)$
-- [LC 704](https://leetcode.com/problems/704) Binary Search
+- [LeetCode 704](https://github.com/lufftw/neetcode/blob/main/solutions/0704_binary_search.py) ✓
 
 ### Component 1.2
 | Operation | Time | Space |
@@ -110,11 +138,7 @@ Markmap supports rich Markdown features. Use them for technical precision:
 ## Module 2: Category
 ### Component 2.1
 - **Prerequisite**: Component 1.1
-- Implementation pattern:
-  ```python
-  def solve(arr):
-      pass
-  ```
+- [Unsolved Problem](https://leetcode.com/problems/...) ○
 ```
 
 ---
@@ -136,8 +160,8 @@ Markmap supports rich Markdown features. Use them for technical precision:
 |-----------|-------------|
 | Technical Accuracy | Correct complexity, accurate relationships |
 | Structural Rigor | Consistent classification logic |
+| Links | Correct URL based on solution status |
 | Engineering Utility | Reference value for developers |
-| Completeness | Cover key algorithms and patterns |
 | Rich Notation | Use KaTeX, code, tables appropriately |
 
 ---
@@ -146,3 +170,4 @@ Markmap supports rich Markdown features. Use them for technical precision:
 
 Generate only the Markmap in Markdown format. No additional explanations needed.
 Include complexity analysis, code references, and technical annotations throughout.
+Ensure all problem links follow the URL selection logic based on solution status.

@@ -5,6 +5,54 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
+# URL Templates Configuration
+# -----------------------------------------------------------------------------
+# Configure external URLs for problem links in generated Markmaps
+urls:
+  # GitHub repository for solutions
+  github:
+    base: "https://github.com/lufftw/neetcode"
+    # Template for solution file links: {solution_file} from problem data
+    solution_template: "https://github.com/lufftw/neetcode/blob/main/{solution_file}"
+  
+  # LeetCode problem links
+  leetcode:
+    base: "https://leetcode.com"
+    # Template for problem page: {slug} from problem data
+    problem_template: "https://leetcode.com/problems/{slug}/"
+  
+  # Link selection logic:
+  # 1. If problem has solution_file (non-empty) → use github.solution_template
+  # 2. Otherwise → use leetcode.problem_template
+
+# -----------------------------------------------------------------------------
+# Data Compression Configuration
+# -----------------------------------------------------------------------------
+# Token-efficient data transmission to LLM
+data_compression:
+  enabled: true
+  
+  # Compression format for problem data
+  # Options: "compact_json", "tabular", "minimal"
+  format: "compact_json"
+  
+  # Fields to include in compressed problem data
+  # These are the minimal fields needed for Markmap generation
+  problem_fields:
+    - "id"              # Problem ID (e.g., "0003")
+    - "title"           # Problem title
+    - "difficulty"      # easy/medium/hard
+    - "patterns"        # Algorithm patterns used
+    - "has_solution"    # Boolean: true if solution_file exists
+    - "topics"          # LeetCode topics
+  
+  # Fields to extract from ontology (reduce verbosity)
+  ontology_summary: true
+  
+  # Maximum problems per batch (for very large datasets)
+  max_problems_per_batch: 200
+
+# -----------------------------------------------------------------------------
 # Data Sources Configuration
 # -----------------------------------------------------------------------------
 # Define which data sources to read from for Markmap generation

@@ -8,10 +8,15 @@ Generate a well-structured, comprehensive Markmap based on the provided metadata
 
 ## Input
 
-### Metadata
+### Problem Data (Compressed Format)
 ```
 {metadata}
 ```
+
+**Data Format Explanation:**
+- Compact JSON with short keys: `i`=id, `t`=title, `d`=difficulty, `p`=patterns, `s`=has_solution, `sf`=solution_file, `tp`=topics
+- Difficulty: `E`=Easy, `M`=Medium, `H`=Hard
+- `s`=true means we have a solution (link to GitHub), `s`=false means no solution yet (link to LeetCode)
 
 ### Ontology
 ```
@@ -20,6 +25,28 @@ Generate a well-structured, comprehensive Markmap based on the provided metadata
 
 ### Language
 {language}  <!-- "en" or "zh-TW" -->
+
+---
+
+## Link Generation Rules
+
+**IMPORTANT: Use correct URLs based on solution status**
+
+1. **If problem has solution (`s: true`):**
+   - Link to GitHub: `https://github.com/lufftw/neetcode/blob/main/{sf}`
+   - Format: `[Problem Title](github_url)`
+
+2. **If problem has no solution (`s: false`):**
+   - Link to LeetCode: `https://leetcode.com/problems/{slug}/`
+   - Format: `[Problem Title](leetcode_url)`
+
+**Example:**
+```markdown
+- [Two Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py) ✓
+- [Median of Two Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) ○
+```
+
+Use ✓ for solved, ○ for unsolved (optional visual indicator).
 
 ---
 
@@ -55,12 +82,12 @@ Markmap supports rich Markdown features. Use them effectively:
 
 ## Sliding Window
 ### Fixed Size
-- [x] Maximum Sum Subarray `O(n)`
-- [x] [LC 643](https://leetcode.com/problems/643) - Subarray Average
+- [x] [Maximum Sum Subarray](https://github.com/...) `$O(n)$` ✓
+- [ ] [Subarray Average](https://leetcode.com/problems/...) ○
 
 ### Variable Size <!-- markmap: fold -->
-- Longest Substring Without Repeating
-- Minimum Window Substring
+- [Longest Substring](https://github.com/...)
+- [Minimum Window](https://leetcode.com/problems/...)
   - Complexity: $O(n)$
 ```
 
@@ -69,28 +96,27 @@ Markmap supports rich Markdown features. Use them effectively:
 ## Generation Process
 
 ### Step 1: Analyze Input
-1. Identify main topics/domains from metadata
-2. Find core concepts and relationships from ontology
-3. Determine target audience's knowledge level
+1. Parse the compressed problem data format
+2. Identify main topics/domains from patterns and topics
+3. Group problems by patterns, difficulty, or learning path
 
 ### Step 2: Design Structure
 1. Determine root node (clear, descriptive title)
 2. Plan 3-7 level-1 categories (most important first)
-3. Design subcategories under each (2-3 levels deep)
+3. Design subcategories (2-3 levels deep)
 4. Keep depth within 3-4 levels for readability
 
 ### Step 3: Enrich Content
-1. Add links to LeetCode problems: `[LC XXX](url)`
+1. Add links using correct URL (GitHub if solved, LeetCode if not)
 2. Include complexity annotations: `$O(n)$`
-3. Use checkboxes for learning paths: `- [x] completed`
+3. Mark solved problems: `✓` or `[x]`
 4. Add `<!-- markmap: fold -->` to dense sections
 5. Use **bold** for key terms, `code` for technical names
 
 ### Step 4: Review & Optimize
 1. Check if structure is balanced
-2. Confirm no important concepts are missing
-3. Verify labels are intuitive and understandable
-4. Ensure rich formatting is used appropriately
+2. Verify all links use correct URL pattern
+3. Ensure labels are intuitive and understandable
 
 ---
 
@@ -104,10 +130,9 @@ Generate a complete Markmap in Markdown:
 ## Category 1
 ### Subcategory 1.1
 - **Key Concept** - description
-- [Problem Link](url) `O(n)`
+- [Problem Name](url) `$O(n)$` ✓
 ### Subcategory 1.2 <!-- markmap: fold -->
-- Detail A
-- Detail B
+- [Unsolved Problem](leetcode_url) ○
 
 ## Category 2
 ### Subcategory 2.1
@@ -124,8 +149,8 @@ Generate a complete Markmap in Markdown:
 | Completeness | Cover all major concepts from metadata |
 | Structure | Clear hierarchy, logical classification |
 | Balance | Similar depth across branches |
+| Links | Correct URL based on solution status |
 | Readability | Intuitive labels, no extra explanation needed |
-| Rich Formatting | Use links, code, math, emphasis appropriately |
 
 ---
 
@@ -133,3 +158,4 @@ Generate a complete Markmap in Markdown:
 
 Generate only the Markmap in Markdown format. No additional explanations needed.
 Use the full range of Markmap features to create an informative, visually rich mindmap.
+Ensure all problem links follow the URL selection logic based on solution status.

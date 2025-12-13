@@ -10,6 +10,7 @@ import json
 from typing import Any
 
 from .base_agent import BaseAgent
+from ..data_compressor import DataCompressor
 
 
 class GeneralistAgent(BaseAgent):
@@ -57,10 +58,13 @@ class GeneralistAgent(BaseAgent):
         Returns:
             Updated state with generated markmap
         """
-        # Prepare input data for the prompt
+        # Use data compressor for token-efficient transmission
+        compressor = DataCompressor(self.config)
+        
+        # Prepare input data for the prompt (compressed format)
         input_data = {
-            "metadata": self._format_data(state.get("problems", {})),
-            "ontology": self._format_data(state.get("ontology", {})),
+            "metadata": compressor.compress_problems(state.get("problems", {})),
+            "ontology": compressor.compress_ontology(state.get("ontology", {})),
             "language": self.language,
         }
         
@@ -72,24 +76,6 @@ class GeneralistAgent(BaseAgent):
         state[key] = markmap_content
         
         return state
-    
-    def _format_data(self, data: dict[str, Any]) -> str:
-        """
-        Format data dictionary as readable string for prompt.
-        
-        Args:
-            data: Data dictionary
-            
-        Returns:
-            Formatted string representation
-        """
-        if not data:
-            return "{}"
-        
-        try:
-            return json.dumps(data, indent=2, ensure_ascii=False)
-        except (TypeError, ValueError):
-            return str(data)
 
 
 class SpecialistAgent(BaseAgent):
@@ -137,10 +123,13 @@ class SpecialistAgent(BaseAgent):
         Returns:
             Updated state with generated markmap
         """
-        # Prepare input data for the prompt
+        # Use data compressor for token-efficient transmission
+        compressor = DataCompressor(self.config)
+        
+        # Prepare input data for the prompt (compressed format)
         input_data = {
-            "metadata": self._format_data(state.get("problems", {})),
-            "ontology": self._format_data(state.get("ontology", {})),
+            "metadata": compressor.compress_problems(state.get("problems", {})),
+            "ontology": compressor.compress_ontology(state.get("ontology", {})),
             "language": self.language,
         }
         
@@ -152,24 +141,6 @@ class SpecialistAgent(BaseAgent):
         state[key] = markmap_content
         
         return state
-    
-    def _format_data(self, data: dict[str, Any]) -> str:
-        """
-        Format data dictionary as readable string for prompt.
-        
-        Args:
-            data: Data dictionary
-            
-        Returns:
-            Formatted string representation
-        """
-        if not data:
-            return "{}"
-        
-        try:
-            return json.dumps(data, indent=2, ensure_ascii=False)
-        except (TypeError, ValueError):
-            return str(data)
 
 
 def create_generators(config: dict[str, Any] | None = None) -> dict[str, BaseAgent]:
