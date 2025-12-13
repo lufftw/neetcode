@@ -309,19 +309,50 @@ memory:
 # Output Configuration
 # -----------------------------------------------------------------------------
 output:
+  # Intermediate outputs (during processing)
   save_intermediate: true
   intermediate_dir: "outputs/intermediate"
-  final_dir: "outputs/final"
+  
+  # Final output directories (relative to project root or absolute)
+  final_dirs:
+    markdown: "../../docs/mindmaps"        # .md files
+    html: "../../docs/pages/mindmaps"      # .html files
+  
+  # Naming convention - generates 4 final outputs (2 types × 2 languages)
+  # Output files: neetcode_{type}_ai_{lang}.md / .html
   naming:
-    baseline: "markmap_{type}_{lang}.md"
-    round: "markmap_round_{n}.md"
-    final_md: "markmap_final.md"
-    final_html: "markmap_final.html"
+    prefix: "neetcode"
+    
+    # Languages to generate
+    languages:
+      - "en"
+      - "zh-TW"
+    
+    # Output types
+    types:
+      general:
+        description: "Broad understanding, knowledge organization"
+        generator: "generalist"
+      specialist:
+        description: "Engineering details, structural rigor"
+        generator: "specialist"
+    
+    # File naming template: {prefix}_{type}_ai_{lang}.{ext}
+    # Examples:
+    #   neetcode_general_ai_en.md
+    #   neetcode_general_ai_zh-TW.html
+    #   neetcode_specialist_ai_en.md
+    #   neetcode_specialist_ai_zh-TW.html
+    template: "{prefix}_{type}_ai_{lang}"
+    
+    # Intermediate files
+    round: "{prefix}_{type}_ai_{lang}_round_{n}.md"
+  
   html:
     template: "templates/markmap.html"
     include_styles: true
     include_scripts: true
-    title: "AI Generated Markmap"
+    title: "NeetCode AI Mindmap"
 
 # -----------------------------------------------------------------------------
 # API Configuration
