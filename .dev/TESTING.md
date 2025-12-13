@@ -88,10 +88,6 @@ python tools/check_solutions.py --verbose  # Show fix suggestions
 python -m pytest tools/tests/test_solution_format.py -v
 ```
 
-#### Related Documentation
-
-- [tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) - Format checking tool details
-
 ---
 
 ### 2. Component Tests

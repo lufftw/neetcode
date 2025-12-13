@@ -229,7 +229,6 @@ python -m pytest .dev/tests --cov=runner --cov-report=html
 - [Project Main README](../README.md) - Project overview
 - [Root pytest.ini](../pytest.ini) - pytest configuration file
 - [requirements.txt](../requirements.txt) - Project dependencies
-- [tools/FORMAT_CHECKING.md](../tools/FORMAT_CHECKING.md) - Format checking description
 
 ---
 
