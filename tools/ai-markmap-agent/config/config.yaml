@@ -270,7 +270,7 @@ models:
 
   # Summarizer - Consolidates each round's discussion
   summarizer:
-    model: "gpt-4"  # ORIGINAL: gpt-5.2
+    model: "gpt-4o"  # ORIGINAL: gpt-5.2
     persona_prompt: "prompts/summarizer/summarizer_persona.md"
     behavior_prompt: "prompts/summarizer/summarizer_behavior.md"
     temperature: 0.5
