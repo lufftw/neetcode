@@ -217,9 +217,56 @@ models:
 Writer 接收以下輸入：
 
 1. **Selected Markmap** - Phase 3 選出的最佳結構
-2. **Judge Feedback** - 評審的改進建議
-3. **Problem Metadata** - 完整的問題資料（★ 此時才載入）
-4. **Markmap Format Guide** - Markmap 格式能力說明
+2. **Judge Feedback** - 評審的改進建議（★ 必須根據這些建議優化）
+3. **Consensus Suggestions** - 評審辯論後達成的共識改進項目
+4. **Problem Metadata** - 完整的問題資料（★ 此時才載入）
+5. **Markmap Format Guide** - Markmap 格式能力說明
+
+#### 4.3 Writer 的優化職責
+
+Writer **必須根據 Evaluation & Debate 的意見進行優化**：
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Writer 優化流程                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Input: Selected Markmap (from Judges)                          │
+│         ↓                                                       │
+│  Step 1: 分析評審反饋                                           │
+│         • 讀取每位評審的 strengths (保留)                       │
+│         • 讀取每位評審的 improvements (必須改進)                │
+│         • 讀取 consensus_suggestions (優先改進)                 │
+│         ↓                                                       │
+│  Step 2: 應用改進建議                                           │
+│         • 結構調整 (如：拆分過大的節點)                         │
+│         • 命名優化 (如：更清晰的分類名稱)                       │
+│         • 深度平衡 (如：避免過深或過淺)                         │
+│         • 補充缺失 (如：增加遺漏的 pattern)                     │
+│         ↓                                                       │
+│  Step 3: 套用 Metadata                                          │
+│         • 根據 problem metadata 生成正確連結                    │
+│         • GitHub solution (if exists) / LeetCode (fallback)     │
+│         • 加入 difficulty, complexity 等資訊                    │
+│         ↓                                                       │
+│  Step 4: 套用 Markmap 格式                                      │
+│         • YAML frontmatter                                      │
+│         • Checkboxes, KaTeX, fold, tables                       │
+│         ↓                                                       │
+│  Output: Final Optimized Markmap                                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**範例 - 評審建議與 Writer 處理：**
+
+| 評審建議 | Writer 處理方式 |
+|----------|-----------------|
+| "Two Pointers section is too flat" | 拆分為 "Opposite Direction" 和 "Same Direction" 子分類 |
+| "Missing complexity annotations" | 加入 `Time: $O(n)$` KaTeX 標註 |
+| "Hard problems should be highlighted" | 使用 **Hard** 粗體標記 |
+| "Section too long, hard to navigate" | 加入 `<!-- markmap: fold -->` 折疊 |
+| "Inconsistent naming convention" | 統一使用 "LC-XXX Title" 格式 |
 
 #### 4.3 Link Generation Logic
 
