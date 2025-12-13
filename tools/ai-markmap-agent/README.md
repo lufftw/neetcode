@@ -202,13 +202,123 @@ langchain-community>=0.3.0
 chromadb>=0.4.0
 pyyaml>=6.0
 tiktoken>=0.5.0
+tomli>=2.0.0  # For Python < 3.11
+```
+
+---
+
+## API Key Handling
+
+> ⚠️ **Important Security Design**: API keys are entered once at runtime and **NEVER stored**.
+
+### Runtime Input
+
+```bash
+# When starting the program, you'll be prompted for API keys
+python main.py
+
+# Example output:
+# ============================================================
+# API Key Input
+# ============================================================
+# Enter your API keys below.
+# Keys are NOT stored and will be cleared when program exits.
+# ============================================================
+#
+# Enter OPENAI API Key: ********
+#   ✓ OPENAI API key accepted
+```
+
+### Security Features
+
+| Feature | Description |
+|---------|-------------|
+| **Not Stored** | Keys exist only in memory, never written to any file |
+| **Secure Input** | Uses `getpass` to hide input |
+| **Auto-Clear on Exit** | Registered with `atexit` to clear on program termination |
+| **Manual Clear** | Call `ConfigLoader.clear_api_keys()` anytime |
+
+### Command Line Options
+
+```bash
+# Skip OpenAI key input
+python main.py --no-openai
+
+# Skip Anthropic key input
+python main.py --no-anthropic
+
+# Dry run - load data sources only
+python main.py --dry-run
+
+# Verbose output
+python main.py -v
 ```
 
 ---
 
 ## Configuration
 
-All settings are managed in `config/config.yaml`:
+All settings are managed in `config/config.yaml`.
+
+### Data Sources Configuration
+
+Configure which data sources to read in the `data_sources` section:
+
+```yaml
+# ===== Data Sources Configuration =====
+data_sources:
+  # Base paths (relative to project root)
+  base_paths:
+    ontology: "../../ontology"
+    problems: "../../meta/problems"
+    patterns: "../../meta/patterns"
+    roadmaps: "../../roadmaps"
+
+  # Ontology files - taxonomy definitions
+  ontology:
+    enabled: true
+    files:
+      - name: "algorithms"
+        path: "algorithms.toml"
+        enabled: true
+      - name: "patterns"
+        path: "patterns.toml"
+        enabled: true
+      # Set enabled: false to disable specific files
+      - name: "companies"
+        path: "companies.toml"
+        enabled: false
+
+  # Problem metadata files
+  problems:
+    enabled: true
+    load_mode: "pattern"  # "all" | "list" | "pattern"
+    patterns:
+      - "*.toml"
+    exclude:
+      - "README.md"
+
+  # Pattern documentation directories
+  patterns:
+    enabled: true
+    directories:
+      - name: "sliding_window"
+        path: "sliding_window"
+        enabled: true
+      - name: "two_pointers"
+        path: "two_pointers"
+        enabled: true
+
+  # Roadmap learning paths
+  roadmaps:
+    enabled: true
+    files:
+      - name: "sliding_window_path"
+        path: "sliding_window_path.toml"
+        enabled: true
+```
+
+### Model Configuration
 
 ```yaml
 # ===== Model Configuration =====

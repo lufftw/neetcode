@@ -191,6 +191,52 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+---
+
+## API Key 處理
+
+> ⚠️ **重要安全設計**：API Key 僅在執行期間輸入一次，**絕不儲存**。
+
+### 執行期間輸入
+
+```bash
+# 啟動程式時會提示輸入 API Key
+python main.py
+
+# 輸出範例：
+# ============================================================
+# API Key Input
+# ============================================================
+# Enter your API keys below.
+# Keys are NOT stored and will be cleared when program exits.
+# ============================================================
+#
+# Enter OPENAI API Key: ********
+#   ✓ OPENAI API key accepted
+```
+
+### 安全特性
+
+| 特性 | 說明 |
+|------|------|
+| **不儲存** | Key 僅存在記憶體中，不寫入任何檔案 |
+| **安全輸入** | 使用 `getpass` 隱藏輸入內容 |
+| **程式結束清除** | 透過 `atexit` 註冊，程式結束時自動清除 |
+| **手動清除** | 可隨時呼叫 `ConfigLoader.clear_api_keys()` |
+
+### 命令列選項
+
+```bash
+# 跳過 OpenAI key 輸入
+python main.py --no-openai
+
+# 跳過 Anthropic key 輸入
+python main.py --no-anthropic
+
+# 僅載入資料來源，不執行 pipeline
+python main.py --dry-run
+```
+
 ### 依賴套件
 
 ```
@@ -208,7 +254,67 @@ tiktoken>=0.5.0
 
 ## 配置
 
-所有設定皆透過 `config/config.yaml` 管理：
+所有設定皆透過 `config/config.yaml` 管理。
+
+### 資料來源配置
+
+在 `data_sources` 區段中設定要讀取的資料來源：
+
+```yaml
+# ===== 資料來源配置 =====
+data_sources:
+  # 基礎路徑（相對於專案根目錄）
+  base_paths:
+    ontology: "../../ontology"
+    problems: "../../meta/problems"
+    patterns: "../../meta/patterns"
+    roadmaps: "../../roadmaps"
+
+  # Ontology 檔案 - 分類定義
+  ontology:
+    enabled: true
+    files:
+      - name: "algorithms"
+        path: "algorithms.toml"
+        enabled: true
+      - name: "patterns"
+        path: "patterns.toml"
+        enabled: true
+      # 設定 enabled: false 可停用特定檔案
+      - name: "companies"
+        path: "companies.toml"
+        enabled: false
+
+  # 題目 metadata 檔案
+  problems:
+    enabled: true
+    load_mode: "pattern"  # "all" | "list" | "pattern"
+    patterns:
+      - "*.toml"
+    exclude:
+      - "README.md"
+
+  # Pattern 文件目錄
+  patterns:
+    enabled: true
+    directories:
+      - name: "sliding_window"
+        path: "sliding_window"
+        enabled: true
+      - name: "two_pointers"
+        path: "two_pointers"
+        enabled: true
+
+  # Roadmap 學習路徑
+  roadmaps:
+    enabled: true
+    files:
+      - name: "sliding_window_path"
+        path: "sliding_window_path.toml"
+        enabled: true
+```
+
+### 模型配置
 
 ```yaml
 # ===== 模型配置 =====

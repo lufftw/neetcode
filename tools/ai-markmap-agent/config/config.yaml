@@ -5,6 +5,92 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
+# Data Sources Configuration
+# -----------------------------------------------------------------------------
+# Define which data sources to read from for Markmap generation
+# Set enabled: true/false to include/exclude each source
+data_sources:
+  # Base paths (relative to project root)
+  base_paths:
+    ontology: "../../ontology"
+    problems: "../../meta/problems"
+    patterns: "../../meta/patterns"
+    roadmaps: "../../roadmaps"
+
+  # Ontology files - taxonomy definitions
+  ontology:
+    enabled: true
+    files:
+      - name: "algorithms"
+        path: "algorithms.toml"
+        enabled: true
+      - name: "api_kernels"
+        path: "api_kernels.toml"
+        enabled: true
+      - name: "data_structures"
+        path: "data_structures.toml"
+        enabled: true
+      - name: "patterns"
+        path: "patterns.toml"
+        enabled: true
+      - name: "families"
+        path: "families.toml"
+        enabled: true
+      - name: "topics"
+        path: "topics.toml"
+        enabled: true
+      - name: "difficulties"
+        path: "difficulties.toml"
+        enabled: false
+      - name: "companies"
+        path: "companies.toml"
+        enabled: false
+      - name: "roadmaps"
+        path: "roadmaps.toml"
+        enabled: true
+
+  # Problem metadata files
+  problems:
+    enabled: true
+    # Load mode: "all" | "list" | "pattern"
+    load_mode: "pattern"
+    # For load_mode: "list" - specific files to load
+    files: []
+    # For load_mode: "pattern" - glob patterns
+    patterns:
+      - "*.toml"
+    # Exclude patterns (always applied)
+    exclude:
+      - "README.md"
+
+  # Pattern documentation directories
+  patterns:
+    enabled: true
+    directories:
+      - name: "sliding_window"
+        path: "sliding_window"
+        enabled: true
+        config_file: "_config.toml"
+      - name: "two_pointers"
+        path: "two_pointers"
+        enabled: true
+        config_file: "_config.toml"
+
+  # Roadmap learning paths
+  roadmaps:
+    enabled: true
+    files:
+      - name: "sliding_window_path"
+        path: "sliding_window_path.toml"
+        enabled: true
+      - name: "neetcode_150"
+        path: "neetcode_150.toml"
+        enabled: false
+      - name: "blind_75"
+        path: "blind_75.toml"
+        enabled: false
+
+# -----------------------------------------------------------------------------
 # Prompt Mode Configuration
 # -----------------------------------------------------------------------------
 # Choose between static (pre-defined) prompts or dynamic (AI-generated) prompts
