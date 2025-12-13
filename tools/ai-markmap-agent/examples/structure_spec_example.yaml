@@ -1,0 +1,331 @@
+# =============================================================================
+# Structure Specification Example
+# =============================================================================
+# 這是 AI Markmap Agent V3 的中間格式
+# Agents 討論這個格式，不是最終的 Markdown
+# =============================================================================
+
+# 基本資訊
+metadata:
+  title: "NeetCode Algorithm Patterns"
+  description: "A comprehensive guide to algorithm patterns for technical interviews"
+  version: "1.0"
+  generated_by: "generalist"
+  language: "en"
+
+# -----------------------------------------------------------------------------
+# 組織策略 (Organization Strategy)
+# -----------------------------------------------------------------------------
+organization:
+  # 主要分組方式
+  primary_grouping: "pattern"      # pattern | difficulty | topic | progress
+  
+  # 次要分組方式 (在每個 section 內)
+  secondary_grouping: "difficulty"
+  
+  # 問題顯示選項
+  display_options:
+    show_complexity: true          # 顯示時間/空間複雜度
+    show_difficulty: true          # 顯示 Easy/Medium/Hard
+    show_progress: true            # 顯示 [x]/[ ] 完成狀態
+    show_topics: false             # 顯示 LeetCode topics
+  
+  # 特殊區段
+  include_sections:
+    learning_paths: true           # 包含學習路徑
+    progress_summary: true         # 包含進度統計表
+    quick_reference: false         # 包含快速參考
+
+# -----------------------------------------------------------------------------
+# 內容結構 (Content Structure)
+# -----------------------------------------------------------------------------
+sections:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Section 1: Two Pointers
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "two_pointers"
+    name: "Two Pointers"
+    importance: "core"             # core | intermediate | advanced | optional
+    
+    content:
+      # 問題列表 (只記錄 ID，完整資訊由 Writer 從 metadata 查詢)
+      problems:
+        - id: "0125"               # Valid Palindrome
+          role: "foundation"       # foundation | practice | challenge
+        - id: "0167"               # Two Sum II
+          role: "foundation"
+        - id: "0015"               # 3Sum
+          role: "practice"
+        - id: "0011"               # Container With Most Water
+          role: "practice"
+        - id: "0042"               # Trapping Rain Water
+          role: "challenge"
+      
+      # 學習順序
+      learning_order: ["0125", "0167", "0015", "0011", "0042"]
+      
+      # 子分類
+      subcategories:
+        - name: "Opposite Direction"
+          description: "Two pointers moving towards each other"
+          problems: ["0125", "0167", "0011", "0042"]
+        - name: "Same Direction"
+          description: "Two pointers moving in the same direction"
+          problems: ["0026", "0027", "0283"]
+    
+    # 格式提示 (只在必要時使用)
+    format_hints:
+      should_fold: false           # 問題不多，不需摺疊
+      highlight_level: "normal"
+    
+    # 內部決策記錄 (不會出現在最終產品)
+    _decisions:
+      - "Split into Opposite/Same Direction per architect suggestion"
+      - "Start with Easy palindrome problem for gentle introduction"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Section 2: Sliding Window
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "sliding_window"
+    name: "Sliding Window"
+    importance: "core"
+    
+    content:
+      problems:
+        - id: "0003"               # Longest Substring Without Repeating
+          role: "foundation"
+        - id: "0424"               # Longest Repeating Character Replacement
+          role: "practice"
+        - id: "0567"               # Permutation in String
+          role: "practice"
+        - id: "0076"               # Minimum Window Substring
+          role: "challenge"
+        - id: "0239"               # Sliding Window Maximum
+          role: "challenge"
+        - id: "0480"               # Sliding Window Median
+          role: "challenge"
+      
+      learning_order: ["0003", "0424", "0567", "0076", "0239", "0480"]
+      
+      subcategories:
+        - name: "Fixed Size Window"
+          problems: ["0643", "1343"]
+          description: "Window size is predetermined"
+        - name: "Dynamic Size Window"
+          problems: ["0003", "0076", "0424", "0567"]
+          description: "Window expands/shrinks based on conditions"
+        - name: "Window with Data Structure"
+          problems: ["0239", "0480"]
+          description: "Uses heap/deque for window operations"
+    
+    format_hints:
+      should_fold: true            # 6+ 問題，建議摺疊
+      highlight_level: "normal"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Section 3: Binary Search
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "binary_search"
+    name: "Binary Search"
+    importance: "core"
+    
+    content:
+      problems:
+        - id: "0704"               # Binary Search
+          role: "foundation"
+        - id: "0035"               # Search Insert Position
+          role: "foundation"
+        - id: "0074"               # Search a 2D Matrix
+          role: "practice"
+        - id: "0153"               # Find Minimum in Rotated Sorted Array
+          role: "practice"
+        - id: "0033"               # Search in Rotated Sorted Array
+          role: "challenge"
+        - id: "0004"               # Median of Two Sorted Arrays
+          role: "challenge"
+      
+      subcategories:
+        - name: "Basic Binary Search"
+          problems: ["0704", "0035"]
+        - name: "Search Space Reduction"
+          problems: ["0074", "0153", "0033"]
+        - name: "Advanced Applications"
+          problems: ["0004", "0875", "1011"]
+    
+    format_hints:
+      should_fold: false
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Section 4: Stack
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "stack"
+    name: "Stack"
+    importance: "core"
+    
+    content:
+      problems:
+        - id: "0020"               # Valid Parentheses
+          role: "foundation"
+        - id: "0155"               # Min Stack
+          role: "foundation"
+        - id: "0150"               # Evaluate Reverse Polish Notation
+          role: "practice"
+        - id: "0739"               # Daily Temperatures
+          role: "practice"
+        - id: "0084"               # Largest Rectangle in Histogram
+          role: "challenge"
+      
+      subcategories:
+        - name: "Basic Stack Operations"
+          problems: ["0020", "0155", "0150"]
+        - name: "Monotonic Stack"
+          problems: ["0739", "0084", "0496"]
+    
+    format_hints:
+      should_fold: false
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Section 5: Linked List (intermediate importance)
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "linked_list"
+    name: "Linked List"
+    importance: "intermediate"
+    
+    content:
+      problems:
+        - id: "0206"               # Reverse Linked List
+          role: "foundation"
+        - id: "0021"               # Merge Two Sorted Lists
+          role: "foundation"
+        - id: "0141"               # Linked List Cycle
+          role: "practice"
+        - id: "0019"               # Remove Nth Node From End
+          role: "practice"
+        - id: "0023"               # Merge K Sorted Lists
+          role: "challenge"
+    
+    format_hints:
+      should_fold: true            # 預設摺疊（次要 section）
+      highlight_level: "de-emphasized"
+
+# -----------------------------------------------------------------------------
+# 學習路徑 (Learning Paths)
+# -----------------------------------------------------------------------------
+learning_paths:
+  - id: "beginner_path"
+    name: "Beginner's Path"
+    description: "Start here if you're new to algorithm patterns"
+    estimated_time: "2 weeks"
+    steps:
+      - section: "two_pointers"
+        problems: ["0125", "0167"]
+        milestone: "Understand basic two pointer technique"
+      - section: "sliding_window"
+        problems: ["0003"]
+        milestone: "Grasp dynamic window concept"
+      - section: "binary_search"
+        problems: ["0704", "0035"]
+        milestone: "Master basic binary search"
+      - section: "stack"
+        problems: ["0020", "0155"]
+        milestone: "Comfortable with stack operations"
+  
+  - id: "intermediate_path"
+    name: "Intermediate Challenges"
+    description: "Ready to tackle medium difficulty problems"
+    estimated_time: "3 weeks"
+    prerequisite: "beginner_path"
+    steps:
+      - section: "two_pointers"
+        problems: ["0015", "0011"]
+      - section: "sliding_window"
+        problems: ["0424", "0567"]
+      - section: "binary_search"
+        problems: ["0074", "0153", "0033"]
+  
+  - id: "advanced_path"
+    name: "Advanced Mastery"
+    description: "For those preparing for FAANG interviews"
+    estimated_time: "4 weeks"
+    prerequisite: "intermediate_path"
+    steps:
+      - section: "two_pointers"
+        problems: ["0042"]
+      - section: "sliding_window"
+        problems: ["0076", "0239"]
+      - section: "binary_search"
+        problems: ["0004"]
+      - section: "stack"
+        problems: ["0084"]
+
+# -----------------------------------------------------------------------------
+# 進度摘要設定 (Progress Summary)
+# -----------------------------------------------------------------------------
+progress_summary:
+  enabled: true
+  group_by: "section"              # section | difficulty | pattern
+  show_percentage: true
+  show_count: true
+
+# -----------------------------------------------------------------------------
+# 內部記錄 (Internal - 不會出現在最終產品)
+# -----------------------------------------------------------------------------
+_internal:
+  # 決策日誌
+  decision_log:
+    - round: 1
+      timestamp: "2024-01-15T10:00:00Z"
+      decision: "Use pattern-first organization"
+      rationale: "Better for learning progression, patterns are more memorable"
+      source: "architect_strategist"
+      agreed_by: ["architect", "professor", "ux"]
+    
+    - round: 1
+      timestamp: "2024-01-15T10:05:00Z"
+      decision: "Split Two Pointers into subcategories"
+      rationale: "Opposite vs Same direction is a key conceptual difference"
+      source: "professor_strategist"
+      agreed_by: ["architect", "professor", "ux"]
+    
+    - round: 2
+      timestamp: "2024-01-15T10:30:00Z"
+      decision: "Add learning paths with milestones"
+      rationale: "Helps users track progress and understand dependencies"
+      source: "ux_strategist"
+      agreed_by: ["ux", "learning"]
+  
+  # 被拒絕的建議
+  rejected_suggestions:
+    - suggestion: "Organize by difficulty first (Easy → Medium → Hard)"
+      reason: "Loses pattern coherence; harder to see relationships"
+      source: "round_1"
+      rejected_by: ["architect", "professor"]
+    
+    - suggestion: "Include company tags"
+      reason: "Out of scope for pattern-focused mindmap"
+      source: "round_1"
+      rejected_by: ["architect"]
+  
+  # 版本歷史
+  version_history:
+    - version: "0.1"
+      timestamp: "2024-01-15T09:00:00Z"
+      changes: "Initial structure from generalist planner"
+    - version: "0.2"
+      timestamp: "2024-01-15T10:00:00Z"
+      changes: "Added subcategories per architect/professor consensus"
+    - version: "0.3"
+      timestamp: "2024-01-15T10:30:00Z"
+      changes: "Added learning paths per UX strategist suggestion"
+    - version: "1.0"
+      timestamp: "2024-01-15T11:00:00Z"
+      changes: "Final version after evaluation approval"
+  
+  # 統計資訊
+  statistics:
+    total_sections: 5
+    total_problems: 30
+    core_sections: 4
+    intermediate_sections: 1
+    learning_paths: 3
+
