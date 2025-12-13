@@ -23,7 +23,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 **A scalable Python framework that transforms LeetCode-style algorithm practice into a knowledge-graph-driven, data-driven, testable, and high-performance workflow — with AI-powered mind maps, industrial-strength testing, and pattern-based learning to help developers grow faster and understand algorithms more deeply.**
 
-[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/)
+[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 

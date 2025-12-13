@@ -54,6 +54,7 @@ site/
 docs/pages/**
 !docs/pages/mindmaps/
 !docs/pages/mindmaps/neetcode_ontology_ai_*.html
+!docs/pages/mindmaps/neetcode_ontology_agent_evolved_*.html
 
 # Ignore generated Markdown mindmaps
 docs/mindmaps/*.md
