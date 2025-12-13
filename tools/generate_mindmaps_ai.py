@@ -649,8 +649,9 @@ def is_chat_model(model_name: str) -> bool:
     model_lower = model_name.lower()
     
     # Completion models (use /v1/completions) - check these first (more specific)
-    # Note: GPT-5.x-codex models are chat models, not completion models
+    # Codex models (e.g., gpt-5.1-codex, gpt-5.2-codex) are completion models
     completion_model_patterns = [
+        "codex",            # gpt-5.1-codex, gpt-5.2-codex, etc. (use /v1/completions)
         "text-",            # text-davinci-003, text-curie-001, etc.
         "davinci",          # davinci-003, etc.
         "curie",            # curie-001, etc.
@@ -663,11 +664,11 @@ def is_chat_model(model_name: str) -> bool:
             return False
     
     # Chat models (use /v1/chat/completions)
-    # GPT-5.x series (including gpt-5.1-codex, gpt-5.2-codex) are chat models
+    # GPT-5.x series (excluding codex variants) are chat models
     chat_model_patterns = [
         "gpt-4",           # gpt-4, gpt-4o, gpt-4-turbo, gpt-4o-mini
         "gpt-3.5",         # gpt-3.5-turbo
-        "gpt-5",           # gpt-5.2, gpt-5.1, gpt-5.1-codex, gpt-5.2-codex, etc.
+        "gpt-5",           # gpt-5.2, gpt-5.1 (but NOT gpt-5.1-codex - handled above)
         "o1",              # o1, o1-mini, o3-mini
         "o3",              # o3-mini
         "claude",          # Claude models
