@@ -214,10 +214,10 @@ class WriterAgent(BaseAgent):
 
 Produce ONLY the final Markmap markdown. No explanations."""
 
-        messages = [{"role": "user", "content": prompt}]
-        final_markmap = self._call_llm(messages)
+        messages = self._build_messages(prompt)
+        response = self.llm.invoke(messages)
         
-        state["final_markmap"] = final_markmap
+        state["final_markmap"] = response.content
         return state
     
     def _format_problems_for_prompt(self, problems: list[dict]) -> str:

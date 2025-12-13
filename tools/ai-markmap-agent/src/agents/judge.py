@@ -130,10 +130,10 @@ Provide a structured evaluation in JSON format:
 Be specific in your improvements - they will be applied by the Writer.
 Score should be 0-100 based on your criteria."""
 
-        messages = [{"role": "user", "content": prompt}]
-        response = self._call_llm(messages)
+        messages = self._build_messages(prompt)
+        response = self.llm.invoke(messages)
         
-        return self._parse_structured_evaluation(response)
+        return self._parse_structured_evaluation(response.content)
     
     def _parse_structured_evaluation(self, response: str) -> dict[str, Any]:
         """
@@ -254,10 +254,10 @@ Respond in JSON format:
 }}
 ```"""
 
-        messages = [{"role": "user", "content": prompt}]
-        response = self._call_llm(messages)
+        messages = self._build_messages(prompt)
+        response = self.llm.invoke(messages)
         
-        return self._parse_debate_response(response)
+        return self._parse_debate_response(response.content)
     
     def _parse_debate_response(self, response: str) -> dict[str, Any]:
         """Parse debate response."""

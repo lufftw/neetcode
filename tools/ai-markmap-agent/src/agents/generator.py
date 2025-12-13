@@ -204,6 +204,17 @@ class TranslatorAgent(BaseAgent):
         self.source_language = source_language
         self.target_language = target_language
     
+    def process(self, state: dict[str, Any]) -> dict[str, Any]:
+        """
+        Process state for translation (required by BaseAgent).
+        
+        Note: Translation is typically called directly via translate() method,
+        not through the process() workflow interface.
+        """
+        # This method exists to satisfy the abstract base class requirement
+        # Actual translation is done via the translate() method
+        return state
+    
     def translate(self, content: str, output_type: str) -> str:
         """
         Translate Markmap content from source to target language.
@@ -237,9 +248,9 @@ Content to translate:
 
 {content}"""
         
-        messages = [{"role": "user", "content": prompt}]
-        response = self._call_llm(messages)
-        return response
+        messages = self._build_messages(prompt)
+        response = self.llm.invoke(messages)
+        return response.content
 
 
 def create_generators(config: dict[str, Any] | None = None) -> dict[str, BaseAgent]:
