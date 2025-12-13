@@ -9,17 +9,21 @@ Agents:
 """
 
 from .base_agent import BaseAgent
-from .generator import GeneralistAgent, SpecialistAgent
-from .optimizer import OptimizerAgent
+from .generator import GeneralistAgent, SpecialistAgent, create_generators
+from .optimizer import OptimizerAgent, create_optimizers
 from .summarizer import SummarizerAgent
-from .judge import JudgeAgent
+from .judge import JudgeAgent, create_judges, aggregate_votes
 
 __all__ = [
     "BaseAgent",
     "GeneralistAgent",
     "SpecialistAgent",
+    "create_generators",
     "OptimizerAgent",
+    "create_optimizers",
     "SummarizerAgent",
     "JudgeAgent",
+    "create_judges",
+    "aggregate_votes",
 ]
 

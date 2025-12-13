@@ -1,12 +1,15 @@
 """
-Content compression module for handling long discussions and Markmaps.
+Content compression module for managing token limits.
 """
 
-from .compressor import compress_if_needed, compress_content, estimate_tokens
+from .compressor import (
+    ContentCompressor,
+    get_compressor,
+    compress_if_needed,
+)
 
 __all__ = [
+    "ContentCompressor",
+    "get_compressor",
     "compress_if_needed",
-    "compress_content",
-    "estimate_tokens",
 ]
-

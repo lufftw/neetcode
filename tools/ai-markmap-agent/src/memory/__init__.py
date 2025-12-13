@@ -6,15 +6,17 @@ Components:
 - LTM (Long-Term Memory): Cross-session persistence with Vector Store
 """
 
-from .stm import ShortTermMemory, update_stm, get_recent_stm
-from .ltm import LongTermMemory, query_ltm, store_to_ltm
+from .stm import ShortTermMemory, update_stm, get_recent_stm, get_stm
+from .ltm import LongTermMemory, query_ltm, store_to_ltm, get_ltm
 
 __all__ = [
     "ShortTermMemory",
     "update_stm",
     "get_recent_stm",
+    "get_stm",
     "LongTermMemory",
     "query_ltm",
     "store_to_ltm",
+    "get_ltm",
 ]
 

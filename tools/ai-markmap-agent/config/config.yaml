@@ -352,7 +352,7 @@ output:
     template: "templates/markmap.html"
     include_styles: true
     include_scripts: true
-    title: "NeetCode AI Mindmap"
+    title: "AI Generated Markmap"
 
 # -----------------------------------------------------------------------------
 # API Configuration

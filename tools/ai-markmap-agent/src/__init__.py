@@ -1,30 +1,30 @@
 """
-AI Markmap Agent
+AI Markmap Agent - Multi-Agent Collaborative System for Markmap Generation.
 
-A configurable, extensible multi-agent AI system for generating
-and optimizing Markmaps using LangGraph.
+This package provides a LangGraph-based pipeline that coordinates multiple
+AI agents to generate high-quality Markmaps from NeetCode metadata.
+
+Main components:
+- agents: Generator, Optimizer, Summarizer, and Judge agents
+- memory: Short-term (STM) and Long-term (LTM) memory systems
+- compression: Content compression for token management
+- output: HTML converter for final output generation
+- graph: LangGraph workflow orchestration
 """
 
-__version__ = "0.1.0"
-__author__ = "NeetCode Team"
+from .config_loader import ConfigLoader, load_config, get_api_key
+from .data_sources import DataSourcesLoader, load_data_sources
+from .graph import build_markmap_graph, run_pipeline, run_pipeline_async
 
-from .config_loader import (
-    ConfigLoader,
-    load_config,
-    request_api_keys,
-    get_api_key,
-)
-from .data_sources import (
-    DataSourcesLoader,
-    load_data_sources,
-)
+__version__ = "0.1.0"
 
 __all__ = [
     "ConfigLoader",
     "load_config",
-    "request_api_keys",
     "get_api_key",
     "DataSourcesLoader",
     "load_data_sources",
+    "build_markmap_graph",
+    "run_pipeline",
+    "run_pipeline_async",
 ]
-

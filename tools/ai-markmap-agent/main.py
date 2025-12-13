@@ -6,6 +6,7 @@
 #   python main.py
 #   python main.py --config path/to/config.yaml
 #   python main.py --no-openai  # Skip OpenAI API key request
+#   python main.py --dry-run    # Load data but don't run pipeline
 #
 # API keys are requested at runtime and NEVER stored.
 # They exist only in memory and are cleared when the program exits.
@@ -27,6 +28,7 @@ from src.config_loader import (
     get_api_key,
 )
 from src.data_sources import DataSourcesLoader, load_data_sources
+from src.graph import run_pipeline, build_markmap_graph
 
 
 def print_banner() -> None:
@@ -36,6 +38,12 @@ def print_banner() -> None:
 ║                        AI Markmap Agent                                   ║
 ║                                                                           ║
 ║  Multi-Agent Collaborative System for Markmap Generation                  ║
+║                                                                           ║
+║  Outputs:                                                                 ║
+║    • neetcode_general_ai_en.md / .html                                    ║
+║    • neetcode_general_ai_zh-TW.md / .html                                 ║
+║    • neetcode_specialist_ai_en.md / .html                                 ║
+║    • neetcode_specialist_ai_zh-TW.md / .html                              ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
     """)
 
@@ -59,6 +67,23 @@ def print_data_summary(summary: dict) -> None:
             print(f"  Items: {items_str}")
     
     print("\n" + "=" * 60)
+
+
+def print_workflow_summary(config: dict) -> None:
+    """Print workflow configuration summary."""
+    workflow = config.get("workflow", {})
+    naming = config.get("output", {}).get("naming", {})
+    
+    print("\n" + "=" * 60)
+    print("Workflow Configuration")
+    print("=" * 60)
+    print(f"  Optimization rounds: {workflow.get('optimization_rounds', 3)}")
+    print(f"  Optimizer count: {workflow.get('optimizer_count', 3)}")
+    print(f"  Judge count: {workflow.get('judge_count', 2)}")
+    print(f"  Enable debate: {workflow.get('enable_debate', False)}")
+    print(f"\n  Languages: {', '.join(naming.get('languages', ['en', 'zh-TW']))}")
+    print(f"  Types: {', '.join(naming.get('types', {}).keys())}")
+    print("=" * 60)
 
 
 def main() -> int:
@@ -111,6 +136,9 @@ def main() -> int:
         config = load_config(args.config)
         print("  ✓ Configuration loaded\n")
         
+        # Print workflow summary
+        print_workflow_summary(config)
+        
         # Step 2: Request API keys at runtime (NOT STORED)
         providers = []
         if not args.no_openai:
@@ -147,19 +175,28 @@ def main() -> int:
         print("Starting Markmap Generation Pipeline")
         print("=" * 60)
         
-        # TODO: Import and run the actual graph once implemented
-        # from src.graph import build_markmap_graph
-        # graph = build_markmap_graph()
-        # result = graph.invoke({
-        #     "metadata": data["problems"],
-        #     "ontology": data["ontology"],
-        #     "patterns": data["patterns"],
-        #     "roadmaps": data["roadmaps"],
-        # })
+        # Run the pipeline
+        result = run_pipeline(data, config)
         
-        print("\n⚠ Pipeline execution not yet implemented.")
-        print("  Data sources have been loaded and validated.")
-        print("  API keys are ready (in memory only).")
+        # Report results
+        print("\n" + "=" * 60)
+        print("Pipeline Complete")
+        print("=" * 60)
+        
+        if result.get("errors"):
+            print("\n⚠ Warnings/Errors:")
+            for error in result["errors"]:
+                print(f"  - {error}")
+        
+        if result.get("final_outputs"):
+            print(f"\n✓ Generated {len(result['final_outputs'])} Markmap outputs")
+            
+            # Print output locations
+            output_config = config.get("output", {}).get("final_dirs", {})
+            print(f"\n  Markdown files: {output_config.get('markdown', 'outputs/final')}")
+            print(f"  HTML files: {output_config.get('html', 'outputs/final')}")
+        else:
+            print("\n⚠ No outputs generated")
         
         return 0
         
@@ -183,4 +220,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
