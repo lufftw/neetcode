@@ -367,7 +367,31 @@ def two_sum(nums, target):
 
 與 V1 相同，對 `mode="translate"` 的語言進行翻譯。
 
-### Phase 6: Output
+### Phase 6: Post-Processing (程式處理，非 LLM)
+
+在儲存前，程式會自動進行文字替換，減少 LLM prompt 負擔：
+
+```yaml
+post_processing:
+  text_replacements:
+    # Replace "LC" abbreviation with full "LeetCode"
+    - pattern: "\\bLC[-\\s]?(\\d+)"
+      replacement: "LeetCode \\1"
+```
+
+**範例轉換：**
+| 輸入 | 輸出 |
+|------|------|
+| `LC-125` | `LeetCode 125` |
+| `LC 125` | `LeetCode 125` |
+| `LC125` | `LeetCode 125` |
+
+**為什麼用程式處理？**
+- LLM 可能不一致（有時 LC，有時 LeetCode）
+- 減少 prompt 中的格式指令
+- 100% 保證一致性
+
+### Phase 7: Output
 
 產出最終的 `.md` 和 `.html` 檔案。
 

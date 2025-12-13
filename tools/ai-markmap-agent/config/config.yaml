@@ -276,31 +276,63 @@ models:
     temperature: 0.5
     max_tokens: 4096
 
-  # Judges - Final evaluation and selection
+  # Judges - Evaluation and selection (minimum 2 required)
+  # Each judge can use a different model for cost/quality tradeoff
   judges:
-    - id: "judge_quality"
-      name: "Quality Judge"
-      model: "gpt-4"
-      persona_prompt: "prompts/judges/judge_quality_persona.md"
-      behavior_prompt: "prompts/judges/judge_quality_behavior.md"
+    - id: "judge_structure"
+      name: "Structure Judge"
+      persona_name: "Dr. Sarah Chen"
+      model: "gpt-4o"
+      persona_prompt: "prompts/judges/judge_structure_persona.md"
+      behavior_prompt: "prompts/judges/judge_structure_behavior.md"
       temperature: 0.4
       max_tokens: 4096
       criteria:
-        - "structure_quality"
-        - "naming_consistency"
-        - "technical_accuracy"
+        - "hierarchy_quality"       # Is the tree structure logical?
+        - "depth_balance"           # Are levels appropriately deep?
+        - "logical_grouping"        # Are related items grouped together?
+        - "naming_consistency"      # Are names clear and consistent?
     
     - id: "judge_completeness"
       name: "Completeness Judge"
-      model: "gpt-4"
+      persona_name: "Prof. Michael Torres"
+      model: "gpt-4o"
       persona_prompt: "prompts/judges/judge_completeness_persona.md"
       behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
       temperature: 0.4
       max_tokens: 4096
       criteria:
-        - "knowledge_coverage"
-        - "practical_value"
-        - "depth_balance"
+        - "coverage"                # Are all important patterns included?
+        - "practical_value"         # Is it useful for learners?
+        - "learning_path"           # Does it support progressive learning?
+        - "technical_accuracy"      # Are classifications correct?
+    
+    # Add more judges as needed (uncomment below or add new ones)
+    # - id: "judge_usability"
+    #   name: "Usability Judge"
+    #   persona_name: "Lisa Wang"
+    #   model: "gpt-4o-mini"        # Can use cheaper model for some judges
+    #   persona_prompt: "prompts/judges/judge_usability_persona.md"
+    #   behavior_prompt: "prompts/judges/judge_usability_behavior.md"
+    #   temperature: 0.4
+    #   max_tokens: 4096
+    #   criteria:
+    #     - "navigation_ease"
+    #     - "visual_clarity"
+    #     - "information_density"
+
+  # Writer - Final Markmap generation (V2 NEW)
+  # Responsible for:
+  #   1. Applying judge feedback and suggestions
+  #   2. Generating proper links (GitHub/LeetCode)
+  #   3. Applying Markmap formatting (checkboxes, KaTeX, fold, etc.)
+  writer:
+    model: "gpt-5.2"
+    persona_prompt: "prompts/writer/writer_persona.md"
+    behavior_prompt: "prompts/writer/writer_behavior.md"
+    format_guide: "prompts/writer/markmap_format_guide.md"
+    temperature: 0.5
+    max_tokens: 8192
 
   # Compressor - For summarizing long content (use cheaper model)
   compressor:
@@ -313,7 +345,7 @@ models:
 # Workflow Configuration
 # -----------------------------------------------------------------------------
 workflow:
-  # Number of optimization rounds
+  # Number of optimization rounds (Phase 2)
   # NOTE: Recommended setting is 3 rounds for production quality
   # Currently set to 1 for faster iteration during development
   optimization_rounds: 1  # Production: 3
@@ -321,22 +353,43 @@ workflow:
   # Number of optimizers (must match models.optimizer count)
   optimizer_count: 3
   
-  # Number of judges (must match models.judges count)
-  judge_count: 2
-  
   # Token threshold to trigger compression
   max_tokens_before_compress: 8000
   
   # Enable parallel baseline generation (Phase 1)
   parallel_baseline_generation: true
   
-  # Enable debate between judges
-  # NOTE: Recommended true for production quality
-  enable_debate: false  # Production: true
+  # ---------------------------------------------------------------------------
+  # Evaluation & Debate Settings (Phase 3)
+  # ---------------------------------------------------------------------------
+  # Number of judges (minimum 2 required, must match models.judges count)
+  judge_count: 2
   
-  # Maximum debate rounds
-  # NOTE: Recommended 2 for production
-  max_debate_rounds: 1  # Production: 2
+  # Enable debate between judges for consensus
+  # When enabled, judges will discuss and debate to reach agreement
+  enable_debate: true  # Recommended: true for production
+  
+  # Maximum debate rounds before forcing a decision
+  max_debate_rounds: 3  # Production: 2-3
+  
+  # Consensus threshold (0.0-1.0)
+  # If judges agree above this threshold, debate ends early
+  # 0.8 = 80% agreement required for consensus
+  debate_consensus_threshold: 0.8
+  
+  # ---------------------------------------------------------------------------
+  # Post-Processing Settings (applied by program, not LLM)
+  # ---------------------------------------------------------------------------
+  post_processing:
+    # Text replacements applied to final output
+    # These are done by code, reducing LLM prompt burden
+    text_replacements:
+      # Replace "LC" abbreviation with full "LeetCode"
+      - pattern: "\\bLC[-\\s]?(\\d+)"
+        replacement: "LeetCode \\1"
+      # Ensure consistent spacing
+      - pattern: "LeetCode(\\d+)"
+        replacement: "LeetCode \\1"
 
 # -----------------------------------------------------------------------------
 # Memory Configuration
