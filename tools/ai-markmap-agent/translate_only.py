@@ -184,6 +184,9 @@ def main() -> int:
                 return 1
             print(f"\n📂 Found latest output: {input_path}")
         
+        # Create converter for output path resolution
+        converter = MarkMapHTMLConverter(config)
+        
         # Determine output file
         if args.output:
             output_path = Path(args.output)
@@ -196,7 +199,9 @@ def main() -> int:
                 new_stem = stem[:-len(suffix)] + f"_{args.target}"
             else:
                 new_stem = f"{stem}_{args.target}"
-            output_path = input_path.parent / f"{new_stem}.md"
+            
+            # Use final_dirs.markdown from config for consistency with HTML output
+            output_path = converter.md_output_dir / f"{new_stem}.md"
         
         # Determine model
         model = args.model
@@ -219,14 +224,12 @@ def main() -> int:
         # Generate HTML if requested
         if args.html:
             print("\n📊 Generating HTML...")
-            converter = MarkMapHTMLConverter(config)
             html_content = converter.convert(
                 translated,
                 title=f"NeetCode Agent Evolved Mindmap ({args.target.upper()})"
             )
             # Use correct HTML output directory from config
-            html_dir = converter.html_output_dir
-            html_path = html_dir / f"{output_path.stem}.html"
+            html_path = converter.html_output_dir / f"{output_path.stem}.html"
             html_path.write_text(html_content, encoding="utf-8")
             print(f"   ✓ Saved: {html_path}")
         

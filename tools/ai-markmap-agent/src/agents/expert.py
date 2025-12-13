@@ -271,16 +271,35 @@ Remember: Only suggestions with majority support will be implemented."""
         """Parse adoption list from discussion response."""
         adopted_ids = []
         
-        # Look for adoption list section
-        adoption_section = re.search(
-            r'(?:Final Adoption List|My Final Adoption|I recommend adopting).*?(?=##|$)',
-            response,
-            re.IGNORECASE | re.DOTALL
-        )
+        # Strategy 1: Look for explicit adoption section
+        # The regex was failing because "###" contains "##" 
+        # Use a more robust pattern: find the adoption header and take everything after it
+        adoption_patterns = [
+            r'(?:^|\n)#+\s*(?:My\s+)?Final\s+Adoption\s+List.*',  # "### My Final Adoption List"
+            r'I\s+recommend\s+adopting\s+(?:these\s+)?suggestions?:?\s*\n.*',  # "I recommend adopting..."
+            r'(?:^|\n)#+\s*Part\s*2\s*:?\s*Final\s+Adoption.*',  # "## Part 2: Final Adoption..."
+        ]
         
-        if adoption_section:
-            section_text = adoption_section.group(0)
+        section_text = ""
+        for pattern in adoption_patterns:
+            match = re.search(pattern, response, re.IGNORECASE | re.DOTALL)
+            if match:
+                # Take from match position to end of response
+                section_text = response[match.start():]
+                break
+        
+        # Strategy 2: If no explicit section found, look for all ✅ Agree votes
+        if not section_text:
+            # Fallback: collect IDs from ✅ Agree vote lines
+            agree_pattern = r'\*\*Vote\*\*:\s*✅\s*Agree.*?(?:^|\n)#+\s*([APE]\d+)'
+            agrees = re.findall(agree_pattern, response, re.IGNORECASE | re.DOTALL | re.MULTILINE)
+            if agrees:
+                adopted_ids = list(dict.fromkeys(agrees))
+        
+        # Extract IDs from section text
+        if section_text:
             # Find all suggestion IDs (A1, P2, E3, etc.)
+            # Match IDs that appear in list items or bold text
             ids = re.findall(r'\b([APE]\d+)\b', section_text)
             adopted_ids = list(dict.fromkeys(ids))  # Remove duplicates, preserve order
         
