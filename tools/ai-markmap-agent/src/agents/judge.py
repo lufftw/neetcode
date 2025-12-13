@@ -131,7 +131,14 @@ Be specific in your improvements - they will be applied by the Writer.
 Score should be 0-100 based on your criteria."""
 
         messages = self._build_messages(prompt)
+        
+        # Save LLM input
+        self._save_llm_call_input(messages, "evaluate")
+        
         response = self.llm.invoke(messages)
+        
+        # Save LLM output
+        self._save_llm_call_output(response.content, "evaluate")
         
         return self._parse_structured_evaluation(response.content)
     
@@ -255,7 +262,14 @@ Respond in JSON format:
 ```"""
 
         messages = self._build_messages(prompt)
+        
+        # Save LLM input
+        self._save_llm_call_input(messages, "debate")
+        
         response = self.llm.invoke(messages)
+        
+        # Save LLM output
+        self._save_llm_call_output(response.content, "debate")
         
         return self._parse_debate_response(response.content)
     

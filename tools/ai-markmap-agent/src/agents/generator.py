@@ -249,7 +249,15 @@ Content to translate:
 {content}"""
         
         messages = self._build_messages(prompt)
+        
+        # Save LLM input
+        self._save_llm_call_input(messages, "translate")
+        
         response = self.llm.invoke(messages)
+        
+        # Save LLM output
+        self._save_llm_call_output(response.content, "translate")
+        
         return response.content
 
 

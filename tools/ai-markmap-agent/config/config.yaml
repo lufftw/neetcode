@@ -408,6 +408,15 @@ debug_output:
   # Base directory for debug outputs
   output_dir: "outputs/debug"
   
+  # Save LLM inputs and outputs for debugging
+  # This saves the FULL prompt sent to each LLM call
+  llm_calls:
+    enabled: true                    # Save LLM call details
+    save_input: true                 # Save full prompt/input to LLM
+    save_output: true                # Save LLM response
+    save_as_single_file: false       # true = one file per call, false = append to log
+    format: "md"                     # "md" for readable, "json" for structured
+  
   # Save outputs for each phase
   phases:
     # Phase 1: Baseline generation

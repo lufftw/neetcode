@@ -215,7 +215,14 @@ class WriterAgent(BaseAgent):
 Produce ONLY the final Markmap markdown. No explanations."""
 
         messages = self._build_messages(prompt)
+        
+        # Save LLM input
+        self._save_llm_call_input(messages, "write")
+        
         response = self.llm.invoke(messages)
+        
+        # Save LLM output
+        self._save_llm_call_output(response.content, "write")
         
         state["final_markmap"] = response.content
         return state

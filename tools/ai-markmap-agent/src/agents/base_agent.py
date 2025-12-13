@@ -153,6 +153,139 @@ class BaseAgent(ABC):
         
         return messages
     
+    def _get_llm_debug_config(self) -> dict[str, Any]:
+        """Get LLM debug configuration."""
+        debug_config = self.config.get("debug_output", {})
+        return debug_config.get("llm_calls", {})
+    
+    def _save_llm_call_input(self, messages: list, call_type: str = "invoke"):
+        """
+        Save LLM input (prompt) to debug file.
+        
+        Args:
+            messages: List of messages sent to LLM
+            call_type: Type of call (invoke, evaluate, etc.)
+        """
+        llm_config = self._get_llm_debug_config()
+        if not llm_config.get("enabled", False) or not llm_config.get("save_input", False):
+            return
+        
+        try:
+            from ..debug_output import get_debug_manager
+            debug = get_debug_manager(self.config)
+            
+            if not debug.enabled:
+                return
+            
+            # Format messages for saving
+            fmt = llm_config.get("format", "md")
+            
+            if fmt == "md":
+                content = self._format_messages_as_markdown(messages)
+            else:
+                content = self._format_messages_as_json(messages)
+            
+            # Determine filename
+            if llm_config.get("save_as_single_file", False):
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%H%M%S_%f")
+                filename = f"llm_input_{self.agent_id}_{call_type}_{timestamp}"
+            else:
+                filename = f"llm_input_{self.agent_id}_{call_type}"
+            
+            # Save to debug directory
+            ext = "md" if fmt == "md" else "json"
+            filepath = debug.run_dir / f"{filename}.{ext}"
+            filepath.write_text(content, encoding="utf-8")
+            print(f"      📝 LLM input saved: {filepath.name}")
+            
+        except Exception as e:
+            print(f"      ⚠ Failed to save LLM input: {e}")
+    
+    def _save_llm_call_output(self, response: str, call_type: str = "invoke"):
+        """
+        Save LLM output (response) to debug file.
+        
+        Args:
+            response: LLM response content
+            call_type: Type of call (invoke, evaluate, etc.)
+        """
+        llm_config = self._get_llm_debug_config()
+        if not llm_config.get("enabled", False) or not llm_config.get("save_output", False):
+            return
+        
+        try:
+            from ..debug_output import get_debug_manager
+            debug = get_debug_manager(self.config)
+            
+            if not debug.enabled:
+                return
+            
+            # Determine filename
+            if llm_config.get("save_as_single_file", False):
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%H%M%S_%f")
+                filename = f"llm_output_{self.agent_id}_{call_type}_{timestamp}"
+            else:
+                filename = f"llm_output_{self.agent_id}_{call_type}"
+            
+            # Save to debug directory
+            filepath = debug.run_dir / f"{filename}.md"
+            filepath.write_text(response, encoding="utf-8")
+            print(f"      📤 LLM output saved: {filepath.name}")
+            
+        except Exception as e:
+            print(f"      ⚠ Failed to save LLM output: {e}")
+    
+    def _format_messages_as_markdown(self, messages: list) -> str:
+        """Format messages as readable markdown."""
+        lines = [
+            f"# LLM Input: {self.agent_id}",
+            f"Model: {self.model_config.get('model', 'unknown')}",
+            f"Temperature: {self.model_config.get('temperature', 'unknown')}",
+            "",
+            "---",
+            "",
+        ]
+        
+        for msg in messages:
+            if hasattr(msg, 'type'):
+                msg_type = msg.type
+            else:
+                msg_type = type(msg).__name__
+            
+            content = msg.content if hasattr(msg, 'content') else str(msg)
+            
+            lines.append(f"## {msg_type.upper()}")
+            lines.append("")
+            lines.append(content)
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+        
+        return "\n".join(lines)
+    
+    def _format_messages_as_json(self, messages: list) -> str:
+        """Format messages as JSON."""
+        import json
+        
+        data = {
+            "agent_id": self.agent_id,
+            "model": self.model_config.get("model", "unknown"),
+            "temperature": self.model_config.get("temperature", "unknown"),
+            "messages": []
+        }
+        
+        for msg in messages:
+            msg_type = msg.type if hasattr(msg, 'type') else type(msg).__name__
+            content = msg.content if hasattr(msg, 'content') else str(msg)
+            data["messages"].append({
+                "role": msg_type,
+                "content": content
+            })
+        
+        return json.dumps(data, indent=2, ensure_ascii=False)
+    
     def invoke(self, input_data: dict[str, Any]) -> str:
         """
         Invoke the agent with input data.
@@ -172,8 +305,14 @@ class BaseAgent(ABC):
         # Build messages
         messages = self._build_messages(formatted_prompt)
         
+        # Save LLM input if debug enabled
+        self._save_llm_call_input(messages, "invoke")
+        
         # Call LLM
         response = self.llm.invoke(messages)
+        
+        # Save LLM output if debug enabled
+        self._save_llm_call_output(response.content, "invoke")
         
         return response.content
     
