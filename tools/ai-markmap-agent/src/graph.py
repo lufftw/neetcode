@@ -466,20 +466,21 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                         continue  # Skip if source_lang appears but not at the end
                 else:
                     continue  # Skip if source_lang not found
+                
+                # Translate the content
+                try:
+                    if debug.enabled:
+                        debug.save_translation(content, output_key, target_key, is_before=True)
                     
-                    try:
-                        if debug.enabled:
-                            debug.save_translation(content, output_key, target_key, is_before=True)
-                        
-                        translated_content = translator.translate(content, "general")
-                        translated[target_key] = translated_content
-                        print(f"  ✓ Translated: {output_key} → {target_key}")
-                        
-                        if debug.enabled:
-                            debug.save_translation(translated_content, output_key, target_key, is_before=False)
-                    except Exception as e:
-                        print(f"  ✗ Translation failed: {e}")
-                        state["errors"].append(f"Translation error: {e}")
+                    translated_content = translator.translate(content, "general")
+                    translated[target_key] = translated_content
+                    print(f"  ✓ Translated: {output_key} → {target_key}")
+                    
+                    if debug.enabled:
+                        debug.save_translation(translated_content, output_key, target_key, is_before=False)
+                except Exception as e:
+                    print(f"  ✗ Translation failed: {e}")
+                    state["errors"].append(f"Translation error: {e}")
         
         state["translated_outputs"] = translated
         return state

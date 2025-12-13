@@ -199,6 +199,24 @@ python main.py --baseline path/to/markmap.md
 python main.py --dry-run
 ```
 
+### Translation Only
+
+Translate an existing Markmap without running the full pipeline:
+
+```bash
+# Translate latest English output to zh-TW
+python translate_only.py
+
+# Translate specific file
+python translate_only.py --input path/to/file_en.md
+
+# Custom source/target languages
+python translate_only.py --source en --target zh-TW
+
+# Also generate HTML
+python translate_only.py --html
+```
+
 ### API Keys
 
 API keys are entered at runtime and **never stored**:

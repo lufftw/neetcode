@@ -199,6 +199,24 @@ python main.py --baseline path/to/markmap.md
 python main.py --dry-run
 ```
 
+### 單獨翻譯
+
+不執行完整 pipeline，只翻譯現有的 Markmap：
+
+```bash
+# 翻譯最新的英文輸出為 zh-TW
+python translate_only.py
+
+# 翻譯指定檔案
+python translate_only.py --input path/to/file_en.md
+
+# 自訂來源/目標語言
+python translate_only.py --source en --target zh-TW
+
+# 同時產生 HTML
+python translate_only.py --html
+```
+
 ### API 金鑰
 
 API 金鑰在執行時輸入，**永不儲存**：
