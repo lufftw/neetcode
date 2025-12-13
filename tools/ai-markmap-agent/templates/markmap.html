@@ -59,10 +59,10 @@
             z-index: 1000;
         }
     </style>
-    <!-- Markmap dependencies -->
+    <!-- Markmap dependencies (use specific versions for stability) -->
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.16.0/dist/browser/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.16.0/dist/browser/index.js"></script>
 </head>
 <body>
     <div class="toolbar">
@@ -85,9 +85,9 @@
         // Markmap content (injected during generation)
         const markdownContent = `{{ markdown_content | safe }}`;
         
-        // Initialize markmap
+        // Initialize markmap (both libs expose to window.markmap after v0.16)
+        const { Transformer } = markmap;
         const { Markmap, loadCSS, loadJS } = markmap;
-        const { Transformer } = markmapLib;
         
         const transformer = new Transformer();
         const { root, features } = transformer.transform(markdownContent);

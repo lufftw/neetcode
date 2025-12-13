@@ -12,7 +12,7 @@ from typing import Any, TypedDict
 
 from langgraph.graph import StateGraph, END
 
-from .agents.generator import GeneralistAgent, SpecialistAgent, create_generators
+from .agents.generator import GeneralistAgent, SpecialistAgent, TranslatorAgent, create_generators, create_translators
 from .agents.optimizer import OptimizerAgent, create_optimizers
 from .agents.summarizer import SummarizerAgent
 from .agents.judge import JudgeAgent, create_judges, aggregate_votes
@@ -31,7 +31,7 @@ class WorkflowState(TypedDict, total=False):
     patterns: dict[str, Any]
     roadmaps: dict[str, Any]
     
-    # Baseline outputs (4 total: 2 types × 2 languages)
+    # Baseline outputs (for "generate" mode languages only)
     baseline_general_en: str
     baseline_general_zh_TW: str  # Note: - replaced with _ for valid Python
     baseline_specialist_en: str
@@ -56,9 +56,13 @@ class WorkflowState(TypedDict, total=False):
     markmap_round_3: str
     
     # Final outputs
-    candidates: dict[str, str]
+    candidates: dict[str, str]  # Only "generate" mode outputs (for optimization)
+    translated_outputs: dict[str, str]  # "translate" mode outputs
     judge_evaluations: dict[str, dict]
-    final_outputs: dict[str, str]
+    final_outputs: dict[str, str]  # All outputs (generated + translated)
+    
+    # Translation config
+    translator_configs: list[dict]
     
     # Metadata
     messages: list[str]
@@ -112,6 +116,10 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         state["messages"] = []
         state["errors"] = []
         state["final_outputs"] = {}
+        state["translated_outputs"] = {}
+        
+        # Store translator configs for later use
+        state["translator_configs"] = create_translators(config)
         
         update_stm("Workflow initialized", category="system")
         return state
@@ -227,15 +235,66 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         return state
     
+    def run_translations(state: WorkflowState) -> WorkflowState:
+        """Translate optimized outputs for translate-mode languages."""
+        translator_configs = state.get("translator_configs", [])
+        
+        if not translator_configs:
+            return state
+        
+        print("\n[Phase 4] Translating outputs...")
+        
+        candidates = state.get("candidates", {})
+        translated = {}
+        
+        for tr_config in translator_configs:
+            source_lang = tr_config["source_lang"]
+            target_lang = tr_config["target_lang"]
+            model = tr_config["model"]
+            
+            translator = TranslatorAgent(
+                source_language=source_lang,
+                target_language=target_lang,
+                model=model,
+                config=config,
+            )
+            
+            # Translate each output type (general, specialist)
+            for output_type in types_config.keys():
+                source_key = f"{output_type}_{source_lang}"
+                target_key = f"{output_type}_{target_lang}"
+                
+                if source_key in candidates:
+                    try:
+                        translated_content = translator.translate(
+                            candidates[source_key],
+                            output_type,
+                        )
+                        translated[target_key] = translated_content
+                        print(f"  ✓ Translated: {source_key} → {target_key}")
+                    except Exception as e:
+                        print(f"  ✗ Translation failed {source_key} → {target_key}: {e}")
+                        state["errors"].append(f"Translation error: {e}")
+        
+        state["translated_outputs"] = translated
+        update_stm("Translations completed", category="translation")
+        return state
+    
     def finalize_outputs(state: WorkflowState) -> WorkflowState:
         """Finalize and prepare outputs for saving."""
-        print("\n[Phase 4] Finalizing outputs...")
+        print("\n[Phase 5] Finalizing outputs...")
         
-        # The candidates at this point are the optimized markmaps
-        final_outputs = state.get("candidates", {})
+        # Merge generated (optimized) and translated outputs
+        final_outputs = {}
         
-        # If we have judge evaluations, we could use them to make final adjustments
-        # For now, we use the candidates directly
+        # Add optimized outputs (from generate mode)
+        for key, content in state.get("candidates", {}).items():
+            final_outputs[key] = content
+        
+        # Add translated outputs (from translate mode)
+        for key, content in state.get("translated_outputs", {}).items():
+            final_outputs[key] = content
+        
         state["final_outputs"] = final_outputs
         
         # Log final scores if available
@@ -249,7 +308,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     
     def save_outputs(state: WorkflowState) -> WorkflowState:
         """Save all final outputs to files."""
-        print("\n[Phase 5] Saving outputs...")
+        print("\n[Phase 6] Saving outputs...")
         
         final_outputs = state.get("final_outputs", {})
         
@@ -278,10 +337,12 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     graph.add_node("prepare_optimization", prepare_optimization)
     graph.add_node("optimize", run_optimization_round)
     graph.add_node("judge", run_judging)
+    graph.add_node("translate", run_translations)  # New: translate after judging
     graph.add_node("finalize", finalize_outputs)
     graph.add_node("save", save_outputs)
     
     # Add edges
+    # Flow: initialize → generate → prepare → optimize (loop) → judge → translate → finalize → save
     graph.set_entry_point("initialize")
     graph.add_edge("initialize", "generate_baselines")
     graph.add_edge("generate_baselines", "prepare_optimization")
@@ -297,7 +358,8 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         }
     )
     
-    graph.add_edge("judge", "finalize")
+    graph.add_edge("judge", "translate")  # After judging, translate
+    graph.add_edge("translate", "finalize")
     graph.add_edge("finalize", "save")
     graph.add_edge("save", END)
     

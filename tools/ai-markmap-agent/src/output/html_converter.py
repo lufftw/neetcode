@@ -79,15 +79,14 @@ class MarkMapHTMLConverter:
         #markmap { width: 100%; height: 100vh; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.16.0/dist/browser/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.16.0/dist/browser/index.js"></script>
 </head>
 <body>
     <svg id="markmap"></svg>
     <script>
         const markdownContent = `{{ markdown_content | safe }}`;
-        const { Markmap } = markmap;
-        const { Transformer } = markmapLib;
+        const { Markmap, Transformer } = markmap;
         const transformer = new Transformer();
         const { root } = transformer.transform(markdownContent);
         Markmap.create('#markmap', { autoFit: true }, root);

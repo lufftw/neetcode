@@ -161,9 +161,93 @@ class SpecialistAgent(BaseAgent):
         return state
 
 
+class TranslatorAgent(BaseAgent):
+    """
+    Translator agent for converting Markmaps between languages.
+    
+    Translates the content while preserving structure, links, and formatting.
+    """
+    
+    def __init__(
+        self,
+        source_language: str,
+        target_language: str,
+        model: str = "gpt-4o",
+        config: dict[str, Any] | None = None,
+    ):
+        """
+        Initialize the Translator agent.
+        
+        Args:
+            source_language: Source language (e.g., "en")
+            target_language: Target language (e.g., "zh-TW")
+            model: Model to use for translation
+            config: Full configuration dict
+        """
+        from ..config_loader import ConfigLoader
+        
+        config = config or ConfigLoader.get_config()
+        
+        # Create model config for translator
+        model_config = {
+            "model": model,
+            "temperature": 0.3,  # Lower temperature for translation accuracy
+            "max_tokens": 8192,
+        }
+        
+        super().__init__(
+            agent_id=f"translator_{source_language}_to_{target_language}",
+            model_config=model_config,
+            config=config,
+        )
+        
+        self.source_language = source_language
+        self.target_language = target_language
+    
+    def translate(self, content: str, output_type: str) -> str:
+        """
+        Translate Markmap content from source to target language.
+        
+        Args:
+            content: Markdown content to translate
+            output_type: Type of output ("general" or "specialist")
+            
+        Returns:
+            Translated markdown content
+        """
+        target_name = "繁體中文" if self.target_language == "zh-TW" else self.target_language
+        
+        prompt = f"""Translate the following Markmap markdown content from English to {target_name}.
+
+CRITICAL RULES:
+1. Preserve ALL markdown formatting exactly (headers, lists, links, checkboxes, code blocks)
+2. DO NOT translate:
+   - URLs (keep all links exactly as-is)
+   - Code/variable names inside backticks
+   - Problem IDs (e.g., "LC 125", "0003")
+   - Technical terms that are commonly kept in English (e.g., "Two Pointers", "Sliding Window" - but add Chinese translation in parentheses)
+3. Translate:
+   - Section headings
+   - Descriptions and explanations
+   - Comments
+4. Keep the same tree structure and indentation
+5. Output ONLY the translated markdown, no explanations
+
+Content to translate:
+
+{content}"""
+        
+        messages = [{"role": "user", "content": prompt}]
+        response = self._call_llm(messages)
+        return response
+
+
 def create_generators(config: dict[str, Any] | None = None) -> dict[str, BaseAgent]:
     """
-    Create all generator agents based on config.
+    Create generator agents based on config.
+    
+    Only creates generators for languages with mode="generate".
+    Languages with mode="translate" will be handled separately.
     
     Args:
         config: Configuration dictionary
@@ -175,11 +259,27 @@ def create_generators(config: dict[str, Any] | None = None) -> dict[str, BaseAge
     
     config = config or ConfigLoader.get_config()
     naming = config.get("output", {}).get("naming", {})
-    languages = naming.get("languages", ["en", "zh-TW"])
+    languages_config = naming.get("languages", {})
+    
+    # Handle both old format (list) and new format (dict with mode)
+    if isinstance(languages_config, list):
+        # Old format: ["en", "zh-TW"] - treat all as generate mode
+        languages = {lang: {"mode": "generate"} for lang in languages_config}
+    else:
+        languages = languages_config
     
     generators = {}
     
-    for lang in languages:
+    for lang, lang_settings in languages.items():
+        # Skip if disabled
+        if not lang_settings.get("enabled", True):
+            continue
+        
+        # Only create generators for "generate" mode languages
+        mode = lang_settings.get("mode", "generate")
+        if mode != "generate":
+            continue
+        
         # Create generalist
         gen_agent = GeneralistAgent(language=lang, config=config)
         generators[gen_agent.agent_id] = gen_agent
@@ -189,4 +289,44 @@ def create_generators(config: dict[str, Any] | None = None) -> dict[str, BaseAge
         generators[spec_agent.agent_id] = spec_agent
     
     return generators
+
+
+def create_translators(config: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    """
+    Create translator configurations based on config.
+    
+    Returns info about which languages need translation.
+    
+    Args:
+        config: Configuration dictionary
+        
+    Returns:
+        List of translator configs with source_lang, target_lang, model
+    """
+    from ..config_loader import ConfigLoader
+    
+    config = config or ConfigLoader.get_config()
+    naming = config.get("output", {}).get("naming", {})
+    languages_config = naming.get("languages", {})
+    
+    # Handle old format
+    if isinstance(languages_config, list):
+        return []  # Old format doesn't support translate mode
+    
+    translators = []
+    
+    for lang, lang_settings in languages_config.items():
+        # Skip if disabled
+        if not lang_settings.get("enabled", True):
+            continue
+        
+        mode = lang_settings.get("mode", "generate")
+        if mode == "translate":
+            translators.append({
+                "target_lang": lang,
+                "source_lang": lang_settings.get("source_lang", "en"),
+                "model": lang_settings.get("translator_model", "gpt-4o"),
+            })
+    
+    return translators
 
