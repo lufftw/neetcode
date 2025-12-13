@@ -67,23 +67,23 @@ markmap:
   maxWidth: 300
 ---
 
-## 🎯 如何使用這個思維導圖（快速）
-- **自上而下閱讀**: *API 核心* → *模式* → *問題*（鏈接）
-- **練習循環**: 實現模板 → 解決 2–3 個問題 → 重構為可重用的 \`solve(pattern_state_machine)\` 心智模型
+## 🎯 如何使用這個心智圖（快速）
+- **從上到下閱讀**：*API Kernel* → *Pattern* → *Problems*（連結）
+- **練習循環**：實作範本 → 解決 2–3 個問題 → 重構為可重用的 \`solve(pattern_state_machine)\` 心智模型
 - **進度追蹤**
   - [ ] 先做所有 **簡單** 的
   - [ ] 然後是 **中等** 變體
-  - [ ] 最後是 **困難** “邊界情況放大器”
+  - [ ] 最後是 **困難** 的「邊界情況放大器」
 
 ---
 
 ## 🧠 API 核心（“引擎”）
 ### SubstringSlidingWindow — *一維窗口狀態機*
-- ==核心不變性==: 窗口 \`[L,R]\` 通過 **向右擴展** + **向左收縮** 保持有效
-- 複雜度: 通常 $O(n)$ 時間, $O(\\Sigma)$ 空間（字母表 / 不同鍵）
+- ==核心不變性==：窗口 \`[L,R]\` 透過 **向右擴展** + **向左收縮** 保持有效
+- 複雜度：通常是 $O(n)$ 時間，$O(\\Sigma)$ 空間（字母表 / 不同鍵）
 
 <!-- markmap: fold -->
-#### 模式速查表（來自文檔）
+#### 模式速查表（來自文件）
 | 問題 | 不變性 | 狀態 | 窗口大小 | 目標 |
 |---------|-----------|-------|-------------|------|
 | [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | 全部唯一 | 最後索引映射 | 可變 | 最大 |
@@ -97,12 +97,12 @@ markmap:
 - **sliding_window_unique** *(最大化，“向左跳”優化)*
   - 🎯 問題
     - [ ] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-  - 關鍵狀態: \`last_seen[char]\` → \`L = max(L, last_seen[c]+1)\`
+  - 關鍵狀態：\`last_seen[char]\` → \`L = max(L, last_seen[c]+1)\`
 - **sliding_window_at_most_k_distinct** *(最大化，無效時收縮)*
   - 🎯 問題
     - [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-  - 關鍵不變性: \`len(freq) <= k\`
-- **sliding_window_freq_cover** *(覆蓋 / 精確匹配系列)*
+  - 關鍵不變性：\`len(freq) <= k\`
+- **sliding_window_freq_cover** *(覆蓋 / 精確匹配家族)*
   - 🎯 問題
     - [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) — *在有效時最小化*
     - [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) — *固定窗口，收集索引*
@@ -110,18 +110,18 @@ markmap:
 - **sliding_window_cost_bounded** *(數值約束)*
   - 🎯 問題
     - [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-  - 典型要求: 正數 → 單調收縮有效
+  - 典型要求：正數 → 單調收縮有效
 
 ---
 
 ### TwoPointersTraversal — *序列上的指針編排*
-- ==核心不變性==: 指針按確定性移動; 處理過的區域是“安全的”
-- 複雜度: 通常 $O(n)$ 時間, $O(1)$ 空間（除了排序步驟）
+- ==核心不變性==：指針確定性移動；已處理區域是“安全”的
+- 複雜度：通常是 $O(n)$ 時間，$O(1)$ 空間（排序步驟除外）
 
-#### 模式比較（來自文檔）
+#### 模式比較（來自文件）
 | 模式 | 指針初始化 | 移動 | 終止 | 時間 | 空間 | 關鍵用例 |
 |---------|--------------|----------|-------------|------|-------|--------------|
-| 相反 | \`0, n-1\` | 向中心 | \`L>=R\` | $O(n)$ | $O(1)$ | 排序對 / 回文 / 最大化 |
+| 相反 | \`0, n-1\` | 向中心 | \`L>=R\` | $O(n)$ | $O(1)$ | 已排序對 / 回文 / 最大化 |
 | 同方向 | \`write, read\` | 向前 | \`read==n\` | $O(n)$ | $O(1)$ | 就地修改 |
 | 快–慢 | \`slow, fast\` | 1× / 2× | 相遇或空 | $O(n)$ | $O(1)$ | 循環 / 中點 |
 | 去重枚舉 | \`i\` + \`L,R\` | 嵌套 | 完成 | $O(n^2)$ | $O(1)$ | 3Sum/4Sum |
@@ -130,12 +130,12 @@ markmap:
 - **two_pointer_opposite_maximize**
   - 🎯 問題
     - [ ] [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-  - 洞察: 移動**較短**高度的指針
+  - 洞察：移動 **較短** 高度的指針
 - **two_pointer_three_sum** *(去重枚舉)*
   - 🎯 問題
     - [ ] [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
     - [ ] [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
-  - 要求: 先排序 ($O(n\\log n)$), 然後掃描去重
+  - 要求：先排序 ($O(n\\log n)$)，然後用去重掃描
 - **two_pointer_opposite_palindrome**
   - 🎯 問題
     - [ ] [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
@@ -154,7 +154,7 @@ markmap:
 ---
 
 ### FastSlowPointers — *Floyd + 中點 + 隱式序列*
-- ==核心不變性==: 如果存在循環，\`fast\` 會遇到 \`slow\`
+- ==核心不變性==：如果存在循環，\`fast\` 會遇到 \`slow\`
 - 模式
   - **fast_slow_cycle_detect**
     - [ ] [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
@@ -168,7 +168,7 @@ markmap:
 ---
 
 ### TwoPointerPartition — *就地分區“迷你快速排序”*
-- ==核心不變性==: 區域按屬性分區
+- ==核心不變性==：區域按屬性分區
 - 模式
   - **dutch_flag_partition**
     - [ ] [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
@@ -181,7 +181,7 @@ markmap:
 ---
 
 ### MergeSortedSequences — *合併兩個已排序序列*
-- ==核心不變性==: 輸出前綴是完全排序的
+- ==核心不變性==：輸出前綴是完全排序的
 - 模式
   - **merge_two_sorted_lists**
     - [ ] [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
@@ -194,15 +194,15 @@ markmap:
 
 ### KWayMerge — *合併 K 個已排序序列*
 - 兩個主要實現
-  - **merge_k_sorted_heap** → $O(N\\log k)$ 時間, $O(k)$ 堆
-  - **merge_k_sorted_divide** → $O(N\\log k)$ 時間, 有時較小的常數
+  - **merge_k_sorted_heap** → $O(N\\log k)$ 時間，$O(k)$ 堆
+  - **merge_k_sorted_divide** → $O(N\\log k)$ 時間，有時常數較小
 - 🎯 問題
   - [ ] [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - 相關“混合思維”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+  - 相關“混合思維”：[LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
 
 ---
 
-### HeapTopK — *在流式更新中保持最佳 K*
+### HeapTopK — *在流更新中保持最佳 K*
 - 模式
   - **heap_kth_element**
     - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
@@ -218,7 +218,7 @@ markmap:
 
 ---
 
-### BacktrackingExploration — *帶修剪的搜索樹*
+### BacktrackingExploration — *帶剪枝的搜索樹*
 - 模式
   - **backtracking_n_queens**
     - [ ] [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
@@ -229,7 +229,7 @@ markmap:
 - 模式
   - **grid_bfs_propagation**
     - [ ] [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
-- 實現不變性: 隊列持有當前“分鐘/級別”的前沿
+- 實現不變性：隊列持有當前“分鐘/層級”的前沿
 
 ---
 
@@ -261,17 +261,17 @@ markmap:
 ---
 
 ## 🧩 “同一問題，不同視角” （遷移學習）
-- **選擇**: [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-  - 選項 A: \`quickselect_partition\` (期望 $O(n)$)
-  - 選項 B: \`heap_kth_element\` ($O(n\\log k)$, 流式友好)
-- **合併**:
-  - 2-路: [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
-  - K-路: [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - “邊界 + 合併思維”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+- **選擇**：[LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+  - 選項 A：\`quickselect_partition\`（期望 $O(n)$）
+  - 選項 B：\`heap_kth_element\`（$O(n\\log k)$，流處理友好）
+- **合併**：
+  - 2 路：[LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - K 路：[LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
+  - “邊界 + 合併思維”：[LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
 
 ---
 
-## 🧱 最小可重用模板（心智 API）
+## 🧱 最小可重用範本（心智 API）
 \`\`\`python
 # 滑動窗口（可變，最大化）
 def max_window(seq):

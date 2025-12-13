@@ -32,6 +32,7 @@ from .consensus import (
     ConsensusResult,
 )
 from .output.html_converter import save_all_markmaps, MarkMapHTMLConverter
+from .post_processing import clean_translated_content
 
 __all__ = [
     "run_pipeline",
@@ -473,6 +474,8 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                         debug.save_translation(content, output_key, target_key, is_before=True)
                     
                     translated_content = translator.translate(content, "general")
+                    # Clean up LLM artifacts
+                    translated_content = clean_translated_content(translated_content)
                     translated[target_key] = translated_content
                     print(f"  ✓ Translated: {output_key} → {target_key}")
                     

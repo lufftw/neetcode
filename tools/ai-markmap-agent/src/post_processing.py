@@ -122,3 +122,54 @@ def apply_lc_to_leetcode(content: str) -> str:
     result = re.sub(r"LeetCode(\d+)", r"LeetCode \1", result)
     return result
 
+
+def clean_translated_content(content: str) -> str:
+    """
+    Clean up translated content by removing LLM artifacts.
+    
+    Removes:
+    - Leading/trailing whitespace
+    - Multiple consecutive empty lines
+    - Standalone --- separators at start/end
+    - Markdown code fence wrappers if present
+    
+    Args:
+        content: Raw translated content from LLM
+        
+    Returns:
+        Cleaned content
+    """
+    # Remove markdown code fence if LLM wrapped the output
+    content = content.strip()
+    if content.startswith("```markdown"):
+        content = content[len("```markdown"):].strip()
+    if content.startswith("```md"):
+        content = content[len("```md"):].strip()
+    if content.startswith("```"):
+        content = content[3:].strip()
+    if content.endswith("```"):
+        content = content[:-3].strip()
+    
+    # Remove standalone --- at start or end
+    lines = content.split("\n")
+    
+    # Remove leading empty lines and ---
+    while lines and (lines[0].strip() == "" or lines[0].strip() == "---"):
+        lines.pop(0)
+    
+    # Remove trailing empty lines and ---
+    while lines and (lines[-1].strip() == "" or lines[-1].strip() == "---"):
+        lines.pop()
+    
+    # Collapse multiple empty lines into single empty line
+    result = []
+    prev_empty = False
+    for line in lines:
+        is_empty = line.strip() == ""
+        if is_empty and prev_empty:
+            continue  # Skip consecutive empty lines
+        result.append(line)
+        prev_empty = is_empty
+    
+    return "\n".join(result)
+

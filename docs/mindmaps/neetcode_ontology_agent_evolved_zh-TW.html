@@ -1,4 +1,65 @@
-```markdown
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeetCode Agent Evolved Mindmap (ZH-TW) - NeetCode Mind Maps</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        .markmap { width: 100%; height: 100%; }
+        .markmap > svg { width: 100%; height: 100%; }
+        #topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #fff; border-bottom: 1px solid #e5e7eb;
+            padding: 8px 16px; display: flex; gap: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 13px;
+        }
+        #topbar button {
+            padding: 4px 12px; border: 1px solid #d1d5db;
+            border-radius: 4px; background: #fff; cursor: pointer;
+        }
+        #topbar button:hover { background: #f3f4f6; }
+        .markmap { margin-top: 40px; height: calc(100% - 40px); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
+    <script>
+        function fitView() {
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) svg.mm.fit();
+        }
+        function expandAll() {
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) {
+                var root = svg.mm.state.data;
+                (function expand(n) {
+                    n.payload = Object.assign({}, n.payload, { fold: 0 });
+                    if (n.children) n.children.forEach(expand);
+                })(root);
+                svg.mm.setData(root); svg.mm.fit();
+            }
+        }
+        function collapseAll() {
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) {
+                var root = svg.mm.state.data;
+                root.children && root.children.forEach(function collapse(n) {
+                    if (n.children && n.children.length) {
+                        n.payload = Object.assign({}, n.payload, { fold: 1 });
+                        n.children.forEach(collapse);
+                    }
+                });
+                svg.mm.setData(root); svg.mm.fit();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const { Transformer, Markmap } = window.markmap;
+            const transformer = new Transformer();
+            const markdown = `\`\`\`markdown
 ---
 title: LeetCode Patterns Knowledge Graph (33 Problems) — API Kernels → Patterns → Problems 🎯
 markmap:
@@ -6,41 +67,41 @@ markmap:
   maxWidth: 300
 ---
 
-## 🎯 如何使用這個心智圖（快速）
-- **從上到下閱讀**：*API Kernel* → *Pattern* → *Problems*（連結）
-- **練習循環**：實作範本 → 解決 2–3 個問題 → 重構為可重用的 `solve(pattern_state_machine)` 心智模型
+## 🎯 如何使用這個思維導圖（快速）
+- **自上而下閱讀**: *API Kernel* → *Pattern* → *Problems* (鏈接)
+- **練習循環**: 實現模板 → 解決 2–3 個問題 → 重構為可重用的 \`solve(pattern_state_machine)\` 心智模型
 - **進度追蹤**
-  - [ ] 先做所有 **簡單** 的
+  - [ ] 先完成所有 **簡單** 題目
   - [ ] 然後是 **中等** 變體
-  - [ ] 最後是 **困難** 的「邊界情況放大器」
+  - [ ] 最後是 **困難** “邊界情況放大器”
 
 ---
 
 ## 🧠 API 核心（“引擎”）
 ### SubstringSlidingWindow — *一維窗口狀態機*
-- ==核心不變性==：窗口 `[L,R]` 透過 **向右擴展** + **向左收縮** 保持有效
-- 複雜度：通常是 $O(n)$ 時間，$O(\Sigma)$ 空間（字母表 / 不同鍵）
+- ==核心不變性==: 窗口 \`[L,R]\` 通過 **向右擴展** + **向左收縮** 保持有效
+- 複雜度: 通常 $O(n)$ 時間，$O(\\Sigma)$ 空間（字母表 / 不同鍵）
 
 <!-- markmap: fold -->
-#### 模式速查表（來自文件）
+#### 模式速查表（來自文檔）
 | 問題 | 不變性 | 狀態 | 窗口大小 | 目標 |
 |---------|-----------|-------|-------------|------|
 | [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | 全部唯一 | 最後索引映射 | 可變 | 最大 |
 | [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | ≤K 不同 | 頻率映射 | 可變 | 最大 |
-| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | 覆蓋 `t` | 需要/擁有 | 可變 | 最小 |
+| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | 覆蓋 \`t\` | 需要/擁有 | 可變 | 最小 |
 | [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | 精確頻率匹配 | 頻率 + 匹配 | 固定 | 存在 |
 | [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | 精確頻率匹配 | 頻率 + 匹配 | 固定 | 全部 |
 | [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | 和 ≥ 目標 | 整數和 | 可變 | 最小 |
 
 #### 模式
-- **sliding_window_unique** *(最大化，“向左跳”優化)*
+- **sliding_window_unique** *(最大化，“跳左”優化)*
   - 🎯 問題
     - [ ] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-  - 關鍵狀態：`last_seen[char]` → `L = max(L, last_seen[c]+1)`
+  - 關鍵狀態: \`last_seen[char]\` → \`L = max(L, last_seen[c]+1)\`
 - **sliding_window_at_most_k_distinct** *(最大化，無效時收縮)*
   - 🎯 問題
     - [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-  - 關鍵不變性：`len(freq) <= k`
+  - 關鍵不變性: \`len(freq) <= k\`
 - **sliding_window_freq_cover** *(覆蓋 / 精確匹配家族)*
   - 🎯 問題
     - [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) — *在有效時最小化*
@@ -49,32 +110,32 @@ markmap:
 - **sliding_window_cost_bounded** *(數值約束)*
   - 🎯 問題
     - [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-  - 典型要求：正數 → 單調收縮有效
+  - 典型要求: 正數 → 單調收縮有效
 
 ---
 
 ### TwoPointersTraversal — *序列上的指針編排*
-- ==核心不變性==：指針確定性移動；已處理區域是“安全”的
-- 複雜度：通常是 $O(n)$ 時間，$O(1)$ 空間（排序步驟除外）
+- ==核心不變性==: 指針確定性移動；已處理區域是“安全”的
+- 複雜度: 通常 $O(n)$ 時間，$O(1)$ 空間（排序步驟除外）
 
-#### 模式比較（來自文件）
+#### 模式比較（來自文檔）
 | 模式 | 指針初始化 | 移動 | 終止 | 時間 | 空間 | 關鍵用例 |
 |---------|--------------|----------|-------------|------|-------|--------------|
-| 相反 | `0, n-1` | 向中心 | `L>=R` | $O(n)$ | $O(1)$ | 已排序對 / 回文 / 最大化 |
-| 同方向 | `write, read` | 向前 | `read==n` | $O(n)$ | $O(1)$ | 就地修改 |
-| 快–慢 | `slow, fast` | 1× / 2× | 相遇或空 | $O(n)$ | $O(1)$ | 循環 / 中點 |
-| 去重枚舉 | `i` + `L,R` | 嵌套 | 完成 | $O(n^2)$ | $O(1)$ | 3Sum/4Sum |
+| 相反方向 | \`0, n-1\` | 向中心 | \`L>=R\` | $O(n)$ | $O(1)$ | 排序對 / 回文 / 最大化 |
+| 同方向 | \`write, read\` | 向前 | \`read==n\` | $O(n)$ | $O(1)$ | 就地修改 |
+| 快慢指針 | \`slow, fast\` | 1× / 2× | 相遇或空 | $O(n)$ | $O(1)$ | 循環 / 中點 |
+| 去重枚舉 | \`i\` + \`L,R\` | 嵌套 | 完成 | $O(n^2)$ | $O(1)$ | 3Sum/4Sum |
 
 #### 模式
 - **two_pointer_opposite_maximize**
   - 🎯 問題
     - [ ] [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-  - 洞察：移動 **較短** 高度的指針
+  - 洞察: 移動 **較短** 高度的指針
 - **two_pointer_three_sum** *(去重枚舉)*
   - 🎯 問題
     - [ ] [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
     - [ ] [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
-  - 要求：先排序 ($O(n\log n)$)，然後用去重掃描
+  - 要求: 先排序 ($O(n\\log n)$)，然後掃描去重
 - **two_pointer_opposite_palindrome**
   - 🎯 問題
     - [ ] [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
@@ -93,7 +154,7 @@ markmap:
 ---
 
 ### FastSlowPointers — *Floyd + 中點 + 隱式序列*
-- ==核心不變性==：如果存在循環，`fast` 會遇到 `slow`
+- ==核心不變性==: 如果存在循環，\`fast\` 會遇到 \`slow\`
 - 模式
   - **fast_slow_cycle_detect**
     - [ ] [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
@@ -107,7 +168,7 @@ markmap:
 ---
 
 ### TwoPointerPartition — *就地分區“迷你快速排序”*
-- ==核心不變性==：區域按屬性分區
+- ==核心不變性==: 區域按屬性分區
 - 模式
   - **dutch_flag_partition**
     - [ ] [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
@@ -119,8 +180,8 @@ markmap:
 
 ---
 
-### MergeSortedSequences — *合併兩個已排序序列*
-- ==核心不變性==：輸出前綴是完全排序的
+### MergeSortedSequences — *合併兩個排序序列*
+- ==核心不變性==: 輸出前綴完全排序
 - 模式
   - **merge_two_sorted_lists**
     - [ ] [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
@@ -131,17 +192,17 @@ markmap:
 
 ---
 
-### KWayMerge — *合併 K 個已排序序列*
-- 兩個主要實現
-  - **merge_k_sorted_heap** → $O(N\log k)$ 時間，$O(k)$ 堆
-  - **merge_k_sorted_divide** → $O(N\log k)$ 時間，有時常數較小
+### KWayMerge — *合併 K 個排序序列*
+- 兩種主要實現
+  - **merge_k_sorted_heap** → $O(N\\log k)$ 時間，$O(k)$ 堆
+  - **merge_k_sorted_divide** → $O(N\\log k)$ 時間，有時較小的常數
 - 🎯 問題
   - [ ] [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - 相關“混合思維”：[LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+  - 相關“混合思維”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
 
 ---
 
-### HeapTopK — *在流更新中保持最佳 K*
+### HeapTopK — *在流式更新中保持最佳 K*
 - 模式
   - **heap_kth_element**
     - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
@@ -152,12 +213,12 @@ markmap:
 - 模式
   - **linked_list_k_group_reversal**
     - [ ] [LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
-- 也包括核心鏈表算術
+- 也包括核心鏈表運算
   - [ ] [LeetCode 2 - Add Two Numbers](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
 
 ---
 
-### BacktrackingExploration — *帶剪枝的搜索樹*
+### BacktrackingExploration — *帶修剪的搜索樹*
 - 模式
   - **backtracking_n_queens**
     - [ ] [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
@@ -168,7 +229,7 @@ markmap:
 - 模式
   - **grid_bfs_propagation**
     - [ ] [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
-- 實現不變性：隊列持有當前“分鐘/層級”的前沿
+- 實現不變性: 隊列持有當前“分鐘/層級”的前沿
 
 ---
 
@@ -186,12 +247,12 @@ markmap:
   - [ ] [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
   - [ ] [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
   - [ ] [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
-- 寫入指針（就地）
+- 寫指針（就地）
   - [ ] [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
   - [ ] [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
   - [ ] [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
   - [ ] [LeetCode 80 - Remove Duplicates from Sorted Array II](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
-- 快–慢
+- 快慢指針
   - [ ] [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
   - [ ] [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
   - [ ] [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
@@ -200,18 +261,18 @@ markmap:
 ---
 
 ## 🧩 “同一問題，不同視角” （遷移學習）
-- **選擇**：[LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-  - 選項 A：`quickselect_partition`（期望 $O(n)$）
-  - 選項 B：`heap_kth_element`（$O(n\log k)$，流處理友好）
-- **合併**：
-  - 2 路：[LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
-  - K 路：[LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - “邊界 + 合併思維”：[LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+- **選擇**: [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+  - 選項 A: \`quickselect_partition\` (期望 $O(n)$)
+  - 選項 B: \`heap_kth_element\` ($O(n\\log k)$，流式友好)
+- **合併**:
+  - 2 路: [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - K 路: [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
+  - “邊界 + 合併思維”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
 
 ---
 
-## 🧱 最小可重用範本（心智 API）
-```python
+## 🧱 最小可重用模板（心智 API）
+\`\`\`python
 # 滑動窗口（可變，最大化）
 def max_window(seq):
     state = {}
@@ -232,7 +293,40 @@ def opposite(arr):
             L += 1
         else:
             R -= 1
-```
+\`\`\`
 
 ---
-```
+\`\`\``;
+            const { root } = transformer.transform(markdown);
+            const svg = d3.select('.markmap').append('svg');
+            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
+            svg.node().mm = mm;
+            if (window.markmap && window.markmap.Toolbar) {
+                const toolbar = new window.markmap.Toolbar();
+                toolbar.attach(mm);
+                setTimeout(function() {
+                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
+                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
+                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
+                        });
+                        var brand = toolbar.querySelector('.mm-toolbar-brand');
+                        if (brand) {
+                            brand.innerHTML = '🟡 NeetCode';
+                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
+                            brand.style.fontSize = '12px'; brand.style.color = '#666';
+                        }
+                    });
+                }, 200);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="topbar">
+        <button onclick="fitView()">Fit View</button>
+        <button onclick="expandAll()">Expand All</button>
+        <button onclick="collapseAll()">Collapse All</button>
+    </div>
+    <div class="markmap"></div>
+</body>
+</html>

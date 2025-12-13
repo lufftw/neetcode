@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 from src.config_loader import ConfigLoader, load_config, request_api_keys
 from src.agents.translator import TranslatorAgent
 from src.output.html_converter import MarkMapHTMLConverter
+from src.post_processing import clean_translated_content
 
 
 def find_latest_english_output(config: dict) -> Path | None:
@@ -93,6 +94,9 @@ def translate_file(
     # Translate
     print("\n⏳ Translating...")
     translated = translator.translate(content, "general")
+    
+    # Clean up LLM artifacts
+    translated = clean_translated_content(translated)
     print(f"   ✓ Translated to {len(translated)} chars")
     
     # Save output
@@ -220,7 +224,9 @@ def main() -> int:
                 translated,
                 title=f"NeetCode Agent Evolved Mindmap ({args.target.upper()})"
             )
-            html_path = output_path.with_suffix(".html")
+            # Use correct HTML output directory from config
+            html_dir = converter.html_output_dir
+            html_path = html_dir / f"{output_path.stem}.html"
             html_path.write_text(html_content, encoding="utf-8")
             print(f"   ✓ Saved: {html_path}")
         
