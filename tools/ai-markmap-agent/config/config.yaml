@@ -295,7 +295,7 @@ models:
 
   # Translator - For translate mode languages
   translator:
-    model: "gpt-4"
+    model: "gpt-4o"  # 128K context window (gpt-4 only has 8K)
     temperature: 0.3
     max_tokens: 8192
 
@@ -455,7 +455,7 @@ output:
         enabled: true
         mode: "translate"      # Translate from English (fast)
         source_lang: "en"      # Source language to translate from
-        translator_model: "gpt-4"
+        translator_model: "gpt-4o"  # 128K context (gpt-4 only has 8K)
     
     # Output types
     types:
