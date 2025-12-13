@@ -42,11 +42,11 @@ Generate a well-structured, comprehensive Markmap based on the provided metadata
 **IMPORTANT: Use correct URLs based on solution status**
 
 1. **If problem has solution (`s: true`):**
-   - Link to GitHub: `https://github.com/lufftw/neetcode/blob/main/{sf}`
+   - Link to GitHub: `https://github.com/lufftw/neetcode/blob/main/{{sf}}`
    - Format: `[Problem Title](github_url)`
 
 2. **If problem has no solution (`s: false`):**
-   - Link to LeetCode: `https://leetcode.com/problems/{slug}/`
+   - Link to LeetCode: `https://leetcode.com/problems/{{slug}}/`
    - Format: `[Problem Title](leetcode_url)`
 
 **Example:**

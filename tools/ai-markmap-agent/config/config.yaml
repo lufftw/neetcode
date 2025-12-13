@@ -58,12 +58,12 @@ data_compression:
 # Define which data sources to read from for Markmap generation
 # Set enabled: true/false to include/exclude each source
 data_sources:
-  # Base paths (relative to project root)
+  # Base paths (relative to config/ directory: 3 levels up to reach project root)
   base_paths:
-    ontology: "../../ontology"
-    problems: "../../meta/problems"
-    patterns: "../../meta/patterns"
-    roadmaps: "../../roadmaps"
+    ontology: "../../../ontology"
+    problems: "../../../meta/problems"
+    patterns: "../../../meta/patterns"
+    roadmaps: "../../../roadmaps"
 
   # Ontology files - taxonomy definitions
   ontology:

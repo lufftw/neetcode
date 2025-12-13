@@ -67,7 +67,7 @@ IF problem.solution_file exists:
     link = GitHub: https://github.com/lufftw/neetcode/blob/main/{solution_file}
     status = ✓ (solved)
 ELSE:
-    link = LeetCode: https://leetcode.com/problems/{slug}/
+    link = LeetCode: https://leetcode.com/problems/{{slug}}/
     status = ○ (unsolved)
 ```
 
