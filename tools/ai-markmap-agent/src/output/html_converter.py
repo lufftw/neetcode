@@ -50,9 +50,16 @@ class MarkMapHTMLConverter:
         self.md_output_dir = (base_dir / final_dirs.get("markdown", "outputs/final")).resolve()
         self.html_output_dir = (base_dir / final_dirs.get("html", "outputs/final")).resolve()
         
+        # Versioning
+        versioning = output_config.get("versioning", {})
+        self.versioning_enabled = versioning.get("enabled", False)
+        self.version_dir = (base_dir / versioning.get("directory", "outputs/versions")).resolve()
+        
         # Ensure directories exist
         self.md_output_dir.mkdir(parents=True, exist_ok=True)
         self.html_output_dir.mkdir(parents=True, exist_ok=True)
+        if self.versioning_enabled:
+            self.version_dir.mkdir(parents=True, exist_ok=True)
     
     def _load_template(self, template_path: str) -> Template:
         """Load Jinja2 template from file."""
@@ -65,6 +72,22 @@ class MarkMapHTMLConverter:
         
         # Fallback to default template
         return Template(self._default_template())
+    
+    def _get_next_version(self) -> str:
+        """Get next version number (v1, v2, ...)."""
+        if not self.version_dir.exists():
+            return "v1"
+        
+        existing = sorted(
+            [d for d in self.version_dir.iterdir() if d.is_dir() and d.name.startswith("v")],
+            key=lambda x: int(x.name[1:]) if x.name[1:].isdigit() else 0
+        )
+        
+        if not existing:
+            return "v1"
+        
+        last_num = int(existing[-1].name[1:])
+        return f"v{last_num + 1}"
     
     def _default_template(self) -> str:
         """Return a minimal default template matching the main template format."""
@@ -231,7 +254,7 @@ class MarkMapHTMLConverter:
         naming_config: dict[str, Any] | None = None,
     ) -> dict[str, dict[str, Path]]:
         """
-        Save all 4 final outputs based on configuration.
+        Save all final outputs based on configuration.
         
         Args:
             results: Dictionary with keys like "general_en", "specialist_zh-TW"
@@ -243,8 +266,17 @@ class MarkMapHTMLConverter:
         """
         naming = naming_config or self.config.get("output", {}).get("naming", {})
         prefix = naming.get("prefix", "neetcode")
+        template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
         
         saved_files = {}
+        
+        # Get version directory if versioning is enabled
+        version_subdir = None
+        if self.versioning_enabled:
+            version_name = self._get_next_version()
+            version_subdir = self.version_dir / version_name
+            version_subdir.mkdir(parents=True, exist_ok=True)
+            print(f"  📁 Version: {version_name}")
         
         for output_key, content in results.items():
             # Parse output key (e.g., "general_en" or "specialist_zh-TW")
@@ -256,16 +288,13 @@ class MarkMapHTMLConverter:
                 output_type = parts[0]
                 lang = "en"
             
-            # Generate filename
-            filename = f"{prefix}_{output_type}_ai_{lang}"
+            # Generate filename from template
+            filename = template.format(prefix=prefix, lang=lang)
             
             # Generate title
-            type_label = "通才版" if output_type == "general" else "專才版"
-            if lang == "en":
-                type_label = "General" if output_type == "general" else "Specialist"
-            title = f"NeetCode {type_label} Mindmap"
+            title = f"NeetCode Agent Evolved Mindmap ({lang.upper()})"
             
-            # Save files
+            # Save to final directories
             md_path, html_path = self.save(
                 markdown_content=content,
                 output_name=filename,
@@ -279,6 +308,15 @@ class MarkMapHTMLConverter:
             }
             
             print(f"  ✓ Saved: {filename}.md, {filename}.html")
+            
+            # Also save to version directory
+            if version_subdir:
+                version_md = version_subdir / f"{filename}.md"
+                version_html = version_subdir / f"{filename}.html"
+                version_md.write_text(content, encoding="utf-8")
+                html_content = self.convert(content, title, {"type": output_type, "language": lang})
+                version_html.write_text(html_content, encoding="utf-8")
+                print(f"  📦 Versioned: {version_subdir.name}/{filename}.*")
         
         return saved_files
 

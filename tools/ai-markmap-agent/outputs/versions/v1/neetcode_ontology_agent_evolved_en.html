@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeetCode Agent Evolved Mindmap (EN) - NeetCode Mind Maps</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        .markmap { width: 100%; height: 100%; }
+        .markmap > svg { width: 100%; height: 100%; }
+        #topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: #fff; border-bottom: 1px solid #e5e7eb;
+            padding: 8px 16px; display: flex; gap: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 13px;
+        }
+        #topbar button {
+            padding: 4px 12px; border: 1px solid #d1d5db;
+            border-radius: 4px; background: #fff; cursor: pointer;
+        }
+        #topbar button:hover { background: #f3f4f6; }
+        .markmap { margin-top: 40px; height: calc(100% - 40px); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
+    <script>
+        function fitView() {
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) svg.mm.fit();
+        }
+        function expandAll() {
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) {
+                var root = svg.mm.state.data;
+                (function expand(n) {
+                    n.payload = Object.assign({}, n.payload, { fold: 0 });
+                    if (n.children) n.children.forEach(expand);
+                })(root);
+                svg.mm.setData(root); svg.mm.fit();
+            }
+        }
+        function collapseAll() {
+            var svg = document.querySelector('.markmap > svg');
+            if (svg && svg.mm) {
+                var root = svg.mm.state.data;
+                root.children && root.children.forEach(function collapse(n) {
+                    if (n.children && n.children.length) {
+                        n.payload = Object.assign({}, n.payload, { fold: 1 });
+                        n.children.forEach(collapse);
+                    }
+                });
+                svg.mm.setData(root); svg.mm.fit();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const { Transformer, Markmap } = window.markmap;
+            const transformer = new Transformer();
+            const markdown = `---
+title: LeetCode Patterns Knowledge Graph (33 Problems) — API Kernels → Patterns → Problems 🎯
+markmap:
+  colorFreezeLevel: 2
+  maxWidth: 300
+---
+
+## 🎯 How to use this mind map (fast)
+- **Read top-down**: *API Kernel* → *Pattern* → *Problems* (linked)
+- **Practice loop**: implement template → solve 2–3 problems → refactor into reusable \`solve(pattern_state_machine)\` mental model
+- **Progress tracking**
+  - [ ] Do all **Easy** first
+  - [ ] Then **Medium** variants
+  - [ ] Finally **Hard** “edge-case amplifiers”
+
+---
+
+## 🧭 Quick Access Index
+- [SubstringSlidingWindow](#substring-sliding-window)
+- [TwoPointersTraversal](#two-pointers-traversal)
+- [TwoPointerPartition](#two-pointer-partition)
+- [FastSlowPointers](#fast-slow-pointers)
+- [MergeSortedSequences](#merge-sorted-sequences)
+- [KWayMerge](#k-way-merge)
+- [HeapTopK](#heap-top-k)
+- [LinkedListInPlaceReversal](#linked-list-in-place-reversal)
+- [BacktrackingExploration](#backtracking-exploration)
+- [GridBFSMultiSource](#grid-bfs-multi-source)
+
+---
+
+## 🧠 API Kernels (the “engines”)
+### SubstringSlidingWindow — *1D window state machine*
+- ==Core invariant==: window \`[L,R]\` stays valid by **expand right** + **contract left**
+- Complexity: typically $O(n)$ time, $O(n)$ space in worst case due to frequency map size
+
+#### Pattern cheat sheet (from docs)
+| Problem | Invariant | State | Window Size | Goal |
+|---------|-----------|-------|-------------|------|
+| [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | All unique | last index map | Variable | Max |
+| [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | ≤K distinct | freq map | Variable | Max |
+| [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | window contains all characters of \`t\` with at least the required frequency | need/have | Variable | Min |
+| [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | exact freq match | freq + matches | Fixed | Exists |
+| [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | exact freq match | freq + matches | Fixed | All |
+| [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | sum ≥ target | integer sum | Variable | Min |
+
+#### Patterns
+- **sliding_window_unique** *(maximize, “jump left” optimization)*
+  - 🎯 Problems
+    - [ ] [LeetCode 3 - Longest Substring Without Repeating Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+  - Key state: \`last_seen[char]\` → \`L = max(L, last_seen[c]+1)\`
+- **sliding_window_at_most_k_distinct** *(maximize, shrink while invalid)*
+  - 🎯 Problems
+    - [ ] [LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+  - Key invariant: \`len(freq) <= k\`
+- **sliding_window_freq_cover** *(cover / exact-match family)*
+  - 🎯 Problems
+    - [ ] [LeetCode 76 - Minimum Window Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) — *minimize while valid*
+    - [ ] [LeetCode 438 - Find All Anagrams in a String](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) — *fixed window, collect indices*
+    - [ ] [LeetCode 567 - Permutation in String](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) — *fixed window, boolean*
+- **sliding_window_cost_bounded** *(numeric constraint)*
+  - 🎯 Problems
+    - [ ] [LeetCode 209 - Minimum Size Subarray Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+  - Typical requirement: positives → monotone contraction works
+
+#### Real-world Application
+- **Example**: Network packet analysis where you need to find the longest sequence of packets without repetition.
+
+#### Problem-Solving Strategy
+1. Identify the invariant condition for the window.
+2. Use a frequency map to manage state.
+3. Expand and contract the window to maintain the invariant.
+
+#### See Also
+- TwoPointersTraversal for similar problems involving sequence traversal.
+
+---
+
+### TwoPointersTraversal — *pointer choreography on sequences*
+- ==Core invariant==: pointers move deterministically; processed region is “safe”
+- Complexity: often $O(n)$ time, $O(1)$ space (except sorting step)
+
+#### Pattern comparison (from docs)
+| Pattern | Pointer Init | Movement | Termination | Time | Space | Key Use Case |
+|---------|--------------|----------|-------------|------|-------|--------------|
+| Opposite | \`0, n-1\` | toward center | \`L>=R\` | $O(n)$ | $O(1)$ | sorted pairs / palindrome / optimize |
+| Same-direction | \`write, read\` | forward | \`read==n\` | $O(n)$ | $O(1)$ | in-place modify |
+| Fast–Slow | \`slow, fast\` | 1× / 2× | meet or null | $O(n)$ | $O(1)$ | cycle / midpoint |
+| Dedup enum | \`i\` + \`L,R\` | nested | done | $O(n^2)$ | $O(1)$ | 3Sum/4Sum |
+
+#### Patterns
+- **two_pointer_opposite_maximize**
+  - 🎯 Problems
+    - [ ] [LeetCode 11 - Container With Most Water](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+  - Insight: move the pointer at the **shorter** height
+- **two_pointer_three_sum** *(dedup enumeration)*
+  - 🎯 Problems
+    - [ ] [LeetCode 15 - 3Sum](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
+    - [ ] [LeetCode 16 - 3Sum Closest](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
+  - Requires: sort first ($O(n\\log n)$), then scan with dedup
+- **two_pointer_opposite_palindrome**
+  - 🎯 Problems
+    - [ ] [LeetCode 125 - Valid Palindrome](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+    - [ ] [LeetCode 680 - Valid Palindrome II](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
+- **two_pointer_writer_dedup**
+  - 🎯 Problems
+    - [ ] [LeetCode 26 - Remove Duplicates from Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+    - [ ] [LeetCode 80 - Remove Duplicates from Sorted Array II](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
+- **two_pointer_writer_remove**
+  - 🎯 Problems
+    - [ ] [LeetCode 27 - Remove Element](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+- **two_pointer_writer_compact**
+  - 🎯 Problems
+    - [ ] [LeetCode 283 - Move Zeroes](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+
+#### When to Use Opposite vs. Same-Direction
+- **Opposite Pointers**: Best for problems where elements are compared or combined from both ends (e.g., finding pairs).
+- **Same-Direction Pointers**: Suitable for in-place modifications or when a single pass is needed.
+
+#### Complexity Note
+- Understand the difference between average-case and worst-case complexities, especially for inputs that may lead to different performance characteristics.
+
+#### See Also
+- Sliding Window techniques for problems involving dynamic window management.
+
+---
+
+### TwoPointerPartition — *in-place partitioning “mini quicksort”*
+- ==Core invariant==: elements are rearranged such that all elements satisfying the partition property precede those that do not
+
+#### Patterns
+- **dutch_flag_partition**
+  - 🎯 Problems
+    - [ ] [LeetCode 75 - Sort Colors](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
+- **two_way_partition**
+  - 🎯 Problems
+    - [ ] [LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+    - [ ] [LeetCode 922 - Sort Array By Parity II](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+- **quickselect_partition** *(selection via partition)*
+  - 🎯 Problems
+    - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+
+#### Real-world Application
+- **Example**: Efficiently organizing data such as segregating even and odd numbers in a dataset.
+
+#### Problem-Solving Strategy
+1. Choose a pivot or condition for partitioning.
+2. Rearrange elements around the pivot to satisfy the partition property.
+
+#### See Also
+- FastSlowPointers for more advanced pointer manipulations.
+
+---
+
+### FastSlowPointers — *Floyd + midpoints + implicit sequences*
+- ==Core invariant==: if a cycle exists, \`fast\` meets \`slow\`
+- Patterns
+  - **fast_slow_cycle_detect**
+    - [ ] [LeetCode 141 - Linked List Cycle](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - **fast_slow_cycle_start**
+    - [ ] [LeetCode 142 - Linked List Cycle II](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - **fast_slow_midpoint**
+    - [ ] [LeetCode 876 - Middle of the Linked List](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+  - **fast_slow_implicit_cycle**
+    - [ ] [LeetCode 202 - Happy Number](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
+
+#### Real-world Application
+- **Example**: Detecting cycles in network routing or data processing pipelines.
+
+#### Problem-Solving Strategy
+1. Use two pointers with different speeds.
+2. Detect cycle presence and locate cycle start if needed.
+
+#### See Also
+- TwoPointerPartition for simpler partitioning tasks.
+
+---
+
+### MergeSortedSequences — *merge two sorted sequences*
+- ==Core invariant==: at each step, the smallest unmerged element is added to the output, maintaining sorted order
+- Patterns
+  - **merge_two_sorted_lists**
+    - [ ] [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
+  - **merge_two_sorted_arrays**
+    - [ ] [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - **merge_sorted_from_ends**
+    - [ ] [LeetCode 977 - Squares of a Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
+
+#### Real-world Application
+- **Example**: Merging sorted data streams or logs in real-time analytics systems.
+
+#### Problem-Solving Strategy
+1. Compare elements from the start of each sequence.
+2. Append the smallest to the result and advance the pointer.
+
+#### See Also
+- KWayMerge for merging multiple sequences.
+
+---
+
+### KWayMerge — *merge K sorted sequences*
+- Two main implementations
+  - **merge_k_sorted_heap** → $O(N\\log k)$ time, $O(k)$ heap
+  - **merge_k_sorted_divide** → $O(N\\log k)$ time, smaller constants sometimes
+- 🎯 Problems
+  - [ ] [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
+  - Related “hybrid thinking”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+
+#### Real-world Application
+- **Example**: Combining multiple sorted data feeds into a single sorted output.
+
+#### Problem-Solving Strategy
+1. Use a min-heap to efficiently track the smallest elements.
+2. Continuously extract and insert elements to maintain order.
+
+#### See Also
+- MergeSortedSequences for simpler two-sequence merging.
+
+---
+
+### HeapTopK — *keep best K under streaming updates*
+- Patterns
+  - **heap_kth_element**
+    - [ ] [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+
+#### Real-world Application
+- **Example**: Real-time leaderboard updates where only the top scores are maintained.
+
+#### Problem-Solving Strategy
+1. Use a min-heap to track the top K elements.
+2. Insert new elements and remove the smallest when exceeding K.
+
+#### See Also
+- KWayMerge for merging top elements from multiple lists.
+
+---
+
+### LinkedListInPlaceReversal — *pointer surgery*
+- Pattern
+  - **linked_list_k_group_reversal**
+    - [ ] [LeetCode 25 - Reverse Nodes in k-Group](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
+- Also core linked list arithmetic
+  - [ ] [LeetCode 2 - Add Two Numbers](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
+
+#### Edge Cases
+- Handle empty lists or lists with fewer nodes than the reversal group size.
+
+#### Real-world Application
+- **Example**: Reversing segments of data in network packets for reordering.
+
+#### Problem-Solving Strategy
+1. Identify groups of nodes to reverse.
+2. Use pointers to reverse nodes in place.
+
+#### See Also
+- FastSlowPointers for cycle detection in linked lists.
+
+---
+
+### BacktrackingExploration — *search tree with pruning*
+- Pattern
+  - **backtracking_n_queens**
+    - [ ] [LeetCode 51 - N-Queens](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
+
+#### Pruning Efficiency
+- Pruning reduces the search space and improves efficiency by eliminating impossible paths early.
+
+#### Real-world Application
+- **Example**: Solving constraint satisfaction problems like Sudoku or N-Queens.
+
+#### Problem-Solving Strategy
+1. Explore all potential configurations.
+2. Use pruning to eliminate invalid paths early.
+
+#### See Also
+- GridBFSMultiSource for exploring grid-based problems.
+
+---
+
+### GridBFSMultiSource — *wavefront propagation on grids*
+- Pattern
+  - **grid_bfs_propagation**
+    - [ ] [LeetCode 994 - Rotting Oranges](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+- Implementation invariant: queue holds frontier of current “minute/level”
+
+#### Real-world Application
+- **Example**: Simulating the spread of information or disease in a network.
+
+#### Problem-Solving Strategy
+1. Initialize the queue with all sources.
+2. Propagate the wavefront level by level.
+
+#### See Also
+- BacktrackingExploration for exhaustive search techniques.
+
+---
+
+## 🧩 “Same problem, different lens” (transfer learning)
+- **Selection**: [LeetCode 215 - Kth Largest Element in an Array](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+  - Option A: \`quickselect_partition\` (expected $O(n)$)
+  - Option B: \`heap_kth_element\` ($O(n\\log k)$, streaming-friendly)
+- **Merging**:
+  - 2-way: [LeetCode 21 - Merge Two Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), [LeetCode 88 - Merge Sorted Array](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - K-way: [LeetCode 23 - Merge k Sorted Lists](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
+  - “boundary + merge thinking”: [LeetCode 4 - Median of Two Sorted Arrays](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+
+---
+
+## 🧱 Minimal reusable templates (mental API)
+\`\`\`python
+# Sliding Window (variable, maximize)
+def max_window(seq):
+    state = {}
+    L = 0
+    ans = 0
+    for R, x in enumerate(seq):
+        add(state, x)  # Add current element to the state
+        while invalid(state):  # While the state is invalid
+            remove(state, seq[L])  # Remove the leftmost element from the state
+            L += 1  # Move the left pointer right
+        ans = max(ans, R - L + 1)  # Update the answer with the maximum window size
+    return ans
+
+# Two pointers (opposite)
+def opposite(arr):
+    L, R = 0, len(arr) - 1
+    while L < R:
+        if should_move_left(arr, L, R):  # Determine if left pointer should move
+            L += 1
+        else:
+            R -= 1  # Otherwise, move the right pointer
+\`\`\`
+
+---`;
+            const { root } = transformer.transform(markdown);
+            const svg = d3.select('.markmap').append('svg');
+            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
+            svg.node().mm = mm;
+            if (window.markmap && window.markmap.Toolbar) {
+                const toolbar = new window.markmap.Toolbar();
+                toolbar.attach(mm);
+                setTimeout(function() {
+                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
+                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
+                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
+                        });
+                        var brand = toolbar.querySelector('.mm-toolbar-brand');
+                        if (brand) {
+                            brand.innerHTML = '🟡 NeetCode';
+                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
+                            brand.style.fontSize = '12px'; brand.style.color = '#666';
+                        }
+                    });
+                }, 200);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="topbar">
+        <button onclick="fitView()">Fit View</button>
+        <button onclick="expandAll()">Expand All</button>
+        <button onclick="collapseAll()">Collapse All</button>
+    </div>
+    <div class="markmap"></div>
+</body>
+</html>

@@ -343,8 +343,45 @@ ai-markmap-agent/
 │   ├── config_loader.py         # Configuration loading
 │   └── ...
 ├── main.py                      # Entry point
+├── outputs/
+│   ├── versions/                # Version history (v1, v2, ...)
+│   ├── debug/                   # Debug logs per run
+│   └── intermediate/            # Intermediate outputs
 └── README.md
 ```
+
+---
+
+## Output
+
+### Output Files
+
+Final Markmaps are saved to:
+- **Markdown**: `docs/mindmaps/`
+- **HTML**: `docs/pages/mindmaps/`
+
+Filename format: `neetcode_ontology_agent_evolved_{lang}.{ext}`
+
+Examples:
+- `neetcode_ontology_agent_evolved_en.md`
+- `neetcode_ontology_agent_evolved_zh-TW.html`
+
+### Version History
+
+Each run saves a versioned copy to `outputs/versions/`:
+
+```
+outputs/versions/
+├── v1/
+│   ├── neetcode_ontology_agent_evolved_en.md
+│   └── neetcode_ontology_agent_evolved_zh-TW.md
+├── v2/
+│   └── ...
+└── v3/
+    └── ...
+```
+
+Version numbers auto-increment: `v1`, `v2`, `v3`, ...
 
 ---
 

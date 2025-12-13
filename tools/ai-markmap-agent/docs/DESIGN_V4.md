@@ -171,7 +171,7 @@ Sequential batches: 3（固定，不隨 N 增加）
 │   │   保留原有的優秀結構，只應用清單中的改動。                            │  │
 │   │                                                                      │  │
 │   │   輸出:                                                              │  │
-│   │   • neetcode_ontology_evolved_en.md                                  │  │
+│   │   • neetcode_ontology_agent_evolved_en.md                                  │  │
 │   │                                                                      │  │
 │   └──────────────────────────┬──────────────────────────────────────────┘  │
 │                              │                                             │
@@ -495,8 +495,8 @@ input:
 output:
   # Output filename
   naming:
-    template: "neetcode_ontology_evolved_{lang}"
-    # Produces: neetcode_ontology_evolved_en.md
+    template: "neetcode_ontology_agent_evolved_{lang}"
+    # Produces: neetcode_ontology_agent_evolved_en.md
 
 # -----------------------------------------------------------------------------
 # Expert Configuration (Scalable)
@@ -809,7 +809,7 @@ Phase 3: Writing (1 API call)
 ════════════════════════════════════════════════════════════════
 
   Applying 7 improvements to baseline...
-  ✓ Output: neetcode_ontology_evolved_en.md
+  ✓ Output: neetcode_ontology_agent_evolved_en.md
 
 ════════════════════════════════════════════════════════════════
 Phase 4: Post-Processing (Code)
@@ -817,7 +817,7 @@ Phase 4: Post-Processing (Code)
 
   ✓ Link validation: 47/47 valid
   ✓ Format fixing: 2 replacements
-  ✓ Translation: neetcode_ontology_evolved_zh-TW.md (1 API call)
+  ✓ Translation: neetcode_ontology_agent_evolved_zh-TW.md (1 API call)
   ✓ HTML generation: 2 files
 
 ════════════════════════════════════════════════════════════════
@@ -830,10 +830,14 @@ Summary:
   - Improvements applied: 7
 
 Output files:
-  docs/mindmaps/neetcode_ontology_evolved_en.md
-  docs/mindmaps/neetcode_ontology_evolved_zh-TW.md
-  docs/pages/mindmaps/neetcode_ontology_evolved_en.html
-  docs/pages/mindmaps/neetcode_ontology_evolved_zh-TW.html
+  docs/mindmaps/neetcode_ontology_agent_evolved_en.md
+  docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+  docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html
+  docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html
+
+Version history:
+  outputs/versions/v1/neetcode_ontology_agent_evolved_en.md
+  outputs/versions/v1/neetcode_ontology_agent_evolved_zh-TW.md
 ```
 
 ---

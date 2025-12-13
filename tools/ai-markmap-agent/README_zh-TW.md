@@ -343,8 +343,45 @@ ai-markmap-agent/
 │   ├── config_loader.py         # 配置載入
 │   └── ...
 ├── main.py                      # 程式入口
+├── outputs/
+│   ├── versions/                # 版本歷史（v1, v2, ...）
+│   ├── debug/                   # 每次執行的除錯日誌
+│   └── intermediate/            # 中間產出
 └── README.md
 ```
+
+---
+
+## 輸出
+
+### 輸出檔案
+
+最終 Markmap 儲存位置：
+- **Markdown**：`docs/mindmaps/`
+- **HTML**：`docs/pages/mindmaps/`
+
+檔名格式：`neetcode_ontology_agent_evolved_{lang}.{ext}`
+
+範例：
+- `neetcode_ontology_agent_evolved_en.md`
+- `neetcode_ontology_agent_evolved_zh-TW.html`
+
+### 版本歷史
+
+每次執行會在 `outputs/versions/` 儲存版本備份：
+
+```
+outputs/versions/
+├── v1/
+│   ├── neetcode_ontology_agent_evolved_en.md
+│   └── neetcode_ontology_agent_evolved_zh-TW.md
+├── v2/
+│   └── ...
+└── v3/
+    └── ...
+```
+
+版本號自動遞增：`v1`、`v2`、`v3`...
 
 ---
 

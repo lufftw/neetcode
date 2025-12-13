@@ -309,6 +309,12 @@ output:
   save_intermediate: true
   intermediate_dir: "outputs/intermediate"
   
+  # Version history for tracking changes
+  versioning:
+    enabled: true
+    directory: "outputs/versions"
+    # Auto-increment: v1, v2, v3, ...
+  
   final_dirs:
     markdown: "../../docs/mindmaps"
     html: "../../docs/pages/mindmaps"
@@ -327,9 +333,9 @@ output:
         source_lang: "en"
         translator_model: "gpt-4o"
     
-    # Output template: {prefix}_ontology_evolved_{lang}.{ext}
-    # Example: neetcode_ontology_evolved_en.md
-    template: "{prefix}_ontology_evolved_{lang}"
+    # Output template: {prefix}_ontology_agent_evolved_{lang}.{ext}
+    # Example: neetcode_ontology_agent_evolved_en.md
+    template: "{prefix}_ontology_agent_evolved_{lang}"
   
   html:
     template: "templates/markmap.html"
