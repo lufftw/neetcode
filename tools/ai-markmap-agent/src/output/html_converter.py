@@ -248,7 +248,8 @@ class MarkMapHTMLConverter:
         
         for output_key, content in results.items():
             # Parse output key (e.g., "general_en" or "specialist_zh-TW")
-            parts = output_key.split("_", 1)
+            # Use rsplit to handle language codes that might contain underscores
+            parts = output_key.rsplit("_", 1)
             if len(parts) == 2:
                 output_type, lang = parts
             else:

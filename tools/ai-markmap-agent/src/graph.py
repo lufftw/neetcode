@@ -392,8 +392,18 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             )
             
             for output_key, content in writer_outputs.items():
-                if source_lang in output_key:
-                    target_key = output_key.replace(source_lang, target_lang)
+                # Parse output_key format: "{type}_{lang}" (e.g., "general_en")
+                parts = output_key.rsplit("_", 1)
+                if len(parts) == 2 and parts[1] == source_lang:
+                    target_key = f"{parts[0]}_{target_lang}"
+                elif source_lang in output_key:
+                    # Fallback: only replace if it's at the end of the string
+                    if output_key.endswith(f"_{source_lang}"):
+                        target_key = output_key[:-len(f"_{source_lang}")] + f"_{target_lang}"
+                    else:
+                        continue  # Skip if source_lang appears but not at the end
+                else:
+                    continue  # Skip if source_lang not found
                     
                     try:
                         if debug.enabled:
