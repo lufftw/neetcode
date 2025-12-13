@@ -218,6 +218,35 @@ models:
       temperature: 0.5
       max_tokens: 4096
 
+  # Planners (V3) - Structure Specification generators
+  generalist_planner:
+    en:
+      model: "gpt-4o"
+      persona_prompt: "prompts/planners/generalist_planner_persona.md"
+      behavior_prompt: "prompts/planners/generalist_planner_behavior.md"
+      temperature: 0.7
+      max_tokens: 4096
+    zh:
+      model: "gpt-4o"
+      persona_prompt: "prompts/planners/generalist_planner_persona.md"
+      behavior_prompt: "prompts/planners/generalist_planner_behavior.md"
+      temperature: 0.7
+      max_tokens: 4096
+
+  specialist_planner:
+    en:
+      model: "gpt-4o"
+      persona_prompt: "prompts/planners/specialist_planner_persona.md"
+      behavior_prompt: "prompts/planners/specialist_planner_behavior.md"
+      temperature: 0.5
+      max_tokens: 4096
+    zh:
+      model: "gpt-4o"
+      persona_prompt: "prompts/planners/specialist_planner_persona.md"
+      behavior_prompt: "prompts/planners/specialist_planner_behavior.md"
+      temperature: 0.5
+      max_tokens: 4096
+
   # Optimizers - Three distinct expert perspectives for debate
   optimizer:
     # Top-tier Software Architect (Dr. Alexander Chen)

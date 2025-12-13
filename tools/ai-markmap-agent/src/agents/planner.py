@@ -245,8 +245,9 @@ def create_planners(config: dict[str, Any]) -> dict[str, StructurePlannerAgent]:
     for output_type, type_config in types_config.items():
         generator_type = type_config.get("generator", "generalist")
         
-        # Get model config for this generator type
-        generator_config = models_config.get(generator_type, {})
+        # Get model config for this planner type (use planner-specific config)
+        planner_config_key = f"{generator_type}_planner"
+        generator_config = models_config.get(planner_config_key, models_config.get(generator_type, {}))
         
         for lang, lang_config in languages_config.items():
             # Only create planners for "generate" mode languages
