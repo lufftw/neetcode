@@ -1,5 +1,5 @@
 # =============================================================================
-# Writer Agent V3
+# Writer Agent
 # =============================================================================
 # Reads Structure Specification and generates final Markmap Markdown.
 # This is the ONLY agent that produces Markdown output.
@@ -15,9 +15,9 @@ from .base_agent import BaseAgent
 from ..schema import StructureSpec, dump_structure_spec
 
 
-class WriterAgentV3(BaseAgent):
+class WriterAgent(BaseAgent):
     """
-    V3 Markmap Writer agent.
+    Markmap Writer agent.
     
     Responsibilities:
     1. Read Structure Specification (YAML)
@@ -27,7 +27,7 @@ class WriterAgentV3(BaseAgent):
     5. Apply Markmap formatting (checkboxes, KaTeX, fold, etc.)
     6. Produce complete Markmap Markdown output
     
-    This is the ONLY agent in V3 that produces Markdown.
+    This is the ONLY agent that produces Markdown.
     """
     
     def __init__(self, config: dict[str, Any] | None = None):
@@ -43,7 +43,7 @@ class WriterAgentV3(BaseAgent):
         model_config = config["models"]["writer"]
         
         super().__init__(
-            agent_id="writer_v3",
+            agent_id="writer",
             model_config=model_config,
             config=config,
         )
@@ -318,26 +318,26 @@ Produce ONLY the final Markmap markdown. No explanations, no YAML, just the fini
         messages = self._build_messages(prompt)
         
         # Save LLM input
-        self._save_llm_call_input(messages, "write_v3")
+        self._save_llm_call_input(messages, "write")
         
         response = self.llm.invoke(messages)
         
         # Save LLM output
-        self._save_llm_call_output(response.content, "write_v3")
+        self._save_llm_call_output(response.content, "write")
         
         state["final_markmap"] = response.content
         return state
 
 
-def create_writer_v3(config: dict[str, Any] | None = None) -> WriterAgentV3:
+def create_writer(config: dict[str, Any] | None = None) -> WriterAgent:
     """
-    Create a V3 Writer agent.
+    Create a Writer agent.
     
     Args:
         config: Configuration dictionary
         
     Returns:
-        WriterAgentV3 instance
+        WriterAgent instance
     """
-    return WriterAgentV3(config)
+    return WriterAgent(config)
 

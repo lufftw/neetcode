@@ -38,7 +38,7 @@ from .evaluator import (
     create_evaluators,
     aggregate_evaluations,
 )
-from .writer_v3 import WriterAgentV3, create_writer_v3
+from .writer import WriterAgent, create_writer
 from .translator import TranslatorAgent, create_translators
 
 __all__ = [
@@ -62,8 +62,8 @@ __all__ = [
     "ContentEvaluator",
     "create_evaluators",
     "aggregate_evaluations",
-    "WriterAgentV3",
-    "create_writer_v3",
+    "WriterAgent",
+    "create_writer",
     "TranslatorAgent",
     "create_translators",
 ]

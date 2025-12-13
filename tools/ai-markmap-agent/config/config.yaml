@@ -172,7 +172,7 @@ prompt_mode:
   mode: "static"
   
   # Model to use for generating dynamic prompts (only used when mode="dynamic")
-  generator_model: "gpt-4"  # ORIGINAL: gpt-5.2
+  generator_model: "gpt-4"
   
   # Meta-prompts for dynamic generation
   meta_prompts:
@@ -188,37 +188,7 @@ prompt_mode:
 # Model Configuration
 # -----------------------------------------------------------------------------
 models:
-  # Generalist - Broad understanding, knowledge organization
-  generalist:
-    en:
-      model: "gpt-4o"  # 128K context window
-      persona_prompt: "prompts/generators/generalist_persona.md"
-      behavior_prompt: "prompts/generators/generalist_behavior.md"
-      temperature: 0.7
-      max_tokens: 4096
-    zh:
-      model: "gpt-4o"  # 128K context window
-      persona_prompt: "prompts/generators/generalist_persona.md"
-      behavior_prompt: "prompts/generators/generalist_behavior.md"
-      temperature: 0.7
-      max_tokens: 4096
-
-  # Specialist - Engineering details, structural rigor
-  specialist:
-    en:
-      model: "gpt-4o"  # 128K context window
-      persona_prompt: "prompts/generators/specialist_persona.md"
-      behavior_prompt: "prompts/generators/specialist_behavior.md"
-      temperature: 0.5
-      max_tokens: 4096
-    zh:
-      model: "gpt-4o"  # 128K context window
-      persona_prompt: "prompts/generators/specialist_persona.md"
-      behavior_prompt: "prompts/generators/specialist_behavior.md"
-      temperature: 0.5
-      max_tokens: 4096
-
-  # Planners (V3) - Structure Specification generators
+  # Planners - Structure Specification generators
   generalist_planner:
     en:
       model: "gpt-4o"
@@ -247,7 +217,7 @@ models:
       temperature: 0.5
       max_tokens: 4096
 
-  # Content Strategists (V3) - Three distinct expert perspectives for debate
+  # Content Strategists - Three distinct expert perspectives for discussion
   # Uses Structure Spec (YAML), not Markdown
   content_strategist:
     - id: "architect_strategist"
@@ -277,57 +247,7 @@ models:
       max_tokens: 4096
       focus: "user_experience"
 
-  # Optimizers (V2, legacy) - Three distinct expert perspectives for debate
-  optimizer:
-    # Top-tier Software Architect (Dr. Alexander Chen)
-    - id: "optimizer_architect"
-      name: "The Software Architect"
-      persona_name: "Dr. Alexander Chen"
-      model: "gpt-4"  # ORIGINAL: gpt-5.1
-      persona_prompt: "prompts/optimizers/optimizer_architect_persona.md"
-      behavior_prompt: "prompts/optimizers/optimizer_architect_behavior.md"
-      temperature: 0.6
-      max_tokens: 4096
-      focus: "architecture_modularity"
-      # For dynamic mode:
-      dynamic_config:
-        role_description: "Top-tier Software Architect"
-        focus_area: "system design, modularity, clean architecture, design patterns"
-        perspective: "structural and organizational excellence"
-    
-    # Senior Algorithm Professor (Prof. David Knuth Jr.)
-    - id: "optimizer_professor"
-      name: "The Algorithm Professor"
-      persona_name: "Prof. David Knuth Jr."
-      model: "gpt-4"  # ORIGINAL: gpt-5.1
-      persona_prompt: "prompts/optimizers/optimizer_professor_persona.md"
-      behavior_prompt: "prompts/optimizers/optimizer_professor_behavior.md"
-      temperature: 0.6
-      max_tokens: 4096
-      focus: "correctness_completeness"
-      # For dynamic mode:
-      dynamic_config:
-        role_description: "Distinguished Algorithm Professor and Computer Scientist"
-        focus_area: "algorithms, data structures, computational complexity, formal methods"
-        perspective: "academic rigor and correctness"
-    
-    # Senior Technical Architect / API Designer (James Patterson)
-    - id: "optimizer_apidesigner"
-      name: "The Technical API Architect"
-      persona_name: "James Patterson"
-      model: "gpt-4"  # ORIGINAL: gpt-5.1
-      persona_prompt: "prompts/optimizers/optimizer_apidesigner_persona.md"
-      behavior_prompt: "prompts/optimizers/optimizer_apidesigner_behavior.md"
-      temperature: 0.7
-      max_tokens: 4096
-      focus: "developer_experience"
-      # For dynamic mode:
-      dynamic_config:
-        role_description: "Senior Technical Architect and API Designer"
-        focus_area: "API design, developer experience, documentation, interface patterns"
-        perspective: "usability and developer-centric design"
-
-  # Integrator (V3) - Consolidates strategist suggestions
+  # Integrator - Consolidates strategist suggestions
   integrator:
     model: "gpt-4o"
     persona_prompt: "prompts/integrator/integrator_persona.md"
@@ -335,15 +255,7 @@ models:
     temperature: 0.5
     max_tokens: 4096
 
-  # Summarizer (V2, legacy) - Consolidates each round's discussion
-  summarizer:
-    model: "gpt-4o"  # ORIGINAL: gpt-5.2
-    persona_prompt: "prompts/summarizer/summarizer_persona.md"
-    behavior_prompt: "prompts/summarizer/summarizer_behavior.md"
-    temperature: 0.5
-    max_tokens: 4096
-
-  # Evaluators (V3) - Structure Specification evaluation
+  # Evaluators - Structure Specification evaluation
   # Uses Structure Spec (YAML), not Markdown
   evaluator:
     - id: "structure_evaluator"
@@ -368,43 +280,13 @@ models:
         - "learning_progression"
         - "practical_value"
 
-  # Judges (V2, legacy) - Evaluation and selection
-  judges:
-    - id: "judge_structure"
-      name: "Structure Judge"
-      persona_name: "Dr. Sarah Chen"
-      model: "gpt-4"
-      persona_prompt: "prompts/judges/judge_quality_persona.md"
-      behavior_prompt: "prompts/judges/judge_quality_behavior.md"
-      temperature: 0.4
-      max_tokens: 4096
-      criteria:
-        - "hierarchy_quality"
-        - "depth_balance"
-        - "logical_grouping"
-        - "naming_consistency"
-    
-    - id: "judge_completeness"
-      name: "Completeness Judge"
-      persona_name: "Prof. Michael Torres"
-      model: "gpt-4"
-      persona_prompt: "prompts/judges/judge_completeness_persona.md"
-      behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
-      temperature: 0.4
-      max_tokens: 4096
-      criteria:
-        - "coverage"
-        - "practical_value"
-        - "learning_path"
-        - "technical_accuracy"
-
-  # Writer - Final Markmap generation (V2 NEW)
+  # Writer - Final Markmap generation
   # Responsible for:
-  #   1. Applying judge feedback and suggestions
+  #   1. Applying evaluator feedback and suggestions
   #   2. Generating proper links (GitHub/LeetCode)
   #   3. Applying Markmap formatting (checkboxes, KaTeX, fold, etc.)
   writer:
-    model: "gpt-4o"  # 128K context window (gpt-4 only has 8K)
+    model: "gpt-4o"  # 128K context window
     persona_prompt: "prompts/writer/writer_persona.md"
     behavior_prompt: "prompts/writer/writer_behavior.md"
     format_guide: "prompts/writer/markmap_format_guide.md"
@@ -413,7 +295,7 @@ models:
 
   # Translator - For translate mode languages
   translator:
-    model: "gpt-4"  # ORIGINAL: gpt-4o
+    model: "gpt-4"
     temperature: 0.3
     max_tokens: 8192
 
@@ -428,37 +310,18 @@ models:
 # Workflow Configuration
 # -----------------------------------------------------------------------------
 workflow:
-  # Number of optimization rounds (Phase 2)
-  # NOTE: Recommended setting is 3 rounds for production quality
-  # Currently set to 1 for faster iteration during development
-  optimization_rounds: 1  # Production: 3
+  # Maximum discussion rounds for strategists
+  max_discussion_rounds: 3
   
-  # Number of optimizers (must match models.optimizer count)
-  optimizer_count: 3
+  # Consensus threshold (0.0-1.0)
+  # If strategists agree above this threshold, discussion ends early
+  consensus_threshold: 0.8
   
   # Token threshold to trigger compression
   max_tokens_before_compress: 8000
   
-  # Enable parallel baseline generation (Phase 1)
-  parallel_baseline_generation: true
-  
-  # ---------------------------------------------------------------------------
-  # Evaluation & Debate Settings (Phase 3)
-  # ---------------------------------------------------------------------------
-  # Number of judges (minimum 2 required, must match models.judges count)
-  judge_count: 2
-  
-  # Enable debate between judges for consensus
-  # When enabled, judges will discuss and debate to reach agreement
-  enable_debate: true  # Recommended: true for production
-  
-  # Maximum debate rounds before forcing a decision
-  max_debate_rounds: 1  # Production: 2-3
-  
-  # Consensus threshold (0.0-1.0)
-  # If judges agree above this threshold, debate ends early
-  # 0.8 = 80% agreement required for consensus
-  debate_consensus_threshold: 0.8
+  # Enable parallel structure generation (Phase 1)
+  parallel_generation: true
   
   # ---------------------------------------------------------------------------
   # Post-Processing Settings (applied by program, not LLM)
@@ -496,29 +359,28 @@ debug_output:
   
   # Save outputs for each phase
   phases:
-    # Phase 1: Baseline generation
+    # Phase 1: Structure generation
     baseline:
       enabled: true
-      save_each_generator: true    # Save output from each generator (generalist, specialist)
+      save_each_generator: true    # Save output from each planner
     
-    # Phase 2: Optimization rounds
+    # Phase 2: Strategy discussion rounds
     optimization:
       enabled: true
-      save_each_round: true        # Save markmap after each round
-      save_optimizer_suggestions: true  # Save each optimizer's suggestions
-      save_summarizer_output: true # Save summarizer's consolidated output
+      save_each_round: true        # Save structure after each round
+      save_strategist_suggestions: true  # Save each strategist's suggestions
+      save_integrator_output: true # Save integrator's consolidated output
     
-    # Phase 3: Judge evaluation & debate
-    judging:
+    # Phase 3: Evaluation
+    evaluation:
       enabled: true
-      save_initial_evaluations: true  # Save each judge's initial evaluation
-      save_debate_rounds: true     # Save each debate round's discussion
-      save_final_consensus: true   # Save final consensus and selected winner
+      save_evaluations: true       # Save each evaluator's assessment
+      save_final_consensus: true   # Save final consensus
     
     # Phase 4: Writer
     writer:
       enabled: true
-      save_writer_input: true      # Save input to writer (selected markmap + feedback)
+      save_writer_input: true      # Save input to writer (structure + feedback)
       save_writer_output: true     # Save writer's final output
     
     # Phase 5: Translation
@@ -574,15 +436,15 @@ output:
     markdown: "../../docs/mindmaps"        # .md files
     html: "../../docs/pages/mindmaps"      # .html files
   
-  # Naming convention - generates 4 final outputs (2 types × 2 languages)
+  # Naming convention
   # Output files: neetcode_{type}_ai_{lang}.md / .html
   naming:
     prefix: "neetcode"
     
     # Languages to generate
     # Each language can use one of two modes:
-    #   "generate"  - Run full optimization pipeline from scratch (slow)
-    #   "translate" - Translate from another language's output (fast, DEFAULT for non-primary)
+    #   "generate"  - Run full pipeline from scratch (slow)
+    #   "translate" - Translate from another language's output (fast)
     #
     languages:
       en:
@@ -591,26 +453,20 @@ output:
       
       zh-TW:
         enabled: true
-        mode: "translate"      # DEFAULT: translate from English (fast)
-        # mode: "generate"     # Alternative: run full pipeline independently (slow)
+        mode: "translate"      # Translate from English (fast)
         source_lang: "en"      # Source language to translate from
-        translator_model: "gpt-4"  # ORIGINAL: gpt-4o
+        translator_model: "gpt-4"
     
     # Output types
     types:
       general:
         description: "Broad understanding, knowledge organization"
         generator: "generalist"
-      specialist:
-        description: "Engineering details, structural rigor"
-        generator: "specialist"
     
     # File naming template: {prefix}_{type}_ai_{lang}.{ext}
     # Examples:
     #   neetcode_general_ai_en.md
     #   neetcode_general_ai_zh-TW.html
-    #   neetcode_specialist_ai_en.md
-    #   neetcode_specialist_ai_zh-TW.html
     template: "{prefix}_{type}_ai_{lang}"
     
     # Intermediate files

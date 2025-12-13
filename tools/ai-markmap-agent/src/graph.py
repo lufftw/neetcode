@@ -1,9 +1,9 @@
 # =============================================================================
-# LangGraph Pipeline V3
+# LangGraph Pipeline
 # =============================================================================
-# V3 Workflow: Structure Specification based multi-agent system
+# Structure Specification based multi-agent system for Markmap generation.
 #
-# Key Changes from V2:
+# Workflow:
 #   - Planners produce Structure Spec (YAML), not Markdown
 #   - Strategists discuss content strategy, not formatting
 #   - Integrator consolidates with consensus detection
@@ -22,7 +22,7 @@ from .agents.planner import create_planners
 from .agents.strategist import create_strategists
 from .agents.integrator import create_integrator
 from .agents.evaluator import create_evaluators, aggregate_evaluations
-from .agents.writer_v3 import create_writer_v3
+from .agents.writer import create_writer
 from .agents.translator import create_translators, TranslatorAgent
 from .schema import StructureSpec, validate_final_output
 from .memory.stm import update_stm
@@ -32,8 +32,8 @@ from .debug_output import get_debug_manager, reset_debug_manager
 from .config_loader import ConfigLoader
 
 
-class WorkflowStateV3(TypedDict, total=False):
-    """State schema for the V3 LangGraph workflow."""
+class WorkflowState(TypedDict, total=False):
+    """State schema for the LangGraph workflow."""
     
     # Input data
     ontology: dict[str, Any]
@@ -81,11 +81,11 @@ class WorkflowStateV3(TypedDict, total=False):
     errors: list[str]
 
 
-def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
+def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     """
-    Build the V3 LangGraph workflow for Markmap generation.
+    Build the LangGraph workflow for Markmap generation.
     
-    V3 Workflow:
+    Workflow:
     1. Generate Structure Specifications (Planners)
     2. Optimize content strategy (Strategists + Integrator, N rounds)
     3. Evaluate structure quality (Evaluators)
@@ -112,13 +112,13 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         languages_config = {lang: {"mode": "generate"} for lang in languages_config}
     
     # Create the state graph
-    graph = StateGraph(WorkflowStateV3)
+    graph = StateGraph(WorkflowState)
     
     # =========================================================================
     # Node Functions
     # =========================================================================
     
-    def initialize(state: WorkflowStateV3) -> WorkflowStateV3:
+    def initialize(state: WorkflowState) -> WorkflowState:
         """Initialize workflow state."""
         state["current_round"] = 0
         state["max_discussion_rounds"] = max_discussion_rounds
@@ -139,12 +139,12 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         reset_debug_manager()
         debug = get_debug_manager(config)
         if debug.enabled:
-            print(f"\n📊 Debug output enabled (V3)")
+            print(f"\n📊 Debug output enabled")
         
-        update_stm("Workflow V3 initialized", category="system")
+        update_stm("Workflow initialized", category="system")
         return state
     
-    def generate_structure_specs(state: WorkflowStateV3) -> WorkflowStateV3:
+    def generate_structure_specs(state: WorkflowState) -> WorkflowState:
         """
         Phase 1: Generate Structure Specifications.
         
@@ -196,7 +196,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         
         return state
     
-    def run_strategist_round(state: WorkflowStateV3) -> WorkflowStateV3:
+    def run_strategist_round(state: WorkflowState) -> WorkflowState:
         """
         Phase 2: Run strategist optimization round.
         
@@ -254,7 +254,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         update_stm(f"Strategy round {current_round} completed", category="optimization")
         return state
     
-    def should_continue_strategy(state: WorkflowStateV3) -> str:
+    def should_continue_strategy(state: WorkflowState) -> str:
         """Decide whether to continue strategy rounds or proceed to evaluation."""
         current_round = state.get("current_round", 0)
         max_rounds = state.get("max_discussion_rounds", 3)
@@ -270,7 +270,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         
         return "strategize"
     
-    def run_evaluation(state: WorkflowStateV3) -> WorkflowStateV3:
+    def run_evaluation(state: WorkflowState) -> WorkflowState:
         """
         Phase 3: Evaluate the Structure Specification.
         
@@ -318,7 +318,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         update_stm("Evaluation completed", category="evaluation")
         return state
     
-    def run_writer(state: WorkflowStateV3) -> WorkflowStateV3:
+    def run_writer(state: WorkflowState) -> WorkflowState:
         """
         Phase 4: Render final Markmap.
         
@@ -328,7 +328,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         print("\n[Phase 4] Rendering final Markmap...")
         debug = get_debug_manager(config)
         
-        writer = create_writer_v3(config)
+        writer = create_writer(config)
         
         try:
             # Save writer input
@@ -364,7 +364,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         update_stm("Writer completed", category="writing")
         return state
     
-    def run_translations(state: WorkflowStateV3) -> WorkflowStateV3:
+    def run_translations(state: WorkflowState) -> WorkflowState:
         """
         Phase 5: Translate outputs for translate-mode languages.
         """
@@ -411,7 +411,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         update_stm("Translations completed", category="translation")
         return state
     
-    def run_post_processing(state: WorkflowStateV3) -> WorkflowStateV3:
+    def run_post_processing(state: WorkflowState) -> WorkflowState:
         """
         Phase 6: Post-processing.
         
@@ -442,7 +442,7 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
         update_stm("Post-processing completed", category="post_processing")
         return state
     
-    def save_outputs(state: WorkflowStateV3) -> WorkflowStateV3:
+    def save_outputs(state: WorkflowState) -> WorkflowState:
         """
         Phase 7: Save all outputs to files.
         """
@@ -503,12 +503,12 @@ def build_markmap_graph_v3(config: dict[str, Any] | None = None) -> StateGraph:
     return graph.compile()
 
 
-async def run_pipeline_v3_async(
+async def run_pipeline_async(
     data: dict[str, Any],
     config: dict[str, Any] | None = None,
-) -> WorkflowStateV3:
+) -> WorkflowState:
     """
-    Run the V3 pipeline asynchronously.
+    Run the pipeline asynchronously.
     
     Args:
         data: Input data with ontology, problems, patterns, roadmaps
@@ -517,9 +517,9 @@ async def run_pipeline_v3_async(
     Returns:
         Final workflow state
     """
-    graph = build_markmap_graph_v3(config)
+    graph = build_markmap_graph(config)
     
-    initial_state: WorkflowStateV3 = {
+    initial_state: WorkflowState = {
         "ontology": data.get("ontology", {}),
         "problems": data.get("problems", {}),
         "patterns": data.get("patterns", {}),
@@ -530,12 +530,12 @@ async def run_pipeline_v3_async(
     return result
 
 
-def run_pipeline_v3(
+def run_pipeline(
     data: dict[str, Any],
     config: dict[str, Any] | None = None,
-) -> WorkflowStateV3:
+) -> WorkflowState:
     """
-    Run the V3 pipeline synchronously.
+    Run the pipeline synchronously.
     
     Args:
         data: Input data with ontology, problems, patterns, roadmaps
@@ -544,9 +544,9 @@ def run_pipeline_v3(
     Returns:
         Final workflow state
     """
-    graph = build_markmap_graph_v3(config)
+    graph = build_markmap_graph(config)
     
-    initial_state: WorkflowStateV3 = {
+    initial_state: WorkflowState = {
         "ontology": data.get("ontology", {}),
         "problems": data.get("problems", {}),
         "patterns": data.get("patterns", {}),

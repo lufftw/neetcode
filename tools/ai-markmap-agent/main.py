@@ -28,7 +28,7 @@ from src.config_loader import (
     get_api_key,
 )
 from src.data_sources import DataSourcesLoader, load_data_sources
-from src.graph_v3 import run_pipeline_v3, build_markmap_graph_v3
+from src.graph import run_pipeline, build_markmap_graph
 
 
 def print_banner() -> None:
@@ -185,7 +185,7 @@ def main() -> int:
         print("  4. Render final Markmap (Writer)")
         print("  5. Translate if needed")
         print("  6. Post-process and save")
-        result = run_pipeline_v3(data, config)
+        result = run_pipeline(data, config)
         
         # Report results
         print("\n" + "=" * 60)
