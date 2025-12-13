@@ -23,7 +23,7 @@ from .agents.strategist import create_strategists
 from .agents.integrator import create_integrator
 from .agents.evaluator import create_evaluators, aggregate_evaluations
 from .agents.writer_v3 import create_writer_v3
-from .agents.generator import create_translators, TranslatorAgent
+from .agents.translator import create_translators, TranslatorAgent
 from .schema import StructureSpec, validate_final_output
 from .memory.stm import update_stm
 from .output.html_converter import save_all_markmaps
