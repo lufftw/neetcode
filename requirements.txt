@@ -20,7 +20,7 @@ mkdocs-minify-plugin>=0.7.0  # Minify HTML output
 mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 
 # Optional LLM packages (for tools/text_to_mindmap.py):
-# openai>=1.0.0         # OpenAI API client (for GPT models)
+# openai>=2.11.0        # OpenAI API client (for GPT models)
 # anthropic>=0.18.0    # Anthropic API client (for Claude models)
 # requests>=2.31.0     # HTTP library (for Ollama local LLM)
 
