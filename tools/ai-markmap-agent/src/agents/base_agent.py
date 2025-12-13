@@ -239,29 +239,38 @@ class BaseAgent(ABC):
     
     def _format_messages_as_markdown(self, messages: list) -> str:
         """Format messages as readable markdown."""
+        from datetime import datetime
+        
         lines = [
             f"# LLM Input: {self.agent_id}",
-            f"Model: {self.model_config.get('model', 'unknown')}",
-            f"Temperature: {self.model_config.get('temperature', 'unknown')}",
+            f"**Timestamp**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            f"**Model**: {self.model_config.get('model', 'unknown')}",
+            f"**Temperature**: {self.model_config.get('temperature', 'unknown')}",
+            f"**Max Tokens**: {self.model_config.get('max_tokens', 'unknown')}",
             "",
             "---",
             "",
         ]
         
-        for msg in messages:
+        total_chars = 0
+        for i, msg in enumerate(messages):
             if hasattr(msg, 'type'):
                 msg_type = msg.type
             else:
                 msg_type = type(msg).__name__
             
             content = msg.content if hasattr(msg, 'content') else str(msg)
+            total_chars += len(content)
             
-            lines.append(f"## {msg_type.upper()}")
+            lines.append(f"## Message {i+1}: {msg_type.upper()}")
+            lines.append(f"**Length**: {len(content)} characters")
             lines.append("")
             lines.append(content)
             lines.append("")
             lines.append("---")
             lines.append("")
+        
+        lines.insert(6, f"**Total Content Length**: ~{total_chars:,} characters")
         
         return "\n".join(lines)
     

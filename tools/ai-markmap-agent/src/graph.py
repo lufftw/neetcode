@@ -176,6 +176,21 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         print("\n[Phase 1] Generating baselines (Draft mode)...")
         debug = get_debug_manager(config)
         
+        # Print data summary
+        problems = state.get("problems", {})
+        ontology = state.get("ontology", {})
+        roadmaps = state.get("roadmaps", {})
+        
+        print(f"  📊 Input data summary:")
+        print(f"     Problems: {len(problems)} loaded")
+        print(f"     Ontology: {len(ontology)} categories ({', '.join(ontology.keys()) if ontology else 'none'})")
+        print(f"     Roadmaps: {len(roadmaps)} loaded")
+        
+        if not problems:
+            print("  ⚠️ WARNING: No problems loaded! Check data_sources config and paths.")
+        if not ontology:
+            print("  ⚠️ WARNING: No ontology loaded! Check data_sources config and paths.")
+        
         generators = create_generators(config)
         
         for agent_id, agent in generators.items():
