@@ -2,177 +2,144 @@
 
 ## Task
 
-Evaluate all candidate Markmaps for completeness and practical value, debate with other judges, and vote to select the best version.
+Evaluate the Markmap for completeness, coverage, and practical value.
 
 ---
 
 ## Input
 
-### Candidate Markmaps
+### Markmap to Evaluate
 ```
-{candidates}
-```
-
-### Original Metadata (For Coverage Check)
-```
-{metadata}
+{markmap}
 ```
 
-### Ontology Summary (For Completeness Reference)
-```
-{ontology_summary}
-```
+### Evaluation Criteria
+{criteria}
 
 ---
 
-## Evaluation Steps
+## Completeness Checklist
 
-### Step 1: Build Checklist
+A complete Markmap should:
+- [ ] Cover all major topics from the domain
+- [ ] Include key algorithms and data structures
+- [ ] Have practical examples (LeetCode problems)
+- [ ] Show learning progression
+- [ ] Balance depth across all areas
 
-Based on Metadata and Ontology, list topics that should be covered:
+---
 
-```markdown
-## Required Topics Checklist
+## Evaluation Process
 
-### Core Topics (Must Cover)
-- [ ] Topic A
-- [ ] Topic B
-- [ ] Topic C
+### Step 1: Knowledge Coverage (40%)
 
-### Important Topics (Should Cover)
-- [ ] Topic D
-- [ ] Topic E
+**Topics Checklist:**
 
-### Secondary Topics (Nice to Cover)
-- [ ] Topic F
-- [ ] Topic G
-```
+| Category | Expected Topics | Covered | Missing |
+|----------|-----------------|---------|---------|
+| [Category 1] | [Topic list] | X/Y | [List] |
+| [Category 2] | [Topic list] | X/Y | [List] |
 
-### Step 2: Coverage Check
+| Criterion | Score (1-10) | Evidence |
+|-----------|--------------|----------|
+| Core Topics | X | [Are fundamentals covered?] |
+| Important Topics | X | [Secondary topics present?] |
+| Edge Cases | X | [Special cases mentioned?] |
+| **Subtotal** | X/10 | |
 
-Analyze coverage for each candidate:
+**Coverage Gaps:**
+1. [Missing topic]
 
-```markdown
-## Candidate {N} Coverage Analysis
+### Step 2: Practical Value (35%)
 
-### Coverage Status
-| Topic | Status | Depth | Notes |
-|-------|--------|-------|-------|
-| Topic A | ✅ Covered | Sufficient | |
-| Topic B | ⚠️ Partial | Insufficient | Missing X detail |
-| Topic C | ❌ Missing | - | Completely absent |
+| Criterion | Score (1-10) | Evidence |
+|-----------|--------------|----------|
+| Problem Links | X | [LeetCode references included?] |
+| Real Examples | X | [Concrete applications?] |
+| Actionable Info | X | [Can users take action?] |
+| **Subtotal** | X/10 | |
 
-### Statistics
-- Core topics covered: X/Y (Z%)
-- Important topics covered: X/Y (Z%)
-- Overall coverage rate: Z%
-```
+**Practical Issues:**
+1. [Missing practical element]
 
-### Step 3: Practicality Assessment
+### Step 3: Depth Balance (25%)
 
-```markdown
-## Candidate {N} Practicality Assessment
-
-### User Scenario Analysis
-| Scenario | Satisfied? | Notes |
-|----------|-----------|-------|
-| Learning intro | ✅/❌ | [Notes] |
-| Quick lookup | ✅/❌ | [Notes] |
-| Deep research | ✅/❌ | [Notes] |
-
-### Actionability
-- Can users take direct action: [Yes/No]
-- Information specific enough: [Yes/No]
-- Clear next steps: [Yes/No]
-```
-
-### Step 4: Depth Balance Check
-
-```markdown
-## Candidate {N} Depth Balance Analysis
-
-### Depth by Area
 | Area | Depth (Levels) | Node Count | Assessment |
 |------|---------------|------------|------------|
-| Area A | 3 | 15 | Appropriate |
-| Area B | 5 | 32 | Too deep |
-| Area C | 2 | 5 | Insufficient |
+| [Area 1] | X | Y | Appropriate/Too deep/Too shallow |
+| [Area 2] | X | Y | Assessment |
 
-### Balance Assessment
-- Deepest vs shallowest area: [Difference]
-- Are there neglected important areas: [Yes/No]
+| Criterion | Score (1-10) | Evidence |
+|-----------|--------------|----------|
+| Balanced Depth | X | [Similar depth across areas?] |
+| No Neglected Areas | X | [All areas adequately covered?] |
+| **Subtotal** | X/10 | |
+
+**Balance Issues:**
+1. [Imbalance description]
+
+### Step 4: Learning Path Quality
+
+| Aspect | Present? | Quality |
+|--------|----------|---------|
+| Beginner section | Yes/No | Good/Poor |
+| Progress markers | Yes/No | [x]/[ ] used? |
+| Prerequisites shown | Yes/No | Good/Poor |
+| Advanced section | Yes/No | Good/Poor |
+
+---
+
+## Final Evaluation
+
+### Overall Score
+
+```json
+{
+  "score": X,
+  "reasoning": "Summary of completeness evaluation"
+}
 ```
-
-### Step 5: Comprehensive Scoring
-
-```markdown
-## Candidate {N} Comprehensive Score
-
-| Dimension | Weight | Score | Weighted |
-|-----------|--------|-------|----------|
-| Knowledge Coverage | 40% | X/10 | X |
-| Practical Value | 35% | X/10 | X |
-| Depth Balance | 25% | X/10 | X |
-| **Total** | | | X/10 |
 
 ### Strengths
 1. [Strength 1]
+2. [Strength 2]
 
-### Weaknesses
-1. [Weakness 1]
+### Critical Gaps
+1. [Missing element 1]
+2. [Missing element 2]
 
-### Critical Omissions
-- [Missing important content]
-```
-
-### Step 6: Debate and Vote
-
-```markdown
-## Debate Position
-
-**My Choice**: Candidate {N}
-
-**Core Arguments from Completeness Perspective**:
-1. [Coverage argument]
-2. [Practicality argument]
-3. [Balance argument]
-
-**Response to Quality Judge's Possible Points**:
-- Quality Judge might think: [Their view]
-- My perspective: [Response from completeness angle]
-
-## Final Vote
-
-**Vote For**: Candidate {N}
-**Core Rationale**: [One sentence summary]
-```
+### Recommendation
+[Overall assessment and recommendation]
 
 ---
 
-## Output Template
+## Output Format
+
+Provide evaluation as:
 
 ```markdown
-# Completeness Judge Evaluation Report
+# Completeness Evaluation Report
 
-## 1. Topics Checklist
-[Checklist content]
+## Scores
+- Knowledge Coverage: X/10
+- Practical Value: X/10
+- Depth Balance: X/10
+- **Overall**: X/10
 
-## 2. Coverage Analysis per Candidate
-[Analysis content]
+## Key Findings
 
-## 3. Practicality Assessment
-[Assessment content]
+### Well Covered
+1. [Area]
 
-## 4. Depth Balance Analysis
-[Analysis content]
+### Gaps Found
+1. [Missing element]
 
-## 5. Comprehensive Scores
-[Score table]
+## Final Assessment
 
-## 6. Debate Position
-[Debate content]
-
-## 7. Final Vote
-**Vote**: Candidate {N}
-**Rationale**: [Rationale]
+```json
+{
+  "score": X,
+  "reasoning": "One paragraph summary"
+}
+```
 ```

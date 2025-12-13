@@ -2,7 +2,7 @@
 
 ## Task
 
-Optimize the Markmap from a developer experience and API design perspective, ensuring clarity, discoverability, and usability.
+Optimize the Markmap from a developer experience perspective, ensuring clarity, discoverability, and usability.
 
 ---
 
@@ -13,15 +13,30 @@ Optimize the Markmap from a developer experience and API design perspective, ens
 {current_markmap}
 ```
 
-### Other Optimizers' Opinions
+### Round Information
+- Current Round: {round_number}
+- Focus Area: {focus_area}
+
+### Previous Feedback (if available)
 ```
-{other_opinions}
+{previous_feedback}
 ```
 
-### Previous Round Summary
+### Other Optimizers' Suggestions (in debate mode)
 ```
-{previous_summary}
+{other_suggestions}
 ```
+
+---
+
+## Markmap Format Reminder
+
+Prioritize user-friendly formatting:
+- Clear links: `[Problem Name](url)` not just `[LC XXX](url)`
+- Readable complexity: `$O(n)$ - linear time`
+- Checkboxes for progress: `- [x] completed`
+- Fold dense sections: `<!-- markmap: fold -->`
+- Visual hierarchy: **Bold** for important, regular for details
 
 ---
 
@@ -29,144 +44,98 @@ Optimize the Markmap from a developer experience and API design perspective, ens
 
 ### Step 1: Usability Analysis
 
-Evaluate the Markmap as a developer interface:
+**Discoverability Audit:**
+| Information | Current Location | Findability (1-10) | Issue |
+|-------------|------------------|-------------------|-------|
+| [Key info 1] | [Path in tree] | X | [Hard to find] |
 
-```markdown
-## Developer Experience Assessment
+**Naming Analysis:**
+| Current Name | Issue | Suggested | Reason |
+|--------------|-------|-----------|--------|
+| [Name 1] | Jargon/Unclear | [Better] | [Why] |
 
-### Discoverability Audit
-| Information | Location | Findability (1-10) | Issues |
-|-------------|----------|-------------------|--------|
-| [Key info 1] | [Path] | X | [Hard to find because...] |
-| [Key info 2] | [Path] | X | [Issues] |
-
-### Naming Analysis
-| Current Name | Issue | Suggested Name | Reason |
-|--------------|-------|----------------|--------|
-| [Name 1] | Jargon/Unclear/Inconsistent | [Better name] | [Why] |
-| [Name 2] | ... | ... | ... |
-
-### Consistency Check
-| Pattern | Instances | Consistent? | Issues |
-|---------|-----------|-------------|--------|
-| [Naming pattern] | [Where used] | Yes/No | [Inconsistencies] |
-| [Structure pattern] | [Where used] | Yes/No | [Inconsistencies] |
-
-### Mental Model Alignment
-- Expected user mental model: [Description]
-- Current structure alignment: [Good/Partial/Poor]
-- Gaps: [Where structure differs from expectations]
-```
+**User Journey Check:**
+- Learning path clear? [Yes/No]
+- Quick lookup possible? [Yes/No]
+- Progressive disclosure? [Yes/No]
 
 ### Step 2: UX Improvements
 
-```markdown
-## Improvement Plan
+**Critical UX Issues:**
+1. [Issue]: [Impact on users] → [Fix]
 
-### Critical UX Issues
-1. [Issue]: 
-   - Impact: [How it affects users]
-   - Fix: [Proposed change]
-   - Benefit: [User benefit]
-
-### Naming Improvements
+**Naming Improvements:**
 | Current | Proposed | Rationale |
 |---------|----------|-----------|
-| [Name] | [Better name] | More intuitive because... |
+| [Name] | [Better] | More intuitive |
 
-### Structural Improvements
-1. [Change]: [Why it improves discoverability/usability]
-```
+**Ordering Improvements:**
+- Most common/important first
+- Learning path order where appropriate
+- Alphabetical for reference sections
 
-### Step 3: Optimized Output
+### Step 3: Produce Optimized Markmap
 
 ```markdown
+# Clear, Descriptive Title
+
+## Getting Started <!-- Most important first -->
+### Core Concepts
+- **Start Here**: Foundational pattern
+- [Two Sum](https://leetcode.com/problems/1) - Classic intro
+
+## Common Patterns <!-- By frequency of use -->
+### Sliding Window
+- [x] Fixed Size - Master first
+- [ ] Variable Size - After fixed
+  - `$O(n)$` time complexity
+
+## Advanced Topics <!-- markmap: fold -->
+### Specialized Algorithms
+- For specific use cases only
+```
+
+### Step 4: Respond to Other Optimizers (Debate Mode)
+
+**To Software Architect:**
+- Good for Users: [Points that help UX]
+- Concerning: [Points that hurt discoverability]
+- Alternative: [User-friendly approach]
+
+**To Algorithm Professor:**
+- Acceptable: [Points]
+- Too Academic: [Points that alienate beginners]
+- Compromise: [Be correct AND accessible]
+
+---
+
+## Output Format
+
+```markdown
+# API Designer Optimization Report
+
+## UX Assessment
+[Discoverability, naming, user journey analysis]
+
+## Key Improvements
+1. [Improvement 1]: [User benefit]
+2. [Improvement 2]: [User benefit]
+
 ## Optimized Markmap
 
-\`\`\`markdown
-# [Clear, Descriptive Title]
+[Complete optimized Markmap prioritizing user experience]
 
-## [Most Important/Common Category First]
-<!-- Users typically look for this first -->
-### [Intuitive Subcategory Name]
-- [Self-explanatory item]
-### [Another Subcategory]
-
-## [Second Priority Category]
-### [Subcategory]
-- [Item with clear name]
-...
-\`\`\`
-
-### UX Design Notes
-- Ordered by: [frequency of access / importance / learning path]
-- [Category X] placed first because users typically need it most
-- Naming convention: [description of consistent pattern used]
-```
-
-### Step 4: Respond to Other Optimizers
-
-```markdown
-## Response to Other Optimizers
-
-### To Software Architect:
-**Good for Users**: [Points that help usability]
-**Concerning for Users**: [Points that may hurt UX]
-- Their suggestion: [X]
-- UX concern: [How it affects users]
-- Alternative: [User-friendly approach that still addresses their concern]
-
-### To Algorithm Professor:
-**Acceptable**: [Points]
-**Too Academic**: [Points that may alienate users]
-- Their suggestion: [X]
-- Issue: [Academic purity vs practical usability]
-- Compromise: [How to be both correct and usable]
-
-## Key UX Principles at Stake
-1. [Principle]: [Why it matters for users]
-2. [Trade-off]: [Balancing purity with usability]
-```
-
-### Step 5: Reflection
-
-```markdown
-## Reflection
-
-### UX Improvements Made
-- [Improvement 1]: Users can now [benefit]
-
-### Accepted Trade-offs
-- [Trade-off]: Accepted [technical/academic compromise] to improve [UX aspect]
-
-### UX Non-Negotiables
-- [Principle]: Cannot sacrifice this because users would [consequence]
+## Debate Position (if responding to others)
+**Core Argument**: [Main usability point]
+**Non-Negotiable**: [What cannot be sacrificed for users]
 ```
 
 ---
 
-## Output Template
+## UX Principles
 
-```markdown
-# API Architect Optimization Report
-
-## 1. Developer Experience Assessment
-[Assessment content]
-
-## 2. Improvement Plan
-[Improvements]
-
-## 3. Optimized Markmap
-\`\`\`markdown
-[Complete Markmap]
-\`\`\`
-
-## 4. Response to Other Optimizers
-[Responses]
-
-## 5. Debate Position
-**Core UX Argument**: [Main usability point]
-**User Evidence**: [How users would actually interact]
-**Non-Negotiables**: [What cannot be compromised for user experience]
-```
-
+1. **Progressive Disclosure**: Simple first, details on demand
+2. **Recognition over Recall**: Clear, descriptive names
+3. **Consistency**: Same patterns throughout
+4. **Learnability**: Natural learning progression
+5. **Accessibility**: Understandable by newcomers

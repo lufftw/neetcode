@@ -59,11 +59,16 @@ class OptimizerAgent(BaseAgent):
         round_num = state.get("current_round", 1)
         previous_feedback = state.get("optimization_history", [])
         
+        # Get other suggestions from this round (for debate mode)
+        suggestions_key = f"suggestions_round_{round_num}"
+        other_suggestions = state.get(suggestions_key, [])
+        
         # Prepare input for the optimizer
         input_data = {
             "current_markmap": current_markmap,
             "round_number": round_num,
             "previous_feedback": self._format_feedback(previous_feedback),
+            "other_suggestions": self._format_other_suggestions(other_suggestions),
             "focus_area": self.focus,
         }
         
@@ -103,7 +108,7 @@ class OptimizerAgent(BaseAgent):
             Formatted feedback string
         """
         if not feedback_history:
-            return "No previous feedback."
+            return "No previous feedback from earlier rounds."
         
         formatted = []
         for entry in feedback_history[-6:]:  # Keep last 6 entries
@@ -114,6 +119,34 @@ class OptimizerAgent(BaseAgent):
             )
         
         return "\n\n".join(formatted)
+    
+    def _format_other_suggestions(self, suggestions: list[dict]) -> str:
+        """
+        Format other optimizers' suggestions for debate mode.
+        
+        Args:
+            suggestions: List of suggestion entries from this round
+            
+        Returns:
+            Formatted suggestions string
+        """
+        if not suggestions:
+            return "No other optimizer suggestions yet this round."
+        
+        # Filter out own suggestions
+        others = [s for s in suggestions if s.get("optimizer_id") != self.agent_id]
+        
+        if not others:
+            return "No other optimizer suggestions yet this round."
+        
+        formatted = []
+        for s in others:
+            formatted.append(
+                f"**{s.get('persona', 'Expert')}** ({s.get('focus', 'general')}):\n"
+                f"{s.get('suggestions', '')[:800]}"
+            )
+        
+        return "\n\n---\n\n".join(formatted)
     
     def debate(
         self,

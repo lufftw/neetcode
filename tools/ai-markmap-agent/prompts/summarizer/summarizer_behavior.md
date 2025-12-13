@@ -2,166 +2,132 @@
 
 ## Task
 
-Synthesize all optimizer opinions, resolve conflicts, and produce this round's unified Markmap and decision summary.
+Synthesize all optimizer suggestions, resolve conflicts, and produce this round's unified Markmap.
 
 ---
 
 ## Input
-
-### All Optimizer Outputs
-```
-{optimizer_outputs}
-```
 
 ### Current Markmap (Before Optimization)
 ```
 {current_markmap}
 ```
 
+### All Optimizer Suggestions
+```
+{suggestions}
+```
+
 ### Round Information
 - Current Round: {round_number}
-- Total Rounds: {total_rounds}
 
-### Previous Round Summary (if not first round)
-```
-{previous_summary}
-```
+---
+
+## Markmap Format Reminder
+
+The final Markmap should use all available features:
+- **Bold** for key concepts, `code` for technical terms
+- Links: `[Problem Name](url)` for references
+- Math: `$O(n)$` for complexity notation
+- Folding: `<!-- markmap: fold -->` for dense sections
+- Tables for structured comparisons
+- Checkboxes: `- [x]` for progress tracking
 
 ---
 
 ## Processing Steps
 
-### Step 1: Organize All Opinions
+### Step 1: Organize Suggestions
 
-```markdown
-## Optimizer Opinion Summary
+| Optimizer | Main Suggestions | Key Arguments |
+|-----------|------------------|---------------|
+| Architect | [Summary] | [Core reasoning] |
+| Professor | [Summary] | [Core reasoning] |
+| API Designer | [Summary] | [Core reasoning] |
 
-### Software Architect (Dr. Chen)
-- **Main Suggestions**: [Summary]
-- **Core Arguments**: [Arguments]
-- **Proposed Changes**: [Change list]
+### Step 2: Identify Consensus and Conflicts
 
-### Algorithm Professor (Prof. Knuth)
-- **Main Suggestions**: [Summary]
-- **Core Arguments**: [Arguments]
-- **Proposed Changes**: [Change list]
-
-### API Architect (James)
-- **Main Suggestions**: [Summary]
-- **Core Arguments**: [Arguments]
-- **Proposed Changes**: [Change list]
-```
-
-### Step 2: Identify Consensus and Disagreements
-
-```markdown
-## Consensus and Disagreement Analysis
-
-### ✅ Consensus Points (All Agree)
+**✅ Consensus Points (All Agree):**
 1. [Consensus 1]
 2. [Consensus 2]
 
-### ⚠️ Disagreement Points
+**⚠️ Conflict Points:**
 | Issue | Architect | Professor | API Designer |
 |-------|-----------|-----------|--------------|
 | [Issue 1] | [Position] | [Position] | [Position] |
-| [Issue 2] | [Position] | [Position] | [Position] |
-```
 
-### Step 3: Resolve Disagreements
+### Step 3: Resolve Conflicts
 
-For each disagreement:
+For each conflict:
 
-```markdown
-## Disagreement Resolution
-
-### Issue 1: [Issue Description]
-
-**Each Party's Position:**
+**Issue: [Description]**
 - Architect: [Position] - [Rationale]
-- Professor: [Position] - [Rationale]
+- Professor: [Position] - [Rationale]  
 - API Designer: [Position] - [Rationale]
 
-**Decision:** [Adopted solution]
-
-**Rationale:**
-1. [Reason 1 supporting this decision]
-2. [Reason 2 supporting this decision]
-
-**Explanation to Non-adopted Parties:**
-- [Why certain opinions weren't adopted]
-```
+**Decision**: [Adopted solution]
+**Rationale**: [Why this balances all concerns]
 
 ### Step 4: Produce Unified Markmap
 
-Integrate all decisions to produce this round's Markmap:
+Integrate all decisions into a cohesive Markmap:
 
 ```markdown
-## This Round's Unified Markmap
+# Topic Name
 
-\`\`\`markdown
-# [Topic]
+## Category 1
+### Subcategory 1.1
+- **Key Concept** `$O(n)$`
+- [Problem Link](url) - Description
+### Subcategory 1.2 <!-- markmap: fold -->
+- Detail items...
 
-## [Category 1]
-...
-\`\`\`
+## Category 2
+### Subcategory 2.1
+- [x] Completed item
+- [ ] Pending item
 ```
 
-### Step 5: Write Decision Summary
+### Step 5: Document Changes
 
-Provide background for next round:
-
-```markdown
-## Decision Summary (For Next Round Reference)
-
-### Achieved This Round
-1. [Improvement 1]
-2. [Improvement 2]
-
-### Pending Issues
-1. [Unresolved issue 1]
-2. [Unresolved issue 2]
-
-### Suggested Focus for Next Round
-1. [Suggested focus 1]
-2. [Suggested focus 2]
-```
+| Change | Source | Rationale |
+|--------|--------|-----------|
+| [Change 1] | [Optimizer] | [Why adopted] |
+| [Change 2] | [Optimizer] | [Why adopted] |
+| [Rejected] | [Optimizer] | [Why not adopted] |
 
 ---
 
-## Output Template
+## Output Format
 
 ```markdown
-# Round {N} Summary Report
+# Round {round_number} Summary
 
-## 1. Optimizer Opinion Summary
-[Summary of each party's opinions]
+## Optimizer Suggestions Summary
+[Brief summary of each optimizer's main points]
 
-## 2. Consensus and Disagreements
-[Analysis content]
+## Consensus Adopted
+1. [What everyone agreed on]
 
-## 3. Disagreement Resolution
-[Decisions and rationale for each disagreement]
+## Conflicts Resolved
+1. [Issue]: Adopted [solution] because [reason]
 
-## 4. This Round's Unified Markmap
-\`\`\`markdown
-[Complete Markmap]
-\`\`\`
+## Unified Markmap
 
-## 5. Decision Summary
-[Summary for next round reference]
+[Complete Markmap with all improvements incorporated]
 
-## 6. Change Log
+## Change Log
 | Change | Source | Rationale |
 |--------|--------|-----------|
-| [Change 1] | [Optimizer] | [Reason] |
+| ... | ... | ... |
 ```
 
 ---
 
 ## Decision Principles
 
-1. **Reasoned suggestions first**: Suggestions with clear rationale get priority
-2. **User benefit first**: When disagreements are hard to resolve, choose what benefits users more
-3. **Incremental improvement**: Don't need to solve everything at once, can defer to next round
-4. **Transparent documentation**: Every decision must have clear documentation
+1. **Evidence-based**: Suggestions with clear rationale get priority
+2. **User benefit**: When in doubt, choose what helps users most
+3. **Balance**: Technical accuracy AND usability
+4. **Incremental**: Don't try to fix everything in one round
+5. **Transparency**: Document every decision clearly

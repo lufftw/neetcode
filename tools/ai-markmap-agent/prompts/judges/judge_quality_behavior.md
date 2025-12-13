@@ -2,184 +2,135 @@
 
 ## Task
 
-Evaluate all candidate Markmaps for quality, debate with other judges, and vote to select the best version.
+Evaluate the Markmap for quality, focusing on structure, naming, and technical accuracy.
 
 ---
 
 ## Input
 
-### Candidate Markmaps
+### Markmap to Evaluate
 ```
-{candidates}
-```
-
-### Round Summaries
-```
-{summaries}
+{markmap}
 ```
 
-### Original Metadata (Reference)
-```
-{metadata_summary}
-```
+### Evaluation Criteria
+{criteria}
 
 ---
 
-## Evaluation Steps
+## Markmap Quality Checklist
 
-### Step 1: Evaluate Each Candidate
+A high-quality Markmap should:
+- [ ] Use **bold**, `code`, and other formatting appropriately
+- [ ] Include links to problems: `[LC XXX](url)`
+- [ ] Show complexity with KaTeX: `$O(n)$`
+- [ ] Have balanced depth across branches
+- [ ] Use `<!-- markmap: fold -->` for dense sections
+- [ ] Have clear, consistent naming
 
-Score each candidate Markmap:
+---
 
-```markdown
-## Candidate {N} Evaluation
+## Evaluation Process
 
-### Basic Info
-- Source: [Generalist/Specialist/Round X Optimization]
-- Language: [EN/ZH]
+### Step 1: Structure Quality (40%)
 
-### Score Details
-
-#### Structure Quality (40%)
-| Item | Score | Explanation |
-|------|-------|-------------|
-| Hierarchy Logic | X/10 | [Specific explanation] |
-| Structure Balance | X/10 | [Specific explanation] |
-| Depth Appropriateness | X/10 | [Specific explanation] |
+| Criterion | Score (1-10) | Evidence |
+|-----------|--------------|----------|
+| Hierarchy Logic | X | [Does the structure make sense?] |
+| Balance | X | [Are branches roughly equal depth?] |
+| Depth Appropriateness | X | [Not too shallow, not too deep?] |
 | **Subtotal** | X/10 | |
 
-#### Naming Consistency (30%)
-| Item | Score | Explanation |
-|------|-------|-------------|
-| Terminology Unity | X/10 | [Specific explanation] |
-| Convention Consistency | X/10 | [Specific explanation] |
-| Label Clarity | X/10 | [Specific explanation] |
+**Structure Issues Found:**
+1. [Issue and location]
+
+### Step 2: Naming Consistency (30%)
+
+| Criterion | Score (1-10) | Evidence |
+|-----------|--------------|----------|
+| Terminology Unity | X | [Consistent terms throughout?] |
+| Naming Convention | X | [PascalCase, camelCase consistent?] |
+| Label Clarity | X | [Self-explanatory names?] |
 | **Subtotal** | X/10 | |
 
-#### Technical Accuracy (30%)
-| Item | Score | Explanation |
-|------|-------|-------------|
-| Content Correctness | X/10 | [Specific explanation] |
-| Relationship Accuracy | X/10 | [Specific explanation] |
-| Standards Compliance | X/10 | [Specific explanation] |
+**Naming Issues Found:**
+1. [Inconsistency and location]
+
+### Step 3: Technical Accuracy (30%)
+
+| Criterion | Score (1-10) | Evidence |
+|-----------|--------------|----------|
+| Content Correctness | X | [Algorithms named correctly?] |
+| Complexity Accuracy | X | [Big-O notation correct?] |
+| Relationship Accuracy | X | [Dependencies correct?] |
 | **Subtotal** | X/10 | |
 
-### Total Score: X/10
+**Accuracy Issues Found:**
+1. [Error and location]
+
+### Step 4: Formatting Quality (Bonus)
+
+| Feature | Present? | Quality |
+|---------|----------|---------|
+| Bold/emphasis | Yes/No | Good/Poor |
+| Code formatting | Yes/No | Good/Poor |
+| Links | Yes/No | Good/Poor |
+| Math notation | Yes/No | Good/Poor |
+| Folding | Yes/No | Good/Poor |
+
+---
+
+## Final Evaluation
+
+### Overall Score
+
+```json
+{
+  "score": X,
+  "reasoning": "Summary of evaluation"
+}
+```
 
 ### Strengths
 1. [Strength 1]
 2. [Strength 2]
 
-### Weaknesses
-1. [Weakness 1]
-2. [Weakness 2]
-```
+### Areas for Improvement
+1. [Area 1]
+2. [Area 2]
 
-### Step 2: Comparative Analysis
-
-```markdown
-## Candidate Comparison
-
-| Dimension | Candidate 1 | Candidate 2 | Candidate 3 | Best |
-|-----------|-------------|-------------|-------------|------|
-| Structure Quality | X/10 | X/10 | X/10 | Candidate ? |
-| Naming Consistency | X/10 | X/10 | X/10 | Candidate ? |
-| Technical Accuracy | X/10 | X/10 | X/10 | Candidate ? |
-| **Total** | X/10 | X/10 | X/10 | Candidate ? |
-```
-
-### Step 3: Form Initial Recommendation
-
-```markdown
-## Initial Recommendation
-
-**Recommended Candidate**: Candidate {N}
-
-**Recommendation Rationale**:
-1. [Core advantage 1]
-2. [Core advantage 2]
-
-**Main Basis**:
-- Structure quality leads by [X] points
-- Best naming consistency
-- [Other basis]
-```
-
-### Step 4: Debate Preparation
-
-```markdown
-## Debate Position
-
-**My Choice**: Candidate {N}
-
-**Core Arguments**:
-1. [Argument 1 - Strongest evidence]
-2. [Argument 2]
-3. [Argument 3]
-
-**Expected Objections**:
-- [Possible objection 1] → My response: [Response]
-- [Possible objection 2] → My response: [Response]
-
-**Points I Might Compromise On**:
-- [If the other party has better evidence, I'm willing to concede on X]
-
-**Non-negotiable Bottom Line**:
-- [Absolutely cannot choose Candidate X because...]
-```
-
-### Step 5: Debate with Other Judges
-
-```markdown
-## Response to Other Judges
-
-### To Completeness Judge
-
-**Agree With**:
-- [Points I agree with]
-
-**Disagree With**:
-- [Point]:
-  - Their rationale: [Their reasoning]
-  - My rebuttal: [Rebuttal from quality perspective]
-  - Evidence: [Specific examples supporting my argument]
-```
-
-### Step 6: Final Vote
-
-```markdown
-## Final Vote
-
-**Vote For**: Candidate {N}
-
-**Final Rationale**: [Rationale after comprehensive debate]
-
-**Confidence Level**: [High/Medium/Low]
-```
+### Recommendation
+[Overall assessment and recommendation]
 
 ---
 
-## Output Template
+## Output Format
+
+Provide evaluation as:
 
 ```markdown
-# Quality Judge Evaluation Report
+# Quality Evaluation Report
 
-## 1. Individual Candidate Evaluations
-[Evaluation content]
+## Scores
+- Structure Quality: X/10
+- Naming Consistency: X/10
+- Technical Accuracy: X/10
+- **Overall**: X/10
 
-## 2. Comparative Analysis
-[Comparison table]
+## Key Findings
 
-## 3. Initial Recommendation
-[Recommendation content]
+### Strengths
+1. [Strength]
 
-## 4. Debate Position
-[Debate preparation]
+### Issues
+1. [Issue]
 
-## 5. Response to Other Judges
-[Debate responses]
+## Final Assessment
 
-## 6. Final Vote
-**Vote**: Candidate {N}
-**Rationale**: [Rationale]
+```json
+{
+  "score": X,
+  "reasoning": "One paragraph summary"
+}
+```
 ```
