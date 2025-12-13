@@ -31,6 +31,7 @@ from .compression.compressor import get_compressor
 from .memory.stm import update_stm, get_recent_stm
 from .output.html_converter import MarkMapHTMLConverter, save_all_markmaps
 from .post_processing import PostProcessor, apply_post_processing
+from .debug_output import get_debug_manager, reset_debug_manager
 from .config_loader import ConfigLoader
 
 
@@ -156,6 +157,12 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         # Store translator configs
         state["translator_configs"] = create_translators(config)
         
+        # Initialize debug output manager
+        reset_debug_manager()
+        debug = get_debug_manager(config)
+        if debug.enabled:
+            print(f"\n📊 Debug output enabled")
+        
         update_stm("Workflow V2 initialized", category="system")
         return state
     
@@ -167,6 +174,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         Links are added later by the Writer.
         """
         print("\n[Phase 1] Generating baselines (Draft mode)...")
+        debug = get_debug_manager(config)
         
         generators = create_generators(config)
         
@@ -175,6 +183,17 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 state = agent.process(state)
                 print(f"  ✓ {agent_id} completed")
                 update_stm(f"Draft baseline: {agent_id}", category="generation")
+                
+                # Save debug output
+                # agent_id format: "generalist_en" or "specialist_zh-TW"
+                parts = agent_id.split("_", 1)
+                generator_type = parts[0] if len(parts) > 0 else agent_id
+                lang = parts[1] if len(parts) > 1 else "en"
+                lang_key = lang.replace("-", "_")
+                baseline_key = f"baseline_{generator_type}_{lang_key}"
+                if baseline_key in state:
+                    debug.save_baseline(state[baseline_key], generator_type, lang)
+                    
             except Exception as e:
                 error_msg = f"Error in {agent_id}: {e}"
                 state["errors"].append(error_msg)
@@ -215,6 +234,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         state["current_round"] = current_round
         
         print(f"\n[Phase 2] Optimization round {current_round}/{total_rounds}...")
+        debug = get_debug_manager(config)
         
         optimizers = create_optimizers(config)
         summarizer = SummarizerAgent(config)
@@ -230,6 +250,13 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 try:
                     state = optimizer.process(state)
                     print(f"    ✓ {optimizer.name}")
+                    
+                    # Save optimizer suggestion
+                    if suggestions_key in state and state[suggestions_key]:
+                        last_suggestion = state[suggestions_key][-1] if state[suggestions_key] else ""
+                        debug.save_optimizer_suggestion(
+                            last_suggestion, optimizer.name, current_round, output_key
+                        )
                 except Exception as e:
                     print(f"    ✗ {optimizer.name}: {e}")
             
@@ -237,8 +264,14 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 state = summarizer.process(state)
                 print(f"    ✓ Summarizer consolidated")
                 state["candidates"][output_key] = state["current_markmap"]
+                
+                # Save summarizer output
+                debug.save_summarizer_output(state["current_markmap"], current_round, output_key)
             except Exception as e:
                 print(f"    ✗ Summarizer: {e}")
+            
+            # Save round output
+            debug.save_optimization_round(state["candidates"][output_key], current_round, output_key)
         
         update_stm(f"Optimization round {current_round} completed", category="optimization")
         return state
@@ -260,6 +293,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         and provide structured feedback for the Writer.
         """
         print("\n[Phase 3] Evaluation & Debate...")
+        debug = get_debug_manager(config)
         
         judges = create_judges(config)
         candidates = state.get("candidates", {})
@@ -274,6 +308,11 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             try:
                 state = judge.process(state)
                 print(f"  ✓ {judge.name} evaluated")
+                
+                # Save judge evaluation
+                if judge.agent_id in state.get("judge_evaluations", {}):
+                    for output_key, eval_data in state["judge_evaluations"][judge.agent_id].items():
+                        debug.save_judge_evaluation(eval_data, judge.name, output_key)
             except Exception as e:
                 print(f"  ✗ {judge.name}: {e}")
         
@@ -288,6 +327,9 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 max_rounds=max_debate_rounds,
                 consensus_threshold=consensus_threshold,
             )
+            
+            # Save debate result
+            debug.save_consensus(debate_result)
             
             # Store results for each candidate
             for output_key in candidates.keys():
@@ -316,6 +358,13 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                         })
                 state["judge_feedback"][output_key] = feedback
                 state["consensus_suggestions"][output_key] = []
+            
+            # Save consensus
+            debug.save_consensus({
+                "winner": winner,
+                "score": score,
+                "details": details,
+            })
         
         update_stm("Judging completed", category="evaluation")
         return state
@@ -328,6 +377,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         adds proper links (GitHub/LeetCode), and formats output.
         """
         print("\n[Phase 4] Writing final Markmaps...")
+        debug = get_debug_manager(config)
         
         writer = create_writer(config)
         selected = state.get("selected_markmap", {})
@@ -339,17 +389,26 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             print(f"  Writing: {output_key}")
             
             try:
+                feedback = state.get("judge_feedback", {}).get(output_key, [])
+                suggestions = state.get("consensus_suggestions", {}).get(output_key, [])
+                
+                # Save writer input
+                debug.save_writer_input(markmap, feedback, suggestions, output_key)
+                
                 # Prepare state for writer
                 writer_state = {
                     "selected_markmap": markmap,
-                    "judge_feedback": state.get("judge_feedback", {}).get(output_key, []),
-                    "consensus_suggestions": state.get("consensus_suggestions", {}).get(output_key, []),
+                    "judge_feedback": feedback,
+                    "consensus_suggestions": suggestions,
                     "problems": problems,
                 }
                 
                 writer_state = writer.process(writer_state)
                 writer_outputs[output_key] = writer_state.get("final_markmap", markmap)
                 print(f"    ✓ {output_key} written")
+                
+                # Save writer output
+                debug.save_writer_output(writer_outputs[output_key], output_key)
                 
             except Exception as e:
                 print(f"    ✗ Writer error for {output_key}: {e}")
@@ -369,6 +428,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             return state
         
         print("\n[Phase 5] Translating outputs...")
+        debug = get_debug_manager(config)
         
         writer_outputs = state.get("writer_outputs", {})
         translated = {}
@@ -391,12 +451,18 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 
                 if source_key in writer_outputs:
                     try:
+                        # Save source before translation
+                        debug.save_translation(writer_outputs[source_key], source_key, target_key, is_before=True)
+                        
                         translated_content = translator.translate(
                             writer_outputs[source_key],
                             output_type,
                         )
                         translated[target_key] = translated_content
                         print(f"  ✓ Translated: {source_key} → {target_key}")
+                        
+                        # Save translation result
+                        debug.save_translation(translated_content, source_key, target_key, is_before=False)
                     except Exception as e:
                         print(f"  ✗ Translation failed: {e}")
                         state["errors"].append(f"Translation error: {e}")
@@ -413,6 +479,7 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         ensuring 100% consistency.
         """
         print("\n[Phase 6] Post-processing...")
+        debug = get_debug_manager(config)
         
         processor = PostProcessor(config)
         
@@ -424,9 +491,15 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         # Apply post-processing
         final_outputs = {}
         for key, content in all_outputs.items():
+            # Save before processing
+            debug.save_post_processing(content, key, is_before=True)
+            
             processed = processor.process(content)
             final_outputs[key] = processed
             print(f"  ✓ Processed: {key}")
+            
+            # Save after processing
+            debug.save_post_processing(processed, key, is_before=False)
         
         state["final_outputs"] = final_outputs
         update_stm("Post-processing completed", category="post_processing")

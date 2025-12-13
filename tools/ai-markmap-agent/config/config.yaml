@@ -172,7 +172,7 @@ prompt_mode:
   mode: "static"
   
   # Model to use for generating dynamic prompts (only used when mode="dynamic")
-  generator_model: "gpt-5.2"
+  generator_model: "gpt-4"  # ORIGINAL: gpt-5.2
   
   # Meta-prompts for dynamic generation
   meta_prompts:
@@ -191,13 +191,13 @@ models:
   # Generalist - Broad understanding, knowledge organization
   generalist:
     en:
-      model: "gpt-5.2"
+      model: "gpt-4"  # ORIGINAL: gpt-5.2
       persona_prompt: "prompts/generators/generalist_persona.md"
       behavior_prompt: "prompts/generators/generalist_behavior.md"
       temperature: 0.7
       max_tokens: 4096
     zh:
-      model: "gpt-5.2"
+      model: "gpt-4"  # ORIGINAL: gpt-5.2
       persona_prompt: "prompts/generators/generalist_persona.md"
       behavior_prompt: "prompts/generators/generalist_behavior.md"
       temperature: 0.7
@@ -206,13 +206,13 @@ models:
   # Specialist - Engineering details, structural rigor
   specialist:
     en:
-      model: "gpt-5.2"
+      model: "gpt-4"  # ORIGINAL: gpt-5.2
       persona_prompt: "prompts/generators/specialist_persona.md"
       behavior_prompt: "prompts/generators/specialist_behavior.md"
       temperature: 0.5
       max_tokens: 4096
     zh:
-      model: "gpt-5.2"
+      model: "gpt-4"  # ORIGINAL: gpt-5.2
       persona_prompt: "prompts/generators/specialist_persona.md"
       behavior_prompt: "prompts/generators/specialist_behavior.md"
       temperature: 0.5
@@ -224,7 +224,7 @@ models:
     - id: "optimizer_architect"
       name: "The Software Architect"
       persona_name: "Dr. Alexander Chen"
-      model: "gpt-5.1"
+      model: "gpt-4"  # ORIGINAL: gpt-5.1
       persona_prompt: "prompts/optimizers/optimizer_architect_persona.md"
       behavior_prompt: "prompts/optimizers/optimizer_architect_behavior.md"
       temperature: 0.6
@@ -240,7 +240,7 @@ models:
     - id: "optimizer_professor"
       name: "The Algorithm Professor"
       persona_name: "Prof. David Knuth Jr."
-      model: "gpt-5.1"
+      model: "gpt-4"  # ORIGINAL: gpt-5.1
       persona_prompt: "prompts/optimizers/optimizer_professor_persona.md"
       behavior_prompt: "prompts/optimizers/optimizer_professor_behavior.md"
       temperature: 0.6
@@ -256,7 +256,7 @@ models:
     - id: "optimizer_apidesigner"
       name: "The Technical API Architect"
       persona_name: "James Patterson"
-      model: "gpt-5.1"
+      model: "gpt-4"  # ORIGINAL: gpt-5.1
       persona_prompt: "prompts/optimizers/optimizer_apidesigner_persona.md"
       behavior_prompt: "prompts/optimizers/optimizer_apidesigner_behavior.md"
       temperature: 0.7
@@ -270,7 +270,7 @@ models:
 
   # Summarizer - Consolidates each round's discussion
   summarizer:
-    model: "gpt-5.2"
+    model: "gpt-4"  # ORIGINAL: gpt-5.2
     persona_prompt: "prompts/summarizer/summarizer_persona.md"
     behavior_prompt: "prompts/summarizer/summarizer_behavior.md"
     temperature: 0.5
@@ -282,7 +282,7 @@ models:
     - id: "judge_structure"
       name: "Structure Judge"
       persona_name: "Dr. Sarah Chen"
-      model: "gpt-4o"
+      model: "gpt-4"  # ORIGINAL: gpt-4o
       persona_prompt: "prompts/judges/judge_structure_persona.md"
       behavior_prompt: "prompts/judges/judge_structure_behavior.md"
       temperature: 0.4
@@ -296,7 +296,7 @@ models:
     - id: "judge_completeness"
       name: "Completeness Judge"
       persona_name: "Prof. Michael Torres"
-      model: "gpt-4o"
+      model: "gpt-4"  # ORIGINAL: gpt-4o
       persona_prompt: "prompts/judges/judge_completeness_persona.md"
       behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
       temperature: 0.4
@@ -311,7 +311,7 @@ models:
     # - id: "judge_usability"
     #   name: "Usability Judge"
     #   persona_name: "Lisa Wang"
-    #   model: "gpt-4o-mini"        # Can use cheaper model for some judges
+    #   model: "gpt-4"              # ORIGINAL: gpt-4o-mini
     #   persona_prompt: "prompts/judges/judge_usability_persona.md"
     #   behavior_prompt: "prompts/judges/judge_usability_behavior.md"
     #   temperature: 0.4
@@ -327,11 +327,17 @@ models:
   #   2. Generating proper links (GitHub/LeetCode)
   #   3. Applying Markmap formatting (checkboxes, KaTeX, fold, etc.)
   writer:
-    model: "gpt-5.2"
+    model: "gpt-4"  # ORIGINAL: gpt-5.2
     persona_prompt: "prompts/writer/writer_persona.md"
     behavior_prompt: "prompts/writer/writer_behavior.md"
     format_guide: "prompts/writer/markmap_format_guide.md"
     temperature: 0.5
+    max_tokens: 8192
+
+  # Translator - For translate mode languages
+  translator:
+    model: "gpt-4"  # ORIGINAL: gpt-4o
+    temperature: 0.3
     max_tokens: 8192
 
   # Compressor - For summarizing long content (use cheaper model)
@@ -392,6 +398,65 @@ workflow:
         replacement: "LeetCode \\1"
 
 # -----------------------------------------------------------------------------
+# Debug Output Configuration
+# -----------------------------------------------------------------------------
+# Configure intermediate output saving for debugging and verification
+debug_output:
+  # Master switch for debug outputs
+  enabled: true
+  
+  # Base directory for debug outputs
+  output_dir: "outputs/debug"
+  
+  # Save outputs for each phase
+  phases:
+    # Phase 1: Baseline generation
+    baseline:
+      enabled: true
+      save_each_generator: true    # Save output from each generator (generalist, specialist)
+    
+    # Phase 2: Optimization rounds
+    optimization:
+      enabled: true
+      save_each_round: true        # Save markmap after each round
+      save_optimizer_suggestions: true  # Save each optimizer's suggestions
+      save_summarizer_output: true # Save summarizer's consolidated output
+    
+    # Phase 3: Judge evaluation & debate
+    judging:
+      enabled: true
+      save_initial_evaluations: true  # Save each judge's initial evaluation
+      save_debate_rounds: true     # Save each debate round's discussion
+      save_final_consensus: true   # Save final consensus and selected winner
+    
+    # Phase 4: Writer
+    writer:
+      enabled: true
+      save_writer_input: true      # Save input to writer (selected markmap + feedback)
+      save_writer_output: true     # Save writer's final output
+    
+    # Phase 5: Translation
+    translation:
+      enabled: true
+      save_before_translation: true  # Save English version before translation
+      save_after_translation: true   # Save translated versions
+    
+    # Phase 6: Post-processing
+    post_processing:
+      enabled: true
+      save_before_processing: true   # Save before LC → LeetCode replacement
+      save_after_processing: true    # Save after post-processing
+  
+  # Output format settings
+  format:
+    # Include timestamps in filenames
+    include_timestamp: true
+    # Include phase number in filename (e.g., "01_baseline_generalist_en.md")
+    include_phase_number: true
+    # Filename template: {phase}_{agent}_{lang}_{timestamp}.md
+    template: "{phase_num:02d}_{phase}_{agent}_{lang}"
+
+# -----------------------------------------------------------------------------
 # Memory Configuration
 # -----------------------------------------------------------------------------
 memory:
@@ -443,7 +508,7 @@ output:
         mode: "translate"      # DEFAULT: translate from English (fast)
         # mode: "generate"     # Alternative: run full pipeline independently (slow)
         source_lang: "en"      # Source language to translate from
-        translator_model: "gpt-4o"  # Model for translation
+        translator_model: "gpt-4"  # ORIGINAL: gpt-4o
     
     # Output types
     types:
