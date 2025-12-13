@@ -42,6 +42,7 @@ class GroupingType(str, Enum):
     DIFFICULTY = "difficulty"
     TOPIC = "topic"
     PROGRESS = "progress"
+    TECHNIQUE_VARIANT = "technique_variant"
     CUSTOM = "custom"
 
 

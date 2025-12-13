@@ -247,7 +247,37 @@ models:
       temperature: 0.5
       max_tokens: 4096
 
-  # Optimizers - Three distinct expert perspectives for debate
+  # Content Strategists (V3) - Three distinct expert perspectives for debate
+  # Uses Structure Spec (YAML), not Markdown
+  content_strategist:
+    - id: "architect_strategist"
+      name: "Architecture Strategist"
+      model: "gpt-4"
+      persona_prompt: "prompts/strategists/architect_strategist_persona.md"
+      behavior_prompt: "prompts/strategists/architect_strategist_behavior.md"
+      temperature: 0.6
+      max_tokens: 4096
+      focus: "structure_modularity"
+    
+    - id: "professor_strategist"
+      name: "Academic Strategist"
+      model: "gpt-4"
+      persona_prompt: "prompts/strategists/professor_strategist_persona.md"
+      behavior_prompt: "prompts/strategists/professor_strategist_behavior.md"
+      temperature: 0.6
+      max_tokens: 4096
+      focus: "correctness_completeness"
+    
+    - id: "ux_strategist"
+      name: "UX Strategist"
+      model: "gpt-4"
+      persona_prompt: "prompts/strategists/ux_strategist_persona.md"
+      behavior_prompt: "prompts/strategists/ux_strategist_behavior.md"
+      temperature: 0.7
+      max_tokens: 4096
+      focus: "user_experience"
+
+  # Optimizers (V2, legacy) - Three distinct expert perspectives for debate
   optimizer:
     # Top-tier Software Architect (Dr. Alexander Chen)
     - id: "optimizer_architect"
@@ -297,7 +327,15 @@ models:
         focus_area: "API design, developer experience, documentation, interface patterns"
         perspective: "usability and developer-centric design"
 
-  # Summarizer - Consolidates each round's discussion
+  # Integrator (V3) - Consolidates strategist suggestions
+  integrator:
+    model: "gpt-4o"
+    persona_prompt: "prompts/integrator/integrator_persona.md"
+    behavior_prompt: "prompts/integrator/integrator_behavior.md"
+    temperature: 0.5
+    max_tokens: 4096
+
+  # Summarizer (V2, legacy) - Consolidates each round's discussion
   summarizer:
     model: "gpt-4o"  # ORIGINAL: gpt-5.2
     persona_prompt: "prompts/summarizer/summarizer_persona.md"
@@ -305,50 +343,60 @@ models:
     temperature: 0.5
     max_tokens: 4096
 
-  # Judges - Evaluation and selection (minimum 2 required)
-  # Each judge can use a different model for cost/quality tradeoff
+  # Evaluators (V3) - Structure Specification evaluation
+  # Uses Structure Spec (YAML), not Markdown
+  evaluator:
+    - id: "structure_evaluator"
+      name: "Structure Evaluator"
+      model: "gpt-4"
+      behavior_prompt: "prompts/evaluators/structure_evaluator_behavior.md"
+      temperature: 0.4
+      max_tokens: 4096
+      criteria:
+        - "logical_organization"
+        - "appropriate_depth"
+        - "balanced_sections"
+    
+    - id: "content_evaluator"
+      name: "Content Evaluator"
+      model: "gpt-4"
+      behavior_prompt: "prompts/evaluators/content_evaluator_behavior.md"
+      temperature: 0.4
+      max_tokens: 4096
+      criteria:
+        - "coverage"
+        - "learning_progression"
+        - "practical_value"
+
+  # Judges (V2, legacy) - Evaluation and selection
   judges:
     - id: "judge_structure"
       name: "Structure Judge"
       persona_name: "Dr. Sarah Chen"
-      model: "gpt-4"  # ORIGINAL: gpt-4o
-      persona_prompt: "prompts/judges/judge_structure_persona.md"
-      behavior_prompt: "prompts/judges/judge_structure_behavior.md"
+      model: "gpt-4"
+      persona_prompt: "prompts/judges/judge_quality_persona.md"
+      behavior_prompt: "prompts/judges/judge_quality_behavior.md"
       temperature: 0.4
       max_tokens: 4096
       criteria:
-        - "hierarchy_quality"       # Is the tree structure logical?
-        - "depth_balance"           # Are levels appropriately deep?
-        - "logical_grouping"        # Are related items grouped together?
-        - "naming_consistency"      # Are names clear and consistent?
+        - "hierarchy_quality"
+        - "depth_balance"
+        - "logical_grouping"
+        - "naming_consistency"
     
     - id: "judge_completeness"
       name: "Completeness Judge"
       persona_name: "Prof. Michael Torres"
-      model: "gpt-4"  # ORIGINAL: gpt-4o
+      model: "gpt-4"
       persona_prompt: "prompts/judges/judge_completeness_persona.md"
       behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
       temperature: 0.4
       max_tokens: 4096
       criteria:
-        - "coverage"                # Are all important patterns included?
-        - "practical_value"         # Is it useful for learners?
-        - "learning_path"           # Does it support progressive learning?
-        - "technical_accuracy"      # Are classifications correct?
-    
-    # Add more judges as needed (uncomment below or add new ones)
-    # - id: "judge_usability"
-    #   name: "Usability Judge"
-    #   persona_name: "Lisa Wang"
-    #   model: "gpt-4"              # ORIGINAL: gpt-4o-mini
-    #   persona_prompt: "prompts/judges/judge_usability_persona.md"
-    #   behavior_prompt: "prompts/judges/judge_usability_behavior.md"
-    #   temperature: 0.4
-    #   max_tokens: 4096
-    #   criteria:
-    #     - "navigation_ease"
-    #     - "visual_clarity"
-    #     - "information_density"
+        - "coverage"
+        - "practical_value"
+        - "learning_path"
+        - "technical_accuracy"
 
   # Writer - Final Markmap generation (V2 NEW)
   # Responsible for:
@@ -356,7 +404,7 @@ models:
   #   2. Generating proper links (GitHub/LeetCode)
   #   3. Applying Markmap formatting (checkboxes, KaTeX, fold, etc.)
   writer:
-    model: "gpt-4"  # ORIGINAL: gpt-5.2
+    model: "gpt-4o"  # 128K context window (gpt-4 only has 8K)
     persona_prompt: "prompts/writer/writer_persona.md"
     behavior_prompt: "prompts/writer/writer_behavior.md"
     format_guide: "prompts/writer/markmap_format_guide.md"

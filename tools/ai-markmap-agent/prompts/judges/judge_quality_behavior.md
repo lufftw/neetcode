@@ -2,19 +2,29 @@
 
 ## Task
 
-Evaluate the Markmap for quality, focusing on structure, naming, and technical accuracy.
+Evaluate the Structure Specification for quality, focusing on structure, naming, and technical accuracy.
 
 ---
 
 ## Input
 
-### Markmap to Evaluate
+### Structure Specification to Evaluate
+```yaml
+{structure_spec}
 ```
-{markmap}
+
+### Pattern Docs Summary
+```yaml
+{pattern_docs_summary}
 ```
 
 ### Evaluation Criteria
 {criteria}
+
+### Integration Summary
+```yaml
+{integration_summary}
+```
 
 ---
 

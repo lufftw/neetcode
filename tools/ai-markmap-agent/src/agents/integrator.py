@@ -102,8 +102,8 @@ class IntegratorAgent(BaseAgent):
         previous_conflicts = state.get("previous_conflicts", [])
         
         return {
-            "structure_spec": spec_yaml,
-            "strategist_suggestions": suggestions_text,
+            "current_structure_spec": spec_yaml,
+            "strategist_responses": suggestions_text,
             "round_number": round_number,
             "num_strategists": len(suggestions),
             "consensus_threshold": self.consensus_threshold,

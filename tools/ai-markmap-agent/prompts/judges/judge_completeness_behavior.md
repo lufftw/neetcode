@@ -2,19 +2,29 @@
 
 ## Task
 
-Evaluate the Markmap for completeness, coverage, and practical value.
+Evaluate the Structure Specification for completeness, coverage, and practical value.
 
 ---
 
 ## Input
 
-### Markmap to Evaluate
+### Structure Specification to Evaluate
+```yaml
+{structure_spec}
 ```
-{markmap}
+
+### Pattern Docs Summary
+```yaml
+{pattern_docs_summary}
 ```
 
 ### Evaluation Criteria
 {criteria}
+
+### Integration Summary
+```yaml
+{integration_summary}
+```
 
 ---
 
