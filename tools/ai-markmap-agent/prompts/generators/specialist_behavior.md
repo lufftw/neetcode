@@ -23,6 +23,15 @@ Generate a technically precise, engineering-oriented Markmap based on the provid
 {ontology}
 ```
 
+### Roadmaps (Learning Paths)
+```
+{roadmaps}
+```
+
+**Roadmap Format:**
+- `o`=order, `pr`=problem_id, `rl`=role (B=base, V=variant, A=advanced)
+- `p`=pattern, `pq`=prerequisites, `dt`=delta (what's different)
+
 ### Language
 {language}  <!-- "en" or "zh-TW" -->
 

@@ -2,7 +2,9 @@
 # Data Compressor
 # =============================================================================
 # Token-efficient data formatting for LLM consumption.
-# Reduces problem data to minimal representation while preserving essential info.
+# Reduces problem/ontology/roadmap data to minimal representation.
+#
+# See docs/DATA_SOURCES.md for full specification.
 # =============================================================================
 
 from __future__ import annotations
@@ -15,12 +17,16 @@ from .config_loader import ConfigLoader
 
 class DataCompressor:
     """
-    Compresses problem and ontology data for token-efficient LLM transmission.
+    Compresses problem, ontology, and roadmap data for token-efficient LLM transmission.
     
-    Strategies:
-    1. compact_json: Minimal JSON with short keys
-    2. tabular: Pipe-separated values (very compact)
-    3. minimal: Only essential fields, abbreviated
+    Compression Formats:
+    - compact_json: Minimal JSON with short keys (~70% reduction)
+    - tabular: Pipe-separated values (~85% reduction)
+    - minimal: Only IDs and status (~95% reduction)
+    
+    Key Mappings:
+        i = id, t = title, d = difficulty, p = patterns, 
+        s = has_solution, sf = solution_file, tp = topics
     """
     
     # Short key mappings for compact JSON
@@ -29,13 +35,19 @@ class DataCompressor:
         "title": "t",
         "difficulty": "d",
         "patterns": "p",
-        "has_solution": "s",  # Boolean: has solution file
+        "has_solution": "s",
+        "solution_file": "sf",
         "topics": "tp",
         "algorithms": "a",
         "data_structures": "ds",
         "families": "f",
         "complexity": "c",
         "roadmaps": "r",
+        "order": "o",
+        "problem": "pr",
+        "role": "rl",
+        "prerequisite": "pq",
+        "delta": "dt",
     }
     
     # Reverse mapping for decompression
@@ -44,6 +56,9 @@ class DataCompressor:
     # Difficulty abbreviations
     DIFF_MAP = {"easy": "E", "medium": "M", "hard": "H"}
     REVERSE_DIFF_MAP = {v: k for k, v in DIFF_MAP.items()}
+    
+    # Role abbreviations for roadmaps
+    ROLE_MAP = {"base": "B", "variant": "V", "advanced": "A"}
     
     def __init__(self, config: dict[str, Any] | None = None):
         """
@@ -58,9 +73,10 @@ class DataCompressor:
         self.enabled = compression_config.get("enabled", True)
         self.format = compression_config.get("format", "compact_json")
         self.problem_fields = compression_config.get("problem_fields", [
-            "id", "title", "difficulty", "patterns", "has_solution", "topics"
+            "id", "title", "difficulty", "patterns", "has_solution"
         ])
         self.max_problems = compression_config.get("max_problems_per_batch", 200)
+        self.ontology_summary = compression_config.get("ontology_summary", True)
         
         # URL config
         urls_config = self.config.get("urls", {})
@@ -72,6 +88,10 @@ class DataCompressor:
             "problem_template",
             "https://leetcode.com/problems/{slug}/"
         )
+    
+    # =========================================================================
+    # Problem Compression
+    # =========================================================================
     
     def compress_problems(self, problems: dict[str, Any]) -> str:
         """
@@ -87,66 +107,53 @@ class DataCompressor:
             return json.dumps(problems, ensure_ascii=False)
         
         if self.format == "tabular":
-            return self._compress_tabular(problems)
+            return self._compress_problems_tabular(problems)
         elif self.format == "minimal":
-            return self._compress_minimal(problems)
+            return self._compress_problems_minimal(problems)
         else:  # compact_json
-            return self._compress_compact_json(problems)
+            return self._compress_problems_compact_json(problems)
     
-    def _compress_compact_json(self, problems: dict[str, Any]) -> str:
+    def _compress_problems_compact_json(self, problems: dict[str, Any]) -> str:
         """
         Compress to compact JSON with short keys.
         
-        Format:
-        [{"i":"0003","t":"Longest...","d":"M","p":["sliding_window"],"s":true}]
+        Format: [{"i":"0003","t":"Longest...","d":"M","p":["sliding_window"],"s":true}]
         """
         compressed = []
         
         for slug, data in list(problems.items())[:self.max_problems]:
             item = {}
             
-            # Extract essential fields with short keys
-            if "id" in self.problem_fields:
-                item["i"] = data.get("id", slug[:4])
+            # Core fields
+            item["i"] = data.get("id", slug[:4])
+            item["t"] = data.get("title", "")
+            item["d"] = self.DIFF_MAP.get(data.get("difficulty", "medium"), "M")
+            item["p"] = data.get("patterns", [])
             
-            if "title" in self.problem_fields:
-                item["t"] = data.get("title", "")
+            # Solution status - key field for URL selection
+            files = data.get("files", {})
+            solution_file = files.get("solution", "")
+            item["s"] = bool(solution_file)
+            if solution_file:
+                item["sf"] = solution_file
             
-            if "difficulty" in self.problem_fields:
-                diff = data.get("difficulty", "medium")
-                item["d"] = self.DIFF_MAP.get(diff, "M")
-            
-            if "patterns" in self.problem_fields:
-                item["p"] = data.get("patterns", [])
-            
-            if "has_solution" in self.problem_fields:
-                # Check if solution file exists
-                files = data.get("files", {})
-                solution_file = files.get("solution", "")
-                item["s"] = bool(solution_file)
-                if solution_file:
-                    item["sf"] = solution_file  # Include path for URL generation
-            
+            # Optional fields (only if requested)
             if "topics" in self.problem_fields:
-                item["tp"] = data.get("topics", [])
-            
-            if "algorithms" in self.problem_fields:
-                item["a"] = data.get("algorithms", [])
-            
-            if "families" in self.problem_fields:
-                item["f"] = data.get("families", [])
+                topics = data.get("topics", [])
+                if topics:
+                    item["tp"] = topics
             
             compressed.append(item)
         
         return json.dumps(compressed, ensure_ascii=False, separators=(',', ':'))
     
-    def _compress_tabular(self, problems: dict[str, Any]) -> str:
+    def _compress_problems_tabular(self, problems: dict[str, Any]) -> str:
         """
         Compress to tabular pipe-separated format.
         
         Format:
-        id|title|diff|has_sol|patterns
-        0003|Longest Substring...|M|✓|sliding_window,two_pointers
+        id|title|diff|solved|patterns
+        0003|Longest Substring...|M|✓|sliding_window_unique
         """
         lines = ["id|title|diff|solved|patterns"]
         
@@ -158,13 +165,13 @@ class DataCompressor:
             files = data.get("files", {})
             has_sol = "✓" if files.get("solution") else "○"
             
-            patterns = ",".join(data.get("patterns", [])[:3])  # Max 3 patterns
+            patterns = ",".join(data.get("patterns", [])[:3])
             
             lines.append(f"{problem_id}|{title}|{diff}|{has_sol}|{patterns}")
         
         return "\n".join(lines)
     
-    def _compress_minimal(self, problems: dict[str, Any]) -> str:
+    def _compress_problems_minimal(self, problems: dict[str, Any]) -> str:
         """
         Compress to minimal format - just IDs with solution status.
         
@@ -186,15 +193,24 @@ class DataCompressor:
         
         lines = []
         if solved:
-            lines.append(f"SOLVED: {','.join(sorted(solved)[:100])}")
+            lines.append(f"SOLVED: {','.join(sorted(solved))}")
         if unsolved:
-            lines.append(f"UNSOLVED: {','.join(sorted(unsolved)[:100])}")
+            lines.append(f"UNSOLVED: {','.join(sorted(unsolved))}")
         
         return "\n".join(lines)
+    
+    # =========================================================================
+    # Ontology Compression
+    # =========================================================================
     
     def compress_ontology(self, ontology: dict[str, Any]) -> str:
         """
         Compress ontology data for LLM consumption.
+        
+        Extracts only essential taxonomy information:
+        - Category names and IDs
+        - Parent-child relationships
+        - Brief summaries
         
         Args:
             ontology: Dictionary of ontology categories
@@ -205,31 +221,218 @@ class DataCompressor:
         if not self.enabled:
             return json.dumps(ontology, ensure_ascii=False)
         
-        # Extract key information from each ontology category
+        if self.ontology_summary:
+            return self._compress_ontology_summary(ontology)
+        else:
+            return self._compress_ontology_full(ontology)
+    
+    def _compress_ontology_summary(self, ontology: dict[str, Any]) -> str:
+        """
+        Compress ontology to just IDs and hierarchy.
+        
+        Output format:
+        {
+          "algorithms": {"core": ["bfs","dfs"], "technique": ["sliding_window"]},
+          "patterns": ["sliding_window_unique", "two_pointer_opposite"],
+          "data_structures": ["array", "hash_map", "linked_list"]
+        }
+        """
         summary = {}
         
         for category, data in ontology.items():
-            if isinstance(data, dict):
-                # Extract just the keys/names from each category
-                if "items" in data:
-                    summary[category] = list(data["items"].keys())[:50]
-                elif isinstance(data, dict):
-                    # For nested structures, get top-level keys
+            if category == "algorithms":
+                summary[category] = self._extract_algorithms_hierarchy(data)
+            elif category == "patterns":
+                summary[category] = self._extract_pattern_list(data)
+            elif category == "data_structures":
+                summary[category] = self._extract_ds_list(data)
+            elif category == "api_kernels":
+                summary[category] = self._extract_kernel_list(data)
+            elif category == "families":
+                summary[category] = self._extract_family_list(data)
+            else:
+                # Generic extraction
+                if isinstance(data, dict):
                     summary[category] = list(data.keys())[:30]
-            elif isinstance(data, list):
-                summary[category] = data[:30]
+                elif isinstance(data, list):
+                    summary[category] = [
+                        item.get("id", str(item))[:30] 
+                        for item in data[:30]
+                        if isinstance(item, dict)
+                    ]
         
         return json.dumps(summary, ensure_ascii=False, separators=(',', ':'))
+    
+    def _extract_algorithms_hierarchy(self, data: Any) -> dict[str, list]:
+        """Extract algorithms grouped by kind."""
+        if not isinstance(data, dict):
+            return {}
+        
+        # Handle list format from TOML
+        algorithms = data.get("algorithms", data)
+        if isinstance(algorithms, list):
+            grouped = {"core": [], "technique": [], "paradigm": []}
+            for algo in algorithms:
+                if isinstance(algo, dict):
+                    kind = algo.get("kind", "core")
+                    algo_id = algo.get("id", "")
+                    if kind in grouped and algo_id:
+                        grouped[kind].append(algo_id)
+            return {k: v for k, v in grouped.items() if v}
+        
+        return {}
+    
+    def _extract_pattern_list(self, data: Any) -> list[str]:
+        """Extract pattern IDs."""
+        if isinstance(data, dict):
+            patterns = data.get("patterns", [])
+        elif isinstance(data, list):
+            patterns = data
+        else:
+            return []
+        
+        return [
+            p.get("id", "") for p in patterns
+            if isinstance(p, dict) and p.get("id")
+        ][:50]
+    
+    def _extract_ds_list(self, data: Any) -> list[str]:
+        """Extract data structure IDs."""
+        if isinstance(data, dict):
+            items = data.get("data_structures", data.get("items", []))
+        elif isinstance(data, list):
+            items = data
+        else:
+            return []
+        
+        if isinstance(items, list):
+            return [
+                item.get("id", "") for item in items
+                if isinstance(item, dict) and item.get("id")
+            ][:30]
+        elif isinstance(items, dict):
+            return list(items.keys())[:30]
+        
+        return []
+    
+    def _extract_kernel_list(self, data: Any) -> list[str]:
+        """Extract API kernel IDs."""
+        if isinstance(data, dict):
+            kernels = data.get("api_kernels", data.get("kernels", []))
+        elif isinstance(data, list):
+            kernels = data
+        else:
+            return []
+        
+        return [
+            k.get("id", "") for k in kernels
+            if isinstance(k, dict) and k.get("id")
+        ][:20]
+    
+    def _extract_family_list(self, data: Any) -> list[str]:
+        """Extract family IDs."""
+        if isinstance(data, dict):
+            families = data.get("families", [])
+        elif isinstance(data, list):
+            families = data
+        else:
+            return []
+        
+        return [
+            f.get("id", "") for f in families
+            if isinstance(f, dict) and f.get("id")
+        ][:20]
+    
+    def _compress_ontology_full(self, ontology: dict[str, Any]) -> str:
+        """Compress ontology with summaries included."""
+        compressed = {}
+        
+        for category, data in ontology.items():
+            if isinstance(data, dict):
+                items = data.get(category, data.get("items", []))
+                if isinstance(items, list):
+                    compressed[category] = [
+                        {"id": item.get("id"), "sum": item.get("summary", "")[:50]}
+                        for item in items[:30]
+                        if isinstance(item, dict)
+                    ]
+                else:
+                    compressed[category] = list(data.keys())[:30]
+        
+        return json.dumps(compressed, ensure_ascii=False, separators=(',', ':'))
+    
+    # =========================================================================
+    # Roadmap Compression
+    # =========================================================================
+    
+    def compress_roadmaps(self, roadmaps: dict[str, Any]) -> str:
+        """
+        Compress roadmap data for LLM consumption.
+        
+        Extracts learning path order and problem relationships.
+        
+        Args:
+            roadmaps: Dictionary of roadmap_name -> roadmap_data
+            
+        Returns:
+            Compressed string representation
+        """
+        if not self.enabled:
+            return json.dumps(roadmaps, ensure_ascii=False)
+        
+        compressed = {}
+        
+        for name, data in roadmaps.items():
+            roadmap_id = data.get("id", name)
+            steps = data.get("steps", [])
+            
+            # Compress steps
+            compressed_steps = []
+            for step in steps:
+                compressed_step = {
+                    "o": step.get("order", 0),
+                    "pr": step.get("problem", "")[:4],  # Just problem ID
+                    "rl": self.ROLE_MAP.get(step.get("role", "base"), "B"),
+                    "p": step.get("pattern", ""),
+                }
+                
+                # Only include prerequisite if non-empty
+                prereqs = step.get("prerequisite", [])
+                if prereqs:
+                    compressed_step["pq"] = [p[:4] for p in prereqs]
+                
+                # Only include delta if meaningful
+                delta = step.get("delta", "")
+                if delta and len(delta) > 5:
+                    compressed_step["dt"] = delta[:60]
+                
+                compressed_steps.append(compressed_step)
+            
+            compressed[roadmap_id] = {
+                "name": data.get("name", name),
+                "kernel": data.get("api_kernel", ""),
+                "steps": compressed_steps,
+            }
+        
+        return json.dumps(compressed, ensure_ascii=False, separators=(',', ':'))
+    
+    # =========================================================================
+    # URL Generation
+    # =========================================================================
     
     def get_problem_url(self, problem_data: dict[str, Any]) -> str:
         """
         Get the appropriate URL for a problem.
         
+        Logic:
+        - If has solution file → GitHub solution URL
+        - If no solution → LeetCode problem URL
+        
         Args:
             problem_data: Problem data dictionary
             
         Returns:
-            GitHub solution URL if has solution, else LeetCode problem URL
+            URL string
         """
         files = problem_data.get("files", {})
         solution_file = files.get("solution", "")
@@ -237,31 +440,60 @@ class DataCompressor:
         if solution_file:
             return self.github_template.format(solution_file=solution_file)
         else:
-            # Extract slug from problem data
+            # Extract slug
             slug = problem_data.get("slug", "")
-            # Remove the ID prefix if present (e.g., "0003_longest..." -> "longest...")
             if "_" in slug:
                 slug = slug.split("_", 1)[1]
             return self.leetcode_template.format(slug=slug)
     
+    # =========================================================================
+    # Utility Methods
+    # =========================================================================
+    
     def decompress_key(self, short_key: str) -> str:
+        """Convert short key back to full key."""
+        return self.REVERSE_KEY_MAP.get(short_key, short_key)
+    
+    def decompress_difficulty(self, short_diff: str) -> str:
+        """Convert short difficulty back to full name."""
+        return self.REVERSE_DIFF_MAP.get(short_diff, short_diff)
+    
+    def compress_all(
+        self,
+        problems: dict[str, Any],
+        ontology: dict[str, Any],
+        roadmaps: dict[str, Any] | None = None,
+    ) -> dict[str, str]:
         """
-        Convert short key back to full key.
+        Compress all data sources at once.
         
         Args:
-            short_key: Abbreviated key
+            problems: Problem data dictionary
+            ontology: Ontology data dictionary
+            roadmaps: Roadmap data dictionary (optional)
             
         Returns:
-            Full key name
+            Dictionary with compressed strings for each source
         """
-        return self.REVERSE_KEY_MAP.get(short_key, short_key)
+        result = {
+            "problems": self.compress_problems(problems),
+            "ontology": self.compress_ontology(ontology),
+        }
+        
+        if roadmaps:
+            result["roadmaps"] = self.compress_roadmaps(roadmaps)
+        
+        return result
 
 
-# Convenience functions
+# =============================================================================
+# Convenience Functions
+# =============================================================================
 
 def compress_for_llm(
     problems: dict[str, Any],
     ontology: dict[str, Any],
+    roadmaps: dict[str, Any] | None = None,
     config: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     """
@@ -270,17 +502,14 @@ def compress_for_llm(
     Args:
         problems: Problem data dictionary
         ontology: Ontology data dictionary
+        roadmaps: Roadmap data dictionary (optional)
         config: Optional configuration
         
     Returns:
-        Dictionary with compressed 'problems' and 'ontology' strings
+        Dictionary with compressed 'problems', 'ontology', and 'roadmaps' strings
     """
     compressor = DataCompressor(config)
-    
-    return {
-        "problems": compressor.compress_problems(problems),
-        "ontology": compressor.compress_ontology(ontology),
-    }
+    return compressor.compress_all(problems, ontology, roadmaps)
 
 
 def get_link_for_problem(
@@ -299,4 +528,3 @@ def get_link_for_problem(
     """
     compressor = DataCompressor(config)
     return compressor.get_problem_url(problem_data)
-

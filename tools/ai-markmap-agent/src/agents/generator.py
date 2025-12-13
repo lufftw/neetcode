@@ -61,10 +61,18 @@ class GeneralistAgent(BaseAgent):
         # Use data compressor for token-efficient transmission
         compressor = DataCompressor(self.config)
         
+        # Compress all data sources
+        compressed = compressor.compress_all(
+            problems=state.get("problems", {}),
+            ontology=state.get("ontology", {}),
+            roadmaps=state.get("roadmaps", {}),
+        )
+        
         # Prepare input data for the prompt (compressed format)
         input_data = {
-            "metadata": compressor.compress_problems(state.get("problems", {})),
-            "ontology": compressor.compress_ontology(state.get("ontology", {})),
+            "metadata": compressed["problems"],
+            "ontology": compressed["ontology"],
+            "roadmaps": compressed.get("roadmaps", ""),
             "language": self.language,
         }
         
@@ -72,7 +80,8 @@ class GeneralistAgent(BaseAgent):
         markmap_content = self.invoke(input_data)
         
         # Update state
-        key = f"baseline_general_{self.language}"
+        lang_key = self.language.replace("-", "_")
+        key = f"baseline_general_{lang_key}"
         state[key] = markmap_content
         
         return state
@@ -126,10 +135,18 @@ class SpecialistAgent(BaseAgent):
         # Use data compressor for token-efficient transmission
         compressor = DataCompressor(self.config)
         
+        # Compress all data sources
+        compressed = compressor.compress_all(
+            problems=state.get("problems", {}),
+            ontology=state.get("ontology", {}),
+            roadmaps=state.get("roadmaps", {}),
+        )
+        
         # Prepare input data for the prompt (compressed format)
         input_data = {
-            "metadata": compressor.compress_problems(state.get("problems", {})),
-            "ontology": compressor.compress_ontology(state.get("ontology", {})),
+            "metadata": compressed["problems"],
+            "ontology": compressed["ontology"],
+            "roadmaps": compressed.get("roadmaps", ""),
             "language": self.language,
         }
         
@@ -137,7 +154,8 @@ class SpecialistAgent(BaseAgent):
         markmap_content = self.invoke(input_data)
         
         # Update state
-        key = f"baseline_specialist_{self.language}"
+        lang_key = self.language.replace("-", "_")
+        key = f"baseline_specialist_{lang_key}"
         state[key] = markmap_content
         
         return state
