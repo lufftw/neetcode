@@ -35,12 +35,13 @@ STRUCTURAL_FILES_ORDER = ["_header.md"]
 STRUCTURAL_FILES_FOOTER = ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
 
 
-def load_config(source_dir: Path) -> dict[str, list[str]]:
+def load_config(source_dir: Path) -> dict:
     """
     Load file ordering configuration from _config.toml if it exists.
     
     Returns:
         Dictionary with 'header_files', 'problem_files', 'footer_files' lists,
+        and optionally 'output' configuration,
         or empty dict if config file doesn't exist.
     """
     config_path = source_dir / "_config.toml"
@@ -59,6 +60,8 @@ def load_config(source_dir: Path) -> dict[str, list[str]]:
             result["problem_files"] = config["problem_files"]
         if "footer_files" in config:
             result["footer_files"] = config["footer_files"]
+        if "output" in config:
+            result["output"] = config["output"]
         
         return result
     except Exception as e:

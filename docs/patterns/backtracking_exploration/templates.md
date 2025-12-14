@@ -26,7 +26,8 @@ This document presents the **canonical backtracking template** and all its major
 15. [Pruning Techniques](#15-pruning-techniques)
 16. [Pattern Comparison Table](#16-pattern-comparison-table)
 17. [When to Use Backtracking](#17-when-to-use-backtracking)
-18. [Template Quick Reference](#18-template-quick-reference)
+18. [LeetCode Problem Mapping](#18-leetcode-problem-mapping)
+19. [Template Quick Reference](#19-template-quick-reference)
 
 ---
 
@@ -114,6 +115,8 @@ Backtracking algorithms typically have exponential or factorial complexity becau
 | **Constraint Satisfaction** | Row-by-row with constraint sets | LeetCode 51, 52 |
 | **String Partitioning** | Cut positions with validity | LeetCode 131, 93 |
 | **Grid/Path Search** | Visited marking and undo | LeetCode 79 |
+
+---
 
 ---
 
@@ -1291,9 +1294,22 @@ Is the problem asking for ALL solutions?
 
 ---
 
-## 18. Template Quick Reference
+## 18. LeetCode Problem Mapping
 
-### 18.1 Permutation Template
+| Sub-Pattern | Problems |
+|-------------|----------|
+| **Permutation Enumeration** | 46. Permutations, 47. Permutations II |
+| **Subset/Combination** | 78. Subsets, 90. Subsets II, 77. Combinations |
+| **Target Search** | 39. Combination Sum, 40. Combination Sum II, 216. Combination Sum III |
+| **Constraint Satisfaction** | 51. N-Queens, 52. N-Queens II, 37. Sudoku Solver |
+| **String Partitioning** | 131. Palindrome Partitioning, 93. Restore IP Addresses, 140. Word Break II |
+| **Grid/Path Search** | 79. Word Search, 212. Word Search II |
+
+---
+
+## 19. Template Quick Reference
+
+### 19.1 Permutation Template
 
 ```python
 def permute(nums):
@@ -1318,7 +1334,7 @@ def permute(nums):
     return results
 ```
 
-### 18.2 Subset/Combination Template
+### 19.2 Subset/Combination Template
 
 ```python
 def subsets(nums):
@@ -1336,7 +1352,7 @@ def subsets(nums):
     return results
 ```
 
-### 18.3 Target Sum Template
+### 19.3 Target Sum Template
 
 ```python
 def combination_sum(candidates, target):
@@ -1358,7 +1374,7 @@ def combination_sum(candidates, target):
     return results
 ```
 
-### 18.4 Grid Search Template
+### 19.4 Grid Search Template
 
 ```python
 def grid_search(grid, word):
@@ -1388,22 +1404,13 @@ def grid_search(grid, word):
             if backtrack(r, c, 0):
                 return True
     return False
+
 ```
 
----
 
-## LeetCode Problem Mapping
-
-| Sub-Pattern | Problems |
-|-------------|----------|
-| **Permutation Enumeration** | 46. Permutations, 47. Permutations II |
-| **Subset/Combination** | 78. Subsets, 90. Subsets II, 77. Combinations |
-| **Target Search** | 39. Combination Sum, 40. Combination Sum II, 216. Combination Sum III |
-| **Constraint Satisfaction** | 51. N-Queens, 52. N-Queens II, 37. Sudoku Solver |
-| **String Partitioning** | 131. Palindrome Partitioning, 93. Restore IP Addresses, 140. Word Break II |
-| **Grid/Path Search** | 79. Word Search, 212. Word Search II |
 
 ---
+
+
 
 *Document generated for NeetCode Practice Framework — API Kernel: BacktrackingExploration*
-

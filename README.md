@@ -343,16 +343,23 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 > **"Don't memorize 200 problems. Master 10 patterns."**
 
-Each API Kernel has a dedicated pattern guide with **base template**, **variations**, and **copy-paste ready code**.
+Each pattern provides **two learning paths**:
 
-| API Kernel | Guide | Problems |
-|:-----------|:-----:|:---------|
-| `SubstringSlidingWindow` | [📖](docs/patterns/sliding_window.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
-| `TwoPointersTraversal` | [📖](docs/patterns/two_pointers.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
-| `GridBFSMultiSource` | *soon* | LeetCode 994, 286, 542 |
-| `BacktrackingExploration` | *soon* | LeetCode 51, 52, 46, 78 |
-| `KWayMerge` | *soon* | LeetCode 23, 21, 88 |
-| `BinarySearchBoundary` | *soon* | LeetCode 4, 33, 34, 35 |
+| Path | Purpose | Best For |
+|:-----|:--------|:---------|
+| 💡 **Intuition** | Understand the "why" through stories and visual explanations | First-time learners, building mental models |
+| 🛠️ **Templates** | Production-ready implementations with problem-specific variations | Interview prep, quick reference |
+
+| API Kernel | Learning Resources | Problems |
+|:-----------|:-------------------|:---------|
+| `SubstringSlidingWindow` | 💡 [Intuition](docs/patterns/sliding_window/intuition.md) · 🛠️ [Templates](docs/patterns/sliding_window/templates.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
+| `TwoPointersTraversal` | 💡 [Intuition](docs/patterns/two_pointers/intuition.md) · 🛠️ [Templates](docs/patterns/two_pointers/templates.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
+| `BacktrackingExploration` | 💡 [Intuition](docs/patterns/backtracking_exploration/intuition.md) · 🛠️ [Templates](docs/patterns/backtracking_exploration/templates.md) | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
+| `GridBFSMultiSource` | *coming soon* | LeetCode 994, 286, 542 |
+| `KWayMerge` | *coming soon* | LeetCode 23, 21, 88 |
+| `BinarySearchBoundary` | *coming soon* | LeetCode 4, 33, 34, 35 |
+| `LinkedListInPlaceReversal` | *coming soon* | LeetCode 25, 206, 92 |
+| `MonotonicStack` | *coming soon* | LeetCode 84, 85, 496 |
 
 👉 **[View All Pattern Guides →](docs/patterns/README.md)**
 

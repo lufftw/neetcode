@@ -343,16 +343,23 @@ scripts\run_tests.bat 0001_two_sum
 
 > **「不要死背 200 道題。掌握 10 個模式。」**
 
-每個 API 核心都有專屬的模式指南，包含**基礎模板**、**變體**和**可直接複製的程式碼**。
+每個模式提供**兩條學習路徑**：
 
-| API 核心 | 指南 | 題目 |
-|:---------|:----:|:-----|
-| `SubstringSlidingWindow` | [📖](docs/patterns/sliding_window.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
-| `TwoPointersTraversal` | [📖](docs/patterns/two_pointers.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
+| 路徑 | 目的 | 適合對象 |
+|:-----|:-----|:---------|
+| 💡 **直覺理解** | 透過故事和視覺化解釋理解「為什麼」 | 初學者、建立心智模型 |
+| 🛠️ **模板** | 生產級實作與問題專屬變體 | 面試準備、快速參考 |
+
+| API 核心 | 學習資源 | 題目 |
+|:---------|:---------|:-----|
+| `SubstringSlidingWindow` | 💡 [直覺理解](docs/patterns/sliding_window/intuition.md) · 🛠️ [模板](docs/patterns/sliding_window/templates.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
+| `TwoPointersTraversal` | 💡 [直覺理解](docs/patterns/two_pointers/intuition.md) · 🛠️ [模板](docs/patterns/two_pointers/templates.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
+| `BacktrackingExploration` | 💡 [直覺理解](docs/patterns/backtracking_exploration/intuition.md) · 🛠️ [模板](docs/patterns/backtracking_exploration/templates.md) | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
 | `GridBFSMultiSource` | *即將推出* | LeetCode 994, 286, 542 |
-| `BacktrackingExploration` | *即將推出* | LeetCode 51, 52, 46, 78 |
 | `KWayMerge` | *即將推出* | LeetCode 23, 21, 88 |
 | `BinarySearchBoundary` | *即將推出* | LeetCode 4, 33, 34, 35 |
+| `LinkedListInPlaceReversal` | *即將推出* | LeetCode 25, 206, 92 |
+| `MonotonicStack` | *即將推出* | LeetCode 84, 85, 496 |
 
 👉 **[查看所有模式指南 →](docs/patterns/README.md)**
 
