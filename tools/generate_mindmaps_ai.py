@@ -173,7 +173,7 @@ def load_ontology_data(config: dict[str, Any]) -> dict[str, Any]:
 
 
 def load_docs_patterns(config: dict[str, Any]) -> dict[str, str]:
-    """Load pattern documentation from docs/patterns/."""
+    """Load pattern documentation from docs/patterns/ (supports both flat and nested structures)."""
     docs_config = config.get("docs", {}).get("patterns", {})
     
     if not docs_config.get("enabled", True):
@@ -186,6 +186,9 @@ def load_docs_patterns(config: dict[str, Any]) -> dict[str, str]:
     exclude = docs_config.get("exclude", ["README"])
     
     docs = {}
+    
+    # Support both flat structure (*.md in root) and nested structure (*/intuition.md, */templates.md)
+    # First, check root level .md files
     for md_file in DOCS_PATTERNS_DIR.glob("*.md"):
         name = md_file.stem
         
@@ -196,6 +199,27 @@ def load_docs_patterns(config: dict[str, Any]) -> dict[str, str]:
             continue
         
         docs[name] = md_file.read_text(encoding="utf-8")
+    
+    # Then, check subdirectories for nested structure (e.g., sliding_window/intuition.md)
+    for subdir in DOCS_PATTERNS_DIR.iterdir():
+        if not subdir.is_dir():
+            continue
+        
+        # Pattern name is the subdirectory name
+        pattern_name = subdir.name
+        
+        # Filter by include/exclude (check if pattern name matches)
+        if include and pattern_name not in include:
+            continue
+        if pattern_name in exclude:
+            continue
+        
+        # Load all .md files in this subdirectory
+        for md_file in subdir.glob("*.md"):
+            # Use pattern_name/filename as key (e.g., "sliding_window/intuition")
+            file_stem = md_file.stem
+            key = f"{pattern_name}/{file_stem}"
+            docs[key] = md_file.read_text(encoding="utf-8")
     
     return docs
 

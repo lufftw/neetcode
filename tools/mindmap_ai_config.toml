@@ -105,8 +105,8 @@ enabled = true
 # - Specify filenames without .md extension
 # - Examples: ["sliding_window"] or ["sliding_window", "two_pointers"]
 include = [
-    "sliding_window",    # Sliding Window complete guide
-    "two_pointers",      # Two Pointers complete guide
+    # "sliding_window",    # Sliding Window complete guide
+    # "two_pointers",      # Two Pointers complete guide
     # "bfs",             # BFS pattern (coming soon)
     # "backtracking",    # Backtracking pattern (coming soon)
 ]
