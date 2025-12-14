@@ -478,6 +478,584 @@ The variations come from:
 
 ---
 
+## Complete Implementations: From Intuition to Code
+
+Now we translate intuition into production-ready code. Each solution demonstrates the Explorer-Gatekeeper dance with explicit state management and complexity guarantees.
+
+---
+
+### Problem 1: Longest Substring Without Repeating Characters (LeetCode 3)
+
+**The Promise**: *"Every character in my view appears exactly once."*
+
+**Why This Problem Matters**: This is the canonical sliding window problem. Master it, and you understand the pattern.
+
+```python
+def length_of_longest_substring(s: str) -> int:
+    """
+    Find the length of the longest substring without repeating characters.
+    
+    Intuition:
+        We maintain a window [left, right] where all characters are unique.
+        The Explorer (right pointer) advances one character at a time.
+        When a duplicate is detected, the Gatekeeper (left pointer) jumps
+        directly past the previous occurrence — no incremental crawling needed.
+    
+    The Jump Optimization:
+        Instead of shrinking one position at a time (while loop), we record
+        each character's last-seen index. When we see a duplicate, we can
+        teleport the left boundary to skip all characters up to and including
+        the previous occurrence. This eliminates redundant comparisons.
+    
+    Time Complexity: O(n)
+        - The right pointer visits each character exactly once: O(n)
+        - The left pointer only moves forward (never backward): amortized O(n)
+        - Dictionary operations (get, set): O(1) per operation
+        - Total: O(n) where n = len(s)
+    
+    Space Complexity: O(min(n, σ))
+        - σ = size of character set (26 for lowercase, 128 for ASCII, etc.)
+        - In practice, O(1) for fixed alphabets, O(n) for arbitrary Unicode
+    
+    Args:
+        s: Input string to search
+        
+    Returns:
+        Length of the longest substring with all unique characters
+        
+    Examples:
+        >>> length_of_longest_substring("abcabcbb")
+        3  # "abc"
+        >>> length_of_longest_substring("bbbbb")
+        1  # "b"
+        >>> length_of_longest_substring("pwwkew")
+        3  # "wke"
+    """
+    # State: Maps each character to its most recent index
+    # This enables O(1) duplicate detection and O(1) jump calculation
+    last_seen_at: dict[str, int] = {}
+    
+    # Window boundaries: [left, right] inclusive
+    left = 0
+    max_length = 0
+    
+    # Explorer advances through every position
+    for right, char in enumerate(s):
+        # Duplicate detection: Is this char already in our current window?
+        # Key insight: We only care if the previous occurrence is at or after 'left'
+        # Characters before 'left' are outside our window — they don't count
+        if char in last_seen_at and last_seen_at[char] >= left:
+            # Gatekeeper acts: Jump past the previous occurrence
+            # The +1 ensures we exclude the duplicate itself
+            left = last_seen_at[char] + 1
+        
+        # Record this character's position for future duplicate detection
+        last_seen_at[char] = right
+        
+        # The window [left, right] is now guaranteed unique
+        # Update our answer if this window is the largest seen
+        current_length = right - left + 1
+        max_length = max(max_length, current_length)
+    
+    return max_length
+
+
+# Verification
+if __name__ == "__main__":
+    test_cases = [
+        ("abcabcbb", 3),
+        ("bbbbb", 1),
+        ("pwwkew", 3),
+        ("", 0),
+        ("au", 2),
+        ("dvdf", 3),
+    ]
+    for s, expected in test_cases:
+        result = length_of_longest_substring(s)
+        status = "✓" if result == expected else "✗"
+        print(f"{status} Input: {s!r:15} → {result} (expected {expected})")
+```
+
+**Complexity Deep Dive**:
+
+| Operation | Count | Cost | Total |
+|-----------|-------|------|-------|
+| Right pointer advances | n | O(1) | O(n) |
+| Left pointer advances | ≤ n (total) | O(1) | O(n) |
+| Dictionary lookup/update | n | O(1) average | O(n) |
+| **Total** | | | **O(n)** |
+
+The left pointer never retreats. Each character index is visited by `left` at most once across the entire algorithm, giving us the O(n) guarantee.
+
+---
+
+### Problem 2: Longest Substring with At Most K Distinct Characters (LeetCode 340)
+
+**The Promise**: *"I contain no more than K different characters."*
+
+**The Difference from Problem 1**: We can't jump — we must shrink incrementally because removing one character might still leave us with too many distinct characters.
+
+```python
+def length_of_longest_substring_k_distinct(s: str, k: int) -> int:
+    """
+    Find the length of the longest substring with at most K distinct characters.
+    
+    Intuition:
+        The window [left, right] maintains at most K distinct characters.
+        When adding a character causes distinct count to exceed K, we shrink
+        from the left until we're back to K or fewer distinct characters.
+    
+    Why We Can't Jump:
+        Unlike the unique-character problem, removing one character doesn't
+        guarantee we restore validity. We might need to remove several
+        characters before the distinct count drops. Hence, we use a while-loop.
+    
+    State Design:
+        We use a frequency map rather than a last-seen-index map because:
+        1. We need to know when a character's count drops to zero (to decrement distinct count)
+        2. The len(frequency_map) tells us the distinct count directly
+    
+    Time Complexity: O(n)
+        - Right pointer: n iterations, O(1) per iteration
+        - Left pointer: moves at most n times total (amortized)
+        - Each character enters and exits the window at most once
+    
+    Space Complexity: O(K)
+        - The frequency map contains at most K+1 entries at any time
+        - Before we shrink, we might briefly have K+1 entries
+    
+    Args:
+        s: Input string
+        k: Maximum number of distinct characters allowed
+        
+    Returns:
+        Length of the longest valid substring
+        
+    Examples:
+        >>> length_of_longest_substring_k_distinct("eceba", 2)
+        3  # "ece"
+        >>> length_of_longest_substring_k_distinct("aa", 1)
+        2  # "aa"
+    """
+    if k == 0:
+        return 0
+    
+    # State: Frequency count of each character in current window
+    # The length of this dict = number of distinct characters
+    char_count: dict[str, int] = {}
+    
+    left = 0
+    max_length = 0
+    
+    for right, char in enumerate(s):
+        # Explorer adds new character to window
+        char_count[char] = char_count.get(char, 0) + 1
+        
+        # Gatekeeper shrinks window while we have too many distinct characters
+        # This is a while-loop, not an if — we may need multiple shrinks
+        while len(char_count) > k:
+            left_char = s[left]
+            char_count[left_char] -= 1
+            
+            # Critical: Remove from dict when count reaches zero
+            # This keeps len(char_count) accurate for distinct count
+            if char_count[left_char] == 0:
+                del char_count[left_char]
+            
+            left += 1
+        
+        # Window is now valid: at most K distinct characters
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+
+
+# Verification
+if __name__ == "__main__":
+    test_cases = [
+        (("eceba", 2), 3),
+        (("aa", 1), 2),
+        (("a", 0), 0),
+        (("aabbcc", 2), 4),
+    ]
+    for (s, k), expected in test_cases:
+        result = length_of_longest_substring_k_distinct(s, k)
+        status = "✓" if result == expected else "✗"
+        print(f"{status} Input: {s!r}, k={k} → {result} (expected {expected})")
+```
+
+**Engineering Note**: The deletion `del char_count[left_char]` is essential. Without it, `len(char_count)` would count characters with zero frequency, breaking our invariant check.
+
+---
+
+### Problem 3: Minimum Window Substring (LeetCode 76)
+
+**The Promise**: *"I contain all required characters with sufficient frequency."*
+
+**The Paradigm Shift**: Now we're *minimizing*, not maximizing. We expand until valid, then shrink aggressively while staying valid.
+
+```python
+def min_window(s: str, t: str) -> str:
+    """
+    Find the minimum window in s that contains all characters of t.
+    
+    Intuition:
+        Phase 1 (Expand): Explorer advances until window contains all of t.
+        Phase 2 (Contract): Gatekeeper shrinks window while it remains valid.
+        Record the smallest valid window, then continue exploring.
+    
+    The Satisfied Counter Optimization:
+        Naively checking "do we have all characters?" requires O(|t|) per step.
+        Instead, we track how many unique characters have met their quota.
+        When `chars_satisfied == chars_required`, the window is valid.
+        This reduces per-step cost from O(|t|) to O(1).
+    
+    Time Complexity: O(|s| + |t|)
+        - Building need_count: O(|t|)
+        - Main loop: O(|s|) — each character enters and exits once
+        - All dictionary operations: O(1) each
+    
+    Space Complexity: O(|t|)
+        - need_count: O(unique chars in t)
+        - have_count: O(unique chars in t) — we only track needed chars
+    
+    Args:
+        s: Source string to search in
+        t: Target string containing required characters
+        
+    Returns:
+        Minimum window substring, or "" if no valid window exists
+        
+    Examples:
+        >>> min_window("ADOBECODEBANC", "ABC")
+        "BANC"
+        >>> min_window("a", "a")
+        "a"
+        >>> min_window("a", "aa")
+        ""
+    """
+    if not t or not s:
+        return ""
+    
+    # Build the requirement: what characters do we need, and how many of each?
+    need_count: dict[str, int] = {}
+    for char in t:
+        need_count[char] = need_count.get(char, 0) + 1
+    
+    # State: what characters do we have in current window?
+    have_count: dict[str, int] = {}
+    
+    # Optimization: Track satisfaction at character level
+    # chars_satisfied = count of unique characters meeting their quota
+    chars_satisfied = 0
+    chars_required = len(need_count)  # number of unique characters in t
+    
+    # Answer tracking
+    min_length = float('inf')
+    result_start = 0
+    
+    left = 0
+    
+    for right, char in enumerate(s):
+        # Explorer: Add character to window
+        have_count[char] = have_count.get(char, 0) + 1
+        
+        # Did adding this character satisfy a requirement?
+        # We check for exact equality to avoid double-counting
+        if char in need_count and have_count[char] == need_count[char]:
+            chars_satisfied += 1
+        
+        # Gatekeeper: Try to shrink while window remains valid
+        while chars_satisfied == chars_required:
+            # Current window is valid — record if it's the smallest
+            window_length = right - left + 1
+            if window_length < min_length:
+                min_length = window_length
+                result_start = left
+            
+            # Remove leftmost character
+            left_char = s[left]
+            have_count[left_char] -= 1
+            
+            # Did removing break a requirement?
+            if left_char in need_count and have_count[left_char] < need_count[left_char]:
+                chars_satisfied -= 1
+            
+            left += 1
+    
+    if min_length == float('inf'):
+        return ""
+    return s[result_start : result_start + min_length]
+
+
+# Verification
+if __name__ == "__main__":
+    test_cases = [
+        (("ADOBECODEBANC", "ABC"), "BANC"),
+        (("a", "a"), "a"),
+        (("a", "aa"), ""),
+        (("aa", "aa"), "aa"),
+    ]
+    for (s, t), expected in test_cases:
+        result = min_window(s, t)
+        status = "✓" if result == expected else "✗"
+        print(f"{status} s={s!r}, t={t!r} → {result!r} (expected {expected!r})")
+```
+
+**Complexity Breakdown**:
+
+| Phase | Operations | Complexity |
+|-------|------------|------------|
+| Build `need_count` | Iterate over t | O(\|t\|) |
+| Expand (right pointer) | Each char enters once | O(\|s\|) |
+| Contract (left pointer) | Each char exits at most once | O(\|s\|) |
+| **Total** | | **O(\|s\| + \|t\|)** |
+
+---
+
+### Problem 4: Find All Anagrams in a String (LeetCode 438)
+
+**The Promise**: *"I contain exactly the same character frequencies as the pattern."*
+
+**Fixed Window Property**: Since anagrams have the same length, we maintain a window of exactly `len(p)`.
+
+```python
+def find_anagrams(s: str, p: str) -> list[int]:
+    """
+    Find all starting indices of p's anagrams in s.
+    
+    Intuition:
+        An anagram has the exact same character frequencies as the pattern.
+        Since length must match, we use a fixed-size window of len(p).
+        At each position, check if window frequencies match pattern frequencies.
+    
+    The Match Counter Optimization:
+        Instead of comparing two frequency maps (O(26) for lowercase),
+        we track how many characters have matching frequencies.
+        When all match, we've found an anagram.
+    
+    Careful State Transitions:
+        When adding a character:
+          - If it now matches the pattern frequency: matches++
+          - If it just exceeded the pattern frequency: matches--
+        When removing a character:
+          - If it was matching and now isn't: matches--
+          - If it was exceeding and now matches: matches++
+    
+    Time Complexity: O(|s| + |p|)
+        - Build pattern frequency: O(|p|)
+        - Slide window over s: O(|s|) with O(1) per step
+    
+    Space Complexity: O(1)
+        - Two frequency maps bounded by alphabet size (26 for lowercase)
+    
+    Args:
+        s: Source string to search in
+        p: Pattern string (looking for its anagrams)
+        
+    Returns:
+        List of starting indices where anagrams of p begin
+        
+    Examples:
+        >>> find_anagrams("cbaebabacd", "abc")
+        [0, 6]
+        >>> find_anagrams("abab", "ab")
+        [0, 1, 2]
+    """
+    result: list[int] = []
+    
+    pattern_len = len(p)
+    source_len = len(s)
+    
+    if pattern_len > source_len:
+        return result
+    
+    # Build pattern frequency map
+    pattern_freq: dict[str, int] = {}
+    for char in p:
+        pattern_freq[char] = pattern_freq.get(char, 0) + 1
+    
+    # Window frequency map
+    window_freq: dict[str, int] = {}
+    
+    # Track how many characters have matching frequencies
+    chars_matched = 0
+    chars_to_match = len(pattern_freq)
+    
+    for right in range(source_len):
+        # Add character at right edge
+        right_char = s[right]
+        window_freq[right_char] = window_freq.get(right_char, 0) + 1
+        
+        # Update match count for added character
+        if right_char in pattern_freq:
+            if window_freq[right_char] == pattern_freq[right_char]:
+                chars_matched += 1
+            elif window_freq[right_char] == pattern_freq[right_char] + 1:
+                # We just went from matching to exceeding
+                chars_matched -= 1
+        
+        # Remove character at left edge when window exceeds pattern length
+        left = right - pattern_len
+        if left >= 0:
+            left_char = s[left]
+            
+            # Update match count for removed character BEFORE decrementing
+            if left_char in pattern_freq:
+                if window_freq[left_char] == pattern_freq[left_char]:
+                    # We're about to break this match
+                    chars_matched -= 1
+                elif window_freq[left_char] == pattern_freq[left_char] + 1:
+                    # Removing brings us from exceeding to matching
+                    chars_matched += 1
+            
+            window_freq[left_char] -= 1
+            if window_freq[left_char] == 0:
+                del window_freq[left_char]
+        
+        # Check for anagram when window size equals pattern size
+        if right >= pattern_len - 1 and chars_matched == chars_to_match:
+            result.append(right - pattern_len + 1)
+    
+    return result
+
+
+# Verification
+if __name__ == "__main__":
+    test_cases = [
+        (("cbaebabacd", "abc"), [0, 6]),
+        (("abab", "ab"), [0, 1, 2]),
+        (("aaaaaaaaaa", "aaaaaaaaaaaaa"), []),
+    ]
+    for (s, p), expected in test_cases:
+        result = find_anagrams(s, p)
+        status = "✓" if result == expected else "✗"
+        print(f"{status} s={s!r}, p={p!r} → {result} (expected {expected})")
+```
+
+---
+
+### Problem 5: Minimum Size Subarray Sum (LeetCode 209)
+
+**The Promise**: *"My sum is at least the target."*
+
+**Numeric Sliding Window**: Instead of tracking character frequencies, we track a running sum. The principle remains identical.
+
+```python
+def min_subarray_len(target: int, nums: list[int]) -> int:
+    """
+    Find the minimal length of a subarray whose sum is >= target.
+    
+    Intuition:
+        This is the numeric equivalent of minimum window substring.
+        Expand until sum >= target, then shrink while sum stays >= target.
+        Track the smallest window that ever achieves the target.
+    
+    Why Positive Numbers Matter:
+        This algorithm works because all elements are positive.
+        Adding an element always increases the sum.
+        Removing an element always decreases the sum.
+        This monotonicity is what makes sliding window viable.
+    
+    Caution for Interviews:
+        If the array can contain negatives, sliding window doesn't work!
+        You'd need a different approach (prefix sums + monotonic deque).
+    
+    Time Complexity: O(n)
+        - Right pointer: visits each element once
+        - Left pointer: moves forward only, at most n times total
+        - Each element enters and exits the window at most once
+    
+    Space Complexity: O(1)
+        - Only a few integer variables (sum, pointers, min_length)
+    
+    Args:
+        target: The minimum sum we need to achieve
+        nums: Array of positive integers
+        
+    Returns:
+        Minimum length of valid subarray, or 0 if impossible
+        
+    Examples:
+        >>> min_subarray_len(7, [2, 3, 1, 2, 4, 3])
+        2  # [4, 3]
+        >>> min_subarray_len(11, [1, 1, 1, 1, 1, 1, 1, 1])
+        0  # Impossible
+    """
+    n = len(nums)
+    if n == 0:
+        return 0
+    
+    # State: Running sum of current window [left, right]
+    window_sum = 0
+    
+    left = 0
+    min_length = float('inf')
+    
+    for right, num in enumerate(nums):
+        # Explorer: Expand window by including nums[right]
+        window_sum += num
+        
+        # Gatekeeper: Shrink while sum meets target
+        # We want the SMALLEST valid window, so shrink aggressively
+        while window_sum >= target:
+            # Current window is valid — record its size
+            current_length = right - left + 1
+            min_length = min(min_length, current_length)
+            
+            # Remove leftmost element
+            window_sum -= nums[left]
+            left += 1
+    
+    return min_length if min_length != float('inf') else 0
+
+
+# Verification
+if __name__ == "__main__":
+    test_cases = [
+        ((7, [2, 3, 1, 2, 4, 3]), 2),
+        ((4, [1, 4, 4]), 1),
+        ((11, [1, 1, 1, 1, 1, 1, 1, 1]), 0),
+        ((15, [1, 2, 3, 4, 5]), 5),
+    ]
+    for (target, nums), expected in test_cases:
+        result = min_subarray_len(target, nums)
+        status = "✓" if result == expected else "✗"
+        print(f"{status} target={target}, nums={nums} → {result} (expected {expected})")
+```
+
+**The O(n) Guarantee Visualized**:
+
+```
+Element:     [2]  [3]  [1]  [2]  [4]  [3]
+              ↓    ↓    ↓    ↓    ↓    ↓
+Right visits: ✓    ✓    ✓    ✓    ✓    ✓   = 6 times
+Left visits:  ✓    ✓    ✓    ✓    ✓    ✓   = 6 times (at most)
+                                           ─────────
+Total operations:                          ≤ 2n = O(n)
+```
+
+---
+
+## Time Complexity: The Definitive Analysis
+
+Every sliding window algorithm achieves O(n) through the **two-pointer invariant**:
+
+```
+Both pointers only move forward → Each element enters the window once, exits once
+```
+
+| Algorithm | Per-Element Cost | Total Visits | Complexity |
+|-----------|------------------|--------------|------------|
+| Right pointer advance | O(1) | n | O(n) |
+| Left pointer advance | O(1) | ≤ n | O(n) |
+| State update (add/remove) | O(1) | 2n | O(n) |
+| **Combined** | | | **O(n)** |
+
+**The Amortized Argument**: While the inner `while` loop might run multiple times for a single `right` advance, the total number of `left` advances across the *entire* algorithm is bounded by n. This is because `left` starts at 0 and can only increase, never decrease, and can never exceed n.
+
+---
+
 ## The Pattern in One Sentence
 
 > *Sliding Window is the art of maintaining a valid contiguous view by advancing eagerly and retreating only when necessary.*
@@ -488,4 +1066,4 @@ Let it slide.
 
 ---
 
-*For detailed implementations and code examples, see [templates.md](./templates.md).*
+*For additional variations and template reference, see [templates.md](./templates.md).*
