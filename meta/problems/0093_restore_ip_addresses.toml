@@ -1,0 +1,52 @@
+# Problem: Restore IP Addresses
+# https://leetcode.com/problems/restore-ip-addresses/
+
+# ===== Problem Info =====
+id = "0093"
+slug = "0093_restore_ip_addresses"
+title = "Restore IP Addresses"
+leetcode_id = 93
+url = "https://leetcode.com/problems/restore-ip-addresses/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "backtracking"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_string_segmentation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["string", "array"]
+algorithms       = ["backtracking"]
+related_problems = ["0131", "0093"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0093_restore_ip_addresses.py"
+generator = "generators/0093_restore_ip_addresses.py"
+tests_dir = "tests/0093_restore_ip_addresses/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "restoreIpAddresses"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_string_segmentation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["string", "array"]
+algorithms       = ["backtracking"]
+related_problems = ["0131"]
+
+role       = "base"
+variant    = "multi_constraint_segmentation"
+based_on   = []
+delta      = ""
+complexity = "O(3^4 × n) = O(n) time, O(1) space"
+notes      = "String segmentation with multi-constraint validity. IP address has exactly 4 segments, each with constraints: length 1-3, value 0-255, no leading zeros. Prune aggressively based on remaining length bounds."
+

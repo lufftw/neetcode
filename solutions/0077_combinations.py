@@ -28,6 +28,49 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# JUDGE_FUNC - Validate combinations
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Combinations results."""
+    import math
+    lines = input_data.strip().split('\n')
+    n = int(lines[0])
+    k = int(lines[1])
+    
+    # Check each combination has k elements from [1, n]
+    for combo in actual:
+        if len(combo) != k:
+            return False
+        if len(set(combo)) != k:  # no duplicates
+            return False
+        for num in combo:
+            if num < 1 or num > n:
+                return False
+    
+    # Check no duplicate combinations
+    sorted_combos = [tuple(sorted(c)) for c in actual]
+    if len(set(sorted_combos)) != len(actual):
+        return False
+    
+    # Check correct count: C(n,k)
+    expected_count = math.comb(n, k)
+    if len(actual) != expected_count:
+        return False
+    
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with Count Pruning
+# Time: O(k × C(n,k)), Space: O(k)
+#   - Use start_index for canonical ordering
+#   - Only collect when path has exactly k elements
+#   - Prune when remaining elements < elements needed
+# ============================================================================
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         """

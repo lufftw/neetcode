@@ -26,6 +26,43 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# JUDGE_FUNC - Validate subsets
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Subsets results."""
+    nums = list(map(int, input_data.strip().split(',')))
+    n = len(nums)
+    nums_set = set(nums)
+    
+    # Each subset should only contain elements from nums
+    for subset in actual:
+        for num in subset:
+            if num not in nums_set:
+                return False
+    
+    # Check no duplicate subsets
+    sorted_subsets = [tuple(sorted(s)) for s in actual]
+    if len(set(sorted_subsets)) != len(actual):
+        return False
+    
+    # Check correct count: 2^n subsets
+    if len(actual) != (1 << n):
+        return False
+    
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with Start-Index Canonicalization
+# Time: O(n × 2^n), Space: O(n)
+#   - Use start_index to enforce canonical ordering
+#   - Collect at every node (not just leaves)
+#   - 2^n subsets, O(n) to copy each
+# ============================================================================
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         """

@@ -10,6 +10,7 @@ Developer tools for checking, validating, and generating project content.
 |----------|------|---------|
 | **Checking** | [`check_solutions.py`](#check_solutionspy) | Validate solution file architecture compliance |
 | | [`run_format_tests.py`](#run_format_testspy) | Run format unit tests |
+| | [`check_test_files.py`](#check_test_filespy) | Check and fix test files with double newline endings |
 | **Generation** | [`generate_mindmaps.py`](#generate_mindmapspy) | Rule-based mind map generation |
 | | [`generate_mindmaps_ai.py`](#generate_mindmaps_aipy) | AI-powered mind map generation |
 | | [`generate_pattern_docs.py`](#generate_pattern_docspy) | Pattern documentation generation |
@@ -43,6 +44,7 @@ python tools/generate_pattern_docs.py
 tools/
 ├── README.md                      # This file
 ├── check_solutions.py             # Solution file checker
+├── check_test_files.py            # Test file format checker/fixer
 ├── run_format_tests.py            # Format test runner
 ├── run_format_tests.bat/.sh       # Format test scripts
 │
@@ -129,6 +131,33 @@ Runs complete format check (checker + unit tests).
 ```bash
 tools\run_format_tests.bat     # Windows
 tools/run_format_tests.sh      # Linux/Mac
+```
+
+### `check_test_files.py`
+
+Check and fix double newline ending errors in test files under `tests/` directory.
+
+Checks all `.in` and `.out` files to find files ending with two newlines (`\n\n`).
+
+```bash
+python tools/check_test_files.py              # List problematic files
+python tools/check_test_files.py --fix        # List and auto-fix
+python tools/check_test_files.py --verbose    # Show detailed info
+```
+
+**Features:**
+- List all test files ending with two newlines
+- Auto-fix: Remove extra newline, keep only one
+
+**Example Output:**
+```
+Found 3 files ending with two newlines:
+
+  tests/0977_squares_of_a_sorted_array_1.in
+  tests/0977_squares_of_a_sorted_array_1.out
+  tests/0142_linked_list_cycle_ii_1.in
+
+Tip: Use --fix to automatically fix these issues.
 ```
 
 ---

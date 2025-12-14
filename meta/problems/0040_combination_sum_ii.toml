@@ -1,0 +1,52 @@
+# Problem: Combination Sum II
+# https://leetcode.com/problems/combination-sum-ii/
+
+# ===== Problem Info =====
+id = "0040"
+slug = "0040_combination_sum_ii"
+title = "Combination Sum II"
+leetcode_id = 40
+url = "https://leetcode.com/problems/combination-sum-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "backtracking"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_combination"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0039", "0090", "0047", "0216"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0040_combination_sum_ii.py"
+generator = "generators/0040_combination_sum_ii.py"
+tests_dir = "tests/0040_combination_sum_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "combinationSum2"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_combination"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0039", "0090"]
+
+role       = "variant"
+variant    = "no_reuse_with_deduplication"
+based_on   = ["0039#default"]
+delta      = "No reuse: recurse with i+1. Handle duplicates: sort + same-level skip (i > start_index and candidates[i] == candidates[i-1])."
+complexity = "O(2^n) time, O(n) space"
+notes      = "Combines no-reuse pattern with same-level deduplication for handling duplicate candidates."
+

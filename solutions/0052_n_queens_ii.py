@@ -33,6 +33,30 @@ SOLUTIONS = {
 }
 
 
+# Known solution counts for N-Queens
+KNOWN_COUNTS = {1: 1, 2: 0, 3: 0, 4: 2, 5: 10, 6: 4, 7: 40, 8: 92, 9: 352}
+
+
+# ============================================================================
+# JUDGE_FUNC - Validate N-Queens II count
+# ============================================================================
+def judge(actual: int, expected, input_data: str) -> bool:
+    """Validate N-Queens II result against known counts."""
+    n = int(input_data.strip())
+    if expected is not None:
+        return actual == expected
+    return actual == KNOWN_COUNTS.get(n, actual)
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with Hash Sets
+# Time: O(n!), Space: O(n)
+#   - Place queens row by row; track column/diagonal constraints with sets
+#   - O(1) conflict checking using hash sets
+# ============================================================================
 class SolutionSets:
     def totalNQueens(self, n: int) -> int:
         """
@@ -109,6 +133,12 @@ class SolutionSets:
         return count
 
 
+# ============================================================================
+# Solution 2: Backtracking with Bitmask
+# Time: O(n!), Space: O(n)
+#   - Use integers as bitmasks for ultra-fast constraint checking
+#   - Bitwise operations are faster than hash lookups
+# ============================================================================
 class SolutionBitmask:
     def totalNQueens(self, n: int) -> int:
         """

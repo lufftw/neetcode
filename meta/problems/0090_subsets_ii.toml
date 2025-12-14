@@ -1,0 +1,52 @@
+# Problem: Subsets II
+# https://leetcode.com/problems/subsets-ii/
+
+# ===== Problem Info =====
+id = "0090"
+slug = "0090_subsets_ii"
+title = "Subsets II"
+leetcode_id = 90
+url = "https://leetcode.com/problems/subsets-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "backtracking", "bit_manipulation"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_subset"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0078", "0040", "0047"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0090_subsets_ii.py"
+generator = "generators/0090_subsets_ii.py"
+tests_dir = "tests/0090_subsets_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "subsetsWithDup"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_subset"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0078", "0040"]
+
+role       = "variant"
+variant    = "with_duplicates"
+based_on   = ["0078#default"]
+delta      = "Sort array + same-level deduplication: skip nums[i] if i > start_index and nums[i] == nums[i-1]. Ensures each unique subset is generated exactly once."
+complexity = "O(n × 2^n) time, O(n) space"
+notes      = "Extension of base subset pattern with duplicate handling. Same deduplication technique as Combination Sum II and Permutations II."
+

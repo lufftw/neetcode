@@ -1,0 +1,52 @@
+# Problem: Combination Sum III
+# https://leetcode.com/problems/combination-sum-iii/
+
+# ===== Problem Info =====
+id = "0216"
+slug = "0216_combination_sum_iii"
+title = "Combination Sum III"
+leetcode_id = 216
+url = "https://leetcode.com/problems/combination-sum-iii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "backtracking"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_combination"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0039", "0040", "0077"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0216_combination_sum_iii.py"
+generator = "generators/0216_combination_sum_iii.py"
+tests_dir = "tests/0216_combination_sum_iii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "combinationSum3"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_combination"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0039", "0040"]
+
+role       = "variant"
+variant    = "fixed_count_bounded_range"
+based_on   = ["0040#default"]
+delta      = "Dual constraint: fixed count k and fixed sum n. Fixed range [1-9] with all distinct (no duplicates to handle). Prune on both count and sum dimensions."
+complexity = "O(C(9,k) × k) time, O(k) space"
+notes      = "Combines fixed-size constraint (like Combinations) with target sum constraint (like Combination Sum). Simpler than Combination Sum II due to no duplicates."
+

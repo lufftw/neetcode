@@ -11,9 +11,52 @@ hasn't been used yet. Track usage with a boolean array.
 
 This is the BASE TEMPLATE for the BacktrackingExploration API Kernel's
 permutation sub-pattern.
+
+Constraints:
+- 1 <= nums.length <= 6
+- -10 <= nums[i] <= 10
+- All the integers of nums are unique
 """
 from typing import List
 from _runner import get_solver
+import math
+
+
+# ============================================================================
+# JUDGE_FUNC - Custom validation for permutation problems
+# ============================================================================
+def judge(actual: List[List[int]], expected, input_data: str) -> bool:
+    """
+    Validate Permutations results.
+    
+    Checks:
+    1. Each result is a valid permutation (same elements as input)
+    2. No duplicate permutations
+    3. Correct count (n! permutations)
+    """
+    nums = list(map(int, input_data.strip().split(',')))
+    n = len(nums)
+    nums_sorted = sorted(nums)
+    
+    # Each permutation should have same elements as input
+    for perm in actual:
+        if sorted(perm) != nums_sorted:
+            return False
+    
+    # Check no duplicates
+    perm_tuples = [tuple(p) for p in actual]
+    if len(set(perm_tuples)) != len(actual):
+        return False
+    
+    # Check correct count
+    expected_count = math.factorial(n)
+    if len(actual) != expected_count:
+        return False
+    
+    return True
+
+
+JUDGE_FUNC = judge
 
 
 SOLUTIONS = {
@@ -26,6 +69,13 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Backtracking with Used Array
+# Time: O(n! × n), Space: O(n)
+#   - Build permutation position by position
+#   - At each position, try every unused element
+#   - Track usage with boolean array; n! permutations × O(n) copy each
+# ============================================================================
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         """

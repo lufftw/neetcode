@@ -25,6 +25,22 @@ id = "backtracking_combinatorial"
 summary = "Problems generating permutations, combinations, or placements."
 
 [[families]]
+id = "combination_sum"
+summary = "Problems finding combinations that sum to a target value."
+
+[[families]]
+id = "string_segmentation"
+summary = "Problems partitioning strings into valid segments (IP, palindromes)."
+
+[[families]]
+id = "grid_path_search"
+summary = "Problems finding paths in 2D grids using DFS/backtracking."
+
+[[families]]
+id = "constraint_satisfaction"
+summary = "Problems like N-Queens requiring constraint checking during search."
+
+[[families]]
 id = "linked_list_manipulation"
 summary = "Problems involving in-place linked list operations."
 

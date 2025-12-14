@@ -1,0 +1,71 @@
+# Problem: Palindrome Partitioning
+# https://leetcode.com/problems/palindrome-partitioning/
+
+# ===== Problem Info =====
+id = "0131"
+slug = "0131_palindrome_partitioning"
+title = "Palindrome Partitioning"
+leetcode_id = 131
+url = "https://leetcode.com/problems/palindrome-partitioning/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "dynamic_programming", "backtracking"]
+companies = ["google", "amazon", "meta", "microsoft", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_string_segmentation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["string", "array"]
+algorithms       = ["backtracking", "dynamic_programming"]
+related_problems = ["0093", "0005"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0131_palindrome_partitioning.py"
+generator = "generators/0131_palindrome_partitioning.py"
+tests_dir = "tests/0131_palindrome_partitioning/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDP"
+method = "partition"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_string_segmentation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["string", "array"]
+algorithms       = ["backtracking", "dynamic_programming"]
+related_problems = ["0093"]
+
+role       = "base"
+variant    = "dp_precomputed_palindrome"
+based_on   = []
+delta      = ""
+complexity = "O(n × 2^n) time, O(n^2) space"
+notes      = "Backtracking with DP-precomputed palindrome table. Precompute is_palindrome[i][j] for O(1) checks. At each position, try all valid (palindrome) prefixes. O(n^2) preprocessing dominated by O(n × 2^n) backtracking."
+
+[[solutions]]
+key    = "naive"
+class  = "SolutionNaive"
+method = "partition"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_string_segmentation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["string", "array"]
+algorithms       = ["backtracking"]
+related_problems = ["0093"]
+
+role       = "variant"
+variant    = "on_the_fly_checking"
+based_on   = ["0131#default"]
+delta      = "Check palindrome during backtracking (no preprocessing). Simpler code but slower for repeated checks."
+complexity = "O(n × 2^n × n) time, O(n) space"
+notes      = "Alternative approach with on-the-fly palindrome checking. Demonstrates trade-off between preprocessing and runtime checking."
+

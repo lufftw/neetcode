@@ -176,6 +176,133 @@ SOLUTIONS = {
 }
 ```
 
+### A.7 Solution Comment Format
+
+Solutions SHOULD include structured comments to explain the algorithm, approach, and key insights. This section defines the standard comment format.
+
+#### A.7.1 File-Level Docstring
+
+Every solution file SHOULD start with a docstring describing the problem:
+
+```python
+"""
+Problem: Two Sum
+Link: https://leetcode.com/problems/two-sum/
+
+Given an array of integers nums and an integer target, return indices 
+of the two numbers such that they add up to target.
+
+Constraints:
+- 2 <= nums.length <= 10^4
+- -10^9 <= nums[i] <= 10^9
+- -10^9 <= target <= 10^9
+- Only one valid answer exists.
+"""
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `Problem` | ✅ | Problem title |
+| `Link` | ✅ | LeetCode URL |
+| Description | Recommended | Brief problem statement |
+| `Constraints` | Recommended | Key constraints affecting algorithm choice |
+
+#### A.7.2 Solution Block Comments
+
+Each solution class SHOULD be preceded by a block comment explaining the approach.
+
+**No blank line** between the comment block and the class definition:
+
+```python
+# ============================================================================
+# Solution 1: Sliding Window (Optimized with Jump)
+# Time: O(n), Space: O(min(n, σ))
+#   - Each character visited at most twice
+#   - Uses last-seen-index array for O(1) duplicate detection
+#   - Direct position jumping instead of incremental contraction
+# ============================================================================
+class SolutionSlidingWindow:   # ← 緊接著，無空行
+    ...
+```
+
+**Format:**
+
+```
+# ============================================
+# Solution {N}: {Approach Name}
+# Time: O(?), Space: O(?)
+#   - {Key insight or implementation detail}
+#   - {Additional notes}
+# ============================================
+class ClassName:   # ← No blank line before class/function
+```
+
+| Component | Required | Description |
+|-----------|----------|-------------|
+| Solution number & name | ✅ | e.g., `Solution 1: Sliding Window` |
+| Time/Space complexity | ✅ | e.g., `Time: O(n), Space: O(n)` |
+| Bullet points | Recommended | Key insights, implementation details |
+| **No blank line** | ✅ | Comment block directly followed by class/function |
+
+**More examples:**
+
+```python
+# ============================================
+# Solution 1: Single Pass
+# Time: O(max(m,n)), Space: O(max(m,n))
+#   - Single pass through both lists
+#   - Result list has at most max(m,n) + 1 nodes
+# ============================================
+class Solution:
+    ...
+```
+
+```python
+# ============================================================================
+# Solution 2: Using Dictionary (More Flexible for Unicode)
+# Time: O(n), Space: O(min(n, σ))
+#   - Same sliding window approach with dictionary instead of array
+#   - More flexible for Unicode strings but slightly slower
+# ============================================================================
+class SolutionDict:
+    ...
+```
+
+```python
+# ============================================================================
+# Solution 3: Using Set (Standard While-Loop Pattern)
+# Time: O(n), Space: O(min(n, σ))
+#   - Uses set to track current window characters
+#   - Demonstrates standard while-loop contraction pattern
+# ============================================================================
+class SolutionSet:
+    ...
+```
+
+#### A.7.3 JUDGE_FUNC Comments (Optional)
+
+When defining a `JUDGE_FUNC`, you MAY include a block comment explaining its purpose and complexity.
+
+Same rule: **no blank line** between comment and function:
+
+```python
+# ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+# Uses brute force O(m+n) merge to compute the correct answer,
+# then compares with the solution output.
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:   # ← 無空行
+    ...
+
+JUDGE_FUNC = judge
+```
+
+This is optional but recommended when:
+- The judge uses a different algorithm than the solution
+- The judge has notable complexity characteristics
+- Generator support requires custom validation
+
 ---
 
 ## B. SOLUTIONS Metadata Schema
@@ -629,6 +756,12 @@ When adding or modifying a solution, verify:
 """
 Problem: {Problem Title}
 Link: https://leetcode.com/problems/{slug}/
+
+{Brief problem description}
+
+Constraints:
+- {constraint 1}
+- {constraint 2}
 """
 from typing import List
 from _runner import get_solver
@@ -652,9 +785,12 @@ SOLUTIONS = {
 }
 
 # ============================================
-# Solution class(es)
+# Solution 1: {Approach Name}
+# Time: O(?), Space: O(?)
+#   - {Key insight or implementation detail}
+#   - {Additional notes}
 # ============================================
-class Solution:
+class Solution:   # ← No blank line after comment block
     def methodName(self, ...):
         ...
 

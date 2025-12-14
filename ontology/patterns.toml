@@ -122,6 +122,36 @@ id = "backtracking_sudoku"
 api_kernel = "BacktrackingExploration"
 summary = "Fill sudoku grid with constraint propagation."
 
+[[patterns]]
+id = "backtracking_combination_sum"
+api_kernel = "BacktrackingExploration"
+summary = "Find combinations that sum to target, with or without reuse."
+
+[[patterns]]
+id = "backtracking_combination_dedup"
+api_kernel = "BacktrackingExploration"
+summary = "Combinations with duplicate handling via same-level skip."
+
+[[patterns]]
+id = "backtracking_permutation_dedup"
+api_kernel = "BacktrackingExploration"
+summary = "Unique permutations with sorting and same-level deduplication."
+
+[[patterns]]
+id = "backtracking_subset_dedup"
+api_kernel = "BacktrackingExploration"
+summary = "Unique subsets with sorting and same-level deduplication."
+
+[[patterns]]
+id = "backtracking_string_partition"
+api_kernel = "BacktrackingExploration"
+summary = "Partition string into valid segments (IP, palindromes)."
+
+[[patterns]]
+id = "backtracking_grid_path"
+api_kernel = "BacktrackingExploration"
+summary = "DFS path search in grid with visited marking."
+
 # === Linked List Patterns ===
 [[patterns]]
 id = "linked_list_k_group_reversal"

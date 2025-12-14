@@ -128,7 +128,6 @@ JUDGE_FUNC = judge
 #   - Uses last-seen-index array for O(1) duplicate detection
 #   - Direct position jumping instead of incremental contraction
 # ============================================================================
-
 class Solution:
     """
     Optimal solution using sliding window with jump optimization.
@@ -180,7 +179,6 @@ class Solution:
 #   - Same sliding window approach with dictionary instead of array
 #   - More flexible for Unicode strings but slightly slower
 # ============================================================================
-
 class SolutionDict:
     """
     Alternative implementation using dictionary for last-seen index.
@@ -210,7 +208,6 @@ class SolutionDict:
 #   - Uses set to track current window characters
 #   - Demonstrates standard while-loop contraction pattern
 # ============================================================================
-
 class SolutionWithSet:
     """
     Alternative implementation using a set for the current window.

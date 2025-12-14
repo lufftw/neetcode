@@ -14,9 +14,55 @@ occurrence of each duplicate at each level.
 Delta from Base (LeetCode 46):
 - Sort the input array to bring duplicates together
 - Add deduplication: skip nums[i] if it equals nums[i-1] and !used[i-1]
+
+Constraints:
+- 1 <= nums.length <= 8
+- -10 <= nums[i] <= 10
 """
 from typing import List
 from _runner import get_solver
+from collections import Counter
+import math
+
+
+# ============================================================================
+# JUDGE_FUNC - Custom validation for permutation problems with duplicates
+# ============================================================================
+def judge(actual: List[List[int]], expected, input_data: str) -> bool:
+    """
+    Validate Permutations II results.
+    
+    Checks:
+    1. Each result is a valid permutation (same multiset as input)
+    2. No duplicate permutations
+    3. Correct count (n! / (k1! * k2! * ...))
+    """
+    nums = list(map(int, input_data.strip().split(',')))
+    n = len(nums)
+    nums_count = Counter(nums)
+    
+    # Each permutation should have same elements as input
+    for perm in actual:
+        if Counter(perm) != nums_count:
+            return False
+    
+    # Check no duplicates
+    perm_tuples = [tuple(p) for p in actual]
+    if len(set(perm_tuples)) != len(actual):
+        return False
+    
+    # Calculate expected unique permutations: n! / (k1! * k2! * ...)
+    expected_count = math.factorial(n)
+    for cnt in nums_count.values():
+        expected_count //= math.factorial(cnt)
+    
+    if len(actual) != expected_count:
+        return False
+    
+    return True
+
+
+JUDGE_FUNC = judge
 
 
 SOLUTIONS = {
@@ -29,6 +75,13 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Backtracking with Sorting and Same-Level Deduplication
+# Time: O(n! × n), Space: O(n)
+#   - Sort to bring duplicates together
+#   - Skip duplicate if previous identical element is unused (same level)
+#   - Ensures leftmost duplicate is always picked first at each level
+# ============================================================================
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         """
