@@ -28,6 +28,54 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# JUDGE_FUNC - Validate IP addresses
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Restore IP Addresses results."""
+    s = input_data.strip()
+    
+    def is_valid_ip(ip: str) -> bool:
+        """Check if ip is valid and uses all characters from s."""
+        parts = ip.split('.')
+        if len(parts) != 4:
+            return False
+        reconstructed = ''.join(parts)
+        if reconstructed != s:
+            return False
+        for part in parts:
+            if not part:
+                return False
+            if len(part) > 1 and part[0] == '0':
+                return False
+            if int(part) > 255:
+                return False
+        return True
+    
+    for ip in actual:
+        if not is_valid_ip(ip):
+            return False
+    
+    # Check no duplicates
+    if len(set(actual)) != len(actual):
+        return False
+    
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with Segment Validation
+# Time: O(3^4 × n) = O(n), Space: O(1)
+#   - Exactly 4 segments; try 1, 2, or 3 chars per segment
+#   - Validate: no leading zeros, value 0-255
+#   - Prune based on remaining length bounds
+# ============================================================================
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
         """

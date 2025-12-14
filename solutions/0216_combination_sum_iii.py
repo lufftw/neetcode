@@ -30,6 +30,50 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# JUDGE_FUNC - Validate Combination Sum III
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Combination Sum III results."""
+    lines = input_data.strip().split('\n')
+    k = int(lines[0])
+    n = int(lines[1])
+    
+    for combo in actual:
+        # Check exactly k numbers
+        if len(combo) != k:
+            return False
+        # Check sum equals n
+        if sum(combo) != n:
+            return False
+        # Check all numbers in [1,9] and unique
+        if len(set(combo)) != k:
+            return False
+        for num in combo:
+            if num < 1 or num > 9:
+                return False
+    
+    # Check no duplicate combinations
+    sorted_combos = [tuple(sorted(c)) for c in actual]
+    if len(set(sorted_combos)) != len(actual):
+        return False
+    
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with Dual Constraint Pruning
+# Time: O(C(9,k) × k), Space: O(k)
+#   - Fixed size k and fixed sum n constraints
+#   - Range [1-9]: all distinct, no duplicates
+#   - Prune on both count and sum dimensions
+# ============================================================================
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         """

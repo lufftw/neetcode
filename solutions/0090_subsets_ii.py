@@ -28,6 +28,43 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# JUDGE_FUNC - Validate subsets with duplicates
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Subsets II results."""
+    from collections import Counter
+    nums = list(map(int, input_data.strip().split(',')))
+    nums_count = Counter(nums)
+    
+    # Each subset should only contain elements from nums (respecting counts)
+    for subset in actual:
+        subset_count = Counter(subset)
+        for num, cnt in subset_count.items():
+            if cnt > nums_count.get(num, 0):
+                return False
+    
+    # Check no duplicate subsets
+    sorted_subsets = [tuple(sorted(s)) for s in actual]
+    if len(set(sorted_subsets)) != len(actual):
+        return False
+    
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with Sorting and Same-Level Deduplication
+# Time: O(n × 2^n), Space: O(n)
+#   - Sort to bring duplicates together
+#   - Skip if i > start_index and nums[i] == nums[i-1]
+#   - Ensures each unique subset is generated exactly once
+# ============================================================================
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         """

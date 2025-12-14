@@ -28,6 +28,13 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: DFS Backtracking with In-Place Visited Marking
+# Time: O(m × n × 4^L), Space: O(L)
+#   - Start DFS from each cell matching word[0]
+#   - Mark visited cells in-place (temporarily change to '#')
+#   - Try all 4 directions; unmark on backtrack
+# ============================================================================
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
         """

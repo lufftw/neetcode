@@ -10,9 +10,58 @@ be used unlimited times.
 Sub-Pattern: Target search with element reuse
 Key Insight: Allow reuse by NOT incrementing start_index when recursing.
 Prune branches where remaining target < 0 or current element > remaining.
+
+Constraints:
+- 1 <= candidates.length <= 30
+- 2 <= candidates[i] <= 40
+- All elements of candidates are distinct
+- 1 <= target <= 40
 """
 from typing import List
 from _runner import get_solver
+
+
+# ============================================================================
+# JUDGE_FUNC - Custom validation for combination problems
+# ============================================================================
+def judge(actual: List[List[int]], expected, input_data: str) -> bool:
+    """
+    Validate Combination Sum results.
+    
+    Checks:
+    1. Each combination sums to target
+    2. Each combination uses only candidates (with reuse allowed)
+    3. No duplicate combinations
+    4. Correct number of combinations
+    """
+    lines = input_data.strip().split('\n')
+    candidates = list(map(int, lines[0].split(',')))
+    target = int(lines[1])
+    candidates_set = set(candidates)
+    
+    # Validate each combination
+    for combo in actual:
+        # Check sum equals target
+        if sum(combo) != target:
+            return False
+        # Check all elements are from candidates
+        for num in combo:
+            if num not in candidates_set:
+                return False
+    
+    # Check no duplicates (sort each combo for comparison)
+    sorted_combos = [tuple(sorted(c)) for c in actual]
+    if len(set(sorted_combos)) != len(actual):
+        return False
+    
+    # Compare count with expected if available
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True
+
+
+JUDGE_FUNC = judge
 
 
 SOLUTIONS = {
@@ -25,6 +74,13 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Backtracking with Element Reuse
+# Time: O(n^(t/m)), Space: O(t/m)
+#   - Track remaining target; allow reuse by recursing with same index
+#   - Prune when candidate > remaining (sorted array optimization)
+#   - t = target, m = min(candidates), n = len(candidates)
+# ============================================================================
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         """

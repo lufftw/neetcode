@@ -14,9 +14,57 @@ deduplication (skip if i > start and candidates[i] == candidates[i-1]).
 Delta from Combination Sum (LeetCode 39):
 - No reuse: recurse with i+1 instead of i
 - Handle duplicates: sort + same-level skip
+
+Constraints:
+- 1 <= candidates.length <= 100
+- 1 <= candidates[i] <= 50
+- 1 <= target <= 30
 """
 from typing import List
 from _runner import get_solver
+
+
+# ============================================================================
+# JUDGE_FUNC - Custom validation for combination problems
+# ============================================================================
+def judge(actual: List[List[int]], expected, input_data: str) -> bool:
+    """
+    Validate Combination Sum II results.
+    
+    Checks:
+    1. Each combination sums to target
+    2. Each element used at most as many times as it appears in candidates
+    3. No duplicate combinations
+    """
+    lines = input_data.strip().split('\n')
+    candidates = list(map(int, lines[0].split(',')))
+    target = int(lines[1])
+    
+    from collections import Counter
+    candidates_count = Counter(candidates)
+    
+    for combo in actual:
+        # Check sum equals target
+        if sum(combo) != target:
+            return False
+        # Check element usage doesn't exceed availability
+        combo_count = Counter(combo)
+        for num, cnt in combo_count.items():
+            if cnt > candidates_count.get(num, 0):
+                return False
+    
+    # Check no duplicate combinations
+    sorted_combos = [tuple(sorted(c)) for c in actual]
+    if len(set(sorted_combos)) != len(actual):
+        return False
+    
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True
+
+
+JUDGE_FUNC = judge
 
 
 SOLUTIONS = {
@@ -29,6 +77,13 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Backtracking with No-Reuse and Deduplication
+# Time: O(2^n), Space: O(n)
+#   - Sort to bring duplicates together for deduplication
+#   - No reuse: recurse with i+1 (each element used at most once)
+#   - Same-level dedup: skip if i > start and candidates[i] == candidates[i-1]
+# ============================================================================
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         """

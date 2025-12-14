@@ -33,6 +33,46 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# JUDGE_FUNC - Validate palindrome partitions
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Palindrome Partitioning results."""
+    s = input_data.strip()
+    
+    def is_palindrome(t: str) -> bool:
+        return t == t[::-1]
+    
+    for partition in actual:
+        # Check partition reconstructs original string
+        if ''.join(partition) != s:
+            return False
+        # Check each part is a palindrome
+        for part in partition:
+            if not is_palindrome(part):
+                return False
+    
+    # Check no duplicate partitions
+    partition_tuples = [tuple(p) for p in actual]
+    if len(set(partition_tuples)) != len(actual):
+        return False
+    
+    if expected is not None:
+        return len(actual) == len(expected)
+    
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
+# Solution 1: Backtracking with DP-Precomputed Palindrome Table
+# Time: O(n × 2^n), Space: O(n^2)
+#   - Precompute is_palindrome[i][j] for O(1) checks
+#   - At each position, try all valid (palindrome) prefixes
+#   - O(n^2) preprocessing dominated by O(n × 2^n) backtracking
+# ============================================================================
 class SolutionDP:
     def partition(self, s: str) -> List[List[str]]:
         """
@@ -104,6 +144,12 @@ class SolutionDP:
         return results
 
 
+# ============================================================================
+# Solution 2: Backtracking with On-the-Fly Checking
+# Time: O(n × 2^n × n), Space: O(n)
+#   - Check palindrome during backtracking (no preprocessing)
+#   - Simpler code but slower for repeated checks
+# ============================================================================
 class SolutionNaive:
     def partition(self, s: str) -> List[List[str]]:
         """
