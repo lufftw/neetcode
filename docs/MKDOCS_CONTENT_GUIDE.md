@@ -23,7 +23,9 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 |:-----|:------------|:------------|
 | `docs/index.md` | Homepage (includes README.md content) | `https://lufftw.github.io/neetcode/` |
 | `docs/index_zh-TW.md` | Traditional Chinese homepage | `https://lufftw.github.io/neetcode/index_zh-TW/` |
-| `docs/patterns/*.md` | Pattern documentation | `https://lufftw.github.io/neetcode/patterns/...` |
+| `docs/patterns/*.md` | Pattern documentation overview | `https://lufftw.github.io/neetcode/patterns/` |
+| `docs/patterns/*/intuition.md` | Pattern intuition guides | `https://lufftw.github.io/neetcode/patterns/.../intuition/` |
+| `docs/patterns/*/templates.md` | Pattern template guides | `https://lufftw.github.io/neetcode/patterns/.../templates/` |
 | `docs/mindmaps/*.md` | All mind map Markdown files | `https://lufftw.github.io/neetcode/mindmaps/...` |
 | `docs/pages/mindmaps/*.html` | Interactive mind map HTML files | `https://lufftw.github.io/neetcode/pages/mindmaps/...` |
 | `docs/SOLUTION_CONTRACT.md` | Solution file specification | `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/` |
@@ -31,15 +33,20 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 | `docs/ARCHITECTURE_MIGRATION.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
 | `docs/GITHUB_PAGES_SETUP.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
 | `docs/BUILD_DOCS_MANUAL.md` | Local documentation build (manual method) | `https://lufftw.github.io/neetcode/BUILD_DOCS_MANUAL/` |
+| `docs/LOCAL_DOCS_BUILD.md` | Local docs build options | `https://lufftw.github.io/neetcode/LOCAL_DOCS_BUILD/` |
 | `docs/ACT_LOCAL_GITHUB_ACTIONS.md` | Run GitHub Actions locally with act | `https://lufftw.github.io/neetcode/ACT_LOCAL_GITHUB_ACTIONS/` |
+| `docs/ONTOLOGY_DESIGN.md` | Ontology design documentation | `https://lufftw.github.io/neetcode/ONTOLOGY_DESIGN/` |
+| `docs/MKDOCS_CONTENT_GUIDE.md` | MkDocs content guide (this file) | `https://lufftw.github.io/neetcode/MKDOCS_CONTENT_GUIDE/` |
 
 ### 📝 Special Notes
 
 - **README.md** and **README_zh-TW.md**: These files do **NOT** appear as separate pages on the website. Instead, they are included in `docs/index.md` and `docs/index_zh-TW.md` via the `include-markdown` plugin.
 - **docs/patterns/**: ✅ Now configured in `nav` and available on the website.
 - **docs/GITHUB_PAGES_SETUP.md**: ✅ Now configured in `nav` and available on the website.
-- **Local build guides**: ✅ `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) are now configured in `nav`.
-- **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, and `ARCHITECTURE_MIGRATION.md` are now configured in `nav`.
+- **Local build guides**: ✅ `BUILD_DOCS_MANUAL.md` (recommended), `LOCAL_DOCS_BUILD.md`, and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) are now configured in `nav`.
+- **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, `ARCHITECTURE_MIGRATION.md`, and `ONTOLOGY_DESIGN.md` are now configured in `nav`.
+- **Guides**: ✅ `MKDOCS_CONTENT_GUIDE.md` is now configured in `nav`.
+- **Patterns**: ✅ `backtracking_exploration` pattern is now available in `nav` alongside `sliding_window` and `two_pointers`.
 - **Tools docs**: Developer tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (not on website, GitHub only).
 
 ---
@@ -72,22 +79,11 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 
 ### 📚 Documentation (Not in nav)
 
-| File | Description | GitHub Link Format |
-|:-----|:------------|:-------------------|
-| `docs/ONTOLOGY_DESIGN.md` | Ontology design documentation | `https://github.com/lufftw/neetcode/blob/main/docs/ONTOLOGY_DESIGN.md` |
-| `docs/MKDOCS_CONTENT_GUIDE.md` | This file | `https://github.com/lufftw/neetcode/blob/main/docs/MKDOCS_CONTENT_GUIDE.md` |
+**Note**: All major documentation files are now configured in `nav` and available on the website. See [Content Included in Website](#content-included-in-website) section above for the complete list.
 
-**Note**: The following docs are now configured in `nav` and available on the website:
-
-- `docs/patterns/` - Pattern documentation
-- `docs/GITHUB_PAGES_SETUP.md` - GitHub Pages setup guide
-- `docs/BUILD_DOCS_MANUAL.md` - Local documentation build (manual method, recommended)
-- `docs/ACT_LOCAL_GITHUB_ACTIONS.md` - Run GitHub Actions locally with act (optional, advanced)
-- `docs/SOLUTION_CONTRACT.md` - Solution file specification
-- `docs/GENERATOR_CONTRACT.md` - Generator file specification
-- `docs/ARCHITECTURE_MIGRATION.md` - Architecture migration guide
-
-See [Content Included in Website](#content-included-in-website) section above.
+The following files are **intentionally NOT** in the website navigation (GitHub only):
+- Internal development notes and drafts
+- Temporary documentation files
 
 ### 🔧 Maintainer Documentation
 
@@ -139,13 +135,19 @@ When linking to content in README.md, follow these strategies:
 
 ```markdown
 <!-- Document in nav - can use relative paths -->
-- [📐 Patterns](docs/patterns/) — Pattern documentation
+- [📐 Patterns](docs/patterns/) — Pattern documentation overview
+- [Sliding Window Intuition](docs/patterns/sliding_window/intuition.md) — Sliding window intuition guide
+- [Sliding Window Templates](docs/patterns/sliding_window/templates.md) — Sliding window templates
+- [Two Pointers Intuition](docs/patterns/two_pointers/intuition.md) — Two pointers intuition guide
+- [Two Pointers Templates](docs/patterns/two_pointers/templates.md) — Two pointers templates
+- [Backtracking Exploration Intuition](docs/patterns/backtracking_exploration/intuition.md) — Backtracking intuition guide
+- [Backtracking Exploration Templates](docs/patterns/backtracking_exploration/templates.md) — Backtracking templates
 - [GitHub Pages Setup](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
 - [Build Documentation Locally](docs/BUILD_DOCS_MANUAL.md) — Manual build method (recommended)
+- [Local Docs Build Options](docs/LOCAL_DOCS_BUILD.md) — Build options guide
 - [Run GitHub Actions Locally](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — Act method (optional, advanced)
-
-<!-- Document NOT in nav - use GitHub URLs -->
-- [`docs/ONTOLOGY_DESIGN.md`](https://github.com/lufftw/neetcode/blob/main/docs/ONTOLOGY_DESIGN.md) — Ontology design documentation
+- [Ontology Design](docs/ONTOLOGY_DESIGN.md) — Ontology design documentation
+- [MkDocs Content Guide](docs/MKDOCS_CONTENT_GUIDE.md) — Content guide (this file)
 ```
 
 #### 3. For Code Files (Not in Website)
@@ -194,8 +196,25 @@ A: ✅ Yes! The "📚 Reference" section is now configured in `nav` and includes
 - Solution Contract at `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/`
 - Generator Contract at `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/`
 - Architecture Migration at `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/`
+- Ontology Design at `https://lufftw.github.io/neetcode/ONTOLOGY_DESIGN/`
 
 **Note**: Tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (GitHub only, not on website).
+
+### Q: What patterns are available on the website?
+
+A: ✅ The following patterns are now configured in `nav`:
+
+- **Sliding Window**
+  - Intuition: `https://lufftw.github.io/neetcode/patterns/sliding_window/intuition/`
+  - Templates: `https://lufftw.github.io/neetcode/patterns/sliding_window/templates/`
+- **Two Pointers**
+  - Intuition: `https://lufftw.github.io/neetcode/patterns/two_pointers/intuition/`
+  - Templates: `https://lufftw.github.io/neetcode/patterns/two_pointers/templates/`
+- **Backtracking Exploration**
+  - Intuition: `https://lufftw.github.io/neetcode/patterns/backtracking_exploration/intuition/`
+  - Templates: `https://lufftw.github.io/neetcode/patterns/backtracking_exploration/templates/`
+
+Each pattern includes both Intuition and Templates documentation as separate pages in the navigation.
 
 ### Q: Do links in README.md work in both GitHub and the website?
 
@@ -229,6 +248,9 @@ If you need to access these documents, use the GitHub absolute URLs provided in 
 - **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration
 - **2025-12-12**: Moved Tools documentation from `docs/TOOLS.md` to `tools/README.md` (developer docs belong with code)
 - **2025-01-XX**: Added local documentation build guides - `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) to Guides section
+- **2025-12-XX**: Added `ONTOLOGY_DESIGN.md` to Reference section
+- **2025-12-XX**: Added `MKDOCS_CONTENT_GUIDE.md` and `LOCAL_DOCS_BUILD.md` to Guides section
+- **2025-12-XX**: Added `backtracking_exploration` pattern to Patterns section
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---

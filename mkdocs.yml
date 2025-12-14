@@ -104,8 +104,15 @@ nav:
     - 繁體中文: index_zh-TW.md
   - 📐 Patterns:
     - Overview: patterns/README.md
-    - Sliding Window: patterns/sliding_window.md
-    - Two Pointers: patterns/two_pointers.md
+    - Sliding Window:
+      - Intuition: patterns/sliding_window/intuition.md
+      - Templates: patterns/sliding_window/templates.md
+    - Two Pointers:
+      - Intuition: patterns/two_pointers/intuition.md
+      - Templates: patterns/two_pointers/templates.md
+    - Backtracking Exploration:
+      - Intuition: patterns/backtracking_exploration/intuition.md
+      - Templates: patterns/backtracking_exploration/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode_ontology_ai_en.md
