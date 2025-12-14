@@ -1,21 +1,49 @@
 # solutions/0051_n_queens.py
 """
-Problem: N-Queens
-Link: https://leetcode.com/problems/n-queens/
+================================================================================
+LeetCode 51: N-Queens
+================================================================================
 
-The n-queens puzzle is the problem of placing n queens on an n x n chessboard
-such that no two queens attack each other.
+Problem: The n-queens puzzle is the problem of placing n queens on an n x n
+         chessboard such that no two queens attack each other.
+         Given an integer n, return all distinct solutions to the n-queens puzzle.
 
-Given an integer n, return all distinct solutions to the n-queens puzzle.
+API Kernel: Backtracking
+Pattern: constraint_satisfaction_backtrack
+Family: backtracking
+
+--------------------------------------------------------------------------------
+BACKTRACKING PATTERN: CONSTRAINT SATISFACTION
+--------------------------------------------------------------------------------
+
+The N-Queens problem is a classic constraint satisfaction problem (CSP).
+We use backtracking to systematically explore all possible queen placements
+while pruning invalid branches early.
+
+KEY INSIGHT:
+- Place queens row by row (one queen per row is guaranteed)
+- For each row, try each column and check three constraints:
+  1. Column constraint: no two queens in same column
+  2. Main diagonal (\): characterized by (row - col) = constant
+  3. Anti-diagonal (/): characterized by (row + col) = constant
+
+--------------------------------------------------------------------------------
+COMPLEXITY ANALYSIS
+--------------------------------------------------------------------------------
+
+Time:  O(N!) - At row 0, we have N choices; at row 1, at most N-1 choices, etc.
+Space: O(N) - board array, three constraint sets, and recursion stack
+
+================================================================================
 """
 from typing import List, Set
 from _runner import get_solver
 
 
-# ============================================
+# ============================================================================
 # JUDGE_FUNC - Custom validation for "return in any order" problems
 # Uses Decision Problem approach: verify solution validity, not exact match
-# ============================================
+# ============================================================================
 def _is_valid_board(board: List[str], n: int) -> bool:
     """Check if a single board configuration is valid (no queens attacking each other)."""
     if len(board) != n:
@@ -349,9 +377,9 @@ class SolutionBacktrackBitmask:
         return result
 
 
-# ============================================
-# Local runner integration
-# ============================================
+# ============================================================================
+# STDIN/STDOUT Interface for Testing Framework
+# ============================================================================
 def solve():
     """
     Input format:

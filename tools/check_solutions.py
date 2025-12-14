@@ -14,6 +14,8 @@ Exit Codes:
 Usage:
     python tools/check_solutions.py
     python tools/check_solutions.py --verbose
+    python tools/check_solutions.py --list-warnings  # List files with warnings only
+    python tools/check_solutions.py --show-warnings  # Show warnings with suggestions
     python tools/check_solutions.py --fix  # Auto-fix simple issues (future)
 """
 import re
@@ -251,24 +253,51 @@ class SolutionChecker:
         class_pattern = re.compile(r'^class\s+(Solution\w*)\s*[:\(]')
         solution_comment_pattern = re.compile(r'^#\s*Solution\s+\d+:')
         
-        # Track which classes have proper comments before them
-        classes_found = []
-        
         for i, line in enumerate(lines):
             match = class_pattern.match(line)
             if match:
                 class_name = match.group(1)
                 class_line = i + 1
                 
-                # Look backwards for a Solution comment (up to 20 lines)
+                # Look backwards for a Solution comment
+                # Strategy: Two-phase search
+                # Phase 1: Look in immediate vicinity (20 lines)
+                # Phase 2: If not found, check further (up to 50 lines) but only
+                #          if intermediate lines are comments/blanks
                 has_comment_before = False
+                comment_line = None
+                
+                # Phase 1: Immediate vicinity (first 20 lines)
                 for j in range(i - 1, max(-1, i - 20), -1):
                     if solution_comment_pattern.match(lines[j]):
                         has_comment_before = True
+                        comment_line = j
                         break
                     # Stop if we hit another class or function definition
                     if re.match(r'^(class|def)\s+', lines[j]):
                         break
+                
+                # Phase 2: Extended search (lines 20-50) if not found in phase 1
+                if not has_comment_before:
+                    for j in range(i - 20, max(-1, i - 50), -1):
+                        if solution_comment_pattern.match(lines[j]):
+                            # Verify all lines between comment and class are comments/blanks
+                            all_comments_or_blanks = True
+                            for k in range(j + 1, i):
+                                line_content = lines[k].strip()
+                                # Allow: blank lines, comment lines (starting with #), or separator lines
+                                if line_content and not line_content.startswith('#'):
+                                    all_comments_or_blanks = False
+                                    break
+                            
+                            if all_comments_or_blanks:
+                                has_comment_before = True
+                                comment_line = j
+                                break
+                        
+                        # Stop if we hit another class or function definition
+                        if re.match(r'^(class|def)\s+', lines[j]):
+                            break
                 
                 # Check if comment is inside the class (wrong placement)
                 has_comment_inside = False
@@ -385,15 +414,36 @@ def main():
     """Main entry point."""
     verbose = '--verbose' in sys.argv or '-v' in sys.argv
     list_warnings = '--list-warnings' in sys.argv
+    show_warnings = '--show-warnings' in sys.argv
     
     checker = SolutionChecker(verbose=verbose)
     results = checker.check_all()
     
     if list_warnings:
-        # Just list files with warnings
+        # Just list files with warnings (filename only)
         warning_files = [r.file for r in results if r.warning_count > 0]
         for filename in sorted(warning_files):
             print(filename)
+        return 0
+    
+    if show_warnings:
+        # Show warnings with detailed information and suggestions
+        warning_results = [r for r in results if r.warning_count > 0]
+        if not warning_results:
+            print("No warnings found.")
+            return 0
+        
+        print("Files with warnings:")
+        print("=" * 80)
+        for result in sorted(warning_results, key=lambda x: x.file):
+            print(f"\n📄 {result.file}")
+            print("-" * 80)
+            for issue in result.issues:
+                if issue.severity == 'warning':
+                    print(f"  ⚠️  Line {issue.line}: {issue.message}")
+                    if issue.suggestion:
+                        print(f"     💡 Suggestion: {issue.suggestion}")
+        print("\n" + "=" * 80)
         return 0
     
     error_count, warning_count = checker.print_report(results)
