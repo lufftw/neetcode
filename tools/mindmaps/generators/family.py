@@ -29,26 +29,35 @@ def generate_family_derivation(ontology: OntologyData, problems: dict[str, Probl
         ])
         return "\n".join(lines)
 
-    for base in sorted(base_problems, key=lambda p: p.leetcode_id):
+    # Group base templates by kernel
+    from collections import defaultdict
+    kernel_groups = defaultdict(list)
+    for base in base_problems:
         kernel = base.base_for_kernel or "General"
+        kernel_groups[kernel].append(base)
+    
+    # Sort kernels and base templates within each kernel
+    for kernel in sorted(kernel_groups.keys()):
+        kernel_bases = sorted(kernel_groups[kernel], key=lambda p: p.leetcode_id)
         lines.extend([f"## {kernel}", ""])
         
-        lines.extend([f"### 🎯 Base Template: {base.markdown_link(include_difficulty=False)}", ""])
-        if base.solutions:
-            notes = base.solutions[0].get("notes", "")
-            if notes:
-                lines.extend([notes, ""])
-        
-        lines.extend(["### Derived Problems", ""])
-        for derived_id in base.derived_problems:
-            if derived_id in problems:
-                lines.append(f"- {format_problem_entry(problems[derived_id], show_complexity=True)}")
-            else:
-                lines.append(f"- LeetCode {derived_id} *(metadata not yet added)*")
-        
-        if not base.derived_problems:
-            lines.append("- *(No derived problems listed)*")
-        lines.append("")
+        for base in kernel_bases:
+            lines.extend([f"### 🎯 Base Template: {base.markdown_link(include_difficulty=False)}", ""])
+            if base.solutions:
+                notes = base.solutions[0].get("notes", "")
+                if notes:
+                    lines.extend([notes, ""])
+            
+            lines.extend(["### Derived Problems", ""])
+            for derived_id in base.derived_problems:
+                if derived_id in problems:
+                    lines.append(f"- {format_problem_entry(problems[derived_id], show_complexity=True)}")
+                else:
+                    lines.append(f"- LeetCode {derived_id} *(metadata not yet added)*")
+            
+            if not base.derived_problems:
+                lines.append("- *(No derived problems listed)*")
+            lines.append("")
 
     return "\n".join(lines)
 
