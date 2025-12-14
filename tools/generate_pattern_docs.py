@@ -44,12 +44,24 @@ from patterndocs import (
     META_PATTERNS_DIR,
     OUTPUT_DIR,
 )
+from patterndocs.files import load_config
 
 
 def generate_pattern_doc(pattern_name: str, dry_run: bool = False) -> bool:
     """Generate documentation for a specific pattern."""
     source_dir = META_PATTERNS_DIR / pattern_name
-    output_file = OUTPUT_DIR / f"{pattern_name}.md"
+    
+    # Load pattern config to check for custom output path
+    pattern_config = load_config(source_dir)
+    output_config = pattern_config.get("output", {})
+    
+    # Determine output file path
+    if output_config.get("subdirectory") and output_config.get("filename"):
+        # Custom output path: docs/patterns/<subdirectory>/<filename>
+        output_file = OUTPUT_DIR / output_config["subdirectory"] / output_config["filename"]
+    else:
+        # Default output path: docs/patterns/<pattern_name>.md
+        output_file = OUTPUT_DIR / f"{pattern_name}.md"
 
     if not source_dir.exists():
         print(f"Error: Source directory not found: {source_dir}")
@@ -97,7 +109,7 @@ def generate_pattern_doc(pattern_name: str, dry_run: bool = False) -> bool:
         return True
 
     # Write output
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     output_file.write_text(document, encoding="utf-8")
     print(f"  Written: {len(document)} characters")
     return True

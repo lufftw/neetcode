@@ -1,0 +1,23 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing templates.md
+
+# Header files (appear first)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by LeetCode number or custom order)
+problem_files = [
+]
+
+# Footer files (appear last, typically templates)
+footer_files = [
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/backtracking_exploration/templates.md
+[output]
+subdirectory = "backtracking_exploration"
+filename = "templates.md"
+

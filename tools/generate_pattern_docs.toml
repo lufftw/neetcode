@@ -6,11 +6,11 @@
 # This is the single source of truth for directory-to-kernel mappings.
 [kernel_mapping]
 sliding_window = "SubstringSlidingWindow"
+two_pointers = "TwoPointersTraversal"
+backtracking_exploration = "BacktrackingExploration"
 bfs_grid = "GridBFSMultiSource"
-backtracking = "BacktrackingExploration"
 k_way_merge = "KWayMerge"
 binary_search = "BinarySearchBoundary"
-two_pointers = "TwoPointersTraversal"
 linked_list_reversal = "LinkedListInPlaceReversal"
 monotonic_stack = "MonotonicStack"
 prefix_sum = "PrefixSumRangeQuery"
