@@ -384,9 +384,18 @@ class SolutionChecker:
 def main():
     """Main entry point."""
     verbose = '--verbose' in sys.argv or '-v' in sys.argv
+    list_warnings = '--list-warnings' in sys.argv
     
     checker = SolutionChecker(verbose=verbose)
     results = checker.check_all()
+    
+    if list_warnings:
+        # Just list files with warnings
+        warning_files = [r.file for r in results if r.warning_count > 0]
+        for filename in sorted(warning_files):
+            print(filename)
+        return 0
+    
     error_count, warning_count = checker.print_report(results)
     
     # Exit with error only if there are errors (not warnings)

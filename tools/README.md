@@ -80,8 +80,9 @@ tools/
 Checks all solution files for Pure Polymorphic Architecture compliance.
 
 ```bash
-python tools/check_solutions.py           # Standard check
-python tools/check_solutions.py --verbose # Show fix suggestions
+python tools/check_solutions.py              # Standard check
+python tools/check_solutions.py --verbose    # Show fix suggestions
+python tools/check_solutions.py --list-warnings  # List only files with warnings
 ```
 
 **Checks Performed:**
