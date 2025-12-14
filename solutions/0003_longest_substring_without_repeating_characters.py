@@ -175,7 +175,10 @@ class Solution:
 
 
 # ============================================================================
-# Alternative: Using Dictionary (More Flexible for Unicode)
+# Solution 2: Using Dictionary (More Flexible for Unicode)
+# Time: O(n), Space: O(min(n, σ))
+#   - Same sliding window approach with dictionary instead of array
+#   - More flexible for Unicode strings but slightly slower
 # ============================================================================
 
 class SolutionDict:
@@ -202,7 +205,10 @@ class SolutionDict:
 
 
 # ============================================================================
-# Alternative: Using Set (Standard While-Loop Pattern)
+# Solution 3: Using Set (Standard While-Loop Pattern)
+# Time: O(n), Space: O(min(n, σ))
+#   - Uses set to track current window characters
+#   - Demonstrates standard while-loop contraction pattern
 # ============================================================================
 
 class SolutionWithSet:

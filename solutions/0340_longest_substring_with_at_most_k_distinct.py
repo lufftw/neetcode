@@ -158,7 +158,10 @@ class Solution:
 
 
 # ============================================================================
-# LeetCode 159: At Most Two Distinct (K=2 specialization)
+# Solution 2: LeetCode 159: At Most Two Distinct (K=2 specialization)
+# Time: O(n), Space: O(1)
+#   - Direct specialization of K-distinct pattern with K=2
+#   - Same sliding window approach with fixed K=2
 # ============================================================================
 
 class SolutionTwoDistinct:
