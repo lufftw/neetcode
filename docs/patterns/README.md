@@ -14,7 +14,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | Path | Purpose | Best For |
 |------|---------|----------|
 | 💡 **Intuition** | Understand the "why" through stories and visual explanations | First-time learners, building mental models |
-| 🛠️ **Templates** | Copy-paste ready code with problem-specific variations | Interview prep, quick reference |
+| 🛠️ **Templates** | Production-ready implementations with problem-specific variations | Interview prep, quick reference |
 
 **Recommended approach**: Start with Intuition to build understanding, then use Templates for implementation.
 
