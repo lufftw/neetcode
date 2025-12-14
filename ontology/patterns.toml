@@ -143,7 +143,7 @@ api_kernel = "BacktrackingExploration"
 summary = "Unique subsets with sorting and same-level deduplication."
 
 [[patterns]]
-id = "backtracking_string_partition"
+id = "backtracking_string_segmentation"
 api_kernel = "BacktrackingExploration"
 summary = "Partition string into valid segments (IP, palindromes)."
 
