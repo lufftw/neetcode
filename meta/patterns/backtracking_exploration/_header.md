@@ -9,93 +9,87 @@ This document presents the **canonical backtracking template** and all its major
 
 ## Core Concepts
 
-### The Backtracking Process
+### What is Backtracking?
 
-Backtracking is a systematic search technique that builds solutions incrementally and abandons partial solutions that cannot lead to valid complete solutions.
+Backtracking is a **systematic trial-and-error** approach that incrementally builds candidates to the solutions and abandons a candidate ("backtracks") as soon as it determines that the candidate cannot lead to a valid solution.
 
 ```
-Backtracking State:
-┌─────────────────────────────────────────────────────────┐
-│  [choice₁] → [choice₂] → [choice₃] → ... → [choiceₙ]  │
-│     │           │           │              │            │
-│     └───────────┴───────────┴──────────────┘            │
-│              Path (current partial solution)            │
-│                                                          │
-│  When constraint violated:                               │
-│     Backtrack: undo last choice, try next alternative   │
-└─────────────────────────────────────────────────────────┘
+Decision Tree Visualization:
+
+                    []
+           ┌────────┼────────┐
+          [1]      [2]      [3]
+        ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
+      [1,2] [1,3] [2,1] [2,3] [3,1] [3,2]
+        │     │     │     │     │     │
+     [1,2,3] ... (continue building)
+        ↓
+    SOLUTION FOUND → collect and backtrack
 ```
 
-### Universal Template Structure
+### The Three-Step Pattern: Choose → Explore → Unchoose
+
+Every backtracking algorithm follows this fundamental pattern:
 
 ```python
-def backtracking_template(problem_state):
+def backtrack(state, choices):
     """
-    Generic backtracking template.
+    Core backtracking template.
     
-    Key components:
-    1. Base Case: Check if current path is a complete solution
-    2. Pruning: Abandon paths that violate constraints
-    3. Choices: Generate all valid choices at current state
-    4. Make Choice: Add choice to path, update state
-    5. Recurse: Explore further with updated state
-    6. Backtrack: Undo choice, restore state
+    1. BASE CASE: Check if current state is a complete solution
+    2. RECURSIVE CASE: For each available choice:
+       a) CHOOSE: Make a choice and update state
+       b) EXPLORE: Recursively explore with updated state
+       c) UNCHOOSE: Undo the choice (backtrack)
     """
-    results = []
+    # BASE CASE: Is this a complete solution?
+    if is_solution(state):
+        collect_solution(state)
+        return
     
-    def backtrack(path, state):
-        # BASE CASE: Check if solution is complete
-        if is_complete(path, state):
-            results.append(path[:])  # Copy path
-            return
+    # RECURSIVE CASE: Try each choice
+    for choice in get_available_choices(state, choices):
+        # CHOOSE: Make this choice
+        apply_choice(state, choice)
         
-        # PRUNING: Abandon invalid paths early
-        if violates_constraints(path, state):
-            return
+        # EXPLORE: Recurse with updated state
+        backtrack(state, remaining_choices(choices, choice))
         
-        # CHOICES: Generate all valid choices
-        for choice in generate_choices(path, state):
-            # MAKE CHOICE: Add to path, update state
-            path.append(choice)
-            update_state(state, choice)
-            
-            # RECURSE: Explore further
-            backtrack(path, state)
-            
-            # BACKTRACK: Undo choice, restore state
-            path.pop()
-            restore_state(state, choice)
-    
-    backtrack([], initial_state)
-    return results
+        # UNCHOOSE: Undo the choice (restore state)
+        undo_choice(state, choice)
 ```
 
-### Backtracking Family Overview
+### Key Invariants
 
-| Sub-Pattern | Key Characteristic | Primary Use Case |
-|-------------|-------------------|------------------|
-| **Permutation** | All elements used, order matters | Generate all arrangements |
-| **Subset/Combination** | Select subset, order doesn't matter | Generate all subsets/combinations |
-| **Target Sum** | Constraint on sum/value | Find combinations meeting target |
-| **Grid Search** | 2D space exploration | Path finding, word search |
-| **Constraint Satisfaction** | Multiple constraints | N-Queens, Sudoku |
+| Invariant | Description |
+|-----------|-------------|
+| **State Consistency** | After backtracking, state must be exactly as before the choice was made |
+| **Exhaustive Exploration** | Every valid solution must be reachable through some path |
+| **Pruning Soundness** | Pruned branches must not contain any valid solutions |
+| **No Duplicates** | Each unique solution must be generated exactly once |
 
-### When to Use Backtracking
+### Time Complexity Discussion
 
-- **Exhaustive Search**: Need to explore all possible solutions
-- **Constraint Satisfaction**: Multiple constraints must be satisfied simultaneously
-- **Decision Problem**: Need to find ANY valid solution (can optimize with early return)
-- **Enumeration**: Need to list ALL valid solutions
-- **Pruning Opportunity**: Can eliminate large portions of search space early
+Backtracking algorithms typically have exponential or factorial complexity because they explore the entire solution space:
 
-### Why It Works
+| Problem Type | Typical Complexity | Output Size |
+|--------------|-------------------|-------------|
+| Permutations | O(n! × n) | n! |
+| Subsets | O(2^n × n) | 2^n |
+| Combinations C(n,k) | O(C(n,k) × k) | C(n,k) |
+| N-Queens | O(n!) | variable |
 
-Backtracking systematically explores the solution space by:
-1. **Building incrementally**: Each recursive call extends the current partial solution
-2. **Pruning early**: Invalid paths are abandoned immediately, saving computation
-3. **Exploring exhaustively**: All valid paths are explored through recursion
-4. **Undoing choices**: Backtracking allows exploring alternative paths from the same state
+**Important**: The complexity is often **output-sensitive** — if there are many solutions, generating them all is inherently expensive.
 
-The key insight is that by maintaining state and undoing choices, we can explore all possibilities without storing all partial solutions explicitly.
+### Sub-Pattern Classification
+
+| Sub-Pattern | Key Characteristic | Examples |
+|-------------|-------------------|----------|
+| **Permutation** | Used/visited tracking | LeetCode 46, 47 |
+| **Subset/Combination** | Start-index canonicalization | LeetCode 78, 90, 77 |
+| **Target Search** | Remaining/target pruning | LeetCode 39, 40, 216 |
+| **Constraint Satisfaction** | Row-by-row with constraint sets | LeetCode 51, 52 |
+| **String Partitioning** | Cut positions with validity | LeetCode 131, 93 |
+| **Grid/Path Search** | Visited marking and undo | LeetCode 79 |
 
 ---

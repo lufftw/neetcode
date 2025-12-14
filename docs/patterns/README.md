@@ -14,7 +14,7 @@ This directory contains comprehensive documentation for each **API Kernel** and 
 | `SubstringSlidingWindow` | [sliding_window.md](sliding_window.md) | Dynamic window over sequences | LeetCode 3, 76, 159, 209, 340, 438, 567 |
 | `TwoPointersTraversal` | [two_pointers.md](two_pointers.md) | Two pointer traversal patterns | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
-| `BacktrackingExploration` | *coming soon* | Exhaustive search with pruning | LeetCode 51, 52, 46, 78 |
+| `BacktrackingExploration` | [backtracking_exploration.md](backtracking_exploration.md) | Exhaustive search with pruning | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `BinarySearchBoundary` | *coming soon* | Binary search boundaries | LeetCode 4, 33, 34, 35 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
