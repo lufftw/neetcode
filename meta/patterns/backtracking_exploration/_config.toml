@@ -8,10 +8,27 @@ header_files = [
 
 # Problem files (appear in middle, ordered by LeetCode number or custom order)
 problem_files = [
+    "0046_permutations.md",
+    "0047_permutations_duplicates.md",
+    "0078_subsets.md",
+    "0090_subsets_duplicates.md",
+    "0077_combinations.md",
+    "0039_combination_sum.md",
+    "0040_combination_sum_ii.md",
+    "0216_combination_sum_iii.md",
+    "0051_n_queens.md",
+    "0131_palindrome_partitioning.md",
+    "0093_restore_ip.md",
+    "0079_word_search.md"
 ]
 
-# Footer files (appear last, typically templates)
+# Footer files (appear last, typically comparison, decision, mapping, templates)
 footer_files = [
+    "_deduplication.md",
+    "_pruning.md",
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
     "_templates.md"
 ]
 
