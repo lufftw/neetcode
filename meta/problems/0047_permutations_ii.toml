@@ -1,0 +1,52 @@
+# Problem: Permutations II
+# https://leetcode.com/problems/permutations-ii/
+
+# ===== Problem Info =====
+id = "0047"
+slug = "0047_permutations_ii"
+title = "Permutations II"
+leetcode_id = 47
+url = "https://leetcode.com/problems/permutations-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "backtracking"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_permutation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0046", "0040", "0090"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0047_permutations_ii.py"
+generator = "generators/0047_permutations_ii.py"
+tests_dir = "tests/0047_permutations_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "permuteUnique"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_permutation"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0046"]
+
+role       = "variant"
+variant    = "with_duplicates"
+based_on   = ["0046#default"]
+delta      = "Sort array + same-level deduplication: skip nums[i] if i > 0 and nums[i] == nums[i-1] and !used[i-1]. Ensures leftmost duplicate is always picked first at each level."
+complexity = "O(n! × n) time, O(n) space"
+notes      = "Extension of base permutation pattern with duplicate handling using same-level deduplication."
+

@@ -1,0 +1,71 @@
+# Problem: N-Queens II
+# https://leetcode.com/problems/n-queens-ii/
+
+# ===== Problem Info =====
+id = "0052"
+slug = "0052_n_queens_ii"
+title = "N-Queens II"
+leetcode_id = 52
+url = "https://leetcode.com/problems/n-queens-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["backtracking"]
+companies = ["google", "amazon", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_n_queens"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array", "hash_set"]
+algorithms       = ["backtracking"]
+related_problems = ["0051"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0052_n_queens_ii.py"
+generator = "generators/0052_n_queens_ii.py"
+tests_dir = "tests/0052_n_queens_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionSets"
+method = "totalNQueens"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_n_queens"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array", "hash_set"]
+algorithms       = ["backtracking"]
+related_problems = ["0051"]
+
+role       = "variant"
+variant    = "count_only"
+based_on   = ["0051#default"]
+delta      = "Only count solutions instead of building board representations. More memory efficient."
+complexity = "O(n!) time, O(n) space"
+notes      = "Same algorithm as N-Queens but optimized for counting. Uses hash sets for O(1) constraint checking."
+
+[[solutions]]
+key    = "bitmask"
+class  = "SolutionBitmask"
+method = "totalNQueens"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_n_queens"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0051"]
+
+role       = "variant"
+variant    = "bitmask_optimization"
+based_on   = ["0052#default"]
+delta      = "Use integers as bitmasks for ultra-fast constraint checking. Bitwise operations are faster than hash lookups."
+complexity = "O(n!) time, O(n) space"
+notes      = "Optimized version using bitmasks for constraint tracking. Better cache locality and smaller constants."
+

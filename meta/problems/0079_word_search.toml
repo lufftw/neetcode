@@ -1,0 +1,52 @@
+# Problem: Word Search
+# https://leetcode.com/problems/word-search/
+
+# ===== Problem Info =====
+id = "0079"
+slug = "0079_word_search"
+title = "Word Search"
+leetcode_id = 79
+url = "https://leetcode.com/problems/word-search/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "backtracking", "matrix"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "uber", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_grid_path"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["grid", "array"]
+algorithms       = ["backtracking", "dfs"]
+related_problems = ["0212", "0130", "0200"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0079_word_search.py"
+generator = "generators/0079_word_search.py"
+tests_dir = "tests/0079_word_search/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "exist"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_grid_path"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["grid", "array"]
+algorithms       = ["backtracking", "dfs"]
+related_problems = ["0212"]
+
+role       = "base"
+variant    = "grid_dfs_visited_marking"
+based_on   = []
+delta      = ""
+complexity = "O(m × n × 4^L) time, O(L) space"
+notes      = "Grid DFS backtracking with in-place visited marking. Mark cells as visited during exploration, unmark on backtrack. Start DFS from each cell matching word[0]."
+

@@ -1,0 +1,52 @@
+# Problem: Combinations
+# https://leetcode.com/problems/combinations/
+
+# ===== Problem Info =====
+id = "0077"
+slug = "0077_combinations"
+title = "Combinations"
+leetcode_id = 77
+url = "https://leetcode.com/problems/combinations/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["backtracking"]
+companies = ["google", "amazon", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_combination"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0078", "0039", "0216"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0077_combinations.py"
+generator = "generators/0077_combinations.py"
+tests_dir = "tests/0077_combinations/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "combine"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_combination"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["array"]
+algorithms       = ["backtracking"]
+related_problems = ["0078", "0039"]
+
+role       = "variant"
+variant    = "fixed_size_subset"
+based_on   = ["0078#default"]
+delta      = "Fixed-size subset enumeration. Only collect when path length equals k. Add count-based pruning: stop early if not enough elements remain."
+complexity = "O(k × C(n,k)) time, O(k) space"
+notes      = "Similar to subsets but with fixed size constraint. Uses start_index for canonical ordering and pruning optimization."
+
