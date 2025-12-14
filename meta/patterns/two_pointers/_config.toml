@@ -22,3 +22,9 @@ footer_files = [
     "_templates.md"
 ]
 
+# Output configuration
+# Generate to: docs/patterns/two_pointers/templates.md
+[output]
+subdirectory = "two_pointers"
+filename = "templates.md"
+

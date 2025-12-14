@@ -24,3 +24,8 @@ footer_files = [
     "_templates.md"
 ]
 
+# Output configuration
+# Generate to: docs/patterns/sliding_window/templates.md
+[output]
+subdirectory = "sliding_window"
+filename = "templates.md"
