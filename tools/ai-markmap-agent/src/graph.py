@@ -766,16 +766,41 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                         debug.save_translation(content, output_key, target_key, is_before=True)
                     
                     translated_content = translator.translate(content, "general")
+                    
+                    # Validate translation result
+                    if not translated_content:
+                        raise ValueError(
+                            f"Translation returned empty content (None). "
+                            f"Source: {source_lang} → Target: {target_lang}, "
+                            f"Model: {model}, Output: {output_key}"
+                        )
+                    if len(translated_content.strip()) == 0:
+                        raise ValueError(
+                            f"Translation returned only whitespace. "
+                            f"Source: {source_lang} → Target: {target_lang}, "
+                            f"Model: {model}, Output: {output_key}"
+                        )
+                    
                     # Clean up LLM artifacts
                     translated_content = clean_translated_content(translated_content)
+                    
+                    # Validate cleaned content
+                    if not translated_content or len(translated_content.strip()) == 0:
+                        raise ValueError(
+                            f"After cleaning, translation is empty. "
+                            f"Source: {source_lang} → Target: {target_lang}, "
+                            f"Model: {model}, Output: {output_key}"
+                        )
+                    
                     translated[target_key] = translated_content
                     print(f"  ✓ Translated: {output_key} → {target_key}")
                     
                     if debug.enabled:
                         debug.save_translation(translated_content, output_key, target_key, is_before=False)
                 except Exception as e:
-                    print(f"  ✗ Translation failed: {e}")
-                    state["errors"].append(f"Translation error: {e}")
+                    error_msg = f"Translation failed for {output_key} → {target_lang}: {e}"
+                    print(f"  ✗ {error_msg}")
+                    state["errors"].append(error_msg)
         
         state["translated_outputs"] = translated
         return state

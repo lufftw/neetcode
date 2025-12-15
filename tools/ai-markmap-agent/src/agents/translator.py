@@ -81,10 +81,9 @@ class TranslatorAgent(BaseAgent):
         """Load translation prompt from file with caching."""
         key = str(prompt_file)
         if key not in self._prompt_cache:
-            if prompt_file.exists():
-                self._prompt_cache[key] = prompt_file.read_text(encoding="utf-8")
-            else:
-                raise FileNotFoundError(f"Prompt file not found: {prompt_file}")
+            if not prompt_file.exists():
+                raise FileNotFoundError(f"Translation prompt file not found: {prompt_file}")
+            self._prompt_cache[key] = prompt_file.read_text(encoding="utf-8")
         return self._prompt_cache[key]
     
     def translate(self, content: str, output_type: str) -> str:
@@ -108,6 +107,14 @@ class TranslatorAgent(BaseAgent):
                 self.target_language
             )
         
+        # Validate prompt template
+        if not prompt_template or len(prompt_template.strip()) == 0:
+            raise ValueError(
+                f"Translation prompt template is empty. "
+                f"Target language: {self.target_language}, "
+                f"Prompt file: {ZH_TW_PROMPT_FILE if self.target_language == 'zh-TW' else GENERIC_PROMPT_FILE}"
+            )
+        
         # Build full prompt with content
         prompt = f"""{prompt_template}
 
@@ -117,17 +124,63 @@ class TranslatorAgent(BaseAgent):
 
 {content}"""
         
+        # Validate full prompt
+        if not prompt or len(prompt.strip()) == 0:
+            raise ValueError(
+                f"Built prompt is empty. "
+                f"Template length: {len(prompt_template)}, "
+                f"Content length: {len(content)}"
+            )
+        
         messages = self._build_messages(prompt)
         
         # Save LLM input
         self._save_llm_call_input(messages, "translate")
         
+        # Call LLM
         response = self.llm.invoke(messages)
         
-        # Save LLM output
-        self._save_llm_call_output(response.content, "translate")
+        # Validate response
+        if response is None:
+            raise ValueError(
+                f"LLM returned None response. "
+                f"Model: {self.model_config.get('model')}, "
+                f"Source: {self.source_language} → Target: {self.target_language}"
+            )
         
-        return response.content
+        # Extract content from response
+        # Handle different response types (AIMessage, str, etc.)
+        if hasattr(response, 'content'):
+            content = response.content
+        elif isinstance(response, str):
+            content = response
+        else:
+            # Try to get content via dict access or other methods
+            try:
+                content = str(response)
+            except Exception as e:
+                raise ValueError(
+                    f"Unable to extract content from response. "
+                    f"Response type: {type(response)}, "
+                    f"Error: {e}"
+                )
+        
+        # Validate content
+        if content is None:
+            raise ValueError(
+                f"LLM response content is None. "
+                f"Model: {self.model_config.get('model')}, "
+                f"Source: {self.source_language} → Target: {self.target_language}. "
+                f"Check API response in debug output files."
+            )
+        
+        # Convert to string if needed
+        content_str = str(content) if not isinstance(content, str) else content
+        
+        # Save LLM output
+        self._save_llm_call_output(content_str, "translate")
+        
+        return content_str
 
 
 def create_translators(config: dict[str, Any] | None = None) -> list[dict[str, Any]]:

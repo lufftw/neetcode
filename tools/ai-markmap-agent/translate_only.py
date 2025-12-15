@@ -79,6 +79,10 @@ def translate_file(
     print(f"🌐 Translation: {source_lang} → {target_lang}")
     print(f"🤖 Model: {model}")
     
+    # Check if input file exists
+    if not input_path.exists():
+        raise FileNotFoundError(f"Input file not found: {input_path}")
+    
     # Read input
     content = input_path.read_text(encoding="utf-8")
     print(f"   Read {len(content)} chars, {len(content.splitlines())} lines")
