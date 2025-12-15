@@ -339,7 +339,7 @@ output:
         enabled: true
         mode: "translate"
         source_lang: "en"
-        translator_model: "gpt-4o"
+        translator_model: "gpt-5.2"
     
     # Output template: {prefix}_ontology_agent_evolved_{lang}.{ext}
     # Example: neetcode_ontology_agent_evolved_en.md

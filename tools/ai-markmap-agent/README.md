@@ -215,6 +215,84 @@ python translate_only.py --source en --target zh-TW
 
 # Also generate HTML
 python translate_only.py --html
+```
+
+#### How to Output `neetcode_ontology_agent_evolved_zh-TW.md`
+
+The `translate_only.py` script automatically generates the translated file with the correct naming convention. Here's how to use it:
+
+**Method 1: Translate Latest English Output (Recommended)**
+
+If you have already generated the English version (`neetcode_ontology_agent_evolved_en.md`), the script will automatically find it and translate it:
+
+```bash
+cd tools/ai-markmap-agent
+
+# This will:
+# 1. Find the latest English output (from version history or final output)
+# 2. Translate it to zh-TW using gpt-5.2
+# 3. Save as neetcode_ontology_agent_evolved_zh-TW.md in the final output directory
+python translate_only.py
+```
+
+The output will be saved to:
+- **Markdown**: `../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md`
+- **HTML** (if using `--html`): `../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html`
+
+**Method 2: Translate a Specific File**
+
+If you want to translate a specific English file:
+
+```bash
+# Translate a specific file
+python translate_only.py --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md
+
+# Or with explicit output path
+python translate_only.py \
+    --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+
+# PowerShell
+python translate_only.py `
+    --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md `
+    --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+
+```
+
+**Method 3: Translate and Generate HTML in One Step**
+
+```bash
+# Translate and generate HTML output
+python translate_only.py --html
+```
+
+This will:
+1. Translate the English markdown to Traditional Chinese (Taiwan)
+2. Generate the HTML file with the same name
+
+**Configuration**
+
+The translation uses settings from `config/config.yaml`:
+
+- **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-TW.translator_model`)
+- **Source Language**: `en` (default)
+- **Target Language**: `zh-TW` (default)
+- **Prompt**: Uses `prompts/translator/zh_tw_translator_behavior.md` with comprehensive Taiwan DSA terminology rules
+
+**Custom Model Override**
+
+You can override the model for a single translation:
+
+```bash
+python translate_only.py --model gpt-4o
+```
+
+**Notes**
+
+- The script reads from `config/config.yaml` for output directory settings
+- Translation prompt enforces Taiwan-specific terminology (not Mainland China terms)
+- API keys are requested at runtime and cleared after execution
+- The output filename automatically replaces the language suffix (e.g., `_en` → `_zh-TW`)
 
 ### Standalone HTML Converter
 
@@ -239,6 +317,90 @@ This tool is **completely independent** of the main pipeline and only requires:
 - `jinja2` package
 
 It can be used to convert any Markmap Markdown file to interactive HTML.
+
+#### Example: Converting Mindmaps to HTML
+
+Convert Markdown files from `docs/mindmaps/` to HTML files in `docs/pages/mindmaps/`:
+
+```bash
+# Navigate to the tool directory
+cd tools/ai-markmap-agent
+
+# Convert English version
+python convert_to_html.py \
+    ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    -t "NeetCode Agent Evolved Mindmap (EN)"
+
+# Convert Traditional Chinese version
+python convert_to_html.py \
+    ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
+    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html \
+    -t "NeetCode Agent Evolved Mindmap (繁體中文)"
+```
+
+**Windows PowerShell:**
+```powershell
+# Convert English version
+python convert_to_html.py `
+    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
+    -t "NeetCode Agent Evolved Mindmap (EN)"
+
+# Convert Traditional Chinese version
+python convert_to_html.py `
+    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
+    -t "NeetCode Agent Evolved Mindmap (繁體中文)"
+```
+
+**Batch conversion script** (save as `convert_all_mindmaps.sh` or `.bat`):
+
+**Unix/macOS:**
+```bash
+#!/bin/bash
+cd "$(dirname "$0")"
+
+# Ensure output directory exists
+mkdir -p ../../docs/pages/mindmaps
+
+# Convert English
+python convert_to_html.py \
+    ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    -t "NeetCode Agent Evolved Mindmap (EN)"
+
+# Convert Traditional Chinese
+python convert_to_html.py \
+    ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
+    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html \
+    -t "NeetCode Agent Evolved Mindmap (繁體中文)"
+
+echo "✅ All conversions complete!"
+```
+
+**Windows:**
+```batch
+@echo off
+cd /d "%~dp0"
+
+REM Ensure output directory exists
+if not exist "..\..\docs\pages\mindmaps" mkdir "..\..\docs\pages\mindmaps"
+
+REM Convert English
+python convert_to_html.py ^
+    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md ^
+    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html ^
+    -t "NeetCode Agent Evolved Mindmap (EN)"
+
+REM Convert Traditional Chinese
+python convert_to_html.py ^
+    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md ^
+    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html ^
+    -t "NeetCode Agent Evolved Mindmap (繁體中文)"
+
+echo ✅ All conversions complete!
+```
 
 ### Integration with Pipeline
 
