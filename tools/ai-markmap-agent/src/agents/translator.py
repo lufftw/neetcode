@@ -97,6 +97,25 @@ class TranslatorAgent(BaseAgent):
         Returns:
             Translated markdown content
         """
+        # Validate input content
+        if content is None:
+            raise ValueError(
+                f"Input content is None. "
+                f"Cannot translate empty content."
+            )
+        
+        if not isinstance(content, str):
+            raise TypeError(
+                f"Input content must be a string, got {type(content).__name__}."
+            )
+        
+        content_str = content.strip()
+        if not content_str or len(content_str) == 0:
+            raise ValueError(
+                f"Input content is empty or contains only whitespace. "
+                f"Content length: {len(content)} chars (after strip: {len(content_str)} chars)."
+            )
+        
         # Load appropriate prompt based on target language
         if self.target_language == "zh-TW":
             prompt_template = self._load_translation_prompt(ZH_TW_PROMPT_FILE)
@@ -108,28 +127,35 @@ class TranslatorAgent(BaseAgent):
             )
         
         # Validate prompt template
-        if not prompt_template or len(prompt_template.strip()) == 0:
+        prompt_template_str = prompt_template.strip() if prompt_template else ""
+        if not prompt_template or len(prompt_template_str) == 0:
+            prompt_file = ZH_TW_PROMPT_FILE if self.target_language == "zh-TW" else GENERIC_PROMPT_FILE
             raise ValueError(
-                f"Translation prompt template is empty. "
-                f"Target language: {self.target_language}, "
-                f"Prompt file: {ZH_TW_PROMPT_FILE if self.target_language == 'zh-TW' else GENERIC_PROMPT_FILE}"
+                f"Translation prompt template is empty or contains only whitespace.\n"
+                f"  Target language: {self.target_language}\n"
+                f"  Prompt file: {prompt_file}\n"
+                f"  Template length: {len(prompt_template) if prompt_template else 0} chars "
+                f"(after strip: {len(prompt_template_str)} chars)\n"
+                f"  Check if prompt file exists and contains valid content."
             )
         
         # Build full prompt with content
-        prompt = f"""{prompt_template}
+        prompt = f"""{prompt_template_str}
 
 ---
 
 ## Content to Translate
 
-{content}"""
+{content_str}"""
         
         # Validate full prompt
-        if not prompt or len(prompt.strip()) == 0:
+        prompt_str = prompt.strip()
+        if not prompt or len(prompt_str) == 0:
             raise ValueError(
-                f"Built prompt is empty. "
-                f"Template length: {len(prompt_template)}, "
-                f"Content length: {len(content)}"
+                f"Built prompt is empty or contains only whitespace.\n"
+                f"  Template length: {len(prompt_template_str)} chars\n"
+                f"  Content length: {len(content_str)} chars\n"
+                f"  Combined prompt length: {len(prompt)} chars (after strip: {len(prompt_str)} chars)"
             )
         
         messages = self._build_messages(prompt)
@@ -140,7 +166,7 @@ class TranslatorAgent(BaseAgent):
         # Show progress info
         model_name = self.model_config.get("model", "unknown")
         prompt_size = len(prompt)
-        content_size = len(content)
+        content_size = len(content_str)
         print(f"   📤 Sending request to {model_name}...")
         print(f"      Prompt: {prompt_size:,} chars, Content: {content_size:,} chars")
         print(f"      This may take 30-120 seconds depending on content size...")
