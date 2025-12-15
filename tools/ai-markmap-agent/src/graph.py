@@ -1163,11 +1163,18 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             # Show what was actually saved
             print(f"\n  ✓ Saved {len(saved)} output file(s):")
             for output_key, file_paths in saved.items():
-                md_file = file_paths.get("markdown", {}).get("path", "N/A")
-                html_file = file_paths.get("html", {}).get("path", "N/A")
+                # save_all_markmaps returns: {"md": Path, "html": Path}
+                md_file = file_paths.get("md", "N/A")
+                html_file = file_paths.get("html", "N/A")
                 print(f"    - {output_key}:")
-                print(f"      MD: {md_file.name if hasattr(md_file, 'name') else md_file}")
-                print(f"      HTML: {html_file.name if hasattr(html_file, 'name') else html_file}")
+                if isinstance(md_file, Path):
+                    print(f"      MD: {md_file.name}")
+                else:
+                    print(f"      MD: {md_file}")
+                if isinstance(html_file, Path):
+                    print(f"      HTML: {html_file.name}")
+                else:
+                    print(f"      HTML: {html_file}")
         except Exception as e:
             error_msg = f"Error saving outputs: {e}"
             state["errors"].append(error_msg)
