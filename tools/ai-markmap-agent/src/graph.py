@@ -32,6 +32,7 @@ from .consensus import (
     ConsensusResult,
 )
 from .output.html_converter import save_all_markmaps, MarkMapHTMLConverter
+from datetime import datetime
 from .post_processing import clean_translated_content
 
 __all__ = [
@@ -96,6 +97,74 @@ class WorkflowState(TypedDict, total=False):
     
     # Resume configuration (internal)
     _resume_config: dict[str, Any]
+
+
+def _save_post_processing_comparison(
+    comparison_data: dict[str, dict[str, str]],
+    config: dict[str, Any]
+) -> None:
+    """
+    Save post-processing before/after comparison to markdown file.
+    
+    Args:
+        comparison_data: Dict mapping output key to {"before": str, "after": str}
+        config: Configuration dictionary
+    """
+    if not comparison_data:
+        return
+    
+    # Get output directory from config
+    output_config = config.get("output", {})
+    final_dirs = output_config.get("final_dirs", {})
+    markdown_dir = final_dirs.get("markdown", "outputs/final")
+    
+    base_dir = Path(__file__).parent.parent.parent.parent
+    output_path = base_dir / markdown_dir
+    output_path.mkdir(parents=True, exist_ok=True)
+    
+    # Create comparison file
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    comparison_file = output_path / f"post_processing_comparison_{timestamp}.md"
+    
+    content_parts = [
+        "# Post-Processing Link Comparison",
+        "",
+        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        "",
+        "This file shows the before/after comparison of post-processing link generation.",
+        "",
+        "---",
+        "",
+    ]
+    
+    for key, data in comparison_data.items():
+        before = data.get("before", "")
+        after = data.get("after", "")
+        
+        content_parts.extend([
+            f"## {key}",
+            "",
+            "### Before (原始內容)",
+            "",
+            "```markdown",
+            before[:5000] + ("..." if len(before) > 5000 else ""),  # Limit length
+            "```",
+            "",
+            "### After (後處理後)",
+            "",
+            "```markdown",
+            after[:5000] + ("..." if len(after) > 5000 else ""),  # Limit length
+            "```",
+            "",
+            "---",
+            "",
+        ])
+    
+    try:
+        comparison_file.write_text("\n".join(content_parts), encoding="utf-8")
+        print(f"  📄 Post-processing comparison saved: {comparison_file.name}")
+    except Exception as e:
+        print(f"  ⚠ Failed to save comparison: {e}")
 
 
 def load_baseline_markmap(config: dict[str, Any]) -> str:
@@ -873,16 +942,28 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Apply post-processing
         final_outputs = {}
+        post_processing_comparison = {}  # Store before/after for comparison
+        
         for key, content in all_outputs.items():
             if debug.enabled:
                 debug.save_post_processing(content, key, is_before=True)
             
             processed = processor.process(content)
             final_outputs[key] = processed
+            
+            # Store comparison for later saving
+            post_processing_comparison[key] = {
+                "before": content,
+                "after": processed
+            }
+            
             print(f"  ✓ Processed: {key}")
             
             if debug.enabled:
                 debug.save_post_processing(processed, key, is_before=False)
+        
+        # Save post-processing comparison to markdown file
+        _save_post_processing_comparison(post_processing_comparison, config)
         
         state["final_outputs"] = final_outputs
         return state

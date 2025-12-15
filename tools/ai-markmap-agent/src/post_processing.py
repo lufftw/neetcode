@@ -171,22 +171,22 @@ class PostProcessor:
     
     def _convert_plain_leetcode_to_links(self, content: str) -> str:
         """
-        Convert plain text "LeetCode XXX" or "LeetCode XXX - Title" to proper links.
+        Convert plain text "LeetCode XXX" to proper links.
         
         Only converts if we have metadata for the problem.
-        AI should provide links for problems we don't have.
+        Uses simple format: [LeetCode {id}](url) without title.
         
         Patterns handled:
-        - "LeetCode 11" -> "[LeetCode 11 - Container With Most Water](url)"
-        - "LeetCode 11 - Container With Most Water" -> "[LeetCode 11 - Container With Most Water](url)"
-        - "[LeetCode 11 - Wrong Title](wrong_url)" -> "[LeetCode 11 - Container With Most Water](correct_url)"
+        - "LeetCode 11" -> "[LeetCode 11](url)"
+        - "LeetCode 11 - Container With Most Water" -> "[LeetCode 11](url)"
+        - "[LeetCode 11 - Title](wrong_url)" -> "[LeetCode 11](correct_url)"
         """
         # First, handle existing markdown links with LeetCode - replace with our data
         def replace_existing_link(match: re.Match) -> str:
             link_text = match.group(1)  # Text inside []
             url = match.group(2)  # The URL
             
-            # Extract problem ID
+            # Extract problem ID (ignore title part)
             id_match = re.search(r'LeetCode\s+(\d+)', link_text)
             if not id_match:
                 return match.group(0)
@@ -199,7 +199,6 @@ class PostProcessor:
                 return match.group(0)
             
             # Use our metadata
-            title = problem.get("title", "")
             problem_url = problem.get("url", "")
             
             if not problem_url:
@@ -209,7 +208,8 @@ class PostProcessor:
             if not problem_url.endswith("/description/"):
                 problem_url = problem_url.rstrip("/") + "/description/"
             
-            return f"[LeetCode {problem_id} - {title}]({problem_url})"
+            # Simple format: [LeetCode {id}](url) without title
+            return f"[LeetCode {problem_id}]({problem_url})"
         
         # Pattern: [LeetCode XXX...](url)
         result = re.sub(
@@ -222,7 +222,7 @@ class PostProcessor:
         def convert_plain_text(match: re.Match) -> str:
             full_match = match.group(0)
             problem_id = match.group(1)
-            title_part = match.group(2) if match.group(2) else ""
+            # Ignore title_part - we only use ID
             
             # Look up in our metadata
             problem = self.problems_lookup.get(problem_id.zfill(4)) or self.problems_lookup.get(problem_id)
@@ -233,7 +233,6 @@ class PostProcessor:
                 return full_match
             
             # Use our metadata
-            title = problem.get("title", "")
             url = problem.get("url", "")
             
             if not url:
@@ -243,7 +242,8 @@ class PostProcessor:
             if not url.endswith("/description/"):
                 url = url.rstrip("/") + "/description/"
             
-            return f"[LeetCode {problem_id} - {title}]({url})"
+            # Simple format: [LeetCode {id}](url) without title
+            return f"[LeetCode {problem_id}]({url})"
         
         # Pattern: Plain text "LeetCode XXX" or "LeetCode XXX - Title" 
         # But NOT inside [] (which would be a link)
@@ -260,12 +260,12 @@ class PostProcessor:
         """
         Automatically add GitHub solution links when seeing "LeetCode {id}".
         
-        Pattern: [LeetCode {id} - {title}](leetcode_url)
-        Result: [LeetCode {id} - {title}](leetcode_url) | [Solution](github_url)
+        Pattern: [LeetCode {id}](leetcode_url)
+        Result: [LeetCode {id}](leetcode_url) | [Solution](github_url)
         
         Note: Only adds if not already present (avoids duplicates).
         """
-        # Pattern to match: [LeetCode {id} - {title}](url)
+        # Pattern to match: [LeetCode {id}](url)
         def add_solution_link(match: re.Match) -> str:
             full_text = match.group(0)
             link_text = match.group(1)  # The text inside []
@@ -297,11 +297,11 @@ class PostProcessor:
             github_url = self.github_template.format(solution_file=solution_file)
             
             # Add GitHub link after LeetCode link
-            # Format: [LeetCode {id} - {title}](leetcode_url) | [Solution](github_url)
+            # Format: [LeetCode {id}](leetcode_url) | [Solution](github_url)
             return f"{full_text} | [Solution]({github_url})"
         
         # Match markdown links with "LeetCode" in the text
-        # Pattern: [LeetCode {id} - ...](url)
+        # Pattern: [LeetCode {id}](url) or [LeetCode {id} - ...](url)
         pattern = r'\[(LeetCode\s+\d+[^\]]*)\]\(([^)]+)\)'
         result = re.sub(pattern, add_solution_link, content)
         

@@ -161,8 +161,10 @@ Apply adopted improvements surgically to the baseline:
 ### Phase 5-6: Post-Processing
 
 - Translation (en → zh-TW)
-- Link validation
-- HTML generation
+- Link validation and normalization
+- Automatic LeetCode URL generation
+- GitHub solution link addition
+- Comparison file generation
 
 ---
 
@@ -902,6 +904,66 @@ The system automatically loads:
 
 ---
 
+## Post-Processing Link Generation
+
+### Link Format
+
+Post-processing automatically converts LeetCode problem references to standardized links:
+
+**Format:**
+```
+[LeetCode 11](leetcode_url) | [Solution](github_url)
+```
+
+**Features:**
+- Simple format: Only problem ID, no title
+- Handles multiple AI-generated formats
+- Auto-generates LeetCode URLs from API cache
+- Adds GitHub solution links when available
+
+### Data Sources
+
+1. **Local TOML files** (`meta/problems/`) - Primary source
+2. **LeetCode API cache** (`tools/.cache/leetcode_problems.json`) - Auto-supplement
+
+**Priority:** Local TOML > API cache
+
+### Comparison Files
+
+After each post-processing run, a comparison file is automatically generated:
+
+**Location:** `outputs/final/post_processing_comparison_{timestamp}.md`
+
+**Contents:**
+- Before: Original AI-generated content
+- After: Post-processed content with normalized links
+
+**Usage:**
+- Verify link generation correctness
+- Check format compliance
+- Identify improvements needed
+
+### LeetCode API Integration
+
+The system automatically syncs with LeetCode API:
+
+```bash
+# Sync LeetCode problem data (7-day cache)
+python tools/sync_leetcode_data.py
+
+# Check cache status
+python tools/sync_leetcode_data.py --check
+```
+
+**Integration:**
+- `PostProcessor` automatically loads and merges API cache data
+- Missing URLs are auto-generated from API data
+- No configuration required
+
+See [Post-Processing Links Documentation](docs/POST_PROCESSING_LINKS.md) for details.
+
+---
+
 ## Module Responsibilities
 
 | Module | Responsibility |
@@ -910,6 +972,8 @@ The system automatically loads:
 | `consensus.py` | Programmatic majority voting |
 | `writer.py` | Refinement-mode writer |
 | `graph.py` | LangGraph workflow orchestration |
+| `post_processing.py` | Link normalization and generation |
+| `leetcode_api.py` | LeetCode API data loading |
 | `config_loader.py` | Configuration management |
 
 ---
