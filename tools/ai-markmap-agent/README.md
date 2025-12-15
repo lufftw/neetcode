@@ -243,20 +243,31 @@ The output will be saved to:
 
 If you want to translate a specific English file:
 
-**Important**: Run the command from the `tools/ai-markmap-agent/` directory, or use absolute paths.
+**Important**: 
+- **Default output location**: When using `--output`, files are saved to the specified path
+- **Auto-detection**: Without `--output`, files are saved to `docs/mindmaps/` (configured in `config.yaml`)
+- **Version history**: The main pipeline also saves to `outputs/versions/v1/` for tracking, but `translate_only.py` only saves to the final location
+
+**Working with `docs/mindmaps/` directory:**
 
 **Unix/macOS:**
 ```bash
 # Navigate to the script directory first
 cd tools/ai-markmap-agent
 
-# Translate a specific file (auto-detects output path)
+# Translate a specific file (auto-detects output to docs/mindmaps/)
 python translate_only.py --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md
 
-# Or with explicit output path
+# Or with explicit output path to docs/mindmaps/
 python translate_only.py \
     --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
     --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+
+# Translate and generate HTML in one step
+python translate_only.py \
+    --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
+    --html
 ```
 
 **Windows PowerShell:**
@@ -264,29 +275,41 @@ python translate_only.py \
 # Navigate to the script directory first
 cd tools\ai-markmap-agent
 
-# Translate a specific file (auto-detects output path)
+# Translate a specific file (auto-detects output to docs\mindmaps\)
 python translate_only.py --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md
 
-# Or with explicit output path
+# Or with explicit output path to docs\mindmaps\
 python translate_only.py `
     --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
     --output ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
+
+# Translate and generate HTML in one step
+python translate_only.py `
+    --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    --output ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    --html
 ```
 
-**Alternative: Use absolute paths from any directory:**
+**From Project Root (Alternative):**
 ```bash
-# Unix/macOS
+# Unix/macOS - from project root
 python tools/ai-markmap-agent/translate_only.py \
     --input docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
     --output docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
 ```
 
 ```powershell
-# Windows PowerShell
+# Windows PowerShell - from project root
 python tools\ai-markmap-agent\translate_only.py `
     --input docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
     --output docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
 ```
+
+**Note on Output Locations:**
+- **Version History** (main pipeline only): `tools/ai-markmap-agent/outputs/versions/v1/` (for tracking changes)
+- **Final Output** (translate_only.py): `docs/mindmaps/` (for actual use)
+- When using `--output`, the file is saved to the specified path
+- When not using `--output`, it auto-detects based on config (saves to `docs/mindmaps/`)
 **Method 3: Translate and Generate HTML in One Step**
 
 ```bash
@@ -326,8 +349,15 @@ python translate_only.py --model gpt-4o
 
 For converting Markdown files to HTML without running the full pipeline:
 
+**Important**: Run from `tools/ai-markmap-agent/` directory, or use absolute paths.
+
+**Basic Usage:**
+
 ```bash
-# Basic conversion (output: input.html)
+# Navigate to script directory
+cd tools/ai-markmap-agent
+
+# Basic conversion (output: input.html in same directory)
 python convert_to_html.py input.md
 
 # Specify output file
@@ -338,6 +368,50 @@ python convert_to_html.py input.md -t "My Mind Map"
 
 # Use custom template
 python convert_to_html.py input.md --template templates/custom.html
+```
+
+**Working with `docs/mindmaps/` directory:**
+
+```bash
+# From tools/ai-markmap-agent/ directory
+# Convert English version
+python convert_to_html.py \
+    ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    -t "NeetCode Agent Evolved Mindmap (EN)"
+
+# Convert Traditional Chinese version
+python convert_to_html.py \
+    ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
+    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html \
+    -t "NeetCode Agent Evolved Mindmap (繁體中文)"
+```
+
+**Windows PowerShell:**
+
+```powershell
+# From tools\ai-markmap-agent\ directory
+# Convert English version
+python convert_to_html.py `
+    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
+    -t "NeetCode Agent Evolved Mindmap (EN)"
+
+# Convert Traditional Chinese version
+python convert_to_html.py `
+    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
+    -t "NeetCode Agent Evolved Mindmap (繁體中文)"
+```
+
+**From Project Root (Alternative):**
+
+```bash
+# From project root directory
+python tools/ai-markmap-agent/convert_to_html.py \
+    docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    -o docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    -t "NeetCode Agent Evolved Mindmap (EN)"
 ```
 
 This tool is **completely independent** of the main pipeline and only requires:

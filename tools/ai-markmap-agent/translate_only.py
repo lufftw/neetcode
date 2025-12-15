@@ -95,14 +95,34 @@ def translate_file(
     print("\n⏳ Translating...")
     translated = translator.translate(content, "general")
     
+    # Validate translation result
+    if not translated:
+        raise ValueError("Translation returned empty content. Check API key and model configuration.")
+    if len(translated.strip()) == 0:
+        raise ValueError("Translation returned only whitespace. Check API response.")
+    
+    print(f"   Raw translation: {len(translated)} chars")
+    
     # Clean up LLM artifacts
     translated = clean_translated_content(translated)
-    print(f"   ✓ Translated to {len(translated)} chars")
+    
+    # Validate cleaned content
+    if not translated or len(translated.strip()) == 0:
+        raise ValueError("After cleaning, translation is empty. Check clean_translated_content function.")
+    
+    print(f"   ✓ Cleaned translation: {len(translated)} chars, {len(translated.splitlines())} lines")
     
     # Save output
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(translated, encoding="utf-8")
-    print(f"\n💾 Saved: {output_path}")
+    
+    # Verify file was written
+    if not output_path.exists():
+        raise IOError(f"Failed to write output file: {output_path}")
+    if output_path.stat().st_size == 0:
+        raise IOError(f"Output file is empty: {output_path}")
+    
+    print(f"\n💾 Saved: {output_path} ({output_path.stat().st_size} bytes)")
     
     return translated
 
@@ -170,11 +190,21 @@ def main() -> int:
             print("\n❌ Error: OpenAI API key is required.")
             return 1
         
+        # Get script base directory for resolving relative paths
+        script_base_dir = Path(__file__).parent
+        
         # Determine input file
         if args.input:
             input_path = Path(args.input)
+            # Resolve relative paths relative to script directory (CLI tool behavior)
+            if not input_path.is_absolute():
+                input_path = (script_base_dir / input_path).resolve()
+            else:
+                input_path = input_path.resolve()
+            
             if not input_path.exists():
                 print(f"\n❌ Error: Input file not found: {args.input}")
+                print(f"   Resolved path: {input_path}")
                 return 1
         else:
             input_path = find_latest_english_output(config)
@@ -190,6 +220,11 @@ def main() -> int:
         # Determine output file
         if args.output:
             output_path = Path(args.output)
+            # Resolve relative paths relative to script directory (CLI tool behavior)
+            if not output_path.is_absolute():
+                output_path = (script_base_dir / output_path).resolve()
+            else:
+                output_path = output_path.resolve()
         else:
             # Replace language suffix in filename (only at the end!)
             stem = input_path.stem
@@ -231,8 +266,7 @@ def main() -> int:
             
             # Get HTML output directory from config
             final_dirs = config.get("output", {}).get("final_dirs", {})
-            base_dir = Path(__file__).parent
-            html_output_dir = (base_dir / final_dirs.get("html", "outputs/final")).resolve()
+            html_output_dir = (script_base_dir / final_dirs.get("html", "outputs/final")).resolve()
             html_output_dir.mkdir(parents=True, exist_ok=True)
             
             html_path = html_output_dir / f"{output_path.stem}.html"

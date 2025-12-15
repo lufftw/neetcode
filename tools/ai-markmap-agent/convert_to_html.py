@@ -98,7 +98,7 @@ def convert_file_to_html(
     Convert a Markdown file to HTML (programmatic interface).
     
     Args:
-        input_path: Path to input Markdown file
+        input_path: Path to input Markdown file (can be relative or absolute)
         output_path: Path to output HTML file (default: same as input with .html)
         title: Optional HTML page title
         template_path: Optional custom template path
@@ -108,14 +108,26 @@ def convert_file_to_html(
         
     This function can be imported and used programmatically.
     """
-    input_path = Path(input_path).resolve()
+    # Resolve input path (handles both absolute and relative paths)
+    input_path = Path(input_path)
+    if not input_path.is_absolute():
+        # If relative, resolve relative to current working directory
+        # (This is correct for programmatic calls where paths are already resolved)
+        input_path = input_path.resolve()
+    else:
+        input_path = input_path.resolve()
+    
     if not input_path.exists():
         raise FileNotFoundError(f"Input file not found: {input_path}")
     
     if output_path is None:
         output_path = input_path.with_suffix(".html")
     else:
-        output_path = Path(output_path).resolve()
+        output_path = Path(output_path)
+        if not output_path.is_absolute():
+            output_path = output_path.resolve()
+        else:
+            output_path = output_path.resolve()
     
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
@@ -183,10 +195,21 @@ Examples:
     args = parser.parse_args()
     
     try:
+        # Get script base directory for resolving relative paths (CLI tool behavior)
+        script_base_dir = Path(__file__).parent
+        
         # Resolve input path
-        input_path = Path(args.input).resolve()
+        # Relative paths are resolved relative to script directory, not current working directory
+        input_path = Path(args.input)
+        if not input_path.is_absolute():
+            input_path = (script_base_dir / input_path).resolve()
+        else:
+            input_path = input_path.resolve()
+        
         if not input_path.exists():
             print(f"❌ Error: Input file not found: {input_path}")
+            print(f"   Resolved from: {args.input}")
+            print(f"   Script directory: {script_base_dir}")
             return 1
         
         if not input_path.is_file():
@@ -195,7 +218,12 @@ Examples:
         
         # Determine output path
         if args.output:
-            output_path = Path(args.output).resolve()
+            output_path = Path(args.output)
+            # Resolve relative paths relative to script directory (CLI tool behavior)
+            if not output_path.is_absolute():
+                output_path = (script_base_dir / output_path).resolve()
+            else:
+                output_path = output_path.resolve()
         else:
             output_path = input_path.with_suffix(".html")
         
