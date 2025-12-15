@@ -44,6 +44,16 @@ __all__ = [
 from .post_processing import PostProcessor
 from .debug_output import get_debug_manager, reset_debug_manager
 from .config_loader import ConfigLoader
+from .resume import (
+    scan_previous_runs,
+    select_run_interactive,
+    ask_reuse_stage,
+    load_consensus_from_run,
+    load_expert_responses_from_run,
+    load_writer_output_from_run,
+    generate_regen_run_id,
+    RunInfo,
+)
 
 
 class WorkflowState(TypedDict, total=False):
@@ -221,23 +231,79 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         """Initialize workflow state and load baseline."""
         print("\n[Phase 0] Initialization...")
         
-        state["current_phase"] = "review"
-        state["messages"] = []
-        state["errors"] = []
-        state["writer_outputs"] = {}
-        state["translated_outputs"] = {}
-        state["final_outputs"] = {}
-        state["expert_suggestions"] = {}
-        state["expert_raw_responses"] = {}
-        state["adoption_lists"] = {}
-        state["discussion_raw_responses"] = {}
+        # Check if resuming from a previous run
+        resume_config = state.get("_resume_config", {})
+        
+        if resume_config:
+            # Resume mode: load state from previous run
+            print("  🔄 Resume mode: Loading state from previous run...")
+            resume_run_dir = Path(resume_config["run_dir"])
+            reuse_stages = resume_config.get("reuse_stages", {})
+            
+            # Initialize debug output manager with new regen directory
+            original_run_id = resume_run_dir.name
+            new_run_id = generate_regen_run_id(original_run_id)
+            debug_output_dir = Path(__file__).parent.parent.parent / "outputs" / "debug"
+            new_run_dir = debug_output_dir / new_run_id
+            reset_debug_manager()
+            debug = get_debug_manager(config, run_dir=str(new_run_dir))
+            print(f"  📁 New run directory: {new_run_id}")
+            
+            # Load previous state if stages are being reused
+            if reuse_stages.get("expert_review"):
+                prev_run = RunInfo(resume_run_dir)
+                expert_responses = load_expert_responses_from_run(prev_run)
+                if expert_responses and "expert_review" in expert_responses:
+                    # Note: We can't fully restore state, but we can skip the phase
+                    print("  ⏭️  Will reuse expert_review outputs")
+            
+            if reuse_stages.get("full_discussion"):
+                print("  ⏭️  Will reuse full_discussion outputs")
+            
+            if reuse_stages.get("consensus"):
+                prev_run = RunInfo(resume_run_dir)
+                consensus_data = load_consensus_from_run(prev_run)
+                if consensus_data:
+                    # Reconstruct consensus result
+                    from .consensus import ConsensusResult
+                    state["consensus_result"] = ConsensusResult(
+                        adopted=consensus_data.get("adopted", []),
+                        rejected=consensus_data.get("rejected", []),
+                        vote_counts=consensus_data.get("vote_counts", {}),
+                        required_votes=0,
+                        num_experts=0,
+                    )
+                    print("  ✓ Loaded consensus from previous run")
+        else:
+            # Fresh run
+            reset_debug_manager()
+            debug = get_debug_manager(config)
+        
+        if not state.get("current_phase"):
+            state["current_phase"] = "review"
+        if "messages" not in state:
+            state["messages"] = []
+        if "errors" not in state:
+            state["errors"] = []
+        if "writer_outputs" not in state:
+            state["writer_outputs"] = {}
+        if "translated_outputs" not in state:
+            state["translated_outputs"] = {}
+        if "final_outputs" not in state:
+            state["final_outputs"] = {}
+        if "expert_suggestions" not in state:
+            state["expert_suggestions"] = {}
+        if "expert_raw_responses" not in state:
+            state["expert_raw_responses"] = {}
+        if "adoption_lists" not in state:
+            state["adoption_lists"] = {}
+        if "discussion_raw_responses" not in state:
+            state["discussion_raw_responses"] = {}
         
         # Store translator configs
-        state["translator_configs"] = create_translators(config)
+        if "translator_configs" not in state:
+            state["translator_configs"] = create_translators(config)
         
-        # Initialize debug output manager
-        reset_debug_manager()
-        debug = get_debug_manager(config)
         if debug.enabled:
             print(f"  📊 Debug output enabled")
         
@@ -265,6 +331,13 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         This phase runs N parallel API calls.
         """
         print("\n[Phase 1] Expert Review (Independent)...")
+        
+        # Check if we should skip this phase (resume mode)
+        resume_config = state.get("_resume_config", {})
+        if resume_config and resume_config.get("reuse_stages", {}).get("expert_review"):
+            print("  ⏭️  Skipping (reusing from previous run)")
+            return state
+        
         debug = get_debug_manager(config)
         
         state["current_phase"] = "review"
@@ -306,6 +379,13 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         This phase runs N parallel API calls.
         """
         print("\n[Phase 2] Full Discussion...")
+        
+        # Check if we should skip this phase (resume mode)
+        resume_config = state.get("_resume_config", {})
+        if resume_config and resume_config.get("reuse_stages", {}).get("full_discussion"):
+            print("  ⏭️  Skipping (reusing from previous run)")
+            return state
+        
         debug = get_debug_manager(config)
         
         state["current_phase"] = "discussion"
@@ -343,6 +423,14 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         Uses majority voting to determine which suggestions are adopted.
         """
         print("\n[Phase 3] Consensus Calculation...")
+        
+        # Check if we should skip this phase (resume mode)
+        resume_config = state.get("_resume_config", {})
+        if resume_config and resume_config.get("reuse_stages", {}).get("consensus"):
+            print("  ⏭️  Skipping (reusing from previous run)")
+            # Consensus should already be loaded in initialize()
+            return state
+        
         debug = get_debug_manager(config)
         
         adoption_lists = state.get("adoption_lists", {})
@@ -392,6 +480,21 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         Applies adopted improvements to the baseline.
         """
         print("\n[Phase 4] Writing...")
+        
+        # Check if we should reuse writer output (resume mode)
+        resume_config = state.get("_resume_config", {})
+        if resume_config and resume_config.get("reuse_stages", {}).get("writer"):
+            print("  ⏭️  Reusing writer output from previous run")
+            resume_run_dir = Path(resume_config["run_dir"])
+            writer_output = load_writer_output_from_run(RunInfo(resume_run_dir))
+            if writer_output:
+                state["final_markmap"] = writer_output
+                state["writer_outputs"]["general_en"] = writer_output
+                print(f"  ✓ Loaded writer output ({len(writer_output)} chars)")
+                return state
+            else:
+                print("  ⚠ Could not load writer output, regenerating...")
+        
         debug = get_debug_manager(config)
         
         adopted = state.get("adopted_suggestions", [])

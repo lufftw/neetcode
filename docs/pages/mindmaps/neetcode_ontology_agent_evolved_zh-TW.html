@@ -59,7 +59,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const { Transformer, Markmap } = window.markmap;
             const transformer = new Transformer();
-            const markdown = `I'm sorry, but it seems that the content to be translated is missing. Could you please provide the specific Markmap content that needs to be translated into Traditional Chinese (Taiwan)?`;
+            const markdown = `I'm sorry, but it seems like the content to translate was not provided. Could you please provide the content that needs to be translated?`;
             const { root } = transformer.transform(markdown);
             const svg = d3.select('.markmap').append('svg');
             const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
