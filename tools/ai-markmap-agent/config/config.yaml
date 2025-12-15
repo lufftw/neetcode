@@ -347,6 +347,9 @@ output:
   
   html:
     template: "templates/markmap.html"
+    # Use standalone convert_to_html.py tool instead of internal converter
+    # This allows decoupling while maintaining integration
+    use_standalone_tool: false  # Set to true to use convert_to_html.py
     include_styles: true
     include_scripts: true
     title: "AI Evolved Markmap"

@@ -215,6 +215,42 @@ python translate_only.py --source en --target zh-TW
 
 # Also generate HTML
 python translate_only.py --html
+
+### Standalone HTML Converter
+
+For converting Markdown files to HTML without running the full pipeline:
+
+```bash
+# Basic conversion (output: input.html)
+python convert_to_html.py input.md
+
+# Specify output file
+python convert_to_html.py input.md -o output.html
+
+# Custom title
+python convert_to_html.py input.md -t "My Mind Map"
+
+# Use custom template
+python convert_to_html.py input.md --template templates/custom.html
+```
+
+This tool is **completely independent** of the main pipeline and only requires:
+- Python 3.10+
+- `jinja2` package
+
+It can be used to convert any Markmap Markdown file to interactive HTML.
+
+### Integration with Pipeline
+
+The standalone tool can be integrated with the main pipeline. To use it instead of the internal converter, set in `config/config.yaml`:
+
+```yaml
+output:
+  html:
+    use_standalone_tool: true  # Use convert_to_html.py instead of internal converter
+```
+
+This maintains **decoupling** (the tool can run independently) while allowing **integration** (the pipeline can call it programmatically).
 ```
 
 ### API Keys

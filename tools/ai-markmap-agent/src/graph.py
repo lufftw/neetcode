@@ -824,8 +824,20 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             print("  ⚠ No outputs to save")
             return state
         
+        # Check if we should use standalone tool
+        output_config = config.get("output", {})
+        html_config = output_config.get("html", {})
+        use_standalone_tool = html_config.get("use_standalone_tool", False)
+        
+        if use_standalone_tool:
+            print("  🔧 Using standalone HTML converter tool...")
+        
         try:
-            saved = save_all_markmaps(final_outputs, config)
+            saved = save_all_markmaps(
+                final_outputs,
+                config,
+                use_standalone_tool=use_standalone_tool
+            )
             state["messages"].append(f"Saved {len(saved)} output files")
             print(f"  ✓ Saved {len(saved)} output files")
         except Exception as e:

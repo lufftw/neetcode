@@ -439,6 +439,7 @@ def convert_to_html(
 def save_all_markmaps(
     results: dict[str, str],
     config: dict[str, Any] | None = None,
+    use_standalone_tool: bool = False,
 ) -> dict[str, dict[str, Path]]:
     """
     Save all final Markmap outputs.
@@ -448,10 +449,103 @@ def save_all_markmaps(
     Args:
         results: Dictionary of output_key -> markdown_content
         config: Optional configuration
+        use_standalone_tool: If True, use the standalone convert_to_html.py tool
+                           instead of the internal converter (default: False)
         
     Returns:
         Dictionary of saved file paths
     """
+    # Check if we should use the standalone tool
+    if use_standalone_tool:
+        return _save_all_markmaps_with_standalone_tool(results, config)
+    
+    # Use internal converter (default behavior)
     converter = MarkMapHTMLConverter(config)
     return converter.save_all_outputs(results)
+
+
+def _save_all_markmaps_with_standalone_tool(
+    results: dict[str, str],
+    config: dict[str, Any] | None = None,
+) -> dict[str, dict[str, Path]]:
+    """
+    Save all outputs using the standalone convert_to_html.py tool.
+    
+    This function calls the standalone tool programmatically, maintaining
+    decoupling while allowing integration.
+    """
+    import sys
+    import tempfile
+    from pathlib import Path
+    
+    # Import the standalone converter
+    base_dir = Path(__file__).parent.parent.parent
+    standalone_path = base_dir / "convert_to_html.py"
+    
+    if not standalone_path.exists():
+        raise FileNotFoundError(
+            f"Standalone converter not found: {standalone_path}\n"
+            "Please ensure convert_to_html.py exists in the ai-markmap-agent directory."
+        )
+    
+    # Import the standalone converter module
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("convert_to_html", standalone_path)
+    convert_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(convert_module)
+    convert_file_to_html = convert_module.convert_file_to_html
+    
+    # Get output directories from config
+    output_config = (config or {}).get("output", {})
+    final_dirs = output_config.get("final_dirs", {})
+    base_dir = Path(__file__).parent.parent.parent
+    md_output_dir = (base_dir / final_dirs.get("markdown", "outputs/final")).resolve()
+    html_output_dir = (base_dir / final_dirs.get("html", "outputs/final")).resolve()
+    
+    md_output_dir.mkdir(parents=True, exist_ok=True)
+    html_output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Get naming configuration
+    naming = output_config.get("naming", {})
+    prefix = naming.get("prefix", "neetcode")
+    template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
+    
+    saved_files = {}
+    
+    # Process each output
+    for output_key, content in results.items():
+        # Parse output key (e.g., "general_en" or "specialist_zh-TW")
+        parts = output_key.rsplit("_", 1)
+        if len(parts) == 2:
+            output_type, lang = parts
+        else:
+            output_type = parts[0]
+            lang = "en"
+        
+        # Generate filename
+        filename = template.format(prefix=prefix, lang=lang)
+        
+        # Generate title
+        title = f"NeetCode Agent Evolved Mindmap ({lang.upper()})"
+        
+        # Save markdown first
+        md_path = md_output_dir / f"{filename}.md"
+        md_path.write_text(content, encoding="utf-8")
+        
+        # Convert to HTML using standalone tool
+        html_path = html_output_dir / f"{filename}.html"
+        convert_file_to_html(
+            input_path=md_path,
+            output_path=html_path,
+            title=title,
+        )
+        
+        saved_files[output_key] = {
+            "md": md_path,
+            "html": html_path,
+        }
+        
+        print(f"  ✓ Saved: {filename}.md, {filename}.html (via standalone tool)")
+    
+    return saved_files
 
