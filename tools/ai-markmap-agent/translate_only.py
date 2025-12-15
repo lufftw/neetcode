@@ -66,27 +66,31 @@ def find_latest_english_output(config: dict) -> Path | None:
     return None
 
 
-def translate_file(
-    input_path: Path,
-    output_path: Path,
+def translate_content(
+    content: str,
     source_lang: str,
     target_lang: str,
     model: str,
     config: dict,
+    output_key: str | None = None,
 ) -> str:
-    """Translate a file and save the result."""
-    print(f"\n📄 Input: {input_path}")
-    print(f"🌐 Translation: {source_lang} → {target_lang}")
-    print(f"🤖 Model: {model}")
+    """
+    Translate content using TranslatorAgent.
     
-    # Check if input file exists
-    if not input_path.exists():
-        raise FileNotFoundError(f"Input file not found: {input_path}")
+    This is the unified translation function used by both translate_only.py
+    and graph.py to ensure consistent behavior.
     
-    # Read input
-    content = input_path.read_text(encoding="utf-8")
-    print(f"   Read {len(content)} chars, {len(content.splitlines())} lines")
-    
+    Args:
+        content: Content to translate
+        source_lang: Source language code
+        target_lang: Target language code
+        model: Model name to use
+        config: Configuration dictionary
+        output_key: Optional output key for logging (used in pipeline)
+        
+    Returns:
+        Translated content
+    """
     # Create translator
     translator = TranslatorAgent(
         source_language=source_lang,
@@ -96,7 +100,11 @@ def translate_file(
     )
     
     # Translate
-    print("\n⏳ Translating...")
+    if output_key:
+        print(f"  ⏳ Translating {output_key} ({source_lang} → {target_lang})...")
+    else:
+        print(f"\n⏳ Translating ({source_lang} → {target_lang})...")
+    
     try:
         translated = translator.translate(content, "general")
     except Exception as e:
@@ -177,7 +185,8 @@ def translate_file(
             f"   - Verify model configuration in config file"
         )
     
-    print(f"   Raw translation: {len(translated)} chars")
+    if not output_key:
+        print(f"   Raw translation: {len(translated)} chars")
     
     # Clean up LLM artifacts
     translated = clean_translated_content(translated)
@@ -210,7 +219,43 @@ def translate_file(
             f"   - Verify API response format matches expectations"
         )
     
-    print(f"   ✓ Cleaned translation: {len(translated)} chars, {len(translated.splitlines())} lines")
+    if output_key:
+        print(f"  ✓ Translated: {output_key} ({len(translated)} chars, {len(translated.splitlines())} lines)")
+    else:
+        print(f"   ✓ Cleaned translation: {len(translated)} chars, {len(translated.splitlines())} lines")
+    
+    return translated
+
+
+def translate_file(
+    input_path: Path,
+    output_path: Path,
+    source_lang: str,
+    target_lang: str,
+    model: str,
+    config: dict,
+) -> str:
+    """Translate a file and save the result."""
+    print(f"\n📄 Input: {input_path}")
+    print(f"🌐 Translation: {source_lang} → {target_lang}")
+    print(f"🤖 Model: {model}")
+    
+    # Check if input file exists
+    if not input_path.exists():
+        raise FileNotFoundError(f"Input file not found: {input_path}")
+    
+    # Read input
+    content = input_path.read_text(encoding="utf-8")
+    print(f"   Read {len(content)} chars, {len(content.splitlines())} lines")
+    
+    # Use unified translation function
+    translated = translate_content(
+        content=content,
+        source_lang=source_lang,
+        target_lang=target_lang,
+        model=model,
+        config=config,
+    )
     
     # Save output
     output_path.parent.mkdir(parents=True, exist_ok=True)

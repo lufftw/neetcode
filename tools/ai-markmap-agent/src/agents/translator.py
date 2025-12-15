@@ -137,8 +137,25 @@ class TranslatorAgent(BaseAgent):
         # Save LLM input
         self._save_llm_call_input(messages, "translate")
         
-        # Call LLM
-        response = self.llm.invoke(messages)
+        # Show progress info
+        model_name = self.model_config.get("model", "unknown")
+        prompt_size = len(prompt)
+        content_size = len(content)
+        print(f"   📤 Sending request to {model_name}...")
+        print(f"      Prompt: {prompt_size:,} chars, Content: {content_size:,} chars")
+        print(f"      This may take 30-120 seconds depending on content size...")
+        
+        # Call LLM with timeout handling
+        import time
+        start_time = time.time()
+        try:
+            response = self.llm.invoke(messages)
+            elapsed = time.time() - start_time
+            print(f"   ⏱️  API call completed in {elapsed:.1f} seconds")
+        except Exception as e:
+            elapsed = time.time() - start_time
+            print(f"   ❌ API call failed after {elapsed:.1f} seconds")
+            raise
         
         # Validate response
         if response is None:

@@ -739,13 +739,6 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             target_lang = tr_config["target_lang"]
             model = tr_config["model"]
             
-            translator = TranslatorAgent(
-                source_language=source_lang,
-                target_language=target_lang,
-                model=model,
-                config=config,
-            )
-            
             for output_key, content in writer_outputs.items():
                 # Parse output_key format: "{type}_{lang}" (e.g., "general_en")
                 parts = output_key.rsplit("_", 1)
@@ -760,40 +753,49 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 else:
                     continue  # Skip if source_lang not found
                 
-                # Translate the content
+                # Translate the content using unified translation function
                 try:
                     if debug.enabled:
                         debug.save_translation(content, output_key, target_key, is_before=True)
                     
-                    translated_content = translator.translate(content, "general")
+                    # Import unified translation function from translate_only.py
+                    import sys
+                    import importlib.util
+                    from pathlib import Path
                     
-                    # Validate translation result
-                    if not translated_content:
-                        raise ValueError(
-                            f"Translation returned empty content (None). "
-                            f"Source: {source_lang} → Target: {target_lang}, "
-                            f"Model: {model}, Output: {output_key}"
-                        )
-                    if len(translated_content.strip()) == 0:
-                        raise ValueError(
-                            f"Translation returned only whitespace. "
-                            f"Source: {source_lang} → Target: {target_lang}, "
-                            f"Model: {model}, Output: {output_key}"
-                        )
+                    # Get path to translate_only.py
+                    translate_only_path = Path(__file__).parent.parent.parent / "translate_only.py"
                     
-                    # Clean up LLM artifacts
-                    translated_content = clean_translated_content(translated_content)
-                    
-                    # Validate cleaned content
-                    if not translated_content or len(translated_content.strip()) == 0:
-                        raise ValueError(
-                            f"After cleaning, translation is empty. "
-                            f"Source: {source_lang} → Target: {target_lang}, "
-                            f"Model: {model}, Output: {output_key}"
+                    if translate_only_path.exists():
+                        # Dynamically import translate_content function
+                        spec = importlib.util.spec_from_file_location("translate_only", translate_only_path)
+                        translate_module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(translate_module)
+                        translate_content = translate_module.translate_content
+                        
+                        translated_content = translate_content(
+                            content=content,
+                            source_lang=source_lang,
+                            target_lang=target_lang,
+                            model=model,
+                            config=config,
+                            output_key=f"{output_key} → {target_key}",
                         )
+                    else:
+                        # Fallback: use translator directly (old behavior)
+                        translator = TranslatorAgent(
+                            source_language=source_lang,
+                            target_language=target_lang,
+                            model=model,
+                            config=config,
+                        )
+                        translated_content = translator.translate(content, "general")
+                        translated_content = clean_translated_content(translated_content)
+                        if not translated_content or len(translated_content.strip()) == 0:
+                            raise ValueError(f"Translation returned empty content")
+                        print(f"  ✓ Translated: {output_key} → {target_key}")
                     
                     translated[target_key] = translated_content
-                    print(f"  ✓ Translated: {output_key} → {target_key}")
                     
                     if debug.enabled:
                         debug.save_translation(translated_content, output_key, target_key, is_before=False)
