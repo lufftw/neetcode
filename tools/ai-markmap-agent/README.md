@@ -421,6 +421,80 @@ output:
 
 **Reset mode** prompts for confirmation. Old versions are deleted only after the pipeline completes successfully (safe: if pipeline fails, old versions are preserved).
 
+### Resume Mode
+
+Resume mode allows you to continue execution from a previous pipeline run, supporting:
+- Reusing completed stage outputs (saves tokens and time)
+- Re-running from a specific stage (debug-friendly)
+- Not overwriting original run data (generates new regen run)
+
+#### Resume vs Reset
+
+**Important distinction:**
+- **`--resume`**: Reuses debug outputs from previous runs to save API calls. This is about **pipeline execution** (whether to run new API calls or reuse existing results).
+- **`versioning.mode: reset`**: Deletes old version directories and starts fresh. This is about **version management** (how to organize final output versions).
+
+These two features are **independent**:
+- You can use `--resume` even when `versioning.mode: reset` is set
+- Resume mode reuses debug outputs regardless of versioning mode
+- Versioning reset only affects final output directories, not debug outputs
+- When resuming, versioning reset prompts are skipped (reset applies to final output only)
+
+#### Usage
+
+**Method 1: Interactive Resume Mode**
+
+```bash
+python main.py --resume
+```
+
+After startup, it will:
+1. Scan all previous runs under `outputs/debug/`
+2. Display them sorted by time (newest first)
+3. Let you select the run to resume
+4. Ask whether to reuse each stage's output one by one
+
+**Method 2: Start from a Specific Stage**
+
+```bash
+python main.py --resume --from-stage writer
+```
+
+This will automatically:
+- Select the latest run
+- Reuse outputs from `expert_review`, `full_discussion`, `consensus`
+- Re-run from the `writer` stage
+
+**Supported stages:**
+- `expert_review`
+- `full_discussion`
+- `consensus`
+- `writer`
+- `translate`
+- `post_process`
+
+#### Run Naming Rules
+
+- **Original run**: `run_YYYYMMDD_HHMMSS/`
+- **Resume from original run**: `run_YYYYMMDD_HHMMSS_regen_1/`
+- **Resume again**: `run_YYYYMMDD_HHMMSS_regen_2/`
+
+**Important**: Original run data is never overwritten, all new outputs are in regen directories.
+
+#### State Loading
+
+The system automatically loads:
+- ✅ **Consensus data**: Loaded from JSON file (if reusing consensus stage)
+- ✅ **Writer output**: Loaded from writer output file (if reusing writer stage)
+- ⚠️ **Expert responses**: Currently only marked as reused, incomplete recovery (needs improvement)
+
+#### Notes
+
+1. **Ensure debug_output.enabled = true**: Resume mode depends on debug output
+2. **API Keys**: Still need to provide API keys (even when reusing stages)
+3. **Configuration consistency**: Resume uses current config, which may differ from original run
+4. **Partial state recovery**: Currently only partial state recovery is supported, some stages may need to be re-run
+
 ---
 
 ## Module Responsibilities
