@@ -19,12 +19,14 @@ class DebugOutputManager:
     Saves intermediate outputs to help with debugging and verification.
     """
     
-    def __init__(self, config: dict[str, Any] | None = None):
+    def __init__(self, config: dict[str, Any] | None = None, run_dir: Path | str | None = None):
         """
         Initialize the debug output manager.
         
         Args:
             config: Configuration dictionary
+            run_dir: Optional run directory path (for resume mode).
+                     If provided, uses this directory instead of creating new one.
         """
         from .config_loader import ConfigLoader
         
@@ -40,11 +42,18 @@ class DebugOutputManager:
         if self.enabled:
             self.output_dir.mkdir(parents=True, exist_ok=True)
             
-            # Create run-specific directory with timestamp
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            self.run_dir = self.output_dir / f"run_{timestamp}"
-            self.run_dir.mkdir(parents=True, exist_ok=True)
-            print(f"  📁 Debug outputs: {self.run_dir}")
+            if run_dir:
+                # Resume mode: use existing run directory
+                self.run_dir = Path(run_dir)
+                if not self.run_dir.exists():
+                    self.run_dir.mkdir(parents=True, exist_ok=True)
+                print(f"  📁 Debug outputs (resume): {self.run_dir}")
+            else:
+                # New run: create run-specific directory with timestamp
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                self.run_dir = self.output_dir / f"run_{timestamp}"
+                self.run_dir.mkdir(parents=True, exist_ok=True)
+                print(f"  📁 Debug outputs: {self.run_dir}")
     
     def _get_filename(
         self,
@@ -314,11 +323,11 @@ class DebugOutputManager:
 _debug_manager: DebugOutputManager | None = None
 
 
-def get_debug_manager(config: dict[str, Any] | None = None) -> DebugOutputManager:
+def get_debug_manager(config: dict[str, Any] | None = None, run_dir: Path | str | None = None) -> DebugOutputManager:
     """Get or create the global debug output manager."""
     global _debug_manager
     if _debug_manager is None:
-        _debug_manager = DebugOutputManager(config)
+        _debug_manager = DebugOutputManager(config, run_dir=run_dir)
     return _debug_manager
 
 

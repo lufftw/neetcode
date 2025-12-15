@@ -56,6 +56,56 @@ class ContentCompressor:
             "max_tokens_before_compress", 8000
         )
     
+    def _save_llm_call(self, agent_id: str, call_type: str, content: Any, is_input: bool = True):
+        """Save LLM call input or output for debugging."""
+        try:
+            from ..debug_output import get_debug_manager
+            debug = get_debug_manager(self.config)
+            
+            if not debug.enabled:
+                return
+            
+            # Get LLM debug config
+            llm_config = self.config.get("debug_output", {}).get("llm_calls", {})
+            if not llm_config.get("enabled", False):
+                return
+            
+            if is_input and not llm_config.get("save_input", False):
+                return
+            if not is_input and not llm_config.get("save_output", False):
+                return
+            
+            # Format content
+            if is_input:
+                # messages list
+                import json
+                if isinstance(content, list):
+                    content_str = json.dumps(
+                        [{"role": msg.type if hasattr(msg, "type") else "unknown", 
+                          "content": msg.content if hasattr(msg, "content") else str(msg)} 
+                         for msg in content],
+                        indent=2,
+                        ensure_ascii=False
+                    )
+                else:
+                    content_str = str(content)
+                filename = f"llm_input_{agent_id}_{call_type}"
+            else:
+                # response string
+                content_str = str(content)
+                filename = f"llm_output_{agent_id}_{call_type}"
+            
+            # Save to debug directory
+            ext = "md"
+            filepath = debug.run_dir / f"{filename}.{ext}"
+            filepath.write_text(content_str, encoding="utf-8")
+            prefix = "📝" if is_input else "📤"
+            print(f"      {prefix} LLM {'input' if is_input else 'output'} saved: {filepath.name}")
+            
+        except Exception as e:
+            # Silently fail if debug output is not available
+            pass
+    
     def _load_prompt(self, prompt_path: str) -> str:
         """Load prompt from file."""
         if not prompt_path:
@@ -134,8 +184,15 @@ Output only the compressed content, no explanations."""
             HumanMessage(content=prompt),
         ]
         
+        # Save LLM input
+        self._save_llm_call("compressor", "compress_content", messages, is_input=True)
+        
         try:
             response = self.llm.invoke(messages)
+            
+            # Save LLM output
+            self._save_llm_call("compressor", "compress_content", response.content, is_input=False)
+            
             return response.content
         except Exception as e:
             print(f"Warning: Compression failed: {e}")
@@ -202,8 +259,15 @@ Provide a concise summary of the main changes and decisions made."""
             HumanMessage(content=prompt),
         ]
         
+        # Save LLM input
+        self._save_llm_call("compressor", "summarize_history", messages, is_input=True)
+        
         try:
             response = self.llm.invoke(messages)
+            
+            # Save LLM output
+            self._save_llm_call("compressor", "summarize_history", response.content, is_input=False)
+            
             return response.content
         except Exception:
             return f"Summary of {len(history)} earlier rounds."

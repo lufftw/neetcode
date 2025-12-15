@@ -32,6 +32,12 @@ from src.config_loader import (
 )
 from src.data_sources import DataSourcesLoader
 from src.graph import run_pipeline, load_baseline_markmap, handle_versioning_mode
+from src.resume import (
+    scan_previous_runs,
+    select_run_interactive,
+    ask_reuse_stage,
+    RunInfo,
+)
 
 
 def print_banner() -> None:
@@ -151,6 +157,17 @@ def main() -> int:
         action="store_true",
         help="Enable verbose output"
     )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume from a previous run (interactive mode)"
+    )
+    parser.add_argument(
+        "--from-stage",
+        type=str,
+        choices=["expert_review", "full_discussion", "consensus", "writer", "translate", "post_process"],
+        help="Start from a specific stage (requires --resume)"
+    )
     
     args = parser.parse_args()
     
@@ -162,6 +179,60 @@ def main() -> int:
         print("Loading configuration...")
         config = load_config(args.config)
         print("  ✓ Configuration loaded\n")
+        
+        # Step 1.5: Resume mode selection
+        resume_config = None
+        if args.resume or args.from_stage:
+            print("\n" + "=" * 60)
+            print("Resume Mode")
+            print("=" * 60)
+            
+            # Scan for previous runs
+            debug_config = config.get("debug_output", {})
+            debug_output_dir = Path(debug_config.get("output_dir", "outputs/debug"))
+            runs = scan_previous_runs(debug_output_dir)
+            
+            if not runs:
+                print("\n  ⚠ No previous runs found")
+                if args.resume:
+                    print("  Starting fresh run instead...\n")
+                else:
+                    return 1
+            else:
+                # Let user select a run
+                selected_run = select_run_interactive(runs)
+                if not selected_run:
+                    print("\n  ⚠ Cancelled")
+                    return 0
+                
+                print(f"\n  ✓ Selected: {selected_run.run_id}")
+                
+                # Determine which stages to reuse
+                reuse_stages = {}
+                stages = ["expert_review", "full_discussion", "consensus", "writer"]
+                
+                # If --from-stage is specified, reuse everything before that stage
+                if args.from_stage:
+                    stage_idx = stages.index(args.from_stage) if args.from_stage in stages else -1
+                    if stage_idx >= 0:
+                        for i in range(stage_idx):
+                            if selected_run.has_stage_output(stages[i]):
+                                reuse_stages[stages[i]] = True
+                        print(f"  → Will start from stage: {args.from_stage}")
+                        if reuse_stages:
+                            print(f"  → Will reuse stages: {', '.join(reuse_stages.keys())}")
+                else:
+                    # Interactive: ask for each stage
+                    print("\n  Select which stages to reuse:")
+                    for stage in stages:
+                        if selected_run.has_stage_output(stage):
+                            should_reuse = ask_reuse_stage(stage, selected_run)
+                            reuse_stages[stage] = should_reuse
+                
+                resume_config = {
+                    "run_dir": str(selected_run.run_dir),
+                    "reuse_stages": reuse_stages,
+                }
         
         # Print workflow summary
         print_workflow_summary(config)
@@ -179,8 +250,11 @@ def main() -> int:
             print("Skipping API key input (--no-openai and/or --no-anthropic specified)\n")
         
         # Step 3: Handle versioning mode (reset prompts here)
+        # Note: In resume mode, versioning is separate - it only affects final output
+        #       Debug outputs are reused regardless of versioning mode
         print("\nChecking versioning mode...")
-        if not handle_versioning_mode(config):
+        is_resume_mode = resume_config is not None
+        if not handle_versioning_mode(config, skip_if_resume=is_resume_mode):
             # User cancelled reset
             return 0
         
@@ -214,6 +288,10 @@ def main() -> int:
         
         # Add baseline to data
         data["baseline_markmap"] = baseline_markmap
+        
+        # Add resume config if available
+        if resume_config:
+            data["_resume_config"] = resume_config
         
         # Print summary
         print_data_summary(loader.get_summary())
