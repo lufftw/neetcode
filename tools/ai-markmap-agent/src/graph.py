@@ -334,9 +334,29 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Check if we should skip this phase (resume mode)
         resume_config = state.get("_resume_config", {})
-        if resume_config and resume_config.get("reuse_stages", {}).get("expert_review"):
-            print("  ⏭️  Skipping (reusing from previous run)")
-            return state
+        if resume_config:
+            reuse_stages = resume_config.get("reuse_stages", {})
+            if reuse_stages.get("expert_review"):
+                print("  ⏭️  Reusing expert_review from previous run")
+                # Copy all files related to expert_review to new directory
+                resume_run_dir = Path(resume_config["run_dir"])
+                prev_run = RunInfo(resume_run_dir)
+                debug = get_debug_manager(config)
+                if debug.enabled:
+                    import shutil
+                    # Copy all expert_review related files
+                    expert_review_files = prev_run.get_stage_files("expert_review")
+                    if expert_review_files:
+                        for file_info in expert_review_files:
+                            try:
+                                dest = debug.run_dir / file_info["filename"]
+                                shutil.copy2(file_info["path"], dest)
+                                print(f"  💾 Copied: {file_info['filename']}")
+                            except Exception as e:
+                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                    else:
+                        print("  ⚠ No expert_review files found in previous run")
+                return state
         
         debug = get_debug_manager(config)
         
@@ -382,9 +402,29 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Check if we should skip this phase (resume mode)
         resume_config = state.get("_resume_config", {})
-        if resume_config and resume_config.get("reuse_stages", {}).get("full_discussion"):
-            print("  ⏭️  Skipping (reusing from previous run)")
-            return state
+        if resume_config:
+            reuse_stages = resume_config.get("reuse_stages", {})
+            if reuse_stages.get("full_discussion"):
+                print("  ⏭️  Reusing full_discussion from previous run")
+                # Copy all files related to full_discussion to new directory
+                resume_run_dir = Path(resume_config["run_dir"])
+                prev_run = RunInfo(resume_run_dir)
+                debug = get_debug_manager(config)
+                if debug.enabled:
+                    import shutil
+                    # Copy all full_discussion related files
+                    discussion_files = prev_run.get_stage_files("full_discussion")
+                    if discussion_files:
+                        for file_info in discussion_files:
+                            try:
+                                dest = debug.run_dir / file_info["filename"]
+                                shutil.copy2(file_info["path"], dest)
+                                print(f"  💾 Copied: {file_info['filename']}")
+                            except Exception as e:
+                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                    else:
+                        print("  ⚠ No full_discussion files found in previous run")
+                return state
         
         debug = get_debug_manager(config)
         
@@ -426,10 +466,79 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Check if we should skip this phase (resume mode)
         resume_config = state.get("_resume_config", {})
-        if resume_config and resume_config.get("reuse_stages", {}).get("consensus"):
-            print("  ⏭️  Skipping (reusing from previous run)")
-            # Consensus should already be loaded in initialize()
-            return state
+        if resume_config:
+            reuse_stages = resume_config.get("reuse_stages", {})
+            
+            resume_run_dir = Path(resume_config["run_dir"])
+            prev_run = RunInfo(resume_run_dir)
+            
+            # If explicitly marked to reuse, load it
+            if reuse_stages.get("consensus"):
+                print("  ⏭️  Reusing consensus from previous run")
+                # Consensus should already be loaded in initialize()
+                # Copy all consensus files to new directory
+                debug = get_debug_manager(config)
+                if debug.enabled:
+                    import shutil
+                    # Copy all consensus related files
+                    consensus_files = prev_run.get_stage_files("consensus")
+                    if consensus_files:
+                        for file_info in consensus_files:
+                            try:
+                                dest = debug.run_dir / file_info["filename"]
+                                shutil.copy2(file_info["path"], dest)
+                                print(f"  💾 Copied: {file_info['filename']}")
+                            except Exception as e:
+                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                    # Also save consensus data if available in state
+                    if "consensus_result" in state:
+                        consensus_result = state["consensus_result"]
+                        consensus_data = {
+                            "adopted": consensus_result.adopted,
+                            "rejected": consensus_result.rejected,
+                            "vote_counts": consensus_result.vote_counts,
+                            "threshold": consensus_threshold,
+                            "_reused_from": prev_run.run_id,
+                        }
+                        debug.save_consensus(consensus_data)
+                return state
+            
+            # If not in reuse list but output exists, ask user
+            if prev_run.has_stage_output("consensus") and "consensus" not in reuse_stages:
+                from ..resume import ask_reuse_stage
+                should_reuse = ask_reuse_stage("consensus", prev_run)
+                if should_reuse:
+                    consensus_data = load_consensus_from_run(prev_run)
+                    if consensus_data:
+                        from .consensus import ConsensusResult
+                        state["consensus_result"] = ConsensusResult(
+                            adopted=consensus_data.get("adopted", []),
+                            rejected=consensus_data.get("rejected", []),
+                            vote_counts=consensus_data.get("vote_counts", {}),
+                            required_votes=0,
+                            num_experts=0,
+                        )
+                        print("  ✓ Loaded consensus from previous run")
+                        # Copy all consensus files to new directory
+                        debug = get_debug_manager(config)
+                        if debug.enabled:
+                            import shutil
+                            # Copy all consensus related files
+                            consensus_files = prev_run.get_stage_files("consensus")
+                            if consensus_files:
+                                for file_info in consensus_files:
+                                    try:
+                                        dest = debug.run_dir / file_info["filename"]
+                                        shutil.copy2(file_info["path"], dest)
+                                        print(f"  💾 Copied: {file_info['filename']}")
+                                    except Exception as e:
+                                        print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                            # Also save consensus data
+                            consensus_data["_reused_from"] = prev_run.run_id
+                            debug.save_consensus(consensus_data)
+                        # Mark as reused so we don't ask again
+                        reuse_stages["consensus"] = True
+                        return state
         
         debug = get_debug_manager(config)
         
@@ -483,17 +592,65 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Check if we should reuse writer output (resume mode)
         resume_config = state.get("_resume_config", {})
-        if resume_config and resume_config.get("reuse_stages", {}).get("writer"):
-            print("  ⏭️  Reusing writer output from previous run")
+        if resume_config:
+            reuse_stages = resume_config.get("reuse_stages", {})
             resume_run_dir = Path(resume_config["run_dir"])
-            writer_output = load_writer_output_from_run(RunInfo(resume_run_dir))
-            if writer_output:
-                state["final_markmap"] = writer_output
-                state["writer_outputs"]["general_en"] = writer_output
-                print(f"  ✓ Loaded writer output ({len(writer_output)} chars)")
+            prev_run = RunInfo(resume_run_dir)
+            
+            # If explicitly marked to reuse, load it
+            if reuse_stages.get("writer"):
+                print("  ⏭️  Reusing writer from previous run")
+                # Copy all writer related files to new directory
+                debug = get_debug_manager(config)
+                if debug.enabled:
+                    import shutil
+                    # Copy all writer related files (LLM input/output, writer output)
+                    writer_files = prev_run.get_stage_files("writer")
+                    if writer_files:
+                        for file_info in writer_files:
+                            try:
+                                dest = debug.run_dir / file_info["filename"]
+                                shutil.copy2(file_info["path"], dest)
+                                print(f"  💾 Copied: {file_info['filename']}")
+                            except Exception as e:
+                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                    # Load writer output content for state
+                    writer_output = load_writer_output_from_run(prev_run)
+                    if writer_output:
+                        state["final_markmap"] = writer_output
+                        state["writer_outputs"]["general_en"] = writer_output
+                        print(f"  ✓ Loaded writer output ({len(writer_output)} chars)")
+                    else:
+                        print("  ⚠ Could not load writer output content")
                 return state
-            else:
-                print("  ⚠ Could not load writer output, regenerating...")
+            
+            # If not in reuse list but output exists, ask user
+            elif prev_run.has_stage_output("writer") and "writer" not in reuse_stages:
+                from ..resume import ask_reuse_stage
+                should_reuse = ask_reuse_stage("writer", prev_run)
+                if should_reuse:
+                    writer_output = load_writer_output_from_run(prev_run)
+                    if writer_output:
+                        state["final_markmap"] = writer_output
+                        state["writer_outputs"]["general_en"] = writer_output
+                        print(f"  ✓ Loaded writer output ({len(writer_output)} chars)")
+                        # Copy all writer files to new directory
+                        debug = get_debug_manager(config)
+                        if debug.enabled:
+                            import shutil
+                            # Copy all writer related files
+                            writer_files = prev_run.get_stage_files("writer")
+                            if writer_files:
+                                for file_info in writer_files:
+                                    try:
+                                        dest = debug.run_dir / file_info["filename"]
+                                        shutil.copy2(file_info["path"], dest)
+                                        print(f"  💾 Copied: {file_info['filename']}")
+                                    except Exception as e:
+                                        print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                        # Mark as reused
+                        reuse_stages["writer"] = True
+                        return state
         
         debug = get_debug_manager(config)
         
@@ -540,6 +697,17 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             return state
         
         print("\n[Phase 5] Translating outputs...")
+        
+        # Check if we should skip this phase (resume mode)
+        resume_config = state.get("_resume_config", {})
+        if resume_config:
+            reuse_stages = resume_config.get("reuse_stages", {})
+            if reuse_stages.get("translate"):
+                print("  ⏭️  Skipping (reusing from previous run)")
+                # Translation outputs should be loaded from previous run
+                # TODO: Load translation outputs if needed
+                return state
+        
         debug = get_debug_manager(config)
         
         writer_outputs = state.get("writer_outputs", {})

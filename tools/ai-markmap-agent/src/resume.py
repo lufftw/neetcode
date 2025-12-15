@@ -70,24 +70,36 @@ class RunInfo:
                 "mtime_str": mtime.strftime("%Y-%m-%d %H:%M:%S"),
             }
             
-            # Categorize file
-            if filename.startswith("llm_input_"):
-                files_by_phase["llm_input"].append(file_info)
-            elif filename.startswith("llm_output_"):
-                files_by_phase["llm_output"].append(file_info)
-            elif "consensus" in filename:
-                files_by_phase["consensus"].append(file_info)
-            elif "writer" in filename:
-                files_by_phase["writer"].append(file_info)
-            elif "translation" in filename or "translator" in filename:
-                files_by_phase["translation"].append(file_info)
-            elif "postproc" in filename or "post_processing" in filename:
-                files_by_phase["post_processing"].append(file_info)
-            elif "optimizer" in filename or "architect" in filename or "professor" in filename or "engineer" in filename:
-                if "discuss" in filename:
-                    files_by_phase["full_discussion"].append(file_info)
+            # Categorize file - precise pattern matching
+            filename_lower = filename.lower()
+            
+            # Expert review: llm_input/output with invoke or review, for expert agents
+            if filename.startswith("llm_input_") or filename.startswith("llm_output_"):
+                if "invoke" in filename_lower or "review" in filename_lower:
+                    # Check if it's an expert agent
+                    if any(expert in filename_lower for expert in ["architect", "professor", "engineer", "optimizer"]):
+                        files_by_phase["expert_review"].append(file_info)
+                elif "discuss" in filename_lower:
+                    # Check if it's an expert agent
+                    if any(expert in filename_lower for expert in ["architect", "professor", "engineer", "optimizer"]):
+                        files_by_phase["full_discussion"].append(file_info)
+                elif "writer" in filename_lower:
+                    files_by_phase["writer"].append(file_info)
+                elif "translator" in filename_lower or "translation" in filename_lower:
+                    files_by_phase["translation"].append(file_info)
                 else:
-                    files_by_phase["expert_review"].append(file_info)
+                    # Generic LLM input/output (add to both lists for backward compatibility)
+                    files_by_phase["llm_input"].append(file_info)
+                    if filename.startswith("llm_output_"):
+                        files_by_phase["llm_output"].append(file_info)
+            elif "consensus" in filename_lower:
+                files_by_phase["consensus"].append(file_info)
+            elif "writer" in filename_lower:
+                files_by_phase["writer"].append(file_info)
+            elif "translation" in filename_lower or "translator" in filename_lower:
+                files_by_phase["translation"].append(file_info)
+            elif "postproc" in filename_lower or "post_processing" in filename_lower:
+                files_by_phase["post_processing"].append(file_info)
         
         return files_by_phase
     
@@ -101,38 +113,14 @@ class RunInfo:
     
     def has_stage_output(self, stage: str) -> bool:
         """Check if this run has output for a specific stage."""
-        stage_map = {
-            "expert_review": ["expert_review", "llm_output"],
-            "full_discussion": ["full_discussion", "llm_output"],
-            "consensus": ["consensus"],
-            "writer": ["writer", "llm_output"],
-            "translation": ["translation", "llm_output"],
-            "post_processing": ["post_processing"],
-        }
-        
-        check_phases = stage_map.get(stage, [])
-        for phase in check_phases:
-            if self.files.get(phase):
-                return True
-        return False
+        # Check directly by stage name (files are categorized by stage)
+        stage_files = self.files.get(stage, [])
+        return len(stage_files) > 0
     
     def get_stage_files(self, stage: str) -> list[dict[str, Any]]:
         """Get files for a specific stage."""
-        stage_map = {
-            "expert_review": ["expert_review", "llm_output"],
-            "full_discussion": ["full_discussion", "llm_output"],
-            "consensus": ["consensus"],
-            "writer": ["writer", "llm_output"],
-            "translation": ["translation", "llm_output"],
-            "post_processing": ["post_processing"],
-        }
-        
-        all_files = []
-        check_phases = stage_map.get(stage, [])
-        for phase in check_phases:
-            all_files.extend(self.files.get(phase, []))
-        
-        return all_files
+        # Return files categorized for this specific stage
+        return self.files.get(stage, [])
 
 
 def scan_previous_runs(debug_output_dir: Path) -> list[RunInfo]:
