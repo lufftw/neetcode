@@ -1143,16 +1143,37 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         if not final_outputs:
             print("  ⚠ No outputs to save")
+            # Debug: Check what's in state
+            writer_outputs = state.get("writer_outputs", {})
+            translated_outputs = state.get("translated_outputs", {})
+            print(f"    writer_outputs keys: {list(writer_outputs.keys())}")
+            print(f"    translated_outputs keys: {list(translated_outputs.keys())}")
             return state
+        
+        # Debug: Show what will be saved
+        print(f"  📦 Saving {len(final_outputs)} output(s):")
+        for key in final_outputs.keys():
+            lang_indicator = "🌐" if "zh-TW" in key or "zh" in key.lower() else "🇺🇸"
+            print(f"    {lang_indicator} {key}")
         
         try:
             saved = save_all_markmaps(final_outputs, config)
             state["messages"].append(f"Saved {len(saved)} output files")
-            print(f"  ✓ Saved {len(saved)} output files")
+            
+            # Show what was actually saved
+            print(f"\n  ✓ Saved {len(saved)} output file(s):")
+            for output_key, file_paths in saved.items():
+                md_file = file_paths.get("markdown", {}).get("path", "N/A")
+                html_file = file_paths.get("html", {}).get("path", "N/A")
+                print(f"    - {output_key}:")
+                print(f"      MD: {md_file.name if hasattr(md_file, 'name') else md_file}")
+                print(f"      HTML: {html_file.name if hasattr(html_file, 'name') else html_file}")
         except Exception as e:
             error_msg = f"Error saving outputs: {e}"
             state["errors"].append(error_msg)
             print(f"  ✗ {error_msg}")
+            import traceback
+            traceback.print_exc()
         
         return state
     
