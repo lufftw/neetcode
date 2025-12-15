@@ -250,8 +250,11 @@ def main() -> int:
             print("Skipping API key input (--no-openai and/or --no-anthropic specified)\n")
         
         # Step 3: Handle versioning mode (reset prompts here)
+        # Note: In resume mode, versioning is separate - it only affects final output
+        #       Debug outputs are reused regardless of versioning mode
         print("\nChecking versioning mode...")
-        if not handle_versioning_mode(config):
+        is_resume_mode = resume_config is not None
+        if not handle_versioning_mode(config, skip_if_resume=is_resume_mode):
             # User cancelled reset
             return 0
         

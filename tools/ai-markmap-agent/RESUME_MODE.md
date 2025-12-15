@@ -7,6 +7,20 @@ Resume mode allows you to continue execution from a previous pipeline run, suppo
 - Re-running from a specific stage (debug-friendly)
 - Not overwriting original run data (generates new regen run)
 
+## Resume vs Reset
+
+**Important distinction:**
+
+- **`--resume`**: Reuses debug outputs from previous runs to save API calls. This is about **pipeline execution** (whether to run new API calls or reuse existing results).
+
+- **`versioning.mode: reset`**: Deletes old version directories and starts fresh. This is about **version management** (how to organize final output versions).
+
+These two features are **independent**:
+- You can use `--resume` even when `versioning.mode: reset` is set
+- Resume mode reuses debug outputs regardless of versioning mode
+- Versioning reset only affects final output directories, not debug outputs
+- When resuming, versioning reset prompts are skipped (reset applies to final output only)
+
 ## Usage
 
 ### Method 1: Interactive Resume Mode
@@ -95,6 +109,10 @@ All intermediate outputs (including reused and regenerated ones) are saved in th
 2. **API Keys**: Still need to provide API keys (even when reusing stages)
 3. **Configuration consistency**: Resume uses current config, which may differ from original run
 4. **Partial state recovery**: Currently only partial state recovery is supported, some stages may need to be re-run
+5. **Versioning mode**: Resume mode works independently of `versioning.mode`:
+   - If `versioning.mode: reset`, the reset prompt is skipped during resume
+   - Versioning reset only affects final output directories, not debug outputs
+   - You can resume from debug outputs even when versioning is set to reset
 
 ## Future Improvements
 

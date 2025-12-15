@@ -156,7 +156,7 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
     raise FileNotFoundError(f"Baseline Markmap not found: {full_path}")
 
 
-def handle_versioning_mode(config: dict[str, Any]) -> bool:
+def handle_versioning_mode(config: dict[str, Any], skip_if_resume: bool = False) -> bool:
     """
     Handle versioning mode before running the pipeline.
     
@@ -164,10 +164,31 @@ def handle_versioning_mode(config: dict[str, Any]) -> bool:
     
     Args:
         config: Configuration dictionary
+        skip_if_resume: If True and in resume mode, skip versioning checks
+                       (resume mode reuses debug outputs, versioning is separate)
         
     Returns:
         True to continue, False to abort (user cancelled reset)
     """
+    # Check if we're in resume mode
+    if skip_if_resume:
+        # In resume mode, versioning is separate from pipeline execution
+        # We'll still show info but won't prompt for reset
+        versioning = config.get("output", {}).get("versioning", {})
+        versioning_enabled = versioning.get("enabled", False)
+        if versioning_enabled:
+            versioning_mode = versioning.get("mode", "continue")
+            if versioning_mode == "reset":
+                print("  ℹ️  Resume mode: Versioning reset will apply to final output only")
+                print("      (Debug outputs are reused from previous run)")
+            else:
+                converter = MarkMapHTMLConverter(config)
+                existing = converter._get_existing_versions()
+                if existing:
+                    print(f"  📂 Continue mode: {len(existing)} existing version(s)")
+                    print(f"      Latest: {existing[-1].name}")
+        return True
+    
     versioning = config.get("output", {}).get("versioning", {})
     versioning_enabled = versioning.get("enabled", False)
     versioning_mode = versioning.get("mode", "continue")
