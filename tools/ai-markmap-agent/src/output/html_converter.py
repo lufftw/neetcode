@@ -285,8 +285,14 @@ class MarkMapHTMLConverter:
         Returns:
             HTML string
         """
-        # Escape backticks and backslashes in markdown for JS template literal
-        escaped_content = markdown_content.replace("\\", "\\\\").replace("`", "\\`")
+        # Escape special characters for JavaScript template literal
+        # Order matters: escape backslash first, then backtick, then ${ to prevent template expression interpretation
+        escaped_content = (
+            markdown_content
+            .replace("\\", "\\\\")  # Escape backslashes first
+            .replace("`", "\\`")     # Escape backticks
+            .replace("${", "\\${")   # Escape ${ to prevent template expression interpretation
+        )
         
         # Prepare template variables
         template_vars = {
