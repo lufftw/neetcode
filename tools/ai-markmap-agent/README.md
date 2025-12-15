@@ -243,22 +243,49 @@ The output will be saved to:
 
 If you want to translate a specific English file:
 
+**Important**: Run the command from the `tools/ai-markmap-agent/` directory, or use absolute paths.
+
+**Unix/macOS:**
 ```bash
-# Translate a specific file
+# Navigate to the script directory first
+cd tools/ai-markmap-agent
+
+# Translate a specific file (auto-detects output path)
 python translate_only.py --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md
 
 # Or with explicit output path
 python translate_only.py \
     --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
     --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
-
 ```
 
 **Windows PowerShell:**
 ```powershell
+# Navigate to the script directory first
+cd tools\ai-markmap-agent
+
+# Translate a specific file (auto-detects output path)
+python translate_only.py --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md
+
+# Or with explicit output path
 python translate_only.py `
-    --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md `
-    --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+    --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    --output ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
+```
+
+**Alternative: Use absolute paths from any directory:**
+```bash
+# Unix/macOS
+python tools/ai-markmap-agent/translate_only.py \
+    --input docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
+    --output docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+```
+
+```powershell
+# Windows PowerShell
+python tools\ai-markmap-agent\translate_only.py `
+    --input docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    --output docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
 ```
 **Method 3: Translate and Generate HTML in One Step**
 
