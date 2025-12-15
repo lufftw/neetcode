@@ -38,6 +38,7 @@ Thumbs.db
 
 # Debug
 *.log
+tools/outputs/debug/run_*_regen_*
 
 # Generated failed test cases (from --save-failed)
 *_failed_*.in

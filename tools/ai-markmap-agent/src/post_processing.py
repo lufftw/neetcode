@@ -28,6 +28,7 @@ class PostProcessor:
             problems: Problem metadata dictionary (for link generation)
         """
         from .config_loader import ConfigLoader
+        from .leetcode_api import merge_leetcode_api_data
         
         config = config or ConfigLoader.get_config()
         workflow_config = config.get("workflow", {})
@@ -45,8 +46,9 @@ class PostProcessor:
                 {"pattern": r"LeetCode(\d+)", "replacement": r"LeetCode \1"},
             ]
         
-        # Store problems data for link generation
-        self.problems = problems or {}
+        # Merge with LeetCode API cache data
+        # This ensures we have URLs and slugs even if local TOML files don't have them
+        self.problems = merge_leetcode_api_data(problems or {})
         self.problems_lookup = self._build_problems_lookup(self.problems)
         
         # Load URL templates
