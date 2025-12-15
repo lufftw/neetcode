@@ -93,6 +93,9 @@ class WorkflowState(TypedDict, total=False):
     # Metadata
     messages: list[str]
     errors: list[str]
+    
+    # Resume configuration (internal)
+    _resume_config: dict[str, Any]
 
 
 def load_baseline_markmap(config: dict[str, Any]) -> str:
