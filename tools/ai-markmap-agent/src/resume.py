@@ -143,7 +143,7 @@ def scan_previous_runs(debug_output_dir: Path) -> list[RunInfo]:
         debug_output_dir: Path to debug outputs directory
         
     Returns:
-        List of RunInfo objects, sorted by timestamp (newest first)
+        List of RunInfo objects, sorted by timestamp (oldest first)
     """
     if not debug_output_dir.exists():
         return []
@@ -154,8 +154,8 @@ def scan_previous_runs(debug_output_dir: Path) -> list[RunInfo]:
             # Skip regeneration runs (they will be handled separately)
             runs.append(RunInfo(item))
     
-    # Sort by timestamp (newest first)
-    runs.sort(key=lambda r: r.timestamp or datetime.min, reverse=True)
+    # Sort by timestamp (oldest first) - so newest prints at the bottom
+    runs.sort(key=lambda r: r.timestamp or datetime.min, reverse=False)
     
     return runs
 
@@ -175,13 +175,15 @@ def select_run_interactive(runs: list[RunInfo]) -> RunInfo | None:
         return None
     
     print("\n" + "=" * 60)
-    print("Available Previous Runs")
+    print("Available Previous Runs (oldest to newest)")
     print("=" * 60)
     
     for i, run in enumerate(runs, 1):
         timestamp_str = run.timestamp.strftime("%Y-%m-%d %H:%M:%S") if run.timestamp else "Unknown"
         file_count = sum(len(files) for files in run.files.values())
-        print(f"\n[{i}] {run.run_id}")
+        is_latest = (i == len(runs))  # Last one is newest
+        marker = " ← Latest" if is_latest else ""
+        print(f"\n[{i}] {run.run_id}{marker}")
         print(f"    Last modified: {timestamp_str}")
         print(f"    Files: {file_count} total")
         

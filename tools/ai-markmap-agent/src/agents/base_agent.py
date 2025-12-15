@@ -341,7 +341,14 @@ class BaseAgent(ABC):
         )
         
         messages = self._build_messages(formatted_prompt)
+        
+        # Save LLM input if debug enabled
+        self._save_llm_call_input(messages, "invoke")
+        
         response = await self.llm.ainvoke(messages)
+        
+        # Save LLM output if debug enabled
+        self._save_llm_call_output(response.content, "invoke")
         
         return response.content
     
