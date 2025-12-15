@@ -224,13 +224,24 @@ def main() -> int:
         # Generate HTML if requested
         if args.html:
             print("\n📊 Generating HTML...")
-            html_content = converter.convert(
-                translated,
-                title=f"NeetCode Agent Evolved Mindmap ({args.target.upper()})"
+            # Use standalone converter
+            from convert_to_html import convert_file_to_html
+            html_config = config.get("output", {}).get("html", {})
+            template_path = html_config.get("template", "templates/markmap.html")
+            
+            # Get HTML output directory from config
+            final_dirs = config.get("output", {}).get("final_dirs", {})
+            base_dir = Path(__file__).parent
+            html_output_dir = (base_dir / final_dirs.get("html", "outputs/final")).resolve()
+            html_output_dir.mkdir(parents=True, exist_ok=True)
+            
+            html_path = html_output_dir / f"{output_path.stem}.html"
+            convert_file_to_html(
+                input_path=output_path,
+                output_path=html_path,
+                title=f"NeetCode Agent Evolved Mindmap ({args.target.upper()})",
+                template_path=template_path,
             )
-            # Use correct HTML output directory from config
-            html_path = converter.html_output_dir / f"{output_path.stem}.html"
-            html_path.write_text(html_content, encoding="utf-8")
             print(f"   ✓ Saved: {html_path}")
         
         print("\n" + "=" * 60)

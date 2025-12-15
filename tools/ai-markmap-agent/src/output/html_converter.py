@@ -1,79 +1,38 @@
 # =============================================================================
-# HTML Converter
+# HTML Converter - Wrapper for Standalone Tool
 # =============================================================================
-# Converts Markdown Markmaps to interactive HTML using Markmap library.
+# This module provides a compatibility layer that calls the standalone
+# convert_to_html.py tool. The standalone tool is the single source of truth
+# for HTML conversion functionality.
 # =============================================================================
 
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from jinja2 import Template
 
-from ..config_loader import ConfigLoader
-
-
+# Keep a minimal MarkMapHTMLConverter class for versioning support
+# (used by load_baseline_markmap and handle_versioning_mode)
 class MarkMapHTMLConverter:
     """
-    Converts Markdown content to interactive HTML Markmaps.
+    Minimal wrapper for versioning support.
     
-    Uses Jinja2 templates and the Markmap JavaScript library
-    to generate standalone HTML files.
+    The actual HTML conversion is handled by the standalone convert_to_html.py tool.
+    This class only provides versioning-related methods.
     """
     
     def __init__(self, config: dict[str, Any] | None = None):
-        """
-        Initialize the HTML converter.
-        
-        Args:
-            config: Configuration dictionary
-        """
+        """Initialize with config (only for versioning support)."""
+        from ..config_loader import ConfigLoader
         self.config = config or ConfigLoader.get_config()
         output_config = self.config.get("output", {})
-        html_config = output_config.get("html", {})
-        
-        # Load template
-        template_path = html_config.get("template", "templates/markmap.html")
-        self.template = self._load_template(template_path)
-        
-        # HTML options
-        self.include_styles = html_config.get("include_styles", True)
-        self.include_scripts = html_config.get("include_scripts", True)
-        self.default_title = html_config.get("title", "AI Generated Markmap")
-        
-        # Output directories
-        final_dirs = output_config.get("final_dirs", {})
-        base_dir = Path(__file__).parent.parent.parent
-        
-        self.md_output_dir = (base_dir / final_dirs.get("markdown", "outputs/final")).resolve()
-        self.html_output_dir = (base_dir / final_dirs.get("html", "outputs/final")).resolve()
-        
-        # Versioning
         versioning = output_config.get("versioning", {})
-        self.versioning_enabled = versioning.get("enabled", False)
+        base_dir = Path(__file__).parent.parent.parent
         self.version_dir = (base_dir / versioning.get("directory", "outputs/versions")).resolve()
+        self.versioning_enabled = versioning.get("enabled", False)
         self.versioning_mode = versioning.get("mode", "continue")
         self.prompt_on_reset = versioning.get("prompt_on_reset", True)
-        
-        # Ensure directories exist
-        self.md_output_dir.mkdir(parents=True, exist_ok=True)
-        self.html_output_dir.mkdir(parents=True, exist_ok=True)
-        if self.versioning_enabled:
-            self.version_dir.mkdir(parents=True, exist_ok=True)
-    
-    def _load_template(self, template_path: str) -> Template:
-        """Load Jinja2 template from file."""
-        base_dir = Path(__file__).parent.parent.parent
-        full_path = base_dir / template_path
-        
-        if full_path.exists():
-            template_content = full_path.read_text(encoding="utf-8")
-            return Template(template_content)
-        
-        # Fallback to default template
-        return Template(self._default_template())
     
     def _get_existing_versions(self) -> list[Path]:
         """Get list of existing version directories, sorted by version number."""
@@ -84,16 +43,6 @@ class MarkMapHTMLConverter:
             [d for d in self.version_dir.iterdir() if d.is_dir() and d.name.startswith("v") and d.name[1:].isdigit()],
             key=lambda x: int(x.name[1:])
         )
-    
-    def _get_next_version(self) -> str:
-        """Get next version number (v1, v2, ...)."""
-        existing = self._get_existing_versions()
-        
-        if not existing:
-            return "v1"
-        
-        last_num = int(existing[-1].name[1:])
-        return f"v{last_num + 1}"
     
     def _get_latest_version_path(self, lang: str = "en") -> Path | None:
         """
@@ -124,9 +73,6 @@ class MarkMapHTMLConverter:
     def handle_reset_mode(self) -> bool:
         """
         Handle reset mode: prompt user for confirmation.
-        
-        Note: Actual deletion happens at the end when saving outputs,
-        so if the pipeline fails, old versions are preserved.
         
         Returns:
             True if reset confirmed (or no versions exist), False if user cancelled
@@ -160,324 +106,25 @@ class MarkMapHTMLConverter:
         
         print(f"\n  ✓ Reset confirmed. Will output as v1 when complete.")
         return True
-    
-    def _cleanup_old_versions(self) -> None:
-        """Delete all existing versions (called after successful pipeline completion)."""
-        import shutil
-        existing = self._get_existing_versions()
-        
-        for version_dir in existing:
-            shutil.rmtree(version_dir)
-            print(f"  🗑️ Deleted old: {version_dir.name}")
-    
-    def _default_template(self) -> str:
-        """Return a minimal default template matching the main template format."""
-        return """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - NeetCode Mind Maps</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
-        .markmap { width: 100%; height: 100%; }
-        .markmap > svg { width: 100%; height: 100%; }
-        #topbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: #fff; border-bottom: 1px solid #e5e7eb;
-            padding: 8px 16px; display: flex; gap: 8px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 13px;
-        }
-        #topbar button {
-            padding: 4px 12px; border: 1px solid #d1d5db;
-            border-radius: 4px; background: #fff; cursor: pointer;
-        }
-        #topbar button:hover { background: #f3f4f6; }
-        .markmap { margin-top: 40px; height: calc(100% - 40px); }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
-    <script>
-        function fitView() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) svg.mm.fit();
-        }
-        function expandAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                (function expand(n) {
-                    n.payload = Object.assign({}, n.payload, { fold: 0 });
-                    if (n.children) n.children.forEach(expand);
-                })(root);
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        function collapseAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                root.children && root.children.forEach(function collapse(n) {
-                    if (n.children && n.children.length) {
-                        n.payload = Object.assign({}, n.payload, { fold: 1 });
-                        n.children.forEach(collapse);
-                    }
-                });
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const { Transformer, Markmap } = window.markmap;
-            const transformer = new Transformer();
-            const markdown = `{{ markdown_content | safe }}`;
-            const { root } = transformer.transform(markdown);
-            const svg = d3.select('.markmap').append('svg');
-            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-            svg.node().mm = mm;
-            if (window.markmap && window.markmap.Toolbar) {
-                const toolbar = new window.markmap.Toolbar();
-                toolbar.attach(mm);
-                setTimeout(function() {
-                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                        });
-                        var brand = toolbar.querySelector('.mm-toolbar-brand');
-                        if (brand) {
-                            brand.innerHTML = '🟡 NeetCode';
-                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                            brand.style.fontSize = '12px'; brand.style.color = '#666';
-                        }
-                    });
-                }, 200);
-            }
-        });
-    </script>
-</head>
-<body>
-    <div id="topbar">
-        <button onclick="fitView()">Fit View</button>
-        <button onclick="expandAll()">Expand All</button>
-        <button onclick="collapseAll()">Collapse All</button>
-    </div>
-    <div class="markmap"></div>
-</body>
-</html>"""
-    
-    def convert(
-        self,
-        markdown_content: str,
-        title: str | None = None,
-        metadata: dict[str, Any] | None = None,
-    ) -> str:
-        """
-        Convert Markdown to HTML.
-        
-        Args:
-            markdown_content: Markdown content for the Markmap
-            title: Optional title for the HTML page
-            metadata: Additional metadata to include
-            
-        Returns:
-            HTML string
-        """
-        # Escape special characters for JavaScript template literal
-        # Order matters: escape backslash first, then backtick, then ${ to prevent template expression interpretation
-        escaped_content = (
-            markdown_content
-            .replace("\\", "\\\\")  # Escape backslashes first
-            .replace("`", "\\`")     # Escape backticks
-            .replace("${", "\\${")   # Escape ${ to prevent template expression interpretation
-        )
-        
-        # Prepare template variables
-        template_vars = {
-            "title": title or self.default_title,
-            "markdown_content": escaped_content,
-            "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "source": "AI Markmap Agent",
-            **(metadata or {}),
-        }
-        
-        return self.template.render(**template_vars)
-    
-    def save(
-        self,
-        markdown_content: str,
-        output_name: str,
-        title: str | None = None,
-        metadata: dict[str, Any] | None = None,
-    ) -> tuple[Path, Path]:
-        """
-        Save both Markdown and HTML files.
-        
-        Args:
-            markdown_content: Markdown content
-            output_name: Base name for output files (without extension)
-            title: Optional title
-            metadata: Additional metadata
-            
-        Returns:
-            Tuple of (md_path, html_path)
-        """
-        # Save Markdown
-        md_path = self.md_output_dir / f"{output_name}.md"
-        md_path.write_text(markdown_content, encoding="utf-8")
-        
-        # Convert and save HTML
-        html_content = self.convert(markdown_content, title, metadata)
-        html_path = self.html_output_dir / f"{output_name}.html"
-        html_path.write_text(html_content, encoding="utf-8")
-        
-        return md_path, html_path
-    
-    def save_all_outputs(
-        self,
-        results: dict[str, str],
-        naming_config: dict[str, Any] | None = None,
-    ) -> dict[str, dict[str, Path]]:
-        """
-        Save all final outputs based on configuration.
-        
-        Args:
-            results: Dictionary with keys like "general_en", "specialist_zh-TW"
-                    mapping to markdown content
-            naming_config: Optional naming configuration override
-            
-        Returns:
-            Dictionary mapping output type to {md: path, html: path}
-        """
-        naming = naming_config or self.config.get("output", {}).get("naming", {})
-        prefix = naming.get("prefix", "neetcode")
-        template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
-        
-        saved_files = {}
-        
-        # Get version directory if versioning is enabled
-        version_subdir = None
-        if self.versioning_enabled:
-            # For reset mode, delete old versions first, then start with v1
-            if self.versioning_mode == "reset":
-                self._cleanup_old_versions()
-                version_name = "v1"
-            else:
-                version_name = self._get_next_version()
-            
-            version_subdir = self.version_dir / version_name
-            version_subdir.mkdir(parents=True, exist_ok=True)
-            print(f"  📁 Version: {version_name}")
-        
-        for output_key, content in results.items():
-            # Parse output key (e.g., "general_en" or "specialist_zh-TW")
-            # Use rsplit to handle language codes that might contain underscores
-            parts = output_key.rsplit("_", 1)
-            if len(parts) == 2:
-                output_type, lang = parts
-            else:
-                output_type = parts[0]
-                lang = "en"
-            
-            # Generate filename from template
-            filename = template.format(prefix=prefix, lang=lang)
-            
-            # Generate title
-            title = f"NeetCode Agent Evolved Mindmap ({lang.upper()})"
-            
-            # Save to final directories
-            md_path, html_path = self.save(
-                markdown_content=content,
-                output_name=filename,
-                title=title,
-                metadata={"type": output_type, "language": lang},
-            )
-            
-            saved_files[output_key] = {
-                "md": md_path,
-                "html": html_path,
-            }
-            
-            print(f"  ✓ Saved: {filename}.md, {filename}.html")
-            
-            # Also save to version directory
-            if version_subdir:
-                version_md = version_subdir / f"{filename}.md"
-                version_html = version_subdir / f"{filename}.html"
-                version_md.write_text(content, encoding="utf-8")
-                html_content = self.convert(content, title, {"type": output_type, "language": lang})
-                version_html.write_text(html_content, encoding="utf-8")
-                print(f"  📦 Versioned: {version_subdir.name}/{filename}.*")
-        
-        return saved_files
-
-
-def convert_to_html(
-    markdown_content: str,
-    title: str | None = None,
-    config: dict[str, Any] | None = None,
-) -> str:
-    """
-    Convert Markdown to HTML.
-    
-    Convenience function.
-    
-    Args:
-        markdown_content: Markdown content
-        title: Optional title
-        config: Optional configuration
-        
-    Returns:
-        HTML string
-    """
-    converter = MarkMapHTMLConverter(config)
-    return converter.convert(markdown_content, title)
 
 
 def save_all_markmaps(
     results: dict[str, str],
     config: dict[str, Any] | None = None,
-    use_standalone_tool: bool = False,
 ) -> dict[str, dict[str, Path]]:
     """
-    Save all final Markmap outputs.
+    Save all final Markmap outputs using the standalone convert_to_html.py tool.
     
-    Convenience function.
+    This function calls the standalone tool programmatically, maintaining
+    decoupling while allowing integration.
     
     Args:
         results: Dictionary of output_key -> markdown_content
         config: Optional configuration
-        use_standalone_tool: If True, use the standalone convert_to_html.py tool
-                           instead of the internal converter (default: False)
         
     Returns:
         Dictionary of saved file paths
     """
-    # Check if we should use the standalone tool
-    if use_standalone_tool:
-        return _save_all_markmaps_with_standalone_tool(results, config)
-    
-    # Use internal converter (default behavior)
-    converter = MarkMapHTMLConverter(config)
-    return converter.save_all_outputs(results)
-
-
-def _save_all_markmaps_with_standalone_tool(
-    results: dict[str, str],
-    config: dict[str, Any] | None = None,
-) -> dict[str, dict[str, Path]]:
-    """
-    Save all outputs using the standalone convert_to_html.py tool.
-    
-    This function calls the standalone tool programmatically, maintaining
-    decoupling while allowing integration.
-    """
-    import sys
-    import tempfile
-    from pathlib import Path
-    
     # Import the standalone converter
     base_dir = Path(__file__).parent.parent.parent
     standalone_path = base_dir / "convert_to_html.py"
@@ -496,7 +143,9 @@ def _save_all_markmaps_with_standalone_tool(
     convert_file_to_html = convert_module.convert_file_to_html
     
     # Get output directories from config
-    output_config = (config or {}).get("output", {})
+    from ..config_loader import ConfigLoader
+    config = config or ConfigLoader.get_config()
+    output_config = config.get("output", {})
     final_dirs = output_config.get("final_dirs", {})
     base_dir = Path(__file__).parent.parent.parent
     md_output_dir = (base_dir / final_dirs.get("markdown", "outputs/final")).resolve()
@@ -509,6 +158,10 @@ def _save_all_markmaps_with_standalone_tool(
     naming = output_config.get("naming", {})
     prefix = naming.get("prefix", "neetcode")
     template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
+    
+    # Get template path from config
+    html_config = output_config.get("html", {})
+    template_path = html_config.get("template", "templates/markmap.html")
     
     saved_files = {}
     
@@ -538,6 +191,7 @@ def _save_all_markmaps_with_standalone_tool(
             input_path=md_path,
             output_path=html_path,
             title=title,
+            template_path=template_path,
         )
         
         saved_files[output_key] = {
@@ -545,7 +199,100 @@ def _save_all_markmaps_with_standalone_tool(
             "html": html_path,
         }
         
-        print(f"  ✓ Saved: {filename}.md, {filename}.html (via standalone tool)")
-    
-    return saved_files
+        print(f"  ✓ Saved: {filename}.md, {filename}.html")
+        
+        # Handle versioning if enabled
+        versioning = output_config.get("versioning", {})
+        if versioning.get("enabled", False):
+            version_dir = (base_dir / versioning.get("directory", "outputs/versions")).resolve()
+            
+            # Determine version name
+            if versioning.get("mode", "continue") == "reset":
+                # Clean up old versions first
+                converter = MarkMapHTMLConverter(config)
+                existing = converter._get_existing_versions()
+                for version_dir_old in existing:
+                    import shutil
+                    shutil.rmtree(version_dir_old)
+                    print(f"  🗑️ Deleted old: {version_dir_old.name}")
+                version_name = "v1"
+            else:
+                # Get next version
+                converter = MarkMapHTMLConverter(config)
+                existing = converter._get_existing_versions()
+                if not existing:
+                    version_name = "v1"
+                else:
+                    last_num = int(existing[-1].name[1:])
+                    version_name = f"v{last_num + 1}"
+            
+            version_subdir = version_dir / version_name
+            version_subdir.mkdir(parents=True, exist_ok=True)
+            
+            # Save to version directory
+            version_md = version_subdir / f"{filename}.md"
+            version_html = version_subdir / f"{filename}.html"
+            version_md.write_text(content, encoding="utf-8")
+            convert_file_to_html(
+                input_path=version_md,
+                output_path=version_html,
+                title=title,
+                template_path=template_path,
+            )
+            print(f"  📦 Versioned: {version_subdir.name}/{filename}.*")
 
+
+def convert_to_html(
+    markdown_content: str,
+    title: str | None = None,
+    config: dict[str, Any] | None = None,
+) -> str:
+    """
+    Convert Markdown to HTML using the standalone tool.
+    
+    Convenience function.
+    
+    Args:
+        markdown_content: Markdown content
+        title: Optional title
+        config: Optional configuration
+        
+    Returns:
+        HTML string
+    """
+    import tempfile
+    
+    # Create temporary file
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8') as tmp:
+        tmp.write(markdown_content)
+        tmp_path = Path(tmp.name)
+    
+    try:
+        # Import standalone converter
+        base_dir = Path(__file__).parent.parent.parent
+        standalone_path = base_dir / "convert_to_html.py"
+        
+        if not standalone_path.exists():
+            raise FileNotFoundError(f"Standalone converter not found: {standalone_path}")
+        
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("convert_to_html", standalone_path)
+        convert_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(convert_module)
+        StandaloneHTMLConverter = convert_module.StandaloneHTMLConverter
+        
+        # Get template path from config
+        from ..config_loader import ConfigLoader
+        config = config or ConfigLoader.get_config()
+        html_config = config.get("output", {}).get("html", {})
+        template_path = html_config.get("template", "templates/markmap.html")
+        
+        # Convert
+        converter = StandaloneHTMLConverter(template_path=template_path)
+        html_content = converter.convert(markdown_content, title=title)
+        
+        return html_content
+    finally:
+        # Clean up temp file
+        if tmp_path.exists():
+            tmp_path.unlink()

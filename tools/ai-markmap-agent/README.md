@@ -242,15 +242,13 @@ It can be used to convert any Markmap Markdown file to interactive HTML.
 
 ### Integration with Pipeline
 
-The standalone tool can be integrated with the main pipeline. To use it instead of the internal converter, set in `config/config.yaml`:
+The standalone tool is **automatically used** by the main pipeline. The pipeline
+calls `convert_to_html.py` programmatically to generate HTML files. This maintains
+**decoupling** (the tool can run independently) while enabling **integration**
+(the pipeline calls it automatically).
 
-```yaml
-output:
-  html:
-    use_standalone_tool: true  # Use convert_to_html.py instead of internal converter
-```
-
-This maintains **decoupling** (the tool can run independently) while allowing **integration** (the pipeline can call it programmatically).
+The HTML template is stored in `templates/markmap.html` and can be customized
+without modifying code.
 ```
 
 ### API Keys

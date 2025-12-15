@@ -34,7 +34,7 @@ class StandaloneHTMLConverter:
         Initialize the converter.
         
         Args:
-            template_path: Path to HTML template (optional)
+            template_path: Path to HTML template (optional, defaults to templates/markmap.html)
         """
         self.base_dir = Path(__file__).parent
         
@@ -46,109 +46,13 @@ class StandaloneHTMLConverter:
         else:
             template_path = self.base_dir / "templates" / "markmap.html"
         
-        if template_path.exists():
-            self.template = Template(template_path.read_text(encoding="utf-8"))
-        else:
-            # Use default template
-            self.template = Template(self._default_template())
-    
-    def _default_template(self) -> str:
-        """Return default HTML template."""
-        return """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - NeetCode Mind Maps</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
-        .markmap { width: 100%; height: 100%; }
-        .markmap > svg { width: 100%; height: 100%; }
-        #topbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: #fff; border-bottom: 1px solid #e5e7eb;
-            padding: 8px 16px; display: flex; gap: 8px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 13px;
-        }
-        #topbar button {
-            padding: 4px 12px; border: 1px solid #d1d5db;
-            border-radius: 4px; background: #fff; cursor: pointer;
-        }
-        #topbar button:hover { background: #f3f4f6; }
-        .markmap { margin-top: 40px; height: calc(100% - 40px); }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
-    <script>
-        function fitView() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) svg.mm.fit();
-        }
-        function expandAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                (function expand(n) {
-                    n.payload = Object.assign({}, n.payload, { fold: 0 });
-                    if (n.children) n.children.forEach(expand);
-                })(root);
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        function collapseAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                root.children && root.children.forEach(function collapse(n) {
-                    if (n.children && n.children.length) {
-                        n.payload = Object.assign({}, n.payload, { fold: 1 });
-                        n.children.forEach(collapse);
-                    }
-                });
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const { Transformer, Markmap } = window.markmap;
-            const transformer = new Transformer();
-            const markdown = `{{ markdown_content | safe }}`;
-            const { root } = transformer.transform(markdown);
-            const svg = d3.select('.markmap').append('svg');
-            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-            svg.node().mm = mm;
-            if (window.markmap && window.markmap.Toolbar) {
-                const toolbar = new window.markmap.Toolbar();
-                toolbar.attach(mm);
-                setTimeout(function() {
-                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                        });
-                        var brand = toolbar.querySelector('.mm-toolbar-brand');
-                        if (brand) {
-                            brand.innerHTML = '🟡 NeetCode';
-                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                            brand.style.fontSize = '12px'; brand.style.color = '#666';
-                        }
-                    });
-                }, 200);
-            }
-        });
-    </script>
-</head>
-<body>
-    <div id="topbar">
-        <button onclick="fitView()">Fit View</button>
-        <button onclick="expandAll()">Expand All</button>
-        <button onclick="collapseAll()">Collapse All</button>
-    </div>
-    <div class="markmap"></div>
-</body>
-</html>"""
+        if not template_path.exists():
+            raise FileNotFoundError(
+                f"Template file not found: {template_path}\n"
+                "Please ensure templates/markmap.html exists or specify a custom template path."
+            )
+        
+        self.template = Template(template_path.read_text(encoding="utf-8"))
     
     def convert(
         self,
