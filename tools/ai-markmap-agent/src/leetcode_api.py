@@ -7,6 +7,7 @@ LeetCode API 快取資料載入模組
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict
 
@@ -87,8 +88,29 @@ def merge_leetcode_api_data(
                 problem_data["difficulty"] = api_data.get("difficulty", "")
     
     # 添加 API 中有但本地沒有的問題（作為參考）
+    # 注意：只添加真正本地沒有的問題，避免覆蓋本地 TOML 資料
     for api_id, api_data in api_problems.items():
-        if api_id not in merged:
+        # 檢查是否已經存在（可能以不同的 key 格式存在，如 "0001_two_sum"）
+        # 標準化 api_id 以便比較
+        normalized_api_id = api_id
+        if isinstance(api_id, str) and api_id.isdigit():
+            normalized_api_id = api_id.zfill(4)
+        
+        # 檢查是否已經存在（檢查所有可能的 key 格式）
+        exists = False
+        for key in merged.keys():
+            # 檢查 key 是否匹配（可能是 "0001" 或 "0001_two_sum"）
+            if key == normalized_api_id or key == api_id:
+                exists = True
+                break
+            # 檢查 key 是否以 ID 開頭（如 "0001_two_sum"）
+            if isinstance(key, str):
+                match = re.match(r'^(\d+)_', key)
+                if match and match.group(1).zfill(4) == normalized_api_id:
+                    exists = True
+                    break
+        
+        if not exists:
             # 只添加基本資訊，標記為 API 來源
             merged[api_id] = {
                 "id": api_id,

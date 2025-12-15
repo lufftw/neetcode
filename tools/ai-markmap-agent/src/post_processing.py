@@ -100,16 +100,41 @@ class PostProcessor:
                 if problem_id_str.isdigit():
                     # Store as 4-digit format: "0011"
                     normalized_id = problem_id_str.zfill(4)
-                    lookup[normalized_id] = value
+                    # Only store if not exists, or if current value has files (prefer TOML data over API data)
+                    if normalized_id not in lookup:
+                        lookup[normalized_id] = value
+                    else:
+                        # Prefer value with files (TOML data) over value without files (API data)
+                        existing = lookup[normalized_id]
+                        existing_has_files = bool(existing.get("files", {}).get("solution"))
+                        current_has_files = bool(value.get("files", {}).get("solution"))
+                        if current_has_files and not existing_has_files:
+                            lookup[normalized_id] = value
                     
                     # Store as integer string (no leading zeros): "11"
                     int_id = str(int(problem_id_str))
                     if int_id != normalized_id:
-                        lookup[int_id] = value
+                        if int_id not in lookup:
+                            lookup[int_id] = value
+                        else:
+                            # Prefer value with files
+                            existing = lookup[int_id]
+                            existing_has_files = bool(existing.get("files", {}).get("solution"))
+                            current_has_files = bool(value.get("files", {}).get("solution"))
+                            if current_has_files and not existing_has_files:
+                                lookup[int_id] = value
                     
                     # Also store original format if different
                     if problem_id_str != normalized_id and problem_id_str != int_id:
-                        lookup[problem_id_str] = value
+                        if problem_id_str not in lookup:
+                            lookup[problem_id_str] = value
+                        else:
+                            # Prefer value with files
+                            existing = lookup[problem_id_str]
+                            existing_has_files = bool(existing.get("files", {}).get("solution"))
+                            current_has_files = bool(value.get("files", {}).get("solution"))
+                            if current_has_files and not existing_has_files:
+                                lookup[problem_id_str] = value
                     
                     # Debug: Store sample for first few problems
                     if len(debug_samples) < 3:
