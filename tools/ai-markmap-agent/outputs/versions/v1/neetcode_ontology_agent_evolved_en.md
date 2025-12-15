@@ -1,65 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeetCode Agent Evolved Mindmap (EN) - NeetCode Mind Maps</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
-        .markmap { width: 100%; height: 100%; }
-        .markmap > svg { width: 100%; height: 100%; }
-        #topbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: #fff; border-bottom: 1px solid #e5e7eb;
-            padding: 8px 16px; display: flex; gap: 8px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 13px;
-        }
-        #topbar button {
-            padding: 4px 12px; border: 1px solid #d1d5db;
-            border-radius: 4px; background: #fff; cursor: pointer;
-        }
-        #topbar button:hover { background: #f3f4f6; }
-        .markmap { margin-top: 40px; height: calc(100% - 40px); }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
-    <script>
-        function fitView() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) svg.mm.fit();
-        }
-        function expandAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                (function expand(n) {
-                    n.payload = Object.assign({}, n.payload, { fold: 0 });
-                    if (n.children) n.children.forEach(expand);
-                })(root);
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        function collapseAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                root.children && root.children.forEach(function collapse(n) {
-                    if (n.children && n.children.length) {
-                        n.payload = Object.assign({}, n.payload, { fold: 1 });
-                        n.children.forEach(collapse);
-                    }
-                });
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const { Transformer, Markmap } = window.markmap;
-            const transformer = new Transformer();
-            const markdown = `---
+```markdown
+---
 title: LeetCode Knowledge Graph Mind Map (Core Patterns → API Kernels → Problems) 🎯
 markmap:
   colorFreezeLevel: 2
@@ -195,16 +135,16 @@ markmap:
 ## 1) Hash Map Lookup (HashMapLookup) 🔥
 - **Contract (standard)**
   - **Inputs**: sequence/stream of items; key extraction; optional target/complement rule
-  - **State**: \`seen\` (hash map / hash set), counts, last index
-  - **Invariant**: \`seen\` reflects exactly the processed prefix; lookups query the prefix only
-  - **Progress rule**: scan once; update \`seen\` after using it (avoid self-pair bugs)
+  - **State**: `seen` (hash map / hash set), counts, last index
+  - **Invariant**: `seen` reflects exactly the processed prefix; lookups query the prefix only
+  - **Progress rule**: scan once; update `seen` after using it (avoid self-pair bugs)
   - **Complexity knobs**: key size / hashing; collision behavior; memory = distinct keys
   - **Common failure modes**
-    - updating \`seen\` before checking complement (self-match)
+    - updating `seen` before checking complement (self-match)
     - forgetting duplicates semantics (store first vs last index)
 - **Pseudo-signature (API surface)**
-  - \`hash_lookup(seq, key(x), on_hit(key)->answer, on_miss(update))\`
-  - Extension points: \`key\`, duplicate policy, value stored (count/index/list)
+  - `hash_lookup(seq, key(x), on_hit(key)->answer, on_miss(update))`
+  - Extension points: `key`, duplicate policy, value stored (count/index/list)
 - **Problems**
   - 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)
     - Note: Target $O(n)$; store index; check complement before insert.
@@ -216,16 +156,16 @@ markmap:
 ## 2) Prefix Sums (PrefixSumRangeQuery) 🔥
 - **Contract (standard)**
   - **Inputs**: numeric sequence; range queries or target-sum constraints
-  - **State**: \`prefix[i]\`, or running \`pref\`; hash map \`count[pref]\`
-  - **Invariant**: \`pref = sum(seq[0..i])\`; range sum \`sum(l..r)=pref[r]-pref[l-1]\`
+  - **State**: `prefix[i]`, or running `pref`; hash map `count[pref]`
+  - **Invariant**: `pref = sum(seq[0..i])`; range sum `sum(l..r)=pref[r]-pref[l-1]`
   - **Progress rule**: accumulate once; answer queries in $O(1)$ or count via hash map
   - **Complexity knobs**: memory for prefix array vs streaming; hash map size
   - **Common failure modes**
     - off-by-one in range endpoints
     - using sliding window when negatives exist (should use prefix techniques)
 - **Pseudo-signature (API surface)**
-  - \`prefix_sum(seq) -> prefix[]\`
-  - \`count_subarrays(seq, target) using pref_count: count += pref_count[pref-target]\`
+  - `prefix_sum(seq) -> prefix[]`
+  - `count_subarrays(seq, target) using pref_count: count += pref_count[pref-target]`
   - Extension points: store earliest index (for longest), store counts (for number)
 - **Representative problems**
   - [LeetCode 560](https://leetcode.com/problems/subarray-sum-equals-k/description/)
@@ -240,16 +180,16 @@ markmap:
 ## 3) Two Pointers Traversal (TwoPointersTraversal) 👯 ⭐
 - **Contract (standard)**
   - **Inputs**: read-only array/string; comparator/predicate; (often sorted or symmetric structure)
-  - **State**: \`L\`, \`R\`, best answer so far; optional skipping rules
+  - **State**: `L`, `R`, best answer so far; optional skipping rules
   - **Invariant**: answer lies within current search space; pointer moves never re-expand it
   - **Progress rule**: move one pointer per step based on rule ⇒ shrinks search space ⇒ terminates
-  - **Complexity knobs**: sort precondition (may add $O(n \\log n)$); skipping duplicates
+  - **Complexity knobs**: sort precondition (may add $O(n \log n)$); skipping duplicates
   - **Common failure modes**
     - moving wrong pointer (breaks exclusion proof)
     - missing dedup skip loops (duplicates in output)
 - **Pseudo-signatures (API surface)**
-  - \`two_pointers_opposite(arr, L=0, R=n-1, move_rule(state, L, R) -> (L', R'), on_answer)\`
-  - \`two_pointer_sorted_enum(arr_sorted, i_loop, L/R inner, skip_duplicates=True)\`
+  - `two_pointers_opposite(arr, L=0, R=n-1, move_rule(state, L, R) -> (L', R'), on_answer)`
+  - `two_pointer_sorted_enum(arr_sorted, i_loop, L/R inner, skip_duplicates=True)`
   - Extension points: move rule, stop condition, dedup policy, objective update
 
 - **Mental model**: every move *proves* an excluded region can’t contain the answer
@@ -268,18 +208,18 @@ markmap:
     - “Two Sum family”
       - Primary (unsorted): 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)
       - Sorted variant: ⭐ [LeetCode 167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
-        - Each step guarantees either \`L\` or \`R\` can be discarded because sum is monotone in each pointer on sorted input.
+        - Each step guarantees either `L` or `R` can be discarded because sum is monotone in each pointer on sorted input.
   - **Dedup + enumeration on sorted array**
     - 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/)(outer i + inner L/R + skip duplicates)*
       - Each step guarantees duplicates are discarded because sorted order enables same-value skip without missing new tuples.
-      - Note: Target $O(n^2)$ after sort; be precise about duplicate skipping at \`i\`, \`L\`, \`R\`.
+      - Note: Target $O(n^2)$ after sort; be precise about duplicate skipping at `i`, `L`, `R`.
     - ⭐ [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/)
-      - Each step guarantees a pointer move discards sums that only move farther in the monotone direction for that fixed \`i\`.
+      - Each step guarantees a pointer move discards sums that only move farther in the monotone direction for that fixed `i`.
 
 - **Quick invariant table**
   - | Pattern | Invariant | Typical problems |
     |---------|-----------|------------------|
-    | Opposite | answer in \`[L..R]\` | [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
+    | Opposite | answer in `[L..R]` | [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
     | Sorted enumeration | no duplicate tuples emitted | [LeetCode 15](https://leetcode.com/problems/3sum/description/)
 
 - **Where this shows up at work**
@@ -289,65 +229,65 @@ markmap:
 
 ## 4) Sliding Window (SubstringSlidingWindow) 🪟 🔥
 - **Contract (standard)**
-  - **Inputs**: contiguous sequence (string/array); invariant predicate \`Valid(state)\`; add/remove update rules
-  - **State**: counts/frequencies, \`distinct_count\`, \`need/have\`, sums, last-seen indices
-  - **Invariant**: \`Valid(L,R)\` is maintained (or restored) by shrinking \`L\` after expanding \`R\`
-  - **Progress rule**: advance \`R\` monotonically; advance \`L\` monotonically only as needed to restore \`Valid\` ⇒ termination
-  - **Complexity knobs**: update cost of map/array; alphabet size \`σ\`; memory $O(σ)$ or $O(k)$
+  - **Inputs**: contiguous sequence (string/array); invariant predicate `Valid(state)`; add/remove update rules
+  - **State**: counts/frequencies, `distinct_count`, `need/have`, sums, last-seen indices
+  - **Invariant**: `Valid(L,R)` is maintained (or restored) by shrinking `L` after expanding `R`
+  - **Progress rule**: advance `R` monotonically; advance `L` monotonically only as needed to restore `Valid` ⇒ termination
+  - **Complexity knobs**: update cost of map/array; alphabet size `σ`; memory $O(σ)$ or $O(k)$
   - **Common failure modes**
-    - not shrinking in a \`while\` loop when minimizing
+    - not shrinking in a `while` loop when minimizing
     - applying sum-window with negatives (breaks monotonicity)
 
-- **Core invariant**: maintain an invariant \`Valid(L,R)\`; advance \`R\` monotonically, and advance \`L\` monotonically only as needed to restore \`Valid\`. This monotonicity implies at most \`n\` increments of each pointer, hence $O(n)$ updates *assuming $O(1)$ amortized map updates*.
+- **Core invariant**: maintain an invariant `Valid(L,R)`; advance `R` monotonically, and advance `L` monotonically only as needed to restore `Valid`. This monotonicity implies at most `n` increments of each pointer, hence $O(n)$ updates *assuming $O(1)$ amortized map updates*.
 
 - **Pseudo-signature (API surface)**
-  - \`sliding_window(seq, on_add(x), on_remove(x), is_valid(state), on_answer(L,R,state))\`
+  - `sliding_window(seq, on_add(x), on_remove(x), is_valid(state), on_answer(L,R,state))`
   - Extension points: validity predicate (≤K distinct / cover / sum), fixed vs variable window, answer aggregation (max/min/all)
 
 - **State choices**
-  - \`last_seen_index\` map (jump-L optimization)
-  - \`freq\` map + \`distinct_count\`
-  - \`need/have\` maps + \`satisfied/required\`
-  - numeric \`window_sum\`
+  - `last_seen_index` map (jump-L optimization)
+  - `freq` map + `distinct_count`
+  - `need/have` maps + `satisfied/required`
+  - numeric `window_sum`
 
 - **Pattern comparison table**
   - | Problem | Invariant | State | Window Size | Goal |
     |---------|-----------|-------|-------------|------|
     | 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
     | ⭐ [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
-    | 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)[c] >= need[c]\` | need/have + satisfied | variable | minimize |
-    | ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)(fixed)**: \`len==|p|\` and ∀c, \`have[c]==need[c]\` (or \`matched==required\` with defined criterion) | freq + matched | fixed | exists |
-    | ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)(fixed)**: \`len==|p|\` and ∀c, \`have[c]==need[c]\` (or \`matched==required\`) | freq + matched | fixed | all positions |
+    | 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)[c] >= need[c]` | need/have + satisfied | variable | minimize |
+    | ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)(fixed)**: `len==|p|` and ∀c, `have[c]==need[c]` (or `matched==required` with defined criterion) | freq + matched | fixed | exists |
+    | ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)(fixed)**: `len==|p|` and ∀c, `have[c]==need[c]` (or `matched==required`) | freq + matched | fixed | all positions |
     | 🔥 [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)(requires all numbers non-negative; if negatives exist use prefix sums + monotone structure / binary search variants)* | sum ≥ target | integer sum | variable | minimize |
 
 - **Patterns**
-  - **Unique window** (\`sliding_window_unique\`)
-    - Pseudo-signature: \`unique_window(s) -> max_len\` (extend: store indices to reconstruct substring)
+  - **Unique window** (`sliding_window_unique`)
+    - Pseudo-signature: `unique_window(s) -> max_len` (extend: store indices to reconstruct substring)
     - Anchor: 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)(learn jump-left)==
       - Note: Target $O(n)$; ASCII vs Unicode trade-off (array[128/256] vs hashmap).
-      - Each step guarantees \`L..(newL-1)\` is discarded because any window starting before \`newL\` would still contain a duplicate of \`s[R]\`.
-  - **At most K distinct** (\`sliding_window_at_most_k_distinct\`)
-    - Pseudo-signature: \`at_most_k_distinct(s, k) -> max_len\` (extend: “exactly K” via at_most(K)-at_most(K-1))
+      - Each step guarantees `L..(newL-1)` is discarded because any window starting before `newL` would still contain a duplicate of `s[R]`.
+  - **At most K distinct** (`sliding_window_at_most_k_distinct`)
+    - Pseudo-signature: `at_most_k_distinct(s, k) -> max_len` (extend: “exactly K” via at_most(K)-at_most(K-1))
     - Anchor: 🔥 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
-      - Each step guarantees when invalid, advancing \`L\` discards prefixes that cannot become valid without removing elements (monotone distinct-count under removals).
-  - **Frequency cover / exact match** (\`sliding_window_freq_cover\`)
-    - Pseudo-signature: \`min_cover(s, need) -> (L,R)\` (extend: track satisfied counts)
+      - Each step guarantees when invalid, advancing `L` discards prefixes that cannot become valid without removing elements (monotone distinct-count under removals).
+  - **Frequency cover / exact match** (`sliding_window_freq_cover`)
+    - Pseudo-signature: `min_cover(s, need) -> (L,R)` (extend: track satisfied counts)
     - Minimize cover: 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
       - Note: Target $O(n)$; memory $O(σ)$; use array when alphabet bounded.
-      - Each step guarantees when window covers \`need\`, shrinking \`L\` discards left chars because any larger window with same \`R\` is never better for “minimize”.
+      - Each step guarantees when window covers `need`, shrinking `L` discards left chars because any larger window with same `R` is never better for “minimize”.
     - Fixed-size exact match (exists): ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
-      - Each step guarantees any window not of length \`|p|\` is discarded because exact-match predicate depends on fixed length.
+      - Each step guarantees any window not of length `|p|` is discarded because exact-match predicate depends on fixed length.
     - Fixed-size exact match (collect all): ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
       - Each step guarantees shifting by one discards previous start because only the current fixed window can match at that start.
-  - **Cost bounded / sum constraint** (\`sliding_window_cost_bounded\`)
-    - Pseudo-signature: \`min_len_sum_at_least(nums_nonneg, target) -> min_len\`
+  - **Cost bounded / sum constraint** (`sliding_window_cost_bounded`)
+    - Pseudo-signature: `min_len_sum_at_least(nums_nonneg, target) -> min_len`
     - Anchor: 🔥 [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
       - Note: Requires all numbers **positive or non-negative** for correctness; if negatives exist, use **PrefixSumRangeQuery** (+ monotone deque / hashmap). Canonical “window fails” example: [LeetCode 862](https://leetcode.com/problems/find-and-replace-in-string/description/)
-      - Each step guarantees once \`sum >= target\`, advancing \`L\` discards starts that only make the window longer for the same \`R\`.
+      - Each step guarantees once `sum >= target`, advancing `L` discards starts that only make the window longer for the same `R`.
 
 - **Common interview pitfalls**
   - “minimize window” needs: **while valid → shrink** (not just one shrink)
-  - “exact match” works best with: **fixed window** + \`matched\` counter
+  - “exact match” works best with: **fixed window** + `matched` counter
 
 - **Where this shows up at work**
   - rate limiting (rolling windows); log/session analytics; dedupe within recent horizon
@@ -357,22 +297,22 @@ markmap:
 ## 5) Binary Search Boundary (BinarySearchBoundary) 🔥
 - **Contract (standard)**
   - **Inputs**: sorted array / implicit monotone predicate over index or answer-space
-  - **State**: \`lo\`, \`hi\` bounds; predicate \`P(mid)\`; best-so-far boundary
+  - **State**: `lo`, `hi` bounds; predicate `P(mid)`; best-so-far boundary
   - **Invariant**: true region and false region remain separated by maintained bounds
-  - **Progress rule**: shrink \`[lo, hi]\` each iteration ⇒ terminates in $O(\\log n)$
+  - **Progress rule**: shrink `[lo, hi]` each iteration ⇒ terminates in $O(\log n)$
   - **Complexity knobs**: predicate cost; integer overflow in mid; inclusive/exclusive boundaries
   - **Common failure modes**
     - off-by-one (wrong loop condition / return)
     - predicate not monotone (binary search invalid)
 
 - **Templates (boundary)**
-  - \`first_true(lo, hi):\` find smallest \`i\` s.t. \`P(i)=true\`
-  - \`last_true(lo, hi):\` find largest \`i\` s.t. \`P(i)=true\`
-  - \`lower_bound(x):\` first index with \`A[i] >= x\`
-  - \`upper_bound(x):\` first index with \`A[i] > x\`
+  - `first_true(lo, hi):` find smallest `i` s.t. `P(i)=true`
+  - `last_true(lo, hi):` find largest `i` s.t. `P(i)=true`
+  - `lower_bound(x):` first index with `A[i] >= x`
+  - `upper_bound(x):` first index with `A[i] > x`
 
 - **Templates (answer-space search)**
-  - \`min_x_s.t._feasible(x)\` where \`feasible(x)\` is monotone (false...false,true...true)
+  - `min_x_s.t._feasible(x)` where `feasible(x)` is monotone (false...false,true...true)
   - Composition: **BinarySearchBoundary + FeasibilityCheck** 🧩
 
 - **Representative problems**
@@ -383,7 +323,7 @@ markmap:
   - [LeetCode 875](https://leetcode.com/problems/longest-mountain-in-array/description/)
   - [LeetCode 1011](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/description/)
   - 🧩 🔥 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)(partition-by-count invariant; binary search on partition index, not a merge)*
-    - Note: Target $O(\\log \\min(m,n))$; define invariant “left partition has k elements and all left ≤ all right”.
+    - Note: Target $O(\log \min(m,n))$; define invariant “left partition has k elements and all left ≤ all right”.
 
 - **Where this shows up at work**
   - tuning thresholds (SLA/SLO); capacity planning via feasibility; “first failure point” diagnostics
@@ -402,8 +342,8 @@ markmap:
     - missing base cases / null checks
 
 - **Pseudo-signatures (API surface)**
-  - \`dfs(node, enter, exit)\` / \`dfs_iterative(stack, on_pop)\`
-  - \`bfs(root, on_level(level_nodes))\`
+  - `dfs(node, enter, exit)` / `dfs_iterative(stack, on_pop)`
+  - `bfs(root, on_level(level_nodes))`
   - Extension points: preorder/inorder/postorder; accumulate path; parent pointers
 
 - **Representative problems**
@@ -430,9 +370,9 @@ markmap:
     - topo: not decrementing indegree correctly; not checking processed count
 
 - **Pseudo-signatures (API surface)**
-  - \`graph_bfs(starts, neighbors, on_visit)\`
-  - \`graph_dfs(starts, neighbors, on_enter, on_exit)\`
-  - \`toposort(nodes, edges) -> order or fail\`
+  - `graph_bfs(starts, neighbors, on_visit)`
+  - `graph_dfs(starts, neighbors, on_enter, on_exit)`
+  - `toposort(nodes, edges) -> order or fail`
   - Extension points: multi-source init; parent tracking; component counting
 
 - **Representative problems**
@@ -448,31 +388,31 @@ markmap:
 
 ## 8) Heap / Selection (HeapTopK + Quickselect) ⛰️ ⭐
 - **Contract (standard)**
-  - **Inputs**: iterable; comparator/key; target \`k\`
-  - **State**: heap of size \`k\` (min-heap for top-k largest); or partition indices for quickselect
-  - **Invariant**: heap contains current best \`k\` candidates; quickselect partition places pivot correctly
-  - **Progress rule**: heap: push/pop maintains size \`k\`; quickselect: partition shrinks search side
-  - **Complexity knobs**: \`k\`; stream vs batch; stability requirements
+  - **Inputs**: iterable; comparator/key; target `k`
+  - **State**: heap of size `k` (min-heap for top-k largest); or partition indices for quickselect
+  - **Invariant**: heap contains current best `k` candidates; quickselect partition places pivot correctly
+  - **Progress rule**: heap: push/pop maintains size `k`; quickselect: partition shrinks search side
+  - **Complexity knobs**: `k`; stream vs batch; stability requirements
   - **Common failure modes**
     - wrong heap polarity (min vs max)
     - quickselect pivot choice causing worst-case
 
 - **Pseudo-signatures (API surface)**
-  - \`heap_top_k(stream, k, key=None) -> items\`
-  - \`quickselect(arr, k, key=None, randomized=True) -> kth\`
+  - `heap_top_k(stream, k, key=None) -> items`
+  - `quickselect(arr, k, key=None, randomized=True) -> kth`
   - Extension points: stable output, streaming updates, two-heaps median
 
 - **Kth element**
   - 🧩 Quickselect / partition: 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
-    - Quickselect: **expected** $O(n)$ with randomization, **worst-case** $O(n^2)$; space $O(1)$ iterative (or $O(\\log n)$ recursion).
+    - Quickselect: **expected** $O(n)$ with randomization, **worst-case** $O(n^2)$; space $O(1)$ iterative (or $O(\log n)$ recursion).
     - Each step guarantees one side of the partition can be discarded because pivot is placed in its final rank position.
   - Heap alternative (especially streaming / stability): ⭐ [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
-    - Heap: $O(n \\log k)$ time; space $O(k)$.
-    - Each step guarantees elements outside the size-\`k\` heap can be discarded because they cannot enter the top-k given current heap minimum.
+    - Heap: $O(n \log k)$ time; space $O(k)$.
+    - Each step guarantees elements outside the size-`k` heap can be discarded because they cannot enter the top-k given current heap minimum.
 
 - **Choose X when…**
   - **Quickselect**: batch array, in-place, expected linear; OK with worst-case risk.
-  - **Heap**: streaming data or need incremental updates; simpler correctness; predictable $O(n \\log k)$.
+  - **Heap**: streaming data or need incremental updates; simpler correctness; predictable $O(n \log k)$.
 
 - **Where this shows up at work**
   - top-N dashboards; percentile approximations (exact kth for small data); priority scheduling queues
@@ -482,17 +422,17 @@ markmap:
 ## 9) Merging Sorted Sequences (MergeSortedSequences + KWayMerge) 🔗 ⭐
 - **Contract (standard)**
   - **Inputs**: sorted sequences/iterators; comparator/key; output mode (stream vs materialize)
-  - **State**: two pointers (\`i\`,\`j\`) for 2-way; heap of heads for k-way; output buffer
+  - **State**: two pointers (`i`,`j`) for 2-way; heap of heads for k-way; output buffer
   - **Invariant**: output prefix is globally sorted; next chosen item is smallest available head
   - **Progress rule**: advance the pointer/iterator of the chosen head; terminates after consuming all items
-  - **Complexity knobs**: \`k\`; stability requirement; memory for output
+  - **Complexity knobs**: `k`; stability requirement; memory for output
   - **Common failure modes**
     - forgetting to advance pointer after output
     - mishandling empty lists / null heads
 
 - **Pseudo-signatures (API surface)**
-  - \`merge_two(a, b, key=None) -> merged\`
-  - \`kway_merge(iterators, key=None, stable=True, mode="stream|list")\`
+  - `merge_two(a, b, key=None) -> merged`
+  - `kway_merge(iterators, key=None, stable=True, mode="stream|list")`
   - Extension points: stable tie-breaking, lazy iteration, dedup merges
 
 - **Two sorted streams (two pointers)**
@@ -504,9 +444,9 @@ markmap:
     - Each step guarantees one end index can be discarded because the maximum absolute value must be at an end of a sorted array.
 
 - **K-way merge**
-  - Heap-based $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
+  - Heap-based $O(N \log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
     - Each step guarantees the heap-min head can be output because it is the smallest among all list heads.
-  - Divide-and-conquer $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
+  - Divide-and-conquer $O(N \log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
     - Each merge step guarantees sortedness is preserved because it composes correct 2-way merges.
 
 - **Choose X when… (Merge k lists)**
@@ -521,28 +461,28 @@ markmap:
 ## 10) Partitioning / In-Place Compaction (TwoPointerPartition) 🚧 ⭐
 - **Contract (standard)**
   - **Inputs**: mutable array; classification predicate(s); desired region order
-  - **State**: region pointers (\`low/mid/high\` or \`write/read\`); optional counts
+  - **State**: region pointers (`low/mid/high` or `write/read`); optional counts
   - **Invariant**: array is divided into labeled regions with precise meanings
   - **Progress rule**: each step shrinks the unknown region; terminates when unknown is empty
   - **Complexity knobs**: stable vs unstable; number of partitions; swap cost
   - **Common failure modes**
-    - wrong pointer updates after swap (especially \`mid/high\`)
+    - wrong pointer updates after swap (especially `mid/high`)
     - assuming stability when using swaps
 
 - **Pseudo-signatures (API surface)**
-  - \`writer_compact(arr, keep(x)) -> new_len\` (stable)
-  - \`partition_2way(arr, pred) -> boundary\`
-  - \`dutch_flag(arr, classify={0,1,2})\`
+  - `writer_compact(arr, keep(x)) -> new_len` (stable)
+  - `partition_2way(arr, pred) -> boundary`
+  - `dutch_flag(arr, classify={0,1,2})`
   - Extension points: stability requirement; k-way generalization; in-place vs extra buffer
 
 - **Patterns**
-  - **Dutch flag (3-way partition)** (\`dutch_flag_partition\`)
-    - Pseudo-signature: \`dutch_flag(A, values={0,1,2}) -> A\`
+  - **Dutch flag (3-way partition)** (`dutch_flag_partition`)
+    - Pseudo-signature: `dutch_flag(A, values={0,1,2}) -> A`
     - Region invariant:
-      - \`A[0..low-1] = 0\`, \`A[low..mid-1] = 1\`, \`A[mid..high] = unknown\`, \`A[high+1..n-1] = 2\`
-      - Loop: while \`mid <= high\`, maintain regions after each swap/update
+      - `A[0..low-1] = 0`, `A[low..mid-1] = 1`, `A[mid..high] = unknown`, `A[high+1..n-1] = 2`
+      - Loop: while `mid <= high`, maintain regions after each swap/update
     - Anchor: 🔥 [LeetCode 75](https://leetcode.com/problems/sort-colors/description/)
-  - **Two-way partition** (\`two_way_partition\`)
+  - **Two-way partition** (`two_way_partition`)
     - ⭐ [LeetCode 905](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/description/)
     - ⭐ [LeetCode 922](https://leetcode.com/problems/possible-bipartition/description/)
   - **Writer compaction (same-direction reader/writer)**
@@ -561,18 +501,18 @@ markmap:
 
 ## 11) Fast–Slow Pointers (FastSlowPointers) 🐢🐇 ⭐
 - **Contract (standard)**
-  - **Inputs**: linked structure or function \`f(x)\` defining next; head/start
-  - **State**: \`slow\`, \`fast\` pointers
-  - **Invariant**: after \`t\` iterations, \`slow\` moved \`t\` steps, \`fast\` moved \`2t\`
+  - **Inputs**: linked structure or function `f(x)` defining next; head/start
+  - **State**: `slow`, `fast` pointers
+  - **Invariant**: after `t` iterations, `slow` moved `t` steps, `fast` moved `2t`
   - **Progress rule**: advance slow by 1 and fast by 2; if cycle exists they must meet; else fast hits null
   - **Complexity knobs**: step function cost; loop termination conditions
   - **Common failure modes**
-    - null checks for \`fast\` / \`fast.next\`
+    - null checks for `fast` / `fast.next`
     - mixing up phase-2 reset logic
 
 - **Two phases (Floyd)**
   - Phase 1: detect cycle
-    - Correctness hook: after \`t\` iterations, slow moved \`t\`, fast moved \`2t\`; if a cycle exists, relative speed 1 ensures they meet inside the cycle.
+    - Correctness hook: after `t` iterations, slow moved `t`, fast moved `2t`; if a cycle exists, relative speed 1 ensures they meet inside the cycle.
   - Phase 2: find cycle start
     - Correctness hook: reset one pointer to head and move both 1 step; equal distance-to-entry modulo cycle length ⇒ meet at entry.
 
@@ -599,18 +539,18 @@ markmap:
     - insufficient pruning / wrong duplicate-skip level
 
 - **Pseudo-signature (API surface)**
-  - \`backtrack(state, choices(state), choose, unchoose, is_solution, prune) -> outputs\`
+  - `backtrack(state, choices(state), choose, unchoose, is_solution, prune) -> outputs`
   - Extension points: duplicate handling (sort + same-level skip), memoization cache key, iterative stack
 
 - **Core rhythm**: **Choose → Explore → Unchoose**
 
 - **Decision-tree shapes**
   - **Permutation** (used[])
-    - Time: \`O(n * n!)\` to output all permutations; stack \`O(n)\`
+    - Time: `O(n * n!)` to output all permutations; stack `O(n)`
     - ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/)
     - With duplicates (sort + same-level skip): ⭐ [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/)
   - **Subset** (start index)
-    - Time: \`O(n * 2^n)\`; stack \`O(n)\`
+    - Time: `O(n * 2^n)`; stack `O(n)`
     - ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/)
     - With duplicates (sort + same-level skip): ⭐ [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/)
   - **Combination / fixed size** (start index + length bound)
@@ -620,7 +560,7 @@ markmap:
     - No reuse + duplicates: ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/)
     - Fixed count + bounded domain: ⭐ [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/)
   - **Constraint satisfaction**
-    - N-Queens: exponential with strong pruning; state via \`cols\`, \`diag1\`, \`diag2\`
+    - N-Queens: exponential with strong pruning; state via `cols`, `diag1`, `diag2`
     - 🔥 [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
     - ⭐ [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/)
   - **String segmentation**
@@ -650,11 +590,11 @@ markmap:
 
 - **Core idea**: push all sources, expand layer by layer (time = levels)
 - **Model**: grid cells are vertices; edges connect 4-neighbors (or 8 if specified).
-- **Complexity**: $O(R \\* C)$ time and $O(R \\* C)$ space in worst case (queue + visited/state); each cell is enqueued at most once.
+- **Complexity**: $O(R \* C)$ time and $O(R \* C)$ space in worst case (queue + visited/state); each cell is enqueued at most once.
 
 - **Anchor**
   - 🔥 [LeetCode 994](https://leetcode.com/problems/prison-cells-after-n-days/description/)
-    - Each step guarantees processed cells at minute \`t\` cannot be reached earlier because BFS explores in nondecreasing distance layers.
+    - Each step guarantees processed cells at minute `t` cannot be reached earlier because BFS explores in nondecreasing distance layers.
 - **Engineering checklist**
   - queue init with all sources
   - count fresh/remaining targets
@@ -677,7 +617,7 @@ markmap:
     - forgetting to store indices (need distances)
 
 - **Pseudo-signature (API surface)**
-  - \`mono_stack(arr, cmp, on_pop(pop_i, i), on_finish(i))\`
+  - `mono_stack(arr, cmp, on_pop(pop_i, i), on_finish(i))`
   - Extension points: next greater, previous smaller, span/area computations
 
 - **Representative problems**
@@ -694,8 +634,8 @@ markmap:
 ## 15) Union-Find Connectivity (UnionFindConnectivity) 🧩 ⭐
 - **Contract (standard)**
   - **Inputs**: elements; union operations; connectivity queries
-  - **State**: \`parent[]\`, \`rank/size[]\`
-  - **Invariant**: \`find(x)\` returns representative; union merges components
+  - **State**: `parent[]`, `rank/size[]`
+  - **Invariant**: `find(x)` returns representative; union merges components
   - **Progress rule**: path compression + union by rank ⇒ near-constant amortized
   - **Complexity knobs**: number of unions/finds; mapping ids to indices
   - **Common failure modes**
@@ -703,7 +643,7 @@ markmap:
     - forgetting to initialize all nodes
 
 - **Pseudo-signature (API surface)**
-  - \`find(x)\`, \`union(x,y)\`, \`connected(x,y)\`
+  - `find(x)`, `union(x,y)`, `connected(x,y)`
   - Extension points: component counting, union by size, dynamic node add
 
 - **Representative problems**
@@ -720,7 +660,7 @@ markmap:
 ## 16) DP (Sequence / Interval) (DPSequence/DPInterval) 🧠 🔥
 - **Contract (standard)**
   - **Inputs**: sequence/string; recurrence definition; base cases
-  - **State**: \`dp[i]\` or \`dp[i][j]\`; transition rules
+  - **State**: `dp[i]` or `dp[i][j]`; transition rules
   - **Invariant**: dp state represents optimal/ways for a prefix/interval
   - **Progress rule**: fill in topological order of dependencies
   - **Complexity knobs**: state dimension; transition cost; memory optimization
@@ -729,8 +669,8 @@ markmap:
     - confusing “ways” vs “min cost” semantics
 
 - **Pseudo-signature (API surface)**
-  - \`dp_sequence(n, transition(i, dp)->dp[i])\`
-  - \`dp_interval(n, transition(l,r,dp)->dp[l][r])\`
+  - `dp_sequence(n, transition(i, dp)->dp[i])`
+  - `dp_interval(n, transition(l,r,dp)->dp[l][r])`
   - Extension points: reconstruct path; rolling arrays; memoization
 
 - **Representative problems**
@@ -758,7 +698,7 @@ markmap:
     - using hashmap children when alphabet small and fixed (constant factors)
 
 - **Pseudo-signature (API surface)**
-  - \`insert(word)\`, \`search(word)\`, \`starts_with(prefix)\`
+  - `insert(word)`, `search(word)`, `starts_with(prefix)`
   - Extension points: word count; delete; wildcard; compressed trie
 
 - **Representative problems**
@@ -773,7 +713,7 @@ markmap:
 ## 18) Linked List Manipulation (pointer surgery) 🔧 ⭐
 - **Contract (standard)**
   - **Inputs**: linked list head; group size / arithmetic rules
-  - **State**: \`prev/curr/next\` pointers; dummy head; carry (for arithmetic)
+  - **State**: `prev/curr/next` pointers; dummy head; carry (for arithmetic)
   - **Invariant**: pointers maintain list connectivity; reversed segments are fully linked
   - **Progress rule**: move through nodes; reverse/connect segments; terminate at end
   - **Complexity knobs**: recursion vs iterative; extra dummy nodes
@@ -782,14 +722,14 @@ markmap:
     - incorrect reconnection at segment boundaries
 
 - **Pseudo-signature (API surface)**
-  - \`reverse_segment(head, k) -> (new_head, new_tail, next_start)\`
+  - `reverse_segment(head, k) -> (new_head, new_tail, next_start)`
   - Extension points: reverse between positions; reverse whole list; group reversal
 
 - Arithmetic on lists
   - ⭐ [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/)
 - In-place reversal in groups
   - 🔥 [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
-    - Note: Target $O(n)$; be careful about reconnecting \`prev_tail\`, \`new_head\`, \`new_tail\`, \`next_start\`.
+    - Note: Target $O(n)$; be careful about reconnecting `prev_tail`, `new_head`, `new_tail`, `next_start`.
 
 - **Where this shows up at work**
   - pointer-safe list transforms; streaming buffers (linked structures); in-place chunk operations
@@ -816,37 +756,5 @@ markmap:
   - [ ] 🔥 [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
   - [ ] ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/)
 
----`;
-            const { root } = transformer.transform(markdown);
-            const svg = d3.select('.markmap').append('svg');
-            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-            svg.node().mm = mm;
-            if (window.markmap && window.markmap.Toolbar) {
-                const toolbar = new window.markmap.Toolbar();
-                toolbar.attach(mm);
-                setTimeout(function() {
-                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                        });
-                        var brand = toolbar.querySelector('.mm-toolbar-brand');
-                        if (brand) {
-                            brand.innerHTML = '🟡 NeetCode';
-                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                            brand.style.fontSize = '12px'; brand.style.color = '#666';
-                        }
-                    });
-                }, 200);
-            }
-        });
-    </script>
-</head>
-<body>
-    <div id="topbar">
-        <button onclick="fitView()">Fit View</button>
-        <button onclick="expandAll()">Expand All</button>
-        <button onclick="collapseAll()">Collapse All</button>
-    </div>
-    <div class="markmap"></div>
-</body>
-</html>
+---
+```

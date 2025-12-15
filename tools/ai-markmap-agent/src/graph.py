@@ -53,6 +53,7 @@ from .resume import (
     load_expert_responses_from_run,
     load_writer_output_from_run,
     load_translation_outputs_from_run,
+    load_post_processing_outputs_from_run,
     generate_regen_run_id,
     RunInfo,
 )
@@ -1023,12 +1024,15 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             if run_dir:
                 prev_run = RunInfo(Path(run_dir))
                 if prev_run.has_stage_output("post_processing"):
-                    should_reuse = ask_reuse_stage("post_processing", prev_run)
-                    if should_reuse:
-                        print("  ⏭️  Reusing post-processing output from previous run")
-                        # Use writer/translation outputs as final outputs (skip post-processing)
-                        state["final_outputs"] = all_outputs
-                        return state
+                    cached_outputs = load_post_processing_outputs_from_run(prev_run)
+                    if cached_outputs:
+                        should_reuse = ask_reuse_stage("post_processing", prev_run)
+                        if should_reuse:
+                            print("  ⏭️  Reusing post-processing output from previous run")
+                            state["final_outputs"] = cached_outputs
+                            return state
+                    else:
+                        print("  ⚠ Post-processing outputs not found in previous run; re-running post-processing")
         
         # Ask user if they want to run post-processing
         print("\n  Post-processing will:")
@@ -1050,7 +1054,12 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 print("  ⚠ Please enter 'y' or 'n'")
         
         # Pass problems data to PostProcessor for link generation
-        processor = PostProcessor(config, problems=state.get("problems", {}))
+        problems_data = state.get("problems", {})
+        if not problems_data:
+            print("  ⚠ Warning: No problems data in state - Solution links will not be added")
+        else:
+            print(f"  ℹ️  Loaded {len(problems_data)} problems for Solution link generation")
+        processor = PostProcessor(config, problems=problems_data)
         
         # Apply post-processing
         final_outputs = {}

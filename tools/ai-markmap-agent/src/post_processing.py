@@ -51,6 +51,15 @@ class PostProcessor:
         self.problems = merge_leetcode_api_data(problems or {})
         self.problems_lookup = self._build_problems_lookup(self.problems)
         
+        # Debug: Count problems with solution files
+        if self.problems_lookup:
+            solutions_count = sum(
+                1 for p in self.problems_lookup.values()
+                if p.get("files", {}).get("solution")
+            )
+            if solutions_count > 0:
+                print(f"  ℹ️  PostProcessor: {solutions_count} problems have solution files")
+        
         # Load URL templates
         urls_config = config.get("urls", {})
         self.github_template = urls_config.get("github", {}).get(
@@ -78,21 +87,28 @@ class PostProcessor:
                 if not problem_id:
                     problem_id = key
                 
-                # Normalize ID to string and ensure 4 digits
+                # Normalize ID to string
                 if isinstance(problem_id, int):
-                    problem_id = str(problem_id)
+                    problem_id_str = str(problem_id)
                 elif not isinstance(problem_id, str):
-                    problem_id = str(problem_id)
+                    problem_id_str = str(problem_id)
+                else:
+                    problem_id_str = problem_id
                 
-                # Store with 4-digit format
-                if problem_id.isdigit():
-                    normalized_id = problem_id.zfill(4)
+                # Store with multiple formats for maximum compatibility
+                if problem_id_str.isdigit():
+                    # Store as 4-digit format: "0011"
+                    normalized_id = problem_id_str.zfill(4)
                     lookup[normalized_id] = value
-                    # Also store without leading zeros for flexibility
-                    lookup[problem_id] = value
-                    # Also store as integer string if different
-                    if normalized_id != problem_id:
-                        lookup[str(int(problem_id))] = value
+                    
+                    # Store as integer string (no leading zeros): "11"
+                    int_id = str(int(problem_id_str))
+                    if int_id != normalized_id:
+                        lookup[int_id] = value
+                    
+                    # Also store original format if different
+                    if problem_id_str != normalized_id and problem_id_str != int_id:
+                        lookup[problem_id_str] = value
         
         return lookup
     
@@ -284,6 +300,11 @@ class PostProcessor:
         
         Note: Only adds if not already present (avoids duplicates).
         """
+        # Debug: Check if we have problems data
+        if not self.problems_lookup:
+            print("  ⚠ Post-processing: No problems data loaded (cannot add Solution links)")
+            return content
+        
         # Pattern to match: [LeetCode {id}](url)
         def add_solution_link(match: re.Match) -> str:
             full_text = match.group(0)
@@ -302,17 +323,29 @@ class PostProcessor:
             problem_id = id_match.group(1)
             
             # Look up problem in our data
-            # Try both 4-digit format and numeric format
-            problem = (
-                self.problems_lookup.get(problem_id.zfill(4)) or 
-                self.problems_lookup.get(problem_id) or
-                self.problems_lookup.get(str(int(problem_id)).zfill(4)) if problem_id.isdigit() else None
-            )
+            # Try multiple ID formats for maximum compatibility
+            problem = None
+            lookup_keys = [
+                problem_id.zfill(4),  # "0011"
+                problem_id,          # "11"
+            ]
+            if problem_id.isdigit():
+                lookup_keys.append(str(int(problem_id)).zfill(4))  # "0011" (from "11")
+                lookup_keys.append(str(int(problem_id)))          # "11" (normalized)
+            
+            for key in lookup_keys:
+                problem = self.problems_lookup.get(key)
+                if problem:
+                    break
+            
             if not problem:
                 return full_text
             
             # Check if solution_file exists
             files = problem.get("files", {})
+            if not files:
+                return full_text
+            
             solution_file = files.get("solution", "")
             if not solution_file:
                 return full_text

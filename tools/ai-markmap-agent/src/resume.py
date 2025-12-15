@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -405,6 +406,41 @@ def load_translation_outputs_from_run(run_info: RunInfo) -> dict[str, str] | Non
             continue
     
     return translated_outputs if translated_outputs else None
+
+
+def load_post_processing_outputs_from_run(run_info: RunInfo) -> dict[str, str] | None:
+    """
+    Load post-processing outputs (after processing) from a previous run.
+    
+    Returns:
+        Dict mapping output_key to processed content, e.g.:
+        {"general_en": "...", "general_zh-TW": "..."}
+    """
+    postproc_files = [
+        f for f in run_info.files.get("post_processing", [])
+        if "postproc_after" in f["filename"]
+    ]
+    
+    if not postproc_files:
+        return None
+    
+    processed_outputs = {}
+    pattern = re.compile(r"postproc_after_(.+?)(?:_\d{6})?\.(?:md|json)$", re.IGNORECASE)
+    
+    for file_info in postproc_files:
+        filename = file_info["filename"]
+        match = pattern.search(filename)
+        if not match:
+            continue
+        
+        output_key = match.group(1)
+        try:
+            processed_outputs[output_key] = file_info["path"].read_text(encoding="utf-8")
+        except Exception as e:
+            print(f"  ⚠ Error loading post-processing file {filename}: {e}")
+            continue
+    
+    return processed_outputs if processed_outputs else None
 
 
 def generate_regen_run_id(original_run_id: str) -> str:
