@@ -3,6 +3,21 @@
 # =============================================================================
 # Translates Markmap content between languages.
 # Prompts are loaded from prompts/translator/*.md files.
+#
+# Configuration:
+#   - max_tokens: Set in config.yaml under output.naming.languages.{lang}
+#     Example for gpt-5.2: max_tokens: 128000 (max output capacity)
+#     Example for gpt-4o: max_tokens: 16384
+#     Default: 8192 if not specified
+#
+#   - Model specifications:
+#     * gpt-5.2: max output 128,000 tokens, context window 400,000 tokens
+#     * gpt-4o: max output typically 16,384 tokens
+#     * gpt-4: max output typically 8,192 tokens
+#
+# Error Handling:
+#   - All errors include request details (model, prompt size, tokens) for debugging
+#   - Debug output files saved for API request/response inspection
 # =============================================================================
 
 from __future__ import annotations
@@ -51,11 +66,29 @@ class TranslatorAgent(BaseAgent):
         
         config = config or ConfigLoader.get_config()
         
+        # Get max_tokens from config
+        # Check language-specific translator config first
+        naming = config.get("output", {}).get("naming", {})
+        languages_config = naming.get("languages", {})
+        
+        max_tokens = None
+        if isinstance(languages_config, dict):
+            for lang, lang_settings in languages_config.items():
+                if lang_settings.get("mode") == "translate":
+                    # Check if this is the target language
+                    if lang == target_language:
+                        max_tokens = lang_settings.get("translator_max_tokens")
+                        break
+        
+        # Fallback to default if not configured
+        if max_tokens is None:
+            max_tokens = 8192  # Default for safety
+        
         # Create model config for translator
         model_config = {
             "model": model,
             "temperature": 0.3,  # Lower temperature for translation accuracy
-            "max_tokens": 8192,
+            "max_tokens": max_tokens,
         }
         
         # Initialize prompt cache BEFORE super().__init__() 
@@ -199,14 +232,41 @@ class TranslatorAgent(BaseAgent):
         except Exception as e:
             elapsed = time.time() - start_time
             print(f"   ❌ API call failed after {elapsed:.1f} seconds")
-            raise
+            
+            # Enhanced error with request details for debugging
+            model_name = self.model_config.get("model", "unknown")
+            max_tokens = self.model_config.get("max_tokens", 8192)
+            estimated_input_tokens = prompt_size / 4
+            
+            error_details = (
+                f"API request failed.\n"
+                f"  Request details:\n"
+                f"    Model: {model_name}\n"
+                f"    Source: {self.source_language} → Target: {self.target_language}\n"
+                f"    Prompt size: {prompt_size:,} chars (~{estimated_input_tokens:.0f} tokens)\n"
+                f"    Content size: {content_size:,} chars\n"
+                f"    Max output tokens: {max_tokens:,}\n"
+                f"    Elapsed time: {elapsed:.1f} seconds\n"
+                f"  Error: {type(e).__name__}: {str(e)}\n"
+                f"  Debug: Check saved LLM input file for full request details."
+            )
+            raise RuntimeError(error_details) from e
         
         # Validate response
         if response is None:
+            model_name = self.model_config.get('model', 'unknown')
+            max_tokens = self.model_config.get("max_tokens", 8192)
+            estimated_input_tokens = prompt_size / 4
+            
             raise ValueError(
-                f"LLM returned None response. "
-                f"Model: {self.model_config.get('model')}, "
-                f"Source: {self.source_language} → Target: {self.target_language}"
+                f"LLM returned None response.\n"
+                f"  Request details:\n"
+                f"    Model: {model_name}\n"
+                f"    Source: {self.source_language} → Target: {self.target_language}\n"
+                f"    Prompt size: {prompt_size:,} chars (~{estimated_input_tokens:.0f} tokens)\n"
+                f"    Content size: {content_size:,} chars\n"
+                f"    Max output tokens: {max_tokens:,}\n"
+                f"  Debug: Check saved LLM input file for full request details."
             )
         
         # Extract content from response
@@ -228,11 +288,19 @@ class TranslatorAgent(BaseAgent):
         
         # Validate content
         if content is None:
+            model_name = self.model_config.get('model', 'unknown')
+            max_tokens = self.model_config.get("max_tokens", 8192)
+            estimated_input_tokens = prompt_size / 4
+            
             raise ValueError(
-                f"LLM response content is None. "
-                f"Model: {self.model_config.get('model')}, "
-                f"Source: {self.source_language} → Target: {self.target_language}. "
-                f"Check API response in debug output files."
+                f"LLM response content is None.\n"
+                f"  Request details:\n"
+                f"    Model: {model_name}\n"
+                f"    Source: {self.source_language} → Target: {self.target_language}\n"
+                f"    Prompt size: {prompt_size:,} chars (~{estimated_input_tokens:.0f} tokens)\n"
+                f"    Content size: {content_size:,} chars\n"
+                f"    Max output tokens: {max_tokens:,}\n"
+                f"  Debug: Check saved LLM input/output files for full request/response details."
             )
         
         # Convert to string if needed
@@ -245,24 +313,27 @@ class TranslatorAgent(BaseAgent):
         # Validate content is not empty
         if not content_str or len(content_str.strip()) == 0:
             model_name = self.model_config.get('model', 'unknown')
-            prompt_size = len(prompt) if 'prompt' in locals() else 0
             max_tokens = self.model_config.get("max_tokens", 8192)
-            estimated_tokens = prompt_size / 4 if prompt_size > 0 else 0
+            estimated_input_tokens = prompt_size / 4
             
             error_msg = (
                 f"LLM returned empty response.\n"
-                f"  Model: {model_name}\n"
-                f"  Source: {self.source_language} → Target: {self.target_language}\n"
-                f"  Response length: {len(content_str)} chars\n"
-                f"  Prompt size: {prompt_size:,} chars (~{estimated_tokens:.0f} tokens, max_tokens: {max_tokens})\n"
-                f"  Debug output has been saved (check debug files for actual API response).\n"
+                f"  Request details:\n"
+                f"    Model: {model_name}\n"
+                f"    Source: {self.source_language} → Target: {self.target_language}\n"
+                f"    Prompt size: {prompt_size:,} chars (~{estimated_input_tokens:.0f} tokens)\n"
+                f"    Content size: {content_size:,} chars\n"
+                f"    Max output tokens: {max_tokens:,}\n"
+                f"    Response length: {len(content_str)} chars\n"
+                f"  Debug: Check saved LLM input/output files for full request/response details.\n"
                 f"  Possible causes:\n"
                 f"    1. Invalid model name '{model_name}' (verify it's a valid model for your API provider)\n"
-                f"    2. Prompt too large: {prompt_size:,} chars may exceed model context limit\n"
-                f"    3. API quota/rate limit exceeded\n"
-                f"    4. API returned empty content due to content filtering or safety checks\n"
-                f"    5. Prompt format issue causing model to reject the request\n"
-                f"    6. Network/API connection issue"
+                f"    2. Prompt too large: {prompt_size:,} chars (~{estimated_input_tokens:.0f} tokens) may exceed model context limit\n"
+                f"    3. Max tokens too small: {max_tokens:,} may be insufficient (check config.yaml translator_max_tokens)\n"
+                f"    4. API quota/rate limit exceeded\n"
+                f"    5. API returned empty content due to content filtering or safety checks\n"
+                f"    6. Prompt format issue causing model to reject the request\n"
+                f"    7. Network/API connection issue"
             )
             raise ValueError(error_msg)
         

@@ -365,7 +365,14 @@ The translation uses settings from `config/config.yaml`:
 - **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-TW.translator_model`)
 - **Source Language**: `en` (default)
 - **Target Language**: `zh-TW` (default)
+- **Max Tokens**: `translator_max_tokens` (configured in `output.naming.languages.zh-TW.translator_max_tokens`)
+  - **gpt-5.2**: Recommended `128000` (max output capacity: 128,000 tokens, context window: 400,000 tokens)
+  - **gpt-4o**: Recommended `16384` (max output typically 16,384 tokens)
+  - **gpt-4**: Recommended `8192` (max output typically 8,192 tokens)
+  - **Default**: `8192` if not specified
 - **Prompt**: Uses `prompts/translator/zh_tw_translator_behavior.md` with comprehensive Taiwan DSA terminology rules
+
+**Important**: Set `translator_max_tokens` appropriately for your model. If the value is too small, the API may return empty responses for large translations.
 
 **Custom Model Override**
 
@@ -375,12 +382,22 @@ You can override the model for a single translation:
 python translate_only.py --model gpt-4o
 ```
 
+**Error Handling**
+
+All translation errors include detailed request information for debugging:
+- Model name and configuration
+- Prompt size (chars and estimated tokens)
+- Content size
+- Max output tokens setting
+- Full request/response saved to debug output files
+
 **Notes**
 
 - The script reads from `config/config.yaml` for output directory settings
 - Translation prompt enforces Taiwan-specific terminology (not Mainland China terms)
 - API keys are requested at runtime and cleared after execution
 - The output filename automatically replaces the language suffix (e.g., `_en` → `_zh-TW`)
+- **Always check debug output files** when errors occur - they contain the full API request/response
 
 ### Standalone HTML Converter
 

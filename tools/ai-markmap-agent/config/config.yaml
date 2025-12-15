@@ -340,6 +340,11 @@ output:
         mode: "translate"
         source_lang: "en"
         translator_model: "gpt-5.2"
+        # max_tokens for translation output
+        # gpt-5.2: max output 128,000 tokens, context window 400,000 tokens
+        # gpt-4o: max output typically 16,384 tokens
+        # Default: 8192 if not specified
+        translator_max_tokens: 128000
     
     # Output template: {prefix}_ontology_agent_evolved_{lang}.{ext}
     # Example: neetcode_ontology_agent_evolved_en.md
