@@ -194,20 +194,26 @@ class TranslatorAgent(BaseAgent):
         # Convert to string if needed
         content_str = str(content) if not isinstance(content, str) else content
         
+        # Save LLM output BEFORE validation
+        # This ensures we can debug empty responses by checking the saved file
+        self._save_llm_call_output(content_str, "translate")
+        
         # Validate content is not empty
         if not content_str or len(content_str.strip()) == 0:
-            raise ValueError(
-                f"LLM returned empty response. "
-                f"Model: {self.model_config.get('model')}, "
-                f"Source: {self.source_language} → Target: {self.target_language}. "
-                f"Check API response in debug output files."
+            model_name = self.model_config.get('model', 'unknown')
+            error_msg = (
+                f"LLM returned empty response.\n"
+                f"  Model: {model_name}\n"
+                f"  Source: {self.source_language} → Target: {self.target_language}\n"
+                f"  Response length: {len(content_str)} chars\n"
+                f"  Debug output has been saved (check debug files for actual API response).\n"
+                f"  Possible causes:\n"
+                f"    1. Invalid model name '{model_name}' (verify it's a valid model for your API provider)\n"
+                f"    2. API quota/rate limit exceeded\n"
+                f"    3. API returned empty content due to content filtering or safety checks\n"
+                f"    4. Network/API connection issue"
             )
-        
-        # Convert to string if needed
-        content_str = str(content) if not isinstance(content, str) else content
-        
-        # Save LLM output
-        self._save_llm_call_output(content_str, "translate")
+            raise ValueError(error_msg)
         
         return content_str
 
