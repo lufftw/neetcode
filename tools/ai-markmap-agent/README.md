@@ -252,13 +252,14 @@ python translate_only.py \
     --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
     --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
 
-# PowerShell
+```
+
+**Windows PowerShell:**
+```powershell
 python translate_only.py `
     --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md `
     --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
-
 ```
-
 **Method 3: Translate and Generate HTML in One Step**
 
 ```bash
@@ -411,7 +412,6 @@ calls `convert_to_html.py` programmatically to generate HTML files. This maintai
 
 The HTML template is stored in `templates/markmap.html` and can be customized
 without modifying code.
-```
 
 ### API Keys
 
