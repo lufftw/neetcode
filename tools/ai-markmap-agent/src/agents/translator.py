@@ -93,14 +93,17 @@ class TranslatorAgent(BaseAgent):
     
     def translate(self, content: str, output_type: str) -> str:
         """
-        Translate Markmap content from source to target language.
+        Translate content from source to target language.
+        
+        This is a simple translation tool: input what, translate what.
+        No content extraction or filtering is performed.
         
         Args:
-            content: Markdown content to translate
+            content: Content to translate (will be translated as-is)
             output_type: Type of output ("general" or "specialist")
             
         Returns:
-            Translated markdown content
+            Translated content
         """
         # Validate input content
         if content is None:
@@ -145,6 +148,7 @@ class TranslatorAgent(BaseAgent):
             )
         
         # Build full prompt with content
+        # Translate whatever is provided (input what, translate what)
         prompt = f"""{prompt_template_str}
 
 ---
