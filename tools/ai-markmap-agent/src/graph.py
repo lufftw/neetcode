@@ -878,9 +878,23 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                         print(f"  ✓ Loaded {len(translated_outputs)} translation(s)")
                         for key in translated_outputs.keys():
                             print(f"    - {key}")
+                        return state
                     else:
-                        print("  ⚠ Could not load translation outputs")
-                return state
+                        print("  ⚠ Could not load translation outputs from previous run")
+                        print("  ℹ️  Will continue to translation phase to generate translations")
+                        # Don't return - continue to translation phase
+                else:
+                    # Debug not enabled, try to load anyway
+                    translated_outputs = load_translation_outputs_from_run(prev_run)
+                    if translated_outputs:
+                        state["translated_outputs"] = translated_outputs
+                        print(f"  ✓ Loaded {len(translated_outputs)} translation(s)")
+                        for key in translated_outputs.keys():
+                            print(f"    - {key}")
+                        return state
+                    else:
+                        print("  ⚠ Could not load translation outputs from previous run")
+                        print("  ℹ️  Will continue to translation phase to generate translations")
             
             # If not in reuse list but output exists, ask user
             elif prev_run.has_stage_output("translation") and "translation" not in reuse_stages:
@@ -1041,8 +1055,24 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         else:
             print("      ⚠ No translated outputs found - zh-TW will not be post-processed!")
             print("      ℹ️  Make sure translation phase completed successfully")
+            # In resume mode, check if we should have translations
+            if resume_config:
+                print("      🔍 Resume mode: Checking if translations should be loaded...")
+                reuse_stages = resume_config.get("reuse_stages", {})
+                if reuse_stages.get("translation"):
+                    print("      ⚠ Translation marked for reuse but not found in state!")
+                    print("      ℹ️  Try re-running translation phase or check previous run")
         
         print(f"    Total outputs to process: {len(all_outputs)}")
+        
+        # Critical check: If we have writer outputs but no translations, warn
+        if writer_keys and not translated_keys:
+            print("\n  ⚠️  WARNING: English outputs exist but no translations found!")
+            print("     This means zh-TW files will NOT be generated.")
+            print("     Possible causes:")
+            print("     1. Translation phase was skipped or failed")
+            print("     2. Translation phase was not executed")
+            print("     3. In resume mode: translations not loaded from previous run")
         
         # Check if resuming and ask user whether to run post-processing
         resume_config = state.get("_resume_config", {})
@@ -1056,11 +1086,28 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 if prev_run.has_stage_output("post_processing"):
                     cached_outputs = load_post_processing_outputs_from_run(prev_run)
                     if cached_outputs:
-                        should_reuse = ask_reuse_stage("post_processing", prev_run)
-                        if should_reuse:
-                            print("  ⏭️  Reusing post-processing output from previous run")
-                            state["final_outputs"] = cached_outputs
-                            return state
+                        # Check if cached outputs include all current outputs (including translations)
+                        current_outputs = set(all_outputs.keys())
+                        cached_keys = set(cached_outputs.keys())
+                        
+                        # Debug: Show what's in cache vs what we need
+                        print(f"\n  📦 Cached post-processing outputs: {sorted(cached_keys)}")
+                        print(f"  📋 Current outputs to process: {sorted(current_outputs)}")
+                        
+                        missing = current_outputs - cached_keys
+                        if missing:
+                            print(f"  ⚠ Missing outputs in cache: {sorted(missing)}")
+                            print(f"  ℹ️  Will re-run post-processing to include missing outputs")
+                            # Don't reuse, continue to post-processing
+                        else:
+                            should_reuse = ask_reuse_stage("post_processing", prev_run)
+                            if should_reuse:
+                                print("  ⏭️  Reusing post-processing output from previous run")
+                                # Merge cached with any new outputs (shouldn't happen, but safe)
+                                final_cached = cached_outputs.copy()
+                                final_cached.update(all_outputs)  # Add any new outputs
+                                state["final_outputs"] = final_cached
+                                return state
                     else:
                         print("  ⚠ Post-processing outputs not found in previous run; re-running post-processing")
         
