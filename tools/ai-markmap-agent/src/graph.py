@@ -986,6 +986,15 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                     state["errors"].append(error_msg)
         
         state["translated_outputs"] = translated
+        
+        # Debug: Show translation results
+        if translated:
+            print(f"\n  ✓ Translation complete: {len(translated)} output(s) translated")
+            for key in translated.keys():
+                print(f"    - {key}")
+        else:
+            print("\n  ⚠ No translations generated - check translator configs")
+        
         return state
     
     def run_post_processing(state: WorkflowState) -> WorkflowState:
@@ -1010,9 +1019,30 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Merge writer outputs (English, raw) and translations (e.g., Chinese, raw)
         # Post-processing will normalize links for BOTH English and translated outputs
+        writer_outputs = state.get("writer_outputs", {})
+        translated_outputs = state.get("translated_outputs", {})
+        
         all_outputs = {}
-        all_outputs.update(state.get("writer_outputs", {}))  # English: raw markdown
-        all_outputs.update(state.get("translated_outputs", {}))  # Translated: raw markdown
+        all_outputs.update(writer_outputs)  # English: raw markdown
+        all_outputs.update(translated_outputs)  # Translated: raw markdown
+        
+        # Debug: Show what will be processed
+        writer_keys = list(writer_outputs.keys())
+        translated_keys = list(translated_outputs.keys())
+        print(f"\n  📋 Post-processing summary:")
+        print(f"    English outputs: {len(writer_keys)}")
+        if writer_keys:
+            for key in writer_keys:
+                print(f"      - {key}")
+        print(f"    Translated outputs: {len(translated_keys)}")
+        if translated_keys:
+            for key in translated_keys:
+                print(f"      - {key}")
+        else:
+            print("      ⚠ No translated outputs found - zh-TW will not be post-processed!")
+            print("      ℹ️  Make sure translation phase completed successfully")
+        
+        print(f"    Total outputs to process: {len(all_outputs)}")
         
         # Check if resuming and ask user whether to run post-processing
         resume_config = state.get("_resume_config", {})
@@ -1065,9 +1095,19 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         final_outputs = {}
         post_processing_comparison = {}  # Store before/after for comparison
         
+        if not all_outputs:
+            print("  ⚠ No outputs to process!")
+            state["final_outputs"] = {}
+            return state
+        
+        print(f"\n  🔄 Processing {len(all_outputs)} output(s)...")
         for key, content in all_outputs.items():
             if debug.enabled:
                 debug.save_post_processing(content, key, is_before=True)
+            
+            # Show which language is being processed
+            lang_indicator = "🌐" if "zh-TW" in key or "zh" in key.lower() else "🇺🇸"
+            print(f"  {lang_indicator} Processing: {key} ({len(content)} chars)")
             
             processed = processor.process(content)
             final_outputs[key] = processed
@@ -1078,10 +1118,12 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 "after": processed
             }
             
-            print(f"  ✓ Processed: {key}")
+            print(f"  ✓ Processed: {key} -> {len(processed)} chars")
             
             if debug.enabled:
                 debug.save_post_processing(processed, key, is_before=False)
+        
+        print(f"\n  ✓ Post-processing complete: {len(final_outputs)} output(s) processed")
         
         # Save post-processing comparison to markdown file
         _save_post_processing_comparison(post_processing_comparison, config)
