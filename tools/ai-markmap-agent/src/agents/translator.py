@@ -22,6 +22,11 @@ class TranslatorAgent(BaseAgent):
     """
     Translator agent for converting Markmaps between languages.
     
+    NOTE: This is a PROMPT-DRIVEN translator, not a true agent architecture.
+    It loads prompt templates from external .md files, combines them with content,
+    and makes a single LLM API call. No multi-turn conversation, tool usage, or
+    state management is involved.
+    
     Translates the content while preserving structure, links, and formatting.
     Prompts are loaded from external .md files for easy customization.
     """
@@ -158,6 +163,16 @@ class TranslatorAgent(BaseAgent):
                 f"  Combined prompt length: {len(prompt)} chars (after strip: {len(prompt_str)} chars)"
             )
         
+        # Check prompt size (warn if too large)
+        prompt_size = len(prompt)
+        max_tokens = self.model_config.get("max_tokens", 8192)
+        # Rough estimate: 1 token ≈ 4 characters
+        estimated_tokens = prompt_size / 4
+        
+        if estimated_tokens > max_tokens * 0.8:  # Warn if > 80% of max_tokens
+            print(f"   ⚠️  Warning: Prompt size ({prompt_size:,} chars, ~{estimated_tokens:.0f} tokens) "
+                  f"may exceed model context limit (max_tokens: {max_tokens})")
+        
         messages = self._build_messages(prompt)
         
         # Save LLM input
@@ -165,7 +180,6 @@ class TranslatorAgent(BaseAgent):
         
         # Show progress info
         model_name = self.model_config.get("model", "unknown")
-        prompt_size = len(prompt)
         content_size = len(content_str)
         print(f"   📤 Sending request to {model_name}...")
         print(f"      Prompt: {prompt_size:,} chars, Content: {content_size:,} chars")
@@ -227,17 +241,24 @@ class TranslatorAgent(BaseAgent):
         # Validate content is not empty
         if not content_str or len(content_str.strip()) == 0:
             model_name = self.model_config.get('model', 'unknown')
+            prompt_size = len(prompt) if 'prompt' in locals() else 0
+            max_tokens = self.model_config.get("max_tokens", 8192)
+            estimated_tokens = prompt_size / 4 if prompt_size > 0 else 0
+            
             error_msg = (
                 f"LLM returned empty response.\n"
                 f"  Model: {model_name}\n"
                 f"  Source: {self.source_language} → Target: {self.target_language}\n"
                 f"  Response length: {len(content_str)} chars\n"
+                f"  Prompt size: {prompt_size:,} chars (~{estimated_tokens:.0f} tokens, max_tokens: {max_tokens})\n"
                 f"  Debug output has been saved (check debug files for actual API response).\n"
                 f"  Possible causes:\n"
                 f"    1. Invalid model name '{model_name}' (verify it's a valid model for your API provider)\n"
-                f"    2. API quota/rate limit exceeded\n"
-                f"    3. API returned empty content due to content filtering or safety checks\n"
-                f"    4. Network/API connection issue"
+                f"    2. Prompt too large: {prompt_size:,} chars may exceed model context limit\n"
+                f"    3. API quota/rate limit exceeded\n"
+                f"    4. API returned empty content due to content filtering or safety checks\n"
+                f"    5. Prompt format issue causing model to reject the request\n"
+                f"    6. Network/API connection issue"
             )
             raise ValueError(error_msg)
         
