@@ -29,6 +29,10 @@ urls:
   github:
     base: "https://github.com/lufftw/neetcode"
     solution_template: "https://github.com/lufftw/neetcode/blob/main/{solution_file}"
+  
+  leetcode:
+    base: "https://leetcode.com"
+    problem_template: "https://leetcode.com/problems/{slug}/"
 
 # -----------------------------------------------------------------------------
 # Data Sources Configuration

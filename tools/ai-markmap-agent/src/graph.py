@@ -359,25 +359,47 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             reuse_stages = resume_config.get("reuse_stages", {})
             if reuse_stages.get("expert_review"):
                 print("  ⏭️  Reusing expert_review from previous run")
-                # Copy all files related to expert_review to new directory
                 resume_run_dir = Path(resume_config["run_dir"])
                 prev_run = RunInfo(resume_run_dir)
                 debug = get_debug_manager(config)
-                if debug.enabled:
-                    import shutil
-                    # Copy all expert_review related files
-                    expert_review_files = prev_run.get_stage_files("expert_review")
-                    if expert_review_files:
-                        for file_info in expert_review_files:
-                            try:
-                                dest = debug.run_dir / file_info["filename"]
-                                shutil.copy2(file_info["path"], dest)
-                                print(f"  💾 Copied: {file_info['filename']}")
-                            except Exception as e:
-                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
-                    else:
-                        print("  ⚠ No expert_review files found in previous run")
-                return state
+                
+                # Load expert responses from previous run
+                expert_data = load_expert_responses_from_run(prev_run)
+                if expert_data and "expert_review" in expert_data:
+                    # Parse and load expert suggestions into state
+                    from .agents.expert import parse_suggestions_from_response
+                    expert_suggestions = {}
+                    expert_raw_responses = {}
+                    
+                    for expert_id, raw_response in expert_data["expert_review"].items():
+                        suggestions = parse_suggestions_from_response(raw_response, expert_id)
+                        expert_suggestions[expert_id] = suggestions
+                        expert_raw_responses[expert_id] = raw_response
+                        print(f"  ✓ Loaded {expert_id}: {len(suggestions)} suggestions")
+                    
+                    state["expert_suggestions"] = expert_suggestions
+                    state["expert_raw_responses"] = expert_raw_responses
+                    
+                    # Copy files to new debug directory
+                    if debug.enabled:
+                        import shutil
+                        expert_review_files = prev_run.get_stage_files("expert_review")
+                        if expert_review_files:
+                            for file_info in expert_review_files:
+                                try:
+                                    dest = debug.run_dir / file_info["filename"]
+                                    shutil.copy2(file_info["path"], dest)
+                                    print(f"  💾 Copied: {file_info['filename']}")
+                                except Exception as e:
+                                    print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                else:
+                    print("  ⚠ Could not load expert responses from previous run")
+                    print("  → Running expert review fresh...")
+                    # Fall through to run fresh
+                    pass
+                
+                if state.get("expert_suggestions"):
+                    return state
         
         debug = get_debug_manager(config)
         
@@ -427,25 +449,48 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             reuse_stages = resume_config.get("reuse_stages", {})
             if reuse_stages.get("full_discussion"):
                 print("  ⏭️  Reusing full_discussion from previous run")
-                # Copy all files related to full_discussion to new directory
                 resume_run_dir = Path(resume_config["run_dir"])
                 prev_run = RunInfo(resume_run_dir)
                 debug = get_debug_manager(config)
-                if debug.enabled:
-                    import shutil
-                    # Copy all full_discussion related files
-                    discussion_files = prev_run.get_stage_files("full_discussion")
-                    if discussion_files:
-                        for file_info in discussion_files:
-                            try:
-                                dest = debug.run_dir / file_info["filename"]
-                                shutil.copy2(file_info["path"], dest)
-                                print(f"  💾 Copied: {file_info['filename']}")
-                            except Exception as e:
-                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
-                    else:
-                        print("  ⚠ No full_discussion files found in previous run")
-                return state
+                
+                # Load discussion responses and parse adoption lists
+                expert_data = load_expert_responses_from_run(prev_run)
+                if expert_data and "full_discussion" in expert_data:
+                    from .agents.expert import parse_adoption_list_from_response, AdoptionList
+                    adoption_lists = {}
+                    discussion_raw_responses = {}
+                    
+                    for expert_id, raw_response in expert_data["full_discussion"].items():
+                        adopted_ids = parse_adoption_list_from_response(raw_response)
+                        adoption_lists[expert_id] = AdoptionList(
+                            expert_id=expert_id,
+                            adopted_ids=adopted_ids
+                        )
+                        discussion_raw_responses[expert_id] = raw_response
+                        print(f"  ✓ Loaded {expert_id}: {len(adopted_ids)} adopted")
+                    
+                    state["adoption_lists"] = adoption_lists
+                    state["discussion_raw_responses"] = discussion_raw_responses
+                    
+                    # Copy files to new debug directory
+                    if debug.enabled:
+                        import shutil
+                        discussion_files = prev_run.get_stage_files("full_discussion")
+                        if discussion_files:
+                            for file_info in discussion_files:
+                                try:
+                                    dest = debug.run_dir / file_info["filename"]
+                                    shutil.copy2(file_info["path"], dest)
+                                    print(f"  💾 Copied: {file_info['filename']}")
+                                except Exception as e:
+                                    print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                else:
+                    print("  ⚠ Could not load discussion responses from previous run")
+                    print("  → Running full discussion fresh...")
+                    pass
+                
+                if state.get("adoption_lists"):
+                    return state
         
         debug = get_debug_manager(config)
         
@@ -812,11 +857,13 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         Phase 6: Post-processing.
         
         Apply text transformations (e.g., LC → LeetCode).
+        Normalize LeetCode links and add GitHub solution links.
         """
         print("\n[Phase 6] Post-processing...")
         debug = get_debug_manager(config)
         
-        processor = PostProcessor(config)
+        # Pass problems data to PostProcessor for link generation
+        processor = PostProcessor(config, problems=state.get("problems", {}))
         
         # Merge writer outputs and translations
         all_outputs = {}

@@ -59,6 +59,88 @@ class AdoptionList:
         }
 
 
+def parse_suggestions_from_response(response: str, expert_id: str) -> list[Suggestion]:
+    """
+    Parse suggestions from LLM response (standalone function for resume).
+    
+    Args:
+        response: Raw LLM response text
+        expert_id: Expert identifier (e.g., "architect", "professor")
+        
+    Returns:
+        List of parsed Suggestion objects
+    """
+    suggestions = []
+    
+    # Pattern to match suggestion blocks
+    # Looking for patterns like: ### A1: Title or ## A1 - Title
+    suggestion_pattern = r'#{2,3}\s*([A-Z]\d+)[:\s-]+(.+?)(?=#{2,3}\s*[A-Z]\d+|$)'
+    matches = re.findall(suggestion_pattern, response, re.DOTALL)
+    
+    for match in matches:
+        suggestion_id = match[0]
+        content = match[1].strip()
+        
+        # Extract fields
+        type_match = re.search(r'\*\*Type\*\*:\s*(\w+)', content, re.IGNORECASE)
+        location_match = re.search(r'\*\*Location\*\*:\s*(.+?)(?=\n\*\*|\n-|\n#|$)', content, re.IGNORECASE | re.DOTALL)
+        what_match = re.search(r'\*\*What\*\*:\s*(.+?)(?=\n\*\*|\n-|\n#|$)', content, re.IGNORECASE | re.DOTALL)
+        why_match = re.search(r'\*\*Why\*\*:\s*(.+?)(?=\n\*\*|\n-|\n#|$)', content, re.IGNORECASE | re.DOTALL)
+        
+        suggestions.append(Suggestion(
+            id=suggestion_id,
+            expert_id=expert_id,
+            type=type_match.group(1).strip().lower() if type_match else "modify",
+            location=location_match.group(1).strip() if location_match else "",
+            what=what_match.group(1).strip() if what_match else content[:200],
+            why=why_match.group(1).strip() if why_match else "",
+            raw_text=content,
+        ))
+    
+    return suggestions
+
+
+def parse_adoption_list_from_response(response: str) -> list[str]:
+    """
+    Parse adoption list from discussion response (standalone function for resume).
+    
+    Args:
+        response: Raw LLM discussion response text
+        
+    Returns:
+        List of adopted suggestion IDs (e.g., ["A1", "P2", "E3"])
+    """
+    adopted_ids = []
+    
+    # Strategy 1: Look for explicit adoption section
+    adoption_patterns = [
+        r'(?:^|\n)#+\s*(?:My\s+)?Final\s+Adoption\s+List.*',
+        r'I\s+recommend\s+adopting\s+(?:these\s+)?suggestions?:?\s*\n.*',
+        r'(?:^|\n)#+\s*Part\s*2\s*:?\s*Final\s+Adoption.*',
+    ]
+    
+    section_text = ""
+    for pattern in adoption_patterns:
+        match = re.search(pattern, response, re.IGNORECASE | re.DOTALL)
+        if match:
+            section_text = response[match.start():]
+            break
+    
+    # Strategy 2: If no explicit section found, look for all ✅ Agree votes
+    if not section_text:
+        agree_pattern = r'\*\*Vote\*\*:\s*✅\s*Agree.*?(?:^|\n)#+\s*([APE]\d+)'
+        agrees = re.findall(agree_pattern, response, re.IGNORECASE | re.DOTALL | re.MULTILINE)
+        if agrees:
+            adopted_ids = list(dict.fromkeys(agrees))
+    
+    # Extract IDs from section text
+    if section_text:
+        ids = re.findall(r'\b([APE]\d+)\b', section_text)
+        adopted_ids = list(dict.fromkeys(ids))
+    
+    return adopted_ids
+
+
 class ExpertAgent(BaseAgent):
     """
     Base class for Expert agents.

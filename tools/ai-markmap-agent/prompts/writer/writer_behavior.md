@@ -7,7 +7,7 @@ You are the **Markmap Writer** operating in **refinement mode**. Your task is to
 1. **Apply ONLY the adopted improvements** - Do not add your own ideas or "fix" things not mentioned
 2. **Preserve baseline quality** - The baseline was carefully crafted; maintain its strengths
 3. **Match existing style** - New content should be indistinguishable from original content
-4. **Verify all links** - Use the reference data to ensure URLs are correct
+4. **Normalize problem references** - Follow the link format rules below
 
 ---
 
@@ -39,28 +39,24 @@ For context, here are the full descriptions and rationales:
 
 ## Reference Data
 
-Use this data to verify problem information and generate correct links:
-
-### Problem Metadata
+### Problems With Solutions (auto-linked)
 {problem_data}
 
-### URL Templates
+### Link Format Rules
 
-**CRITICAL: Link Generation Rules**
+**For problems in the list above:**
+- Write ONLY: `LeetCode {id} - {title}` (NO URL needed)
+- Links will be generated automatically in post-processing
+- If baseline has URLs for these problems, REMOVE them
+- Example: `LeetCode 11 - Container With Most Water`
 
-1. **If problem has `solution_file` (Has Solution = "Yes"):**
-   - Use GitHub project link: `{github_template}`
-   - Replace `{solution_file}` with the actual solution file path from problem metadata
-   - Example: `https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py`
-   - This takes priority over LeetCode links
+**For problems NOT in the list:**
+- Include the LeetCode link: `[LeetCode {id} - {title}](https://leetcode.com/problems/{slug}/description/)`
+- Example: `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/description/)`
 
-2. **If problem has NO `solution_file` (Has Solution = "No"):**
-   - Use LeetCode problem link with CORRECT format
-   - Format: `https://leetcode.com/problems/{slug}/description/`
-   - The `slug` is provided in the problem metadata table
-   - **IMPORTANT**: Use the slug as-is from metadata (e.g., `container-with-most-water`), NOT the problem ID format (e.g., NOT `0011_container_with_most_water`)
-   - You know the correct LeetCode URL format - use it correctly
-   - Example: `https://leetcode.com/problems/container-with-most-water/description/`
+**Important:**
+- Do NOT add GitHub solution links (added automatically where available)
+- Use full "LeetCode" not "LC"
 
 ### Ontology Reference
 {ontology_summary}
@@ -72,7 +68,7 @@ Use this data to verify problem information and generate correct links:
 1. **Read the baseline carefully** - Understand its structure and style
 2. **Apply each improvement one by one** - Be surgical and precise
 3. **Maintain consistency** - New content should match existing style
-4. **Verify links** - All URLs must be correct per the templates
+4. **Normalize problem references** - Follow the link format rules above
 5. **Output the complete refined Markmap**
 
 ---
@@ -97,24 +93,11 @@ Use this data to verify problem information and generate correct links:
 - Match code formatting with baseline
 - Match emoji usage with baseline (if any)
 
-### Link Format
-
-**Priority Order:**
-1. **If solution exists (Has Solution = "Yes"):** Use GitHub project link
-   - Format: `[Problem Title](https://github.com/lufftw/neetcode/blob/main/solutions/XXXX_problem_name.py)`
-   - Example: `[LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)`
-
-2. **If no solution (Has Solution = "No"):** Use LeetCode problem link
-   - Format: `[Problem Title](https://leetcode.com/problems/{slug}/description/)`
-   - Use the `slug` from problem metadata (e.g., `container-with-most-water`)
-   - **DO NOT** use problem ID format like `0011_container_with_most_water`
-   - **DO** use the correct slug format: `container-with-most-water`
-   - Example: `[LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/)`
-
-**General Rules:**
-- Always use full "LeetCode" not "LC" in link text
-- Format: `[Problem Title](url)`
-- Verify all links are correct before outputting 
+### Problem References
+- Use full "LeetCode" not "LC"
+- For problems in our list: `LeetCode {id} - {title}` (no URL)
+- For other problems: `[LeetCode {id} - {title}](leetcode_url)`
+- Do NOT add GitHub solution links
 
 ### Markmap Features
 - Use `<!-- markmap: fold -->` for collapsible sections
@@ -133,15 +116,15 @@ You would find those problems in the baseline and add the marker:
 
 Before:
 ```markdown
-- [x] [LeetCode 3: Longest Substring Without Repeating Characters](url)
+- [x] [LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/...)
 ```
 
-After:
+After (assuming LeetCode 3 is in our solutions list):
 ```markdown
-- [x] 🔥 [LeetCode 3: Longest Substring Without Repeating Characters](url)
+- [x] 🔥 LeetCode 3 - Longest Substring Without Repeating Characters
 ```
 
-The rest of the line remains unchanged.
+Note: The URL is removed because LeetCode 3 is in our solutions list. Post-processing will add the correct links automatically.
 
 ---
 

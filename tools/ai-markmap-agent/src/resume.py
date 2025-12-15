@@ -279,24 +279,45 @@ def load_expert_responses_from_run(run_info: RunInfo) -> dict[str, dict[str, str
     expert_review_outputs = {}
     discussion_outputs = {}
     
-    # Scan LLM output files
-    for file_info in run_info.files.get("llm_output", []):
+    # Scan expert_review files (llm_output_*_invoke.md)
+    for file_info in run_info.files.get("expert_review", []):
         filename = file_info["filename"]
+        
+        # Only process llm_output files (skip llm_input)
+        if not filename.startswith("llm_output_"):
+            continue
         
         # Parse filename: llm_output_{agent}_{action}.md
         parts = filename.replace("llm_output_", "").replace(".md", "").split("_")
         
         if len(parts) >= 2:
-            action = parts[-1]  # "invoke" or "discuss"
+            action = parts[-1]  # "invoke"
             agent = "_".join(parts[:-1])  # "architect", "professor", etc.
             
             try:
                 content = file_info["path"].read_text(encoding="utf-8")
-                
-                if action == "invoke":
-                    expert_review_outputs[agent] = content
-                elif action == "discuss":
-                    discussion_outputs[agent] = content
+                expert_review_outputs[agent] = content
+            except Exception as e:
+                print(f"  ⚠ Error loading {filename}: {e}")
+    
+    # Scan full_discussion files (llm_output_*_discuss.md)
+    for file_info in run_info.files.get("full_discussion", []):
+        filename = file_info["filename"]
+        
+        # Only process llm_output files (skip llm_input)
+        if not filename.startswith("llm_output_"):
+            continue
+        
+        # Parse filename: llm_output_{agent}_{action}.md
+        parts = filename.replace("llm_output_", "").replace(".md", "").split("_")
+        
+        if len(parts) >= 2:
+            action = parts[-1]  # "discuss"
+            agent = "_".join(parts[:-1])  # "architect", "professor", etc.
+            
+            try:
+                content = file_info["path"].read_text(encoding="utf-8")
+                discussion_outputs[agent] = content
             except Exception as e:
                 print(f"  ⚠ Error loading {filename}: {e}")
     

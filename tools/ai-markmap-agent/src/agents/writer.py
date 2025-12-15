@@ -48,13 +48,6 @@ class WriterAgent(BaseAgent):
         
         # Load format guide
         self.format_guide = self._load_format_guide(model_config)
-        
-        # URL templates
-        urls_config = config.get("urls", {})
-        self.github_template = urls_config.get("github", {}).get(
-            "solution_template",
-            "https://github.com/lufftw/neetcode/blob/main/{solution_file}"
-        )
     
     def _load_format_guide(self, model_config: dict) -> str:
         """Load the Markmap format guide."""
@@ -91,24 +84,33 @@ class WriterAgent(BaseAgent):
         self,
         problems_lookup: dict[str, dict],
     ) -> str:
-        """Format problems for the writer prompt."""
+        """Format problems for the writer prompt - compressed ID list only."""
         if not problems_lookup:
-            return "No problem data available."
+            return "None"
         
-        lines = ["| ID | Title | Slug | Has Solution |", "|---|---|---|---|"]
-        
+        # Collect problem IDs that have solution files
+        solution_ids = []
         seen = set()
-        for pid, problem in list(problems_lookup.items())[:100]:
+        
+        for pid, problem in problems_lookup.items():
             if pid in seen:
                 continue
-            seen.add(pid)
-            
-            title = problem.get("title", "Unknown")[:50]
-            slug = problem.get("slug", "")
-            has_solution = "Yes" if problem.get("solution_file") else "No"
-            lines.append(f"| {pid} | {title} | {slug} | {has_solution} |")
+            try:
+                pid_int = int(pid)
+                seen.add(pid)
+                # Check for solution file in files.solution
+                files = problem.get("files", {})
+                if files.get("solution"):
+                    solution_ids.append(pid_int)
+            except (ValueError, TypeError):
+                continue
         
-        return "\n".join(lines)
+        if not solution_ids:
+            return "None"
+        
+        # Sort and format as compact list: "1,2,3,11,15,..."
+        solution_ids.sort()
+        return ",".join(str(pid) for pid in solution_ids)
     
     def _format_ontology(self, ontology: dict[str, Any]) -> str:
         """Format ontology for prompt."""
@@ -159,13 +161,12 @@ class WriterAgent(BaseAgent):
         # Get ontology
         ontology = state.get("ontology", {})
         
-        # Build the prompt
+        # Build the prompt (no longer pass github_template or leetcode_template)
         prompt = self.behavior_prompt.format(
             baseline_markmap=baseline_markmap,
             adopted_improvements=brief_list,
             improvement_details=detailed_descriptions,
             problem_data=self._format_problems_for_prompt(problems_lookup),
-            github_template=self.github_template,
             ontology_summary=self._format_ontology(ontology),
         )
         
