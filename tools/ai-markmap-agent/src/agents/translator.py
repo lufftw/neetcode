@@ -194,6 +194,18 @@ class TranslatorAgent(BaseAgent):
         # Convert to string if needed
         content_str = str(content) if not isinstance(content, str) else content
         
+        # Validate content is not empty
+        if not content_str or len(content_str.strip()) == 0:
+            raise ValueError(
+                f"LLM returned empty response. "
+                f"Model: {self.model_config.get('model')}, "
+                f"Source: {self.source_language} → Target: {self.target_language}. "
+                f"Check API response in debug output files."
+            )
+        
+        # Convert to string if needed
+        content_str = str(content) if not isinstance(content, str) else content
+        
         # Save LLM output
         self._save_llm_call_output(content_str, "translate")
         
