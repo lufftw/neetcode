@@ -55,10 +55,6 @@ class WriterAgent(BaseAgent):
             "solution_template",
             "https://github.com/lufftw/neetcode/blob/main/{solution_file}"
         )
-        self.leetcode_template = urls_config.get("leetcode", {}).get(
-            "problem_template",
-            "https://leetcode.com/problems/{slug}/"
-        )
     
     def _load_format_guide(self, model_config: dict) -> str:
         """Load the Markmap format guide."""
@@ -170,7 +166,6 @@ class WriterAgent(BaseAgent):
             improvement_details=detailed_descriptions,
             problem_data=self._format_problems_for_prompt(problems_lookup),
             github_template=self.github_template,
-            leetcode_template=self.leetcode_template,
             ontology_summary=self._format_ontology(ontology),
         )
         

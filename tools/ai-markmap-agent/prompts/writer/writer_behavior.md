@@ -45,8 +45,22 @@ Use this data to verify problem information and generate correct links:
 {problem_data}
 
 ### URL Templates
-- For problems WITH solution_file: `{github_template}`
-- For problems WITHOUT solution_file: `{leetcode_template}`
+
+**CRITICAL: Link Generation Rules**
+
+1. **If problem has `solution_file` (Has Solution = "Yes"):**
+   - Use GitHub project link: `{github_template}`
+   - Replace `{solution_file}` with the actual solution file path from problem metadata
+   - Example: `https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py`
+   - This takes priority over LeetCode links
+
+2. **If problem has NO `solution_file` (Has Solution = "No"):**
+   - Use LeetCode problem link with CORRECT format
+   - Format: `https://leetcode.com/problems/{slug}/description/`
+   - The `slug` is provided in the problem metadata table
+   - **IMPORTANT**: Use the slug as-is from metadata (e.g., `container-with-most-water`), NOT the problem ID format (e.g., NOT `0011_container_with_most_water`)
+   - You know the correct LeetCode URL format - use it correctly
+   - Example: `https://leetcode.com/problems/container-with-most-water/description/`
 
 ### Ontology Reference
 {ontology_summary}
@@ -84,10 +98,23 @@ Use this data to verify problem information and generate correct links:
 - Match emoji usage with baseline (if any)
 
 ### Link Format
-- LeetCode problems: Use full "LeetCode" not "LC"
-- Solution links: Use GitHub template when solution exists
-- Problem links: Use LeetCode template when no solution
-- Format: `[Problem Title](url)` 
+
+**Priority Order:**
+1. **If solution exists (Has Solution = "Yes"):** Use GitHub project link
+   - Format: `[Problem Title](https://github.com/lufftw/neetcode/blob/main/solutions/XXXX_problem_name.py)`
+   - Example: `[LeetCode 905 - Sort Array By Parity](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)`
+
+2. **If no solution (Has Solution = "No"):** Use LeetCode problem link
+   - Format: `[Problem Title](https://leetcode.com/problems/{slug}/description/)`
+   - Use the `slug` from problem metadata (e.g., `container-with-most-water`)
+   - **DO NOT** use problem ID format like `0011_container_with_most_water`
+   - **DO** use the correct slug format: `container-with-most-water`
+   - Example: `[LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/)`
+
+**General Rules:**
+- Always use full "LeetCode" not "LC" in link text
+- Format: `[Problem Title](url)`
+- Verify all links are correct before outputting 
 
 ### Markmap Features
 - Use `<!-- markmap: fold -->` for collapsible sections
