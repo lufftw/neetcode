@@ -93,13 +93,85 @@ def translate_file(
     
     # Translate
     print("\n⏳ Translating...")
-    translated = translator.translate(content, "general")
+    try:
+        translated = translator.translate(content, "general")
+    except Exception as e:
+        # Get debug output path if available
+        debug_info = ""
+        try:
+            from src.debug_output import get_debug_manager
+            debug = get_debug_manager(config)
+            if debug.enabled and debug.run_dir.exists():
+                debug_info = f"\n   📁 Debug outputs: {debug.run_dir}\n      Check LLM input/output files for details."
+        except:
+            pass
+        
+        raise RuntimeError(
+            f"Translation failed with exception: {e}\n"
+            f"   Model: {model}\n"
+            f"   Source: {source_lang} → Target: {target_lang}\n"
+            f"   Input size: {len(content)} chars, {len(content.splitlines())} lines{debug_info}\n"
+            f"   Troubleshooting:\n"
+            f"   1. Verify API key is set correctly (check environment variables)\n"
+            f"   2. Check API key has sufficient credits/quota\n"
+            f"   3. Verify model name '{model}' is valid and accessible\n"
+            f"   4. Review debug output files for API response details"
+        ) from e
     
     # Validate translation result
     if not translated:
-        raise ValueError("Translation returned empty content. Check API key and model configuration.")
+        # Get debug output path if available
+        debug_info = ""
+        try:
+            from src.debug_output import get_debug_manager
+            debug = get_debug_manager(config)
+            if debug.enabled and debug.run_dir.exists():
+                debug_info = f"\n   📁 Debug outputs: {debug.run_dir}\n      Check 'llm_output_translator_*_translate.md' for API response."
+        except:
+            pass
+        
+        raise ValueError(
+            f"Translation returned empty content (None).\n"
+            f"   Model: {model}\n"
+            f"   Source: {source_lang} → Target: {target_lang}\n"
+            f"   Input size: {len(content)} chars, {len(content.splitlines())} lines{debug_info}\n"
+            f"   Possible causes:\n"
+            f"   1. API key is missing or invalid\n"
+            f"   2. API returned empty response (check debug output files)\n"
+            f"   3. Model '{model}' is not available or not responding\n"
+            f"   4. Network/API connection issue\n"
+            f"   Troubleshooting:\n"
+            f"   - Verify OPENAI_API_KEY environment variable is set\n"
+            f"   - Check API key has sufficient credits\n"
+            f"   - Review debug output files for detailed API response"
+        )
+    
     if len(translated.strip()) == 0:
-        raise ValueError("Translation returned only whitespace. Check API response.")
+        # Get debug output path if available
+        debug_info = ""
+        try:
+            from src.debug_output import get_debug_manager
+            debug = get_debug_manager(config)
+            if debug.enabled and debug.run_dir.exists():
+                debug_info = f"\n   📁 Debug outputs: {debug.run_dir}\n      Check 'llm_output_translator_*_translate.md' for API response."
+        except:
+            pass
+        
+        raise ValueError(
+            f"Translation returned only whitespace (empty after stripping).\n"
+            f"   Model: {model}\n"
+            f"   Source: {source_lang} → Target: {target_lang}\n"
+            f"   Input size: {len(content)} chars, {len(content.splitlines())} lines\n"
+            f"   Raw response length: {len(translated)} chars{debug_info}\n"
+            f"   Possible causes:\n"
+            f"   1. API returned whitespace-only response\n"
+            f"   2. Model generated empty content\n"
+            f"   3. Response parsing issue\n"
+            f"   Troubleshooting:\n"
+            f"   - Review debug output files to see actual API response\n"
+            f"   - Check if API key has proper permissions\n"
+            f"   - Verify model configuration in config file"
+        )
     
     print(f"   Raw translation: {len(translated)} chars")
     
@@ -108,7 +180,31 @@ def translate_file(
     
     # Validate cleaned content
     if not translated or len(translated.strip()) == 0:
-        raise ValueError("After cleaning, translation is empty. Check clean_translated_content function.")
+        # Get debug output path if available
+        debug_info = ""
+        try:
+            from src.debug_output import get_debug_manager
+            debug = get_debug_manager(config)
+            if debug.enabled and debug.run_dir.exists():
+                debug_info = f"\n   📁 Debug outputs: {debug.run_dir}\n      Check 'llm_output_translator_*_translate.md' for original API response."
+        except:
+            pass
+        
+        raise ValueError(
+            f"After cleaning, translation is empty.\n"
+            f"   Model: {model}\n"
+            f"   Source: {source_lang} → Target: {target_lang}\n"
+            f"   Input size: {len(content)} chars, {len(content.splitlines())} lines{debug_info}\n"
+            f"   This suggests the cleaning function (clean_translated_content) removed all content.\n"
+            f"   Possible causes:\n"
+            f"   1. API response format was unexpected\n"
+            f"   2. Cleaning function is too aggressive\n"
+            f"   3. Response contained only artifacts that were removed\n"
+            f"   Troubleshooting:\n"
+            f"   - Review debug output files to see raw API response\n"
+            f"   - Check clean_translated_content function logic\n"
+            f"   - Verify API response format matches expectations"
+        )
     
     print(f"   ✓ Cleaned translation: {len(translated)} chars, {len(translated.splitlines())} lines")
     
