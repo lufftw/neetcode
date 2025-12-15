@@ -68,752 +68,955 @@ markmap:
 
 ## How to use this map 📚
 - **Goal**: learn *transferable kernels* (APIs) → recognize *patterns* → solve *problems*
-- **Legend / tags**
-  - 🔥 anchor / must-know
-  - ⭐ common
-  - ➕ optional / reinforcement
-  - 🧩 hybrid (composition of kernels)
+- **Definitions**
+  - **Kernel** = reusable code template / API
+  - **Pattern** = invariant + state choices (specialization of a kernel)
+  - **Family** = group of problems sharing pattern(s)
 - **Progress tracker**
   - [ ] Do 1 problem per kernel (breadth)
   - [ ] Do 3 problems per kernel (depth)
   - [ ] Re-solve “anchor” problems from scratch under 20 minutes ⚡
 
+## Router (Decision Guide) 🧭
+- Contiguous substring/subarray with constraint → **SubstringSlidingWindow**
+- Sorted array + monotonic objective / symmetric property → **TwoPointersTraversal**
+- In-place reordering into buckets/regions → **TwoPointerPartition**
+- “Minimum time/steps” on unweighted grid/graph → **GridBFSMultiSource** (or TreeTraversalBFS)
+- “Kth/topK/median/streaming” → **HeapTopK** / **KWayMerge**
+- Monotone feasibility in answer space / boundary index → **BinarySearchBoundary**
+- Need counts over ranges / subarray sum targets → **PrefixSumRangeQuery**
+- Next greater/smaller / histogram areas → **MonotonicStack**
+- Connectivity / components → **UnionFindConnectivity**
+- Hierarchical structure traversal → **TreeTraversalDFS/BFS**
+- DAG prerequisites → **TopologicalSort**
+- Optimal substructure on sequences/intervals → **DPSequence/DPInterval**
+
+## Legend (priority tags) 🧾
+- 🔥 must-know
+- ⭐ common
+- 🧊 nice-to-know
+
 ## Kernel Index (the “APIs” you should internalize) 🔥
-- **Core Platform Kernels (primitives)**
-  - **HashMapLookup** 🔥
-  - **PrefixSumRangeQuery** 🔥
-  - **BinarySearchBoundary** 🔥
-  - **MonotonicStack** 🔥
-  - **TreeTraversalDFS / TreeTraversalBFS** 🔥
-  - **GraphTraversalBFS / GraphTraversalDFS + TopologicalSort** 🔥
-  - **UnionFindConnectivity** ⭐
-  - **DPSequence / DPInterval** 🔥
-  - **TriePrefixSearch** ⭐
-- **This Map’s Implemented Kernels (expanded below)**
-  - **HashMapLookup** 🔥
-  - **PrefixSumRangeQuery** 🔥
-  - **TwoPointersTraversal** ⭐ → read-only traversal (search/validation; shrink search space)
-  - **SubstringSlidingWindow** 🔥 → contiguous substring state machine
-  - **BinarySearchBoundary** 🔥 → boundary + answer-space search
-  - **TreeTraversalDFS / TreeTraversalBFS** 🔥
-  - **GraphTraversalBFS / GraphTraversalDFS + TopologicalSort** 🔥
-  - **HeapTopK** ⭐ → top-k / kth / streaming median
-  - **MergeSortedSequences** + **KWayMerge** ⭐ → merging sorted streams
-  - **TwoPointerPartition (InPlaceCompaction)** ⭐ → mutation kernel (partition/compaction)
-  - **MonotonicStack** ⭐
-  - **UnionFindConnectivity** ⭐
-  - **BacktrackingExploration** ⭐ → choose → explore → unchoose
-  - **GridBFSMultiSource** ⭐ → wavefront BFS on grid
-  - **FastSlowPointers** ⭐ → cycle / midpoint
-  - **DPSequence / DPInterval** 🔥
-  - **TriePrefixSearch** ⭐
-- **Canonical compositions (combinators)**
-  - **BinarySearchBoundary + FeasibilityCheck** (answer-space search) 🧩
-  - **Partition + Quickselect** (selection) 🧩
-  - **HeapTopK + Streaming aggregation** (running kth/median) 🧩
-  - **Backtracking + Memoization/DP** (search with caching) 🧩
-  - **BFS + Multi-source init** (wavefront) 🧩
-  - **MergeSortedSequences + TwoPointersTraversal** (merge-like scans) 🧩
-- **Planned / Backlog**
-  - *(keep extending with more representative problems as you add sections)*
+- PrefixSumRangeQuery
+- TwoPointersTraversal
+- SubstringSlidingWindow
+- BinarySearchBoundary
+- TreeTraversalDFS + TreeTraversalBFS
+- GridBFSMultiSource
+- HeapTopK
+- MonotonicStack
+- MergeSortedSequences + KWayMerge
+- BacktrackingExploration
+- TwoPointerPartition
+- FastSlowPointers
+- UnionFindConnectivity
+- TopologicalSort
+- DPSequence + DPInterval
+- TriePrefixSearch *(in ontology; not anchored by provided problems)*
 
 ---
 
-## Router (pick the kernel fast) 🧭
-- | Problem signal | Route to |
-  |---|---|
-  | Unsorted array/string, need complement / count / frequency | **HashMapLookup** |
-  | Range sum, subarray sum = K, “count of subarrays …” | **PrefixSumRangeQuery** (+ hash map) |
-  | Contiguous + optimize over window (max/min/exists) | **SubstringSlidingWindow** |
-  | Sorted + monotone move proves exclusion | **TwoPointersTraversal (Opposite)** |
-  | In-place classify/compact/rewrite | **TwoPointerPartition (InPlaceCompaction)** |
-  | “first/last”, boundary, rotated, answer feasible monotone | **BinarySearchBoundary** |
-  | Tree traversal / LCA / validate BST | **TreeTraversalDFS/BFS** |
-  | Graph components / shortest hops / DAG ordering | **GraphTraversalBFS/DFS + TopologicalSort** |
-  | Kth/top-k/streaming median | **HeapTopK** / **Partition+Quickselect** |
-  | Merge sorted streams / k lists | **MergeSortedSequences / KWayMerge** |
-  | Wavefront propagation on grid | **GridBFSMultiSource** |
-  | Choose/explore/unchoose; generate combinations | **BacktrackingExploration** |
-  | Next greater/smaller; histogram/water trapping | **MonotonicStack** |
-  | Connectivity under unions | **UnionFindConnectivity** |
-  | Optimal substructure / overlapping subproblems | **DPSequence/DPInterval** |
-  | Prefix search / word dictionary | **TriePrefixSearch** |
+## Pitfalls & Checklists (reusable) ✅
+- **Sliding window**
+  - Off-by-one: inclusive \`[L..R]\` vs half-open \`[L, R)\`; update answer after making window valid
+  - Validity must be maintainable in $O(1)$ per move (avoid rescanning maps/alphabets each step)
+  - “Shrink while valid” requires monotonicity (e.g., sums need non-negative numbers)
+- **Two pointers / partition**
+  - Termination: \`while L < R\` vs \`<=\`; ensure progress on every branch
+  - Duplicates handling: skip duplicates at the correct pointer(s) and at the correct time
+  - Stability: reader/writer compaction is stable; swap-based partition is usually unstable
+- **Binary search**
+  - Use a **half-open invariant** (\`[lo, hi)\`) and avoid infinite loops (\`mid = lo + (hi-lo)//2\`)
+  - Pick \`first_true\` vs \`last_true\` intentionally; confirm predicate monotonicity
+  - Overflow/sentinels: boundaries around \`mid-1\`, \`mid+1\`, empty arrays
+- **BFS**
+  - Mark visited **upon enqueue** to avoid multiple enqueues
+  - Level counting: process BFS in layers when “minutes/steps” are required
+  - Multi-source init: enqueue all sources before BFS loop; track remaining targets
+- **Backtracking**
+  - “Unchoose” is mandatory (no ghost marks): undo every mutation on return
+  - Pruning must be safe (don’t prune on partial info that could be fixed later)
+  - Copy vs mutate: avoid copying full paths unless needed (push/pop pattern)
+- **Linked list**
+  - Use a dummy head to simplify head changes
+  - Preserve \`next\` pointers before rewiring
+  - Group boundaries: confirm there are \`k\` nodes before reversing k-group
+- **Quickselect / heaps**
+  - Quickselect worst-case $O(n^2)$ unless randomized/median-of-medians
+  - Duplicates: 3-way partition can simplify handling repeated pivot values
+  - Streaming/large input: heap often preferred
 
 ---
 
-## Reverse Index (problems → kernels) 🔎
-- | Problem | Primary kernel | Secondary kernel |
-  |---|---|---|
-  | [LeetCode 1](https://leetcode.com/problems/two-sum/description/)(only if sorted / after sort) |
-  | [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/)
-  | [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
-  | [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)(context only) |
-  | [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
-  | [LeetCode 15](https://leetcode.com/problems/3sum/description/)
-  | [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/)
-  | [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/)
-  | [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
-  | [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
-  | [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)(InPlaceCompaction) | writer |
-  | [LeetCode 27](https://leetcode.com/problems/remove-element/description/)(InPlaceCompaction) | writer |
-  | [LeetCode 39](https://leetcode.com/problems/combination-sum/description/)
-  | [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/)
-  | [LeetCode 46](https://leetcode.com/problems/permutations/description/)[] |
-  | [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/)
-  | [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
-  | [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/)
-  | [LeetCode 75](https://leetcode.com/problems/sort-colors/description/)(InPlaceCompaction) | dutch flag |
-  | [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
-  | [LeetCode 77](https://leetcode.com/problems/combinations/description/)
-  | [LeetCode 78](https://leetcode.com/problems/subsets/description/)
-  | [LeetCode 79](https://leetcode.com/problems/word-search/description/)
-  | [LeetCode 80](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/)(InPlaceCompaction) | writer |
-  | [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/)
-  | [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/)
-  | [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/)
-  | [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/)
-  | [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/)
-  | [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/)
-  | [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/)
-  | [LeetCode 202](https://leetcode.com/problems/happy-number/description/)
-  | [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
-  | [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
-  | [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/)
-  | [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/)(InPlaceCompaction) | stable compaction |
-  | [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
-  | [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
-  | [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
-  | [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/)
-  | [LeetCode 876](https://leetcode.com/problems/hand-of-straights/description/)
-  | [LeetCode 905](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/description/)(InPlaceCompaction) | two-way |
-  | [LeetCode 922](https://leetcode.com/problems/possible-bipartition/description/)(InPlaceCompaction) | two-way |
-  | [LeetCode 977](https://leetcode.com/problems/distinct-subsequences-ii/description/)
-  | [LeetCode 994](https://leetcode.com/problems/prison-cells-after-n-days/description/)
+## Reverse Index (Problem → Kernel → Pattern → invariant) 🔎
+- 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)(hash map complement) → \`hash_map_complement\` → “store seen value→index; look for target-x”
+- 🔥 [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/)
+- 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
+- 🧊 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)
+- ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
+- 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/)
+- 🧊 [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/)
+- 🔥 [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/)
+- 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
+- ⭐ [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
+- ⭐ [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)[0:write]\` kept unique”
+- ⭐ [LeetCode 27](https://leetcode.com/problems/remove-element/description/)
+- ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/)
+- ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/)
+- ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/)[]; choose unused”
+- 🧊 [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/)
+- ⭐ [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
+- 🧊 [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/)
+- 🔥 [LeetCode 75](https://leetcode.com/problems/sort-colors/description/)
+- 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
+- ⭐ [LeetCode 77](https://leetcode.com/problems/combinations/description/)
+- ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/)
+- ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/)
+- 🧊 [LeetCode 80](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/)
+- ⭐ [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/)
+- 🧊 [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/)
+- 🧊 [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/)
+- ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/)
+- ⭐ [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/)
+- ⭐ [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/)
+- ⭐ [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/)
+- ⭐ [LeetCode 202](https://leetcode.com/problems/happy-number/description/)(n); detect cycle”
+- ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
+- 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
+- 🧊 [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/)
+- ⭐ [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/)
+- 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
+- ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
+- ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
+- ⭐ [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/)
+- ⭐ [LeetCode 876](https://leetcode.com/problems/hand-of-straights/description/)
+- ⭐ [LeetCode 905](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/description/)
+- 🧊 [LeetCode 922](https://leetcode.com/problems/possible-bipartition/description/)
+- ⭐ [LeetCode 977](https://leetcode.com/problems/distinct-subsequences-ii/description/)
+- 🔥 [LeetCode 994](https://leetcode.com/problems/prison-cells-after-n-days/description/)
 
 ---
 
-## 1) Hash Map Lookup (HashMapLookup) 🔥
-- **Contract (standard)**
-  - **Inputs**: sequence/stream of items; key extraction; optional target/complement rule
-  - **State**: \`seen\` (hash map / hash set), counts, last index
-  - **Invariant**: \`seen\` reflects exactly the processed prefix; lookups query the prefix only
-  - **Progress rule**: scan once; update \`seen\` after using it (avoid self-pair bugs)
-  - **Complexity knobs**: key size / hashing; collision behavior; memory = distinct keys
-  - **Common failure modes**
-    - updating \`seen\` before checking complement (self-match)
-    - forgetting duplicates semantics (store first vs last index)
-- **Pseudo-signature (API surface)**
-  - \`hash_lookup(seq, key(x), on_hit(key)->answer, on_miss(update))\`
-  - Extension points: \`key\`, duplicate policy, value stored (count/index/list)
-- **Problems**
-  - 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)
-    - Note: Target $O(n)$; store index; check complement before insert.
-- **Where this shows up at work**
-  - dedupe IDs/events; frequency counting; join-like lookups in pipelines
+## 1) Hashing + Prefix Sum (PrefixSumRangeQuery) 🧮
+- **Where you’ll see this at work**
+  - Counting events in logs; frequency tables; de-dup; “have we seen this key?”
+  - Subarray analytics with running totals; anomaly detection with deltas
+- **Kernel mini-spec**
+  - **Signature**: sequence \`nums\`; queries like “count subarrays meeting condition” / “range aggregate”; output integer/count/array
+  - **Required invariant**: maintain prefix aggregate \`pref[i]\` and a map of seen prefix states; use identities like \`pref[j]-pref[i]=target\`
+  - **State model**: running prefix value; \`hash_map\` from prefix value → count (or earliest index)
+  - **Complexity envelope**: typically $O(n)$ time, $O(n)$ space (hash map); $O(1)$ per step expected
+  - **Failure modes / when NOT to use**: floating-point prefixes; hash collisions (theoretical); for min/max over window prefer sliding window/monotonic deque
+- **Complexity template**
+  - Time $O(n)$ expected; space $O(n)$ for prefix map (or $O(1)$ if only a few aggregates kept)
+- **Patterns**
+  - **Hash map complement lookup** (\`hash_map_complement\`)
+    - Anchor: 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)
+    - Template
+      - \`\`\`text
+        seen = map()  // value -> index
+        for i in [0..n-1]:
+          x = nums[i]
+          y = target - x
+          if y in seen:
+            return [seen[y], i]
+          seen[x] = i
+        return none
+        \`\`\`
+  - **Prefix sum + hash map counts** (\`prefix_sum_subarray_sum\`)
+    - Anchor: 🔥 [LeetCode 560](https://leetcode.com/problems/subarray-sum-equals-k/description/)(not in provided solutions list)*
+    - Template
+      - \`\`\`text
+        count = 0
+        pref = 0
+        freq = map(); freq[0] = 1
+        for x in nums:
+          pref += x
+          count += freq.get(pref - k, 0)
+          freq[pref] = freq.get(pref, 0) + 1
+        return count
+        \`\`\`
+- **Common compositions**
+  - PrefixSumRangeQuery + MonotonicStack (range contributions / subarray min-max counting)
+  - PrefixSumRangeQuery + BinarySearchBoundary (prefix-based feasibility checks)
+- **Common interview pitfalls**
+  - Forgetting base case \`freq[0]=1\` for “subarray starting at 0”
+  - Using earliest index vs count incorrectly (problem-dependent)
 
 ---
 
-## 2) Prefix Sums (PrefixSumRangeQuery) 🔥
-- **Contract (standard)**
-  - **Inputs**: numeric sequence; range queries or target-sum constraints
-  - **State**: \`prefix[i]\`, or running \`pref\`; hash map \`count[pref]\`
-  - **Invariant**: \`pref = sum(seq[0..i])\`; range sum \`sum(l..r)=pref[r]-pref[l-1]\`
-  - **Progress rule**: accumulate once; answer queries in $O(1)$ or count via hash map
-  - **Complexity knobs**: memory for prefix array vs streaming; hash map size
-  - **Common failure modes**
-    - off-by-one in range endpoints
-    - using sliding window when negatives exist (should use prefix techniques)
-- **Pseudo-signature (API surface)**
-  - \`prefix_sum(seq) -> prefix[]\`
-  - \`count_subarrays(seq, target) using pref_count: count += pref_count[pref-target]\`
-  - Extension points: store earliest index (for longest), store counts (for number)
-- **Representative problems**
-  - [LeetCode 560](https://leetcode.com/problems/subarray-sum-equals-k/description/)
-  - [LeetCode 525](https://leetcode.com/problems/contiguous-array/description/)
-  - [LeetCode 238](https://leetcode.com/problems/product-of-array-except-self/description/)
-  - [LeetCode 304](https://leetcode.com/problems/range-sum-query-2d-immutable/description/)
-- **Where this shows up at work**
-  - time-series rollups; cumulative metrics; anomaly detection with deltas
-
----
-
-## 3) Two Pointers Traversal (TwoPointersTraversal) 👯 ⭐
-- **Contract (standard)**
-  - **Inputs**: read-only array/string; comparator/predicate; (often sorted or symmetric structure)
-  - **State**: \`L\`, \`R\`, best answer so far; optional skipping rules
-  - **Invariant**: answer lies within current search space; pointer moves never re-expand it
-  - **Progress rule**: move one pointer per step based on rule ⇒ shrinks search space ⇒ terminates
-  - **Complexity knobs**: sort precondition (may add $O(n \\log n)$); skipping duplicates
-  - **Common failure modes**
-    - moving wrong pointer (breaks exclusion proof)
-    - missing dedup skip loops (duplicates in output)
-- **Pseudo-signatures (API surface)**
-  - \`two_pointers_opposite(arr, L=0, R=n-1, move_rule(state, L, R) -> (L', R'), on_answer)\`
-  - \`two_pointer_sorted_enum(arr_sorted, i_loop, L/R inner, skip_duplicates=True)\`
-  - Extension points: move rule, stop condition, dedup policy, objective update
-
-- **Mental model**: every move *proves* an excluded region can’t contain the answer
-
+## 2) Two Pointers Traversal (TwoPointersTraversal) 👯
+- **Where you’ll see this at work**
+  - Linear-time scans over sorted arrays; in-place compaction/filtering pipelines
+  - Text normalization with symmetric checks (palindrome-like validations)
+- **Kernel mini-spec**
+  - **Signature**: array/string \`A\`; output depends (max/min, boolean, indices, modified array)
+  - **Required invariant**: after each move, the discarded region cannot contain a better/valid answer than what remains (or what’s recorded)
+  - **State model**: pointers (\`L\`,\`R\`) or (\`read\`,\`write\`); optional counters for constraints/duplicates
+  - **Complexity envelope**: $O(n)$ time from monotone pointer movement; $O(1)$ extra space
+  - **Failure modes / when NOT to use**: requires monotonic structure (sorted/symmetric) or a preserved feasibility argument; otherwise use hashing/DP
+- **Complexity template**
+  - Time $O(n)$; space $O(1)$ extra
+- **Mental model**: every move *proves* excluded region can’t contain the answer
+- **Dominant proof pattern (safety lemma)**
+  - “At each step, choose a pointer move that preserves the existence of an optimal solution in the remaining interval; equivalently, prove that the discarded indices cannot participate in any better solution than the best already seen.”
+  - Example ([LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)): if \`height[L] ≤ height[R]\`, any container using \`L\` with smaller width can’t exceed current area unless the limiting height increases ⇒ increment \`L\`.
 - **Subfamilies**
   - **Opposite pointers** (sorted/symmetric optimization)
     - Maximize objective
-      - 🔥 [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)(move shorter side)*
-        - Each step guarantees one boundary index can be discarded because area is limited by the shorter height and width only shrinks.
-        - Note: Target $O(n)$; correctness hinges on “shorter side is bottleneck”.
+      - ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)(move shorter side)*
     - Palindrome validation
       - ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/)
-        - Each step guarantees discarded outer characters can’t affect validity because they are either matched or skipped by predicate.
       - ⭐ [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/)(one skip branch)*
-        - Each step guarantees at most one mismatch needs branching because only one deletion is allowed.
-    - “Two Sum family”
-      - Primary (unsorted): 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)
-      - Sorted variant: ⭐ [LeetCode 167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
-        - Each step guarantees either \`L\` or \`R\` can be discarded because sum is monotone in each pointer on sorted input.
   - **Dedup + enumeration on sorted array**
     - 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/)(outer i + inner L/R + skip duplicates)*
-      - Each step guarantees duplicates are discarded because sorted order enables same-value skip without missing new tuples.
-      - Note: Target $O(n^2)$ after sort; be precise about duplicate skipping at \`i\`, \`L\`, \`R\`.
-    - ⭐ [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/)
-      - Each step guarantees a pointer move discards sums that only move farther in the monotone direction for that fixed \`i\`.
-
+    - 🧊 [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/)
+  - **Hash Map Lookup (single pass)**
+    - 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/)
+    - Note: two pointers requires **sorted input** (or sorting), which changes complexity and indices vs values trade-offs. The canonical opposite-pointer variant is **[LeetCode 167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)(not in provided solutions list)*.
+- **Pattern ID mapping (pattern_id → subfamily)**
+  - \`two_pointer_opposite_maximize\` → Opposite pointers → Maximize objective
+  - \`two_pointer_opposite_palindrome\` → Opposite pointers → Palindrome validation
+  - \`two_pointer_three_sum\` → Dedup + enumeration on sorted array
+  - \`hash_map_complement\` → Hash Map Lookup (single pass)
 - **Quick invariant table**
   - | Pattern | Invariant | Typical problems |
     |---------|-----------|------------------|
-    | Opposite | answer in \`[L..R]\` | [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
-    | Sorted enumeration | no duplicate tuples emitted | [LeetCode 15](https://leetcode.com/problems/3sum/description/)
-
-- **Where this shows up at work**
-  - scanning sorted logs; reconciling two ordered feeds; symmetric validation in parsers
+    | Opposite | answer in \`[L..R]\` under safety lemma | ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
+    | Sorted enumeration | no duplicate tuples emitted | 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/)
+- **Common compositions**
+  - TwoPointersTraversal + BinarySearchBoundary (two-level search: fix one pointer, binary search partner)
+  - TwoPointersTraversal + PrefixSumRangeQuery (post-filtering then prefix analytics)
+- **Common interview pitfalls (examples)**
+  - Duplicates: skipping too early/late in 3Sum leads to missing/duplicated tuples
+  - Termination: wrong loop (\`<=\` vs \`<\`) causes infinite loop or double-processing
+  - Stable vs unstable: compaction should preserve relative order when required
 
 ---
 
-## 4) Sliding Window (SubstringSlidingWindow) 🪟 🔥
-- **Contract (standard)**
-  - **Inputs**: contiguous sequence (string/array); invariant predicate \`Valid(state)\`; add/remove update rules
-  - **State**: counts/frequencies, \`distinct_count\`, \`need/have\`, sums, last-seen indices
-  - **Invariant**: \`Valid(L,R)\` is maintained (or restored) by shrinking \`L\` after expanding \`R\`
-  - **Progress rule**: advance \`R\` monotonically; advance \`L\` monotonically only as needed to restore \`Valid\` ⇒ termination
-  - **Complexity knobs**: update cost of map/array; alphabet size \`σ\`; memory $O(σ)$ or $O(k)$
-  - **Common failure modes**
-    - not shrinking in a \`while\` loop when minimizing
-    - applying sum-window with negatives (breaks monotonicity)
-
-- **Core invariant**: maintain an invariant \`Valid(L,R)\`; advance \`R\` monotonically, and advance \`L\` monotonically only as needed to restore \`Valid\`. This monotonicity implies at most \`n\` increments of each pointer, hence $O(n)$ updates *assuming $O(1)$ amortized map updates*.
-
-- **Pseudo-signature (API surface)**
-  - \`sliding_window(seq, on_add(x), on_remove(x), is_valid(state), on_answer(L,R,state))\`
-  - Extension points: validity predicate (≤K distinct / cover / sum), fixed vs variable window, answer aggregation (max/min/all)
-
+## 3) Sliding Window (SubstringSlidingWindow) 🪟
+- **Where you’ll see this at work**
+  - Rate limiting windows; moving aggregates/features over event streams
+  - Log scanning for anomaly substrings; token frequency windows
+- **Kernel mini-spec**
+  - **Signature**: sequence \`s\`/\`nums\`, optional parameter \`k\`/\`target\`; output max/min length, boolean, or indices
+  - **Required invariant**: maintain window state so a predicate \`Valid(L,R)\` can be checked/updated incrementally
+  - **State model**: pointers \`L ≤ R\`; counts (\`freq\`, \`need/have\`), distinct counters, sums; optionally \`last_seen_index\`
+  - **Complexity envelope**: \`R\` increments exactly \`n\` times; \`L\` is monotonically non-decreasing and increments at most \`n\` times ⇒ total pointer moves $O(n)$. Total work $O(n)$ assuming $O(1)$ state update/query (or $O(n·Σ)$ if you rescan an alphabet/state each step).
+  - **Failure modes / when NOT to use**: predicate not monotone under moving \`L\` (e.g., sums with negatives); validity check requires scanning large state each step
+- **Complexity template**
+  - Time $O(n)$ with monotone pointers + $O(1)$ updates; space $O(Σ)$ for counts (or $O(k)$ distinct keys)
 - **State choices**
   - \`last_seen_index\` map (jump-L optimization)
   - \`freq\` map + \`distinct_count\`
   - \`need/have\` maps + \`satisfied/required\`
   - numeric \`window_sum\`
-
 - **Pattern comparison table**
   - | Problem | Invariant | State | Window Size | Goal |
     |---------|-----------|-------|-------------|------|
     | 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
-    | ⭐ [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
-    | 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)[c] >= need[c]\` | need/have + satisfied | variable | minimize |
-    | ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)(fixed)**: \`len==|p|\` and ∀c, \`have[c]==need[c]\` (or \`matched==required\` with defined criterion) | freq + matched | fixed | exists |
-    | ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)(fixed)**: \`len==|p|\` and ∀c, \`have[c]==need[c]\` (or \`matched==required\`) | freq + matched | fixed | all positions |
-    | 🔥 [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)(requires all numbers non-negative; if negatives exist use prefix sums + monotone structure / binary search variants)* | sum ≥ target | integer sum | variable | minimize |
-
+    | 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
+    | 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
+    | ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
+    | ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
+    | ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
 - **Patterns**
   - **Unique window** (\`sliding_window_unique\`)
-    - Pseudo-signature: \`unique_window(s) -> max_len\` (extend: store indices to reconstruct substring)
     - Anchor: 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)(learn jump-left)==
-      - Note: Target $O(n)$; ASCII vs Unicode trade-off (array[128/256] vs hashmap).
-      - Each step guarantees \`L..(newL-1)\` is discarded because any window starting before \`newL\` would still contain a duplicate of \`s[R]\`.
+    - Two correct invariants/implementations
+      - Frequency-based: maintain \`freq[c] ≤ 1\` for all \`c\` in \`s[L..R]\`; while violated, increment \`L\` decrementing \`freq\`
+      - Last-seen jump: maintain \`L = max(L, last_seen[c]+1)\` so \`s[L..R]\` has no duplicates  
+        - Invariant (last-seen): \`L\` is always \`1 +\` the maximum last-seen index among duplicates within the current window
+    - Template (last-seen jump)
+      - \`\`\`text
+        last = map(); L = 0; best = 0
+        for R in [0..n-1]:
+          c = s[R]
+          if c in last:
+            L = max(L, last[c] + 1)
+          last[c] = R
+          best = max(best, R - L + 1)
+        return best
+        \`\`\`
   - **At most K distinct** (\`sliding_window_at_most_k_distinct\`)
-    - Pseudo-signature: \`at_most_k_distinct(s, k) -> max_len\` (extend: “exactly K” via at_most(K)-at_most(K-1))
-    - Anchor: 🔥 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
-      - Each step guarantees when invalid, advancing \`L\` discards prefixes that cannot become valid without removing elements (monotone distinct-count under removals).
-  - **Frequency cover / exact match** (\`sliding_window_freq_cover\`)
-    - Pseudo-signature: \`min_cover(s, need) -> (L,R)\` (extend: track satisfied counts)
-    - Minimize cover: 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
-      - Note: Target $O(n)$; memory $O(σ)$; use array when alphabet bounded.
-      - Each step guarantees when window covers \`need\`, shrinking \`L\` discards left chars because any larger window with same \`R\` is never better for “minimize”.
-    - Fixed-size exact match (exists): ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
-      - Each step guarantees any window not of length \`|p|\` is discarded because exact-match predicate depends on fixed length.
-    - Fixed-size exact match (collect all): ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
-      - Each step guarantees shifting by one discards previous start because only the current fixed window can match at that start.
+    - Anchor: 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
+    - Template
+      - \`\`\`text
+        freq = map(); distinct = 0; L = 0; best = 0
+        for R in [0..n-1]:
+          add s[R]; if freq[s[R]] becomes 1: distinct++
+          while distinct > K:
+            remove s[L]; if freq[s[L]] becomes 0: distinct--
+            L++
+          best = max(best, R - L + 1)
+        return best
+        \`\`\`
+  - **Frequency contracts (do not mix)**
+    - Warning: **Cover** (≥ need) is a variable-window “shrink-while-valid” state machine; **Exact match** (= need) is a fixed-window state machine. Mixing counters/loops causes bugs.
+    - **Cover contract (≥ need)** (\`sliding_window_freq_cover\`)
+      - Minimize cover: 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
+      - Note: array \`[128]/[256]\` is faster than dict for ASCII; dict needed for unicode/general tokens.
+      - Template
+        - \`\`\`text
+          need = counts(t); have = map(); satisfied = 0; required = number_of_keys(need)
+          L = 0; best = none
+          for R in [0..n-1]:
+            add s[R] into have
+            if s[R] in need and have[s[R]] == need[s[R]]: satisfied++
+            while satisfied == required:
+              update best using [L..R]
+              if s[L] in need and have[s[L]] == need[s[L]]: satisfied--
+              remove s[L] from have
+              L++
+          return best
+          \`\`\`
+    - **Exact-match contract (= need)** (\`sliding_window_fixed_size\`)
+      - Fixed-size exact match (exists): ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
+      - Fixed-size exact match (collect all): ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
+      - Template
+        - \`\`\`text
+          need = counts(p); have = empty counts
+          matched = 0; required = number_of_keys(need)
+          L = 0
+          for R in [0..n-1]:
+            add s[R] into have; update matched if have hits need exactly
+            if window_size > len(p):
+              remove s[L] from have; update matched if crossing equality
+              L++
+            if window_size == len(p) and matched == required:
+              record match (or return true)
+          \`\`\`
   - **Cost bounded / sum constraint** (\`sliding_window_cost_bounded\`)
-    - Pseudo-signature: \`min_len_sum_at_least(nums_nonneg, target) -> min_len\`
-    - Anchor: 🔥 [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
-      - Note: Requires all numbers **positive or non-negative** for correctness; if negatives exist, use **PrefixSumRangeQuery** (+ monotone deque / hashmap). Canonical “window fails” example: [LeetCode 862](https://leetcode.com/problems/find-and-replace-in-string/description/)
-      - Each step guarantees once \`sum >= target\`, advancing \`L\` discards starts that only make the window longer for the same \`R\`.
-
+    - Anchor: ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
+    - Note: this shrinking-window method requires all numbers to be **non-negative** (as in [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)). With negative numbers, validity is not monotone in \`L\` and sliding window fails; use prefix sums + monotone deque / binary search variants instead.
+    - Template
+      - \`\`\`text
+        L = 0; sum = 0; best = +inf
+        for R in [0..n-1]:
+          sum += nums[R]
+          while sum >= target:
+            best = min(best, R - L + 1)
+            sum -= nums[L]; L++
+        return best if best != +inf else 0
+        \`\`\`
+- **Common compositions**
+  - SubstringSlidingWindow + HeapTopK (top-k within moving window; streaming analytics)
+  - SubstringSlidingWindow + PrefixSumRangeQuery (windowed feature extraction + downstream counts)
 - **Common interview pitfalls**
   - “minimize window” needs: **while valid → shrink** (not just one shrink)
   - “exact match” works best with: **fixed window** + \`matched\` counter
 
-- **Where this shows up at work**
-  - rate limiting (rolling windows); log/session analytics; dedupe within recent horizon
+---
+
+## 4) Binary Search Boundary (BinarySearchBoundary) 🔎
+- **Where you’ll see this at work**
+  - Feature flags/rollouts: first version where regression appears; capacity planning via feasibility checks
+  - Tuning thresholds: minimum viable parameter under monotone predicate
+- **Kernel mini-spec**
+  - **Signature**: sorted array \`A\` or predicate \`P(x)\` over an ordered domain; output boundary index/value
+  - **Required invariant**: search interval maintains “answer exists within bounds” under monotone predicate
+  - **State model**: \`lo, hi\` bounds; \`mid\`; predicate \`P(mid)\`; optional best-so-far
+  - **Complexity envelope**: $O(\\log n)$ evaluations for index search; $O(\\log V)$ for answer-space with domain size \`V\`
+  - **Failure modes / when NOT to use**: predicate not monotone; off-by-one boundaries; mid not progressing
+- **Complexity template**
+  - Time $O(\\log n)$ (index) or $O(\\log V)$ (answer-space); space $O(1)$
+- **Boundary templates**
+  - \`first_true\` (\`binary_search_first_true\`) / \`lower_bound\`
+    - \`\`\`text
+      // find smallest x in [lo, hi) with P(x) == true
+      while lo < hi:
+        mid = lo + (hi - lo)//2
+        if P(mid): hi = mid
+        else: lo = mid + 1
+      return lo
+      \`\`\`
+  - \`last_true\` (\`binary_search_last_true\`)
+    - \`\`\`text
+      // find largest x in [lo, hi) with P(x) == true; return lo-1 if none
+      while lo < hi:
+        mid = lo + (hi - lo)//2
+        if P(mid): lo = mid + 1
+        else: hi = mid
+      return lo - 1
+      \`\`\`
+  - \`upper_bound\` (first \`> key\`) / \`lower_bound\` (first \`≥ key\`) mental model
+    - “Pick the first index where predicate flips from false→true.”
+- **Answer-space search** (\`binary_search_on_answer\`)
+  - Monotone feasibility checklist
+    - Define \`feasible(x)\` clearly
+    - Prove: if \`feasible(x)\` then \`feasible(x')\` for all \`x' ≥ x\` (or ≤ x)
+    - Choose search for min feasible / max feasible accordingly
+  - Template (min feasible)
+    - \`\`\`text
+      lo = min_possible; hi = max_possible
+      while lo < hi:
+        mid = lo + (hi - lo)//2
+        if feasible(mid): hi = mid
+        else: lo = mid + 1
+      return lo
+      \`\`\`
+  - Anchors
+    - 🔥 [LeetCode 875](https://leetcode.com/problems/longest-mountain-in-array/description/)(not in provided solutions list)*
+    - 🔥 [LeetCode 1011](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/description/)(not in provided solutions list)*
+- **Rotated array search** (\`binary_search_rotated\`)
+  - Anchor set
+    - 🔥 [LeetCode 33](https://leetcode.com/problems/search-in-rotated-sorted-array/description/)(not in provided solutions list)*
+    - 🔥 [LeetCode 153](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)(not in provided solutions list)*
+  - Template
+    - \`\`\`text
+      lo = 0; hi = n-1
+      while lo <= hi:
+        mid = (lo + hi)//2
+        if A[mid] == target: return mid
+        if A[lo] <= A[mid]:  // left sorted
+          if A[lo] <= target < A[mid]: hi = mid - 1
+          else: lo = mid + 1
+        else:               // right sorted
+          if A[mid] < target <= A[hi]: lo = mid + 1
+          else: hi = mid - 1
+      return -1
+      \`\`\`
+- **Binary search on partition index (advanced hybrid)**
+  - 🧊 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)(partition-by-count invariant)==
+    - Invariant: choose \`i\` in A, \`j\` in B so left side has \`(m+n+1)//2\` elements and \`maxLeft ≤ minRight\`
+- **Common compositions**
+  - BinarySearchBoundary + GridBFSMultiSource (outer binary search on time; inner feasibility via BFS/DFS)
+  - BinarySearchBoundary + HeapTopK (search threshold; validate by counting via heap/selection)
+- **Common interview pitfalls**
+  - Wrong half-open interval leading to infinite loops
+  - Predicate depends on mutable global state (must be reset per check)
 
 ---
 
-## 5) Binary Search Boundary (BinarySearchBoundary) 🔥
-- **Contract (standard)**
-  - **Inputs**: sorted array / implicit monotone predicate over index or answer-space
-  - **State**: \`lo\`, \`hi\` bounds; predicate \`P(mid)\`; best-so-far boundary
-  - **Invariant**: true region and false region remain separated by maintained bounds
-  - **Progress rule**: shrink \`[lo, hi]\` each iteration ⇒ terminates in $O(\\log n)$
-  - **Complexity knobs**: predicate cost; integer overflow in mid; inclusive/exclusive boundaries
-  - **Common failure modes**
-    - off-by-one (wrong loop condition / return)
-    - predicate not monotone (binary search invalid)
-
-- **Templates (boundary)**
-  - \`first_true(lo, hi):\` find smallest \`i\` s.t. \`P(i)=true\`
-  - \`last_true(lo, hi):\` find largest \`i\` s.t. \`P(i)=true\`
-  - \`lower_bound(x):\` first index with \`A[i] >= x\`
-  - \`upper_bound(x):\` first index with \`A[i] > x\`
-
-- **Templates (answer-space search)**
-  - \`min_x_s.t._feasible(x)\` where \`feasible(x)\` is monotone (false...false,true...true)
-  - Composition: **BinarySearchBoundary + FeasibilityCheck** 🧩
-
-- **Representative problems**
-  - [LeetCode 33](https://leetcode.com/problems/search-in-rotated-sorted-array/description/)
-  - [LeetCode 34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
-  - [LeetCode 153](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)
-  - [LeetCode 162](https://leetcode.com/problems/find-peak-element/description/)
-  - [LeetCode 875](https://leetcode.com/problems/longest-mountain-in-array/description/)
-  - [LeetCode 1011](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/description/)
-  - 🧩 🔥 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/)(partition-by-count invariant; binary search on partition index, not a merge)*
-    - Note: Target $O(\\log \\min(m,n))$; define invariant “left partition has k elements and all left ≤ all right”.
-
-- **Where this shows up at work**
-  - tuning thresholds (SLA/SLO); capacity planning via feasibility; “first failure point” diagnostics
-
----
-
-## 6) Tree Traversal (TreeTraversalDFS/BFS) 🌳 🔥
-- **Contract (standard)**
-  - **Inputs**: tree root; neighbor access (children)
-  - **State**: recursion stack / explicit stack; (BFS) queue + level markers
-  - **Invariant**: DFS: stack represents current path; BFS: queue contains frontier
-  - **Progress rule**: visit each node once; push children; terminate when structure exhausted
-  - **Complexity knobs**: recursion depth vs iterative; memory = height (DFS) or width (BFS)
-  - **Common failure modes**
-    - recursion depth overflow on skewed trees
-    - missing base cases / null checks
-
-- **Pseudo-signatures (API surface)**
-  - \`dfs(node, enter, exit)\` / \`dfs_iterative(stack, on_pop)\`
-  - \`bfs(root, on_level(level_nodes))\`
-  - Extension points: preorder/inorder/postorder; accumulate path; parent pointers
-
-- **Representative problems**
-  - [LeetCode 102](https://leetcode.com/problems/binary-tree-level-order-traversal/description/)
-  - [LeetCode 104](https://leetcode.com/problems/maximum-depth-of-binary-tree/description/)
-  - [LeetCode 236](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
-  - [LeetCode 199](https://leetcode.com/problems/binary-tree-right-side-view/description/)
-  - [LeetCode 98](https://leetcode.com/problems/validate-binary-search-tree/description/)
-
-- **Where this shows up at work**
-  - traversing ASTs/config trees; dependency trees; hierarchical aggregations
+## 5) Tree Traversal (TreeTraversalDFS + TreeTraversalBFS) 🌳
+- **Where you’ll see this at work**
+  - Hierarchies: org charts, filesystem trees, DOM/AST traversal
+  - Aggregations: compute metrics bottom-up; validate constraints top-down
+- **Kernel mini-spec**
+  - **Signature**: \`root\` node; output aggregate value, boolean, list per level, or path-based result
+  - **Required invariant**: DFS preserves call-stack path; BFS processes nodes in non-decreasing depth
+  - **State model**: recursion stack (DFS) / queue (BFS); optional parent pointers
+  - **Complexity envelope**: visit each node once ⇒ $O(n)$ time; space $O(h)$ DFS / $O(w)$ BFS
+  - **Failure modes / when NOT to use**: recursion depth overflow (use iterative); missing base cases / null checks
+- **Complexity template**
+  - Time $O(n)$; space $O(h)$ (DFS) or $O(w)$ (BFS)
+- **Patterns**
+  - **DFS (recursive)** (\`tree_dfs_recursive\`)
+    - Anchors
+      - 🔥 [LeetCode 104](https://leetcode.com/problems/maximum-depth-of-binary-tree/description/)(not in provided solutions list)*
+      - 🔥 [LeetCode 236](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)(not in provided solutions list)*
+    - Template
+      - \`\`\`text
+        def dfs(node):
+          if node == null: return base
+          left = dfs(node.left)
+          right = dfs(node.right)
+          return combine(node, left, right)
+        return dfs(root)
+        \`\`\`
+  - **BFS (level-order)** (\`bfs_level_order\`)
+    - Anchor: 🔥 [LeetCode 102](https://leetcode.com/problems/binary-tree-level-order-traversal/description/)(not in provided solutions list)*
+    - Template
+      - \`\`\`text
+        q = queue([root]); ans = []
+        while q not empty:
+          level = []
+          repeat size(q) times:
+            node = pop_front(q)
+            level.append(node.val)
+            push children
+          ans.append(level)
+        return ans
+        \`\`\`
+- **Common compositions**
+  - TreeTraversalDFS + BacktrackingExploration (path enumeration with constraints)
+  - TreeTraversalBFS + BinarySearchBoundary (search minimal depth satisfying predicate)
+- **Common interview pitfalls**
+  - Forgetting to return/propagate values in recursion
+  - Using BFS but forgetting fixed layer size (mixing levels)
 
 ---
 
-## 7) Graph Traversal + Topological Sort (GraphTraversalBFS/DFS + TopologicalSort) 🌐 🔥
-- **Contract (standard)**
-  - **Inputs**: graph neighbors function; start nodes; (Topo) indegree counts
-  - **State**: visited set; queue/stack; (Topo) queue of indegree-0
-  - **Invariant**: visited prevents reprocessing; BFS layers give shortest hops (unweighted)
-  - **Progress rule**: pop frontier, push unvisited neighbors; topo removes indegree-0 nodes
-  - **Complexity knobs**: adjacency representation; recursion vs stack
-  - **Common failure modes**
-    - forgetting visited (infinite loops)
-    - topo: not decrementing indegree correctly; not checking processed count
-
-- **Pseudo-signatures (API surface)**
-  - \`graph_bfs(starts, neighbors, on_visit)\`
-  - \`graph_dfs(starts, neighbors, on_enter, on_exit)\`
-  - \`toposort(nodes, edges) -> order or fail\`
-  - Extension points: multi-source init; parent tracking; component counting
-
-- **Representative problems**
-  - [LeetCode 133](https://leetcode.com/problems/clone-graph/description/)
-  - [LeetCode 200](https://leetcode.com/problems/number-of-islands/description/)
-  - [LeetCode 207](https://leetcode.com/problems/course-schedule/description/)
-  - [LeetCode 417](https://leetcode.com/problems/pacific-atlantic-water-flow/description/)
-
-- **Where this shows up at work**
-  - dependency graphs; scheduling; reachability/impact analysis
+<!-- markmap: fold -->
+## 6) Graph BFS/DFS + Grid BFS (GridBFSMultiSource) 🌊
+- **Where you’ll see this at work**
+  - Propagation/latency from multiple regions; shortest-time spread simulations
+  - Grid-like maps and multi-source distance transforms
+- **Kernel mini-spec**
+  - **Signature**: grid \`m×n\` with sources/targets/obstacles; output minimum time/steps or final state
+  - **Required invariant**: level-order expansion ensures first time reaching a cell is via a shortest path in an unweighted graph
+  - **State model**: queue of frontier; visited set/mark; distance/time array or in-place timestamps
+  - **Complexity envelope**: each cell enqueued/dequeued at most once ⇒ $O(mn)$ time, $O(mn)$ space
+  - **Failure modes / when NOT to use**: weighted edges (use Dijkstra); marking visited too late causing multiple enqueues
+- **Complexity template**
+  - Time $O(V+E)$ (grid: $O(mn)$); space $O(V)$
+- **Core idea**: push all sources, expand layer by layer (time = levels)
+- **Invariant (shortest-by-level)**
+  - When a cell is dequeued, its recorded time/distance is minimal among all possible paths from any source (unweighted edges). Level-order traversal corresponds to increasing distance.
+  - Mark visited upon **enqueue** (not dequeue) to avoid multiple enqueues.
+- **Anchor**
+  - 🔥 [LeetCode 994](https://leetcode.com/problems/prison-cells-after-n-days/description/)
+- **Engineering checklist**
+  - queue init with all sources
+  - count fresh/remaining targets
+  - process BFS by levels to count minutes
+- **Common compositions**
+  - GridBFSMultiSource + BinarySearchBoundary (time feasibility variants)
+  - GridBFSMultiSource + UnionFindConnectivity (connectivity vs shortest-time trade-offs)
+- **Common interview pitfalls (examples)**
+  - Forgetting to enqueue all initial sources (multi-source correctness)
+  - Wrong minute counting (increment per level, not per node)
 
 ---
 
-## 8) Heap / Selection (HeapTopK + Quickselect) ⛰️ ⭐
-- **Contract (standard)**
-  - **Inputs**: iterable; comparator/key; target \`k\`
-  - **State**: heap of size \`k\` (min-heap for top-k largest); or partition indices for quickselect
-  - **Invariant**: heap contains current best \`k\` candidates; quickselect partition places pivot correctly
-  - **Progress rule**: heap: push/pop maintains size \`k\`; quickselect: partition shrinks search side
-  - **Complexity knobs**: \`k\`; stream vs batch; stability requirements
-  - **Common failure modes**
-    - wrong heap polarity (min vs max)
-    - quickselect pivot choice causing worst-case
-
-- **Pseudo-signatures (API surface)**
-  - \`heap_top_k(stream, k, key=None) -> items\`
-  - \`quickselect(arr, k, key=None, randomized=True) -> kth\`
-  - Extension points: stable output, streaming updates, two-heaps median
-
+## 7) Heap / Selection (HeapTopK + Quickselect) ⛰️
+- **Where you’ll see this at work**
+  - Trending queries, telemetry heavy hitters, priority scheduling
+  - Streaming medians/percentiles (two-heaps median; approximate alternatives)
+- **Kernel mini-spec**
+  - **Signature**: stream/array \`nums\`, parameter \`k\`; output kth/top-k/median
+  - **Required invariant**: heap maintains extremum at top; size constraint encodes “kept set”
+  - **State model**: min-heap of size \`k\` (top-k largest) or max-heap analog; for median, two heaps partition lower/upper halves
+  - **Complexity envelope**: per insertion $O(\\log k)$ for bounded heap; build heap $O(n)$ then pops $O(k\\log n)$ or incremental
+  - **Failure modes / when NOT to use**: if you need full sort order; if k≈n and sorting is simpler; quickselect may be faster in-memory
+- **Complexity template**
+  - Heap top-k: $O(n \\log k)$ time, $O(k)$ space; Quickselect: avg $O(n)$, worst $O(n^2)$ unless randomized
 - **Kth element**
-  - 🧩 Quickselect / partition: 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
-    - Quickselect: **expected** $O(n)$ with randomization, **worst-case** $O(n^2)$; space $O(1)$ iterative (or $O(\\log n)$ recursion).
-    - Each step guarantees one side of the partition can be discarded because pivot is placed in its final rank position.
-  - Heap alternative (especially streaming / stability): ⭐ [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
-    - Heap: $O(n \\log k)$ time; space $O(k)$.
-    - Each step guarantees elements outside the size-\`k\` heap can be discarded because they cannot enter the top-k given current heap minimum.
-
-- **Choose X when…**
-  - **Quickselect**: batch array, in-place, expected linear; OK with worst-case risk.
-  - **Heap**: streaming data or need incremental updates; simpler correctness; predictable $O(n \\log k)$.
-
-- **Where this shows up at work**
-  - top-N dashboards; percentile approximations (exact kth for small data); priority scheduling queues
-
----
-
-## 9) Merging Sorted Sequences (MergeSortedSequences + KWayMerge) 🔗 ⭐
-- **Contract (standard)**
-  - **Inputs**: sorted sequences/iterators; comparator/key; output mode (stream vs materialize)
-  - **State**: two pointers (\`i\`,\`j\`) for 2-way; heap of heads for k-way; output buffer
-  - **Invariant**: output prefix is globally sorted; next chosen item is smallest available head
-  - **Progress rule**: advance the pointer/iterator of the chosen head; terminates after consuming all items
-  - **Complexity knobs**: \`k\`; stability requirement; memory for output
-  - **Common failure modes**
-    - forgetting to advance pointer after output
-    - mishandling empty lists / null heads
-
-- **Pseudo-signatures (API surface)**
-  - \`merge_two(a, b, key=None) -> merged\`
-  - \`kway_merge(iterators, key=None, stable=True, mode="stream|list")\`
-  - Extension points: stable tie-breaking, lazy iteration, dedup merges
-
-- **Two sorted streams (two pointers)**
-  - Linked list merge: ⭐ [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/)
-    - Each step guarantees the smaller head node can be emitted because all remaining nodes in that list are ≥ its head.
-  - Array merge (often from ends): ⭐ [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/)
-    - Each step guarantees placing the current max at the end is safe because it will never need to move again.
-  - Merge-from-ends trick: ⭐ [LeetCode 977](https://leetcode.com/problems/distinct-subsequences-ii/description/)
-    - Each step guarantees one end index can be discarded because the maximum absolute value must be at an end of a sorted array.
-
-- **K-way merge**
-  - Heap-based $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
-    - Each step guarantees the heap-min head can be output because it is the smallest among all list heads.
-  - Divide-and-conquer $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
-    - Each merge step guarantees sortedness is preserved because it composes correct 2-way merges.
-
-- **Choose X when… (Merge k lists)**
-  - **Heap**: streaming incremental output; simpler implementation; stable incremental merge.
-  - **Divide-and-conquer**: often better constants in batch; no heap overhead; clean recursion/iteration over pairs.
-
-- **Where this shows up at work**
-  - merging sorted event streams; index segment merges (LSM/IR systems); external sort pipelines
+  - Quickselect / partition: 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
+    - Note: average $O(n)$ time, worst-case $O(n^2)$ unless randomized/median-of-medians; $O(1)$ extra space (in-place).
+  - Heap alternative (especially streaming / stability): 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
+    - Note: $O(n \\log k)$ time, $O(k)$ space; better for streaming and when $k \\ll n$.
+- **Decision note**
+  - **[LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)**: Quickselect (avg $O(n)$; must guard worst-case) vs Heap ($O(n\\log k)$; streaming-friendly)
+- **Common compositions**
+  - HeapTopK + SubstringSlidingWindow (top-k within moving window)
+  - HeapTopK + KWayMerge (merge streams and maintain top-k)
+- **Common interview pitfalls (examples)**
+  - Not randomizing pivot for quickselect (adversarial worst-case)
+  - Mishandling duplicates around pivot (use 3-way partition if needed)
 
 ---
 
-## 10) Partitioning / In-Place Compaction (TwoPointerPartition) 🚧 ⭐
-- **Contract (standard)**
-  - **Inputs**: mutable array; classification predicate(s); desired region order
-  - **State**: region pointers (\`low/mid/high\` or \`write/read\`); optional counts
-  - **Invariant**: array is divided into labeled regions with precise meanings
-  - **Progress rule**: each step shrinks the unknown region; terminates when unknown is empty
-  - **Complexity knobs**: stable vs unstable; number of partitions; swap cost
-  - **Common failure modes**
-    - wrong pointer updates after swap (especially \`mid/high\`)
-    - assuming stability when using swaps
+## 8) Monotonic Stack (MonotonicStack) 🧱
+- **Where you’ll see this at work**
+  - Next-greater queries in monitoring; skyline/range dominance computations
+  - Histogram-like capacity/area computations
+- **Kernel mini-spec**
+  - **Signature**: array \`A\`; output next greater/smaller indices/values or maximal area
+  - **Required invariant**: stack maintains monotone order of values (or indices) so each element is pushed/popped once
+  - **State model**: stack of indices; sentinel index to flush at end
+  - **Complexity envelope**: each index pushed/popped at most once ⇒ $O(n)$ time; stack $O(n)$ space
+  - **Failure modes / when NOT to use**: wrong strict vs non-strict inequality; forgetting sentinel/flush; duplicates handling
+- **Complexity template**
+  - Time $O(n)$ amortized; space $O(n)$
+- **Anchors**
+  - 🔥 [LeetCode 739](https://leetcode.com/problems/daily-temperatures/description/)(not in provided solutions list)*
+  - 🔥 [LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)(not in provided solutions list)*
+- **Templates**
+  - Next greater element
+    - \`\`\`text
+      st = empty stack of indices
+      for i in [0..n-1]:
+        while st not empty and A[st.top] < A[i]:
+          j = st.pop()
+          ans[j] = i
+        st.push(i)
+      \`\`\`
+  - Histogram max rectangle (with sentinel)
+    - \`\`\`text
+      st = empty stack
+      for i in [0..n]:               // treat A[n]=0 sentinel
+        cur = A[i] if i<n else 0
+        while st not empty and A[st.top] > cur:
+          h = A[st.pop()]
+          left = st.top if st not empty else -1
+          width = i - left - 1
+          best = max(best, h * width)
+        st.push(i)
+      return best
+      \`\`\`
+- **Common compositions**
+  - MonotonicStack + PrefixSumRangeQuery (range contributions / sum of subarray mins/maxes)
+- **Common interview pitfalls**
+  - Using \`<\` vs \`<=\` changes duplicate behavior; must match problem definition
 
-- **Pseudo-signatures (API surface)**
-  - \`writer_compact(arr, keep(x)) -> new_len\` (stable)
-  - \`partition_2way(arr, pred) -> boundary\`
-  - \`dutch_flag(arr, classify={0,1,2})\`
-  - Extension points: stability requirement; k-way generalization; in-place vs extra buffer
+---
 
+## 9) Backtracking Exploration (BacktrackingExploration) 🧠
+- **Where you’ll see this at work**
+  - Constraint solvers, configuration search, rule-based generation (small domains)
+  - Enumerating candidate solutions with pruning
+- **Kernel mini-spec**
+  - **Signature**: candidate set/options; output list of solutions or count
+  - **Required invariant**: state exactly matches current path (no “ghost marks”)
+  - **State model**: recursion stack; \`path\`; \`used[]\` or \`start\` index; constraint sets (cols/diags)
+  - **Complexity envelope**: $O(\\text{branch}^{\\text{depth}})$ time; recursion depth $O(\\text{depth})$; output-size lower bound
+  - **Failure modes / when NOT to use**: large unconstrained search space (need DP/greedy); forgetting rollback; excessive copying
+- **Complexity template**
+  - Time $O(\\text{branch}^{\\text{depth}})$ (often output-dominated); space $O(\\text{depth})$ + output
+- **Core rhythm**: **Choose → Explore → Unchoose**
+- **Invariant**: state exactly matches current path (no “ghost marks”)
+- **Decision-tree shapes**
+  - **Permutation** (used[])
+    - ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/)
+    - With duplicates (sort + same-level skip): 🧊 [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/)
+    - Template
+      - \`\`\`text
+        used = [false]*n; path = []
+        def dfs():
+          if len(path) == n: emit(path); return
+          for i in [0..n-1]:
+            if used[i]: continue
+            used[i] = true; path.push(A[i])
+            dfs()
+            path.pop(); used[i] = false
+        dfs()
+        \`\`\`
+  - **Subset** (start index)
+    - ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/)
+    - With duplicates (sort + same-level skip): 🧊 [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/)
+    - Template
+      - \`\`\`text
+        path = []
+        def dfs(i):
+          emit(path)
+          for j in [i..n-1]:
+            if j>i and A[j]==A[j-1]: continue
+            path.push(A[j])
+            dfs(j+1)
+            path.pop()
+        dfs(0)
+        \`\`\`
+  - **Combination / fixed size** (start index + length bound)
+    - ⭐ [LeetCode 77](https://leetcode.com/problems/combinations/description/)
+    - Template
+      - \`\`\`text
+        path=[]
+        def dfs(start):
+          if len(path)==k: emit(path); return
+          for x in [start..N]:
+            path.push(x)
+            dfs(x+1)
+            path.pop()
+        dfs(1)
+        \`\`\`
+  - **Target sum search**
+    - Reuse allowed: ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/)
+    - No reuse + duplicates: ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/)
+    - Fixed count + bounded domain: 🧊 [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/)
+    - Template (reuse-allowed)
+      - \`\`\`text
+        path=[]
+        def dfs(start, remain):
+          if remain==0: emit(path); return
+          for i in [start..n-1]:
+            if A[i] > remain: continue/prune if sorted
+            path.push(A[i])
+            dfs(i, remain - A[i])   // reuse allowed
+            path.pop()
+        dfs(0, target)
+        \`\`\`
+  - **Constraint satisfaction**
+    - ⭐ [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
+    - 🧊 [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/)
+    - Template
+      - \`\`\`text
+        cols=set(); d1=set(); d2=set()
+        def dfs(r):
+          if r==n: emit(); return
+          for c in [0..n-1]:
+            if c in cols or (r-c) in d1 or (r+c) in d2: continue
+            add(c,r-c,r+c)
+            dfs(r+1)
+            remove(c,r-c,r+c)
+        dfs(0)
+        \`\`\`
+  - **String segmentation**
+    - 🧊 [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/)(4 segments + length bounds prune)*
+    - ⭐ [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/)(optional DP precompute for palindrome checks)*
+    - Decision note: **[LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/)** precompute palindrome DP $O(n^2)$ to reduce repeated checks; better for longer strings.
+    - Template
+      - \`\`\`text
+        path=[]
+        def dfs(i):
+          if i==n: emit(path); return
+          for j in [i..n-1]:
+            if not is_valid(i,j): continue
+            path.push(s[i..j])
+            dfs(j+1)
+            path.pop()
+        dfs(0)
+        \`\`\`
+  - **Grid path search**
+    - ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/)(visited mark/unmark)*
+    - Template
+      - \`\`\`text
+        def dfs(r,c,idx):
+          if idx==len(word): return true
+          if out_of_bounds or visited or grid[r][c]!=word[idx]: return false
+          visited[r][c]=true
+          ok = any(dfs(nr,nc,idx+1) for neighbors)
+          visited[r][c]=false
+          return ok
+        \`\`\`
+- **Common compositions**
+  - BacktrackingExploration + DP memo (top-down caching) for segmentation/partitioning
+  - BacktrackingExploration + BinarySearchBoundary (search parameter; validate via backtracking for small domains)
+- **Common interview pitfalls**
+  - Not rolling back state (visited/sets/path)
+  - Over-copying lists at each recursion step (time/memory blowups)
+
+---
+
+## 10) Linked List Manipulation (pointer surgery) 🔧
+- **Where you’ll see this at work**
+  - In-place transformations; streaming pipelines; pointer-safe rewiring
+- **Kernel mini-spec**
+  - **Signature**: \`head\` of linked list; output new head or modified list
+  - **Required invariant**: preserve reachability; never lose remaining list (\`next\`) while rewiring
+  - **State model**: \`prev/curr/next\`, dummy head, group boundaries
+  - **Complexity envelope**: typically $O(n)$ time, $O(1)$ extra space
+  - **Failure modes / when NOT to use**: forgetting to store \`next\`; mishandling head changes; group boundary errors
+- **Complexity template**
+  - Time $O(n)$; space $O(1)$ extra
+- Arithmetic on lists
+  - ⭐ [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/)
+- In-place reversal in groups
+  - ⭐ [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
+- **Common compositions**
+  - Linked list manipulation + HeapTopK (stream nodes by value)
+- **Common interview pitfalls (examples)**
+  - Not using dummy head (complex head-edge handling)
+  - Reversing fewer than \`k\` nodes (must check availability first)
+
+---
+
+## 11) Partitioning (TwoPointerPartition) 🚧
+- **Where you’ll see this at work**
+  - In-place bucketing (flags, categories), quickselect pipelines, unstable partition stages
+- **Kernel mini-spec**
+  - **Signature**: array \`A\`; output reordered array (in-place) and/or pivot index / partition boundary
+  - **Required invariant**: maintain disjoint regions (good/bad/unknown) with correct pointer movement
+  - **State model**: pointers delimiting regions (\`low, mid, high\` or \`i, j\`); predicate “good(x)”
+  - **Complexity envelope**: $O(n)$ time, $O(1)$ extra space
+  - **Failure modes / when NOT to use**: stability required (use reader/writer); incorrect unknown-region handling
+- **Complexity template**
+  - Time $O(n)$; space $O(1)$
+- **Note on stability**
+  - Writer pattern is a **2-region partition with stability**; this section is multi-region / swap-based (typically **unstable**).
 - **Patterns**
   - **Dutch flag (3-way partition)** (\`dutch_flag_partition\`)
-    - Pseudo-signature: \`dutch_flag(A, values={0,1,2}) -> A\`
-    - Region invariant:
-      - \`A[0..low-1] = 0\`, \`A[low..mid-1] = 1\`, \`A[mid..high] = unknown\`, \`A[high+1..n-1] = 2\`
-      - Loop: while \`mid <= high\`, maintain regions after each swap/update
     - Anchor: 🔥 [LeetCode 75](https://leetcode.com/problems/sort-colors/description/)
+    - Loop invariant: maintain  
+      \`A[0..low-1]=0\`, \`A[low..mid-1]=1\`, \`A[mid..high]=unknown\`, \`A[high+1..n-1]=2\`.
+    - Template
+      - \`\`\`text
+        low=0; mid=0; high=n-1
+        while mid <= high:
+          if A[mid]==0: swap(A[low],A[mid]); low++; mid++
+          elif A[mid]==1: mid++
+          else: swap(A[mid],A[high]); high--
+        \`\`\`
   - **Two-way partition** (\`two_way_partition\`)
     - ⭐ [LeetCode 905](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/description/)
-    - ⭐ [LeetCode 922](https://leetcode.com/problems/possible-bipartition/description/)
-  - **Writer compaction (same-direction reader/writer)**
-    - Deduplicate
-      - ⭐ [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
-      - ⭐ [LeetCode 80](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/)
-    - Remove elements
-      - ⭐ [LeetCode 27](https://leetcode.com/problems/remove-element/description/)
-    - Compact / stable filtering
-      - ⭐ [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/)
-
-- **Where this shows up at work**
-  - compaction in ETL; stable filtering; bucketing/routing partitions
+    - 🧊 [LeetCode 922](https://leetcode.com/problems/possible-bipartition/description/)
+    - Loop invariant: maintain  
+      \`A[0..i-1]\` are ‘good’, \`A[j+1..n-1]\` are ‘bad’, \`i ≤ j\` unknown.
+    - Template
+      - \`\`\`text
+        i=0; j=n-1
+        while i <= j:
+          if good(A[i]): i++
+          elif not good(A[j]): j--
+          else: swap(A[i],A[j]); i++; j--
+        \`\`\`
+- **Common compositions**
+  - TwoPointerPartition + Quickselect (selection pipeline)
+- **Common interview pitfalls**
+  - Off-by-one in \`mid <= high\` (Dutch flag)
+  - Stability assumptions (swap-based partition breaks relative order)
 
 ---
 
-## 11) Fast–Slow Pointers (FastSlowPointers) 🐢🐇 ⭐
-- **Contract (standard)**
-  - **Inputs**: linked structure or function \`f(x)\` defining next; head/start
-  - **State**: \`slow\`, \`fast\` pointers
-  - **Invariant**: after \`t\` iterations, \`slow\` moved \`t\` steps, \`fast\` moved \`2t\`
-  - **Progress rule**: advance slow by 1 and fast by 2; if cycle exists they must meet; else fast hits null
-  - **Complexity knobs**: step function cost; loop termination conditions
-  - **Common failure modes**
-    - null checks for \`fast\` / \`fast.next\`
-    - mixing up phase-2 reset logic
-
+## 12) Fast–Slow Pointers (FastSlowPointers) 🐢🐇
+- **Where you’ll see this at work**
+  - Detecting cycles in iterative processes; midpoint splits for list algorithms
+- **Kernel mini-spec**
+  - **Signature**: linked list head or function \`f(x)\`; output cycle existence/start or midpoint
+  - **Required invariant**: fast moves 2x; if cycle exists, pointers meet; second phase aligns to cycle entry
+  - **State model**: \`slow\`, \`fast\`; optionally reset pointer for phase 2
+  - **Complexity envelope**: $O(n)$ time, $O(1)$ space
+  - **Failure modes / when NOT to use**: null checks for \`fast\` and \`fast.next\`; misunderstanding phase-2 proof
+- **Complexity template**
+  - Time $O(n)$; space $O(1)$
 - **Two phases (Floyd)**
   - Phase 1: detect cycle
-    - Correctness hook: after \`t\` iterations, slow moved \`t\`, fast moved \`2t\`; if a cycle exists, relative speed 1 ensures they meet inside the cycle.
   - Phase 2: find cycle start
-    - Correctness hook: reset one pointer to head and move both 1 step; equal distance-to-entry modulo cycle length ⇒ meet at entry.
-
 - **Problems**
   - Detect cycle: ⭐ [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/)
   - Find cycle start: ⭐ [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/)
   - Implicit cycle (function iteration): ⭐ [LeetCode 202](https://leetcode.com/problems/happy-number/description/)
   - Midpoint: ⭐ [LeetCode 876](https://leetcode.com/problems/hand-of-straights/description/)
-
-- **Where this shows up at work**
-  - detecting cycles in references; iterative function systems; stream dedupe with cycle checks
+- **Common compositions**
+  - FastSlowPointers + MergeSortedSequences (split list then merge: mergesort on list)
+- **Common interview pitfalls**
+  - Not checking \`fast\`/\`fast.next\` before stepping
+  - Returning meet point instead of entry point (phase 2 required)
 
 ---
 
-## 12) Backtracking Exploration (BacktrackingExploration) 🧠 ⭐
-- **Contract (standard)**
-  - **Inputs**: choice set; constraints; goal predicate; pruning rules
-  - **State**: current path; auxiliary sets (used/cols/diags); recursion depth
-  - **Invariant**: state exactly matches current path (no “ghost marks”)
-  - **Progress rule**: choose one option, recurse, unchoose; terminates by depth/choices exhaustion
-  - **Complexity knobs**: branching factor; pruning strength; output size lower bound
-  - **Common failure modes**
-    - forgetting to unchoose (state leak)
-    - insufficient pruning / wrong duplicate-skip level
+## 13) Merging Sorted Sequences (MergeSortedSequences + KWayMerge) 🔗
+- **Where you’ll see this at work**
+  - Merging sorted log segments (LSM compaction), external sort, shard result merging
+- **Kernel mini-spec**
+  - **Signature**: two sorted sequences (or k sequences); output merged sorted sequence
+  - **Required invariant**: output prefix is always the smallest remaining elements; pointers/heap reflect current heads
+  - **State model**: two pointers for 2-way; min-heap of current heads for k-way
+  - **Complexity envelope**: 2-way $O(m+n)$; k-way $O(N\\log k)$; extra space $O(1)$ to $O(k)$
+  - **Failure modes / when NOT to use**: inputs not sorted; forgetting stable tie-handling if required
+- **Complexity template**
+  - Two-way merge $O(m+n)$; k-way heap merge $O(N\\log k)$ with $O(k)$ heap space
+- **Two sorted streams (two pointers)**
+  - Linked list merge: 🔥 [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/)
+  - Array merge (often from ends): ⭐ [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/)
+  - Merge-from-ends trick: ⭐ [LeetCode 977](https://leetcode.com/problems/distinct-subsequences-ii/description/)
+- **K-way merge**
+  - Heap-based $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
+  - Divide-and-conquer $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/)
+  - Decision note ([LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/))
+    - Heap (simpler, streaming-friendly, $O(k)$ memory) vs Divide&Conquer (often faster constants when all lists are in memory)
+- **Common compositions**
+  - KWayMerge + HeapTopK (merge many streams but keep only top-k)
+  - MergeSortedSequences + BinarySearchBoundary (search partition/boundary on merged order statistics)
+- **Common interview pitfalls**
+  - Losing original pointers in linked list merges (store \`next\`)
+  - Off-by-one in merge-from-ends indices
 
-- **Pseudo-signature (API surface)**
-  - \`backtrack(state, choices(state), choose, unchoose, is_solution, prune) -> outputs\`
-  - Extension points: duplicate handling (sort + same-level skip), memoization cache key, iterative stack
+---
 
-- **Core rhythm**: **Choose → Explore → Unchoose**
+## 14) Union-Find Connectivity (UnionFindConnectivity) 🔌
+- **Where you’ll see this at work**
+  - Connectivity clustering, dedup of accounts/entities, network components
+- **Kernel mini-spec**
+  - **Signature**: \`n\` nodes + edges/relations; output component count or merged groups
+  - **Required invariant**: \`find(x)\` returns representative; \`union(a,b)\` merges sets
+  - **State model**: \`parent[]\`, \`rank/size[]\` with path compression
+  - **Complexity envelope**: near $O(1)$ amortized per op ($α(n)$)
+  - **Failure modes / when NOT to use**: directed reachability/shortest path (use BFS/DFS); forgetting path compression
+- **Complexity template**
+  - Time $O((n+m)·α(n))$; space $O(n)$
+- **Anchors**
+  - 🔥 [LeetCode 200](https://leetcode.com/problems/number-of-islands/description/)(UF alternative) *(not in provided solutions list)*
+  - 🔥 [LeetCode 721](https://leetcode.com/problems/accounts-merge/description/)(not in provided solutions list)*
+- **Template**
+  - \`\`\`text
+    init parent[i]=i, size[i]=1
+    def find(x):
+      while x != parent[x]:
+        parent[x] = parent[parent[x]]
+        x = parent[x]
+      return x
+    def union(a,b):
+      ra, rb = find(a), find(b)
+      if ra==rb: return
+      if size[ra] < size[rb]: swap
+      parent[rb]=ra; size[ra]+=size[rb]
+    \`\`\`
+- **Common compositions**
+  - UnionFindConnectivity + Grid traversal (map 2D cells to ids)
+- **Common interview pitfalls**
+  - Union by rank/size missing → can degrade constants significantly
 
-- **Decision-tree shapes**
-  - **Permutation** (used[])
-    - Time: \`O(n * n!)\` to output all permutations; stack \`O(n)\`
-    - ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/)
-    - With duplicates (sort + same-level skip): ⭐ [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/)
-  - **Subset** (start index)
-    - Time: \`O(n * 2^n)\`; stack \`O(n)\`
-    - ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/)
-    - With duplicates (sort + same-level skip): ⭐ [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/)
-  - **Combination / fixed size** (start index + length bound)
-    - ⭐ [LeetCode 77](https://leetcode.com/problems/combinations/description/)
-  - **Target sum search**
-    - Reuse allowed: ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/)
-    - No reuse + duplicates: ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/)
-    - Fixed count + bounded domain: ⭐ [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/)
-  - **Constraint satisfaction**
-    - N-Queens: exponential with strong pruning; state via \`cols\`, \`diag1\`, \`diag2\`
-    - 🔥 [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
-    - ⭐ [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/)
-  - **String segmentation**
-    - ⭐ [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/)(4 segments + length bounds prune)*
-    - ⭐ [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/)(optional DP precompute for palindrome checks)*
-  - **Grid path search**
-    - ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/)(visited mark/unmark)*
+---
 
-- **Choose X when…**
-  - recursion: simplest expression of choose/explore/unchoose
-  - iterative stack: avoid recursion depth limits in some languages / huge depth constraints
-
-- **Where this shows up at work**
-  - constraint solvers; generating configurations; search with pruning in schedulers
-
-<!-- markmap: fold -->
-## 13) BFS Wavefront on Grid (GridBFSMultiSource) 🌊 ⭐
-- **Contract (standard)**
-  - **Inputs**: grid; neighbor function (4-neighbor or 8-neighbor as specified); multiple sources
-  - **State**: queue; visited/state grid; remaining targets; time/levels counter
-  - **Invariant**: queue contains current frontier; each cell is enqueued at most once
-  - **Progress rule**: process BFS by levels; push valid neighbors; terminate when queue empty or goals met
-  - **Complexity knobs**: neighbor degree (4 vs 8); visited representation; grid mutation vs separate visited
-  - **Common failure modes**
-    - not marking visited at enqueue-time (duplicate enqueues)
-    - mixing level counting with per-node processing
-
-- **Core idea**: push all sources, expand layer by layer (time = levels)
-- **Model**: grid cells are vertices; edges connect 4-neighbors (or 8 if specified).
-- **Complexity**: $O(R \\* C)$ time and $O(R \\* C)$ space in worst case (queue + visited/state); each cell is enqueued at most once.
-
+## 15) Topological Sort (TopologicalSort) 🧩
+- **Where you’ll see this at work**
+  - Build systems, dependency graphs, course prerequisites, DAG scheduling
+- **Kernel mini-spec**
+  - **Signature**: DAG with \`n\` nodes + edges; output ordering or feasibility
+  - **Required invariant**: nodes with indegree 0 are safe to output next (Kahn’s)
+  - **State model**: indegree array; queue of zero-indegree nodes
+  - **Complexity envelope**: $O(V+E)$ time, $O(V+E)$ space
+  - **Failure modes / when NOT to use**: cycles (ordering impossible); forgetting to decrement indegrees
+- **Complexity template**
+  - Time $O(V+E)$; space $O(V+E)$
 - **Anchor**
-  - 🔥 [LeetCode 994](https://leetcode.com/problems/prison-cells-after-n-days/description/)
-    - Each step guarantees processed cells at minute \`t\` cannot be reached earlier because BFS explores in nondecreasing distance layers.
-- **Engineering checklist**
-  - queue init with all sources
-  - count fresh/remaining targets
-  - process BFS by levels to count minutes
-
-- **Where this shows up at work**
-  - multi-origin propagation (blast radius); distance-to-nearest facility; shortest hops on maps
-
----
-
-## 14) Monotonic Stack (MonotonicStack) 📚 🔥
-- **Contract (standard)**
-  - **Inputs**: array; comparator defining monotonicity; query type (next greater/smaller)
-  - **State**: stack of indices maintaining monotone property
-  - **Invariant**: stack values are monotone; unresolved indices remain on stack
-  - **Progress rule**: each index pushed once and popped once ⇒ $O(n)$
-  - **Complexity knobs**: strict vs non-strict comparisons; direction (left/right)
-  - **Common failure modes**
-    - wrong comparison (>= vs >) causing duplicates bugs
-    - forgetting to store indices (need distances)
-
-- **Pseudo-signature (API surface)**
-  - \`mono_stack(arr, cmp, on_pop(pop_i, i), on_finish(i))\`
-  - Extension points: next greater, previous smaller, span/area computations
-
-- **Representative problems**
-  - [LeetCode 739](https://leetcode.com/problems/daily-temperatures/description/)
-  - [LeetCode 853](https://leetcode.com/problems/most-profit-assigning-work/description/)
-  - [LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
-  - [LeetCode 42](https://leetcode.com/problems/trapping-rain-water/description/)
-
-- **Where this shows up at work**
-  - time-to-next-event queries; envelope computations; stack-based single-pass analytics
+  - 🔥 [LeetCode 207](https://leetcode.com/problems/course-schedule/description/)(not in provided solutions list)*
+- **Template (Kahn)**
+  - \`\`\`text
+    build adj, indeg
+    q = all nodes with indeg==0
+    seen = 0
+    while q not empty:
+      u = pop(q); seen++
+      for v in adj[u]:
+        indeg[v]--
+        if indeg[v]==0: push(q,v)
+    return seen==n
+    \`\`\`
+- **Common compositions**
+  - TopologicalSort + DPSequence (longest path in DAG via topo order)
+- **Common interview pitfalls**
+  - Using DFS topo but missing 3-color cycle detection
 
 ---
 
-## 15) Union-Find Connectivity (UnionFindConnectivity) 🧩 ⭐
-- **Contract (standard)**
-  - **Inputs**: elements; union operations; connectivity queries
-  - **State**: \`parent[]\`, \`rank/size[]\`
-  - **Invariant**: \`find(x)\` returns representative; union merges components
-  - **Progress rule**: path compression + union by rank ⇒ near-constant amortized
-  - **Complexity knobs**: number of unions/finds; mapping ids to indices
-  - **Common failure modes**
-    - not compressing paths; incorrect rank updates
-    - forgetting to initialize all nodes
-
-- **Pseudo-signature (API surface)**
-  - \`find(x)\`, \`union(x,y)\`, \`connected(x,y)\`
-  - Extension points: component counting, union by size, dynamic node add
-
-- **Representative problems**
-  - [LeetCode 323](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/description/)
-  - [LeetCode 547](https://leetcode.com/problems/number-of-provinces/description/)
-  - [LeetCode 684](https://leetcode.com/problems/redundant-connection/description/)
-  - [LeetCode 721](https://leetcode.com/problems/accounts-merge/description/)
-
-- **Where this shows up at work**
-  - grouping/merging identities; network connectivity; clustering by relations
-
----
-
-## 16) DP (Sequence / Interval) (DPSequence/DPInterval) 🧠 🔥
-- **Contract (standard)**
-  - **Inputs**: sequence/string; recurrence definition; base cases
-  - **State**: \`dp[i]\` or \`dp[i][j]\`; transition rules
-  - **Invariant**: dp state represents optimal/ways for a prefix/interval
-  - **Progress rule**: fill in topological order of dependencies
-  - **Complexity knobs**: state dimension; transition cost; memory optimization
-  - **Common failure modes**
-    - wrong dependency order; missing base cases
-    - confusing “ways” vs “min cost” semantics
-
-- **Pseudo-signature (API surface)**
-  - \`dp_sequence(n, transition(i, dp)->dp[i])\`
-  - \`dp_interval(n, transition(l,r,dp)->dp[l][r])\`
-  - Extension points: reconstruct path; rolling arrays; memoization
-
-- **Representative problems**
-  - [LeetCode 70](https://leetcode.com/problems/climbing-stairs/description/)
-  - [LeetCode 198](https://leetcode.com/problems/house-robber/description/)
-  - [LeetCode 300](https://leetcode.com/problems/longest-increasing-subsequence/description/)
-  - [LeetCode 322](https://leetcode.com/problems/coin-change/description/)
-  - [LeetCode 1143](https://leetcode.com/problems/find-smallest-common-element-in-all-rows/description/)
-  - [LeetCode 416](https://leetcode.com/problems/partition-equal-subset-sum/description/)
-
-- **Where this shows up at work**
-  - optimization under constraints; alignment/diff-like tasks; planning with overlapping subproblems
-
----
-
-## 17) Trie / Prefix Search (TriePrefixSearch) 🔤 ⭐
-- **Contract (standard)**
-  - **Inputs**: strings; alphabet; operations insert/search/prefix; optional board neighbors for word search
-  - **State**: trie nodes with children map/array; terminal markers
-  - **Invariant**: path from root spells prefix; terminal indicates full word
-  - **Progress rule**: traverse characters; create nodes as needed
-  - **Complexity knobs**: alphabet size; memory; compressing nodes
-  - **Common failure modes**
-    - forgetting terminal flag
-    - using hashmap children when alphabet small and fixed (constant factors)
-
-- **Pseudo-signature (API surface)**
-  - \`insert(word)\`, \`search(word)\`, \`starts_with(prefix)\`
-  - Extension points: word count; delete; wildcard; compressed trie
-
-- **Representative problems**
-  - [LeetCode 208](https://leetcode.com/problems/implement-trie-prefix-tree/description/)(Prefix Tree)
-  - [LeetCode 212](https://leetcode.com/problems/word-search-ii/description/)
-
-- **Where this shows up at work**
-  - autocomplete; routing by prefix; dictionary matching in parsers
-
----
-
-## 18) Linked List Manipulation (pointer surgery) 🔧 ⭐
-- **Contract (standard)**
-  - **Inputs**: linked list head; group size / arithmetic rules
-  - **State**: \`prev/curr/next\` pointers; dummy head; carry (for arithmetic)
-  - **Invariant**: pointers maintain list connectivity; reversed segments are fully linked
-  - **Progress rule**: move through nodes; reverse/connect segments; terminate at end
-  - **Complexity knobs**: recursion vs iterative; extra dummy nodes
-  - **Common failure modes**
-    - losing next pointer (breaking list)
-    - incorrect reconnection at segment boundaries
-
-- **Pseudo-signature (API surface)**
-  - \`reverse_segment(head, k) -> (new_head, new_tail, next_start)\`
-  - Extension points: reverse between positions; reverse whole list; group reversal
-
-- Arithmetic on lists
-  - ⭐ [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/)
-- In-place reversal in groups
-  - 🔥 [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/)
-    - Note: Target $O(n)$; be careful about reconnecting \`prev_tail\`, \`new_head\`, \`new_tail\`, \`next_start\`.
-
-- **Where this shows up at work**
-  - pointer-safe list transforms; streaming buffers (linked structures); in-place chunk operations
+## 16) Dynamic Programming (DPSequence + DPInterval) 🧠📈
+- **Where you’ll see this at work**
+  - Cost optimization, scheduling, string alignment, interval scoring
+- **Kernel mini-spec**
+  - **Signature**: sequence/string/interval; output optimal value or reconstruction
+  - **Required invariant**: define state \`dp[...]\` meaning clearly; transitions use smaller subproblems only
+  - **State model**: 1D dp for sequences; 2D dp for intervals/substrings
+  - **Complexity envelope**: depends on state size × transition cost
+  - **Failure modes / when NOT to use**: state not minimal (blows up); missing base cases; wrong iteration order
+- **Complexity template**
+  - Typically $O(\\#states × \\#transitions)$; space $O(\\#states)$ (often optimizable)
+- **Anchors**
+  - 🔥 [LeetCode 70](https://leetcode.com/problems/climbing-stairs/description/)(not in provided solutions list)*
+  - 🔥 [LeetCode 300](https://leetcode.com/problems/longest-increasing-subsequence/description/)(not in provided solutions list)*
+- **Templates**
+  - Fibonacci-style (\`dp_fibonacci_style\`)
+    - \`\`\`text
+      dp[0]=...; dp[1]=...
+      for i in [2..n]:
+        dp[i] = dp[i-1] + dp[i-2]   // example
+      return dp[n]
+      \`\`\`
+  - Interval DP skeleton (\`dp_palindrome\` / DPInterval)
+    - \`\`\`text
+      dp = 2D array n×n
+      for len in [1..n]:
+        for i in [0..n-len]:
+          j = i + len - 1
+          dp[i][j] = combine(dp smaller intervals, s[i], s[j])
+      return dp[0][n-1]
+      \`\`\`
+- **Common compositions**
+  - DPInterval + BacktrackingExploration (DP for fast validity checks; backtrack to enumerate)
+- **Common interview pitfalls**
+  - Using recursion without memoization (TLE)
+  - Wrong iteration order for interval dependencies
 
 ---
 
 ## Suggested Learning Paths (roadmap-style) 🚀
 - **Sliding Window Mastery**
   - [ ] 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
-  - [ ] 🔥 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
+  - [ ] 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/)
   - [ ] 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/)
   - [ ] ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/)
   - [ ] ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/)
-  - [ ] 🔥 [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
+  - [ ] ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
 - **Two Pointers Mastery**
-  - [ ] 🔥 [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
+  - [ ] ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
   - [ ] ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/)
-  - [ ] ⭐ [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
   - [ ] 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/)
 - **Backtracking Mastery**
   - [ ] ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/)
   - [ ] ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/)
   - [ ] ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/)
-  - [ ] 🔥 [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
+  - [ ] ⭐ [LeetCode 51](https://leetcode.com/problems/n-queens/description/)
   - [ ] ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/)
 
 ---`;

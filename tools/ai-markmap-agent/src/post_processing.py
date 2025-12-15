@@ -70,6 +70,7 @@ class PostProcessor:
     def _build_problems_lookup(self, problems: dict[str, Any]) -> dict[str, dict]:
         """Build a lookup dictionary for problems by ID."""
         lookup = {}
+        debug_samples = []  # Store first few for debugging
         
         for key, value in problems.items():
             if isinstance(value, dict):
@@ -109,6 +110,26 @@ class PostProcessor:
                     # Also store original format if different
                     if problem_id_str != normalized_id and problem_id_str != int_id:
                         lookup[problem_id_str] = value
+                    
+                    # Debug: Store sample for first few problems
+                    if len(debug_samples) < 3:
+                        has_solution = bool(value.get("files", {}).get("solution"))
+                        debug_samples.append({
+                            "key": key,
+                            "id": problem_id_str,
+                            "normalized": normalized_id,
+                            "has_solution": has_solution,
+                            "files_keys": list(value.get("files", {}).keys()) if value.get("files") else []
+                        })
+        
+        # Debug output
+        if debug_samples:
+            print(f"  ℹ️  Problems lookup: {len(lookup)} entries built from {len(problems)} problems")
+            for sample in debug_samples:
+                sol_status = "✓" if sample["has_solution"] else "✗"
+                print(f"    {sol_status} {sample['key']} -> ID:{sample['id']} (lookup keys: {sample['normalized']}, {str(int(sample['id']))})")
+                if sample["files_keys"]:
+                    print(f"      files keys: {sample['files_keys']}")
         
         return lookup
     
@@ -305,8 +326,15 @@ class PostProcessor:
             print("  ⚠ Post-processing: No problems data loaded (cannot add Solution links)")
             return content
         
+        # Count matches for debugging
+        matches_found = 0
+        links_added = 0
+        
         # Pattern to match: [LeetCode {id}](url)
         def add_solution_link(match: re.Match) -> str:
+            nonlocal matches_found, links_added
+            matches_found += 1
+            
             full_text = match.group(0)
             link_text = match.group(1)  # The text inside []
             url = match.group(2)  # The URL
@@ -339,15 +367,22 @@ class PostProcessor:
                     break
             
             if not problem:
+                # Debug: Show which ID was not found
+                if matches_found <= 5:  # Only show first few to avoid spam
+                    print(f"    ⚠ LeetCode {problem_id}: Problem not found in lookup (tried: {lookup_keys[:2]})")
                 return full_text
             
             # Check if solution_file exists
             files = problem.get("files", {})
             if not files:
+                if matches_found <= 5:
+                    print(f"    ⚠ LeetCode {problem_id}: No 'files' key in problem data")
                 return full_text
             
             solution_file = files.get("solution", "")
             if not solution_file:
+                if matches_found <= 5:
+                    print(f"    ⚠ LeetCode {problem_id}: No solution file (files={list(files.keys())})")
                 return full_text
             
             # Generate GitHub URL
@@ -355,12 +390,22 @@ class PostProcessor:
             
             # Add GitHub link after LeetCode link
             # Format: [LeetCode {id}](leetcode_url) | [Solution](github_url)
+            links_added += 1
+            if links_added <= 5:  # Show first few successful additions
+                print(f"    ✓ Added Solution link for LeetCode {problem_id}")
             return f"{full_text} | [Solution]({github_url})"
         
         # Match markdown links with "LeetCode" in the text
         # Pattern: [LeetCode {id}](url) or [LeetCode {id} - ...](url)
+        # Note: [^\]]* matches any character except ], so it handles "LeetCode 11" or "LeetCode 11 - Title"
         pattern = r'\[(LeetCode\s+\d+[^\]]*)\]\(([^)]+)\)'
         result = re.sub(pattern, add_solution_link, content)
+        
+        # Debug summary
+        if matches_found > 0:
+            print(f"  ℹ️  Found {matches_found} LeetCode links, added {links_added} Solution links")
+        else:
+            print("  ⚠ No LeetCode links found in content (pattern may not match)")
         
         return result
     
