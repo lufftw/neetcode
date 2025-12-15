@@ -108,8 +108,22 @@ This system refines existing high-quality Markmaps through multi-expert review a
 │   Apply adopted improvements to baseline → Refined Markmap                 │
 │                              │                                             │
 │  ════════════════════════════════════════════════════════════════════════  │
-│  Phase 5-6: Translation & Post-Processing                                   │
+│  Phase 4: Writer                                                             │
 │  ════════════════════════════════════════════════════════════════════════  │
+│                                                                             │
+│   Apply improvements → Raw markdown (saved to debug)                        │
+│                              │                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 5: Translation                                                         │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                              │                                             │
+│   Translate raw markdown → Translated raw markdown (saved to debug)         │
+│                              │                                             │
+│  ════════════════════════════════════════════════════════════════════════  │
+│  Phase 6: Post-Processing                                                     │
+│  ════════════════════════════════════════════════════════════════════════  │
+│                              │                                             │
+│   Normalize links for BOTH English and translated outputs                   │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -158,13 +172,25 @@ Apply adopted improvements surgically to the baseline:
 - Preserve existing quality
 - Verify links and formatting
 
-### Phase 5-6: Post-Processing
+### Phase 4: Writer
 
-- Translation (en → zh-TW)
+- Applies adopted improvements to baseline
+- Outputs raw markdown (no post-processing)
+- Saves to debug output for inspection
+
+### Phase 5: Translation
+
+- Translates writer outputs (raw markdown)
+- Both original and translated outputs saved to debug
+- Outputs raw markdown (no post-processing)
+
+### Phase 6: Post-Processing
+
+- Processes both English and translated outputs
 - Link validation and normalization
-- Automatic LeetCode URL generation
+- Automatic LeetCode URL generation for all languages
 - GitHub solution link addition
-- Comparison file generation
+- Comparison file generation (before/after for each language)
 
 ---
 
@@ -928,6 +954,21 @@ Post-processing automatically converts LeetCode problem references to standardiz
 
 **Priority:** Local TOML > API cache
 
+### Processing Flow
+
+1. **Writer Phase**: Generates raw markdown (no post-processing)
+   - Saved to debug output: `llm_output_writer_write.md`
+   - Used as input for translation
+
+2. **Translation Phase**: Translates raw markdown (no post-processing)
+   - Debug output: `translation_before_*.md` and `translation_after_*.md`
+   - Outputs translated raw markdown
+
+3. **Post-Processing Phase**: Processes both English and translated outputs
+   - Input: Raw markdown from writer (English) + translations (e.g., Chinese)
+   - Output: Post-processed markdown with normalized links for all languages
+   - Debug output: `post_processing_before_*.md` and `post_processing_after_*.md` for each language
+
 ### Comparison Files
 
 After each post-processing run, a comparison file is automatically generated:
@@ -935,11 +976,12 @@ After each post-processing run, a comparison file is automatically generated:
 **Location:** `outputs/final/post_processing_comparison_{timestamp}.md`
 
 **Contents:**
-- Before: Original AI-generated content
+- Before/After comparison for each language (English, Chinese, etc.)
+- Before: Raw content from Writer/Translation (no post-processing)
 - After: Post-processed content with normalized links
 
 **Usage:**
-- Verify link generation correctness
+- Verify link generation correctness for all languages
 - Check format compliance
 - Identify improvements needed
 

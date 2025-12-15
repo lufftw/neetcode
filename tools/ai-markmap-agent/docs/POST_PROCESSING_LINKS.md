@@ -1,120 +1,191 @@
-# 後處理連結處理說明
+# Post-Processing Link Handling
 
-## 概述
+## Overview
 
-後處理模組 (`post_processing.py`) 負責將 AI 生成的 mindmap 內容中的 LeetCode 問題引用轉換為標準化的連結格式。
+The post-processing module (`post_processing.py`) is responsible for converting LeetCode problem references in AI-generated mindmap content into standardized link formats.
 
-## 連結格式
+## Link Format
 
-### 目標格式
+### Target Format
 
 ```
 [LeetCode 11](leetcode_url) | [Solution](github_url)
 ```
 
-**特點：**
-- 只使用題號，不包含標題
-- 格式簡潔統一
-- 自動添加 GitHub solution 連結（如果有）
+**Features:**
+- Uses only problem numbers, excludes titles
+- Concise and unified format
+- Automatically adds GitHub solution links (if available)
 
-### 處理的輸入格式
+### Input Formats Handled
 
-後處理會處理以下多種 AI 可能產生的格式：
+Post-processing handles the following various formats that AI may generate:
 
-1. **純文字格式**
+1. **Plain Text Format**
    - `LeetCode 11`
    - `LeetCode 11 - Container With Most Water`
    - `LC 11`
 
-2. **Markdown 連結格式**
+2. **Markdown Link Format**
    - `[LeetCode 11](url)`
    - `[LeetCode 11 - Container With Most Water](url)`
    - `[LC 11](url)`
 
-3. **錯誤的 URL**
-   - `[LeetCode 11](wrong_url)` → 自動修正為正確的 URL
+3. **Incorrect URLs**
+   - `[LeetCode 11](wrong_url)` → Automatically corrected to the correct URL
 
-## 處理流程
+## Processing Flow
 
-### 步驟 1: 文字替換
+### Overall Flow
+
+1. **Writer Phase**: Produces raw markdown (**no post-processing**)
+   - Saved to debug output
+   - Used for translation phase
+
+2. **Translation Phase**: Translates raw markdown (**no post-processing**)
+   - Saved to debug output
+   - Produces translated raw markdown
+
+3. **Post-Processing Phase**: Processes links for English and Chinese
+   - Simultaneously processes `writer_outputs` (English) and `translated_outputs` (Chinese)
+   - Generates standardized links for all languages
+
+### Post-Processing Steps
+
+### Step 1: Text Replacement
 
 - `LC 11` → `LeetCode 11`
 - `LC-11` → `LeetCode 11`
 - `LeetCode11` → `LeetCode 11`
 
-### 步驟 2: 連結轉換
+### Step 2: Link Conversion
 
-將純文字或現有連結轉換為標準格式：
+Convert plain text or existing links to standard format:
 
-**輸入：**
+**Input:**
 ```
 LeetCode 11 - Container With Most Water
 ```
 
-**輸出：**
+**Output:**
 ```
 [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
 ```
 
-### 步驟 3: URL 正規化
+### Step 3: URL Normalization
 
-確保所有 LeetCode URL 使用正確的格式：
-- 移除檔案名稱格式的 slug（如 `0011_container_with_most_water`）
-- 轉換為標準 slug（如 `container-with-most-water`）
-- 確保以 `/description/` 結尾
+Ensure all LeetCode URLs use the correct format:
+- Remove file name format slugs (e.g., `0011_container_with_most_water`)
+- Convert to standard slugs (e.g., `container-with-most-water`)
+- Ensure ending with `/description/`
 
-### 步驟 4: 添加 GitHub Solution 連結
+### Step 4: Add GitHub Solution Links
 
-如果問題有對應的 solution 檔案，自動添加 GitHub 連結：
+If a problem has a corresponding solution file, automatically add GitHub link:
 
-**輸入：**
+**Input:**
 ```
 [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/)
 ```
 
-**輸出：**
+**Output:**
 ```
 [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 ```
 
-## 資料來源
+## Data Sources
 
-### 本地 TOML 檔案
+### Local TOML Files
 
-從 `meta/problems/` 目錄載入問題元資料，包含：
-- 問題標題
-- Solution 檔案路徑
-- 其他元資料
+Load problem metadata from `meta/problems/` directory, including:
+- Problem titles
+- Solution file paths
+- Other metadata
 
-### LeetCode API 快取
+### LeetCode API Cache
 
-從 `tools/.cache/leetcode_problems.json` 載入：
-- LeetCode URL
-- Slug
-- 問題標題（作為補充）
+Load from `tools/.cache/leetcode_problems.json`:
+- LeetCode URLs
+- Slugs
+- Problem titles (as supplement)
 
-**優先順序：**
-1. 本地 TOML 資料（優先）
-2. API 快取資料（補充）
+**Priority:**
+1. Local TOML data (priority)
+2. API cache data (supplement)
 
-## 對比檔案
+## Comparison Files
 
-每次執行後處理後，會自動生成對比檔案：
+After each post-processing execution, a comparison file is automatically generated:
 
-**位置：** `outputs/final/post_processing_comparison_{timestamp}.md`
+**Location:** `outputs/final/post_processing_comparison_{timestamp}.md`
 
-**內容：**
-- Before: 原始內容（AI 生成）
-- After: 後處理後的內容
+**Content:**
+- Before/After comparison for each language (English, Chinese, etc.)
+- Before: Original content (Writer/Translation output, unprocessed)
+- After: Post-processed content (links standardized)
 
-**用途：**
-- 檢查後處理效果
-- 驗證連結是否正確生成
-- 比較處理前後的差異
+**Purpose:**
+- Check post-processing effectiveness
+- Verify links are correctly generated (English and Chinese)
+- Compare differences before and after processing
 
-## 範例
+## Flow Confirmation
 
-### 範例 1: 純文字轉換
+### Writer Phase Output
+
+**Output:** Raw markdown (no post-processing)
+```
+- LeetCode 11 - Container With Most Water
+- LeetCode 3 - Longest Substring
+```
+
+**Debug Output:** `llm_output_writer_write.md` (original content)
+
+### Translation Phase Output
+
+**Input:** Writer's raw markdown (no post-processing)
+
+**Output:** Translated raw markdown (no post-processing)
+```
+- LeetCode 11 - 盛最多水的容器
+- LeetCode 3 - 無重複字符的最長子串
+```
+
+**Debug Output:** 
+- `translation_before_general_en_general_zh-TW.md` (before translation)
+- `translation_after_general_en_general_zh-TW.md` (after translation)
+
+### Post-Processing Phase Output
+
+**Input:** 
+- Writer raw markdown (English)
+- Translated raw markdown (Chinese)
+
+**Output:** Post-processed markdown (English and Chinese)
+
+**English:**
+```
+- [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](...)
+- [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](...)
+```
+
+**Chinese:**
+```
+- [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](...)
+- [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](...)
+```
+
+**Debug Output:**
+- `post_processing_before_general_en.md` (English before processing)
+- `post_processing_after_general_en.md` (English after processing)
+- `post_processing_before_general_zh-TW.md` (Chinese before processing)
+- `post_processing_after_general_zh-TW.md` (Chinese after processing)
+
+**Comparison File:** `post_processing_comparison_{timestamp}.md` (contains comparisons for all languages)
+
+## Examples
+
+### Example 1: Plain Text Conversion
 
 **Before:**
 ```markdown
@@ -128,7 +199,7 @@ LeetCode 11 - Container With Most Water
 - [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
 ```
 
-### 範例 2: 修正錯誤 URL
+### Example 2: Correcting Incorrect URLs
 
 **Before:**
 ```markdown
@@ -140,7 +211,7 @@ LeetCode 11 - Container With Most Water
 - [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 ```
 
-### 範例 3: 處理多種格式
+### Example 3: Handling Multiple Formats
 
 **Before:**
 ```markdown
@@ -156,9 +227,9 @@ LeetCode 11 - Container With Most Water
 - [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 ```
 
-## 配置
+## Configuration
 
-後處理行為由 `config/config.yaml` 中的 `workflow.post_processing` 配置控制：
+Post-processing behavior is controlled by the `workflow.post_processing` configuration in `config/config.yaml`:
 
 ```yaml
 workflow:
@@ -168,17 +239,16 @@ workflow:
         replacement: "LeetCode \\1"
 ```
 
-## 相關檔案
+## Related Files
 
-- `src/post_processing.py` - 後處理主模組
-- `src/leetcode_api.py` - LeetCode API 資料載入
-- `src/graph.py` - 工作流程整合
-- `tools/sync_leetcode_data.py` - API 資料同步工具
+- `src/post_processing.py` - Post-processing main module
+- `src/leetcode_api.py` - LeetCode API data loading
+- `src/graph.py` - Workflow integration
+- `tools/sync_leetcode_data.py` - API data synchronization tool
 
-## 注意事項
+## Notes
 
-1. **格式簡化**：只使用題號，不包含標題，因為 AI 產生的格式很多元
-2. **自動補充**：如果本地資料缺少 URL，自動從 API 快取補充
-3. **對比檔案**：每次執行都會生成對比檔案，方便檢查效果
-4. **向後相容**：不影響現有功能，只做補充和標準化
-
+1. **Format Simplification**: Uses only problem numbers, excludes titles, because AI-generated formats are diverse
+2. **Automatic Supplementation**: If local data lacks URLs, automatically supplements from API cache
+3. **Comparison Files**: Comparison files are generated after each execution for easy effect checking
+4. **Backward Compatibility**: Does not affect existing functionality, only supplements and standardizes

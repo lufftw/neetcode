@@ -209,11 +209,17 @@ def main() -> int:
                 
                 # Determine which stages to reuse
                 reuse_stages = {}
-                stages = ["expert_review", "full_discussion", "consensus", "writer"]
+                stages = ["expert_review", "full_discussion", "consensus", "writer", "translation", "post_processing"]
                 
                 # If --from-stage is specified, reuse everything before that stage
                 if args.from_stage:
-                    stage_idx = stages.index(args.from_stage) if args.from_stage in stages else -1
+                    # Map CLI stage names to internal stage names
+                    stage_map = {
+                        "translate": "translation",
+                        "post_process": "post_processing",
+                    }
+                    internal_stage = stage_map.get(args.from_stage, args.from_stage)
+                    stage_idx = stages.index(internal_stage) if internal_stage in stages else -1
                     if stage_idx >= 0:
                         for i in range(stage_idx):
                             if selected_run.has_stage_output(stages[i]):

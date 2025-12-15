@@ -52,6 +52,7 @@ from .resume import (
     load_consensus_from_run,
     load_expert_responses_from_run,
     load_writer_output_from_run,
+    load_translation_outputs_from_run,
     generate_regen_run_id,
     RunInfo,
 )
@@ -723,6 +724,11 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         Phase 4: Writer (1 API call).
         
         Applies adopted improvements to the baseline.
+        
+        Output:
+        - Raw markdown (no post-processing applied)
+        - Saved to debug output for inspection
+        - Stored in writer_outputs for translation phase
         """
         print("\n[Phase 4] Writing...")
         
@@ -826,6 +832,12 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
     def run_translations(state: WorkflowState) -> WorkflowState:
         """
         Phase 5: Translate outputs for translate-mode languages.
+        
+        Translates writer outputs (raw markdown, no post-processing).
+        Both original and translated outputs are saved to debug.
+        
+        Input: writer_outputs (raw markdown from writer)
+        Output: translated_outputs (raw markdown, no post-processing)
         """
         translator_configs = state.get("translator_configs", [])
         
@@ -838,11 +850,65 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         resume_config = state.get("_resume_config", {})
         if resume_config:
             reuse_stages = resume_config.get("reuse_stages", {})
-            if reuse_stages.get("translate"):
-                print("  ⏭️  Skipping (reusing from previous run)")
-                # Translation outputs should be loaded from previous run
-                # TODO: Load translation outputs if needed
+            resume_run_dir = Path(resume_config["run_dir"])
+            prev_run = RunInfo(resume_run_dir)
+            
+            # If explicitly marked to reuse, load it
+            if reuse_stages.get("translation"):
+                print("  ⏭️  Reusing translations from previous run")
+                # Copy all translation related files to new directory
+                debug = get_debug_manager(config)
+                if debug.enabled:
+                    import shutil
+                    # Copy all translation related files
+                    translation_files = prev_run.get_stage_files("translation")
+                    if translation_files:
+                        for file_info in translation_files:
+                            try:
+                                dest = debug.run_dir / file_info["filename"]
+                                shutil.copy2(file_info["path"], dest)
+                                print(f"  💾 Copied: {file_info['filename']}")
+                            except Exception as e:
+                                print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                    # Load translation outputs for state
+                    translated_outputs = load_translation_outputs_from_run(prev_run)
+                    if translated_outputs:
+                        state["translated_outputs"] = translated_outputs
+                        print(f"  ✓ Loaded {len(translated_outputs)} translation(s)")
+                        for key in translated_outputs.keys():
+                            print(f"    - {key}")
+                    else:
+                        print("  ⚠ Could not load translation outputs")
                 return state
+            
+            # If not in reuse list but output exists, ask user
+            elif prev_run.has_stage_output("translation") and "translation" not in reuse_stages:
+                from ..resume import ask_reuse_stage
+                should_reuse = ask_reuse_stage("translation", prev_run)
+                if should_reuse:
+                    translated_outputs = load_translation_outputs_from_run(prev_run)
+                    if translated_outputs:
+                        state["translated_outputs"] = translated_outputs
+                        print(f"  ✓ Loaded {len(translated_outputs)} translation(s)")
+                        for key in translated_outputs.keys():
+                            print(f"    - {key}")
+                        # Copy all translation files to new directory
+                        debug = get_debug_manager(config)
+                        if debug.enabled:
+                            import shutil
+                            # Copy all translation related files
+                            translation_files = prev_run.get_stage_files("translation")
+                            if translation_files:
+                                for file_info in translation_files:
+                                    try:
+                                        dest = debug.run_dir / file_info["filename"]
+                                        shutil.copy2(file_info["path"], dest)
+                                        print(f"  💾 Copied: {file_info['filename']}")
+                                    except Exception as e:
+                                        print(f"  ⚠ Failed to copy {file_info['filename']}: {e}")
+                        # Mark as reused
+                        reuse_stages["translation"] = True
+                        return state
         
         debug = get_debug_manager(config)
         
@@ -926,19 +992,66 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         """
         Phase 6: Post-processing.
         
-        Apply text transformations (e.g., LC → LeetCode).
-        Normalize LeetCode links and add GitHub solution links.
+        Apply text transformations to both English and translated outputs.
+        
+        Process:
+        1. Takes raw markdown from writer_outputs (English)
+        2. Takes raw markdown from translated_outputs (e.g., Chinese)
+        3. Applies link normalization to both:
+           - Convert 'LC 11' → '[LeetCode 11](url)'
+           - Normalize LeetCode URLs
+           - Add GitHub solution links
+        4. Generates comparison file (before/after)
+        
+        Output: final_outputs (post-processed markdown for both languages)
         """
         print("\n[Phase 6] Post-processing...")
         debug = get_debug_manager(config)
         
+        # Merge writer outputs (English, raw) and translations (e.g., Chinese, raw)
+        # Post-processing will normalize links for BOTH English and translated outputs
+        all_outputs = {}
+        all_outputs.update(state.get("writer_outputs", {}))  # English: raw markdown
+        all_outputs.update(state.get("translated_outputs", {}))  # Translated: raw markdown
+        
+        # Check if resuming and ask user whether to run post-processing
+        resume_config = state.get("_resume_config", {})
+        reuse_stages = resume_config.get("reuse_stages", {}) if resume_config else {}
+        
+        # If in resume mode and post_processing is marked for reuse, check for existing output
+        if resume_config and reuse_stages.get("post_processing"):
+            run_dir = resume_config.get("run_dir")
+            if run_dir:
+                prev_run = RunInfo(Path(run_dir))
+                if prev_run.has_stage_output("post_processing"):
+                    should_reuse = ask_reuse_stage("post_processing", prev_run)
+                    if should_reuse:
+                        print("  ⏭️  Reusing post-processing output from previous run")
+                        # Use writer/translation outputs as final outputs (skip post-processing)
+                        state["final_outputs"] = all_outputs
+                        return state
+        
+        # Ask user if they want to run post-processing
+        print("\n  Post-processing will:")
+        print("    - Convert 'LC 11' → '[LeetCode 11](url)'")
+        print("    - Normalize LeetCode URLs")
+        print("    - Add GitHub solution links")
+        print("    - Generate comparison file")
+        
+        while True:
+            choice = input("  Run post-processing? [Y/n]: ").strip().lower()
+            if choice in ['', 'y', 'yes']:
+                break
+            elif choice in ['n', 'no']:
+                print("  ⏭️  Skipping post-processing")
+                # Use writer/translation outputs as final outputs
+                state["final_outputs"] = all_outputs
+                return state
+            else:
+                print("  ⚠ Please enter 'y' or 'n'")
+        
         # Pass problems data to PostProcessor for link generation
         processor = PostProcessor(config, problems=state.get("problems", {}))
-        
-        # Merge writer outputs and translations
-        all_outputs = {}
-        all_outputs.update(state.get("writer_outputs", {}))
-        all_outputs.update(state.get("translated_outputs", {}))
         
         # Apply post-processing
         final_outputs = {}

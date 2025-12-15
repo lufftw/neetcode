@@ -176,7 +176,7 @@ def select_run_interactive(runs: list[RunInfo]) -> RunInfo | None:
         print(f"    Files: {file_count} total")
         
         # Show stage completion
-        stages = ["expert_review", "full_discussion", "consensus", "writer"]
+        stages = ["expert_review", "full_discussion", "consensus", "writer", "translation", "post_processing"]
         completed = [s for s in stages if run.has_stage_output(s)]
         if completed:
             print(f"    Completed stages: {', '.join(completed)}")
@@ -349,6 +349,62 @@ def load_writer_output_from_run(run_info: RunInfo) -> str | None:
     except Exception as e:
         print(f"  ⚠ Error loading writer output: {e}")
         return None
+
+
+def load_translation_outputs_from_run(run_info: RunInfo) -> dict[str, str] | None:
+    """
+    Load translation outputs from a previous run.
+    
+    Returns:
+        Dict mapping target_key to translated content, e.g.:
+        {"general_zh-TW": "...", "pattern_zh-TW": "..."}
+    """
+    # Look for translation result files (after translation, not before)
+    translation_files = [
+        f for f in run_info.files.get("translation", [])
+        if "translation_result" in f["filename"]
+    ]
+    
+    if not translation_files:
+        return None
+    
+    translated_outputs = {}
+    
+    # Parse each translation file to extract target_key and content
+    for file_info in translation_files:
+        filename = file_info["filename"]
+        
+        # Extract target_key from filename
+        # Format: 05_translation_result_{target_key}_{timestamp}.md
+        # Example: 05_translation_result_general_zh-TW_143022.md
+        try:
+            # Remove extension
+            name_without_ext = filename.replace(".md", "").replace(".json", "")
+            
+            # Split by underscore
+            parts = name_without_ext.split("_")
+            
+            # Find "translation_result" and get everything after it
+            if "translation_result" in parts:
+                idx = parts.index("translation_result")
+                # Get all parts after "translation_result"
+                key_parts = parts[idx + 1:]
+                
+                # Remove timestamp if present (last part if it's 6 digits)
+                if key_parts and len(key_parts[-1]) == 6 and key_parts[-1].isdigit():
+                    key_parts = key_parts[:-1]
+                
+                if key_parts:
+                    target_key = "_".join(key_parts)
+                    
+                    # Read content
+                    content = file_info["path"].read_text(encoding="utf-8")
+                    translated_outputs[target_key] = content
+        except Exception as e:
+            print(f"  ⚠ Error loading translation file {filename}: {e}")
+            continue
+    
+    return translated_outputs if translated_outputs else None
 
 
 def generate_regen_run_id(original_run_id: str) -> str:
