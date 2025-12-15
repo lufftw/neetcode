@@ -415,11 +415,10 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 
                 # Save debug output
                 if debug.enabled and expert.agent_id in state.get("expert_raw_responses", {}):
-                    debug.save_optimizer_suggestion(
+                    debug.save_expert_review(
                         state["expert_raw_responses"][expert.agent_id],
                         expert.name,
-                        1,
-                        "review"
+                        suggestions,
                     )
             except Exception as e:
                 error_msg = f"Error in {expert.name}: {e}"
@@ -509,11 +508,10 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
                 
                 # Save debug output
                 if debug.enabled and expert.agent_id in state.get("discussion_raw_responses", {}):
-                    debug.save_optimizer_suggestion(
+                    debug.save_discussion(
                         state["discussion_raw_responses"][expert.agent_id],
                         expert.name,
-                        2,
-                        "discussion"
+                        adoption_list,
                     )
             except Exception as e:
                 error_msg = f"Error in {expert.name} discussion: {e}"

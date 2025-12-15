@@ -175,7 +175,7 @@ class DebugOutputManager:
         round_num: int,
         output_key: str,
     ) -> Path | None:
-        """Save individual optimizer suggestion."""
+        """Save individual optimizer suggestion (legacy method)."""
         config = self.phases_config.get("optimization", {})
         if not config.get("save_optimizer_suggestions", False):
             return None
@@ -186,6 +186,55 @@ class DebugOutputManager:
             output_key,
             f"round{round_num}",
         )
+    
+    def save_expert_review(
+        self,
+        response: str,
+        expert_name: str,
+        suggestions: list | None = None,
+    ) -> Path | None:
+        """Save Phase 1 expert review output."""
+        config = self.phases_config.get("expert_review", {})
+        if not config.get("save_each_expert", False):
+            return None
+        
+        expert_key = expert_name.lower().replace(" ", "_")
+        
+        # Save raw response
+        self.save(1, "expert_review", response, expert_key)
+        
+        # Save suggestions as JSON if provided
+        if suggestions and config.get("save_all_suggestions", False):
+            suggestions_data = [s.to_dict() if hasattr(s, 'to_dict') else s for s in suggestions]
+            return self.save(1, "expert_suggestions", suggestions_data, expert_key, extension="json")
+        
+        return None
+    
+    def save_discussion(
+        self,
+        response: str,
+        expert_name: str,
+        adoption_list: list | None = None,
+    ) -> Path | None:
+        """Save Phase 2 discussion output."""
+        config = self.phases_config.get("discussion", {})
+        if not config.get("save_votes", False):
+            return None
+        
+        expert_key = expert_name.lower().replace(" ", "_")
+        
+        # Save raw response
+        self.save(2, "discussion", response, expert_key)
+        
+        # Save adoption list if provided
+        if adoption_list is not None and config.get("save_adoption_lists", False):
+            adoption_data = {
+                "expert": expert_name,
+                "adopted_ids": adoption_list if isinstance(adoption_list, list) else adoption_list.adopted_ids if hasattr(adoption_list, 'adopted_ids') else [],
+            }
+            return self.save(2, "adoption_list", adoption_data, expert_key, extension="json")
+        
+        return None
     
     def save_summarizer_output(
         self,
