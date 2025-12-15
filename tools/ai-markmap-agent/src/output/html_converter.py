@@ -240,6 +240,8 @@ def save_all_markmaps(
                 template_path=template_path,
             )
             print(f"  📦 Versioned: {version_subdir.name}/{filename}.*")
+    
+    return saved_files
 
 
 def convert_to_html(

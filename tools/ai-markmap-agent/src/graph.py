@@ -961,6 +961,10 @@ async def run_pipeline_async(
         "roadmaps": data.get("roadmaps", {}),
     }
     
+    # Pass resume config if available
+    if "_resume_config" in data:
+        initial_state["_resume_config"] = data["_resume_config"]
+    
     result = await graph.ainvoke(initial_state)
     return result
 
@@ -988,6 +992,10 @@ def run_pipeline(
         "patterns": data.get("patterns", {}),
         "roadmaps": data.get("roadmaps", {}),
     }
+    
+    # Pass resume config if available
+    if "_resume_config" in data:
+        initial_state["_resume_config"] = data["_resume_config"]
     
     result = graph.invoke(initial_state)
     return result

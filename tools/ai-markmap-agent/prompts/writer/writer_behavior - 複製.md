@@ -42,8 +42,20 @@ For context, here are the full descriptions and rationales:
 ### Problems With Solutions (auto-linked)
 {problem_data}
 
+### Link Format Rules
+
+**For problems in the list above:**
+- Write ONLY: `LeetCode NUMBER - TITLE` (NO URL needed)
+- Links will be generated automatically in post-processing
+- If baseline has URLs for these problems, REMOVE them
+- Example: `LeetCode 11 - Container With Most Water`
+
+**For problems NOT in the list:**
+- Include the LeetCode link: `[LeetCode NUMBER - TITLE](https://leetcode.com/problems/SLUG/description/)`
+- Example: `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/description/)`
 
 **Important:**
+- Do NOT add GitHub solution links (added automatically where available)
 - Use full "LeetCode" not "LC"
 
 ### Ontology Reference
@@ -83,6 +95,9 @@ For context, here are the full descriptions and rationales:
 
 ### Problem References
 - Use full "LeetCode" not "LC"
+- For problems in our list: `LeetCode NUMBER - TITLE` (no URL)
+- For other problems: `[LeetCode NUMBER - TITLE](leetcode_url)`
+- Do NOT add GitHub solution links
 
 ### Markmap Features
 - Use `<!-- markmap: fold -->` for collapsible sections
