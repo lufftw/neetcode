@@ -64,16 +64,35 @@ class PostProcessor:
         
         for key, value in problems.items():
             if isinstance(value, dict):
-                problem_id = value.get("id", key)
-                # Normalize ID to 4 digits
-                if isinstance(problem_id, str) and problem_id.isdigit():
-                    problem_id = problem_id.zfill(4)
-                lookup[problem_id] = value
-                # Also store without leading zeros for flexibility
-                try:
-                    lookup[str(int(problem_id))] = value
-                except (ValueError, TypeError):
-                    pass
+                # Try to get ID from various sources
+                problem_id = value.get("id") or value.get("leetcode_id")
+                
+                # If no ID found, try to extract from key (slug format: "0079_word_search")
+                if not problem_id:
+                    # Extract ID from slug if it starts with digits
+                    match = re.match(r'^(\d+)_', key)
+                    if match:
+                        problem_id = match.group(1)
+                
+                # If still no ID, use key as fallback (but this is less reliable)
+                if not problem_id:
+                    problem_id = key
+                
+                # Normalize ID to string and ensure 4 digits
+                if isinstance(problem_id, int):
+                    problem_id = str(problem_id)
+                elif not isinstance(problem_id, str):
+                    problem_id = str(problem_id)
+                
+                # Store with 4-digit format
+                if problem_id.isdigit():
+                    normalized_id = problem_id.zfill(4)
+                    lookup[normalized_id] = value
+                    # Also store without leading zeros for flexibility
+                    lookup[problem_id] = value
+                    # Also store as integer string if different
+                    if normalized_id != problem_id:
+                        lookup[str(int(problem_id))] = value
         
         return lookup
     
@@ -283,7 +302,12 @@ class PostProcessor:
             problem_id = id_match.group(1)
             
             # Look up problem in our data
-            problem = self.problems_lookup.get(problem_id.zfill(4)) or self.problems_lookup.get(problem_id)
+            # Try both 4-digit format and numeric format
+            problem = (
+                self.problems_lookup.get(problem_id.zfill(4)) or 
+                self.problems_lookup.get(problem_id) or
+                self.problems_lookup.get(str(int(problem_id)).zfill(4)) if problem_id.isdigit() else None
+            )
             if not problem:
                 return full_text
             

@@ -135,6 +135,18 @@ def convert_file_to_html(
         title = f"{input_path.stem.replace('_', ' ').title()} - NeetCode Mind Maps"
     
     markdown_content = input_path.read_text(encoding="utf-8")
+    
+    # Remove markdown code fence if present (LLM sometimes wraps output)
+    markdown_content = markdown_content.strip()
+    if markdown_content.startswith("```markdown"):
+        markdown_content = markdown_content[len("```markdown"):].strip()
+    if markdown_content.startswith("```md"):
+        markdown_content = markdown_content[len("```md"):].strip()
+    if markdown_content.startswith("```"):
+        markdown_content = markdown_content[3:].strip()
+    if markdown_content.endswith("```"):
+        markdown_content = markdown_content[:-3].strip()
+    
     converter = StandaloneHTMLConverter(template_path=template_path)
     html_content = converter.convert(markdown_content, title=title)
     output_path.write_text(html_content, encoding="utf-8")
