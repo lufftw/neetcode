@@ -62,6 +62,7 @@ docs/mindmaps/*.md
 !docs/mindmaps/index.md
 !docs/mindmaps/README.md
 !docs/mindmaps/neetcode_ontology_ai_*.md
+!docs/mindmaps/neetcode_ontology_agent_evolved_*.md
 
 # =============================================================================
 # AI Markmap Agent (tools/ai-markmap-agent/)
