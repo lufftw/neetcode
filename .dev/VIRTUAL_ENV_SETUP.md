@@ -1,22 +1,22 @@
-# 虛擬環境設定指南
+# Virtual Environment Setup Guide
 
-## 📋 概述
+## 📋 Overview
 
-本專案使用 `leetcode` Python 虛擬環境來隔離依賴。單元測試腳本會自動使用此虛擬環境。
+This project uses a `leetcode` Python virtual environment to isolate dependencies. Unit test scripts automatically use this virtual environment.
 
 ---
 
-## 🔧 虛擬環境設定
+## 🔧 Virtual Environment Setup
 
 ### Windows
 
-#### 1. 建立虛擬環境
+#### 1. Create Virtual Environment
 ```powershell
-# 從專案根目錄
+# From project root directory
 python -m venv leetcode
 ```
 
-#### 2. 啟動虛擬環境
+#### 2. Activate Virtual Environment
 ```powershell
 # PowerShell
 leetcode\Scripts\Activate.ps1
@@ -25,44 +25,44 @@ leetcode\Scripts\Activate.ps1
 leetcode\Scripts\activate.bat
 ```
 
-#### 3. 安裝依賴
+#### 3. Install Dependencies
 ```powershell
-# 安裝基本依賴
+# Install basic dependencies
 pip install -r requirements.txt
 
-# 安裝測試依賴
+# Install test dependencies
 pip install pytest pytest-cov
 ```
 
 ### Linux / macOS
 
-#### 1. 建立虛擬環境
+#### 1. Create Virtual Environment
 ```bash
-# 從專案根目錄
+# From project root directory
 python3 -m venv leetcode
 ```
 
-#### 2. 啟動虛擬環境
+#### 2. Activate Virtual Environment
 ```bash
 source leetcode/bin/activate
 ```
 
-#### 3. 安裝依賴
+#### 3. Install Dependencies
 ```bash
-# 安裝基本依賴
+# Install basic dependencies
 pip install -r requirements.txt
 
-# 安裝測試依賴
+# Install test dependencies
 pip install pytest pytest-cov
 ```
 
 ---
 
-## 🧪 運行測試
+## 🧪 Running Tests
 
-### 方法 1: 使用測試腳本（推薦）
+### Method 1: Using Test Scripts (Recommended)
 
-測試腳本會自動使用虛擬環境：
+Test scripts automatically use the virtual environment:
 
 ```bash
 # Windows
@@ -74,7 +74,7 @@ cd .dev
 ./run_tests.sh
 ```
 
-### 方法 2: 手動使用虛擬環境
+### Method 2: Manual Virtual Environment Usage
 
 ```bash
 # Windows
@@ -88,23 +88,23 @@ cd .dev
 python -m pytest tests -v
 ```
 
-### 方法 3: 直接使用虛擬環境 Python
+### Method 3: Direct Virtual Environment Python Usage
 
-不需要啟動虛擬環境：
+No need to activate the virtual environment:
 
 ```bash
-# Windows（從專案根目錄）
+# Windows (from project root)
 leetcode\Scripts\python.exe -m pytest .dev/tests -v
 
-# Linux/Mac（從專案根目錄）
+# Linux/Mac (from project root)
 leetcode/bin/python -m pytest .dev/tests -v
 ```
 
 ---
 
-## 🔍 驗證設定
+## 🔍 Verify Setup
 
-### 檢查虛擬環境是否存在
+### Check if Virtual Environment Exists
 
 ```bash
 # Windows
@@ -114,7 +114,7 @@ dir leetcode\Scripts\python.exe
 ls -la leetcode/bin/python
 ```
 
-### 檢查 pytest 是否安裝
+### Check if pytest is Installed
 
 ```bash
 # Windows
@@ -124,7 +124,7 @@ leetcode\Scripts\python.exe -m pytest --version
 leetcode/bin/python -m pytest --version
 ```
 
-### 檢查安裝的套件
+### Check Installed Packages
 
 ```bash
 # Windows
@@ -138,90 +138,90 @@ pip list
 
 ---
 
-## 📦 虛擬環境路徑
+## 📦 Virtual Environment Paths
 
-測試腳本使用以下路徑：
+Test scripts use the following paths:
 
 ### Windows
-- Python 執行檔: `leetcode\Scripts\python.exe`
-- 啟動腳本: `leetcode\Scripts\activate.bat` (CMD) 或 `leetcode\Scripts\Activate.ps1` (PowerShell)
+- Python executable: `leetcode\Scripts\python.exe`
+- Activation script: `leetcode\Scripts\activate.bat` (CMD) or `leetcode\Scripts\Activate.ps1` (PowerShell)
 
 ### Linux/Mac
-- Python 執行檔: `leetcode/bin/python`
-- 啟動腳本: `leetcode/bin/activate`
+- Python executable: `leetcode/bin/python`
+- Activation script: `leetcode/bin/activate`
 
 ---
 
-## ⚠️ 常見問題
+## ⚠️ Common Issues
 
-### Q1: 虛擬環境不存在
+### Q1: Virtual Environment Not Found
 
-**錯誤訊息**:
+**Error Message**:
 ```
 [ERROR] Virtual environment not found: leetcode\Scripts\python.exe
 ```
 
-**解決方法**:
+**Solution**:
 ```bash
-# 建立虛擬環境
+# Create virtual environment
 python -m venv leetcode
 
-# 啟動並安裝依賴
+# Activate and install dependencies
 leetcode\Scripts\activate
 pip install -r requirements.txt
 pip install pytest pytest-cov
 ```
 
-### Q2: pytest 未安裝
+### Q2: pytest Not Installed
 
-**錯誤訊息**:
+**Error Message**:
 ```
 [ERROR] pytest is not installed in virtual environment
 ```
 
-**解決方法**:
+**Solution**:
 ```bash
-# 啟動虛擬環境
+# Activate virtual environment
 leetcode\Scripts\activate  # Windows
 source leetcode/bin/activate  # Linux/Mac
 
-# 安裝 pytest
+# Install pytest
 pip install pytest pytest-cov
 ```
 
-### Q3: 找不到 runner 模組
+### Q3: Module 'runner' Not Found
 
-**錯誤訊息**:
+**Error Message**:
 ```
 ModuleNotFoundError: No module named 'runner'
 ```
 
-**解決方法**:
-確保從專案根目錄運行測試，或使用測試腳本。
+**Solution**:
+Ensure you run tests from the project root directory, or use the test scripts.
 
 ---
 
-## 🔄 更新依賴
+## 🔄 Updating Dependencies
 
-### 更新測試依賴
+### Update Test Dependencies
 
 ```bash
-# 啟動虛擬環境
+# Activate virtual environment
 leetcode\Scripts\activate  # Windows
 source leetcode/bin/activate  # Linux/Mac
 
-# 更新套件
+# Update packages
 pip install --upgrade pytest pytest-cov
 ```
 
-### 更新所有依賴
+### Update All Dependencies
 
 ```bash
-# 啟動虛擬環境
+# Activate virtual environment
 leetcode\Scripts\activate  # Windows
 source leetcode/bin/activate  # Linux/Mac
 
-# 更新所有套件
+# Update all packages
 pip install --upgrade -r requirements.txt
 ```
 
@@ -229,7 +229,7 @@ pip install --upgrade -r requirements.txt
 
 ## 📝 requirements.txt
 
-確保 `requirements.txt` 包含測試依賴：
+Ensure `requirements.txt` includes test dependencies:
 
 ```txt
 # LeetCode Practice Framework - Dependencies
@@ -253,24 +253,23 @@ mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 
 ---
 
-## 🎯 最佳實踐
+## 🎯 Best Practices
 
-1. **使用虛擬環境**: 始終在虛擬環境中安裝依賴
-2. **使用測試腳本**: 測試腳本會自動處理虛擬環境
-3. **定期更新**: 定期更新依賴以獲得最新功能和修復
-4. **版本控制**: 不要將 `leetcode/` 資料夾加入 Git
-
----
-
-## 📞 需要幫助？
-
-如有問題，請參考：
-- [.dev/README.md](.dev/README.md) - 維護者指南
-- [.dev/TESTING.md](.dev/TESTING.md) - 完整測試文檔
-- 專案主 README.md - Python 環境章節
+1. **Use Virtual Environment**: Always install dependencies in the virtual environment
+2. **Use Test Scripts**: Test scripts automatically handle the virtual environment
+3. **Regular Updates**: Regularly update dependencies to get the latest features and fixes
+4. **Version Control**: Do not add the `leetcode/` folder to Git
 
 ---
 
-**測試負責人**: luffdev  
-**建立日期**: 2025-12-08
+## 📞 Need Help?
 
+If you have questions, please refer to:
+- [.dev/README.md](.dev/README.md) - Maintainer Guide
+- [.dev/TESTING.md](.dev/TESTING.md) - Complete Testing Documentation
+- Project main README.md - Python Environment section
+
+---
+
+**Test Maintainer**: luffdev  
+**Created Date**: 2025-12-08

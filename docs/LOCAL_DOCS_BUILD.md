@@ -191,7 +191,7 @@ Act provides **exact CI/CD simulation**, which is useful when:
 
 ## Changelog
 
-- **2025-01-XX**: Initial version
+- **2025-12-17**: Initial version
   - ✅ Added comparison of local build methods
   - ✅ Created overview guide
   - ✅ Linked to detailed guides for each method

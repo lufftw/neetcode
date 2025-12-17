@@ -1,51 +1,51 @@
 # AI Markmap Agent - Technical Design Document
 
-> 本文件詳細說明系統的技術設計決策、LangGraph 實作細節、以及各模組的互動方式。
+> This document details the system's technical design decisions, LangGraph implementation details, and how modules interact.
 
-## 目錄
+## Table of Contents
 
-1. [設計原則](#設計原則)
-2. [LangGraph 核心概念](#langgraph-核心概念)
-3. [State 設計](#state-設計)
-4. [Graph 結構](#graph-結構)
-5. [Agent 設計模式](#agent-設計模式)
-6. [記憶系統架構](#記憶系統架構)
-7. [錯誤處理策略](#錯誤處理策略)
-8. [效能優化](#效能優化)
-
----
-
-## 設計原則
-
-### 1. 可配置性 (Configurability)
-- 所有參數皆可透過 YAML 配置
-- 支援環境變數插值 (`${VAR_NAME}`)
-- 熱重載配置（開發模式）
-
-### 2. 可擴展性 (Extensibility)
-- 新增 Agent 只需定義配置與 Prompt
-- 支援自訂 Vector Store 實作
-- 模組化設計便於替換元件
-
-### 3. 可觀測性 (Observability)
-- 完整的日誌記錄
-- LangGraph Studio 可視化
-- Checkpoint 支援中斷恢復
-
-### 4. 可測試性 (Testability)
-- Mock LLM 支援單元測試
-- 獨立模組可單獨測試
-- 整合測試覆蓋完整流程
+1. [Design Principles](#design-principles)
+2. [LangGraph Core Concepts](#langgraph-core-concepts)
+3. [State Design](#state-design)
+4. [Graph Structure](#graph-structure)
+5. [Agent Design Patterns](#agent-design-patterns)
+6. [Memory System Architecture](#memory-system-architecture)
+7. [Error Handling Strategies](#error-handling-strategies)
+8. [Performance Optimization](#performance-optimization)
 
 ---
 
-## LangGraph 核心概念
+## Design Principles
 
-### State + Graph 範式
+### 1. Configurability
+- All parameters configurable via YAML
+- Support for environment variable interpolation (`${VAR_NAME}`)
+- Hot-reload configuration (development mode)
+
+### 2. Extensibility
+- Adding new Agents only requires defining configuration and Prompt
+- Support for custom Vector Store implementations
+- Modular design for easy component replacement
+
+### 3. Observability
+- Complete logging
+- LangGraph Studio visualization
+- Checkpoint support for interruption recovery
+
+### 4. Testability
+- Mock LLM support for unit testing
+- Independent modules can be tested separately
+- Integration tests cover complete workflows
+
+---
+
+## LangGraph Core Concepts
+
+### State + Graph Paradigm
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        LangGraph 架構                           │
+│                        LangGraph Architecture                    │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │   State (TypedDict)          Graph (StateGraph)                 │
@@ -68,21 +68,21 @@
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 關鍵 API
+### Key APIs
 
-| API | 用途 | 範例 |
-|-----|------|------|
-| `StateGraph(State)` | 建立有狀態的 Graph | `graph = StateGraph(MarkmapState)` |
-| `add_node(name, func)` | 新增節點 | `graph.add_node("optimize", optimize_fn)` |
-| `add_edge(from, to)` | 新增邊 | `graph.add_edge("a", "b")` |
-| `add_conditional_edges()` | 條件路由 | 根據狀態決定下一步 |
-| `compile(checkpointer)` | 編譯並啟用持久化 | `graph.compile(checkpointer=MemorySaver())` |
+| API | Purpose | Example |
+|-----|---------|---------|
+| `StateGraph(State)` | Create a stateful Graph | `graph = StateGraph(MarkmapState)` |
+| `add_node(name, func)` | Add a node | `graph.add_node("optimize", optimize_fn)` |
+| `add_edge(from, to)` | Add an edge | `graph.add_edge("a", "b")` |
+| `add_conditional_edges()` | Conditional routing | Decide next step based on state |
+| `compile(checkpointer)` | Compile and enable persistence | `graph.compile(checkpointer=MemorySaver())` |
 
 ---
 
-## State 設計
+## State Design
 
-### MarkmapState 定義
+### MarkmapState Definition
 
 ```python
 from typing import TypedDict, List, Optional, Annotated
@@ -90,70 +90,70 @@ from langgraph.graph.message import add_messages
 
 class MarkmapState(TypedDict):
     """
-    共享狀態 - 在所有節點間傳遞
+    Shared state - passed between all nodes
     
-    設計原則：
-    1. 不可變性：每次更新返回新字典
-    2. 可追蹤性：保留完整歷史
-    3. 最小化：僅包含必要資訊
+    Design principles:
+    1. Immutability: Each update returns a new dictionary
+    2. Traceability: Preserve complete history
+    3. Minimalism: Only include necessary information
     """
     
-    # ===== 輸入數據 =====
-    metadata: Optional[dict]           # 全量 metadata（僅首次）
-    ontology: Optional[dict]           # ontology 數據
+    # ===== Input Data =====
+    metadata: Optional[dict]           # Full metadata (first time only)
+    ontology: Optional[dict]           # Ontology data
     
-    # ===== 第一階段產物 =====
+    # ===== Phase 1 Outputs =====
     markmap_general_en: Optional[str]
     markmap_general_zh: Optional[str]
     markmap_specialist_en: Optional[str]
     markmap_specialist_zh: Optional[str]
     
-    # ===== 流程狀態 =====
+    # ===== Process State =====
     current_round: int
     current_markmaps: List[str]
     
-    # ===== 討論紀錄 =====
-    # 使用 add_messages reducer 自動累積
+    # ===== Discussion Records =====
+    # Uses add_messages reducer to automatically accumulate
     discussion_history: Annotated[List[dict], add_messages]
     round_summaries: List[str]
     
-    # ===== 壓縮內容 =====
+    # ===== Compressed Content =====
     compressed_discussion: Optional[str]
     compressed_metadata: Optional[str]
     
-    # ===== 評斷結果 =====
+    # ===== Evaluation Results =====
     candidate_markmaps: List[dict]
     judge_evaluations: List[dict]
     final_selection: Optional[str]
     
-    # ===== 輸出 =====
+    # ===== Output =====
     final_html: Optional[str]
     
-    # ===== 記憶 =====
+    # ===== Memory =====
     stm: dict
     ltm_context: Optional[str]
 ```
 
-### Reducer 機制
+### Reducer Mechanism
 
-LangGraph 使用 Reducer 處理狀態更新：
+LangGraph uses Reducers to handle state updates:
 
 ```python
-# add_messages reducer 範例
-# 自動將新訊息累積到歷史中
+# add_messages reducer example
+# Automatically accumulates new messages into history
 
-# 節點返回：
+# Node returns:
 return {"discussion_history": [new_message]}
 
-# State 更新後：
+# After state update:
 # discussion_history = [old_msg1, old_msg2, new_message]
 ```
 
 ---
 
-## Graph 結構
+## Graph Structure
 
-### 完整 Graph 定義
+### Complete Graph Definition
 
 ```python
 from langgraph.graph import StateGraph, START, END
@@ -206,16 +206,16 @@ def build_graph():
     return graph.compile(checkpointer=MemorySaver())
 ```
 
-### 條件路由邏輯
+### Conditional Routing Logic
 
 ```python
 def should_continue(state: MarkmapState) -> Literal["continue", "evaluate"]:
     """
-    決定是否繼續優化
+    Decide whether to continue optimization
     
-    條件：
-    1. 未達最大輪數
-    2. 上輪有顯著改進（可選）
+    Conditions:
+    1. Maximum rounds not reached
+    2. Significant improvement in previous round (optional)
     """
     config = load_config()
     max_rounds = config["workflow"]["optimization_rounds"]
@@ -227,16 +227,16 @@ def should_continue(state: MarkmapState) -> Literal["continue", "evaluate"]:
 
 ---
 
-## Agent 設計模式
+## Agent Design Patterns
 
-### Base Agent 抽象
+### Base Agent Abstract
 
 ```python
 from abc import ABC, abstractmethod
 from langchain_core.messages import HumanMessage
 
 class BaseAgent(ABC):
-    """所有 Agent 的基類"""
+    """Base class for all Agents"""
     
     def __init__(self, config: dict):
         self.config = config
@@ -245,40 +245,40 @@ class BaseAgent(ABC):
     
     @abstractmethod
     def _init_model(self):
-        """初始化 LLM"""
+        """Initialize LLM"""
         pass
     
     def _load_prompt(self) -> str:
-        """載入 Prompt 模板"""
+        """Load Prompt template"""
         with open(self.config["prompt_path"], "r") as f:
             return f.read()
     
     @abstractmethod
     def execute(self, state: MarkmapState) -> dict:
-        """執行 Agent 邏輯"""
+        """Execute Agent logic"""
         pass
 ```
 
-### Optimizer Agent 認知模組
+### Optimizer Agent Cognitive Modules
 
 ```python
 class OptimizerAgent(BaseAgent):
     """
-    優化者 Agent - 具備完整認知能力
+    Optimizer Agent - Full cognitive capabilities
     
-    認知模組：
-    1. Planning: 規劃優化目標
-    2. Decomposition: 任務分解
-    3. Reflection: 反思改進
-    4. Memory: 記憶管理
+    Cognitive modules:
+    1. Planning: Plan optimization objectives
+    2. Decomposition: Task decomposition
+    3. Reflection: Reflect and improve
+    4. Memory: Memory management
     """
     
     def plan(self, state: MarkmapState) -> dict:
         """
-        🧠 規劃模組
+        🧠 Planning Module
         
-        輸入：當前 Markmap, LTM 上下文
-        輸出：優化計劃
+        Input: Current Markmap, LTM context
+        Output: Optimization plan
         """
         prompt = self._build_planning_prompt(state)
         response = self.model.invoke([HumanMessage(content=prompt)])
@@ -286,13 +286,13 @@ class OptimizerAgent(BaseAgent):
     
     def decompose(self, plan: str) -> List[dict]:
         """
-        🧩 任務分解模組
+        🧩 Task Decomposition Module
         
-        將優化計劃分解為：
-        - 節點結構調整
-        - 分類層次優化
-        - 語義一致性檢查
-        - 工程可讀性提升
+        Decompose optimization plan into:
+        - Node structure adjustments
+        - Classification hierarchy optimization
+        - Semantic consistency checks
+        - Engineering readability improvements
         """
         prompt = self._build_decomposition_prompt(plan)
         response = self.model.invoke([HumanMessage(content=prompt)])
@@ -300,9 +300,9 @@ class OptimizerAgent(BaseAgent):
     
     def reflect(self, previous_results: List[dict], state: MarkmapState) -> dict:
         """
-        🔁 反思模組
+        🔁 Reflection Module
         
-        評估前一輪結果，調整策略
+        Evaluate previous round results and adjust strategy
         """
         prompt = self._build_reflection_prompt(previous_results, state)
         response = self.model.invoke([HumanMessage(content=prompt)])
@@ -310,32 +310,32 @@ class OptimizerAgent(BaseAgent):
     
     def execute(self, state: MarkmapState, other_opinions: List[str]) -> dict:
         """
-        執行完整優化流程
+        Execute complete optimization workflow
         
-        1. 從 LTM 檢索相關決策
-        2. 規劃
-        3. 分解任務
-        4. 反思（非首輪）
-        5. 執行優化
-        6. 更新記憶
+        1. Retrieve relevant decisions from LTM
+        2. Plan
+        3. Decompose tasks
+        4. Reflect (if not first round)
+        5. Execute optimization
+        6. Update memory
         """
-        # 1. LTM 檢索
+        # 1. LTM retrieval
         ltm_context = query_ltm(state["current_markmaps"][0][:500])
         
-        # 2. 規劃
+        # 2. Plan
         plan = self.plan(state)
         
-        # 3. 分解
+        # 3. Decompose
         subtasks = self.decompose(plan["plan"])
         
-        # 4. 反思（非首輪）
+        # 4. Reflect (if not first round)
         if state["current_round"] > 0:
             reflection = self.reflect(state["round_summaries"], state)
         
-        # 5. 執行優化
+        # 5. Execute optimization
         optimized = self._optimize(state, other_opinions, subtasks)
         
-        # 6. 更新記憶
+        # 6. Update memory
         update_stm(state["stm"], optimized)
         store_to_ltm(optimized)
         
@@ -344,19 +344,19 @@ class OptimizerAgent(BaseAgent):
 
 ---
 
-## 記憶系統架構
+## Memory System Architecture
 
-### 短期記憶 (STM)
+### Short-Term Memory (STM)
 
 ```python
 class ShortTermMemory:
     """
-    短期記憶 - 維護當前會話上下文
+    Short-Term Memory - Maintains current session context
     
-    特點：
-    - In-memory 實作
-    - FIFO 淘汰策略
-    - 快速存取
+    Features:
+    - In-memory implementation
+    - FIFO eviction strategy
+    - Fast access
     """
     
     def __init__(self, max_items: int = 50):
@@ -378,7 +378,7 @@ class ShortTermMemory:
         return [m for m in self.memory if keyword in str(m["content"])]
 ```
 
-### 長期記憶 (LTM)
+### Long-Term Memory (LTM)
 
 ```python
 from langchain_community.vectorstores import Chroma
@@ -386,12 +386,12 @@ from langchain_openai import OpenAIEmbeddings
 
 class LongTermMemory:
     """
-    長期記憶 - 跨會話持久化
+    Long-Term Memory - Cross-session persistence
     
-    特點：
-    - Vector Store 實作
-    - 語義搜尋
-    - 持久化存儲
+    Features:
+    - Vector Store implementation
+    - Semantic search
+    - Persistent storage
     """
     
     def __init__(self, config: dict):
@@ -405,40 +405,41 @@ class LongTermMemory:
         )
     
     def store(self, content: str, metadata: dict = None) -> None:
-        """存儲決策到 LTM"""
+        """Store decision to LTM"""
         self.vectorstore.add_texts(
             texts=[content],
             metadatas=[metadata or {}]
         )
     
     def query(self, query: str, k: int = 5) -> List[str]:
-        """語義搜尋相關決策"""
+        """Semantic search for relevant decisions"""
         docs = self.vectorstore.similarity_search(query, k=k)
         return [doc.page_content for doc in docs]
 ```
 
-### 記憶整合流程
+### Memory Integration Flow
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                       記憶系統流程                               │
+│                        Memory System Flow                        │
 │                                                                 │
 │   ┌─────────────┐                         ┌─────────────┐       │
-│   │   Agent     │ ─── 查詢相關決策 ────► │    LTM      │       │
-│   │             │ ◄── 返回上下文 ─────── │  (Vector)   │       │
+│   │   Agent     │ ─── Query relevant ───► │    LTM      │       │
+│   │             │     decisions            │  (Vector)   │       │
+│   │             │ ◄── Return context ────── │             │       │
 │   └──────┬──────┘                         └─────────────┘       │
 │          │                                                      │
-│          │ 執行決策                                              │
+│          │ Execute decision                                     │
 │          ▼                                                      │
 │   ┌─────────────┐                         ┌─────────────┐       │
-│   │   Result    │ ─── 存入短期 ─────────► │    STM      │       │
-│   │             │                         │  (Memory)   │       │
+│   │   Result    │ ─── Store to ─────────► │    STM      │       │
+│   │             │     short-term            │  (Memory)   │       │
 │   └──────┬──────┘                         └──────┬──────┘       │
 │          │                                       │              │
-│          │ 重要決策                               │ 會話結束    │
+│          │ Important decision                    │ Session end  │
 │          ▼                                       ▼              │
 │   ┌─────────────┐                         ┌─────────────┐       │
-│   │   Store to  │ ◄── 持久化 ──────────── │   Persist   │       │
+│   │   Store to  │ ◄── Persist ──────────── │   Persist   │       │
 │   │    LTM      │                         │    STM      │       │
 │   └─────────────┘                         └─────────────┘       │
 │                                                                 │
@@ -447,15 +448,15 @@ class LongTermMemory:
 
 ---
 
-## 錯誤處理策略
+## Error Handling Strategies
 
-### 重試機制
+### Retry Mechanism
 
 ```python
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 class RobustLLMCall:
-    """帶重試的 LLM 呼叫"""
+    """LLM call with retry"""
     
     @retry(
         stop=stop_after_attempt(3),
@@ -472,14 +473,14 @@ class RobustLLMCall:
             raise
 ```
 
-### Checkpoint 恢復
+### Checkpoint Recovery
 
 ```python
 def resume_from_checkpoint(thread_id: str):
-    """從 Checkpoint 恢復執行"""
+    """Resume execution from checkpoint"""
     graph = build_graph()
     
-    # 取得最新 checkpoint
+    # Get latest checkpoint
     state = graph.get_state({"configurable": {"thread_id": thread_id}})
     
     if state.values:
@@ -492,25 +493,25 @@ def resume_from_checkpoint(thread_id: str):
 
 ---
 
-## 效能優化
+## Performance Optimization
 
-### 1. 並行執行
+### 1. Parallel Execution
 
 ```python
-# 第一階段：4 個生成器並行
+# Phase 1: 4 generators in parallel
 graph.add_edge(START, "gen_general_en")
 graph.add_edge(START, "gen_general_zh")
 graph.add_edge(START, "gen_specialist_en")
 graph.add_edge(START, "gen_specialist_zh")
 
-# LangGraph 自動並行執行無依賴的節點
+# LangGraph automatically executes independent nodes in parallel
 ```
 
-### 2. 內容壓縮
+### 2. Content Compression
 
 ```python
 def compress_if_needed(state: MarkmapState) -> dict:
-    """智慧壓縮 - 僅在必要時壓縮"""
+    """Smart compression - only compress when necessary"""
     
     estimated_tokens = estimate_tokens(state["discussion_history"])
     threshold = config["workflow"]["max_tokens_before_compress"]
@@ -519,41 +520,41 @@ def compress_if_needed(state: MarkmapState) -> dict:
         compressed = compress_content(state["discussion_history"])
         return {"compressed_discussion": compressed}
     
-    return {}  # 不壓縮
+    return {}  # No compression
 ```
 
-### 3. 快取策略
+### 3. Caching Strategy
 
 ```python
 from functools import lru_cache
 
 @lru_cache(maxsize=100)
 def get_embedding(text: str) -> List[float]:
-    """快取 embedding 結果"""
+    """Cache embedding results"""
     return embeddings.embed_query(text)
 ```
 
-### 4. 串流輸出
+### 4. Streaming Output
 
 ```python
 async def stream_optimization(state: MarkmapState):
-    """串流輸出優化過程"""
+    """Stream optimization process"""
     async for event in graph.astream(state):
         yield event
 ```
 
 ---
 
-## 附錄：設計決策記錄
+## Appendix: Design Decision Records
 
-| 決策 | 選項 | 選擇 | 原因 |
-|------|------|------|------|
-| 狀態管理 | Redux / Zustand / LangGraph State | LangGraph State | 與 Graph 緊密整合 |
-| Vector Store | Chroma / Pinecone / FAISS | Chroma | 免費、本地、易部署 |
-| 配置格式 | JSON / YAML / TOML | YAML | 可讀性好、支援註解 |
-| 日誌框架 | logging / loguru | loguru | 更好的格式化 |
+| Decision | Options | Choice | Reason |
+|----------|---------|--------|--------|
+| State Management | Redux / Zustand / LangGraph State | LangGraph State | Tight integration with Graph |
+| Vector Store | Chroma / Pinecone / FAISS | Chroma | Free, local, easy to deploy |
+| Config Format | JSON / YAML / TOML | YAML | Good readability, supports comments |
+| Logging Framework | logging / loguru | loguru | Better formatting |
 
 ---
 
-*Last updated: 2024-12*
+*Last updated: 2025-12-17
 

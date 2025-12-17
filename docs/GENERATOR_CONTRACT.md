@@ -2,7 +2,7 @@
 
 > **Status**: Canonical Reference  
 > **Scope**: All generator files in `generators/`  
-> **Last Updated**: 2025/12/12
+> **Last Updated**: 2025-12-12
 
 This document defines the **contract** for test case generator files. Generators enable stress testing, edge case discovery, and reproducible test generation.
 

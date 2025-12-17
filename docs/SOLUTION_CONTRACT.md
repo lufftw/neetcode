@@ -2,7 +2,7 @@
 
 > **Status**: Canonical Reference  
 > **Scope**: All solution files in `solutions/`  
-> **Last Updated**: 2024
+> **Last Updated**: 2025-12-17
 
 This document defines the **contract** for solution files in this repository. All solution files MUST conform to this specification. The test runner, generators, and tooling depend on this contract.
 

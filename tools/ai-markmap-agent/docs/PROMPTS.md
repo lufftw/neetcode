@@ -1,44 +1,44 @@
-# Prompt 設計指南
+# Prompt Design Guide
 
-> 本文件說明各 Agent 的 Prompt 設計原則與範例。
+> This document describes the prompt design principles and examples for each Agent.
 
-## 目錄
+## Table of Contents
 
-1. [Prompt 設計原則](#prompt-設計原則)
-2. [通才 Prompt](#通才-prompt)
-3. [專才 Prompt](#專才-prompt)
-4. [優化者 Prompt](#優化者-prompt)
-5. [總結者 Prompt](#總結者-prompt)
-6. [評斷者 Prompt](#評斷者-prompt)
-7. [壓縮者 Prompt](#壓縮者-prompt)
-
----
-
-## Prompt 設計原則
-
-### 1. 結構化輸出
-- 明確指定輸出格式
-- 使用 Markdown 結構
-- 要求 JSON 時提供 schema
-
-### 2. 角色定位
-- 清晰定義 Agent 身份
-- 說明專業領域
-- 設定行為準則
-
-### 3. 上下文管理
-- 最重要的資訊放在開頭
-- 使用分隔符號區隔區塊
-- 控制總長度避免截斷
-
-### 4. 可配置性
-- 使用佔位符 `{variable}`
-- 支援動態注入內容
-- 保持核心邏輯穩定
+1. [Prompt Design Principles](#prompt-design-principles)
+2. [Generalist Prompt](#generalist-prompt)
+3. [Specialist Prompt](#specialist-prompt)
+4. [Optimizer Prompts](#optimizer-prompts)
+5. [Summarizer Prompt](#summarizer-prompt)
+6. [Judge Prompts](#judge-prompts)
+7. [Compressor Prompt](#compressor-prompt)
 
 ---
 
-## 通才 Prompt
+## Prompt Design Principles
+
+### 1. Structured Output
+- Explicitly specify output format
+- Use Markdown structure
+- Provide schema when JSON is required
+
+### 2. Role Definition
+- Clearly define Agent identity
+- Specify professional domain
+- Set behavioral guidelines
+
+### 3. Context Management
+- Place most important information at the beginning
+- Use separators to distinguish sections
+- Control total length to avoid truncation
+
+### 4. Configurability
+- Use placeholders `{variable}`
+- Support dynamic content injection
+- Keep core logic stable
+
+---
+
+## Generalist Prompt
 
 ### English Version (`prompts/generalist_en.txt`)
 
@@ -96,7 +96,7 @@ Generate a Markmap (in Markdown format) based on the provided metadata and ontol
 Generate ONLY the Markmap in Markdown format. No explanations.
 ```
 
-### 繁體中文版本 (`prompts/generalist_zh.txt`)
+### Traditional Chinese Version (`prompts/generalist_zh.txt`)
 
 ```markdown
 # 角色：通才 Markmap 架構師
@@ -154,7 +154,7 @@ Generate ONLY the Markmap in Markdown format. No explanations.
 
 ---
 
-## 專才 Prompt
+## Specialist Prompt
 
 ### English Version (`prompts/specialist_en.txt`)
 
@@ -205,9 +205,9 @@ Generate ONLY the Markmap in Markdown format. Focus on technical accuracy.
 
 ---
 
-## 優化者 Prompt
+## Optimizer Prompts
 
-### 結構優化者 (`prompts/optimizer_structure.txt`)
+### Structure Optimizer (`prompts/optimizer_structure.txt`)
 
 ```markdown
 # Role: Structure Optimizer
@@ -263,7 +263,7 @@ Analyze the current structure and identify:
 [If you disagree with other opinions, explain why]
 ```
 
-### 語義優化者 (`prompts/optimizer_semantic.txt`)
+### Semantic Optimizer (`prompts/optimizer_semantic.txt`)
 
 ```markdown
 # Role: Semantic Optimizer
@@ -301,7 +301,7 @@ You ensure semantic consistency and meaningful relationships in Markmaps.
 [Full optimized Markmap]
 ```
 
-### 可讀性優化者 (`prompts/optimizer_readability.txt`)
+### Readability Optimizer (`prompts/optimizer_readability.txt`)
 
 ```markdown
 # Role: Readability Optimizer
@@ -340,7 +340,7 @@ You enhance the readability and usability of Markmaps for end users.
 
 ---
 
-## 總結者 Prompt
+## Summarizer Prompt
 
 ### `prompts/summarizer.txt`
 
@@ -388,9 +388,9 @@ You consolidate optimization discussions and produce a unified Markmap.
 
 ---
 
-## 評斷者 Prompt
+## Judge Prompts
 
-### 品質評斷者 (`prompts/judge_quality.txt`)
+### Quality Judge (`prompts/judge_quality.txt`)
 
 ```markdown
 # Role: Quality Judge
@@ -435,7 +435,7 @@ Weighted average based on criteria importance.
 [Your position if debating with other judges]
 ```
 
-### 完整性評斷者 (`prompts/judge_completeness.txt`)
+### Completeness Judge (`prompts/judge_completeness.txt`)
 
 ```markdown
 # Role: Completeness Judge
@@ -482,7 +482,7 @@ You evaluate Markmap completeness and practical value.
 
 ---
 
-## 壓縮者 Prompt
+## Compressor Prompt
 
 ### `prompts/compressor.txt`
 
@@ -521,9 +521,9 @@ You summarize long discussions while preserving key information.
 
 ---
 
-## Prompt 版本控制
+## Prompt Version Control
 
-建議使用以下命名規則管理 Prompt 版本：
+It is recommended to use the following naming convention for managing prompt versions:
 
 ```
 prompts/
@@ -538,5 +538,4 @@ prompts/
 
 ---
 
-*Last updated: 2024-12*
-
+*Last updated: 2025-12-17*

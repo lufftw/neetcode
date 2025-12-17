@@ -243,14 +243,14 @@ If you need to access these documents, use the GitHub absolute URLs provided in 
 
 ## 📝 Update Log
 
-- **2025-01-XX**: Initial version
-- **2025-01-XX**: Updated - Added `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` to website navigation
+- **2025-12-12**: Initial version
+- **2025-12-12**: Updated - Added `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` to website navigation
 - **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration
 - **2025-12-12**: Moved Tools documentation from `docs/TOOLS.md` to `tools/README.md` (developer docs belong with code)
-- **2025-01-XX**: Added local documentation build guides - `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) to Guides section
-- **2025-12-XX**: Added `ONTOLOGY_DESIGN.md` to Reference section
-- **2025-12-XX**: Added `MKDOCS_CONTENT_GUIDE.md` and `LOCAL_DOCS_BUILD.md` to Guides section
-- **2025-12-XX**: Added `backtracking_exploration` pattern to Patterns section
+- **2025-12-13**: Added local documentation build guides - `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) to Guides section
+- **2025-12-14**: Added `ONTOLOGY_DESIGN.md` to Reference section
+- **2025-12-15**: Added `MKDOCS_CONTENT_GUIDE.md` and `LOCAL_DOCS_BUILD.md` to Guides section
+- **2025-12-17**: Added `backtracking_exploration` pattern to Patterns section
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---

@@ -290,7 +290,7 @@ python -m mkdocs serve -a 127.0.0.1:8001
 
 ## Changelog
 
-- **2025-01-XX**: Initial version
+- **2025-12-17**: Initial version
   - ✅ Added `build_docs.bat` and `build_docs.sh` scripts
   - ✅ Created comprehensive manual build guide
   - ✅ Cross-platform support (Windows, Linux, macOS)
