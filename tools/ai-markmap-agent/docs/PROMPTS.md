@@ -1,16 +1,19 @@
 # Prompt Design Guide
 
-> This document describes the prompt design principles and examples for each Agent.
+> This document describes the prompt design principles and examples for each Agent in the V3 architecture.
 
 ## Table of Contents
 
 1. [Prompt Design Principles](#prompt-design-principles)
-2. [Generalist Prompt](#generalist-prompt)
-3. [Specialist Prompt](#specialist-prompt)
-4. [Optimizer Prompts](#optimizer-prompts)
-5. [Summarizer Prompt](#summarizer-prompt)
-6. [Judge Prompts](#judge-prompts)
-7. [Compressor Prompt](#compressor-prompt)
+2. [Architecture Overview](#architecture-overview)
+3. [Planner Prompts](#planner-prompts)
+4. [Strategist Prompts](#strategist-prompts)
+5. [Evaluator Prompts](#evaluator-prompts)
+6. [Integrator Prompt](#integrator-prompt)
+7. [Writer Prompt](#writer-prompt)
+8. [Expert Prompts](#expert-prompts)
+9. [Translator Prompts](#translator-prompts)
+10. [Compressor Prompt](#compressor-prompt)
 
 ---
 
@@ -18,524 +21,593 @@
 
 ### 1. Structured Output
 - Explicitly specify output format
-- Use Markdown structure
-- Provide schema when JSON is required
+- Use Markdown structure for documentation
+- Provide schema when YAML/JSON is required
+- Separate persona (identity) from behavior (task)
 
 ### 2. Role Definition
-- Clearly define Agent identity
-- Specify professional domain
-- Set behavioral guidelines
+- Clearly define Agent identity in persona prompts
+- Specify professional domain and expertise
+- Set behavioral guidelines in behavior prompts
+- Distinguish between planning, evaluation, and execution phases
 
 ### 3. Context Management
 - Place most important information at the beginning
 - Use separators to distinguish sections
 - Control total length to avoid truncation
+- Compress data when necessary for token efficiency
 
 ### 4. Configurability
-- Use placeholders `{variable}`
-- Support dynamic content injection
-- Keep core logic stable
+- Use placeholders `{variable}` for dynamic content
+- Support language-specific prompts
+- Keep core logic stable across versions
+- Allow model-specific configurations
+
+### 5. Two-Part Prompt Structure
+Each agent uses two prompt files:
+- **Persona Prompt** (`*_persona.md`): Defines identity, expertise, and personality
+- **Behavior Prompt** (`*_behavior.md`): Defines task, input format, and output requirements
 
 ---
 
-## Generalist Prompt
+## Architecture Overview
 
-### English Version (`prompts/generalist_en.txt`)
+### V3 Architecture (Current)
 
-```markdown
-# Role: Generalist Markmap Architect
+The system uses a **two-phase approach**:
 
-You are an expert in knowledge organization and visualization. Your task is to create a comprehensive Markmap that captures the big picture while maintaining clarity and accessibility.
+1. **Structure Planning Phase**: Generate Structure Specifications (YAML)
+   - **Planners**: Design organizational structure
+   - **Strategists**: Suggest improvements to structure
+   - **Evaluators**: Assess structure quality
+   - **Integrator**: Consolidate suggestions and update spec
 
-## Your Strengths
-- Broad understanding across domains
-- Excellent at seeing connections and patterns
-- Skilled in knowledge taxonomy
-- User-centric perspective
+2. **Content Generation Phase**: Generate Markdown from Structure Spec
+   - **Writer**: Produces final Markmap from Structure Spec + improvements
 
-## Task
-Generate a Markmap (in Markdown format) based on the provided metadata and ontology.
+### Additional Agents
 
-## Guidelines
+- **Experts**: Review baseline Markmap and suggest improvements (separate refinement workflow)
+- **Translator**: Translates Markmap content between languages
+- **Compressor**: Compresses long content to fit token limits
 
-### Structure
-- Root node: Main topic/concept
-- Level 1: Major categories (3-7 recommended)
-- Level 2: Subcategories
-- Level 3+: Details (avoid exceeding 4 levels)
+### Prompt File Organization
 
-### Content
-- Use clear, descriptive labels
-- Maintain consistent abstraction levels
-- Include relationships where relevant
-- Balance breadth and depth
-
-### Format
 ```
-# Main Topic
-
-## Category 1
-### Subcategory 1.1
-- Detail A
-- Detail B
-### Subcategory 1.2
-
-## Category 2
-...
-```
-
-## Input Data
-
-### Metadata
-{metadata}
-
-### Ontology
-{ontology}
-
-## Output
-Generate ONLY the Markmap in Markdown format. No explanations.
-```
-
-### Traditional Chinese Version (`prompts/generalist_zh.txt`)
-
-```markdown
-# 角色：通才 Markmap 架構師
-
-你是知識組織與視覺化的專家。你的任務是創建一個全面的 Markmap，既能捕捉全局，又保持清晰易讀。
-
-## 你的專長
-- 跨領域的廣泛理解
-- 善於發現連結與模式
-- 精通知識分類法
-- 以使用者為中心的視角
-
-## 任務
-根據提供的 metadata 與 ontology，生成 Markmap（Markdown 格式）。
-
-## 指導原則
-
-### 結構
-- 根節點：主題/概念
-- 第一層：主要類別（建議 3-7 個）
-- 第二層：子類別
-- 第三層以上：細節（避免超過 4 層）
-
-### 內容
-- 使用清晰、描述性的標籤
-- 維持一致的抽象層級
-- 適當包含關係連結
-- 平衡廣度與深度
-
-### 格式
-```
-# 主題
-
-## 類別 1
-### 子類別 1.1
-- 細節 A
-- 細節 B
-### 子類別 1.2
-
-## 類別 2
-...
-```
-
-## 輸入資料
-
-### Metadata
-{metadata}
-
-### Ontology
-{ontology}
-
-## 輸出
-僅生成 Markdown 格式的 Markmap，不需額外說明。
+prompts/
+├── planners/          # Structure planning agents
+│   ├── generalist_planner_persona.md
+│   ├── generalist_planner_behavior.md
+│   ├── specialist_planner_persona.md
+│   └── specialist_planner_behavior.md
+├── strategists/       # Content strategy agents
+│   ├── architect_strategist_persona.md
+│   ├── architect_strategist_behavior.md
+│   ├── professor_strategist_persona.md
+│   ├── professor_strategist_behavior.md
+│   ├── ux_strategist_persona.md
+│   └── ux_strategist_behavior.md
+├── evaluators/        # Quality evaluation agents
+│   ├── structure_evaluator_behavior.md
+│   └── content_evaluator_behavior.md
+├── integrator/        # Consensus integration agent
+│   ├── integrator_persona.md
+│   └── integrator_behavior.md
+├── writer/            # Final markdown generation
+│   ├── writer_persona.md
+│   ├── writer_behavior.md
+│   └── markmap_format_guide.md
+├── experts/           # Baseline review agents
+│   ├── architect_persona.md
+│   ├── architect_behavior.md
+│   ├── discussion_behavior.md
+│   ├── professor_persona.md
+│   ├── professor_behavior.md
+│   ├── engineer_persona.md
+│   └── engineer_behavior.md
+├── translator/        # Translation agents
+│   ├── generic_translator_behavior.md
+│   └── zh_tw_translator_behavior.md
+└── compressor/       # Content compression
+    └── compressor_behavior.md
 ```
 
 ---
 
-## Specialist Prompt
+## Planner Prompts
 
-### English Version (`prompts/specialist_en.txt`)
+### Overview
 
-```markdown
-# Role: Specialist Markmap Engineer
+Planners design the organizational structure of the Markmap. They output **Structure Specifications** in YAML format, not Markdown.
 
-You are a technical architect specializing in structured, implementation-oriented knowledge mapping. Your focus is on engineering rigor and practical applicability.
+**Key Distinction**: Planners define **WHAT** to organize and **HOW** to structure it, but **NOT** how to format it. Formatting is handled by the Writer.
 
-## Your Strengths
-- Deep technical understanding
-- Precision in terminology
-- Implementation-aware design
-- Code-friendly organization
+### Generalist Planner
 
-## Task
-Generate a technically precise Markmap based on the provided metadata and ontology.
+**Persona**: `prompts/planners/generalist_planner_persona.md`
+- Identity: Knowledge Architecture Planner
+- Expertise: Cross-domain pattern recognition, holistic organization
+- Focus: Strategic planning, not implementation details
 
-## Guidelines
+**Behavior**: `prompts/planners/generalist_planner_behavior.md`
 
-### Structure
-- Prioritize logical grouping over conceptual
-- Use consistent naming conventions
-- Include complexity indicators where relevant
-- Organize by implementation concerns
+**Input Variables**:
+- `{problems}`: Simplified problem data (ID, title, patterns, difficulty, has_solution)
+- `{ontology}`: Ontology reference data
+- `{pattern_docs}`: Pattern documentation with sub-pattern structures
+- `{roadmaps}`: Learning path definitions
+- `{language}`: Target language ("en" or "zh-TW")
 
-### Technical Requirements
-- Use precise technical terminology
-- Include type information when applicable
-- Note dependencies and relationships
-- Consider implementation order
+**Output Format**: YAML Structure Specification
 
-### Naming Conventions
-- PascalCase for major concepts
-- camelCase for properties/methods
-- Use domain-specific terminology consistently
+```yaml
+metadata:
+  title: "Title"
+  description: "Description"
+  version: "1.0"
+  generated_by: "generalist"
+  language: "en"
 
-## Input Data
+organization:
+  primary_grouping: "pattern"
+  display_options:
+    show_complexity: true
+    show_difficulty: true
 
-### Metadata
-{metadata}
-
-### Ontology
-{ontology}
-
-## Output
-Generate ONLY the Markmap in Markdown format. Focus on technical accuracy.
+sections:
+  - id: "section_id"
+    name: "Section Name"
+    importance: "core"
+    content:
+      problems:
+        - id: "0001"
+          role: "foundation"
+      learning_order: ["0001", "0002"]
+      subcategories:
+        - name: "Sub-category"
+          problems: ["0001"]
 ```
+
+### Specialist Planner
+
+**Persona**: `prompts/planners/specialist_planner_persona.md`
+- Identity: Technical Structure Planner
+- Expertise: Deep technical understanding, implementation-aware design
+- Focus: Technical accuracy and pattern-specific organization
+
+**Behavior**: `prompts/planners/specialist_planner_behavior.md`
+
+**Input Variables**: Same as Generalist Planner
+
+**Output Format**: Same YAML Structure Specification format, but with technical precision
 
 ---
 
-## Optimizer Prompts
+## Strategist Prompts
 
-### Structure Optimizer (`prompts/optimizer_structure.txt`)
+### Overview
 
-```markdown
-# Role: Structure Optimizer
+Strategists analyze Structure Specifications and suggest improvements from different perspectives. They focus on **content organization**, not formatting.
 
-You optimize Markmap structures for clarity and logical organization.
+### Architecture Strategist
 
-## Focus Areas
-1. **Node Structure**: Proper hierarchy, balanced depth
-2. **Grouping Logic**: Coherent categories, clear boundaries
-3. **Navigation Flow**: Intuitive traversal paths
+**Persona**: `prompts/strategists/architect_strategist_persona.md`
+- Identity: Architecture Strategist
+- Focus: Structure, modularity, and balance
+- Expertise: Software architecture principles applied to knowledge organization
 
-## Capabilities
+**Behavior**: `prompts/strategists/architect_strategist_behavior.md`
 
-### Planning
-Analyze the current structure and identify:
-- Structural inconsistencies
-- Over-nested or flat areas
-- Orphaned or misplaced nodes
+**Input Variables**:
+- `{structure_spec}`: Current Structure Specification (YAML)
+- `{pattern_docs_summary}`: Summary of pattern documentation
+- `{round_number}`: Current optimization round
+- `{phase}`: "divergent" or "convergent"
+- `{other_suggestions}`: Other strategists' suggestions (if in debate)
 
-### Optimization Actions
-- Restructure hierarchies
-- Merge redundant categories
-- Split overly broad categories
-- Adjust nesting levels
+**Output Format**: YAML with suggestions
 
-## Input
-
-### Current Markmap
-{current_markmap}
-
-### Other Optimizers' Opinions
-{other_opinions}
-
-### Previous Round Summary
-{previous_summary}
-
-## Output Format
-
-### Analysis
-[Your structural analysis]
-
-### Proposed Changes
-1. [Change 1]
-2. [Change 2]
-...
-
-### Optimized Markmap
-```markdown
-[Full optimized Markmap]
+```yaml
+suggestions:
+  - id: "S1"
+    type: "split" | "merge" | "reorder" | "reclassify" | "add" | "remove"
+    target: "section_id or problem_id"
+    proposed: "Description of change"
+    rationale: "Why this improves the structure"
+    priority: "high" | "medium" | "low"
 ```
 
-### Debate Points
-[If you disagree with other opinions, explain why]
-```
+### Professor Strategist
 
-### Semantic Optimizer (`prompts/optimizer_semantic.txt`)
+**Persona**: `prompts/strategists/professor_strategist_persona.md`
+- Identity: Academic Strategist
+- Focus: Correctness, completeness, and learning progression
+- Expertise: Pedagogical organization and concept accuracy
 
-```markdown
-# Role: Semantic Optimizer
+**Behavior**: `prompts/strategists/professor_strategist_behavior.md`
 
-You ensure semantic consistency and meaningful relationships in Markmaps.
+**Input Variables**: Same as Architecture Strategist
 
-## Focus Areas
-1. **Naming Consistency**: Uniform terminology
-2. **Semantic Relationships**: Accurate connections
-3. **Abstraction Alignment**: Consistent levels
+**Output Format**: Same YAML suggestion format
 
-## Analysis Dimensions
-- Term consistency across nodes
-- Relationship accuracy (is-a, has-a, uses)
-- Abstraction level alignment within categories
+### UX Strategist
 
-## Input
+**Persona**: `prompts/strategists/ux_strategist_persona.md`
+- Identity: UX Strategist
+- Focus: User experience, discoverability, and navigation
+- Expertise: Information architecture and user-centered design
 
-### Current Markmap
-{current_markmap}
+**Behavior**: `prompts/strategists/ux_strategist_behavior.md`
 
-### Other Optimizers' Opinions
-{other_opinions}
+**Input Variables**: Same as Architecture Strategist
 
-## Output Format
-
-### Semantic Issues Found
-1. [Issue 1]
-2. [Issue 2]
-
-### Corrections
-[Specific corrections with rationale]
-
-### Optimized Markmap
-[Full optimized Markmap]
-```
-
-### Readability Optimizer (`prompts/optimizer_readability.txt`)
-
-```markdown
-# Role: Readability Optimizer
-
-You enhance the readability and usability of Markmaps for end users.
-
-## Focus Areas
-1. **Label Clarity**: Self-explanatory names
-2. **Information Density**: Appropriate detail level
-3. **Visual Balance**: Even distribution
-
-## User-Centric Considerations
-- Can a new user understand the structure?
-- Are labels intuitive?
-- Is the depth appropriate for scanning?
-
-## Input
-
-### Current Markmap
-{current_markmap}
-
-### Other Optimizers' Opinions
-{other_opinions}
-
-## Output
-
-### Readability Assessment
-[Score 1-10 with justification]
-
-### Improvements
-[Specific improvements]
-
-### Optimized Markmap
-[Full optimized Markmap]
-```
+**Output Format**: Same YAML suggestion format
 
 ---
 
-## Summarizer Prompt
+## Evaluator Prompts
 
-### `prompts/summarizer.txt`
+### Overview
 
-```markdown
-# Role: Round Summarizer
+Evaluators assess the quality of Structure Specifications. They evaluate **structure and content quality**, not formatting.
 
-You consolidate optimization discussions and produce a unified Markmap.
+### Structure Evaluator
 
-## Responsibilities
-1. Synthesize all optimizer opinions
-2. Resolve conflicts fairly
-3. Produce consensus Markmap
-4. Create decision summary for next round
+**Behavior**: `prompts/evaluators/structure_evaluator_behavior.md`
 
-## Input
-
-### All Optimizer Outputs
-{optimizer_outputs}
-
-### Current Markmap
-{current_markmap}
-
-### Round Number
-{round_number}
-
-## Output Format
-
-### Conflict Resolution
-| Topic | Optimizer 1 | Optimizer 2 | Resolution |
-|-------|-------------|-------------|------------|
-| ...   | ...         | ...         | ...        |
-
-### Key Decisions
-1. [Decision 1 with rationale]
-2. [Decision 2 with rationale]
-
-### Consensus Markmap
-```markdown
-[Unified Markmap incorporating all improvements]
-```
-
-### Summary for Next Round
-[Brief summary of decisions and remaining issues]
-```
-
----
-
-## Judge Prompts
-
-### Quality Judge (`prompts/judge_quality.txt`)
-
-```markdown
-# Role: Quality Judge
-
-You evaluate Markmap quality with focus on structural excellence.
-
-## Evaluation Criteria
-
-### Structure Quality (1-10)
-- Hierarchy logic
-- Balance and symmetry
+**Evaluation Criteria**:
+- Logical organization
 - Appropriate depth
+- Balanced sections
 
-### Naming Consistency (1-10)
-- Terminology uniformity
-- Naming convention adherence
-- Clarity of labels
+**Input Variables**:
+- `{structure_spec}`: Structure Specification to evaluate
+- `{pattern_docs_summary}`: Pattern documentation for validation
+- `{criteria}`: Evaluation criteria list
+- `{integration_summary}`: Summary of integration decisions
 
-### Overall Score
-Weighted average based on criteria importance.
+**Output Format**: YAML evaluation result
 
-## Input
-
-### Candidate Markmaps
-{candidates}
-
-### Round Summaries
-{summaries}
-
-## Output
-
-### Evaluation Matrix
-| Candidate | Structure | Naming | Overall | Notes |
-|-----------|-----------|--------|---------|-------|
-| 1         | X/10      | X/10   | X/10    | ...   |
-| 2         | X/10      | X/10   | X/10    | ...   |
-
-### Recommendation
-[Your recommended choice with detailed justification]
-
-### Debate Position
-[Your position if debating with other judges]
+```yaml
+evaluation:
+  overall_score: 8.5
+  criteria_scores:
+    logical_organization: 9.0
+    appropriate_depth: 8.0
+    balanced_sections: 8.5
+  strengths:
+    - "Clear hierarchy"
+    - "Well-balanced depth"
+  improvements:
+    - "Consider adding more subcategories"
+  suggestions:
+    - "Split large sections into smaller groups"
+  approved: true
+  reasoning: "Overall structure is solid with minor improvements needed"
 ```
 
-### Completeness Judge (`prompts/judge_completeness.txt`)
+### Content Evaluator
+
+**Behavior**: `prompts/evaluators/content_evaluator_behavior.md`
+
+**Evaluation Criteria**:
+- Coverage completeness
+- Learning progression
+- Practical value
+
+**Input Variables**: Same as Structure Evaluator
+
+**Output Format**: Same YAML evaluation format
+
+---
+
+## Integrator Prompt
+
+### Overview
+
+The Integrator consolidates strategist suggestions, resolves conflicts, and produces an updated Structure Specification.
+
+**Persona**: `prompts/integrator/integrator_persona.md`
+- Identity: Consensus Integrator
+- Expertise: Conflict resolution and synthesis
+
+**Behavior**: `prompts/integrator/integrator_behavior.md`
+
+**Input Variables**:
+- `{current_structure_spec}`: Current Structure Specification (YAML)
+- `{strategist_responses}`: All strategist suggestions
+- `{round_number}`: Current round number
+- `{consensus_threshold}`: Agreement threshold (e.g., 0.8 = 80%)
+- `{num_strategists}`: Number of strategists
+- `{previous_consensus}`: Previous consensus decisions
+- `{previous_conflicts}`: Previous unresolved conflicts
+
+**Output Format**: YAML with updated spec and consensus analysis
+
+```yaml
+round_result:
+  consensus:
+    - topic: "Add Fast-Slow subcategory"
+      decision: "Adopt"
+      agreed_by: ["architect_strategist", "professor_strategist", "ux_strategist"]
+      agreement_ratio: 1.0
+  conflicts:
+    - id: "conflict_1"
+      topic: "Section ordering"
+      positions:
+        architect_strategist: "Keep current order"
+        ux_strategist: "Reorder by difficulty"
+      relevant_strategists: ["architect_strategist", "ux_strategist"]
+
+updated_structure_spec:
+  # Full updated Structure Specification
+  metadata:
+    ...
+  sections:
+    ...
+```
+
+---
+
+## Writer Prompt
+
+### Overview
+
+The Writer is the **ONLY** agent that produces Markdown output. It takes a Structure Specification and generates the final Markmap.
+
+**Persona**: `prompts/writer/writer_persona.md`
+- Identity: Markmap Writer
+- Expertise: Markdown formatting and link generation
+
+**Behavior**: `prompts/writer/writer_behavior.md`
+
+**Input Variables** (Refinement Mode):
+- `{baseline_markmap}`: Existing Markmap to refine
+- `{adopted_improvements}`: List of expert-approved improvements
+- `{improvement_details}`: Detailed descriptions of improvements
+- `{problem_data}`: Problem metadata for link generation
+- `{ontology_summary}`: Ontology reference
+
+**Input Variables** (Generation Mode):
+- `{structure_spec}`: Structure Specification (YAML)
+- `{problem_data}`: Problem metadata
+- `{ontology_summary}`: Ontology reference
+
+**Output Format**: Markdown Markmap
+
+**Format Guide**: `prompts/writer/markmap_format_guide.md`
+- Link generation rules (GitHub vs LeetCode)
+- Markdown features (bold, italic, checkboxes, etc.)
+- Structure rules (hierarchy, folding, etc.)
+
+**Key Responsibilities**:
+1. Apply improvements surgically to baseline
+2. Generate correct links based on solution status
+3. Preserve baseline quality and style
+4. Validate output formatting
+
+---
+
+## Expert Prompts
+
+### Overview
+
+Experts review a **baseline Markmap** (not Structure Spec) and suggest improvements. This is a separate refinement workflow from the planning phase.
+
+### Architect Expert
+
+**Persona**: `prompts/experts/architect_persona.md`
+- Identity: Top Software Architect
+- Focus: API Kernel design, pattern relationships, code template reusability
+
+**Behavior**: `prompts/experts/architect_behavior.md`
+
+**Input Variables** (Review Phase):
+- `{phase}`: "Independent Review"
+- `{round_number}`: 1
+- `{phase_instructions}`: Phase-specific instructions
+- `{baseline_markmap}`: Markmap to review
+- `{ontology_summary}`: Ontology reference
+- `{problem_data}`: Problem metadata
+- `{min_suggestions}`: Minimum suggestions to provide
+- `{max_suggestions}`: Maximum suggestions to provide
+
+**Input Variables** (Discussion Phase):
+- `{phase}`: "Full Discussion"
+- `{round_number}`: 2
+- `{own_suggestions}`: This expert's suggestions
+- `{architect_suggestions}`: Architect's suggestions
+- `{professor_suggestions}`: Professor's suggestions
+- `{engineer_suggestions}`: Engineer's suggestions
+- `{baseline_markmap}`: Original Markmap
+- `{expert_name}`: Expert's name
+- `{expert_focus_reminder}`: Focus areas reminder
+
+**Output Format** (Review): Structured suggestions
 
 ```markdown
-# Role: Completeness Judge
-
-You evaluate Markmap completeness and practical value.
-
-## Evaluation Criteria
-
-### Knowledge Coverage (1-10)
-- All key concepts included
-- No significant omissions
-- Appropriate scope
-
-### Practical Value (1-10)
-- Actionable insights
-- Real-world applicability
-- User utility
-
-### Depth Balance (1-10)
-- Even coverage across areas
-- No over/under-developed sections
-
-## Input
-
-### Candidate Markmaps
-{candidates}
-
-### Original Metadata
-{metadata_summary}
-
-## Output
-
-### Coverage Analysis
-[What's included, what's missing]
-
-### Evaluation Matrix
-| Candidate | Coverage | Value | Balance | Overall |
-|-----------|----------|-------|---------|---------|
-| ...       | ...      | ...   | ...     | ...     |
-
-### Final Vote
-[Your choice with reasoning]
+### A1: [Suggestion Title]
+- **Type**: add | modify | remove | reorder | clarify
+- **Location**: Where in the Markmap
+- **What**: What to change
+- **Why**: Rationale
 ```
+
+**Output Format** (Discussion): Votes and adoption list
+
+```markdown
+## Part 1: Voting on Suggestions
+
+### A1: [Suggestion]
+**Vote**: ✅ Agree | ⚠️ Modify | ❌ Disagree
+**Rationale**: ...
+
+## Part 2: Final Adoption List
+
+I recommend adopting these suggestions:
+- A1, A2, P3, E1, ...
+```
+
+**Discussion Behavior**: `prompts/experts/discussion_behavior.md`
+- Used in Round 2 for group discussion
+- Format: Same as behavior prompt but with discussion-specific instructions
+
+### Professor Expert
+
+**Persona**: `prompts/experts/professor_persona.md`
+- Identity: Distinguished Algorithm Professor
+- Focus: Concept accuracy, learning progression, complexity analysis
+
+**Behavior**: `prompts/experts/professor_behavior.md`
+
+**Input Variables**: Same as Architect Expert
+
+**Output Format**: Same suggestion format (with prefix "P" instead of "A")
+
+### Engineer Expert
+
+**Persona**: `prompts/experts/engineer_persona.md`
+- Identity: Senior Principal Engineer
+- Focus: Interview frequency, real-world applications, trade-offs
+
+**Behavior**: `prompts/experts/engineer_behavior.md`
+
+**Input Variables**: Same as Architect Expert
+
+**Output Format**: Same suggestion format (with prefix "E" instead of "A")
+
+---
+
+## Translator Prompts
+
+### Overview
+
+Translators convert Markmap content between languages while preserving structure, links, and formatting.
+
+### Generic Translator
+
+**Behavior**: `prompts/translator/generic_translator_behavior.md`
+
+**Input Variables**:
+- Content to translate (provided directly in prompt)
+- Target language (replaced in template)
+
+**Output Format**: Translated Markdown (same structure as input)
+
+**Key Requirements**:
+- Preserve all Markdown syntax
+- Keep links unchanged
+- Maintain formatting (bold, italic, code blocks)
+- Translate only text content
+
+### Traditional Chinese Translator
+
+**Behavior**: `prompts/translator/zh_tw_translator_behavior.md`
+
+**Input Variables**: Same as Generic Translator
+
+**Output Format**: Traditional Chinese Markdown
+
+**Special Considerations**:
+- Use Traditional Chinese terminology
+- Maintain technical terms appropriately
+- Preserve code and links
 
 ---
 
 ## Compressor Prompt
 
-### `prompts/compressor.txt`
+### Overview
 
-```markdown
-# Role: Content Compressor
+The Compressor reduces content length while preserving essential information. Used when content exceeds token limits.
 
-You summarize long discussions while preserving key information.
+**Behavior**: `prompts/compressor/compressor_behavior.md`
 
-## Preservation Priorities
+**Input Variables**:
+- `{content}`: Content to compress
+- `{target_ratio}`: Target compression ratio (e.g., 50 = 50% of original)
+
+**Output Format**: Compressed content
+
+**Preservation Priorities**:
 1. **Critical**: Key decisions, final choices
 2. **Important**: Rationale, trade-offs
 3. **Optional**: Detailed debates, minor points
 
-## Compression Guidelines
+**Compression Guidelines**:
 - Keep decision outcomes
 - Summarize debate points
 - Remove redundant explanations
 - Maintain chronological order
-
-## Input
-
-### Original Content
-{original_content}
-
-### Token Limit
-{target_tokens}
-
-## Output
-
-### Compressed Summary
-[Compressed content within token limit]
-
-### Omitted Topics
-[List of removed content for reference]
-```
+- Preserve hierarchical structure when possible
 
 ---
 
 ## Prompt Version Control
 
-It is recommended to use the following naming convention for managing prompt versions:
+### Recommended Structure
 
 ```
 prompts/
-├── v1/
-│   ├── generalist_en.txt
+├── v1/              # Legacy prompts (V2 architecture)
 │   └── ...
-├── v2/
-│   ├── generalist_en.txt  (improved)
+├── v2/              # Previous version
 │   └── ...
-└── current -> v2/         (symlink)
+└── current/         # Current version (V3)
+    ├── planners/
+    ├── strategists/
+    ├── evaluators/
+    ├── integrator/
+    ├── writer/
+    ├── experts/
+    ├── translator/
+    └── compressor/
 ```
+
+### Versioning Guidelines
+
+1. **Major Changes**: Create new version directory
+   - Architecture changes (V2 → V3)
+   - Output format changes (Markdown → YAML)
+
+2. **Minor Changes**: Update files in place
+   - Clarifications
+   - Example updates
+   - Variable additions
+
+3. **Documentation**: Update this guide when prompts change
 
 ---
 
-*Last updated: 2025-12-17*
+## Configuration Reference
+
+### Agent Configuration Pattern
+
+Each agent is configured in `config.yaml` with:
+
+```yaml
+models:
+  agent_name:
+    model: "gpt-4o"
+    persona_prompt: "prompts/agent/agent_persona.md"
+    behavior_prompt: "prompts/agent/agent_behavior.md"
+    temperature: 0.7
+    max_tokens: 4096
+```
+
+### Prompt Loading
+
+Prompts are loaded by `BaseAgent._load_prompt()`:
+- Paths are relative to `tools/ai-markmap-agent/`
+- UTF-8 encoding
+- Cached after first load
+
+### Variable Formatting
+
+Variables are formatted using Python's `.format()`:
+- `{variable}`: Required variable
+- Missing variables: Warning logged, template returned as-is
+
+---
+
+*Last updated: 2025-01-XX*
