@@ -145,6 +145,7 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/lufftw/neetcode
+      canonical_url: https://lufftw.github.io/neetcode/
   generator: false
 
 extra_css:
