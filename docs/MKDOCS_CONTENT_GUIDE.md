@@ -239,6 +239,42 @@ A: Maintainer documentation (`.dev/README.md`, `.dev/TESTING.md`) is intentional
 
 If you need to access these documents, use the GitHub absolute URLs provided in README.md.
 
+### Q: How do I manually embed revision dates in Markdown files?
+
+A: The `git-revision-date-localized` plugin provides template variables that you can use in your Markdown files. Here's how to use them:
+
+**Basic usage in `.md` files:**
+
+```markdown
+# My Page Title
+
+Last updated: {{ page.meta.git_revision_date_localized }}
+
+Created: {{ page.meta.git_creation_date_localized }}
+
+(Raw ISO datetime: {{ page.meta.git_revision_date_localized_raw_iso_datetime }})
+```
+
+**Output example** (assuming last commit on 2025-12-17):
+
+```
+Last updated: December 17, 2025 14:26
+Created: January 1, 2024
+(Raw ISO datetime: 2025-12-17T14:26:00+08:00)
+```
+
+**Available template variables:**
+
+| Variable | Description |
+|:---------|:------------|
+| `{{ page.meta.git_revision_date_localized }}` | Last modified date (formatted according to plugin config) |
+| `{{ page.meta.git_creation_date_localized }}` | Creation date (first commit) |
+| `{{ page.meta.git_revision_date_localized_raw_iso_datetime }}` | Raw ISO datetime format |
+| `{{ page.meta.git_revision_date_localized_timeago }}` | Time ago format (e.g., "3 days ago") |
+| `{{ git_site_revision_date_localized }}` | Site-wide last update time (not per-page) |
+
+**Note**: The plugin configuration in `mkdocs.yml` determines the format and locale of these dates. See `mkdocs.yml` for current settings (locale: zh_TW, timezone: Asia/Taipei, type: datetime).
+
 ---
 
 ## 📝 Update Log
@@ -251,6 +287,7 @@ If you need to access these documents, use the GitHub absolute URLs provided in 
 - **2025-12-14**: Added `ONTOLOGY_DESIGN.md` to Reference section
 - **2025-12-15**: Added `MKDOCS_CONTENT_GUIDE.md` and `LOCAL_DOCS_BUILD.md` to Guides section
 - **2025-12-17**: Added `backtracking_exploration` pattern to Patterns section
+- **2025-12-20**: Added FAQ section on manually embedding revision dates in Markdown files using git-revision-date-localized plugin template variables
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---

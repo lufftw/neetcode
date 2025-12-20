@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full Git history (required for git-revision-date-localized plugin)
 
       - name: Setup Python
         uses: actions/setup-python@v5
