@@ -97,8 +97,8 @@ plugins:
   - minify:
       minify_html: true
   - git-revision-date-localized:
-      type: datetime                  # Show full datetime, e.g. "2025-12-20 14:30"
-      locale: zh_TW                   # Traditional Chinese (Taiwan)
+      type: datetime                  # Show full datetime, e.g. "December 20, 2025 14:30"
+      locale: en                      # English locale
       timezone: Asia/Taipei           # Set timezone to Taipei (avoid UTC offset)
       enable_creation_date: true      # Also show "creation date" (first commit)
       fallback_to_build_date: true    # Use build date if Git history is unavailable (for some CI environments)
