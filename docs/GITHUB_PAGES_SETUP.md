@@ -1,5 +1,10 @@
 # GitHub Pages Deployment Guide: Interactive Mind Maps
 
+> **Status**: Informational  
+> **Scope**: GitHub Pages deployment  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This guide explains how to deploy mind maps to GitHub Pages with full interactive functionality.
 
 ---

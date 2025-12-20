@@ -1,5 +1,10 @@
 # Building Documentation Locally (Manual Method)
 
+> **Status**: Informational  
+> **Scope**: Documentation build process  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This guide shows you how to build documentation locally using simple batch/shell scripts **without requiring Docker or any external CI/CD tools**.
 
 > 📖 **Looking for other options?** See [Local Documentation Build Options](LOCAL_DOCS_BUILD.md) for a comparison of all available methods, including the act method for testing exact CI/CD workflows.

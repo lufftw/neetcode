@@ -37,14 +37,44 @@ Allowed values:
 
 * **Canonical Reference**
   The single source of truth. Other documents must follow this specification.
+  
+  Use when:
+  - The document defines a complete specification or contract for a system or component
+  - The document is the authoritative reference that other documents must follow
+  - The document defines file formats, data structures, or API contracts
+  - Examples: `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, `ONTOLOGY_DESIGN.md`
+
 * **Normative**
   Defines rules or constraints that must be followed.
+  
+  Use when:
+  - The document defines specific rules, guidelines, or constraints that must be followed
+  - The document establishes standards for documentation, linking, or processes
+  - The document is not a complete specification but contains binding rules
+  - Examples: `MKDOCS_CONTENT_GUIDE.md` (defines linking rules)
+
 * **Informational**
   Provides explanation or background; not strictly binding.
+  
+  Use when:
+  - The document provides guides, tutorials, or explanations
+  - The document describes historical context or migration processes
+  - The document is helpful but not required to follow
+  - Examples: `ARCHITECTURE_MIGRATION.md`, `GITHUB_PAGES_SETUP.md`, `ACT_LOCAL_GITHUB_ACTIONS.md`
+
 * **Draft**
   Work in progress; subject to change.
+  
+  Use when:
+  - The document is actively being developed
+  - The content is not yet finalized
+  - The document may change significantly
 
 > Each document MUST have exactly one status value.
+
+**Distinguishing Canonical Reference from Normative:**
+- **Canonical Reference**: Complete specification/contract (e.g., file format, data structure, API contract)
+- **Normative**: Rules and constraints (e.g., documentation standards, linking guidelines, process rules)
 
 ---
 

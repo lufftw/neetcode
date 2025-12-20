@@ -1,5 +1,10 @@
 # MkDocs Website Content Guide
 
+> **Status**: Normative  
+> **Scope**: MkDocs website content  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This document explains which content is **NOT** included in the MkDocs-generated website and how to properly link to these resources in README.md.
 
 ---

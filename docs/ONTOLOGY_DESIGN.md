@@ -1,8 +1,9 @@
 # NeetCode Ontology & Metadata System Design
 
-> **Status**: Planning / Draft  
-> **Author**: Project Maintainer  
-> **Last Updated**: 2025/12/12
+> **Status**: Canonical Reference  
+> **Scope**: Ontology and metadata system  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
 
 ---
 

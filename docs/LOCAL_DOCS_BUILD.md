@@ -1,5 +1,10 @@
 # Local Documentation Build Options
 
+> **Status**: Informational  
+> **Scope**: Documentation build process  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This guide provides an overview of different methods to build documentation locally. Choose the method that best fits your needs.
 
 > ⚠️ **Important: This is an Optional Feature**

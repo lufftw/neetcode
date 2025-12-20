@@ -1,5 +1,10 @@
 # Architecture Migration: Polymorphic Solution Pattern
 
+> **Status**: Informational  
+> **Scope**: All solution files in `solutions/`  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 ## Overview
 
 This document describes the migration from wrapper-based and single-class patterns to a unified **Pure Polymorphic Architecture** for all solution files.

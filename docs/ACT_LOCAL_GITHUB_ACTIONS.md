@@ -1,5 +1,10 @@
 # Running GitHub Actions Locally with Act
 
+> **Status**: Informational  
+> **Scope**: Documentation for CI/CD testing  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This guide shows you how to use `act` to run GitHub Actions workflows locally without pushing to GitHub.
 
 > 📖 **Looking for other options?** See [Local Documentation Build Options](LOCAL_DOCS_BUILD.md) for a comparison of all available methods, including a simpler manual script method that doesn't require Docker.
