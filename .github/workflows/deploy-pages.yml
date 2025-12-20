@@ -40,7 +40,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install -U pip
+          pip install -e .
           pip install -r requirements.txt
+          pip install mkdocs-mindmaps-lastmod
       
       - name: Generate Mind Maps (Markdown + HTML)
         run: |

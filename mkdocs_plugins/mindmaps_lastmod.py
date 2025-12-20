@@ -11,7 +11,10 @@ Behavior:
     - Fallback to file mtime if Git info is unavailable
 
 Output:
-  config.extra["static_lastmod"][f.url] = "<ISO-8601 timestamp>"
+  config.extra["static_lastmod"][<url_path>] = "<ISO-8601 timestamp>"
+
+Notes:
+- <url_path> is intended to be appended to config.site_url in sitemap template.
 """
 
 from __future__ import annotations
@@ -56,9 +59,11 @@ class MindmapsLastmodPlugin(BasePlugin):
                 self._git_lastmod_iso(repo_root, abs_path)
                 or self._file_mtime_iso(abs_path)
             )
+            if not lastmod:
+                continue
 
-            if lastmod:
-                mapping[f.url] = lastmod
+            url_key = self._url_key(f)
+            mapping[url_key] = lastmod
 
         if mapping:
             extra = config.get("extra") or {}
@@ -70,6 +75,13 @@ class MindmapsLastmodPlugin(BasePlugin):
     # ------------------------------------------------------------------ config
 
     def _load_rules(self) -> List[Tuple[str, List[str]]]:
+        """
+        Sidecar YAML (same basename):
+          rules:
+            - path: pages/mindmaps/
+              extensions: [".html"]
+        All paths are relative to docs_dir (NOT repo root).
+        """
         if yaml is None:
             return []
 
@@ -123,6 +135,24 @@ class MindmapsLastmodPlugin(BasePlugin):
                 return True
         return False
 
+    # ------------------------------------------------------------------- url key
+
+    def _url_key(self, f: File) -> str:
+        """
+        Use f.url when available (preferred).
+        Fallback to src_path (normalized) if url is missing.
+        """
+        try:
+            u = str(f.url).lstrip("/")  # ensure relative for site_url concatenation
+            if u:
+                return u
+        except Exception:
+            pass
+
+        # Fallback: approximate url by src_path
+        src = (f.src_path or "").replace("\\", "/").lstrip("/")
+        return src
+
     # ------------------------------------------------------------------- utils
 
     def _guess_repo_root(self, config) -> Path:
@@ -147,10 +177,8 @@ class MindmapsLastmodPlugin(BasePlugin):
     def _file_mtime_iso(self, file_path: Path) -> Optional[str]:
         try:
             ts = os.path.getmtime(file_path)
-            return (
-                __import__("datetime")
-                .datetime.fromtimestamp(ts, tz=__import__("datetime").timezone.utc)
-                .isoformat()
-            )
+            from datetime import datetime, timezone
+
+            return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
         except Exception:
             return None

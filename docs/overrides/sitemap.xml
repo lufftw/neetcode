@@ -5,32 +5,26 @@
   {%- for file in pages -%}
     {% if not file.page.is_link and (file.page.abs_url or file.page.canonical_url) %}
       <url>
-        <loc>
-          {% if file.page.canonical_url %}
-            {{ file.page.canonical_url | e }}
-          {% else %}
-            {{ file.page.abs_url | e }}
-          {% endif %}
-        </loc>
+        <loc>{% if file.page.canonical_url %}{{ file.page.canonical_url|e }}{% else %}{{ file.page.abs_url|e }}{% endif %}</loc>
 
+        {# mkdocs-document-dates provides this value. It already includes timezone. #}
         {% set lastmod = file.page.meta.document_dates_updated %}
         {% if lastmod %}
-          <lastmod>{{ (lastmod + "+00:00") | replace(" ", "T") }}</lastmod>
+          <lastmod>{{ lastmod | replace(" ", "T") }}</lastmod>
         {% endif %}
       </url>
     {% endif %}
   {%- endfor -%}
 
-  {# -------------------- Static HTML files -------------------- #}
-  {%- set static_map = config.extra.static_lastmod or {} -%}
-  {%- for f in files -%}
-    {% set lastmod = static_map.get(f.url) %}
-    {% if lastmod %}
-      <url>
-        <loc>{{ (config.site_url ~ f.url) | e }}</loc>
-        <lastmod>{{ lastmod }}</lastmod>
-      </url>
-    {% endif %}
+  {# -------------------- Static HTML files (from plugin mapping) -------------------- #}
+  {%- set static_map = (config.extra.static_lastmod if config.extra and config.extra.static_lastmod else {}) -%}
+  {%- for u, lastmod in static_map.items() -%}
+    <url>
+      <loc>{{ (config.site_url ~ u) | e }}</loc>
+      {% if lastmod %}
+        <lastmod>{{ lastmod | replace(" ", "T") }}</lastmod>
+      {% endif %}
+    </url>
   {%- endfor -%}
 
 </urlset>

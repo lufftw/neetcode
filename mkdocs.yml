@@ -104,8 +104,8 @@ plugins:
       enable_creation_date: true      # Also show "creation date" (first commit)
       fallback_to_build_date: true    # Use build date if Git history is unavailable (for some CI environments)
   - document-dates
-  - mindmaps-lastmod:
-      module_name: mkdocs_plugins.mindmaps_lastmod
+  - mindmaps-lastmod
+
 # Navigation
 nav:
   - 🏠 Home:

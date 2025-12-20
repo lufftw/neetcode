@@ -1,4 +1,11 @@
 # mkdocs_plugins/mindmaps_lastmod.yml
+
+# Note:
+# All paths below must be specified relative to docs_dir (usually docs_dir = docs/)
+# For example:
+#   - If your mind map HTML files are under docs/pages/mindmaps/, use path: pages/mindmaps/
+#   - Do NOT include the "docs/" prefix.
+
 rules:
   - path: pages/mindmaps/
     extensions: [".html"]

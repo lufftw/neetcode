@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["generators*", "mkdocs_plugins*", "runner*"]
+exclude = ["leetcode*", "site*", "docs*", "tests*", "tools*", "scripts*"]
+
+[project]
+name = "neetcode"
+version = "0.1.0"
+description = "NeetCode Practice Framework"
+requires-python = ">=3.8"
+dependencies = ["pyyaml"]
+
+[project.entry-points."mkdocs.plugins"]
+mindmaps-lastmod = "mkdocs_plugins.mindmaps_lastmod:MindmapsLastmodPlugin"
