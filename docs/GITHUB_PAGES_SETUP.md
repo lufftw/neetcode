@@ -417,6 +417,89 @@ jobs:
 
 ---
 
+### 🔎 Sitemap & Last-Modified Strategy
+
+This project uses a **source-based sitemap strategy** to ensure SEO correctness and build stability.
+
+#### Why this matters
+
+MkDocs rebuilds the entire `site/` directory on every deployment.
+If sitemap timestamps were derived from build artifacts, **all pages would appear “updated” on every deploy**, which is harmful for SEO.
+
+To avoid this, **all `<lastmod>` values are derived from source-level timestamps**, not build time.
+
+---
+
+### 📄 Markdown Pages (`docs/**/*.md`)
+
+* Handled by **`mkdocs-document-dates`**
+* Timestamp source priority:
+
+  1. Git commit time (if tracked)
+  2. Source file modification time (fallback)
+
+Used in sitemap as:
+
+```
+page.meta.document_dates_updated
+```
+
+✅ Rebuilding or redeploying does **not** change `<lastmod>` unless content actually changes.
+
+---
+
+### 🧠 Static Interactive Mind Maps (`docs/pages/mindmaps/*.html`)
+
+Static HTML mind maps are **not MkDocs pages**, so they are handled separately via a custom plugin:
+
+```
+mkdocs_plugins/mindmaps_lastmod.py
+```
+
+#### Behavior
+
+For each matched HTML file:
+
+1. Use Git commit time if the file is tracked
+2. Otherwise, fall back to the source file’s modification time (`mtime`)
+3. Never use build output (`site/`) timestamps
+
+Collected timestamps are injected into:
+
+```
+config.extra.static_lastmod
+```
+
+The sitemap template then iterates over this mapping directly, ensuring:
+
+* Static HTML files always appear in `sitemap.xml`
+* `<lastmod>` reflects **content updates only**
+* Rebuilds do not affect timestamps
+
+---
+
+### 🗺️ Sitemap Generation Summary
+
+| Content Type     | Source Location              | `<lastmod>` Source | Affected by Rebuild |
+| ---------------- | ---------------------------- | ------------------ | ------------------- |
+| MkDocs pages     | `docs/**/*.md`               | Git / source mtime | ❌ No                |
+| Static mind maps | `docs/pages/mindmaps/*.html` | Git / source mtime | ❌ No                |
+| Build output     | `site/`                      | *Not used*         | —                   |
+
+---
+
+### ✅ Design Guarantee
+
+> Rebuilding or redeploying the site will **not** modify sitemap timestamps unless the underlying content changes.
+
+This ensures:
+
+* Accurate search engine indexing
+* Stable crawl signals
+* No artificial “site-wide updates”
+
+---
+
 ## Step 5: Enable GitHub Pages
 
 ### 5.1 GitHub Settings
