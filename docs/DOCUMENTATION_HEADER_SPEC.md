@@ -1,16 +1,16 @@
+## Documentation Metadata Header Specification
+
 > **Status**: Canonical Reference  
 > **Scope**: All documentation files  
 > **Last Updated**: {{ git_revision_date_localized }}  
 > **Created**: {{ git_creation_date_localized }}
-
-## Documentation Metadata Header Specification
 
 ### Purpose
 
 This metadata header defines the **authoritative status, applicability scope, and lifecycle timestamps** of a documentation file.
 It is used to clarify whether a document is canonical or informational, what it governs, and when it was created or last updated.
 
-All documentation files **must include this header at the top of the file**, unless explicitly stated otherwise.
+All documentation files **must include this header immediately after the document title**, unless explicitly stated otherwise.
 
 ---
 
@@ -96,28 +96,41 @@ Examples:
 #### Generator Specification Documents
 
 ```markdown
+# Generator Contract Specification
+
 > **Status**: Canonical Reference  
 > **Scope**: All generator files in `generators/`  
 > **Last Updated**: {{ git_revision_date_localized }}  
 > **Created**: {{ git_creation_date_localized }}
+
+This document defines the **contract** for test case generator files...
 ```
 
 #### Solution Specification Documents
 
 ```markdown
+# Solution Contract Specification
+
 > **Status**: Canonical Reference  
 > **Scope**: All solution files in `solutions/`  
 > **Last Updated**: {{ git_revision_date_localized }}  
 > **Created**: {{ git_creation_date_localized }}
+
+This document defines the **contract** for solution files...
 ```
 
 ---
 
 ### Placement Rules
 
-* The metadata header **MUST appear at the very top of the document**
-* It must be placed **before any headings or body text**
-* A blank line SHOULD follow the header block
+* The metadata header **MUST appear immediately after the document title** (the first `#` heading)
+* The structure MUST follow this order:
+  1. Document title (first `#` heading)
+  2. Blank line
+  3. Metadata header block
+  4. Blank line
+  5. Document body content
+* A blank line MUST follow the header block before body text begins
 
 ---
 
