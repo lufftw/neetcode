@@ -253,9 +253,14 @@ Last updated: {{ git_revision_date_localized }}
 Created: {{ git_creation_date_localized }}
 ```
 
-**Note:** For raw ISO datetime or other formats, use `page.meta.` prefix (only for theme overriding):
+**Note:** Both formats can be used in Markdown files and are **compatible** with each other:
+- Without `page.meta.` prefix: Simpler, follows plugin config format
+- With `page.meta.` prefix: Access to additional formats (raw ISO, timeago, etc.)
+
+Example using both formats together:
 ```markdown
-(Raw ISO datetime: {{ page.meta.git_revision_date_localized_raw_iso_datetime }})
+Last updated: {{ git_revision_date_localized }}
+Raw ISO: {{ page.meta.git_revision_date_localized_raw_iso_datetime }}
 ```
 
 **Output example** (assuming last commit on 2025-12-17):
@@ -275,13 +280,18 @@ For direct use in Markdown files (without `page.meta.` prefix):
 | `{{ git_creation_date_localized }}` | Creation date (first commit) |
 | `{{ git_site_revision_date_localized }}` | Site-wide last update time (not per-page) |
 
-For theme overriding or raw formats (with `page.meta.` prefix):
+Also available in Markdown files (with `page.meta.` prefix - provides more format options):
 | Variable | Description |
 |:---------|:------------|
-| `{{ page.meta.git_revision_date_localized }}` | Last modified date (for theme templates) |
-| `{{ page.meta.git_creation_date_localized }}` | Creation date (for theme templates) |
-| `{{ page.meta.git_revision_date_localized_raw_iso_datetime }}` | Raw ISO datetime format |
-| `{{ page.meta.git_revision_date_localized_timeago }}` | Time ago format (e.g., "3 days ago") |
+| `{{ page.meta.git_revision_date_localized }}` | Last modified date (same as above, but accessible in theme templates too) |
+| `{{ page.meta.git_creation_date_localized }}` | Creation date (same as above, but accessible in theme templates too) |
+| `{{ page.meta.git_revision_date_localized_raw_iso_datetime }}` | Raw ISO datetime format (e.g., "2025-12-17T14:26:00+08:00") |
+| `{{ page.meta.git_revision_date_localized_timeago }}` | Time ago format (e.g., "3 days ago") - requires timeago.js |
+
+**Key Points:**
+- ✅ Both formats can be used together in the same Markdown file
+- ✅ Without `page.meta.` prefix: Simpler, follows plugin config (recommended for most cases)
+- ✅ With `page.meta.` prefix: Access to raw formats and timeago, also works in theme templates
 
 **Note**: The plugin configuration in `mkdocs.yml` determines the format and locale of these dates. See `mkdocs.yml` for current settings (locale: en, timezone: Asia/Taipei, type: datetime).
 

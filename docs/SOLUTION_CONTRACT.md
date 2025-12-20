@@ -2,9 +2,8 @@
 
 > **Status**: Canonical Reference  
 > **Scope**: All solution files in `solutions/`  
-> **Last Updated**: 2025-12-17  
-> **Last Updated (Git)**: {{ git_revision_date_localized }}  
-> **Created (Git)**: {{ git_creation_date_localized }}
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
 
 This document defines the **contract** for solution files in this repository. All solution files MUST conform to this specification. The test runner, generators, and tooling depend on this contract.
 
