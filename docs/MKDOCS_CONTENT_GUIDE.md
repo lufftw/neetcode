@@ -248,10 +248,13 @@ A: The `git-revision-date-localized` plugin provides template variables that you
 ```markdown
 # My Page Title
 
-Last updated: {{ page.meta.git_revision_date_localized }}
+Last updated: {{ git_revision_date_localized }}
 
-Created: {{ page.meta.git_creation_date_localized }}
+Created: {{ git_creation_date_localized }}
+```
 
+**Note:** For raw ISO datetime or other formats, use `page.meta.` prefix (only for theme overriding):
+```markdown
 (Raw ISO datetime: {{ page.meta.git_revision_date_localized_raw_iso_datetime }})
 ```
 
@@ -265,15 +268,22 @@ Created: January 1, 2024
 
 **Available template variables:**
 
+For direct use in Markdown files (without `page.meta.` prefix):
 | Variable | Description |
 |:---------|:------------|
-| `{{ page.meta.git_revision_date_localized }}` | Last modified date (formatted according to plugin config) |
-| `{{ page.meta.git_creation_date_localized }}` | Creation date (first commit) |
-| `{{ page.meta.git_revision_date_localized_raw_iso_datetime }}` | Raw ISO datetime format |
-| `{{ page.meta.git_revision_date_localized_timeago }}` | Time ago format (e.g., "3 days ago") |
+| `{{ git_revision_date_localized }}` | Last modified date (formatted according to plugin config) |
+| `{{ git_creation_date_localized }}` | Creation date (first commit) |
 | `{{ git_site_revision_date_localized }}` | Site-wide last update time (not per-page) |
 
-**Note**: The plugin configuration in `mkdocs.yml` determines the format and locale of these dates. See `mkdocs.yml` for current settings (locale: zh_TW, timezone: Asia/Taipei, type: datetime).
+For theme overriding or raw formats (with `page.meta.` prefix):
+| Variable | Description |
+|:---------|:------------|
+| `{{ page.meta.git_revision_date_localized }}` | Last modified date (for theme templates) |
+| `{{ page.meta.git_creation_date_localized }}` | Creation date (for theme templates) |
+| `{{ page.meta.git_revision_date_localized_raw_iso_datetime }}` | Raw ISO datetime format |
+| `{{ page.meta.git_revision_date_localized_timeago }}` | Time ago format (e.g., "3 days ago") |
+
+**Note**: The plugin configuration in `mkdocs.yml` determines the format and locale of these dates. See `mkdocs.yml` for current settings (locale: en, timezone: Asia/Taipei, type: datetime).
 
 ---
 

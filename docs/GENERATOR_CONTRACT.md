@@ -3,8 +3,8 @@
 > **Status**: Canonical Reference  
 > **Scope**: All generator files in `generators/`  
 > **Last Updated**: 2025-12-12  
-> **Last Updated (Git)**: {{ page.meta.git_revision_date_localized }}  
-> **Created (Git)**: {{ page.meta.git_creation_date_localized }}
+> **Last Updated (Git)**: {{ git_revision_date_localized }}  
+> **Created (Git)**: {{ git_creation_date_localized }}
 
 This document defines the **contract** for test case generator files. Generators enable stress testing, edge case discovery, and reproducible test generation.
 
