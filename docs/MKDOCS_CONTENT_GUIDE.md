@@ -295,6 +295,58 @@ Also available in Markdown files (with `page.meta.` prefix - provides more forma
 
 **Note**: The plugin configuration in `mkdocs.yml` determines the format and locale of these dates. See `mkdocs.yml` for current settings (locale: en, timezone: Asia/Taipei, type: datetime).
 
+### Q: How do I customize the sitemap.xml to use Git commit dates for lastmod?
+
+A: By default, MkDocs generates a `sitemap.xml` where all pages have the same `lastmod` date (the build date). To use individual Git commit dates for each page's `lastmod`, you can override the sitemap template.
+
+**Steps to override sitemap.xml:**
+
+1. **Create the overrides directory:**
+   ```bash
+   mkdir docs/overrides
+   ```
+
+2. **Create the custom sitemap template:**
+   Create `docs/overrides/sitemap.xml` with the following content:
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     {%- for file in pages -%}
+       {% if not file.page.is_link and (file.page.abs_url or file.page.canonical_url) %}
+         <url>
+           <loc>{% if file.page.canonical_url %}{{ file.page.canonical_url|e }}{% else %}{{ file.page.abs_url|e }}{% endif %}</loc>
+           {%- if not file.page.meta.template and file.page.meta.git_revision_date_localized_raw_iso_datetime %}
+             <lastmod>{{ (file.page.meta.git_revision_date_localized_raw_iso_datetime + "+00:00") | replace(" ", "T") }}</lastmod>
+           {%- endif %}
+           <changefreq>daily</changefreq>
+         </url>
+       {% endif -%}
+     {% endfor %}
+   </urlset>
+   ```
+
+3. **Enable custom_dir in mkdocs.yml:**
+   Add `custom_dir: docs/overrides` to the theme configuration:
+   ```yaml
+   theme:
+     name: material
+     language: en
+     custom_dir: docs/overrides
+     # ... other theme settings
+   ```
+
+**How it works:**
+- The template uses `git_revision_date_localized_raw_iso_datetime` from the `git-revision-date-localized` plugin
+- Each page's `lastmod` will reflect its actual last Git commit date
+- The date format is converted to ISO 8601 (replacing spaces with "T" and adding timezone)
+- Only pages with Git dates will include the `lastmod` tag
+
+**Requirements:**
+- The `git-revision-date-localized` plugin must be enabled in `mkdocs.yml`
+- The plugin must be configured to provide `raw_iso_datetime` format (this is the default)
+
+After building the documentation, each page in `sitemap.xml` will have its own `lastmod` date based on when it was last committed to Git, rather than all pages sharing the same build date.
+
 ---
 
 ## 📝 Update Log
@@ -308,6 +360,7 @@ Also available in Markdown files (with `page.meta.` prefix - provides more forma
 - **2025-12-15**: Added `MKDOCS_CONTENT_GUIDE.md` and `LOCAL_DOCS_BUILD.md` to Guides section
 - **2025-12-17**: Added `backtracking_exploration` pattern to Patterns section
 - **2025-12-20**: Added FAQ section on manually embedding revision dates in Markdown files using git-revision-date-localized plugin template variables
+- **2025-12-20**: Added FAQ section on customizing sitemap.xml to use Git commit dates for lastmod
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---
