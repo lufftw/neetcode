@@ -1,5 +1,10 @@
 # Virtual Environment Setup Guide
 
+> **Status**: Informational  
+> **Scope**: Virtual environment setup for the project  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 ## 📋 Overview
 
 This project uses a `leetcode` Python virtual environment to isolate dependencies. Unit test scripts automatically use this virtual environment.

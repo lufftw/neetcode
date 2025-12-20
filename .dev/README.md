@@ -1,5 +1,10 @@
 # Developer & Maintainer Area
 
+> **Status**: Informational  
+> **Scope**: `.dev/` directory  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 > ⚠️ **Note**: This folder is for project maintainers only, containing unit tests, development documentation, and maintenance tools.  
 > For general users, please refer to the root [README.md](../README.md)
 

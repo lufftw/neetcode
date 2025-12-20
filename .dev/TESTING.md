@@ -1,5 +1,10 @@
 # Testing Documentation - NeetCode Practice Framework
 
+> **Status**: Informational  
+> **Scope**: Testing documentation and test files in `.dev/`  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 ## Overview
 
 This project has established a comprehensive test suite, divided into **three main categories**:

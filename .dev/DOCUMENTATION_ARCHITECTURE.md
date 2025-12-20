@@ -1,5 +1,10 @@
 # Documentation Architecture
 
+> **Status**: Informational  
+> **Scope**: Documentation under `.dev/` and `docs/`  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This document explains the documentation structure of the NeetCode Practice Framework, following software engineering best practices.
 
 ---
