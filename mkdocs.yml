@@ -9,6 +9,7 @@ repo_name: neetcode
 theme:
   name: material
   language: en
+  custom_dir: docs/overrides
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
