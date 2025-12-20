@@ -103,7 +103,18 @@ plugins:
       timezone: Asia/Taipei           # Set timezone to Taipei (avoid UTC offset)
       enable_creation_date: true      # Also show "creation date" (first commit)
       fallback_to_build_date: true    # Use build date if Git history is unavailable (for some CI environments)
-  - document-dates
+  - document-dates:
+      position: top            # Display position: top(after title) bottom(end of document), default: top
+      type: date               # Date type: date datetime timeago, default: date
+      exclude:                 # List of excluded files
+        - temp.md                  # Example: exclude the specified file
+        - blog/*                   # Example: exclude all files in blog folder, including subfolders
+      date_format: '%Y-%m-%d'  # Date format strings (e.g., %Y-%m-%d, %b %d, %Y)
+      time_format: '%H:%M:%S'  # Time format strings (valid only if type=datetime)
+      show_created: true       # Show creation date: true false, default: true
+      show_updated: true       # Show last updated date: true false, default: true
+      show_author: true        # Show author: true(avatar) text(text) false(hidden), default: true
+      locale: en               # Language: en
   - mindmaps-lastmod
 
 # Navigation

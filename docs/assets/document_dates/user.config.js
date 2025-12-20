@@ -86,8 +86,8 @@ const userLanguages = {
         authors: "Authors"
     },
     zh: {
-        created_time: "创建时间",
-        updated_time: "最后更新",
+        created_time: "建立時間",
+        updated_time: "最後更新",
         author: "作者",
         authors: "作者"
     }
