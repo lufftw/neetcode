@@ -1,0 +1,8 @@
+# mkdocs_plugins/mindmaps_lastmod.yml
+rules:
+  - path: pages/mindmaps/
+    extensions: [".html"]
+
+  # example: if you also have another static mindmaps directory
+  # - path: mindmaps/
+  #   extensions: [".html", ".htm"]
