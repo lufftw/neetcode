@@ -19,7 +19,7 @@ mkdocs-material>=9.5.0  # Material theme for MkDocs
 mkdocs-minify-plugin>=0.7.0  # Minify HTML output
 mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 mkdocs-git-revision-date-localized-plugin>=1.2.0  # Git revision date plugin
-mkdocs-document-dates-plugin>=1.0.0  # Document dates plugin
+mkdocs-document-dates>=3.5.0  # Document dates plugin
 
 # Optional LLM packages (for tools/text_to_mindmap.py):
 # openai>=2.11.0        # OpenAI API client (for GPT models)
