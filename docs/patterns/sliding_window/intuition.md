@@ -301,19 +301,19 @@ Ask yourself these questions:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  1. Am I looking for a CONTIGUOUS subarray or substring?   │
-│     └── No? → Not sliding window                           │
+│  1. Am I looking for a CONTIGUOUS subarray or substring?    │
+│     └── No? → Not sliding window                            │
 │                                                             │
-│  2. Can I describe a PROPERTY that makes a window valid?   │
-│     └── No? → Probably not sliding window                  │
+│  2. Can I describe a PROPERTY that makes a window valid?    │
+│     └── No? → Probably not sliding window                   │
 │                                                             │
-│  3. Can I UPDATE that property in O(1) when I add/remove   │
+│  3. Can I UPDATE that property in O(1) when I add/remove    │
 │     a single element?                                       │
-│     └── No? → Sliding window won't give O(n)               │
+│     └── No? → Sliding window won't give O(n)                │
 │                                                             │
-│  4. Is the answer about OPTIMIZING that window             │
+│  4. Is the answer about OPTIMIZING that window              │
 │     (longest, shortest, exists)?                            │
-│     └── Yes to all? → SLIDING WINDOW.                      │
+│     └── Yes to all? → SLIDING WINDOW.                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
