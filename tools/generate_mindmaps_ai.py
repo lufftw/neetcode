@@ -7,7 +7,7 @@ generate Markmap mind maps.
 
 Usage:
     python tools/generate_mindmaps_ai.py                              # Interactive
-    python tools/generate_mindmaps_ai.py --config mindmap_ai_config.toml
+    python tools/generate_mindmaps_ai.py --config generate_mindmaps_ai.toml
     python tools/generate_mindmaps_ai.py --goal interview
     python tools/generate_mindmaps_ai.py --topic sliding_window
 
@@ -57,7 +57,7 @@ PROJECT_ROOT = TOOLS_DIR.parent
 ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
-DEFAULT_CONFIG = TOOLS_DIR / "mindmap_ai_config.toml"
+DEFAULT_CONFIG = TOOLS_DIR / "generate_mindmaps_ai.toml"
 # Use a chat model that is available via /v1/chat/completions by default.
 # Older Codex-style completion models (e.g., gpt-5.1-codex) are no longer
 # served by the public API and will raise "model not supported" errors.

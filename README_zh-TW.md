@@ -731,7 +731,7 @@ neetcode/
 │
 ├── tools/                     # 🛠️ 工具腳本
 │   ├── generate_mindmaps_ai.py    # 🤖 AI 心智圖生成器
-│   ├── mindmap_ai_config.toml     # AI 生成配置
+│   ├── generate_mindmaps_ai.toml     # AI 生成配置
 │   ├── generate_mindmaps.py       # 規則式心智圖生成器
 │   ├── generate_mindmaps.toml     # 規則式配置
 │   ├── generate_pattern_docs.py   # 生成模式文件
@@ -914,11 +914,11 @@ python tools/generate_mindmaps_ai.py
 python tools/generate_mindmaps_ai.py --goal interview
 
 # 生成多語言
-# 編輯 tools/mindmap_ai_config.toml: language = ["en", "zh-TW"]
+# 編輯 tools/generate_mindmaps_ai.toml: language = ["en", "zh-TW"]
 python tools/generate_mindmaps_ai.py
 ```
 
-配置檔：`tools/mindmap_ai_config.toml`
+配置檔：`tools/generate_mindmaps_ai.toml`
 
 **規則式：**
 

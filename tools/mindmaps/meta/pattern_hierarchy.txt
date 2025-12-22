@@ -1,0 +1,1 @@
+Explore the pattern hierarchy of algorithmic API kernels, their pattern instantiations, and linked example problems like sliding window and grid BFS.

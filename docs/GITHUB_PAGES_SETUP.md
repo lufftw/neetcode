@@ -245,7 +245,7 @@ python tools/generate_mindmaps.py --html --autoloader
 2. **Generate AI mindmaps:**
    ```bash
    # Generate both English and 繁體中文 versions
-   python tools/generate_mindmaps_ai.py --config tools/mindmap_ai_config.toml
+   python tools/generate_mindmaps_ai.py --config tools/generate_mindmaps_ai.toml
    
    # Or use interactive mode
    python tools/generate_mindmaps_ai.py
@@ -288,7 +288,7 @@ python tools/generate_mindmaps.py --html --autoloader
 - **Transparency**: Makes the AI generation process transparent and auditable
 
 **Configuration:**
-- Edit `tools/mindmap_ai_config.toml` to customize:
+- Edit `tools/generate_mindmaps_ai.toml` to customize:
   - Output language(s): `language = ["en", "zh-TW"]`
   - HTML generation: `generate_html = true`
   - Output directory: `html_directory = "docs/pages/mindmaps"`

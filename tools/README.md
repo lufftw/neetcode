@@ -55,7 +55,7 @@ tools/
 ├── generate_mindmaps.py           # Rule-based mind map generator
 ├── generate_mindmaps.toml         # Rule-based configuration
 ├── generate_mindmaps_ai.py        # AI mind map generator
-├── mindmap_ai_config.toml         # AI configuration
+├── generate_mindmaps_ai.toml         # AI configuration
 │
 ├── generate_pattern_docs.py       # Pattern documentation generator
 ├── generate_pattern_docs.toml     # Pattern docs configuration
@@ -216,7 +216,7 @@ python tools/generate_mindmaps_ai.py --topic sliding_window
 python tools/generate_mindmaps_ai.py --topic dynamic_programming
 ```
 
-**Configuration:** `tools/mindmap_ai_config.toml`
+**Configuration:** `tools/generate_mindmaps_ai.toml`
 
 | Section | What You Can Configure |
 |---------|------------------------|

@@ -4,7 +4,7 @@
 # Configure which data sources to include as LLM input for generating Markmap mind maps
 # 
 # Usage:
-#   python tools/generate_mindmaps_ai.py --config tools/mindmap_ai_config.toml
+#   python tools/generate_mindmaps_ai.py --config tools/generate_mindmaps_ai.toml
 # =============================================================================
 
 [model]

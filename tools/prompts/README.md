@@ -30,7 +30,7 @@ python tools/generate_mindmaps_ai.py --style academic
 
 ### 配置檔案
 
-編輯 `tools/mindmap_ai_config.toml` 可自訂：
+編輯 `tools/generate_mindmaps_ai.toml` 可自訂：
 - 使用的 LLM 模型
 - 輸出目錄和檔名
 - 要包含的 ontology 資料
@@ -87,7 +87,7 @@ python tools/generate_mindmaps_ai.py --style academic
 ```
 tools/
 ├── generate_mindmaps_ai.py   # 主程式
-├── mindmap_ai_config.toml    # 配置檔案
+├── generate_mindmaps_ai.toml    # 配置檔案
 └── prompts/
     ├── README.md             # 本說明文件
     └── generated/
@@ -106,5 +106,5 @@ tools/
    - [markmap.js.org/repl](https://markmap.js.org/repl)
 
 3. **生成 HTML**
-   - 在 `mindmap_ai_config.toml` 中設定 `generate_html = true`
+   - 在 `generate_mindmaps_ai.toml` 中設定 `generate_html = true`
    - 輸出到 `docs/pages/mindmaps/`

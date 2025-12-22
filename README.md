@@ -731,7 +731,7 @@ neetcode/
 │
 ├── tools/                     # 🛠️ Utility scripts
 │   ├── generate_mindmaps_ai.py    # 🤖 AI mind map generator
-│   ├── mindmap_ai_config.toml     # AI generation configuration
+│   ├── generate_mindmaps_ai.toml     # AI generation configuration
 │   ├── generate_mindmaps.py       # Rule-based mind map generator
 │   ├── generate_mindmaps.toml     # Rule-based configuration
 │   ├── generate_pattern_docs.py   # Generate pattern docs
@@ -916,11 +916,11 @@ python tools/generate_mindmaps_ai.py
 python tools/generate_mindmaps_ai.py --goal interview
 
 # Generate multiple languages
-# Edit tools/mindmap_ai_config.toml: language = ["en", "zh-TW"]
+# Edit tools/generate_mindmaps_ai.toml: language = ["en", "zh-TW"]
 python tools/generate_mindmaps_ai.py
 ```
 
-Configuration: `tools/mindmap_ai_config.toml`
+Configuration: `tools/generate_mindmaps_ai.toml`
 
 **Rule-Based:**
 
