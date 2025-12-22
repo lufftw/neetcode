@@ -66,6 +66,9 @@ def parse_toml_simple(content: str) -> dict[str, Any]:
         if "=" in stripped:
             key, _, value = stripped.partition("=")
             key, value = key.strip(), value.strip()
+            # Remove quotes from key if present (TOML allows quoted keys)
+            if (key.startswith('"') and key.endswith('"')) or (key.startswith("'") and key.endswith("'")):
+                key = key[1:-1]
             # Remove inline comments (but not inside strings or arrays)
             value = strip_inline_comment(value)
             

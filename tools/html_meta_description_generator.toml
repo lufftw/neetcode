@@ -45,15 +45,15 @@ model = "gpt-5.2"
 #                     keepInlineCodeContent, keepImageAlt, languageMode
 
 # Mindmap files (uncomment and configure as needed)
-# "docs/mindmaps/pattern_hierarchy.md" = { }
-# "docs/mindmaps/family_derivation.md" = { }
-# "docs/mindmaps/algorithm_usage.md" = { }
-# "docs/mindmaps/data_structure.md" = { }
-# "docs/mindmaps/company_coverage.md" = { }
-# "docs/mindmaps/roadmap_paths.md" = { }
-# "docs/mindmaps/problem_relations.md" = { }
-# "docs/mindmaps/solution_variants.md" = { }
-# "docs/mindmaps/difficulty_topics.md" = { }
+"docs/mindmaps/pattern_hierarchy.md" = { }
+"docs/mindmaps/family_derivation.md" = { }
+"docs/mindmaps/algorithm_usage.md" = { }
+"docs/mindmaps/data_structure.md" = { }
+"docs/mindmaps/company_coverage.md" = { }
+"docs/mindmaps/roadmap_paths.md" = { }
+"docs/mindmaps/problem_relations.md" = { }
+"docs/mindmaps/solution_variants.md" = { }
+"docs/mindmaps/difficulty_topics.md" = { }
 
 # Example with custom settings:
 # "docs/mindmaps/pattern_hierarchy.md" = { minLen = 100, maxLen = 155, languageMode = "en" }

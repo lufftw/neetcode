@@ -440,6 +440,8 @@ def main() -> int:
             return 1
         
         for file_path_str, file_config in files.items():
+            # Remove any surrounding quotes from path string
+            file_path_str = file_path_str.strip().strip('"').strip("'")
             file_path = Path(file_path_str)
             if not file_path.is_absolute():
                 file_path = PROJECT_ROOT / file_path
