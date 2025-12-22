@@ -36,6 +36,7 @@ from tools.mindmaps.toml_parser import parse_toml_simple
 
 
 CONFIG_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.toml"
+PROMPT_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.md"
 
 # Default configuration
 DEFAULT_CONFIG = {
@@ -46,28 +47,30 @@ DEFAULT_CONFIG = {
     "keepImageAlt": True,
     "languageMode": "auto",
     "outputDir": str(META_DESCRIPTIONS_DIR),
-    "systemPrompt": """You are an SEO expert. Generate a concise, natural meta description for search engine results.
-
-Requirements:
-- Length: 80-160 characters (prefer 120-155)
-- Natural, readable, no markdown syntax
-- Describe what the page helps the reader do/learn
-- Include primary topic naturally
-- Avoid clickbait, marketing fluff, keyword lists
-- One or two sentences maximum""",
-    "userPromptTemplate": """Generate a meta description for this content:
-
-Title: {title}
-
-Content preview:
-{content_preview}
-
-{candidate_info}
-
-Language: {language}
-
-Generate a SEO-friendly meta description following the requirements above.""",
+    "model": "gpt-4o",
 }
+
+
+def load_prompts() -> tuple[str, str]:
+    """Load prompts from markdown file."""
+    if not PROMPT_FILE.exists():
+        raise FileNotFoundError(f"Prompt file not found: {PROMPT_FILE}")
+    
+    content = PROMPT_FILE.read_text(encoding="utf-8")
+    
+    # Extract system prompt (between "## System Prompt" and next "##")
+    system_match = re.search(r'## System Prompt\s*\n(.*?)(?=\n## |$)', content, re.DOTALL)
+    if not system_match:
+        raise ValueError("System prompt not found in prompt file")
+    system_prompt = system_match.group(1).strip()
+    
+    # Extract user prompt template (between "## User Prompt Template" and next "##" or end)
+    user_match = re.search(r'## User Prompt Template\s*\n(.*?)(?=\n## |$)', content, re.DOTALL)
+    if not user_match:
+        raise ValueError("User prompt template not found in prompt file")
+    user_prompt_template = user_match.group(1).strip()
+    
+    return system_prompt, user_prompt_template
 
 
 def load_config() -> dict[str, Any]:
@@ -82,12 +85,6 @@ def load_config() -> dict[str, Any]:
                 config.update(parsed["global"])
             # File-specific settings (will be merged per file)
             config["files"] = parsed.get("files", {})
-            # Prompt templates
-            if "prompts" in parsed:
-                if "system" in parsed["prompts"]:
-                    config["systemPrompt"] = parsed["prompts"]["system"]
-                if "user" in parsed["prompts"]:
-                    config["userPromptTemplate"] = parsed["prompts"]["user"]
         except Exception as e:
             print(f"Warning: Failed to load config: {e}")
     
@@ -307,9 +304,8 @@ def generate_with_openai(md_content: str, config: dict[str, Any], api_key: str, 
     # Extract candidate for context
     candidate = extract_candidate_description(md_content, config)
     
-    # Load prompts from config
-    system_prompt = config.get("systemPrompt", DEFAULT_CONFIG["systemPrompt"])
-    user_prompt_template = config.get("userPromptTemplate", DEFAULT_CONFIG["userPromptTemplate"])
+    # Load prompts from external markdown file
+    system_prompt, user_prompt_template = load_prompts()
     
     # Build user prompt from template
     candidate_info = f"Existing candidate: {candidate}" if candidate else ""
@@ -320,9 +316,12 @@ def generate_with_openai(md_content: str, config: dict[str, Any], api_key: str, 
         language=detected_lang,
     )
     
+    # Get model from config
+    model = config.get("model", "gpt-4o")
+    
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model=model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}

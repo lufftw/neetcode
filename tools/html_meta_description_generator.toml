@@ -29,14 +29,11 @@ outputDir = "tools/mindmaps/meta"
 # OpenAI API key will be prompted when running the program
 # Enter your API key when prompted (input is hidden for security)
 
-[prompts]
-# OpenAI prompt templates
-# Use {title}, {content_preview}, {candidate_info}, {language} as placeholders in user prompt
-# Use \n for newlines in TOML strings
+# OpenAI model to use (e.g., "gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo")
+model = "gpt-5.2"
 
-system = "You are an SEO expert. Generate a concise, natural meta description for search engine results.\n\nRequirements:\n- Length: 80-160 characters (prefer 120-155)\n- Natural, readable, no markdown syntax\n- Describe what the page helps the reader do/learn\n- Include primary topic naturally\n- Avoid clickbait, marketing fluff, keyword lists\n- One or two sentences maximum"
-
-user = "Generate a meta description for this content:\n\nTitle: {title}\n\nContent preview:\n{content_preview}\n\n{candidate_info}\n\nLanguage: {language}\n\nGenerate a SEO-friendly meta description following the requirements above."
+# Prompt templates are loaded from html_meta_description_generator.md
+# Edit that file to customize the prompts
 
 [files]
 # File-specific configurations
