@@ -736,6 +736,8 @@ neetcode/
 │   ├── generate_mindmaps.toml     # Rule-based configuration
 │   ├── generate_pattern_docs.py   # Generate pattern docs
 │   ├── generate_pattern_docs.toml # Pattern docs configuration
+│   ├── html_meta_description_generator.py  # Generate SEO meta descriptions
+│   ├── html_meta_description_generator.toml  # Meta description config
 │   ├── check_solutions.py         # Solution validation tool
 │   ├── prepare_llm_input.py       # Prepare LLM input data
 │   ├── text_to_mindmap.py         # Convert text to mindmap

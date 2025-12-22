@@ -14,6 +14,7 @@ Developer tools for checking, validating, and generating project content.
 | **Generation** | [`generate_mindmaps.py`](#generate_mindmapspy) | Rule-based mind map generation |
 | | [`generate_mindmaps_ai.py`](#generate_mindmaps_aipy) | AI-powered mind map generation |
 | | [`generate_pattern_docs.py`](#generate_pattern_docspy) | Pattern documentation generation |
+| | [`html_meta_description_generator.py`](#html_meta_description_generatorpy) | Generate SEO meta descriptions from Markdown |
 | **Automation** | [Pre-commit Hooks](#-local-cicd-automation) | Auto-generate AI mind maps on commit |
 | **Utilities** | [`text_to_mindmap.py`](#text_to_mindmappy) | Convert text to mind map format |
 | | [`prepare_llm_input.py`](#prepare_llm_inputpy) | Prepare LLM input data |
@@ -34,6 +35,9 @@ python tools/generate_mindmaps_ai.py --goal interview
 
 # Generate pattern documentation
 python tools/generate_pattern_docs.py
+
+# Generate SEO meta descriptions
+python tools/html_meta_description_generator.py
 ```
 
 ---
@@ -55,6 +59,9 @@ tools/
 │
 ├── generate_pattern_docs.py       # Pattern documentation generator
 ├── generate_pattern_docs.toml     # Pattern docs configuration
+│
+├── html_meta_description_generator.py  # SEO meta description generator
+├── html_meta_description_generator.toml  # Meta description config
 │
 ├── text_to_mindmap.py             # Text to mind map converter
 ├── prepare_llm_input.py           # LLM input preparation
@@ -256,6 +263,67 @@ meta/patterns/sliding_window/
 ```
 
 > 📖 **Detailed technical docs:** [patterndocs/README.md](patterndocs/README.md)
+
+### `html_meta_description_generator.py`
+
+Generates SEO-friendly HTML meta descriptions from Markdown files using OpenAI GPT-4o. Follows the Meta Description Generation Spec for optimal search engine result page (SERP) display.
+
+```bash
+# Generate descriptions for all configured files
+python tools/html_meta_description_generator.py
+
+# Generate description for a specific file
+python tools/html_meta_description_generator.py --file docs/mindmaps/pattern_hierarchy.md
+
+# List configured files
+python tools/html_meta_description_generator.py --list
+
+# Specify output directory
+python tools/html_meta_description_generator.py --output custom/output/dir
+
+# Force overwrite existing files
+python tools/html_meta_description_generator.py --force
+```
+
+**Configuration:** `tools/html_meta_description_generator.toml`
+
+**Features:**
+- Automatic markdown cleaning (removes code blocks, images, links, etc.)
+- Language detection (English/Chinese Traditional)
+- Length validation (80-160 characters, truncates at sentence boundaries)
+- Content validation (removes boilerplate, keyword stuffing, etc.)
+- HTML attribute escaping
+- OpenAI GPT-4o integration for high-quality descriptions
+
+**Configuration Options:**
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `minLen` | Minimum description length | 80 |
+| `maxLen` | Maximum description length | 160 |
+| `preferFrontmatterDescription` | Use frontmatter description if available | true |
+| `keepInlineCodeContent` | Keep inline code text (remove backticks) | true |
+| `keepImageAlt` | Keep image alt text | true |
+| `languageMode` | Language mode: "auto", "en", "zh-TW" | "auto" |
+| `outputDir` | Output directory for generated files | "tools/mindmaps/meta" |
+
+**Prompt Templates:**
+
+The tool uses configurable prompt templates in the `[prompts]` section:
+- `system` - System prompt for OpenAI
+- `user` - User prompt template with placeholders: `{title}`, `{content_preview}`, `{candidate_info}`, `{language}`
+
+**API Key:**
+
+The OpenAI API key is prompted interactively when running the program (input is hidden for security). No need to set environment variables.
+
+**Example Configuration:**
+
+```toml
+[files]
+"docs/mindmaps/pattern_hierarchy.md" = { }
+"docs/mindmaps/family_derivation.md" = { minLen = 100, maxLen = 155 }
+```
 
 ---
 

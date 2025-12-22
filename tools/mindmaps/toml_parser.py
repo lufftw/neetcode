@@ -143,8 +143,13 @@ def parse_toml_value(value: str) -> Any:
     
     # String value
     if value.startswith('"') and value.endswith('"'):
-        return value[1:-1]
+        result = value[1:-1]
+        # Handle escape sequences
+        result = result.replace('\\n', '\n').replace('\\t', '\t').replace('\\r', '\r')
+        result = result.replace('\\"', '"').replace("\\'", "'").replace('\\\\', '\\')
+        return result
     if value.startswith("'") and value.endswith("'"):
+        # Literal strings (single quotes) don't process escapes
         return value[1:-1]
     
     # Array value

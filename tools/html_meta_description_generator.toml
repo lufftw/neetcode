@@ -1,0 +1,63 @@
+# HTML Meta Description Generator Configuration
+
+[global]
+# Global default settings for all files
+# Can be overridden per-file in [files] section
+
+# Minimum description length (characters)
+minLen = 80
+
+# Maximum description length (characters)
+maxLen = 160
+
+# Prefer description from frontmatter if available
+preferFrontmatterDescription = true
+
+# Keep inline code content (remove backticks but keep text)
+keepInlineCodeContent = true
+
+# Keep image alt text when removing images
+keepImageAlt = true
+
+# Language mode: "auto" (detect), "en" (English), "zh-TW" (Traditional Chinese)
+languageMode = "auto"
+
+# Output directory for generated description files
+# Relative to project root, or absolute path
+outputDir = "tools/mindmaps/meta"
+
+# OpenAI API key will be prompted when running the program
+# Enter your API key when prompted (input is hidden for security)
+
+[prompts]
+# OpenAI prompt templates
+# Use {title}, {content_preview}, {candidate_info}, {language} as placeholders in user prompt
+# Use \n for newlines in TOML strings
+
+system = "You are an SEO expert. Generate a concise, natural meta description for search engine results.\n\nRequirements:\n- Length: 80-160 characters (prefer 120-155)\n- Natural, readable, no markdown syntax\n- Describe what the page helps the reader do/learn\n- Include primary topic naturally\n- Avoid clickbait, marketing fluff, keyword lists\n- One or two sentences maximum"
+
+user = "Generate a meta description for this content:\n\nTitle: {title}\n\nContent preview:\n{content_preview}\n\n{candidate_info}\n\nLanguage: {language}\n\nGenerate a SEO-friendly meta description following the requirements above."
+
+[files]
+# File-specific configurations
+# Each entry maps a markdown file path (relative to project root) to its config
+# If a setting is omitted, global default is used
+# 
+# Format: "path/to/file.md" = { setting = value, ... }
+# Available settings: minLen, maxLen, preferFrontmatterDescription, 
+#                     keepInlineCodeContent, keepImageAlt, languageMode
+
+# Mindmap files (uncomment and configure as needed)
+# "docs/mindmaps/pattern_hierarchy.md" = { }
+# "docs/mindmaps/family_derivation.md" = { }
+# "docs/mindmaps/algorithm_usage.md" = { }
+# "docs/mindmaps/data_structure.md" = { }
+# "docs/mindmaps/company_coverage.md" = { }
+# "docs/mindmaps/roadmap_paths.md" = { }
+# "docs/mindmaps/problem_relations.md" = { }
+# "docs/mindmaps/solution_variants.md" = { }
+# "docs/mindmaps/difficulty_topics.md" = { }
+
+# Example with custom settings:
+# "docs/mindmaps/pattern_hierarchy.md" = { minLen = 100, maxLen = 155, languageMode = "en" }
+
