@@ -155,6 +155,59 @@ def parse_toml_value(value: str) -> Any:
         # Literal strings (single quotes) don't process escapes
         return value[1:-1]
     
+    # Inline table value { key = value, ... }
+    if value.startswith("{") and value.endswith("}"):
+        inner = value[1:-1].strip()
+        if not inner:
+            return {}
+        
+        result_dict = {}
+        # Split by commas, but respect quotes and nested structures
+        parts = []
+        current_part = ""
+        in_quotes = False
+        quote_char = None
+        brace_depth = 0
+        
+        for char in inner:
+            if char in ('"', "'") and (not in_quotes or char == quote_char):
+                in_quotes = not in_quotes
+                if not in_quotes:
+                    quote_char = None
+                else:
+                    quote_char = char
+                current_part += char
+            elif char == "," and not in_quotes and brace_depth == 0:
+                if current_part.strip():
+                    parts.append(current_part.strip())
+                current_part = ""
+            elif char in ("{", "["):
+                brace_depth += 1
+                current_part += char
+            elif char in ("}", "]"):
+                brace_depth -= 1
+                current_part += char
+            else:
+                current_part += char
+        
+        # Add last part
+        if current_part.strip():
+            parts.append(current_part.strip())
+        
+        # Parse each key=value pair
+        for part in parts:
+            if "=" in part:
+                key, _, val = part.partition("=")
+                key = key.strip()
+                val = val.strip()
+                # Remove quotes from key if present
+                if (key.startswith('"') and key.endswith('"')) or (key.startswith("'") and key.endswith("'")):
+                    key = key[1:-1]
+                parsed_value = parse_toml_value(val)
+                result_dict[key] = parsed_value
+        
+        return result_dict
+    
     # Array value
     if value.startswith("[") and value.endswith("]"):
         inner = value[1:-1].strip()

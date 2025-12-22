@@ -364,7 +364,12 @@ def generate_description(md_file: Path, config: dict[str, Any], api_key: str, fi
     # Merge file-specific config
     merged_config = config.copy()
     if file_config:
-        merged_config.update(file_config)
+        # Ensure file_config is a dictionary
+        if isinstance(file_config, dict):
+            merged_config.update(file_config)
+        else:
+            # If it's not a dict (e.g., empty list from TOML parsing), treat as empty config
+            pass
     
     content = md_file.read_text(encoding="utf-8")
     frontmatter, _ = extract_frontmatter(content)
