@@ -317,6 +317,11 @@ Examples:
         action="store_true",
         help="List available presets from config file and exit"
     )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Process all presets from config file"
+    )
     
     args = parser.parse_args()
     
@@ -347,6 +352,101 @@ Examples:
             else:
                 print("No presets found in configuration file.")
             return 0
+        
+        # Process all presets if requested
+        if args.all:
+            presets = config.get("presets", {})
+            if not presets:
+                print("❌ Error: No presets found in configuration file.")
+                return 1
+            
+            script_base_dir = Path(__file__).parent
+            project_root = script_base_dir.parent.parent
+            
+            print(f"\n🔄 Processing all {len(presets)} preset(s)...\n")
+            
+            success_count = 0
+            error_count = 0
+            
+            for preset_name, preset in presets.items():
+                print(f"{'='*60}")
+                print(f"📋 Processing preset: {preset_name}")
+                print(f"{'='*60}")
+                
+                try:
+                    # Resolve paths
+                    input_path = Path(preset["input"])
+                    if not input_path.is_absolute():
+                        input_path = (project_root / input_path).resolve()
+                    
+                    if not input_path.exists():
+                        print(f"   ⚠️  Input file not found: {input_path}")
+                        print(f"   ⏭️  Skipping...\n")
+                        error_count += 1
+                        continue
+                    
+                    output_path = Path(preset["output"])
+                    if not output_path.is_absolute():
+                        output_path = (project_root / output_path).resolve()
+                    
+                    title = preset.get("title", None)
+                    
+                    # Load meta description
+                    description = args.description  # CLI arg overrides
+                    if description is None:
+                        meta_file = preset.get("meta_description_file")
+                        if meta_file:
+                            description = load_meta_description(meta_file, config, project_root)
+                    
+                    # Get template path
+                    template_path = None
+                    if config.get("template_path"):
+                        template_path = Path(config["template_path"])
+                        if not template_path.is_absolute():
+                            template_path = (script_base_dir / template_path).resolve()
+                    
+                    print(f"   Input:  {input_path}")
+                    print(f"   Output: {output_path}")
+                    print(f"   Title:  {title}")
+                    if description:
+                        print(f"   Meta description: {len(description)} chars")
+                    
+                    # Convert
+                    output_path.parent.mkdir(parents=True, exist_ok=True)
+                    markdown_content = input_path.read_text(encoding="utf-8")
+                    
+                    # Remove markdown code fence if present
+                    markdown_content = markdown_content.strip()
+                    if markdown_content.startswith("```markdown"):
+                        markdown_content = markdown_content[len("```markdown"):].strip()
+                    if markdown_content.startswith("```md"):
+                        markdown_content = markdown_content[len("```md"):].strip()
+                    if markdown_content.startswith("```"):
+                        markdown_content = markdown_content[3:].strip()
+                    if markdown_content.endswith("```"):
+                        markdown_content = markdown_content[:-3].strip()
+                    
+                    converter = StandaloneHTMLConverter(template_path=template_path)
+                    html_content = converter.convert(markdown_content, title=title, description=description)
+                    output_path.write_text(html_content, encoding="utf-8")
+                    
+                    print(f"   ✅ Generated: {output_path}\n")
+                    success_count += 1
+                    
+                except Exception as e:
+                    print(f"   ❌ Error: {e}\n")
+                    error_count += 1
+                    continue
+            
+            # Summary
+            print(f"{'='*60}")
+            if success_count > 0:
+                print(f"✅ Successfully processed {success_count} preset(s)")
+            if error_count > 0:
+                print(f"❌ Failed to process {error_count} preset(s)")
+            print(f"{'='*60}")
+            
+            return 0 if error_count == 0 else 1
         
         # Handle preset mode
         if args.preset:

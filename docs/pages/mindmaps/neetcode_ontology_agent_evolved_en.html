@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeetCode Agent Evolved Mindmap (EN) - NeetCode Mind Maps</title>
+    
+    <meta name="description" content="Use this LeetCode knowledge graph mind map to learn core patterns and reusable API kernels, then route to the right technique for each problem.">
+    
+    <title>NeetCode Agent Evolved Mindmap - NeetCode Mind Maps</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
@@ -60,966 +63,917 @@
             const { Transformer, Markmap } = window.markmap;
             const transformer = new Transformer();
             const markdown = `---
-title: LeetCode Knowledge Graph Mind Map (Core Patterns → API Kernels → Problems) 🎯
+title: LeetCode Knowledge Graph Mind Map (45 Problems) — Kernels → Patterns → Problems
 markmap:
   colorFreezeLevel: 2
   maxWidth: 300
 ---
 
-## How to use this map 📚
-- **Goal**: learn *transferable kernels* (APIs) → recognize *patterns* → solve *problems*
-- **Definitions**
-  - **Kernel** = reusable code template / API
-  - **Pattern** = invariant + state choices (specialization of a kernel)
-  - **Family** = group of problems sharing pattern(s)
+# 🎯 LeetCode Master Map: Kernels → Patterns → Problems
+- **How to use**
+  - Start from an **API Kernel** (reusable “engine”), learn its **invariants**, then grind the mapped problems.
+  - Track progress: do *1–2 problems per sub-pattern*, then mix across kernels.
+  - **Glossary**
+    - **Kernel** = reusable implementation template
+    - **Pattern** = constraint/invariant specialization of a kernel
+    - **Problem** = exercise instance that binds inputs/outputs to a pattern
+  - **Quick router (decision guide)**
+    - Need **contiguous subarray/substring** optimal under a constraint? → \`SubstringSlidingWindow\` (fixed-size vs variable-size; counting vs sum)
+    - Need **two ends / sorted scanning / in-place compaction**? → **Family: Two-Pointer Techniques** → \`TwoPointersTraversal\`
+    - Need **cycle/midpoint** on linked structure or functional graph? → **Family: Two-Pointer Techniques** → \`FastSlowPointers\`
+    - Need **reorder by predicate** or **Kth**? → **Family: Two-Pointer Techniques** → \`TwoPointerPartition\` (or \`HeapTopK\` for streaming)
+    - Need **merge sorted sequences**? → \`MergeSortedSequences\` / \`KWayMerge\`
+    - Need **monotone predicate**? → \`BinarySearchBoundary\` (index boundary vs answer space)
+    - Need **shortest steps/time** on unweighted graph/grid? → \`GridBFSMultiSource\`
 - **Progress tracker**
-  - [ ] Do 1 problem per kernel (breadth)
-  - [ ] Do 3 problems per kernel (depth)
-  - [ ] Re-solve “anchor” problems from scratch under 20 minutes ⚡
-
-## Router (Decision Guide) 🧭
-- Contiguous substring/subarray with constraint → **SubstringSlidingWindow**
-- Sorted array + monotonic objective / symmetric property → **TwoPointersTraversal**
-- In-place reordering into buckets/regions → **TwoPointerPartition**
-- “Minimum time/steps” on unweighted grid/graph → **GridBFSMultiSource** (or TreeTraversalBFS)
-- “Kth/topK/median/streaming” → **HeapTopK** / **KWayMerge**
-- Monotone feasibility in answer space / boundary index → **BinarySearchBoundary**
-- Need counts over ranges / subarray sum targets → **PrefixSumRangeQuery**
-- Next greater/smaller / histogram areas → **MonotonicStack**
-- Connectivity / components → **UnionFindConnectivity**
-- Hierarchical structure traversal → **TreeTraversalDFS/BFS**
-- DAG prerequisites → **TopologicalSort**
-- Optimal substructure on sequences/intervals → **DPSequence/DPInterval**
-
-## Legend (priority tags) 🧾
-- 🔥 must-know
-- ⭐ common
-- 🧊 nice-to-know
-
-## Kernel Index (the “APIs” you should internalize) 🔥
-- PrefixSumRangeQuery
-- TwoPointersTraversal
-- SubstringSlidingWindow
-- BinarySearchBoundary
-- TreeTraversalDFS + TreeTraversalBFS
-- GridBFSMultiSource
-- HeapTopK
-- MonotonicStack
-- MergeSortedSequences + KWayMerge
-- BacktrackingExploration
-- TwoPointerPartition
-- FastSlowPointers
-- UnionFindConnectivity
-- TopologicalSort
-- DPSequence + DPInterval
-- TriePrefixSearch *(in ontology; not anchored by provided problems)*
-
----
-
-## Pitfalls & Checklists (reusable) ✅
-- **Sliding window**
-  - Off-by-one: inclusive \`[L..R]\` vs half-open \`[L, R)\`; update answer after making window valid
-  - Validity must be maintainable in $O(1)$ per move (avoid rescanning maps/alphabets each step)
-  - “Shrink while valid” requires monotonicity (e.g., sums need non-negative numbers)
-- **Two pointers / partition**
-  - Termination: \`while L < R\` vs \`<=\`; ensure progress on every branch
-  - Duplicates handling: skip duplicates at the correct pointer(s) and at the correct time
-  - Stability: reader/writer compaction is stable; swap-based partition is usually unstable
-- **Binary search**
-  - Use a **half-open invariant** (\`[lo, hi)\`) and avoid infinite loops (\`mid = lo + (hi-lo)//2\`)
-  - Pick \`first_true\` vs \`last_true\` intentionally; confirm predicate monotonicity
-  - Overflow/sentinels: boundaries around \`mid-1\`, \`mid+1\`, empty arrays
-- **BFS**
-  - Mark visited **upon enqueue** to avoid multiple enqueues
-  - Level counting: process BFS in layers when “minutes/steps” are required
-  - Multi-source init: enqueue all sources before BFS loop; track remaining targets
-- **Backtracking**
-  - “Unchoose” is mandatory (no ghost marks): undo every mutation on return
-  - Pruning must be safe (don’t prune on partial info that could be fixed later)
-  - Copy vs mutate: avoid copying full paths unless needed (push/pop pattern)
-- **Linked list**
-  - Use a dummy head to simplify head changes
-  - Preserve \`next\` pointers before rewiring
-  - Group boundaries: confirm there are \`k\` nodes before reversing k-group
-- **Quickselect / heaps**
-  - Quickselect worst-case $O(n^2)$ unless randomized/median-of-medians
-  - Duplicates: 3-way partition can simplify handling repeated pivot values
-  - Streaming/large input: heap often preferred
-
----
-
-## Reverse Index (Problem → Kernel → Pattern → invariant) 🔎
-- 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)(hash map complement) → \`hash_map_complement\` → “store seen value→index; look for target-x”
-- 🔥 [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
-- 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-- 🧊 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
-- ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-- 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
-- 🧊 [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
-- 🔥 [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
-- 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-- ⭐ [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
-- ⭐ [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)[0:write]\` kept unique”
-- ⭐ [LeetCode 27](https://leetcode.com/problems/remove-element/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
-- ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)
-- ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py)
-- ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)[]; choose unused”
-- 🧊 [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py)
-- ⭐ [LeetCode 51](https://leetcode.com/problems/n-queens/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
-- 🧊 [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0052_n_queens_ii.py)
-- 🔥 [LeetCode 75](https://leetcode.com/problems/sort-colors/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
-- 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-- ⭐ [LeetCode 77](https://leetcode.com/problems/combinations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py)
-- ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)
-- ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
-- 🧊 [LeetCode 80](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
-- ⭐ [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
-- 🧊 [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py)
-- 🧊 [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0093_restore_ip_addresses.py)
-- ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
-- ⭐ [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)
-- ⭐ [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
-- ⭐ [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
-- ⭐ [LeetCode 202](https://leetcode.com/problems/happy-number/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)(n); detect cycle”
-- ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-- 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-- 🧊 [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0216_combination_sum_iii.py)
-- ⭐ [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
-- 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-- ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-- ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-- ⭐ [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
-- ⭐ [LeetCode 876](https://leetcode.com/problems/middle-of-the-linked-list/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
-- ⭐ [LeetCode 905](https://leetcode.com/problems/sort-array-by-parity/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
-- 🧊 [LeetCode 922](https://leetcode.com/problems/sort-array-by-parity-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
-- ⭐ [LeetCode 977](https://leetcode.com/problems/squares-of-a-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
-- 🔥 [LeetCode 994](https://leetcode.com/problems/rotting-oranges/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
-
----
-
-## 1) Hashing + Prefix Sum (PrefixSumRangeQuery) 🧮
-- **Where you’ll see this at work**
-  - Counting events in logs; frequency tables; de-dup; “have we seen this key?”
-  - Subarray analytics with running totals; anomaly detection with deltas
-- **Kernel mini-spec**
-  - **Signature**: sequence \`nums\`; queries like “count subarrays meeting condition” / “range aggregate”; output integer/count/array
-  - **Required invariant**: maintain prefix aggregate \`pref[i]\` and a map of seen prefix states; use identities like \`pref[j]-pref[i]=target\`
-  - **State model**: running prefix value; \`hash_map\` from prefix value → count (or earliest index)
-  - **Complexity envelope**: typically $O(n)$ time, $O(n)$ space (hash map); $O(1)$ per step expected
-  - **Failure modes / when NOT to use**: floating-point prefixes; hash collisions (theoretical); for min/max over window prefer sliding window/monotonic deque
-- **Complexity template**
-  - Time $O(n)$ expected; space $O(n)$ for prefix map (or $O(1)$ if only a few aggregates kept)
-- **Patterns**
-  - **Hash map complement lookup** (\`hash_map_complement\`)
-    - Anchor: 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
-    - Template
-      - \`\`\`text
-        seen = map()  // value -> index
-        for i in [0..n-1]:
-          x = nums[i]
-          y = target - x
-          if y in seen:
-            return [seen[y], i]
-          seen[x] = i
-        return none
-        \`\`\`
-  - **Prefix sum + hash map counts** (\`prefix_sum_subarray_sum\`)
-    - Anchor: 🔥 [LeetCode 560](https://leetcode.com/problems/subarray-sum-equals-k/description/)(not in provided solutions list)*
-    - Template
-      - \`\`\`text
-        count = 0
-        pref = 0
-        freq = map(); freq[0] = 1
-        for x in nums:
-          pref += x
-          count += freq.get(pref - k, 0)
-          freq[pref] = freq.get(pref, 0) + 1
-        return count
-        \`\`\`
-- **Common compositions**
-  - PrefixSumRangeQuery + MonotonicStack (range contributions / subarray min-max counting)
-  - PrefixSumRangeQuery + BinarySearchBoundary (prefix-based feasibility checks)
-- **Common interview pitfalls**
-  - Forgetting base case \`freq[0]=1\` for “subarray starting at 0”
-  - Using earliest index vs count incorrectly (problem-dependent)
-
----
-
-## 2) Two Pointers Traversal (TwoPointersTraversal) 👯
-- **Where you’ll see this at work**
-  - Linear-time scans over sorted arrays; in-place compaction/filtering pipelines
-  - Text normalization with symmetric checks (palindrome-like validations)
-- **Kernel mini-spec**
-  - **Signature**: array/string \`A\`; output depends (max/min, boolean, indices, modified array)
-  - **Required invariant**: after each move, the discarded region cannot contain a better/valid answer than what remains (or what’s recorded)
-  - **State model**: pointers (\`L\`,\`R\`) or (\`read\`,\`write\`); optional counters for constraints/duplicates
-  - **Complexity envelope**: $O(n)$ time from monotone pointer movement; $O(1)$ extra space
-  - **Failure modes / when NOT to use**: requires monotonic structure (sorted/symmetric) or a preserved feasibility argument; otherwise use hashing/DP
-- **Complexity template**
-  - Time $O(n)$; space $O(1)$ extra
-- **Mental model**: every move *proves* excluded region can’t contain the answer
-- **Dominant proof pattern (safety lemma)**
-  - “At each step, choose a pointer move that preserves the existence of an optimal solution in the remaining interval; equivalently, prove that the discarded indices cannot participate in any better solution than the best already seen.”
-  - Example ([LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)): if \`height[L] ≤ height[R]\`, any container using \`L\` with smaller width can’t exceed current area unless the limiting height increases ⇒ increment \`L\`.
-- **Subfamilies**
-  - **Opposite pointers** (sorted/symmetric optimization)
-    - Maximize objective
-      - ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)(move shorter side)*
-    - Palindrome validation
-      - ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
-      - ⭐ [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)(one skip branch)*
-  - **Dedup + enumeration on sorted array**
-    - 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)(outer i + inner L/R + skip duplicates)*
-    - 🧊 [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
-  - **Hash Map Lookup (single pass)**
-    - 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
-    - Note: two pointers requires **sorted input** (or sorting), which changes complexity and indices vs values trade-offs. The canonical opposite-pointer variant is **[LeetCode 167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)(not in provided solutions list)*.
-- **Pattern ID mapping (pattern_id → subfamily)**
-  - \`two_pointer_opposite_maximize\` → Opposite pointers → Maximize objective
-  - \`two_pointer_opposite_palindrome\` → Opposite pointers → Palindrome validation
-  - \`two_pointer_three_sum\` → Dedup + enumeration on sorted array
-  - \`hash_map_complement\` → Hash Map Lookup (single pass)
-- **Quick invariant table**
-  - | Pattern | Invariant | Typical problems |
-    |---------|-----------|------------------|
-    | Opposite | answer in \`[L..R]\` under safety lemma | ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-    | Sorted enumeration | no duplicate tuples emitted | 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
-- **Common compositions**
-  - TwoPointersTraversal + BinarySearchBoundary (two-level search: fix one pointer, binary search partner)
-  - TwoPointersTraversal + PrefixSumRangeQuery (post-filtering then prefix analytics)
-- **Common interview pitfalls (examples)**
-  - Duplicates: skipping too early/late in 3Sum leads to missing/duplicated tuples
-  - Termination: wrong loop (\`<=\` vs \`<\`) causes infinite loop or double-processing
-  - Stable vs unstable: compaction should preserve relative order when required
-
----
-
-## 3) Sliding Window (SubstringSlidingWindow) 🪟
-- **Where you’ll see this at work**
-  - Rate limiting windows; moving aggregates/features over event streams
-  - Log scanning for anomaly substrings; token frequency windows
-- **Kernel mini-spec**
-  - **Signature**: sequence \`s\`/\`nums\`, optional parameter \`k\`/\`target\`; output max/min length, boolean, or indices
-  - **Required invariant**: maintain window state so a predicate \`Valid(L,R)\` can be checked/updated incrementally
-  - **State model**: pointers \`L ≤ R\`; counts (\`freq\`, \`need/have\`), distinct counters, sums; optionally \`last_seen_index\`
-  - **Complexity envelope**: \`R\` increments exactly \`n\` times; \`L\` is monotonically non-decreasing and increments at most \`n\` times ⇒ total pointer moves $O(n)$. Total work $O(n)$ assuming $O(1)$ state update/query (or $O(n·Σ)$ if you rescan an alphabet/state each step).
-  - **Failure modes / when NOT to use**: predicate not monotone under moving \`L\` (e.g., sums with negatives); validity check requires scanning large state each step
-- **Complexity template**
-  - Time $O(n)$ with monotone pointers + $O(1)$ updates; space $O(Σ)$ for counts (or $O(k)$ distinct keys)
-- **State choices**
-  - \`last_seen_index\` map (jump-L optimization)
-  - \`freq\` map + \`distinct_count\`
-  - \`need/have\` maps + \`satisfied/required\`
-  - numeric \`window_sum\`
-- **Pattern comparison table**
-  - | Problem | Invariant | State | Window Size | Goal |
-    |---------|-----------|-------|-------------|------|
-    | 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-    | 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-    | 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-    | ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-    | ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-    | ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-- **Patterns**
-  - **Unique window** (\`sliding_window_unique\`)
-    - Anchor: 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)(learn jump-left)==
-    - Two correct invariants/implementations
-      - Frequency-based: maintain \`freq[c] ≤ 1\` for all \`c\` in \`s[L..R]\`; while violated, increment \`L\` decrementing \`freq\`
-      - Last-seen jump: maintain \`L = max(L, last_seen[c]+1)\` so \`s[L..R]\` has no duplicates  
-        - Invariant (last-seen): \`L\` is always \`1 +\` the maximum last-seen index among duplicates within the current window
-    - Template (last-seen jump)
-      - \`\`\`text
-        last = map(); L = 0; best = 0
-        for R in [0..n-1]:
-          c = s[R]
-          if c in last:
-            L = max(L, last[c] + 1)
-          last[c] = R
-          best = max(best, R - L + 1)
-        return best
-        \`\`\`
-  - **At most K distinct** (\`sliding_window_at_most_k_distinct\`)
-    - Anchor: 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-    - Template
-      - \`\`\`text
-        freq = map(); distinct = 0; L = 0; best = 0
-        for R in [0..n-1]:
-          add s[R]; if freq[s[R]] becomes 1: distinct++
-          while distinct > K:
-            remove s[L]; if freq[s[L]] becomes 0: distinct--
-            L++
-          best = max(best, R - L + 1)
-        return best
-        \`\`\`
-  - **Frequency contracts (do not mix)**
-    - Warning: **Cover** (≥ need) is a variable-window “shrink-while-valid” state machine; **Exact match** (= need) is a fixed-window state machine. Mixing counters/loops causes bugs.
-    - **Cover contract (≥ need)** (\`sliding_window_freq_cover\`)
-      - Minimize cover: 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-      - Note: array \`[128]/[256]\` is faster than dict for ASCII; dict needed for unicode/general tokens.
-      - Template
-        - \`\`\`text
-          need = counts(t); have = map(); satisfied = 0; required = number_of_keys(need)
-          L = 0; best = none
-          for R in [0..n-1]:
-            add s[R] into have
-            if s[R] in need and have[s[R]] == need[s[R]]: satisfied++
-            while satisfied == required:
-              update best using [L..R]
-              if s[L] in need and have[s[L]] == need[s[L]]: satisfied--
-              remove s[L] from have
-              L++
-          return best
-          \`\`\`
-    - **Exact-match contract (= need)** (\`sliding_window_fixed_size\`)
-      - Fixed-size exact match (exists): ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-      - Fixed-size exact match (collect all): ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-      - Template
-        - \`\`\`text
-          need = counts(p); have = empty counts
-          matched = 0; required = number_of_keys(need)
-          L = 0
-          for R in [0..n-1]:
-            add s[R] into have; update matched if have hits need exactly
-            if window_size > len(p):
-              remove s[L] from have; update matched if crossing equality
-              L++
-            if window_size == len(p) and matched == required:
-              record match (or return true)
-          \`\`\`
-  - **Cost bounded / sum constraint** (\`sliding_window_cost_bounded\`)
-    - Anchor: ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-    - Note: this shrinking-window method requires all numbers to be **non-negative** (as in [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)). With negative numbers, validity is not monotone in \`L\` and sliding window fails; use prefix sums + monotone deque / binary search variants instead.
-    - Template
-      - \`\`\`text
-        L = 0; sum = 0; best = +inf
-        for R in [0..n-1]:
-          sum += nums[R]
-          while sum >= target:
-            best = min(best, R - L + 1)
-            sum -= nums[L]; L++
-        return best if best != +inf else 0
-        \`\`\`
-- **Common compositions**
-  - SubstringSlidingWindow + HeapTopK (top-k within moving window; streaming analytics)
-  - SubstringSlidingWindow + PrefixSumRangeQuery (windowed feature extraction + downstream counts)
-- **Common interview pitfalls**
-  - “minimize window” needs: **while valid → shrink** (not just one shrink)
-  - “exact match” works best with: **fixed window** + \`matched\` counter
-
----
-
-## 4) Binary Search Boundary (BinarySearchBoundary) 🔎
-- **Where you’ll see this at work**
-  - Feature flags/rollouts: first version where regression appears; capacity planning via feasibility checks
-  - Tuning thresholds: minimum viable parameter under monotone predicate
-- **Kernel mini-spec**
-  - **Signature**: sorted array \`A\` or predicate \`P(x)\` over an ordered domain; output boundary index/value
-  - **Required invariant**: search interval maintains “answer exists within bounds” under monotone predicate
-  - **State model**: \`lo, hi\` bounds; \`mid\`; predicate \`P(mid)\`; optional best-so-far
-  - **Complexity envelope**: $O(\\log n)$ evaluations for index search; $O(\\log V)$ for answer-space with domain size \`V\`
-  - **Failure modes / when NOT to use**: predicate not monotone; off-by-one boundaries; mid not progressing
-- **Complexity template**
-  - Time $O(\\log n)$ (index) or $O(\\log V)$ (answer-space); space $O(1)$
-- **Boundary templates**
-  - \`first_true\` (\`binary_search_first_true\`) / \`lower_bound\`
-    - \`\`\`text
-      // find smallest x in [lo, hi) with P(x) == true
-      while lo < hi:
-        mid = lo + (hi - lo)//2
-        if P(mid): hi = mid
-        else: lo = mid + 1
-      return lo
-      \`\`\`
-  - \`last_true\` (\`binary_search_last_true\`)
-    - \`\`\`text
-      // find largest x in [lo, hi) with P(x) == true; return lo-1 if none
-      while lo < hi:
-        mid = lo + (hi - lo)//2
-        if P(mid): lo = mid + 1
-        else: hi = mid
-      return lo - 1
-      \`\`\`
-  - \`upper_bound\` (first \`> key\`) / \`lower_bound\` (first \`≥ key\`) mental model
-    - “Pick the first index where predicate flips from false→true.”
-- **Answer-space search** (\`binary_search_on_answer\`)
-  - Monotone feasibility checklist
-    - Define \`feasible(x)\` clearly
-    - Prove: if \`feasible(x)\` then \`feasible(x')\` for all \`x' ≥ x\` (or ≤ x)
-    - Choose search for min feasible / max feasible accordingly
-  - Template (min feasible)
-    - \`\`\`text
-      lo = min_possible; hi = max_possible
-      while lo < hi:
-        mid = lo + (hi - lo)//2
-        if feasible(mid): hi = mid
-        else: lo = mid + 1
-      return lo
-      \`\`\`
-  - Anchors
-    - 🔥 [LeetCode 875](https://leetcode.com/problems/longest-mountain-in-array/description/)(not in provided solutions list)*
-    - 🔥 [LeetCode 1011](https://leetcode.com/problems/flip-binary-tree-to-match-preorder-traversal/description/)(not in provided solutions list)*
-- **Rotated array search** (\`binary_search_rotated\`)
-  - Anchor set
-    - 🔥 [LeetCode 33](https://leetcode.com/problems/search-in-rotated-sorted-array/description/)(not in provided solutions list)*
-    - 🔥 [LeetCode 153](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/)(not in provided solutions list)*
-  - Template
-    - \`\`\`text
-      lo = 0; hi = n-1
-      while lo <= hi:
-        mid = (lo + hi)//2
-        if A[mid] == target: return mid
-        if A[lo] <= A[mid]:  // left sorted
-          if A[lo] <= target < A[mid]: hi = mid - 1
-          else: lo = mid + 1
-        else:               // right sorted
-          if A[mid] < target <= A[hi]: lo = mid + 1
-          else: hi = mid - 1
-      return -1
-      \`\`\`
-- **Binary search on partition index (advanced hybrid)**
-  - 🧊 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)(partition-by-count invariant)==
-    - Invariant: choose \`i\` in A, \`j\` in B so left side has \`(m+n+1)//2\` elements and \`maxLeft ≤ minRight\`
-- **Common compositions**
-  - BinarySearchBoundary + GridBFSMultiSource (outer binary search on time; inner feasibility via BFS/DFS)
-  - BinarySearchBoundary + HeapTopK (search threshold; validate by counting via heap/selection)
-- **Common interview pitfalls**
-  - Wrong half-open interval leading to infinite loops
-  - Predicate depends on mutable global state (must be reset per check)
-
----
-
-## 5) Tree Traversal (TreeTraversalDFS + TreeTraversalBFS) 🌳
-- **Where you’ll see this at work**
-  - Hierarchies: org charts, filesystem trees, DOM/AST traversal
-  - Aggregations: compute metrics bottom-up; validate constraints top-down
-- **Kernel mini-spec**
-  - **Signature**: \`root\` node; output aggregate value, boolean, list per level, or path-based result
-  - **Required invariant**: DFS preserves call-stack path; BFS processes nodes in non-decreasing depth
-  - **State model**: recursion stack (DFS) / queue (BFS); optional parent pointers
-  - **Complexity envelope**: visit each node once ⇒ $O(n)$ time; space $O(h)$ DFS / $O(w)$ BFS
-  - **Failure modes / when NOT to use**: recursion depth overflow (use iterative); missing base cases / null checks
-- **Complexity template**
-  - Time $O(n)$; space $O(h)$ (DFS) or $O(w)$ (BFS)
-- **Patterns**
-  - **DFS (recursive)** (\`tree_dfs_recursive\`)
-    - Anchors
-      - 🔥 [LeetCode 104](https://leetcode.com/problems/maximum-depth-of-binary-tree/description/)(not in provided solutions list)*
-      - 🔥 [LeetCode 236](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)(not in provided solutions list)*
-    - Template
-      - \`\`\`text
-        def dfs(node):
-          if node == null: return base
-          left = dfs(node.left)
-          right = dfs(node.right)
-          return combine(node, left, right)
-        return dfs(root)
-        \`\`\`
-  - **BFS (level-order)** (\`bfs_level_order\`)
-    - Anchor: 🔥 [LeetCode 102](https://leetcode.com/problems/binary-tree-level-order-traversal/description/)(not in provided solutions list)*
-    - Template
-      - \`\`\`text
-        q = queue([root]); ans = []
-        while q not empty:
-          level = []
-          repeat size(q) times:
-            node = pop_front(q)
-            level.append(node.val)
-            push children
-          ans.append(level)
-        return ans
-        \`\`\`
-- **Common compositions**
-  - TreeTraversalDFS + BacktrackingExploration (path enumeration with constraints)
-  - TreeTraversalBFS + BinarySearchBoundary (search minimal depth satisfying predicate)
-- **Common interview pitfalls**
-  - Forgetting to return/propagate values in recursion
-  - Using BFS but forgetting fixed layer size (mixing levels)
-
----
+  - [ ] Hash Map (complement lookup)
+  - [ ] Family: Two-Pointer Techniques (Traversal + Fast/Slow + Partition)
+  - [ ] Sliding Window (SubstringSlidingWindow)
+  - [ ] Merge (Two-way + K-way)
+  - [ ] Binary Search (Index boundary / Answer space)
+  - [ ] Heap Top K / Kth
+  - [ ] Monotonic Stack
+  - [ ] Tree Traversal (DFS/BFS)
+  - [ ] Dynamic Programming (1D/2D)
+  - [ ] Grid Multi-Source BFS
 
 <!-- markmap: fold -->
-## 6) Graph BFS/DFS + Grid BFS (GridBFSMultiSource) 🌊
-- **Where you’ll see this at work**
-  - Propagation/latency from multiple regions; shortest-time spread simulations
-  - Grid-like maps and multi-source distance transforms
-- **Kernel mini-spec**
-  - **Signature**: grid \`m×n\` with sources/targets/obstacles; output minimum time/steps or final state
-  - **Required invariant**: level-order expansion ensures first time reaching a cell is via a shortest path in an unweighted graph
-  - **State model**: queue of frontier; visited set/mark; distance/time array or in-place timestamps
-  - **Complexity envelope**: each cell enqueued/dequeued at most once ⇒ $O(mn)$ time, $O(mn)$ space
-  - **Failure modes / when NOT to use**: weighted edges (use Dijkstra); marking visited too late causing multiple enqueues
-- **Complexity template**
-  - Time $O(V+E)$ (grid: $O(mn)$); space $O(V)$
-- **Core idea**: push all sources, expand layer by layer (time = levels)
-- **Invariant (shortest-by-level)**
-  - When a cell is dequeued, its recorded time/distance is minimal among all possible paths from any source (unweighted edges). Level-order traversal corresponds to increasing distance.
-  - Mark visited upon **enqueue** (not dequeue) to avoid multiple enqueues.
-- **Anchor**
-  - 🔥 [LeetCode 994](https://leetcode.com/problems/rotting-oranges/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
-- **Engineering checklist**
-  - queue init with all sources
-  - count fresh/remaining targets
-  - process BFS by levels to count minutes
-- **Common compositions**
-  - GridBFSMultiSource + BinarySearchBoundary (time feasibility variants)
-  - GridBFSMultiSource + UnionFindConnectivity (connectivity vs shortest-time trade-offs)
-- **Common interview pitfalls (examples)**
-  - Forgetting to enqueue all initial sources (multi-source correctness)
-  - Wrong minute counting (increment per level, not per node)
+- **Pattern index (grouped)**
+  - **Hash map**
+    - \`hash_map_complement\` → HashMapLookup
+  - **Sliding window**
+    - \`sliding_window_unique\` → SubstringSlidingWindow
+    - \`sliding_window_at_most_k_distinct\` → SubstringSlidingWindow
+    - \`sliding_window_freq_cover\` → SubstringSlidingWindow
+    - \`sliding_window_fixed_size\` → SubstringSlidingWindow
+    - \`sliding_window_cost_bounded\` → SubstringSlidingWindow
+  - **Two pointers (family)**
+    - \`two_pointer_opposite_maximize\` → TwoPointersTraversal
+    - \`two_pointer_opposite_palindrome\` → TwoPointersTraversal
+    - \`two_pointer_three_sum\` → TwoPointersTraversal
+    - \`two_pointer_writer_dedup\` → TwoPointersTraversal
+    - \`two_pointer_writer_remove\` → TwoPointersTraversal
+    - \`two_pointer_writer_compact\` → TwoPointersTraversal
+    - \`fast_slow_cycle_detect\` → FastSlowPointers
+    - \`fast_slow_cycle_start\` → FastSlowPointers
+    - \`fast_slow_midpoint\` → FastSlowPointers
+    - \`fast_slow_implicit_cycle\` → FastSlowPointers
+    - \`dutch_flag_partition\` → TwoPointerPartition
+    - \`two_way_partition\` → TwoPointerPartition
+    - \`quickselect_partition\` → TwoPointerPartition
+  - **Merge**
+    - \`merge_two_sorted_lists\` → MergeSortedSequences
+    - \`merge_two_sorted_arrays\` → MergeSortedSequences
+    - \`merge_sorted_from_ends\` → MergeSortedSequences
+    - \`merge_k_sorted_heap\` → KWayMerge
+    - \`merge_k_sorted_divide\` → KWayMerge
+  - **Binary search**
+    - \`binary_search_index_boundary\` → BinarySearchBoundary
+    - \`binary_search_on_answer\` → BinarySearchBoundary
+    - \`binary_search_partition_index\` → BinarySearchBoundary
+  - **Heap**
+    - \`heap_kth_element\` → HeapTopK
+  - **Linked list pointer surgery**
+    - \`linked_list_k_group_reversal\` → LinkedListInPlaceReversal
+  - **Backtracking**
+    - permutations / subsets / combinations / constraints / segmentation / grid paths → BacktrackingExploration
+  - **Graph BFS**
+    - \`grid_bfs_propagation\` → GridBFSMultiSource
+  - **Monotonic stack**
+    - \`next_greater_element\` → MonotonicStack
+    - \`histogram_max_rectangle\` → MonotonicStack
+  - **Trees**
+    - \`tree_dfs_recursive\` → TreeTraversalDFS
+    - \`bfs_level_order\` → TreeTraversalBFS
+  - **DP**
+    - \`dp_fibonacci_style\` → DPSequence
+    - \`dp_knapsack\` → DPSequence
+    - \`dp_longest_increasing\` → DPSequence
+    - \`dp_palindrome\` → DPInterval
+
+<!-- markmap: fold -->
+- **Cross-kernel problems (same problem, multiple kernels)**
+  - **[LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)(concept: merging order statistics) + \`BinarySearchBoundary\` (partition index)
+  - **[LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)(streaming/top-k) + \`TwoPointerPartition\` (quickselect, batch)
 
 ---
 
-## 7) Heap / Selection (HeapTopK + Quickselect) ⛰️
-- **Where you’ll see this at work**
-  - Trending queries, telemetry heavy hitters, priority scheduling
-  - Streaming medians/percentiles (two-heaps median; approximate alternatives)
-- **Kernel mini-spec**
-  - **Signature**: stream/array \`nums\`, parameter \`k\`; output kth/top-k/median
-  - **Required invariant**: heap maintains extremum at top; size constraint encodes “kept set”
-  - **State model**: min-heap of size \`k\` (top-k largest) or max-heap analog; for median, two heaps partition lower/upper halves
-  - **Complexity envelope**: per insertion $O(\\log k)$ for bounded heap; build heap $O(n)$ then pops $O(k\\log n)$ or incremental
-  - **Failure modes / when NOT to use**: if you need full sort order; if k≈n and sorting is simpler; quickselect may be faster in-memory
-- **Complexity template**
-  - Heap top-k: $O(n \\log k)$ time, $O(k)$ space; Quickselect: avg $O(n)$, worst $O(n^2)$ unless randomized
-- **Kth element**
-  - Quickselect / partition: 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-    - Note: average $O(n)$ time, worst-case $O(n^2)$ unless randomized/median-of-medians; $O(1)$ extra space (in-place).
-  - Heap alternative (especially streaming / stability): 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
-    - Note: $O(n \\log k)$ time, $O(k)$ space; better for streaming and when $k \\ll n$.
-- **Decision note**
-  - **[LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)**: Quickselect (avg $O(n)$; must guard worst-case) vs Heap ($O(n\\log k)$; streaming-friendly)
-- **Common compositions**
-  - HeapTopK + SubstringSlidingWindow (top-k within moving window)
-  - HeapTopK + KWayMerge (merge streams and maintain top-k)
-- **Common interview pitfalls (examples)**
-  - Not randomizing pivot for quickselect (adversarial worst-case)
-  - Mishandling duplicates around pivot (use 3-way partition if needed)
-
----
-
-## 8) Monotonic Stack (MonotonicStack) 🧱
-- **Where you’ll see this at work**
-  - Next-greater queries in monitoring; skyline/range dominance computations
-  - Histogram-like capacity/area computations
-- **Kernel mini-spec**
-  - **Signature**: array \`A\`; output next greater/smaller indices/values or maximal area
-  - **Required invariant**: stack maintains monotone order of values (or indices) so each element is pushed/popped once
-  - **State model**: stack of indices; sentinel index to flush at end
-  - **Complexity envelope**: each index pushed/popped at most once ⇒ $O(n)$ time; stack $O(n)$ space
-  - **Failure modes / when NOT to use**: wrong strict vs non-strict inequality; forgetting sentinel/flush; duplicates handling
-- **Complexity template**
-  - Time $O(n)$ amortized; space $O(n)$
-- **Anchors**
-  - 🔥 [LeetCode 739](https://leetcode.com/problems/daily-temperatures/description/)(not in provided solutions list)*
-  - 🔥 [LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)(not in provided solutions list)*
-- **Templates**
-  - Next greater element
-    - \`\`\`text
-      st = empty stack of indices
-      for i in [0..n-1]:
-        while st not empty and A[st.top] < A[i]:
-          j = st.pop()
-          ans[j] = i
-        st.push(i)
-      \`\`\`
-  - Histogram max rectangle (with sentinel)
-    - \`\`\`text
-      st = empty stack
-      for i in [0..n]:               // treat A[n]=0 sentinel
-        cur = A[i] if i<n else 0
-        while st not empty and A[st.top] > cur:
-          h = A[st.pop()]
-          left = st.top if st not empty else -1
-          width = i - left - 1
-          best = max(best, h * width)
-        st.push(i)
-      return best
-      \`\`\`
-- **Common compositions**
-  - MonotonicStack + PrefixSumRangeQuery (range contributions / sum of subarray mins/maxes)
-- **Common interview pitfalls**
-  - Using \`<\` vs \`<=\` changes duplicate behavior; must match problem definition
-
----
-
-## 9) Backtracking Exploration (BacktrackingExploration) 🧠
-- **Where you’ll see this at work**
-  - Constraint solvers, configuration search, rule-based generation (small domains)
-  - Enumerating candidate solutions with pruning
-- **Kernel mini-spec**
-  - **Signature**: candidate set/options; output list of solutions or count
-  - **Required invariant**: state exactly matches current path (no “ghost marks”)
-  - **State model**: recursion stack; \`path\`; \`used[]\` or \`start\` index; constraint sets (cols/diags)
-  - **Complexity envelope**: $O(\\text{branch}^{\\text{depth}})$ time; recursion depth $O(\\text{depth})$; output-size lower bound
-  - **Failure modes / when NOT to use**: large unconstrained search space (need DP/greedy); forgetting rollback; excessive copying
-- **Complexity template**
-  - Time $O(\\text{branch}^{\\text{depth}})$ (often output-dominated); space $O(\\text{depth})$ + output
-- **Core rhythm**: **Choose → Explore → Unchoose**
-- **Invariant**: state exactly matches current path (no “ghost marks”)
-- **Decision-tree shapes**
-  - **Permutation** (used[])
-    - ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)
-    - With duplicates (sort + same-level skip): 🧊 [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py)
-    - Template
-      - \`\`\`text
-        used = [false]*n; path = []
-        def dfs():
-          if len(path) == n: emit(path); return
-          for i in [0..n-1]:
-            if used[i]: continue
-            used[i] = true; path.push(A[i])
-            dfs()
-            path.pop(); used[i] = false
-        dfs()
-        \`\`\`
-  - **Subset** (start index)
-    - ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)
-    - With duplicates (sort + same-level skip): 🧊 [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py)
-    - Template
-      - \`\`\`text
-        path = []
-        def dfs(i):
-          emit(path)
-          for j in [i..n-1]:
-            if j>i and A[j]==A[j-1]: continue
-            path.push(A[j])
-            dfs(j+1)
-            path.pop()
-        dfs(0)
-        \`\`\`
-  - **Combination / fixed size** (start index + length bound)
-    - ⭐ [LeetCode 77](https://leetcode.com/problems/combinations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py)
-    - Template
-      - \`\`\`text
-        path=[]
-        def dfs(start):
-          if len(path)==k: emit(path); return
-          for x in [start..N]:
-            path.push(x)
-            dfs(x+1)
-            path.pop()
-        dfs(1)
-        \`\`\`
-  - **Target sum search**
-    - Reuse allowed: ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)
-    - No reuse + duplicates: ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py)
-    - Fixed count + bounded domain: 🧊 [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0216_combination_sum_iii.py)
-    - Template (reuse-allowed)
-      - \`\`\`text
-        path=[]
-        def dfs(start, remain):
-          if remain==0: emit(path); return
-          for i in [start..n-1]:
-            if A[i] > remain: continue/prune if sorted
-            path.push(A[i])
-            dfs(i, remain - A[i])   // reuse allowed
-            path.pop()
-        dfs(0, target)
-        \`\`\`
-  - **Constraint satisfaction**
-    - ⭐ [LeetCode 51](https://leetcode.com/problems/n-queens/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
-    - 🧊 [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0052_n_queens_ii.py)
-    - Template
-      - \`\`\`text
-        cols=set(); d1=set(); d2=set()
-        def dfs(r):
-          if r==n: emit(); return
-          for c in [0..n-1]:
-            if c in cols or (r-c) in d1 or (r+c) in d2: continue
-            add(c,r-c,r+c)
-            dfs(r+1)
-            remove(c,r-c,r+c)
-        dfs(0)
-        \`\`\`
-  - **String segmentation**
-    - 🧊 [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0093_restore_ip_addresses.py)(4 segments + length bounds prune)*
-    - ⭐ [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)(optional DP precompute for palindrome checks)*
-    - Decision note: **[LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)** precompute palindrome DP $O(n^2)$ to reduce repeated checks; better for longer strings.
-    - Template
-      - \`\`\`text
-        path=[]
-        def dfs(i):
-          if i==n: emit(path); return
-          for j in [i..n-1]:
-            if not is_valid(i,j): continue
-            path.push(s[i..j])
-            dfs(j+1)
-            path.pop()
-        dfs(0)
-        \`\`\`
-  - **Grid path search**
-    - ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)(visited mark/unmark)*
-    - Template
-      - \`\`\`text
-        def dfs(r,c,idx):
-          if idx==len(word): return true
-          if out_of_bounds or visited or grid[r][c]!=word[idx]: return false
-          visited[r][c]=true
-          ok = any(dfs(nr,nc,idx+1) for neighbors)
-          visited[r][c]=false
-          return ok
-        \`\`\`
-- **Common compositions**
-  - BacktrackingExploration + DP memo (top-down caching) for segmentation/partitioning
-  - BacktrackingExploration + BinarySearchBoundary (search parameter; validate via backtracking for small domains)
-- **Common interview pitfalls**
-  - Not rolling back state (visited/sets/path)
-  - Over-copying lists at each recursion step (time/memory blowups)
-
----
-
-## 10) Linked List Manipulation (pointer surgery) 🔧
-- **Where you’ll see this at work**
-  - In-place transformations; streaming pipelines; pointer-safe rewiring
-- **Kernel mini-spec**
-  - **Signature**: \`head\` of linked list; output new head or modified list
-  - **Required invariant**: preserve reachability; never lose remaining list (\`next\`) while rewiring
-  - **State model**: \`prev/curr/next\`, dummy head, group boundaries
-  - **Complexity envelope**: typically $O(n)$ time, $O(1)$ extra space
-  - **Failure modes / when NOT to use**: forgetting to store \`next\`; mishandling head changes; group boundary errors
-- **Complexity template**
-  - Time $O(n)$; space $O(1)$ extra
-- Arithmetic on lists
-  - ⭐ [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
-- In-place reversal in groups
-  - ⭐ [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
-- **Common compositions**
-  - Linked list manipulation + HeapTopK (stream nodes by value)
-- **Common interview pitfalls (examples)**
-  - Not using dummy head (complex head-edge handling)
-  - Reversing fewer than \`k\` nodes (must check availability first)
-
----
-
-## 11) Partitioning (TwoPointerPartition) 🚧
-- **Where you’ll see this at work**
-  - In-place bucketing (flags, categories), quickselect pipelines, unstable partition stages
-- **Kernel mini-spec**
-  - **Signature**: array \`A\`; output reordered array (in-place) and/or pivot index / partition boundary
-  - **Required invariant**: maintain disjoint regions (good/bad/unknown) with correct pointer movement
-  - **State model**: pointers delimiting regions (\`low, mid, high\` or \`i, j\`); predicate “good(x)”
-  - **Complexity envelope**: $O(n)$ time, $O(1)$ extra space
-  - **Failure modes / when NOT to use**: stability required (use reader/writer); incorrect unknown-region handling
-- **Complexity template**
-  - Time $O(n)$; space $O(1)$
-- **Note on stability**
-  - Writer pattern is a **2-region partition with stability**; this section is multi-region / swap-based (typically **unstable**).
+## ⚡ API Kernel: \`HashMapLookup\` (Complement / counting lookup)
+- **Kernel Contract**
+  - **Inputs**: array/string stream; order usually irrelevant; unsorted OK
+  - **Outputs**: boolean / index pair / count
+  - **Hooks**: \`key(x)\`, \`need(x)\`, \`on_hit(i, j)\`, \`update(map, x)\`
+  - **Failure modes**: needs hashable key; worst-case hash collisions; “return indices” depends on whether you mutate/sort
+- **Core invariant**: at step \`i\`, map contains all information about elements in prefix \`nums[:i]\` needed to answer queries for \`nums[i]\`
+- **Where you’ll use this at work**
+  - Deduplication, join-like lookups, frequency counting in logs/ETL
+  - Fast membership tests for validation/anti-fraud rules
+- **Works when… / Doesn’t work when…**
+  - Works when complement logic depends only on seen prefix (no need for future)
+  - Doesn’t work when you must preserve original order under sorting-based transforms (unless you store indices)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 1](https://leetcode.com/problems/two-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
 - **Patterns**
-  - **Dutch flag (3-way partition)** (\`dutch_flag_partition\`)
-    - Anchor: 🔥 [LeetCode 75](https://leetcode.com/problems/sort-colors/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
-    - Loop invariant: maintain  
-      \`A[0..low-1]=0\`, \`A[low..mid-1]=1\`, \`A[mid..high]=unknown\`, \`A[high+1..n-1]=2\`.
-    - Template
-      - \`\`\`text
-        low=0; mid=0; high=n-1
-        while mid <= high:
-          if A[mid]==0: swap(A[low],A[mid]); low++; mid++
-          elif A[mid]==1: mid++
-          else: swap(A[mid],A[high]); high--
-        \`\`\`
-  - **Two-way partition** (\`two_way_partition\`)
-    - ⭐ [LeetCode 905](https://leetcode.com/problems/sort-array-by-parity/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
-    - 🧊 [LeetCode 922](https://leetcode.com/problems/sort-array-by-parity-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
-    - Loop invariant: maintain  
-      \`A[0..i-1]\` are ‘good’, \`A[j+1..n-1]\` are ‘bad’, \`i ≤ j\` unknown.
-    - Template
-      - \`\`\`text
-        i=0; j=n-1
-        while i <= j:
-          if good(A[i]): i++
-          elif not good(A[j]): j--
-          else: swap(A[i],A[j]); i++; j--
-        \`\`\`
-- **Common compositions**
-  - TwoPointerPartition + Quickselect (selection pipeline)
-- **Common interview pitfalls**
-  - Off-by-one in \`mid <= high\` (Dutch flag)
-  - Stability assumptions (swap-based partition breaks relative order)
+  - **Complement lookup** (\`hash_map_complement\`)
+    - [LeetCode 1](https://leetcode.com/problems/two-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
+
+<!-- markmap: fold -->
+- **Template (complement)**
+\`\`\`python
+seen = {}  # value -> index (or count)
+for i, x in enumerate(nums):
+    y = target - x
+    if y in seen:
+        return [seen[y], i]  # hook: on_hit
+    seen[x] = i             # hook: update
+\`\`\`
 
 ---
 
-## 12) Fast–Slow Pointers (FastSlowPointers) 🐢🐇
-- **Where you’ll see this at work**
-  - Detecting cycles in iterative processes; midpoint splits for list algorithms
-- **Kernel mini-spec**
-  - **Signature**: linked list head or function \`f(x)\`; output cycle existence/start or midpoint
-  - **Required invariant**: fast moves 2x; if cycle exists, pointers meet; second phase aligns to cycle entry
-  - **State model**: \`slow\`, \`fast\`; optionally reset pointer for phase 2
-  - **Complexity envelope**: $O(n)$ time, $O(1)$ space
-  - **Failure modes / when NOT to use**: null checks for \`fast\` and \`fast.next\`; misunderstanding phase-2 proof
-- **Complexity template**
-  - Time $O(n)$; space $O(1)$
-- **Two phases (Floyd)**
-  - Phase 1: detect cycle
-  - Phase 2: find cycle start
-- **Problems**
-  - Detect cycle: ⭐ [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
-  - Find cycle start: ⭐ [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
-  - Implicit cycle (function iteration): ⭐ [LeetCode 202](https://leetcode.com/problems/happy-number/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
-  - Midpoint: ⭐ [LeetCode 876](https://leetcode.com/problems/middle-of-the-linked-list/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
-- **Common compositions**
-  - FastSlowPointers + MergeSortedSequences (split list then merge: mergesort on list)
-- **Common interview pitfalls**
-  - Not checking \`fast\`/\`fast.next\` before stepping
-  - Returning meet point instead of entry point (phase 2 required)
+## ⚡ API Kernel: \`SubstringSlidingWindow\` (Window state machine)
+- **Kernel Contract**
+  - **Inputs**: string/array; typically 1D; often needs monotone validity when expanding \`R\`; fixed-size requires known window length
+  - **Outputs**: max/min length, best window \`[L,R]\`, boolean existence, list of all windows
+  - **Hooks**: \`add(x)\`, \`remove(x)\`, \`is_valid(state)\`, \`score(left, right, state)\`, \`update_answer(...)\`
+  - **Failure modes**: if validity is non-monotone w.r.t expanding \`R\`, naive sliding window can fail or need extra DS (e.g., monotonic deque for max/min)
+- **Core invariant**: maintain a window \`[L..R]\` that is *valid* under a rule; expand \`R\`, move \`L\` to restore validity
+- **Complexity**: $O(n)$ time **when window validity is monotone w.r.t. expanding $R$** (so \`L\` only moves forward). If validity is non-monotone, sliding window may require auxiliary DS or fail.
+- **Where you’ll use this at work**
+  - Log scanning / token streams (e.g., “smallest span covering keywords”)
+  - Rate limiting and windowed metrics (fixed-size counts)
+  - Sessionization / longest-recent-unique style analytics
+- **Compositions**
+  - Sliding window + **hash map / counter** (character counts, distinct tracking)
+  - Sliding window (fixed-size) + **rolling hash** for fingerprints (follow-on)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+    - 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
+    - 🔥 [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+    - ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+    - ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+- **Patterns**
+  - **Unique window** (\`sliding_window_unique\`) — maximize
+    - [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+  - **At most K distinct** (\`sliding_window_at_most_k_distinct\`) — maximize
+    - [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+  - **Frequency cover / exact match (variable-size)** (\`sliding_window_freq_cover\`) — minimize/exists/all
+    - [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
+  - **Fixed-size window (exact multiset over length |t|)** (\`sliding_window_fixed_size\`) — exists/all
+    - [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+    - [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+  - **Cost bounded / sum constraint** (\`sliding_window_cost_bounded\`) — minimize
+    - [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+    - **Note (correctness guardrail)**: this works because all numbers are **positive / non-negative** (sum changes monotonically as \`L\`/\`R\` move). With negatives, use prefix sums + monotone deque / other methods.
+
+- **Comparison table (mental model)**
+  - | Problem | Invariant | State | Window | Goal |
+    |---|---|---|---|---|
+    | [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+    | [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+    | [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)[c] ≥ need[c]\` (equiv: \`formed == required\`) | need/have + formed | variable | min |
+    | [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+    | [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+    | [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)(nums non-negative) | integer sum | variable | min |
+
+<!-- markmap: fold -->
+- **Template (explicit hooks + invariants)**
+\`\`\`python
+left = 0
+state = init_state()
+ans = init_ans()
+
+for right, x in enumerate(seq):
+    add(state, x)  # hook
+
+    # Mode A: maximize / maintain validity by shrinking while invalid
+    while not is_valid(state):  # hook
+        remove(state, seq[left])  # hook
+        left += 1
+
+    # Invariants at this point:
+    # 1) Before ans update, window [left..right] is valid: is_valid(state) == True
+    # 2) state == aggregate(seq[left:right+1]) (freq/sum/etc.)
+
+    ans = update_answer(ans, left, right, state)  # hook
+
+    # Mode B (alternative): minimize a valid window by shrinking while still valid
+    # while is_valid(state):
+    #     ans = update_answer(ans, left, right, state)
+    #     remove(state, seq[left]); left += 1
+
+# Fixed-size window note:
+# - When window size is fixed (k), you "add right", and if right-left+1 > k then "remove left" once.
+\`\`\`
+
+<!-- markmap: fold -->
+- **Trade-offs (common interviewer follow-ups)**
+  - **[LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)**: array counter (e.g., size 128/256) is faster/simpler for ASCII; hashmap is more general for Unicode/large alphabets
+  - Tracking \`formed/required\` avoids $O(\\Sigma)$ checks per step; naive “covers” checks often TLE or bug on duplicates
 
 ---
 
-## 13) Merging Sorted Sequences (MergeSortedSequences + KWayMerge) 🔗
-- **Where you’ll see this at work**
-  - Merging sorted log segments (LSM compaction), external sort, shard result merging
-- **Kernel mini-spec**
-  - **Signature**: two sorted sequences (or k sequences); output merged sorted sequence
-  - **Required invariant**: output prefix is always the smallest remaining elements; pointers/heap reflect current heads
-  - **State model**: two pointers for 2-way; min-heap of current heads for k-way
-  - **Complexity envelope**: 2-way $O(m+n)$; k-way $O(N\\log k)$; extra space $O(1)$ to $O(k)$
-  - **Failure modes / when NOT to use**: inputs not sorted; forgetting stable tie-handling if required
-- **Complexity template**
-  - Two-way merge $O(m+n)$; k-way heap merge $O(N\\log k)$ with $O(k)$ heap space
-- **Two sorted streams (two pointers)**
-  - Linked list merge: 🔥 [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
-  - Array merge (often from ends): ⭐ [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
-  - Merge-from-ends trick: ⭐ [LeetCode 977](https://leetcode.com/problems/squares-of-a-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
-- **K-way merge**
-  - Heap-based $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - Divide-and-conquer $O(N \\log k)$: 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
-  - Decision note ([LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py))
-    - Heap (simpler, streaming-friendly, $O(k)$ memory) vs Divide&Conquer (often faster constants when all lists are in memory)
-- **Common compositions**
-  - KWayMerge + HeapTopK (merge many streams but keep only top-k)
-  - MergeSortedSequences + BinarySearchBoundary (search partition/boundary on merged order statistics)
-- **Common interview pitfalls**
-  - Losing original pointers in linked list merges (store \`next\`)
-  - Off-by-one in merge-from-ends indices
+## 🧩 Family: Two-Pointer Techniques
+- **Traversal** (\`TwoPointersTraversal\`): monotone movement to reduce search space (often sorted/two-ends)
+- **Fast/Slow** (\`FastSlowPointers\`): rate mismatch for cycles/midpoints in linked/functional graphs
+- **Partition** (\`TwoPointerPartition\`): region invariants for rearrangement/selection
 
 ---
 
-## 14) Union-Find Connectivity (UnionFindConnectivity) 🔌
-- **Where you’ll see this at work**
-  - Connectivity clustering, dedup of accounts/entities, network components
-- **Kernel mini-spec**
-  - **Signature**: \`n\` nodes + edges/relations; output component count or merged groups
-  - **Required invariant**: \`find(x)\` returns representative; \`union(a,b)\` merges sets
-  - **State model**: \`parent[]\`, \`rank/size[]\` with path compression
-  - **Complexity envelope**: near $O(1)$ amortized per op ($α(n)$)
-  - **Failure modes / when NOT to use**: directed reachability/shortest path (use BFS/DFS); forgetting path compression
-- **Complexity template**
-  - Time $O((n+m)·α(n))$; space $O(n)$
-- **Anchors**
-  - 🔥 [LeetCode 200](https://leetcode.com/problems/number-of-islands/description/)(UF alternative) *(not in provided solutions list)*
-  - 🔥 [LeetCode 721](https://leetcode.com/problems/accounts-merge/description/)(not in provided solutions list)*
-- **Template**
-  - \`\`\`text
-    init parent[i]=i, size[i]=1
-    def find(x):
-      while x != parent[x]:
-        parent[x] = parent[parent[x]]
-        x = parent[x]
-      return x
-    def union(a,b):
-      ra, rb = find(a), find(b)
-      if ra==rb: return
-      if size[ra] < size[rb]: swap
-      parent[rb]=ra; size[ra]+=size[rb]
-    \`\`\`
-- **Common compositions**
-  - UnionFindConnectivity + Grid traversal (map 2D cells to ids)
-- **Common interview pitfalls**
-  - Union by rank/size missing → can degrade constants significantly
+## ⚡ API Kernel: \`TwoPointersTraversal\` (Coordinated pointer movement)
+- **Kernel Contract**
+  - **Inputs**: array/string; often sorted or supports monotone scan; may require in-place writes
+  - **Outputs**: max score, boolean, indices, modified array length
+  - **Hooks**: \`should_move_left(...)\`, \`should_move_right(...)\`, \`keep(x)\`, \`write(x)\`, \`skip_duplicates(...)\`
+  - **Failure modes**: opposite-pointers usually needs sorted/monotone objective; writer assumes in-place mutation allowed
+- **Core invariants (by subtype)**
+  - **Opposite pointers**: maintain a feasible search interval \`[L,R]\`; each move preserves existence of an optimal solution within the updated interval (dominance argument)
+  - **Writer (reader/write)**: elements in \`arr[:write]\` are exactly the kept/compacted elements from \`arr[:read]\` and satisfy the filter/dedup constraint
+- **Where you’ll use this at work**
+  - In-place filtering/compaction in performance-sensitive ETL/buffers
+  - Two-end scans over sorted data (dedup, pair checks, resource packing variants)
+- **Compositions**
+  - Two pointers + **sorting** (k-sum family, dedup enumeration)
+  - Two pointers + **hash map** (when one pointer moves and you need fast membership)
+- **Works when… / Doesn’t work when…**
+  - Works when pointer moves are monotone and you have a dominance/feasibility argument
+  - Doesn’t work when objective/constraints are non-monotone on pointer moves (often indicates need for DP/graph/search)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+    - 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
+    - 🔥 [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 27](https://leetcode.com/problems/remove-element/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+    - ⭐ [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+    - ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+    - ⭐ [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
+    - ⭐ [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
+- **Patterns**
+  - **Opposite pointers: maximize function** (\`two_pointer_opposite_maximize\`)
+    - [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+    - **Lemma (dominance)**: If \`height[L] ≤ height[R]\`, any container using \`L\` with some \`R' < R\` cannot beat current width while min-height is bounded by \`height[L]\`; therefore incrementing \`L\` cannot discard the optimal.
+  - **Opposite pointers: palindrome validation** (\`two_pointer_opposite_palindrome\`)
+    - [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
+    - [LeetCode 680](https://leetcode.com/problems/valid-palindrome-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0680_valid_palindrome_ii.py)
+  - **Dedup enumeration (sorted + skip): 3Sum** (\`two_pointer_three_sum\`)
+    - [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
+    - [LeetCode 16](https://leetcode.com/problems/3sum-closest/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
+  - **Writer patterns (in-place)**  
+    - Deduplicate (\`two_pointer_writer_dedup\`)
+      - [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+      - [LeetCode 80](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
+    - Remove (\`two_pointer_writer_remove\`)
+      - [LeetCode 27](https://leetcode.com/problems/remove-element/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+    - Compact (\`two_pointer_writer_compact\`)
+      - [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
 
----
+- **Key table (choose the right sub-pattern)**
+  - | Sub-pattern | When it applies | Typical invariant | Example |
+    |---|---|---|---|
+    | Opposite pointers | sorted / symmetric / 2-end optimization | optimal remains in \`[L,R]\` | [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+    | Writer | in-place filter/dedup | \`arr[:write]\` is exactly “kept from arr[:read]” | [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+    | Dedup enum | k-sum family (sort + skip) | skip duplicates at same role | [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
 
-## 15) Topological Sort (TopologicalSort) 🧩
-- **Where you’ll see this at work**
-  - Build systems, dependency graphs, course prerequisites, DAG scheduling
-- **Kernel mini-spec**
-  - **Signature**: DAG with \`n\` nodes + edges; output ordering or feasibility
-  - **Required invariant**: nodes with indegree 0 are safe to output next (Kahn’s)
-  - **State model**: indegree array; queue of zero-indegree nodes
-  - **Complexity envelope**: $O(V+E)$ time, $O(V+E)$ space
-  - **Failure modes / when NOT to use**: cycles (ordering impossible); forgetting to decrement indegrees
-- **Complexity template**
-  - Time $O(V+E)$; space $O(V+E)$
-- **Anchor**
-  - 🔥 [LeetCode 207](https://leetcode.com/problems/course-schedule/description/)(not in provided solutions list)*
-- **Template (Kahn)**
-  - \`\`\`text
-    build adj, indeg
-    q = all nodes with indeg==0
-    seen = 0
-    while q not empty:
-      u = pop(q); seen++
-      for v in adj[u]:
-        indeg[v]--
-        if indeg[v]==0: push(q,v)
-    return seen==n
-    \`\`\`
-- **Common compositions**
-  - TopologicalSort + DPSequence (longest path in DAG via topo order)
-- **Common interview pitfalls**
-  - Using DFS topo but missing 3-color cycle detection
-
----
-
-## 16) Dynamic Programming (DPSequence + DPInterval) 🧠📈
-- **Where you’ll see this at work**
-  - Cost optimization, scheduling, string alignment, interval scoring
-- **Kernel mini-spec**
-  - **Signature**: sequence/string/interval; output optimal value or reconstruction
-  - **Required invariant**: define state \`dp[...]\` meaning clearly; transitions use smaller subproblems only
-  - **State model**: 1D dp for sequences; 2D dp for intervals/substrings
-  - **Complexity envelope**: depends on state size × transition cost
-  - **Failure modes / when NOT to use**: state not minimal (blows up); missing base cases; wrong iteration order
-- **Complexity template**
-  - Typically $O(\\#states × \\#transitions)$; space $O(\\#states)$ (often optimizable)
-- **Anchors**
-  - 🔥 [LeetCode 70](https://leetcode.com/problems/climbing-stairs/description/)(not in provided solutions list)*
-  - 🔥 [LeetCode 300](https://leetcode.com/problems/longest-increasing-subsequence/description/)(not in provided solutions list)*
+<!-- markmap: fold -->
 - **Templates**
-  - Fibonacci-style (\`dp_fibonacci_style\`)
-    - \`\`\`text
-      dp[0]=...; dp[1]=...
-      for i in [2..n]:
-        dp[i] = dp[i-1] + dp[i-2]   // example
-      return dp[n]
-      \`\`\`
-  - Interval DP skeleton (\`dp_palindrome\` / DPInterval)
-    - \`\`\`text
-      dp = 2D array n×n
-      for len in [1..n]:
-        for i in [0..n-len]:
-          j = i + len - 1
-          dp[i][j] = combine(dp smaller intervals, s[i], s[j])
-      return dp[0][n-1]
-      \`\`\`
-- **Common compositions**
-  - DPInterval + BacktrackingExploration (DP for fast validity checks; backtrack to enumerate)
-- **Common interview pitfalls**
-  - Using recursion without memoization (TLE)
-  - Wrong iteration order for interval dependencies
+  - **Opposite pointers (dominance-driven)**
+\`\`\`python
+L, R = 0, len(arr) - 1
+best = init_best()
+
+while L < R:
+    best = update(best, L, R)  # hook: score(L,R)
+    if should_move_left(arr, L, R):  # hook (often based on dominance)
+        L += 1
+    else:
+        R -= 1
+return best
+\`\`\`
+  - **Writer (reader/write)**
+\`\`\`python
+write = 0
+for read in range(len(arr)):
+    if keep(arr[read]):              # hook
+        arr[write] = arr[read]       # hook: write
+        write += 1
+return write  # new length
+\`\`\`
 
 ---
 
-## Suggested Learning Paths (roadmap-style) 🚀
-- **Sliding Window Mastery**
-  - [ ] 🔥 [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
-  - [ ] 🧊 [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-  - [ ] 🔥 [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
-  - [ ] ⭐ [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-  - [ ] ⭐ [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
-  - [ ] ⭐ [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
-- **Two Pointers Mastery**
-  - [ ] ⭐ [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-  - [ ] ⭐ [LeetCode 125](https://leetcode.com/problems/valid-palindrome/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0125_valid_palindrome.py)
-  - [ ] 🔥 [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
-- **Backtracking Mastery**
-  - [ ] ⭐ [LeetCode 78](https://leetcode.com/problems/subsets/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)
-  - [ ] ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)
-  - [ ] ⭐ [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)
-  - [ ] ⭐ [LeetCode 51](https://leetcode.com/problems/n-queens/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
-  - [ ] ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+## ⚡ API Kernel: \`FastSlowPointers\` (Floyd / midpoint / implicit cycles)
+- **Kernel Contract**
+  - **Inputs**: linked list node / functional graph \`f(x)\` / array-as-next-pointer
+  - **Outputs**: boolean cycle, cycle start node/index, midpoint node
+  - **Hooks**: \`next(node)\` / \`f(x)\`, \`meet_action\`, \`phase2_reset\`
+  - **Failure modes**: requires deterministic “next”; can’t detect cycles if graph branches (need visited set)
+- **Core invariant**: fast moves 2×, slow moves 1×; if a cycle exists they meet
+- **Where you’ll use this at work**
+  - Detecting loops in pointer-like structures, iterators, state machines
+  - Finding midpoint for splitting lists (e.g., mergesort on linked list)
+- **Compositions**
+  - Fast/slow + **hash set** (when you need explicit visited for general graphs)
+- **Works when… / Doesn’t work when…**
+  - Works when each state has exactly one successor (linked list / functional graph)
+  - Doesn’t work when nodes have multiple outgoing edges (use DFS/BFS + visited)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+    - 🔥 [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 876](https://leetcode.com/problems/middle-of-the-linked-list/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+    - ⭐ [LeetCode 202](https://leetcode.com/problems/happy-number/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
+- **Patterns**
+  - Cycle detect (\`fast_slow_cycle_detect\`)
+    - [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - Cycle start (\`fast_slow_cycle_start\`)
+    - [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)
+  - Midpoint (\`fast_slow_midpoint\`)
+    - [LeetCode 876](https://leetcode.com/problems/middle-of-the-linked-list/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py)
+  - Implicit cycle (\`fast_slow_implicit_cycle\`)
+    - [LeetCode 202](https://leetcode.com/problems/happy-number/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0202_happy_number.py)
 
----`;
+<!-- markmap: fold -->
+- **Template (Floyd cycle detect + start)**
+\`\`\`python
+slow = fast = head
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+    if slow == fast:
+        break
+else:
+    return None  # no cycle (hook: return False for detect)
+
+# phase 2: find start
+p1, p2 = head, slow
+while p1 != p2:
+    p1 = p1.next
+    p2 = p2.next
+return p1
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`TwoPointerPartition\` (Partitioning / selection)
+- **Kernel Contract**
+  - **Inputs**: array; in-place mutation allowed; predicate or pivot selection
+  - **Outputs**: partitioned array; pivot final index; selection result (kth)
+  - **Hooks**: \`predicate(x)\`, \`choose_pivot(l,r)\`, \`swap(i,j)\`
+  - **Failure modes**: quickselect worst-case $O(n^2)$ with bad pivots; mutates array (may violate “don’t modify input”)
+- **Core invariant**: maintain regions (e.g., \`< pivot\`, \`= pivot\`, \`> pivot\`)
+- **Where you’ll use this at work**
+  - In-place bucketing/segregation by predicate (e.g., feature flags, routing)
+  - Selection/ranking on batch data without full sort
+- **Compositions**
+  - Partition + heap (\`HeapTopK\`) for Kth/top-k trade-offs (batch vs streaming)
+- **Works when… / Doesn’t work when…**
+  - Works when in-place mutation is acceptable and you need selection/partition
+  - Doesn’t work when you need stability (relative order preserved) unless you use stable partition (extra space)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 75](https://leetcode.com/problems/sort-colors/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
+    - 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 905](https://leetcode.com/problems/sort-array-by-parity/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+    - ⭐ [LeetCode 922](https://leetcode.com/problems/sort-array-by-parity-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+- **Patterns**
+  - Dutch flag (\`dutch_flag_partition\`)
+    - [LeetCode 75](https://leetcode.com/problems/sort-colors/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
+  - Two-way partition (\`two_way_partition\`)
+    - [LeetCode 905](https://leetcode.com/problems/sort-array-by-parity/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)
+    - [LeetCode 922](https://leetcode.com/problems/sort-array-by-parity-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
+  - Quickselect partition (\`quickselect_partition\`)
+    - [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+    - **Note**: expected $O(n)$, worst-case $O(n^2)$ unless using median-of-medians; space $O(1)$ iterative / $O(\\log n)$ recursion.
+
+<!-- markmap: fold -->
+- **Template (quickselect, iterative)**
+\`\`\`python
+def partition(l, r):
+    pivot = nums[r]  # hook: choose_pivot
+    i = l
+    for j in range(l, r):
+        if nums[j] <= pivot:          # hook: comparator for kth largest/smallest
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+    nums[i], nums[r] = nums[r], nums[i]
+    return i
+
+l, r = 0, len(nums) - 1
+while True:
+    p = partition(l, r)
+    if p == k_index:
+        return nums[p]
+    elif p < k_index:
+        l = p + 1
+    else:
+        r = p - 1
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`MergeSortedSequences\` (Two-way merge)
+- **Kernel Contract**
+  - **Inputs**: two sorted sequences (arrays/lists/linked lists); sometimes in-place target buffer
+  - **Outputs**: merged sorted sequence
+  - **Hooks**: \`less(a,b)\`, \`take_left()\`, \`take_right()\`
+  - **Failure modes**: requires sorted inputs; in-place merges need sufficient buffer / careful indexing
+- **Core invariant**: pointers \`i,j\` always point to next unmerged element in each sorted sequence
+- **Where you’ll use this at work**
+  - Merging sorted runs (external sort), merging time-ordered event streams
+  - Two-way “stream join” style logic when inputs are ordered
+- **Compositions**
+  - MergeSortedSequences + KWayMerge (k-way built from repeated two-way merges)
+- **Works when… / Doesn’t work when…**
+  - Works when inputs are sorted and you want linear-time merge
+  - Doesn’t work when inputs are unsorted (sort first or use heap)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
+    - 🔥 [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 977](https://leetcode.com/problems/squares-of-a-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
+- **Patterns**
+  - Merge two sorted lists (\`merge_two_sorted_lists\`)
+    - [LeetCode 21](https://leetcode.com/problems/merge-two-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
+  - Merge two sorted arrays (\`merge_two_sorted_arrays\`)
+    - [LeetCode 88](https://leetcode.com/problems/merge-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py)
+  - Merge from ends (\`merge_sorted_from_ends\`)
+    - [LeetCode 977](https://leetcode.com/problems/squares-of-a-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)
+
+<!-- markmap: fold -->
+- **Template (two-way merge)**
+\`\`\`python
+i = j = 0
+out = []
+while i < len(A) and j < len(B):
+    if A[i] <= B[j]:
+        out.append(A[i]); i += 1
+    else:
+        out.append(B[j]); j += 1
+out.extend(A[i:])
+out.extend(B[j:])
+return out
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`KWayMerge\` (K sorted sequences)
+- **Kernel Contract**
+  - **Inputs**: K sorted lists/iterators; may be streaming
+  - **Outputs**: merged sorted list/iterator
+  - **Hooks**: \`push(item)\`, \`pop_min()\`, \`advance(source)\`
+  - **Failure modes**: requires sorted sources; heap approach needs memory for heap nodes
+- **Two production-grade strategies**
+  - **Min-heap** (\`merge_k_sorted_heap\`) — $O(N \\log K)$, great when K is large and lists are uneven / streaming
+  - **Divide & conquer** (\`merge_k_sorted_divide\`) — $O(N \\log K)$, often faster constants + less heap churn
+- **Where you’ll use this at work**
+  - Merging sorted run files (external merge), log compaction
+  - Streaming k-way merge of time-ordered events
+- **Compositions**
+  - KWayMerge + Binary search partitioning for order statistics across sorted arrays (see [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py))
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)(hybrid; see BinarySearchBoundary partition)
+- **Problems**
+  - [LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
+  - Cross-kernel hybrid (merge + binary search on partition)
+    - [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+
+<!-- markmap: fold -->
+- **Trade-offs (heap vs divide & conquer)**
+  - **[LeetCode 23](https://leetcode.com/problems/merge-k-sorted-lists/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)**:
+    - Heap: best for uneven lists or when you can stream nodes incrementally; cost is heap churn
+    - Divide & conquer: often faster constants; merges are cache-friendly; simpler correctness once merge-two is solid
+
+---
+
+## ⚡ API Kernel: \`BinarySearchBoundary\` (Boundary + answer space)
+- **Kernel Contract**
+  - **Inputs**: sorted array for index boundary; numeric answer space for feasibility search; monotone predicate required
+  - **Outputs**: index (lower/upper bound), min/max feasible value, or partition index
+  - **Hooks**: \`pred(mid)\` (monotone), \`lo/hi\` initialization, \`mid\` bias (lower/upper), boundary return convention
+  - **Failure modes**: non-monotone predicate; off-by-one from inconsistent loop invariants
+- **Core invariant**: predicate is monotone; binary search maintains an interval that still contains the boundary/answer
+- **Where you’ll use this at work**
+  - lower_bound/upper_bound lookups in sorted data
+  - capacity planning style “min feasible X” (throughput, resource sizing)
+- **Compositions**
+  - Binary search on answer + greedy/DP feasibility checker
+  - Partition-index binary search in sorted arrays (order statistics)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)(partition index)
+- **Patterns**
+  - **Binary search on index boundary** (\`binary_search_index_boundary\`)
+    - (canonical) first \`>= x\`, last \`<= x\`, lower_bound/upper_bound
+  - **Binary search on answer space** (\`binary_search_on_answer\`)
+    - (canonical) min feasible / max feasible under monotone feasibility predicate
+  - **Binary search on partition (index) in sorted arrays** (\`binary_search_partition_index\`)
+    - [LeetCode 4](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)
+    - **Invariant**: choose partition \`i\` in A (and \`j\` in B) so left parts have size \`k\`; maintain \`A[i-1] ≤ B[j]\` and \`B[j-1] ≤ A[i]\` as feasibility; predicate is monotone in \`i\`.
+
+<!-- markmap: fold -->
+- **Templates**
+  - **Index boundary (lower_bound: first index with pred True)**
+\`\`\`python
+lo, hi = 0, len(arr)  # hi is exclusive
+while lo < hi:
+    mid = (lo + hi) // 2
+    if pred(arr[mid]):      # monotone: False...False True...True
+        hi = mid
+    else:
+        lo = mid + 1
+return lo
+\`\`\`
+  - **Answer space (min feasible)**
+\`\`\`python
+lo, hi = low_possible, high_possible  # inclusive bounds
+while lo < hi:
+    mid = (lo + hi) // 2
+    if feasible(mid):  # monotone: True for >= answer (or <=, depending)
+        hi = mid
+    else:
+        lo = mid + 1
+return lo
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`HeapTopK\` (Top-K / Kth / streaming)
+- **Kernel Contract**
+  - **Inputs**: stream or batch array; comparator for “best”; K
+  - **Outputs**: kth element, list of top K, running median (two-heaps variant)
+  - **Hooks**: \`push(x)\`, \`pop()\`, \`should_evict(heap, x)\`, \`compare(a,b)\`
+  - **Failure modes**: memory $O(k)$; not ideal if you need stable ordering without extra bookkeeping
+- **Core invariant**: heap maintains the current best candidates (size K or two-heaps for median)
+- **Where you’ll use this at work**
+  - Trending topics / top-K queries over streams
+  - Online aggregation; ranking dashboards
+  - Follow-on: approximate heavy hitters (e.g., Count-Min Sketch)
+- **Compositions**
+  - HeapTopK + TwoPointerPartition (choose heap for streaming; quickselect for batch)
+- **Works when… / Doesn’t work when…**
+  - Works when you need incremental maintenance or only top-K (not full sort)
+  - Doesn’t work when you need total order of all items (sort) or worst-case linear-time guarantees (quickselect caveats)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+- **Patterns**
+  - Kth element (\`heap_kth_element\`)
+    - [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+    - **Note**: $O(n \\log k)$ using size-$k$ min-heap; or $O(n + k \\log n)$ if heapify then pop k times.
+
+<!-- markmap: fold -->
+- **Trade-offs ([LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py))**
+  - Heap: $O(n \\log k)$, great for streaming / you only keep K items; predictable
+  - Quickselect: average $O(n)$, but worst-case $O(n^2)$; mutates array; great for batch when mutation is OK
+
+---
+
+## ⚡ API Kernel: \`LinkedListInPlaceReversal\` (Pointer surgery)
+- **Kernel Contract**
+  - **Inputs**: linked list head; group size \`k\` or boundaries
+  - **Outputs**: new head; modified list
+  - **Hooks**: \`reverse_segment(start, end)\`, \`connect(prev, new_head, new_tail, next)\`
+  - **Failure modes**: off-by-one at boundaries; losing pointers when not saving \`next\`
+- **Core invariant**: maintain \`prev/curr/next\` and reconnect boundaries correctly
+- **Where you’ll use this at work**
+  - In-place list/buffer transformations where allocation is restricted
+  - Reversing chunks (batch processing) and pointer manipulation exercises
+- **Compositions**
+  - FastSlowPointers (midpoint) + reversal (palindrome list variants, not listed here)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)(related family, different operation)
+- **Patterns**
+  - Reverse in k-group (\`linked_list_k_group_reversal\`)
+    - [LeetCode 25](https://leetcode.com/problems/reverse-nodes-in-k-group/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
+- **Related (same family, different operation)**
+  - Arithmetic on lists
+    - [LeetCode 2](https://leetcode.com/problems/add-two-numbers/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0002_add_two_numbers.py)
+
+<!-- markmap: fold -->
+- **Template (reverse k-group skeleton)**
+\`\`\`python
+dummy = ListNode(0, head)
+group_prev = dummy
+
+while True:
+    kth = get_kth(group_prev, k)   # hook
+    if not kth:
+        break
+    group_next = kth.next
+
+    # reverse [group_prev.next .. kth]
+    prev, curr = group_next, group_prev.next
+    while curr != group_next:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+
+    tmp = group_prev.next          # new tail after reverse
+    group_prev.next = kth          # connect new head
+    group_prev = tmp               # advance
+return dummy.next
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`BacktrackingExploration\` (Choose → Explore → Unchoose)
+- **Kernel Contract**
+  - **Inputs**: candidate set/sequence/grid; constraints; optional sorting for dedup
+  - **Outputs**: list of solutions, count, boolean existence
+  - **Hooks**: \`choices(state)\`, \`apply(choice)\`, \`undo(choice)\`, \`is_solution(state)\`, \`should_prune(state)\`
+  - **Failure modes**: exponential blowup without pruning; dedup bugs without consistent ordering
+- ==Core invariant==: **state exactly matches the current path** (no “ghost marks” after backtrack)
+- **Complexity**: usually exponential / factorial; aim for pruning + dedup
+- **Where you’ll use this at work**
+  - Configuration search, constraint solving, generating test cases / combinations
+  - Small-state exploration with pruning rules (feature combinations, schedules)
+- **Compositions**
+  - Backtracking + sorting + dedup (same-level skip / used[])
+  - Backtracking + preprocessing (hash sets, constraint bitmasks) for faster \`should_prune\`
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)
+    - 🔥 [LeetCode 51](https://leetcode.com/problems/n-queens/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
+    - 🔥 [LeetCode 78](https://leetcode.com/problems/subsets/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 46](https://leetcode.com/problems/permutations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)
+    - ⭐ [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py)
+    - ⭐ [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py)
+    - ⭐ [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py)
+    - ⭐ [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)
+    - ⭐ [LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+- **Sub-patterns → problems**
+  - **Permutations**
+    - [LeetCode 46](https://leetcode.com/problems/permutations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)
+    - [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py)(sort + same-level skip)*
+  - **Subsets**
+    - [LeetCode 78](https://leetcode.com/problems/subsets/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)
+    - [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py)(sort + same-level skip)*
+  - **Combinations / target search**
+    - [LeetCode 77](https://leetcode.com/problems/combinations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py)
+    - [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)(reuse allowed)*
+    - [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py)(no reuse + dedup)*
+    - [LeetCode 216](https://leetcode.com/problems/combination-sum-iii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0216_combination_sum_iii.py)(fixed count + fixed sum)*
+  - **Constraint satisfaction**
+    - [LeetCode 51](https://leetcode.com/problems/n-queens/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
+    - [LeetCode 52](https://leetcode.com/problems/n-queens-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0052_n_queens_ii.py)
+  - **String segmentation**
+    - [LeetCode 93](https://leetcode.com/problems/restore-ip-addresses/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0093_restore_ip_addresses.py)
+    - [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)
+  - **Grid path search**
+    - [LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+
+<!-- markmap: fold -->
+- **Template (choose → explore → unchoose)**
+\`\`\`python
+def dfs(state):
+    if is_solution(state):            # hook
+        record(state)
+        return
+    for choice in choices(state):     # hook
+        if should_prune(state, choice):  # hook
+            continue
+        apply(state, choice)          # hook
+        dfs(state)
+        undo(state, choice)           # hook
+\`\`\`
+
+<!-- markmap: fold -->
+- **Dedup cheat sheet**
+  - Sort + same-level skip (subsets/combos):
+\`\`\`python
+if i > start and nums[i] == nums[i-1]:
+    continue
+\`\`\`
+  - Sort + used[] constraint (permutations):
+\`\`\`python
+if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+    continue
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`GridBFSMultiSource\` (Wavefront BFS)
+- **Kernel Contract**
+  - **Inputs**: grid/graph; set of sources; unweighted edges (unit cost)
+  - **Outputs**: min time/steps, distance grid, reachability
+  - **Hooks**: \`neighbors(cell)\`, \`is_valid(cell)\`, \`is_source(cell)\`, \`mark_visited(cell)\`, \`distance[cell]\`
+  - **Failure modes**: if edges have weights ≠ 1, need Dijkstra; revisiting without visited/dist checks breaks correctness
+- **Core invariant**: **When a cell is dequeued, its assigned distance/time is minimal (first time reached), because the queue processes nondecreasing distance layers; all enqueued neighbors get distance = current+1 if unvisited.**
+- **Where you’ll use this at work**
+  - Spread/propagation simulations (contagion, cache warmup wave)
+  - Nearest facility / shortest-time-to-signal on grids/maps
+  - SLA reachability regions in discrete maps
+- **Compositions**
+  - BFS + multi-source initialization: seed queue with all sources at distance 0
+- **Works when… / Doesn’t work when…**
+  - Works when transitions are unweighted (each step costs 1)
+  - Doesn’t work for weighted edges (use priority queue / Dijkstra)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 994](https://leetcode.com/problems/rotting-oranges/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+- **Pattern**
+  - Grid propagation (\`grid_bfs_propagation\`)
+    - [LeetCode 994](https://leetcode.com/problems/rotting-oranges/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+
+<!-- markmap: fold -->
+- **Template (multi-source BFS)**
+\`\`\`python
+from collections import deque
+
+q = deque()
+dist = [[-1]*C for _ in range(R)]
+
+for r in range(R):
+    for c in range(C):
+        if is_source(r, c):           # hook
+            q.append((r, c))
+            dist[r][c] = 0
+
+while q:
+    r, c = q.popleft()
+    for nr, nc in neighbors(r, c):    # hook
+        if dist[nr][nc] != -1:
+            continue
+        if not is_valid(nr, nc):      # hook
+            continue
+        dist[nr][nc] = dist[r][c] + 1
+        q.append((nr, nc))
+\`\`\`
+
+---
+
+## ⚡ API Kernel: \`MonotonicStack\` (Next greater/smaller + range dominance)
+- **Kernel Contract**
+  - **Inputs**: array/time series; comparison direction (increasing/decreasing)
+  - **Outputs**: next greater/smaller indices/values; max area via previous/next smaller boundaries
+  - **Hooks**: \`while stack and violates_monotone(...)\`, \`pop_action(popped)\`, \`push(i)\`
+  - **Failure modes**: wrong inequality (\`<\` vs \`<=\`) breaks duplicates handling; forgetting sentinel causes missed flush
+- **Core invariant**: stack indices maintain a monotone property (increasing/decreasing values), enabling amortized $O(n)$ pops
+- **Where you’ll use this at work**
+  - Time-series “next time higher/lower” queries, alerting, span computations
+  - Range dominance boundaries for histogram-like analytics
+- **Compositions**
+  - Monotonic stack + sliding window (follow-on: monotonic deque for window max/min)
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 739](https://leetcode.com/problems/daily-temperatures/description/)
+    - 🔥 [LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
+  - **High-frequency (⭐)**
+    - ⭐ [LeetCode 496](https://leetcode.com/problems/next-greater-element-i/description/)
+- **Patterns → problems**
+  - Next greater element (\`next_greater_element\`)
+    - [LeetCode 739](https://leetcode.com/problems/daily-temperatures/description/)
+    - [LeetCode 496](https://leetcode.com/problems/next-greater-element-i/description/)
+  - Histogram max rectangle (\`histogram_max_rectangle\`)
+    - [LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
+
+---
+
+## ⚡ API Kernel: \`TreeTraversalDFS\` (Recursive / iterative DFS on trees)
+- **Kernel Contract**
+  - **Inputs**: binary tree node (or N-ary); recursion/stack allowed
+  - **Outputs**: aggregate value, boolean, path, LCA node
+  - **Hooks**: \`visit(node)\`, \`combine(left, right)\`, \`base_case(None)\`
+  - **Failure modes**: stack overflow in deep trees (iterative); mixing preorder/inorder/postorder semantics
+- **Core invariant**: each call returns correct result for its subtree; combine step is the only place parent depends on children
+- **Where you’ll use this at work**
+  - Hierarchical aggregation, validation, search in tree-like data models
+- **Compositions**
+  - DFS + hash map (track parent pointers / depths) for LCA variants
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 104](https://leetcode.com/problems/maximum-depth-of-binary-tree/description/)
+    - 🔥 [LeetCode 98](https://leetcode.com/problems/validate-binary-search-tree/description/)
+    - 🔥 [LeetCode 236](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
+- **Patterns → problems**
+  - Recursive DFS (\`tree_dfs_recursive\`)
+    - [LeetCode 104](https://leetcode.com/problems/maximum-depth-of-binary-tree/description/)
+    - [LeetCode 98](https://leetcode.com/problems/validate-binary-search-tree/description/)
+    - [LeetCode 236](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
+
+---
+
+## ⚡ API Kernel: \`TreeTraversalBFS\` (Level-order traversal)
+- **Kernel Contract**
+  - **Inputs**: tree root; queue
+  - **Outputs**: list of levels, min depth, right-side view variants
+  - **Hooks**: \`enqueue(children)\`, \`process_level(level_nodes)\`
+  - **Failure modes**: mixing levels without queue-size snapshot
+- **Core invariant**: queue holds exactly the next frontier; processing one “level batch” corresponds to a fixed depth
+- **Where you’ll use this at work**
+  - Breadth-first processing of hierarchical tasks; level-based batching
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 102](https://leetcode.com/problems/binary-tree-level-order-traversal/description/)
+- **Patterns → problems**
+  - Level order (\`bfs_level_order\`)
+    - [LeetCode 102](https://leetcode.com/problems/binary-tree-level-order-traversal/description/)
+
+---
+
+## ⚡ API Kernel: \`DPSequence\` (1D DP on sequences)
+- **Kernel Contract**
+  - **Inputs**: sequence; recurrence; base cases
+  - **Outputs**: min/max count/value; number of ways
+  - **Hooks**: \`transition(i, ...)\`, \`init_dp\`, \`answer(dp)\`
+  - **Failure modes**: wrong base cases; $O(n^2)$ transitions without optimization
+- **Core invariant**: \`dp[i]\` represents the optimal/total value for prefix ending at \`i\` (or length \`i\`)
+- **Where you’ll use this at work**
+  - Cost optimization over time steps; simple planning/forecast recurrences
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 70](https://leetcode.com/problems/climbing-stairs/description/)
+    - 🔥 [LeetCode 198](https://leetcode.com/problems/house-robber/description/)
+    - 🔥 [LeetCode 322](https://leetcode.com/problems/coin-change/description/)
+- **Patterns → problems**
+  - Fibonacci-style (\`dp_fibonacci_style\`)
+    - [LeetCode 70](https://leetcode.com/problems/climbing-stairs/description/)
+    - [LeetCode 198](https://leetcode.com/problems/house-robber/description/)
+  - Knapsack-style (\`dp_knapsack\`)
+    - [LeetCode 322](https://leetcode.com/problems/coin-change/description/)
+
+---
+
+## ⚡ API Kernel: \`DPInterval\` (DP on ranges / intervals)
+- **Kernel Contract**
+  - **Inputs**: string/array; interval definition; fill order
+  - **Outputs**: boolean/table, min cuts, max length, counts
+  - **Hooks**: \`dp[l][r]\`, \`combine(subintervals)\`, iteration order by length
+  - **Failure modes**: wrong fill order; $O(n^3)$ blowups without pruning/optimization
+- **Core invariant**: \`dp[l][r]\` is correct once all smaller subintervals needed by its transition are computed
+- **Where you’ll use this at work**
+  - Substring/range optimization where decisions split intervals
+- **Must-know (🔥) / High-frequency (⭐)**
+  - **Must-know (🔥)**
+    - 🔥 [LeetCode 1143](https://leetcode.com/problems/find-smallest-common-element-in-all-rows/description/)
+- **Patterns → problems**
+  - Palindrome/interval DP (\`dp_palindrome\`)
+    - [LeetCode 1143](https://leetcode.com/problems/find-smallest-common-element-in-all-rows/description/)
+
+---
+
+## 🧭 Roadmap Slices (from your data)
+- **Recommended learning order (kernel sequence)**
+  1) Hash map basics (\`HashMapLookup\`) + Two pointers/writer
+  2) Sliding window
+  3) Binary search (index boundary / answer space / partition index)
+  4) Heap/top-k
+  5) Linked list pointer patterns
+  6) BFS/DFS (grid + trees)
+  7) Backtracking
+  8) (DP, Monotonic stack)
+- **NeetCode 150 anchors (high ROI)**
+  - Sliding window: [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+  - Two pointers: [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+  - Backtracking: [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)
+  - Graph BFS: [LeetCode 994](https://leetcode.com/problems/rotting-oranges/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
+  - Heap/selection: [LeetCode 215](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
+
+---
+
+## 🏁 “What next?” Mini Paths
+- **Sliding Window Mastery (in order)**
+  - [ ] [LeetCode 3](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+  - [ ] [LeetCode 340](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
+  - [ ] [LeetCode 76](https://leetcode.com/problems/minimum-window-substring/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
+  - [ ] [LeetCode 567](https://leetcode.com/problems/permutation-in-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
+  - [ ] [LeetCode 438](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
+  - [ ] [LeetCode 209](https://leetcode.com/problems/minimum-size-subarray-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
+
+- **Backtracking Mastery (in order)**
+  - [ ] [LeetCode 78](https://leetcode.com/problems/subsets/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)
+  - [ ] [LeetCode 90](https://leetcode.com/problems/subsets-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py)
+  - [ ] [LeetCode 46](https://leetcode.com/problems/permutations/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)
+  - [ ] [LeetCode 47](https://leetcode.com/problems/permutations-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py)
+  - [ ] [LeetCode 39](https://leetcode.com/problems/combination-sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)
+  - [ ] [LeetCode 40](https://leetcode.com/problems/combination-sum-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py)
+  - [ ] [LeetCode 131](https://leetcode.com/problems/palindrome-partitioning/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)
+  - [ ] [LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+  - [ ] [LeetCode 51](https://leetcode.com/problems/n-queens/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
+
+- **Two Pointers Mastery (in order)**
+  - [ ] [LeetCode 26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)
+  - [ ] [LeetCode 27](https://leetcode.com/problems/remove-element/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
+  - [ ] [LeetCode 283](https://leetcode.com/problems/move-zeroes/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py)
+  - [ ] [LeetCode 11](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+  - [ ] [LeetCode 15](https://leetcode.com/problems/3sum/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)
+  - [ ] [LeetCode 141](https://leetcode.com/problems/linked-list-cycle/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
+  - [ ] [LeetCode 142](https://leetcode.com/problems/linked-list-cycle-ii/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py)`;
             const { root } = transformer.transform(markdown);
             const svg = d3.select('.markmap').append('svg');
             const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);

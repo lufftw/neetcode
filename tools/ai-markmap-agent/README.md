@@ -492,19 +492,26 @@ You can define preset conversion tasks in `convert_to_html.toml`:
 # List available presets
 python convert_to_html.py --list-presets
 
-# Use a preset
+# Use a single preset
 python convert_to_html.py --preset neetcode_ontology_agent_evolved_en
 python convert_to_html.py --preset neetcode_ontology_agent_evolved_zh-TW
+
+# Process all presets at once (recommended for batch conversion)
+python convert_to_html.py --all
 ```
+
+The `--all` option processes all presets defined in the configuration file sequentially:
+- Automatically loads input/output/title from each preset
+- Loads corresponding meta description files if configured
+- Generates all HTML files in one command
+- Shows a summary of successful and failed conversions
 
 **Meta Description Support:**
 
-The converter automatically loads meta descriptions from:
-1. Preset configuration (`meta_description_path` in preset)
-2. Custom mappings in `[meta_descriptions]` section
-3. Auto-detection: `tools/mindmaps/meta/{filename}.txt`
-
-If no meta description file is found, the HTML will not include a `<meta name="description">` tag.
+The converter automatically loads meta descriptions from the `meta_description_file` field in each preset:
+- File path is constructed as: `{meta_descriptions_dir}/{meta_description_file}`
+- Default directory: `tools/mindmaps/meta/`
+- If `meta_description_file` is not specified or empty, no meta description tag will be added to the HTML
 
 **Option 2: From Project Root (CLI Tool Mode)**
 
