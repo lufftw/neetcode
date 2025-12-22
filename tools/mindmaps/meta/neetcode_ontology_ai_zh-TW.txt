@@ -1,1 +1,1 @@
-LeetCode 核心模式 Mind Map，AI LeetCode AI整理 Sliding Window、Two Pointers、Backtracking、BFS、Heap、Binary Search 等模板，快速建立解題框架。
+用 AI Mind Map 將 LeetCode 常見題型收斂成 8 大核心模式（Sliding Window、Two Pointers、Backtracking、BFS、Merge、Partition、Heap、Binary Search），帶你抓住每個 Kernel

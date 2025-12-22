@@ -1059,6 +1059,53 @@ def ask_use_existing_prompt(existing_prompt_file: Path | None) -> str:
         return "regenerate"
 
 
+def load_meta_description(lang: str, base_filename: str, config: dict[str, Any]) -> str | None:
+    """Load meta description from configured file path or auto-detect.
+    
+    Args:
+        lang: Language code (e.g., "en", "zh-TW")
+        base_filename: Base filename without extension (e.g., "neetcode_ontology_ai")
+        config: Configuration dict
+        
+    Returns:
+        Meta description string, or None if not found
+    """
+    output_config = config.get("output", {})
+    meta_descriptions = output_config.get("meta_descriptions", {})
+    
+    # Try configured path first
+    if isinstance(meta_descriptions, dict) and lang in meta_descriptions:
+        desc_path_str = meta_descriptions[lang]
+        desc_path = Path(desc_path_str)
+        if not desc_path.is_absolute():
+            desc_path = PROJECT_ROOT / desc_path
+        
+        if desc_path.exists():
+            try:
+                return desc_path.read_text(encoding="utf-8").strip()
+            except Exception as e:
+                print(f"   ⚠️  Failed to read meta description from {desc_path}: {e}")
+    
+    # Auto-detect: try tools/mindmaps/meta/{base_filename}_{lang}.txt
+    from mindmaps.config import META_DESCRIPTIONS_DIR
+    auto_path = META_DESCRIPTIONS_DIR / f"{base_filename}_{lang}.txt"
+    if auto_path.exists():
+        try:
+            return auto_path.read_text(encoding="utf-8").strip()
+        except Exception as e:
+            print(f"   ⚠️  Failed to read auto-detected meta description from {auto_path}: {e}")
+    
+    # Fallback: try without language suffix
+    auto_path_no_lang = META_DESCRIPTIONS_DIR / f"{base_filename}.txt"
+    if auto_path_no_lang.exists():
+        try:
+            return auto_path_no_lang.read_text(encoding="utf-8").strip()
+        except Exception:
+            pass
+    
+    return None
+
+
 def generate_mindmap_ai(config: dict[str, Any]) -> str:
     """Main function to generate AI-powered mind map."""
     
@@ -1292,7 +1339,14 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
                             title = line.replace("title:", "").strip().strip('"').strip("'")
                             break
                 
-                html_content = generate_html_mindmap(title, content, use_autoloader=False)
+                # Load meta description for this language
+                meta_description = load_meta_description(lang, base_name, config)
+                if meta_description:
+                    print(f"   📝 Using meta description from file ({len(meta_description)} chars)")
+                else:
+                    print(f"   ℹ️  No meta description file found for {lang}, using default")
+                
+                html_content = generate_html_mindmap(title, content, use_autoloader=False, description=meta_description)
                 html_filename = lang_filename.replace(".md", ".html")
                 html_file = html_dir / html_filename
                 html_file.write_text(html_content, encoding="utf-8")

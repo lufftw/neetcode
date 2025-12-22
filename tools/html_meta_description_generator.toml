@@ -54,7 +54,7 @@ model = "gpt-5.2"
 #"docs/mindmaps/problem_relations.md" = { }
 #"docs/mindmaps/solution_variants.md" = { }
 #"docs/mindmaps/difficulty_topics.md" = { }
-"docs/mindmaps/neetcode_ontology_ai_en.md" = { }
+#"docs/mindmaps/neetcode_ontology_ai_en.md" = { }
 "docs/mindmaps/neetcode_ontology_ai_zh-TW.md" = { languageMode = "zh-TW" }
 
 # Example with custom settings:

@@ -64,6 +64,16 @@ filename = "neetcode_ontology_ai.md"
 generate_html = true
 html_directory = "docs/pages/mindmaps"
 
+# Meta description files for HTML <meta name="description"> tag
+# Maps language code to meta description file path (relative to project root)
+# If not specified, will try to auto-detect: tools/mindmaps/meta/{filename}_{lang}.txt
+# Example (uncomment and customize):
+# meta_descriptions = { 
+#     "en" = "tools/mindmaps/meta/neetcode_ontology_ai_en.txt", 
+#     "zh-TW" = "tools/mindmaps/meta/neetcode_ontology_ai_zh-TW.txt" 
+# }
+meta_descriptions = { }
+
 # Prompt saving settings
 [prompt]
 # Whether to save prompt (for debugging or manual use)
