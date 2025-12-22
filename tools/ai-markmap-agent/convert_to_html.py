@@ -133,68 +133,36 @@ def load_config(config_path: Path | None = None) -> dict[str, Any]:
 
 
 def load_meta_description(
-    markdown_filename: str,
+    meta_description_file: str,
     config: dict[str, Any],
     project_root: Path | None = None,
 ) -> str | None:
-    """Load meta description from configured path or auto-detect.
+    """Load meta description file from meta_descriptions_dir.
     
     Args:
-        markdown_filename: Markdown filename (e.g., "neetcode_ontology_agent_evolved_en.md")
-        config: Configuration dict
+        meta_description_file: Meta description filename (e.g., "neetcode_ontology_agent_evolved_en.txt")
+        config: Configuration dict (for meta_descriptions_dir setting)
         project_root: Project root path (default: assumes script is in tools/ai-markmap-agent/)
         
     Returns:
         Meta description string, or None if not found
     """
     if project_root is None:
-        # Assume script is in tools/ai-markmap-agent/, project root is 2 levels up
         script_dir = Path(__file__).parent
         project_root = script_dir.parent.parent
     
-    # Extract base name (without extension and language suffix if present)
-    base_name = Path(markdown_filename).stem
-    
-    # Try custom mapping first
-    meta_mappings = config.get("meta_descriptions", {})
-    if isinstance(meta_mappings, dict) and base_name in meta_mappings:
-        desc_path = Path(meta_mappings[base_name])
-        if not desc_path.is_absolute():
-            desc_path = project_root / desc_path
-        if desc_path.exists():
-            try:
-                return desc_path.read_text(encoding="utf-8").strip()
-            except Exception as e:
-                print(f"   ⚠️  Failed to read meta description from {desc_path}: {e}")
-    
-    # Try auto-detection: look for {base_name}.txt in meta_descriptions_dir
+    # Build path: meta_descriptions_dir / filename
     meta_dir_str = config.get("meta_descriptions_dir", "tools/mindmaps/meta")
-    meta_dir = Path(meta_dir_str)
-    if not meta_dir.is_absolute():
-        meta_dir = project_root / meta_dir
+    meta_dir = project_root / meta_dir_str if not Path(meta_dir_str).is_absolute() else Path(meta_dir_str)
     
-    # Try exact match first: {base_name}.txt
-    auto_path = meta_dir / f"{base_name}.txt"
-    if auto_path.exists():
+    desc_path = meta_dir / meta_description_file
+    if desc_path.exists():
         try:
-            return auto_path.read_text(encoding="utf-8").strip()
+            return desc_path.read_text(encoding="utf-8").strip()
         except Exception as e:
-            print(f"   ⚠️  Failed to read auto-detected meta description from {auto_path}: {e}")
-    
-    # Try to detect language suffix (e.g., _en, _zh-TW) and try base without suffix
-    if "_" in base_name:
-        # Try without language suffix
-        parts = base_name.rsplit("_", 1)
-        if len(parts) == 2:
-            base_without_lang = parts[0]
-            lang_suffix = parts[1]
-            # Try {base_without_lang}_{lang_suffix}.txt
-            lang_path = meta_dir / f"{base_name}.txt"
-            if lang_path.exists():
-                try:
-                    return lang_path.read_text(encoding="utf-8").strip()
-                except Exception:
-                    pass
+            print(f"   ⚠️  Failed to read meta description: {e}")
+    else:
+        print(f"   ⚠️  Meta description file not found: {desc_path}")
     
     return None
 
@@ -405,24 +373,12 @@ Examples:
             
             title = preset.get("title", None)
             
-            # Load meta description from preset or auto-detect
-            description = None
-            if args.description:
-                description = args.description
-            elif preset.get("meta_description_path"):
-                desc_path = Path(preset["meta_description_path"])
-                if not desc_path.is_absolute():
-                    desc_path = (project_root / desc_path).resolve()
-                if desc_path.exists():
-                    try:
-                        description = desc_path.read_text(encoding="utf-8").strip()
-                    except Exception as e:
-                        print(f"   ⚠️  Failed to read meta description from preset: {e}")
-                else:
-                    print(f"   ⚠️  Meta description file not found: {desc_path}")
-            else:
-                # Auto-detect meta description
-                description = load_meta_description(input_path.name, config, project_root)
+            # Load meta description: CLI arg > preset file > None
+            description = args.description
+            if description is None:
+                meta_file = preset.get("meta_description_file")
+                if meta_file:
+                    description = load_meta_description(meta_file, config, project_root)
             
             # Get template path from config or use default
             template_path = None
