@@ -10,7 +10,6 @@ Usage:
     python tools/generate_mindmaps_ai.py --config generate_mindmaps_ai.toml
     python tools/generate_mindmaps_ai.py --goal interview
     python tools/generate_mindmaps_ai.py --topic sliding_window
-    python tools/generate_mindmaps_ai.py --html                       # Generate HTML files
 
 Prompt Options:
     When an existing prompt is found, you can choose:
@@ -1444,11 +1443,6 @@ def main() -> int:
         action="store_true",
         help="Show current config and exit"
     )
-    parser.add_argument(
-        "--html",
-        action="store_true",
-        help="Generate HTML files in addition to Markdown (overrides config)"
-    )
     
     args = parser.parse_args()
     
@@ -1471,9 +1465,6 @@ def main() -> int:
         config.setdefault("model", {})["name"] = args.model
         config.setdefault("model", {})["prompt_model"] = args.model
         config.setdefault("model", {})["mindmap_model"] = args.model
-    if args.html:
-        # Override HTML generation setting
-        config.setdefault("output", {})["generate_html"] = True
     
     # Show config if requested
     if args.list_config:
