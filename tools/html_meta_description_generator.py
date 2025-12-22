@@ -320,15 +320,32 @@ def generate_with_openai(md_content: str, config: dict[str, Any], api_key: str, 
     model = config.get("model", "gpt-4o")
     
     try:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            temperature=0.7,
-            max_tokens=200,
-        )
+        # Use max_completion_tokens (newer API standard)
+        # For older models that don't support it, we'll catch the error and retry with max_tokens
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.7,
+                max_completion_tokens=200,
+            )
+        except Exception as e:
+            # Fallback to max_tokens for older models
+            if "max_completion_tokens" in str(e) or "unsupported_parameter" in str(e).lower():
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    temperature=0.7,
+                    max_tokens=200,
+                )
+            else:
+                raise
         
         description = response.choices[0].message.content.strip()
         
