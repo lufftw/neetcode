@@ -23,6 +23,7 @@ from mindmaps import (
     GENERATORS,
     DEFAULT_OUTPUT_DIR,
     PAGES_OUTPUT_DIR,
+    META_DESCRIPTIONS_DIR,
     load_ontology,
     load_problems,
     generate_html_mindmap,
@@ -30,6 +31,7 @@ from mindmaps import (
     markmap_frontmatter,
     INDEX_HTML_TEMPLATE,
     CARD_TEMPLATE,
+    get_config,
 )
 
 # Mind map metadata
@@ -100,7 +102,20 @@ def generate_all_mindmaps(
 
         if generate_html and pages_dir:
             title = TITLES.get(mm_type, mm_type.replace("_", " ").title())
-            html = generate_html_mindmap(title, content, use_autoloader)
+            # Get description from config file path, fallback to DESCRIPTIONS dict
+            config = get_config()
+            description_text = None
+            if config.descriptions:
+                description_path_str = config.descriptions.get(mm_type)
+                if description_path_str:
+                    # Treat as file path relative to tools/mindmaps/meta directory
+                    description_path = META_DESCRIPTIONS_DIR / description_path_str
+                    if description_path.exists() and description_path.is_file():
+                        description_text = description_path.read_text(encoding="utf-8").strip()
+            # Fallback to DESCRIPTIONS dict if file doesn't exist or not configured
+            if not description_text:
+                _, description_text = DESCRIPTIONS.get(mm_type, ("", ""))
+            html = generate_html_mindmap(title, content, use_autoloader, description_text)
             html_file = pages_dir / "mindmaps" / f"{mm_type}.html"
             html_file.write_text(html, encoding="utf-8")
             print(f"  Written: {html_file}")
@@ -123,17 +138,20 @@ def convert_md_to_html(input_files: list[Path], output_dir: Path | None = None) 
         
         content = input_file.read_text(encoding="utf-8")
         
-        # Extract title from frontmatter
+        # Extract title and description from frontmatter
         title = input_file.stem.replace("_", " ").title()
+        description = None
         if content.startswith("---"):
-            for line in content.split("\n"):
+            in_frontmatter = True
+            for line in content.split("\n")[1:]:
+                if line.strip() == "---":
+                    break
                 if line.startswith("title:"):
                     title = line.replace("title:", "").strip().strip('"').strip("'")
-                    break
-                if line.strip() == "---" and line != content.split("\n")[0]:
-                    break
+                elif line.startswith("description:"):
+                    description = line.replace("description:", "").strip().strip('"').strip("'")
         
-        html_content = generate_html_mindmap(title, content, use_autoloader=False)
+        html_content = generate_html_mindmap(title, content, use_autoloader=False, description=description)
         
         output_file = output_dir / input_file.with_suffix(".html").name
         

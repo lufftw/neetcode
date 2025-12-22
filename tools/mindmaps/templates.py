@@ -6,6 +6,7 @@ HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{description}">
     <title>{title} - NeetCode Mind Maps</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
@@ -102,6 +103,7 @@ HTML_TEMPLATE_AUTOLOADER = '''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{description}">
     <title>{title} - NeetCode Mind Maps</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
@@ -191,6 +193,7 @@ INDEX_HTML_TEMPLATE = '''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive visualizations of NeetCode algorithm patterns, problem relationships, and learning roadmaps. Explore mind maps for data structures, algorithms, company coverage, and more.">
     <title>NeetCode Mind Maps</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>

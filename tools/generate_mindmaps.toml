@@ -14,3 +14,21 @@ branch = "main"
 # Set to false to use relative paths (../../solutions/file.py)
 use_github_links = true
 
+[descriptions]
+# File paths to HTML meta description content for SEO
+# Each mindmap type can have a file path pointing to a text file containing the description
+# Paths are relative to tools/mindmaps/meta directory
+# If file doesn't exist, falls back to DESCRIPTIONS dict in generate_mindmaps.py
+# Example: pattern_hierarchy = "pattern_hierarchy.txt"
+# Example: pattern_hierarchy = "subfolder/pattern_hierarchy.txt"
+# Leave empty or omit to use default from DESCRIPTIONS dict
+pattern_hierarchy = "pattern_hierarchy.txt"
+family_derivation = "family_derivation.txt"
+algorithm_usage = "algorithm_usage.txt"
+data_structure = "data_structure.txt"
+company_coverage = "company_coverage.txt"
+roadmap_paths = "roadmap_paths.txt"
+problem_relations = "problem_relations.txt"
+solution_variants = "solution_variants.txt"
+difficulty_topics = "difficulty_topics.txt"
+

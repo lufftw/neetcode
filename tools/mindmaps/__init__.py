@@ -12,6 +12,7 @@ from .config import (
     META_PROBLEMS_DIR,
     DEFAULT_OUTPUT_DIR,
     PAGES_OUTPUT_DIR,
+    META_DESCRIPTIONS_DIR,
 )
 from .toml_parser import parse_toml_simple, parse_toml_value
 from .data import ProblemData
@@ -26,7 +27,7 @@ __all__ = [
     "MindmapsConfig", "load_config", "get_config",
     "MINDMAP_TYPES", "DIFFICULTY_ICONS",
     "PROJECT_ROOT", "ONTOLOGY_DIR", "META_PROBLEMS_DIR",
-    "DEFAULT_OUTPUT_DIR", "PAGES_OUTPUT_DIR",
+    "DEFAULT_OUTPUT_DIR", "PAGES_OUTPUT_DIR", "META_DESCRIPTIONS_DIR",
     # TOML
     "parse_toml_simple", "parse_toml_value",
     # Data

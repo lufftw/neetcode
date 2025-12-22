@@ -22,14 +22,34 @@ def markdown_to_html_content(markdown_content: str) -> str:
     return "\n".join(lines)
 
 
-def generate_html_mindmap(title: str, markdown_content: str, use_autoloader: bool = False) -> str:
+def generate_html_mindmap(
+    title: str,
+    markdown_content: str,
+    use_autoloader: bool = False,
+    description: str | None = None,
+) -> str:
     """Generate HTML file with embedded markmap."""
     content = markdown_to_html_content(markdown_content)
     content_escaped = content.replace('`', '\\`').replace('$', '\\$')
     
+    # Generate default description if not provided
+    if description is None:
+        description = f"Interactive mind map visualization of {title} from NeetCode Practice Framework. Explore algorithm patterns, problem relationships, and learning paths."
+    
+    # Escape description for HTML (escape quotes)
+    description_escaped = description.replace('"', '&quot;')
+    
     if use_autoloader:
-        return HTML_TEMPLATE_AUTOLOADER.format(title=title, markdown_content=content)
-    return HTML_TEMPLATE_MANUAL.format(title=title, markdown_content=content_escaped)
+        return HTML_TEMPLATE_AUTOLOADER.format(
+            title=title,
+            description=description_escaped,
+            markdown_content=content
+        )
+    return HTML_TEMPLATE_MANUAL.format(
+        title=title,
+        description=description_escaped,
+        markdown_content=content_escaped
+    )
 
 
 def setup_pages_directory(pages_dir: Path) -> None:
