@@ -37,6 +37,7 @@ from tools.mindmaps.toml_parser import parse_toml_simple
 
 CONFIG_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.toml"
 PROMPT_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.md"
+PROMPT_FILE_ZH_TW = Path(__file__).resolve().parent / "html_meta_description_generator_zh-TW.md"
 
 # Default configuration
 DEFAULT_CONFIG = {
@@ -51,26 +52,49 @@ DEFAULT_CONFIG = {
 }
 
 
-def load_prompts() -> tuple[str, str]:
-    """Load prompts from markdown file."""
+def _extract_md_section(content: str, heading: str) -> str | None:
+    """
+    Extract a markdown section body by heading (e.g., "System Prompt" or "System Prompt (zh-TW)").
+
+    Returns the section text without the heading line, or None if not found.
+    """
+    pattern = rf'## {re.escape(heading)}\s*\n(.*?)(?=\n## |$)'
+    m = re.search(pattern, content, re.DOTALL)
+    return m.group(1).strip() if m else None
+
+
+def load_prompts() -> dict[str, tuple[str, str]]:
+    """
+    Load prompts from markdown file.
+
+    Supports:
+    - `html_meta_description_generator.md`:
+      - "## System Prompt" + "## User Prompt Template" (default)
+    - `html_meta_description_generator_zh-TW.md` (optional):
+      - "## System Prompt" + "## User Prompt Template" (Traditional Chinese / Taiwan)
+    """
     if not PROMPT_FILE.exists():
         raise FileNotFoundError(f"Prompt file not found: {PROMPT_FILE}")
     
     content = PROMPT_FILE.read_text(encoding="utf-8")
     
-    # Extract system prompt (between "## System Prompt" and next "##")
-    system_match = re.search(r'## System Prompt\s*\n(.*?)(?=\n## |$)', content, re.DOTALL)
-    if not system_match:
-        raise ValueError("System prompt not found in prompt file")
-    system_prompt = system_match.group(1).strip()
-    
-    # Extract user prompt template (between "## User Prompt Template" and next "##" or end)
-    user_match = re.search(r'## User Prompt Template\s*\n(.*?)(?=\n## |$)', content, re.DOTALL)
-    if not user_match:
-        raise ValueError("User prompt template not found in prompt file")
-    user_prompt_template = user_match.group(1).strip()
-    
-    return system_prompt, user_prompt_template
+    system_prompt = _extract_md_section(content, "System Prompt")
+    user_prompt_template = _extract_md_section(content, "User Prompt Template")
+    if not system_prompt:
+        raise ValueError("System prompt not found in prompt file (## System Prompt)")
+    if not user_prompt_template:
+        raise ValueError("User prompt template not found in prompt file (## User Prompt Template)")
+
+    prompts: dict[str, tuple[str, str]] = {"default": (system_prompt, user_prompt_template)}
+
+    if PROMPT_FILE_ZH_TW.exists():
+        zh_content = PROMPT_FILE_ZH_TW.read_text(encoding="utf-8")
+        zh_system = _extract_md_section(zh_content, "System Prompt")
+        zh_user = _extract_md_section(zh_content, "User Prompt Template")
+        if zh_system and zh_user:
+            prompts["zh-TW"] = (zh_system, zh_user)
+
+    return prompts
 
 
 def load_config() -> dict[str, Any]:
@@ -305,7 +329,8 @@ def generate_with_openai(md_content: str, config: dict[str, Any], api_key: str, 
     candidate = extract_candidate_description(md_content, config)
     
     # Load prompts from external markdown file
-    system_prompt, user_prompt_template = load_prompts()
+    prompts = load_prompts()
+    system_prompt, user_prompt_template = prompts.get(detected_lang, prompts["default"])
     
     # Build user prompt from template
     candidate_info = f"Existing candidate: {candidate}" if candidate else ""
