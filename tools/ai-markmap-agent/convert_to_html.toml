@@ -1,0 +1,46 @@
+# =============================================================================
+# HTML Converter Configuration
+# =============================================================================
+# Configuration file for convert_to_html.py to support batch conversion
+# and meta description mapping.
+# =============================================================================
+
+# Default template path (relative to script directory)
+template_path = "templates/markmap.html"
+
+# Default meta descriptions directory (relative to project root)
+# Meta description files will be searched in this directory
+meta_descriptions_dir = "tools/mindmaps/meta"
+
+# Preset conversion tasks
+# Each entry defines a conversion task with input/output/title
+[presets]
+# Example presets for common files
+
+# English version
+[presets.neetcode_ontology_agent_evolved_en]
+input = "docs/mindmaps/neetcode_ontology_agent_evolved_en.md"
+output = "docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html"
+title = "NeetCode Agent Evolved Mindmap"
+# Optional: custom meta description file path (overrides auto-detection)
+# If not specified, will auto-detect: {meta_descriptions_dir}/neetcode_ontology_agent_evolved_en.txt
+meta_description_path = ""
+
+# Traditional Chinese version
+[presets.neetcode_ontology_agent_evolved_zh-TW]
+input = "docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md"
+output = "docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html"
+title = "NeetCode Agent Evolved Mindmap (繁體中文)"
+# Optional: custom meta description file path (overrides auto-detection)
+# If not specified, will auto-detect: {meta_descriptions_dir}/neetcode_ontology_agent_evolved_zh-TW.txt
+meta_description_path = ""
+
+# Meta description file mappings
+# Maps markdown filename (without extension) to meta description file path
+# If a preset uses auto-detection, it will look for {filename}_{lang}.txt or {filename}.txt
+# Custom mappings override auto-detection
+[meta_descriptions]
+# Example mappings (optional - auto-detection will work if files follow naming convention)
+# "neetcode_ontology_agent_evolved_en" = "tools/mindmaps/meta/neetcode_ontology_agent_evolved_en.txt"
+# "neetcode_ontology_agent_evolved_zh-TW" = "tools/mindmaps/meta/neetcode_ontology_agent_evolved_zh-TW.txt"
+

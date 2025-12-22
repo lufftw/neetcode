@@ -435,6 +435,14 @@ For converting Markdown files to HTML without running the full pipeline:
 - **CLI Tool**: Can be run from **any directory** - relative paths are resolved relative to the script directory
 - Supports both relative and absolute paths
 - Template paths are resolved relative to the script directory
+- **Configuration file support**: Use `convert_to_html.toml` for preset conversions and meta description mapping
+
+**Configuration File (`convert_to_html.toml`):**
+
+The converter supports a configuration file for:
+- **Preset conversions**: Define common conversion tasks with input/output/title
+- **Meta description mapping**: Map markdown files to meta description files
+- **Auto-detection**: Automatically finds meta description files in `tools/mindmaps/meta/` directory
 
 **Basic Usage:**
 
@@ -475,6 +483,28 @@ python convert_to_html.py input.md -t "My Mind Map"
 # Use custom template
 python convert_to_html.py input.md --template templates\custom.html
 ```
+
+**Using Configuration Presets:**
+
+You can define preset conversion tasks in `convert_to_html.toml`:
+
+```bash
+# List available presets
+python convert_to_html.py --list-presets
+
+# Use a preset
+python convert_to_html.py --preset neetcode_ontology_agent_evolved_en
+python convert_to_html.py --preset neetcode_ontology_agent_evolved_zh-TW
+```
+
+**Meta Description Support:**
+
+The converter automatically loads meta descriptions from:
+1. Preset configuration (`meta_description_path` in preset)
+2. Custom mappings in `[meta_descriptions]` section
+3. Auto-detection: `tools/mindmaps/meta/{filename}.txt`
+
+If no meta description file is found, the HTML will not include a `<meta name="description">` tag.
 
 **Option 2: From Project Root (CLI Tool Mode)**
 

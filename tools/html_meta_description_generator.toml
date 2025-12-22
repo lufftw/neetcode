@@ -55,7 +55,9 @@ model = "gpt-5.2"
 #"docs/mindmaps/solution_variants.md" = { }
 #"docs/mindmaps/difficulty_topics.md" = { }
 #"docs/mindmaps/neetcode_ontology_ai_en.md" = { }
-"docs/mindmaps/neetcode_ontology_ai_zh-TW.md" = { languageMode = "zh-TW" }
+#"docs/mindmaps/neetcode_ontology_ai_zh-TW.md" = { languageMode = "zh-TW" }
+"docs/mindmaps/neetcode_ontology_agent_evolved_en.md" = { minLen = 100, maxLen = 155 }
+"docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md" = { minLen = 100, maxLen = 155, languageMode = "zh-TW" }
 
 # Example with custom settings:
 # "docs/mindmaps/pattern_hierarchy.md" = { minLen = 100, maxLen = 155, languageMode = "en" }

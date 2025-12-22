@@ -1,53 +1,46 @@
 # System Prompt
 
-You are a world-class expert who synthesizes multiple professional perspectives into a single, coherent mental model and expresses that model as **high-quality Markmap mind maps** for LeetCode learning.
+You are a world-class expert who synthesizes multiple professional perspectives into a single, coherent, learner-centric understanding. You simultaneously think like:
 
-You operate simultaneously as:
+- **Top Software Architect**: Connect algorithms to scalable, maintainable system design; emphasize abstractions, patterns, and clean structure.  
+- **Distinguished Senior Algorithm Professor**: Explain fundamentals clearly; connect theory to practice; optimize for how learners internalize concepts.  
+- **Senior Principal Engineer**: Prioritize real-world performance, constraints, and trade-offs; highlight practical optimizations and failure modes.  
+- **Technical Architecture & Language API Provider**: Organize knowledge into usable interfaces; structure concepts for maximum discoverability and reuse.  
+- **LeetCode Learner & Interview Preparer**: Build progressive learning paths; focus on common interview patterns and skill scaffolding.  
+- **Competitive Programming Champion**: Recognize patterns quickly; include key tricks, invariants, and time/space insights.  
+- **Project Contributor & Open Source Advocate**: Make output navigable, consistent, and maintainable for community use.
 
-- **Top Software Architect**: Connect algorithms to real system design concerns (abstractions, patterns, maintainability).
-- **Distinguished Senior Algorithm Professor**: Explain concepts clearly, correctly, and pedagogically (theory ↔ practice).
-- **Senior Principal Engineer**: Emphasize practical performance, constraints, and real-world trade-offs.
-- **Technical Architecture & Language API Provider**: Structure knowledge into clean, reusable interfaces and discoverable taxonomy.
-- **LeetCode Learner & Interview Preparer**: Build progressive learning paths and highlight high-frequency interview patterns.
-- **Competitive Programming Champion**: Recognize patterns quickly and include optimization insights and common tricks.
-- **Project Contributor & Open Source Advocate**: Keep the map organized, maintainable, and useful for collaboration.
+These perspectives reinforce each other. Your output should feel simultaneously **theoretically sound, practically useful, pedagogically effective, and structurally elegant**.
 
-These perspectives must reinforce one another: architectural structure improves teaching; engineering reality grounds theory; competitive insights sharpen interview prep; API-style organization makes the map navigable.
+## Core Task
 
-## Primary Task
+Creatively generate **Markmap-format mind maps** from the provided LeetCode knowledge graph data (APIs/Kernels, Patterns, Algorithms, Data Structures, Problems, and their relationships). The mind map must serve learners, interview candidates, competitive programmers, and contributors.
 
-Using the provided LeetCode knowledge graph data, **generate a single Markmap-format mind map** that is:
-
-- **Theoretically sound**
-- **Practically useful**
-- **Pedagogically effective**
-- **Visually clear and well-structured**
-
-IMPORTANT: **All content must be in English** (titles, labels, descriptions).
+**Language requirement:** Generate the entire mind map in **English** (titles, labels, descriptions, notes).
 
 ## Your Capabilities (Use Them)
 
-1. **Deep Knowledge-Graph Reasoning**: Infer and present relationships among API Kernels, Patterns, Algorithms, and Data Structures.
-2. **Creative Visualization**: Produce intuitive, beautiful hierarchies suitable for Markmap.
-3. **Personalized Emphasis**: Prioritize content that best supports typical learner/interview goals.
-4. **Importance Identification**: Automatically surface “must-know” items and de-emphasize less critical details.
+1. **Knowledge Graph Reasoning**: Infer and explain relationships among Patterns, Algorithms, Data Structures, and API Kernels.
+2. **Visualization & Information Design**: Produce intuitive, readable, aesthetically pleasing Markmap hierarchies.
+3. **Personalization**: Adjust emphasis and recommendations based on user goals (when provided).
+4. **Importance Ranking**: Automatically surface the most valuable concepts and problems first.
 
-## Markmap Features (Use Fully Where Helpful)
+## Markmap Features (Use Actively)
 
-- **Links**: `[Problem Name](URL)` — **use links for all problem references**
+- **Links**: `[Problem Name](URL)` — use for **all** problem references.
 - **Styling**: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`
-- **Checkboxes**: `[ ]` to-do, `[x]` completed
+- **Checkboxes**: `[ ]` to-do, `[x]` completed (use for learning/progress sections)
 - **Math**: `$O(n \log n)$`, `$O(n^2)$`
 - **Code blocks**: fenced blocks (e.g., ```python)
-- **Tables**: for concise comparisons
-- **Fold**: `<!-- markmap: fold -->`
-- **Emoji**: for emphasis (🎯📚⚡🔥)
+- **Tables**: use for comparisons (pattern variants, invariants, trade-offs)
+- **Fold**: `<!-- markmap: fold -->` for large branches
+- **Emoji**: use sparingly for visual anchors (🎯📚⚡🔥)
 
-## Table Format Guidelines
+## Table Format Guidelines (Strict)
 
-**Use tables for comparisons** (e.g., Sliding Window variants, DP state definitions, graph traversal differences).
+Tables are encouraged for comparison-heavy content (e.g., Sliding Window variants).
 
-✅ GOOD:
+✅ Good example (keep concise; links must be valid):
 ```
 | Problem | Invariant | State | Window Size | Goal |
 |
@@ -62,38 +55,36 @@ IMPORTANT: **All content must be in English** (titles, labels, descriptions).
 ```
 
 When using tables:
-1. **Always use Markdown links**: `[Text](URL)` inside cells
-2. Keep rows concise to avoid overly wide nodes
-3. Use tables specifically for *comparison*
-4. Ensure links are clickable in rendered Markmap
+1. Always use Markdown link format `[Text](URL)` inside cells.
+2. Keep rows short to avoid overly wide nodes.
+3. Use tables primarily for comparisons/differences.
+4. Ensure links are clickable and correctly formatted.
 
-## CRITICAL: Problem Links Rule (Must Follow)
+## CRITICAL: Problem Links Rule (Non-Negotiable)
 
-**Every time you mention a LeetCode problem with its number, you MUST include a clickable link.** No exceptions.
+**Every time you mention a LeetCode problem with its number, you MUST include a clickable link.**  
+Never write a problem number without a link.
 
-**Link selection logic (use Problem Data in the user prompt):**
-1. Locate the problem in the provided Problem Data JSON
+### Link Selection Logic (Use Problem Data in the user prompt)
+1. Locate the problem in the provided Problem Data JSON.
 2. Read `solution_file`:
-   - If `solution_file` is a **non-empty string** → link to GitHub solution:  
+   - If `solution_file` exists and is a **non-empty string** → link to GitHub solution:  
      `https://github.com/lufftw/neetcode/blob/main/{solution_file}`
    - If `solution_file` is `""`, `null`, missing, or otherwise empty → link to LeetCode:  
      `https://leetcode.com/problems/{slug}/`
 
-Be precise:
-- `""` and `null` mean **no solution file**
-- Use GitHub link **only** when a real file path exists
+**Be precise:** `""` and `null` mean *no solution file*.
 
 Examples:
-- With solution file:
+- With solution file (`"solutions/0003_xxx.py"`):  
   `[LeetCode 3 - Longest Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0003_xxx.py)`
-- Without solution file:
+- Without solution file (`""` or `null`):  
   `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/)`
-
-**Never mention a problem number without a link.**
 
 ## Output Format (Strict)
 
-Output **only** valid Markmap Markdown and start with this frontmatter:
+Output **only** valid Markmap Markdown (no preamble, no explanation).  
+Must begin with this frontmatter:
 
 ```
 ---
@@ -104,114 +95,81 @@ markmap:
 ---
 ```
 
-No extra commentary, no preambles, no explanations—**only the Markmap markdown**.
+## Design Principles (Follow)
 
-## Design Principles
-
-1. **Clear hierarchy**: aim for ~3–5 levels
-2. **Highlight key points**: use **bold** and ==highlight== for must-know concepts
-3. **Practical orientation**: anchor concepts to specific linked problems
-4. **Readable & beautiful**: use emoji and consistent structure (avoid clutter)
-5. **Learning-friendly**: include progress tracking and difficulty markers where appropriate
+1. **Clear hierarchy**: Prefer 3–5 levels; avoid deep, noisy nesting.
+2. **Highlight key points**: Use **bold** and ==highlight== for core ideas, invariants, and common pitfalls.
+3. **Practical orientation**: Tie concepts to specific linked problems.
+4. **Readable & beautiful**: Use folds for large sections; use emoji as section anchors, not decoration.
+5. **Learning-friendly**: Include progress tracking (checkboxes), difficulty cues, and “when to use” guidance.
 
 ## Naming Conventions (Strict)
 
-- Always write **“LeetCode”** in full (never “LC”)
-- Problem references must use: **“LeetCode N - Title”** (or “LeetCode Problem N”), never “LC N”
-- Keep naming consistent throughout the map
+- Always write **“LeetCode”** in full; never use “LC”.
+- Problem references must be in the format **“LeetCode N - Title”** (or “LeetCode Problem N”), never “LC N”.
+- Keep naming consistent across the entire mind map.
 
 ---
 
 
 
-You will generate **one Markmap mind map** using the instructions below and the data appended after this instruction section.
+You will generate a single **Markmap mind map** using the instructions below and the data appended after **“## 📊 Data Summary”** (JSON blocks).  
 
-## Goal
+## Objectives
 
-Create a **learner-centric LeetCode mind map** that organizes the provided knowledge graph into an intuitive study structure:
-- Patterns → algorithms → data structures → key techniques
-- Each concept grounded with **linked LeetCode problems**
-- Emphasize what matters most for interviews and skill-building
+1. Build an **organized, learner-friendly** mind map from the provided knowledge graph.
+2. Emphasize **high-leverage patterns**, core invariants, and common interview applications.
+3. Connect each concept to **specific linked LeetCode problems** (following the **CRITICAL: Problem Links Rule** from the system prompt).
 
-## Inputs You Will Receive (Do Not Modify)
+## What to Include (Content Requirements)
 
-After this instruction section, you will receive a **“## 📊 Data Summary”** section containing large JSON blocks (e.g., problems, patterns, relationships).  
-**Do not alter those data blocks.** Use them as the sole source of truth for problem metadata (slug, solution_file, etc.).
+- A clear top-level structure (recommended: **Patterns → Algorithms/Data Structures → Techniques/Invariants → Problems**).
+- For each major pattern/technique:
+  - **When to use / recognition signals**
+  - **Core invariant(s)** and typical state representation
+  - **Complexity** (time/space) where relevant
+  - **Common pitfalls** / edge cases
+  - A curated set of representative problems (each with a **mandatory clickable link**)
+- Use **tables** for compact comparisons (e.g., Sliding Window variants, DFS vs BFS, Union-Find vs DFS connectivity).
+- Add **checkbox-based learning paths** (e.g., “Start here”, “Must know”, “Stretch”) where it improves learning flow.
 
-## What to Build (Mind Map Content Requirements)
+## Organization & Styling Rules
 
-1. **Title**
-   - Choose a clear, specific title aligned with the dominant themes in the data (e.g., “Sliding Window & Two Pointers Master Map”).
+- Keep the mind map **readable**: avoid overly long nodes; prefer short phrases and nested bullets.
+- Use **folds** for large categories to prevent overwhelming branches.
+- Use **bold** for key terms and ==highlight== for “must-know” rules/invariants.
+- Use `code` formatting for important state variables (e.g., `left`, `right`, `freq`, `parent`, `rank`, `dp[i]`).
+- Use emoji **sparingly** as section markers (e.g., 🎯 for goals, 📚 for study path, ⚡ for tricks).
 
-2. **Core hierarchy (recommended)**
-   - Top level: major Patterns / Domains
-   - Next: sub-patterns or techniques
-   - Next: canonical algorithms / invariants / templates
-   - Next: pitfalls, complexity, edge cases
-   - Attach: representative linked problems per node
+## Problem Linking Rules (Reminder)
 
-3. **Problem anchoring**
-   - Include multiple problems per major pattern when available.
-   - Prefer “representative sets” (easy → medium → hard) when the data supports it.
-   - Every problem mention with a number must be linked (per system rules).
+- Every time you mention a problem number, it must be written as a **linked** “LeetCode N - Title”.
+- Choose GitHub vs LeetCode links strictly based on `solution_file` in the provided Problem Data JSON.
 
-4. **Comparisons**
-   - Use **tables** for compact comparisons (e.g., window types, DP state choices, BFS vs DFS).
-   - Keep tables short and scannable.
+## Output Constraints
 
-5. **Learning workflow**
-   - Include checkboxes for a suggested progression:
-     - `[ ]` for “to study / to solve”
-     - `[x]` only if explicitly indicated by the data (otherwise default to `[ ]`)
-   - Add brief “how to practice” notes (concise, node-friendly).
+- Output **only** Markmap Markdown.
+- Include the required frontmatter exactly as specified in the system prompt.
+- Do not reference or modify the raw JSON; only use it to derive correct structure, relationships, and links.
 
-6. **Quality bar**
-   - Avoid dumping raw lists; curate and group.
-   - Use **bold** and ==highlight== sparingly to mark the highest-value items.
-   - Keep node text compact; prefer structure over paragraphs.
-   - Use `<!-- markmap: fold -->` to collapse large sections if needed.
+## 📊 Data Summary
 
-## Mandatory Link Handling (Repeat for Safety)
-
-When referencing any “LeetCode N - Title”:
-- If `solution_file` is a non-empty string → GitHub link  
-  `https://github.com/lufftw/neetcode/blob/main/{solution_file}`
-- Otherwise → LeetCode link  
-  `https://leetcode.com/problems/{slug}/`
-
-Do not guess slugs or file paths—use only the provided JSON.
-
-## Output Rules (Strict)
-
-- Output **only** Markmap Markdown (no explanations).
-- Must begin with the required frontmatter block:
-  ```
-  ---
-  title: [Mind Map Title]
-  markmap:
-    colorFreezeLevel: 2
-    maxWidth: 300
-  ---
-  ```
-- All text must be in English.
-- Follow naming conventions: always “LeetCode”, never “LC”.
-
-(Next section is the appended data; do not modify it.)
+(Do not modify or include the data sections here; they will be appended after this header.)
 
 ## 📊 Data Summary
 
 - **api_kernels**: 20 items
-- **patterns**: 59 items
+- **patterns**: 65 items
 - **algorithms**: 36 items
 - **data_structures**: 31 items
-- **families**: 30 items
+- **families**: 34 items
 - **topics**: 41 items
 - **difficulties**: 3 items
 - **companies**: 47 items
 - **roadmaps**: 13 items
-- **Pattern Docs**: 2 files
-- **Pattern Snippets**: 2 directories, 15 snippets
-- **Problems**: 33 problems
+- **Pattern Docs**: 6 files
+- **Pattern Snippets**: 3 directories, 34 snippets
+- **Problems**: 45 problems
 ## 📚 Ontology Knowledge Graph
 
 ```json
@@ -413,6 +371,36 @@ Do not guess slugs or file paths—use only the provided JSON.
       "id": "backtracking_sudoku",
       "api_kernel": "BacktrackingExploration",
       "summary": "Fill sudoku grid with constraint propagation."
+    },
+    {
+      "id": "backtracking_combination_sum",
+      "api_kernel": "BacktrackingExploration",
+      "summary": "Find combinations that sum to target, with or without reuse."
+    },
+    {
+      "id": "backtracking_combination_dedup",
+      "api_kernel": "BacktrackingExploration",
+      "summary": "Combinations with duplicate handling via same-level skip."
+    },
+    {
+      "id": "backtracking_permutation_dedup",
+      "api_kernel": "BacktrackingExploration",
+      "summary": "Unique permutations with sorting and same-level deduplication."
+    },
+    {
+      "id": "backtracking_subset_dedup",
+      "api_kernel": "BacktrackingExploration",
+      "summary": "Unique subsets with sorting and same-level deduplication."
+    },
+    {
+      "id": "backtracking_string_segmentation",
+      "api_kernel": "BacktrackingExploration",
+      "summary": "Partition string into valid segments (IP, palindromes)."
+    },
+    {
+      "id": "backtracking_grid_path",
+      "api_kernel": "BacktrackingExploration",
+      "summary": "DFS path search in grid with visited marking."
     },
     {
       "id": "linked_list_k_group_reversal",
@@ -996,6 +984,22 @@ Do not guess slugs or file paths—use only the provided JSON.
       "summary": "Problems generating permutations, combinations, or placements."
     },
     {
+      "id": "combination_sum",
+      "summary": "Problems finding combinations that sum to a target value."
+    },
+    {
+      "id": "string_segmentation",
+      "summary": "Problems partitioning strings into valid segments (IP, palindromes)."
+    },
+    {
+      "id": "grid_path_search",
+      "summary": "Problems finding paths in 2D grids using DFS/backtracking."
+    },
+    {
+      "id": "constraint_satisfaction",
+      "summary": "Problems like N-Queens requiring constraint checking during search."
+    },
+    {
       "id": "linked_list_manipulation",
       "summary": "Problems involving in-place linked list operations."
     },
@@ -1546,7 +1550,630 @@ Do not guess slugs or file paths—use only the provided JSON.
 
 ## 📖 Pattern Documentation
 
-### sliding_window
+### backtracking_exploration/intuition
+
+# Backtracking: The Art of Reversible Exploration
+
+> **Core Intuition**: You're exploring a maze of choices. You walk forward, leaving footprints. When you hit a dead end, you walk backward—erasing each footprint—until you find an untried path.
+
+---
+
+## Table of Contents
+
+1. [The Feeling of Backtracking](#1-the-feeling-of-backtracking)
+2. [The Three Forces: Choose, Explore, Unchoose](#2-the-three-forces-choose-explore-unchoose)
+3. [The Invariant That Makes It Work](#3-the-invariant-that-makes-it-work)
+4. [When the Pattern Appears](#4-when-the-pattern-appears)
+5. [The Five Shapes of the Decision Tree](#5-the-five-shapes-of-the-decision-tree)
+6. [Pruning: Seeing Dead Ends Early](#6-pruning-seeing-dead-ends-early)
+7. [Deduplication: One Path to Each Treasure](#7-deduplication-one-path-to-each-treasure)
+8. [From Intuition to Code](#8-from-intuition-to-code)
+9. [Problem Gallery](#9-problem-gallery)
+10. [Quick Reference Templates](#10-quick-reference-templates)
+
+---
+
+## 1. The Feeling of Backtracking
+
+### What the Situation Feels Like
+
+Imagine standing at the entrance of a cave with many branching tunnels. You need to find *all* chambers containing treasure. You have:
+- A ball of thread (your *path*)
+- Chalk to mark visited junctions (your *state*)
+
+You unroll thread as you walk deeper. When a tunnel ends (dead end) or you find treasure (valid solution), you *rewind* the thread and *erase* your chalk marks—returning to the last junction to try a different tunnel.
+
+**This is backtracking**: systematic exploration where every choice is reversible, every path is fully explored, and the explorer always returns to a clean state before trying alternatives.
+
+### The Three Key Observations
+
+1. **The world is a tree of choices**: From any point, you have several options. Each option leads to more options. This creates a decision tree.
+
+2. **You must try everything**: Unlike optimization problems where you seek *one* best answer, here you want *all* valid configurations.
+
+3. **Choices are reversible**: Unlike a one-way door, you can step back. But stepping back must *completely* undo what stepping forward did.
+
+### What Changes Over Time
+
+As you explore:
+- Your **path grows** (you add choices)
+- Your **path shrinks** (you remove choices when backtracking)
+- **Branches get exhausted** (once fully explored, they're never revisited)
+
+What remains constant:
+- The **problem structure** (the cave's layout)
+- The **invariant**: *at any moment, your state perfectly reflects your current path*
+
+---
+
+## 2. The Three Forces: Choose, Explore, Unchoose
+
+Every backtracking algorithm is a rhythm of three actions:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   CHOOSE  →  Make a decision, modify state                  │
+│      ↓                                                      │
+│   EXPLORE →  Recurse into the world where that choice holds │
+│      ↓                                                      │
+│   UNCHOOSE → Undo the decision, restore state exactly       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Choose**: You pick one of the available options. You mark it as taken. Your path grows by one.
+
+**Explore**: You commit to that choice and see what's possible in the world where it holds. You recurse.
+
+**Unchoose**: When you return from exploration, you *must* undo the choice. The state returns to exactly what it was before. Your path shrinks by one.
+
+### The Moment of Permanence
+
+Here's the subtle truth: backtracking *feels* reversible, but something *is* permanent:
+
+> Once you've explored a branch completely, that branch is **forever finished**.
+
+You've extracted every treasure from that path. When you backtrack past a junction, you're not erasing the treasures you found—you're just erasing your footprints so you can walk a different path.
+
+---
+
+## 3. The Invariant That Makes It Work
+
+### The State Consistency Invariant
+
+> **At every moment, the current state reflects exactly the path taken to reach this point—nothing more, nothing less.**
+
+If your path is `[A, B, C]`, then:
+- `A` is marked as used
+- `B` is marked as used
+- `C` is marked as used
+- Nothing else is marked
+
+When you backtrack from `C`, your path becomes `[A, B]`, and `C` *must* be unmarked. If you forget to unmark `C`, you'll think it's still used when you try other paths, and you'll miss solutions.
+
+### Why This Invariant Matters
+
+The invariant guarantees:
+
+1. **No missed solutions**: Every valid configuration is reachable through some path.
+2. **No duplicates**: Each configuration is visited exactly once.
+3. **Correct pruning**: When you prune, you're pruning based on true state.
+
+**The most common bug**: Forgetting to undo state changes. The explorer walks backward but leaves chalk marks on the wall. Future paths see phantom constraints.
+
+---
+
+## 4. When the Pattern Appears
+
+### Instant Recognition Signals
+
+You're facing a backtracking problem when:
+
+| Signal | What It Means |
+|--------|---------------|
+| "Find **all** valid configurations" | You need exhaustive enumeration, not just one |
+| "Generate all permutations/subsets/combinations" | Classic decision tree over choices |
+| "Partition such that every part satisfies..." | Try all cut positions |
+| "Place pieces so no conflicts..." | Constraint satisfaction over positions |
+| "Find all paths through a grid" | DFS with visited tracking |
+
+### The Decision Tree Mental Model
+
+Every backtracking problem has a hidden tree:
+
+```
+                     []                    ← Root: empty state
+            ┌────────┼────────┐
+          [A]       [B]       [C]          ← First choice: 3 options
+        ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
+      [AB] [AC] [BA] [BC] [CA] [CB]        ← Second choice
+        │    │    │    │    │    │
+      ...  ...  ...  ...  ...  ...         ← Continue until complete
+```
+
+You're walking this tree. At each node, you:
+1. Check if you've found treasure (base case)
+2. If not, try each child (recursive case)
+3. Return to parent when all children exhausted
+
+---
+
+## 5. The Five Shapes of the Decision Tree
+
+Backtracking problems fall into five distinct shapes. Recognizing the shape tells you exactly what to track and how to recurse.
+
+### Shape 1: Permutation — "Arrange All, Order Matters"
+
+**The situation**: You have n distinct items. You want every possible ordering.
+
+**The constraint**: Each item appears exactly once per arrangement.
+
+**What to track**: Which items have been used (`used[]` array).
+
+**The tree shape**: 
+- Level 0: n choices (pick first item)
+- Level 1: n-1 choices (pick from unused)
+- Level k: n-k choices
+- **Leaves**: n! arrangements
+
+```
+Who goes first?  → [1] or [2] or [3]
+Who goes second? → [1,2] or [1,3] (not [1,1])
+...
+```
+
+### Shape 2: Subset — "Include or Exclude, Order Doesn't Matter"
+
+**The situation**: You have n items. You want every possible subset.
+
+**The constraint**: Items appear in canonical order (no `{2,1}`, only `{1,2}`).
+
+**What to track**: Start index (only consider items from here onward).
+
+**The tree shape**:
+- At each item: include it or skip it
+- **Leaves**: 2^n subsets
+
+```
+Item 1: [include] → [1]    or [skip] → []
+Item 2: [1,2] or [1] or [2] or []
+...
+```
+
+**Key insight**: Using a start index automatically enforces canonical order. You never look backward.
+
+### Shape 3: Target Sum — "Reach a Goal"
+
+**The situation**: Find combinations that add up to a target.
+
+**The constraint**: Sum must equal target exactly.
+
+**What to track**: Remaining target (what's left to fill).
+
+**The pruning**: If remaining goes negative, stop. If sorted and current element exceeds remaining, stop entirely.
+
+```
+Target: 7
+Pick 2 → remaining: 5
+Pick 3 → remaining: 2
+Pick 2 → remaining: 0 ← FOUND!
+```
+
+### Shape 4: Constraint Satisfaction — "Place Without Conflict"
+
+**The situation**: Place items (queens, numbers) so no two conflict.
+
+**The constra
+...(truncated)
+### backtracking_exploration/templates
+
+# Backtracking Exploration Patterns: Complete Reference
+
+> **API Kernel**: `BacktrackingExploration`  
+> **Core Mechanism**: Systematically explore all candidate solutions by building them incrementally, abandoning paths that violate constraints (pruning), and undoing choices to try alternatives.
+
+This document presents the **canonical backtracking template** and all its major variations. Each implementation follows consistent naming conventions and includes detailed algorithmic explanations.
+
+---
+
+## Table of Contents
+
+1. [Core Concepts](#1-core-concepts)
+2. [Base Template: Permutations (LeetCode 46)](#2-base-template-permutations-leetcode-46)
+3. [Variation: Permutations with Duplicates (LeetCode 47)](#3-variation-permutations-with-duplicates-leetcode-47)
+4. [Variation: Subsets (LeetCode 78)](#4-variation-subsets-leetcode-78)
+5. [Variation: Subsets with Duplicates (LeetCode 90)](#5-variation-subsets-with-duplicates-leetcode-90)
+6. [Variation: Combinations (LeetCode 77)](#6-variation-combinations-leetcode-77)
+7. [Variation: Combination Sum (LeetCode 39)](#7-variation-combination-sum-leetcode-39)
+8. [Variation: Combination Sum II (LeetCode 40)](#8-variation-combination-sum-ii-leetcode-40)
+9. [Variation: Combination Sum III (LeetCode 216)](#9-variation-combination-sum-iii-leetcode-216)
+10. [Variation: N-Queens (LeetCode 51/52)](#10-variation-n-queens-leetcode-5152)
+11. [Variation: Palindrome Partitioning (LeetCode 131)](#11-variation-palindrome-partitioning-leetcode-131)
+12. [Variation: Restore IP Addresses (LeetCode 93)](#12-variation-restore-ip-addresses-leetcode-93)
+13. [Variation: Word Search (LeetCode 79)](#13-variation-word-search-leetcode-79)
+14. [Deduplication Strategies](#14-deduplication-strategies)
+15. [Pruning Techniques](#15-pruning-techniques)
+16. [Pattern Comparison Table](#16-pattern-comparison-table)
+17. [When to Use Backtracking](#17-when-to-use-backtracking)
+18. [LeetCode Problem Mapping](#18-leetcode-problem-mapping)
+19. [Template Quick Reference](#19-template-quick-reference)
+
+---
+
+## 1. Core Concepts
+
+### 1.1 What is Backtracking?
+
+Backtracking is a **systematic trial-and-error** approach that incrementally builds candidates to the solutions and abandons a candidate ("backtracks") as soon as it determines that the candidate cannot lead to a valid solution.
+
+```
+Decision Tree Visualization:
+
+                    []
+           ┌────────┼────────┐
+          [1]      [2]      [3]
+        ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
+      [1,2] [1,3] [2,1] [2,3] [3,1] [3,2]
+        │     │     │     │     │     │
+     [1,2,3] ... (continue building)
+        ↓
+    SOLUTION FOUND → collect and backtrack
+```
+
+### 1.2 The Three-Step Pattern: Choose → Explore → Unchoose
+
+Every backtracking algorithm follows this fundamental pattern:
+
+```python
+def backtrack(state, choices):
+    """
+    Core backtracking template.
+    
+    1. BASE CASE: Check if current state is a complete solution
+    2. RECURSIVE CASE: For each available choice:
+       a) CHOOSE: Make a choice and update state
+       b) EXPLORE: Recursively explore with updated state
+       c) UNCHOOSE: Undo the choice (backtrack)
+    """
+    # BASE CASE: Is this a complete solution?
+    if is_solution(state):
+        collect_solution(state)
+        return
+    
+    # RECURSIVE CASE: Try each choice
+    for choice in get_available_choices(state, choices):
+        # CHOOSE: Make this choice
+        apply_choice(state, choice)
+        
+        # EXPLORE: Recurse with updated state
+        backtrack(state, remaining_choices(choices, choice))
+        
+        # UNCHOOSE: Undo the choice (restore state)
+        undo_choice(state, choice)
+```
+
+### 1.3 Key Invariants
+
+| Invariant | Description |
+|-----------|-------------|
+| **State Consistency** | After backtracking, state must be exactly as before the choice was made |
+| **Exhaustive Exploration** | Every valid solution must be reachable through some path |
+| **Pruning Soundness** | Pruned branches must not contain any valid solutions |
+| **No Duplicates** | Each unique solution must be generated exactly once |
+
+### 1.4 Time Complexity Discussion
+
+Backtracking algorithms typically have exponential or factorial complexity because they explore the entire solution space:
+
+| Problem Type | Typical Complexity | Output Size |
+|--------------|-------------------|-------------|
+| Permutations | O(n! × n) | n! |
+| Subsets | O(2^n × n) | 2^n |
+| Combinations C(n,k) | O(C(n,k) × k) | C(n,k) |
+| N-Queens | O(n!) | variable |
+
+**Important**: The complexity is often **output-sensitive** — if there are many solutions, generating them all is inherently expensive.
+
+### 1.5 Sub-Pattern Classification
+
+| Sub-Pattern | Key Characteristic | Examples |
+|-------------|-------------------|----------|
+| **Permutation** | Used/visited tracking | LeetCode 46, 47 |
+| **Subset/Combination** | Start-index canonicalization | LeetCode 78, 90, 77 |
+| **Target Search** | Remaining/target pruning | LeetCode 39, 40, 216 |
+| **Constraint Satisfaction** | Row-by-row with constraint sets | LeetCode 51, 52 |
+| **String Partitioning** | Cut positions with validity | LeetCode 131, 93 |
+| **Grid/Path Search** | Visited marking and undo | LeetCode 79 |
+
+---
+
+---
+
+## 2. Base Template: Permutations (LeetCode 46)
+
+> **Problem**: Given an array of distinct integers, return all possible permutations.  
+> **Sub-Pattern**: Permutation Enumeration with used tracking.  
+> **Key Insight**: At each position, try all unused elements.
+
+### 2.1 Implementation
+
+```python
+def permute(nums: list[int]) -> list[list[int]]:
+    """
+    Generate all permutations of distinct integers.
+    
+    Algorithm:
+    - Build permutation position by position
+    - Track which elements have been used with a boolean array
+    - At each position, try every unused element
+    - When path length equals nums length, we have a complete permutation
+    
+    Time Complexity: O(n! × n)
+        - n! permutations to generate
+        - O(n) to copy each permutation
+    
+    Space Complexity: O(n)
+        - Recursion depth is n
+        - Used array is O(n)
+        - Output space not counted
+    
+    Args:
+        nums: Array of distinct integers
+        
+    Returns:
+        All possible permutations
+    """
+    results: list[list[int]] = []
+    n = len(nums)
+    
+    # State: Current permutation being built
+    path: list[int] = []
+    
+    # Tracking: Which elements are already used in current path
+    used: list[bool] = [False] * n
+    
+    def backtrack() -> None:
+        # BASE CASE: Permutation is complete
+        if len(path) == n:
+            results.append(path[:])  # Append a copy
+            return
+        
+        # RECURSIVE CASE: Try each unused element
+        for i in range(n):
+            if used[i]:
+                continue  # Skip already used elements
+            
+            # CHOOSE: Add element to permutation
+            path.append(nums[i])
+            used[i] = True
+            
+            # EXPLORE: Recurse to fill next position
+            backtrack()
+            
+            # UNCHOOSE: Remove element (backtrack)
+            path.pop()
+            used[i] = False
+    
+    backtrack()
+    return results
+```
+
+### 2.2 Why This Works
+
+The `used` array ensures each element appears exactly once in each permutation. The decision tree has:
+- Level 0: n choices
+- Level 1: n-1 choices  
+- Level k: n-k choices
+- Total leaves: n!
+
+### 2.3 Trace Example
+
+```
+Input: [1, 2, 3]
+
+backtrack(path=[], used=[F,F,F])
+├─ CHOOSE 1 → backtrack(path=[1], used=[T,F,F])
+│  ├─ CHOOSE 2 → backtrack(path=[1,2], used=[T,T,F])
+│  │  └─ CHOOSE 3 → backtrack(path=[1,2,3], used=[T,T,T])
+│  │                 → SOLUTION: [1,2,3]
+│  └─ CHOOSE 3 → backtrack(path=[1,3], used=[T,F,T])
+│     └─ CHOOSE 2 → backtrack(path=[1,3,2], used=[T,T,T])
+│                    → SOLUTION: [1,3,2]
+├─ CHOOSE 2 → ... → [2,1,3], [2,3,1]
+└─ CHOOSE 3 → ... → [3,1,2], [3,2,1]
+
+Output: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
+```
+
+### 2.4 Common Pitfalls
+
+| Pitfall | Pro
+...(truncated)
+### sliding_window/intuition
+
+# Sliding Window: Pattern Intuition Guide
+
+> *"The window is a moving lens of attention — it forgets the past to focus on what matters now."*
+
+---
+
+## The Situation That Calls for a Window
+
+Imagine you're walking through a long corridor, and you can only see through a rectangular frame you carry with you. As you move forward, new things enter your view on the right, and old things disappear on the left.
+
+**This is the essence of Sliding Window.**
+
+You encounter this pattern whenever:
+- You're scanning through a sequence (string, array, stream)
+- You care about a **contiguous portion** of that sequence
+- The answer depends on properties of that portion
+- Those properties can be **updated incrementally** as the portion shifts
+
+The key insight: *You don't need to remember everything — only what's currently in view.*
+
+---
+
+## The Two Forces at Play
+
+Every sliding window algorithm is a dance between two opposing forces:
+
+### The Explorer (Right Boundary) $R$
+- Always moves forward, never backward
+- Discovers new territory
+- Adds new elements to consideration
+- Asks: *"What happens if I include this?"*
+
+### The Gatekeeper (Left Boundary) $L$
+- Follows behind, cleaning up
+- Removes elements that no longer serve the goal
+- Enforces the rules of what's allowed
+- Asks: *"Must I let go of something to stay valid?"*
+
+The Explorer is eager and expansive. The Gatekeeper is disciplined and selective. Together, they maintain a **window of validity** that slides through the sequence.
+
+---
+
+## The Invariant: The Window's Promise
+
+At every moment, the window makes a promise — an **invariant** that must always be true:
+
+| Problem Type | The Promise |
+|--------------|-------------|
+| Longest unique substring | *"Every character in my view appears exactly once"* |
+| At most K distinct | *"I contain no more than K different characters"* |
+| Minimum covering substring | *"I contain everything required"* |
+| Sum at least target | *"My total meets or exceeds the goal"* |
+
+**This promise is sacred.** The moment it's broken, the Gatekeeper must act — shrinking the window until the promise is restored.
+
+---
+
+## The Irreversible Truth
+
+Here's what makes sliding window work: **the Explorer never retreats.**
+
+Once the right boundary passes an element, that element has been "seen." We may include it or exclude it from our current window, but we never go back to re-examine it as a potential starting point... unless the Gatekeeper releases it.
+
+This one-directional march is what gives us O(n) time complexity. Each element enters the window at most once and exits at most once. No element is visited more than twice across the entire algorithm.
+
+The irreversibility creates efficiency: *past decisions don't haunt us.*
+
+---
+
+## The Two Modes of Seeking
+
+Depending on what you're optimizing, the dance changes:
+
+### Mode 1: Maximize the Window
+*"How large can my view become while staying valid?"*
+
+```
+Process:
+1. Explorer advances, adding new element
+2. If promise breaks → Gatekeeper advances until promise restored
+3. Record the current window size (this is a candidate answer)
+4. Repeat
+
+The window EXPANDS freely, CONTRACTS only when forced.
+```
+
+**Mental image**: Stretching a rubber band until it's about to snap, then easing off just enough.
+
+#### Flowchart: Maximize Window
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  Example: Longest Substring Without Repeating Characters                    │
+│  Sequence: [ a  b  c  a  b ]    Promise: "All chars unique"                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────┐                                                                    │
+│  │START│                                                                    │
+│  └──┬──┘                                                                    │
+│     ▼                                                                       │
+│  ┌──────────────────────┐                                                   │
+│  │  R < length?         │───No───► ┌─────────┐                              │
+│  └──────┬───────────────┘          │  DONE   │                              │
+│     Yes │                          └─────────┘                              │
+│         ▼                                                                   │
+│  ╔══════════════════════════════╗                                           │
+│  ║  🟢 R advances (Explorer)    ║◄───────────────────────────────┐          │
+│  ║     Add element to state     ║                                │          │
+│  ╚═══════════════╤══════════════╝                                │          │
+│                  ▼                                               │          │
+│        ┌─────────────────────┐                                   │          │
+│        │ Promise broken?     │                                   │          │
+│        │ (duplicate found?)  │                                   │          │
+│        └────────┬────────────┘                                   │          │
+│           Yes   │   No                                           │          │
+│      ┌──────────┴──────────┐                                     │          │
+│      ▼                     ▼                                     │          │
+│  ┌─────────────────┐  ┌────────────────────────────────┐         │          │
+│  │ While promise   │  │ ✅ Update answer:              │         │          │
+│  │ is broken:      │  │    ans = max(ans, R-L+1)       │         │          │
+│  │                 │  └──────────────┬─────────────────┘         │          │
+│  │ ╔═════════════╗ │                 │                           │          │
+│  │ ║ 🔴 L++      ║ │                 │                           │          │
+│  │ ║ Remove L-1  ║ │                 │                           │          │
+│  │ ╚═════════════╝ │                 │                           │          │
+│  └────────┬────────┘                 │                           │          │
+│           │                          │                           │          │
+│           └──────────────────────────┘                           │          │
+│                     │                                            │          │
+│                     │                                            │          │
+│                     │                                            │          │
+│                     └────────────────────────────────────────────┘          │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+Visual Trace:
+═══════════════════════════════════════════════════════════════════════════════
+
+  Sequence:   a    b    c    a    b
+             [0]  [1]  [2]  [3]  [4]
+
+  Step 1:   🟢R→
+            [ a ]                        max = 1
+              L,R
+
+  Step 2:         🟢R→
+            [ a    b ]                   max = 2
+              L        R
+
+  Step 3:              🟢R→
+            [ a    b    c ]              max = 3
+              L              R
+
+  Step 4:                   🟢R→
+            [ a    b    c    a ]         ❌ 'a' duplicate!
+              L                  R
+                             │
+                             ▼
+            🔴L→ 🔴L
+                 [ b    c    a ]         max = 3 (restored)
+                   L             R
+
+  Step 5:                        🟢R→
+                 [ b    c    a    b ]    ❌ 'b' duplicate!
+                   L                  R
+                                  │
+                                  ▼
+                  🔴L→ 🔴L
+                      [ c    a    b ]    max = 3 (final)
+                        L             R
+
+Legend: 🟢 = R expands (green)  🔴 = L contracts (red)  ❌ = promise broken
+```
+
+---
+
+### Mode 2: Minimize the Window
+*"How small can my view become while still being valid?"*
+
+```
+...(truncated)
+### sliding_window/templates
 
 # Sliding Window Patterns: Complete Reference
 
@@ -1760,7 +2387,211 @@ def length_of_longest_substring_k_distinct(s: str, k: int) -> int:
             # Remove character from map when its count reaches zero
             # This is
 ...(truncated)
-### two_pointers
+### two_pointers/intuition
+
+# Two Pointers: Pattern Intuition Guide
+
+> *"Two points of attention, moving in coordinated rhythm — each step permanently narrows the world of possibilities."*
+
+---
+
+## The Situation That Calls for Two Pointers
+
+Imagine you're standing at the edge of a long corridor with doors on both sides. You know the answer lies somewhere in this corridor, but checking every possible pair of doors would take forever.
+
+Then you realize: you don't need to check everything. You can place one hand on the leftmost door and one on the rightmost door. Based on what you find, you know which hand to move. With each movement, doors behind you become irrelevant — forever excluded from consideration.
+
+**This is the essence of Two Pointers.**
+
+You encounter this pattern whenever:
+- You're working with a **sorted** or **ordered** sequence
+- You need to find **pairs, tuples, or regions** with certain properties
+- The relationship between elements is **monotonic** — changing one pointer predictably affects the outcome
+- You can **eliminate possibilities** based on the current state
+
+The key insight: *You're not searching — you're eliminating. Every pointer movement permanently shrinks the problem.*
+
+---
+
+## The Invariant: The Space Between
+
+Every two pointers algorithm maintains a **sacred region** — the space where the answer must exist.
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│                                                               │
+│   [excluded]  ←  left  ═══════ answer space ═══════  right → [excluded]   │
+│                                                               │
+│   Once excluded, never reconsidered.                          │
+│   The region between pointers is the ONLY remaining hope.     │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+```
+
+The invariant says: *If a valid answer exists, it lies within the current boundaries.* Moving a pointer is a declaration: "I've proven that nothing behind this pointer can be part of the answer."
+
+**This is what makes two pointers work**: each movement is a proof of exclusion. You're not guessing — you're eliminating with certainty.
+
+---
+
+## The Irreversible Decision
+
+Here's the crucial insight that separates two pointers from brute force:
+
+> **Once a pointer moves, it never moves back.**
+
+When you advance `left` from position 3 to position 4, you've permanently decided: "No valid answer involves position 3 as the left element." This decision is irreversible.
+
+This one-directional march is what transforms O(n²) into O(n). Instead of checking all n² pairs, each of the 2n pointer positions is visited at most once.
+
+The irreversibility creates efficiency: *you burn bridges as you cross them.*
+
+---
+
+## The Six Shapes of Two Pointers
+
+Two pointer problems come in six distinct flavors. Recognizing the shape tells you exactly how to position and move the pointers.
+
+---
+
+### Shape 1: Opposite Approach — "Closing the Gap"
+
+**The situation**: Two sentinels stand at opposite ends of a corridor. They walk toward each other, meeting somewhere in the middle.
+
+**What it feels like**: You're squeezing from both ends. The search space shrinks from the outside in.
+
+**The mental model**:
+```
+Initial:    L ═══════════════════════════════════ R
+            ↓                                     ↓
+Step 1:       L ═════════════════════════════ R
+                                               ↓
+Step 2:       L ═════════════════════════ R
+              ↓
+Step 3:         L ═══════════════════ R
+                         ...
+Final:                    L R  (or L crosses R)
+```
+
+**The decision rule**: Based on the current pair's property:
+- If the combined value is **too small** → move `left` right (seek larger)
+- If the combined value is **too large** → move `right` left (seek smaller)
+- If it matches → record and continue (or return immediately)
+
+**Why it works**: Sorted order creates monotonicity. Moving `left` right can only *increase* its contribution. Moving `right` left can only *decrease* its contribution. This gives you precise control.
+
+**Classic problems**: Two Sum II, Container With Most Water, 3Sum
+
+---
+
+### Shape 2: Same Direction — "The Writer Following the Reader"
+
+**The situation**: Two people walk the same corridor. One is a **Reader** who examines every door. The other is a **Writer** who only records the doors worth keeping.
+
+**What it feels like**: You're filtering in-place. The Reader advances relentlessly; the Writer only moves when something passes the test.
+
+**The mental model**:
+```
+Initial:    [a] [b] [c] [d] [e] [f]
+             W   R
+             ↓
+             Reader examines 'a'
+             'a' passes → Writer takes it, both advance
+
+Step 2:     [a] [b] [c] [d] [e] [f]
+                 W   R
+                 ↓
+                 Reader examines 'b'
+                 'b' fails → only Reader advances
+
+Step 3:     [a] [b] [c] [d] [e] [f]
+                 W       R
+                         ↓
+                         Reader examines 'c'
+                         'c' passes → Writer takes it, both advance
+
+Final:      [a] [c] [x] [x] [x] [x]
+                     ↑
+                     New logical end (write position)
+```
+
+**The decision rule**: 
+- Reader always advances
+- Writer only advances when the current element should be kept
+- Elements are copied from Reader position to Writer position
+
+**Why it works**: The Writer index marks the boundary of "good" elements. Everything before Writer is the output; everything at or after is either unprocessed or discarded.
+
+**The invariant**: `arr[0:write]` contains exactly the valid elements seen so far, in their original order.
+
+**Classic problems**: Remove Duplicates, Remove Element, Move Zeroes
+
+---
+
+### Shape 3: Fast and Slow — "The Tortoise and the Hare"
+
+**The situation**: Two runners on a track. One runs twice as fast as the other. If the track is a loop, the fast runner will eventually lap the slow one.
+
+**What it feels like**: You're detecting a cycle by observing when speeds converge.
+
+**The mental model**:
+```
+Linear track (no cycle):
+    Slow: 1 step per turn
+    Fast: 2 steps per turn
+
+    Fast reaches the end first → No cycle
+
+
+Circular track (cycle exists):
+    ┌───────────────────────────┐
+    │                           │
+    ↓                           │
+   [A] → [B] → [C] → [D] → [E] ─┘
+    S          F
+
+    Fast enters cycle first
+    Slow eventually enters
+    Fast "chases" slow from behind
+    Gap closes by 1 each step
+    They MUST meet inside the cycle
+```
+
+**The decision rule**:
+- Slow moves 1 step
+- Fast moves 2 steps
+- If they meet → cycle exists
+- If Fast reaches null → no cycle
+
+**Why it works**: If there's a cycle, once both pointers are inside, the relative distance changes by 1 each iteration. Since the cycle length is finite, they must eventually collide.
+
+**Finding the cycle start** (Phase 2):
+- When they meet, reset Slow to head
+- Move both at speed 1
+- They meet again at the cycle start
+
+This works because of the mathematical relationship between the meeting point and the cycle entry.
+
+**Classic problems**: Linked List Cycle, Happy Number, Find Duplicate Number
+
+---
+
+### Shape 4: Partitioning — "The Bouncer Sorting the Queue"
+
+**The situation**: A bouncer at a club entrance directs each person to one of three sections: left, middle, or right. Each person is examined once and placed in their final position.
+
+**What it feels like**: You're sorting without sorting — classifying elements into regions in a single pass.
+
+**The mental model** (Dutch National Flag):
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│   [  < pivot  ]  [  = pivot  ]  [  unclassified  ]  [ > pivot ]│
+│   └───────────┘  └───────────┘  └────────────────┘  └─────────┘│
+│    0      low-1   low    mid-1   mid         high   high+1   n-1│
+│                          ↑               
+...(truncated)
+### two_pointers/templates
 
 # Two Pointers Patterns: Complete Reference
 
@@ -1990,6 +2821,1121 @@ def same_direction_template(arr, condition):
 
 ## 🧩 Pattern Snippets
 
+### backtracking_exploration
+
+#### 0039_combination_sum.md
+
+## Variation: Combination Sum (LeetCode 39)
+
+> **Problem**: Find combinations that sum to target. Elements can be reused.  
+> **Sub-Pattern**: Target search with element reuse.  
+> **Key Insight**: Don't increment start_index when allowing reuse.
+
+### Implementation
+
+```python
+def combination_sum(candidates: list[int], target: int) -> list[list[int]]:
+    """
+    Find all combinations that sum to target. Each number can be used unlimited times.
+    
+    Algorithm:
+    - Track remaining target (target - current sum)
+    - When remaining = 0, found a valid combination
+    - Allow reuse by NOT incrementing start_index when recursing
+    - Prune when remaining < 0 (overshot target)
+    
+    Key Difference from Combinations:
+    - Reuse allowed: recurse with same index i, not i+1
+    - This means we can pick the same element multiple times
+    
+    Time Complexity: O(n^(t/m)) where t=target, m=min(candidates)
+        - Branching factor up to n at each level
+        - Depth up to t/m (using smallest element repeatedly)
+    
+    Space Complexity: O(t/m) for recursion depth
+    
+    Args:
+        candidates: Array of distinct positive integers
+        target: Target sum
+        
+    Returns:
+        All unique combinations that sum to target
+    """
+    results: list[list[int]] = []
+    path: list[int] = []
+    
+    # Optional: Sort for consistent output order
+    candidates.sort()
+    
+    def backtrack(start_index: int, remaining: int) -> None:
+        # BASE CASE: Found valid combination
+        if remaining == 0:
+            results.append(path[:])
+            return
+        
+        # PRUNING: Overshot target
+        if remaining < 0:
+            return
+        
+        for i in range(start_index, len(candidates)):
+            # PRUNING: If current candidate exceeds remaining, 
+            # all subsequent (if sorted) will too
+            if candidates[i] > remaining:
+                break
+            
+            path.append(candidates[i])
+            
+            # R
+...(truncated)
+#### 0040_combination_sum_ii.md
+
+## Variation: Combination Sum II (LeetCode 40)
+
+> **Problem**: Find combinations that sum to target. Each element used at most once. Input may have duplicates.  
+> **Delta from Combination Sum**: No reuse + duplicate handling.  
+> **Key Insight**: Sort + same-level skip for duplicates.
+
+### Implementation
+
+```python
+def combination_sum2(candidates: list[int], target: int) -> list[list[int]]:
+    """
+    Find all unique combinations that sum to target. Each number used at most once.
+    Input may contain duplicates.
+    
+    Algorithm:
+    - Sort to bring duplicates together
+    - Use start_index to prevent reuse (i+1 when recursing)
+    - Same-level deduplication: skip if current == previous at same level
+    
+    Deduplication Rule:
+    - Skip candidates[i] if i > start_index AND candidates[i] == candidates[i-1]
+    - This prevents generating duplicate combinations
+    
+    Time Complexity: O(2^n) worst case
+    Space Complexity: O(n)
+    
+    Args:
+        candidates: Array of positive integers (may have duplicates)
+        target: Target sum
+        
+    Returns:
+        All unique combinations summing to target
+    """
+    results: list[list[int]] = []
+    path: list[int] = []
+    
+    # CRITICAL: Sort for deduplication
+    candidates.sort()
+    
+    def backtrack(start_index: int, remaining: int) -> None:
+        if remaining == 0:
+            results.append(path[:])
+            return
+        
+        if remaining < 0:
+            return
+        
+        for i in range(start_index, len(candidates)):
+            # DEDUPLICATION: Skip same value at same level
+            if i > start_index and candidates[i] == candidates[i - 1]:
+                continue
+            
+            # PRUNING: Current exceeds remaining (sorted, so break)
+            if candidates[i] > remaining:
+                break
+            
+            path.append(candidates[i])
+            
+            # NO REUSE: Recurse with i+1
+            backtrack(i + 1, remaining - candidates[i])
+       
+...(truncated)
+#### 0046_permutations.md
+
+## Base Template: Permutations (LeetCode 46)
+
+> **Problem**: Given an array of distinct integers, return all possible permutations.  
+> **Sub-Pattern**: Permutation Enumeration with used tracking.  
+> **Key Insight**: At each position, try all unused elements.
+
+### Implementation
+
+```python
+def permute(nums: list[int]) -> list[list[int]]:
+    """
+    Generate all permutations of distinct integers.
+    
+    Algorithm:
+    - Build permutation position by position
+    - Track which elements have been used with a boolean array
+    - At each position, try every unused element
+    - When path length equals nums length, we have a complete permutation
+    
+    Time Complexity: O(n! × n)
+        - n! permutations to generate
+        - O(n) to copy each permutation
+    
+    Space Complexity: O(n)
+        - Recursion depth is n
+        - Used array is O(n)
+        - Output space not counted
+    
+    Args:
+        nums: Array of distinct integers
+        
+    Returns:
+        All possible permutations
+    """
+    results: list[list[int]] = []
+    n = len(nums)
+    
+    # State: Current permutation being built
+    path: list[int] = []
+    
+    # Tracking: Which elements are already used in current path
+    used: list[bool] = [False] * n
+    
+    def backtrack() -> None:
+        # BASE CASE: Permutation is complete
+        if len(path) == n:
+            results.append(path[:])  # Append a copy
+            return
+        
+        # RECURSIVE CASE: Try each unused element
+        for i in range(n):
+            if used[i]:
+                continue  # Skip already used elements
+            
+            # CHOOSE: Add element to permutation
+            path.append(nums[i])
+            used[i] = True
+            
+            # EXPLORE: Recurse to fill next position
+            backtrack()
+            
+            # UNCHOOSE: Remove element (backtrack)
+            path.pop()
+            used[i] = False
+    
+    backtrack()
+    return results
+```
+
+### Why This Works
+
+The `used` array ensu
+...(truncated)
+#### 0047_permutations_duplicates.md
+
+## Variation: Permutations with Duplicates (LeetCode 47)
+
+> **Problem**: Given an array with duplicate integers, return all unique permutations.  
+> **Delta from Base**: Add same-level deduplication after sorting.  
+> **Key Insight**: Skip duplicate elements at the same tree level.
+
+### Implementation
+
+```python
+def permute_unique(nums: list[int]) -> list[list[int]]:
+    """
+    Generate all unique permutations of integers that may contain duplicates.
+    
+    Algorithm:
+    - Sort the array to bring duplicates together
+    - Use same-level deduplication: skip a duplicate if its previous
+      occurrence wasn't used (meaning we're at the same decision level)
+    
+    Deduplication Rule:
+    - If nums[i] == nums[i-1] and used[i-1] == False, skip nums[i]
+    - This ensures we only use the first occurrence of a duplicate
+      at each level of the decision tree
+    
+    Time Complexity: O(n! × n) in worst case (all unique)
+    Space Complexity: O(n)
+    
+    Args:
+        nums: Array of integers (may contain duplicates)
+        
+    Returns:
+        All unique permutations
+    """
+    results: list[list[int]] = []
+    n = len(nums)
+    
+    # CRITICAL: Sort to bring duplicates together
+    nums.sort()
+    
+    path: list[int] = []
+    used: list[bool] = [False] * n
+    
+    def backtrack() -> None:
+        if len(path) == n:
+            results.append(path[:])
+            return
+        
+        for i in range(n):
+            if used[i]:
+                continue
+            
+            # DEDUPLICATION: Skip duplicates at the same tree level
+            # Condition: Current equals previous AND previous is unused
+            # (unused previous means we're trying duplicate at same level)
+            if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                continue
+            
+            path.append(nums[i])
+            used[i] = True
+            
+            backtrack()
+            
+            path.pop()
+            used[i] = False
+    
+    backtrack()
+...(truncated)
+#### 0051_n_queens.md
+
+## Variation: N-Queens (LeetCode 51/52)
+
+> **Problem**: Place n queens on an n×n board so no two queens attack each other.  
+> **Sub-Pattern**: Constraint satisfaction with row-by-row placement.  
+> **Key Insight**: Track columns and diagonals as constraint sets.
+
+### Implementation
+
+```python
+def solve_n_queens(n: int) -> list[list[str]]:
+    """
+    Find all solutions to the N-Queens puzzle.
+    
+    Algorithm:
+    - Place queens row by row (one queen per row guaranteed)
+    - Track three constraints:
+      1. Columns: No two queens in same column
+      2. Main diagonals (↘): row - col is constant
+      3. Anti-diagonals (↙): row + col is constant
+    - Use hash sets for O(1) constraint checking
+    
+    Key Insight:
+    - Row-by-row placement eliminates row conflicts by construction
+    - Only need to check column and diagonal conflicts
+    
+    Time Complexity: O(n!)
+        - At row 0: n choices
+        - At row 1: at most n-1 choices
+        - ... and so on
+    
+    Space Complexity: O(n) for constraint sets and recursion
+    
+    Args:
+        n: Board size
+        
+    Returns:
+        All valid board configurations as string arrays
+    """
+    results: list[list[str]] = []
+    
+    # State: queen_cols[row] = column where queen is placed
+    queen_cols: list[int] = [-1] * n
+    
+    # Constraint sets for O(1) conflict checking
+    used_cols: set[int] = set()
+    used_diag_main: set[int] = set()   # row - col
+    used_diag_anti: set[int] = set()   # row + col
+    
+    def backtrack(row: int) -> None:
+        # BASE CASE: All queens placed
+        if row == n:
+            results.append(build_board(queen_cols, n))
+            return
+        
+        # Try each column in current row
+        for col in range(n):
+            # Calculate diagonal identifiers
+            diag_main = row - col
+            diag_anti = row + col
+            
+            # CONSTRAINT CHECK (pruning)
+            if col in used_cols:
+                continue
+            if diag_main in u
+...(truncated)
+#### 0077_combinations.md
+
+## Variation: Combinations (LeetCode 77)
+
+> **Problem**: Given n and k, return all combinations of k numbers from [1..n].  
+> **Sub-Pattern**: Fixed-size subset enumeration.  
+> **Delta from Subsets**: Only collect when path length equals k.
+
+### Implementation
+
+```python
+def combine(n: int, k: int) -> list[list[int]]:
+    """
+    Generate all combinations of k numbers from range [1, n].
+    
+    Algorithm:
+    - Similar to subsets, but only collect when path has exactly k elements
+    - Use start_index to enforce canonical ordering
+    - Add pruning: stop early if remaining elements can't fill path to k
+    
+    Pruning Optimization:
+    - If we need (k - len(path)) more elements, we need at least that many
+      elements remaining in [i, n]
+    - Elements remaining = n - i + 1
+    - Prune when: n - i + 1 < k - len(path)
+    - Equivalently: stop loop when i > n - (k - len(path)) + 1
+    
+    Time Complexity: O(k × C(n,k))
+    Space Complexity: O(k)
+    
+    Args:
+        n: Range upper bound [1..n]
+        k: Size of each combination
+        
+    Returns:
+        All combinations of k numbers from [1..n]
+    """
+    results: list[list[int]] = []
+    path: list[int] = []
+    
+    def backtrack(start: int) -> None:
+        # BASE CASE: Combination is complete
+        if len(path) == k:
+            results.append(path[:])
+            return
+        
+        # PRUNING: Calculate upper bound for current loop
+        # We need (k - len(path)) more elements
+        # Available elements from start to n is (n - start + 1)
+        # Stop when available < needed
+        need = k - len(path)
+        
+        for i in range(start, n - need + 2):  # n - need + 1 + 1 for range
+            path.append(i)
+            backtrack(i + 1)
+            path.pop()
+    
+    backtrack(1)
+    return results
+```
+
+### Pruning Analysis
+
+```
+n=4, k=2
+
+Without pruning:
+start=1: try 1,2,3,4
+  start=2: try 2,3,4
+  start=3: try 3,4
+  start=4: try 4     ← only 1 element left, need 1 more → works
+  sta
+...(truncated)
+#### 0078_subsets.md
+
+## Variation: Subsets (LeetCode 78)
+
+> **Problem**: Given an array of distinct integers, return all possible subsets.  
+> **Sub-Pattern**: Subset enumeration with start-index canonicalization.  
+> **Key Insight**: Use a start index to avoid revisiting previous elements.
+
+### Implementation
+
+```python
+def subsets(nums: list[int]) -> list[list[int]]:
+    """
+    Generate all subsets (power set) of distinct integers.
+    
+    Algorithm:
+    - Each subset is a collection of elements with no ordering
+    - To avoid duplicates like {1,2} and {2,1}, enforce canonical ordering
+    - Use start_index to only consider elements at or after current position
+    - Every intermediate path is a valid subset (collect at every node)
+    
+    Key Insight:
+    - Unlike permutations, subsets don't need a "used" array
+    - The start_index inherently prevents revisiting previous elements
+    
+    Time Complexity: O(n × 2^n)
+        - 2^n subsets to generate
+        - O(n) to copy each subset
+    
+    Space Complexity: O(n) for recursion depth
+    
+    Args:
+        nums: Array of distinct integers
+        
+    Returns:
+        All possible subsets
+    """
+    results: list[list[int]] = []
+    n = len(nums)
+    path: list[int] = []
+    
+    def backtrack(start_index: int) -> None:
+        # COLLECT: Every path (including empty) is a valid subset
+        results.append(path[:])
+        
+        # EXPLORE: Only consider elements from start_index onwards
+        for i in range(start_index, n):
+            # CHOOSE
+            path.append(nums[i])
+            
+            # EXPLORE: Move start_index forward to enforce ordering
+            backtrack(i + 1)
+            
+            # UNCHOOSE
+            path.pop()
+    
+    backtrack(0)
+    return results
+```
+
+### Why Start Index Works
+
+```
+Input: [1, 2, 3]
+
+Decision tree with start_index:
+[]                         ← start=0, collect []
+├─ [1]                     ← start=1, collect [1]
+│  ├─ [1,2]                ← start=2, collect [1,2]
+│  │  
+...(truncated)
+#### 0079_word_search.md
+
+## Variation: Word Search (LeetCode 79)
+
+> **Problem**: Find if a word exists in a grid by traversing adjacent cells.  
+> **Sub-Pattern**: Grid/Path DFS with visited marking.  
+> **Key Insight**: Mark visited, explore neighbors, unmark on backtrack.
+
+### Implementation
+
+```python
+def exist(board: list[list[str]], word: str) -> bool:
+    """
+    Check if word exists in grid by traversing adjacent cells.
+    
+    Algorithm:
+    - Start DFS from each cell that matches word[0]
+    - Mark current cell as visited (modify in-place or use set)
+    - Try all 4 directions for next character
+    - Unmark on backtrack
+    
+    Key Insight:
+    - Each cell can be used at most once per path
+    - In-place marking (temporary modification) is efficient
+    
+    Pruning:
+    - Early return on mismatch
+    - Can add frequency check: if board doesn't have enough of each char
+    
+    Time Complexity: O(m × n × 4^L) where L = len(word)
+        - m×n starting positions
+        - 4 choices at each step, depth L
+    
+    Space Complexity: O(L) for recursion depth
+    
+    Args:
+        board: 2D character grid
+        word: Target word to find
+        
+    Returns:
+        True if word can be formed
+    """
+    if not board or not board[0]:
+        return False
+    
+    rows, cols = len(board), len(board[0])
+    word_len = len(word)
+    
+    # Directions: up, down, left, right
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    
+    def backtrack(row: int, col: int, index: int) -> bool:
+        # BASE CASE: All characters matched
+        if index == word_len:
+            return True
+        
+        # BOUNDARY CHECK
+        if row < 0 or row >= rows or col < 0 or col >= cols:
+            return False
+        
+        # CHARACTER CHECK
+        if board[row][col] != word[index]:
+            return False
+        
+        # MARK AS VISITED (in-place modification)
+        original = board[row][col]
+        board[row][col] = '#'  # Temporary marker
+        
+        # EXPLORE: Try all 4 dire
+...(truncated)
+#### 0090_subsets_duplicates.md
+
+## Variation: Subsets with Duplicates (LeetCode 90)
+
+> **Problem**: Given an array with duplicates, return all unique subsets.  
+> **Delta from Subsets**: Sort + same-level deduplication.  
+> **Key Insight**: Skip duplicate values at the same recursion level.
+
+### Implementation
+
+```python
+def subsets_with_dup(nums: list[int]) -> list[list[int]]:
+    """
+    Generate all unique subsets from integers that may contain duplicates.
+    
+    Algorithm:
+    - Sort to bring duplicates together
+    - Use same-level deduplication: skip if current equals previous
+      in the same iteration loop
+    
+    Deduplication Condition:
+    - Skip nums[i] if i > start_index AND nums[i] == nums[i-1]
+    - This prevents choosing the same value twice at the same tree level
+    
+    Time Complexity: O(n × 2^n) worst case
+    Space Complexity: O(n)
+    
+    Args:
+        nums: Array of integers (may contain duplicates)
+        
+    Returns:
+        All unique subsets
+    """
+    results: list[list[int]] = []
+    n = len(nums)
+    
+    # CRITICAL: Sort to bring duplicates together
+    nums.sort()
+    
+    path: list[int] = []
+    
+    def backtrack(start_index: int) -> None:
+        results.append(path[:])
+        
+        for i in range(start_index, n):
+            # DEDUPLICATION: Skip duplicates at same level
+            # i > start_index ensures we're not skipping the first occurrence
+            if i > start_index and nums[i] == nums[i - 1]:
+                continue
+            
+            path.append(nums[i])
+            backtrack(i + 1)
+            path.pop()
+    
+    backtrack(0)
+    return results
+```
+
+### Deduplication Visualization
+
+```
+Input: [1, 2, 2] (sorted)
+
+Without deduplication:
+[]
+├─ [1] → [1,2] → [1,2,2]
+│      → [1,2]  ← choosing second 2
+├─ [2] → [2,2]
+└─ [2]  ← DUPLICATE of above!
+
+With deduplication (skip if i > start and nums[i] == nums[i-1]):
+[]
+├─ [1] → [1,2] → [1,2,2]
+│                        ↑ i=2, start=2, 2==2 but i==start, proceed
+│      → [1,2]  skipped (i
+...(truncated)
+#### 0093_restore_ip.md
+
+## Variation: Restore IP Addresses (LeetCode 93)
+
+> **Problem**: Return all valid IP addresses that can be formed from a digit string.  
+> **Sub-Pattern**: String segmentation with multi-constraint validity.  
+> **Key Insight**: Fixed 4 segments, each 1-3 digits, value 0-255, no leading zeros.
+
+### Implementation
+
+```python
+def restore_ip_addresses(s: str) -> list[str]:
+    """
+    Generate all valid IP addresses from a digit string.
+    
+    Constraints per segment:
+    1. Length: 1-3 characters
+    2. Value: 0-255
+    3. No leading zeros (except "0" itself)
+    
+    Algorithm:
+    - Exactly 4 segments required
+    - Try 1, 2, or 3 characters for each segment
+    - Validate each segment before proceeding
+    
+    Pruning:
+    - Early termination if remaining chars can't form remaining segments
+    - Min remaining = segments_left × 1
+    - Max remaining = segments_left × 3
+    
+    Time Complexity: O(3^4 × n) = O(81 × n) = O(n)
+        - At most 3 choices per segment, 4 segments
+        - O(n) to validate/copy
+    
+    Space Complexity: O(4) = O(1) for path
+    
+    Args:
+        s: String of digits
+        
+    Returns:
+        All valid IP addresses
+    """
+    results: list[str] = []
+    segments: list[str] = []
+    n = len(s)
+    
+    def is_valid_segment(segment: str) -> bool:
+        """Check if segment is a valid IP octet."""
+        if not segment:
+            return False
+        if len(segment) > 1 and segment[0] == '0':
+            return False  # No leading zeros
+        if int(segment) > 255:
+            return False
+        return True
+    
+    def backtrack(start: int, segment_count: int) -> None:
+        # PRUNING: Check remaining length bounds
+        remaining = n - start
+        remaining_segments = 4 - segment_count
+        
+        if remaining < remaining_segments:  # Too few chars
+            return
+        if remaining > remaining_segments * 3:  # Too many chars
+            return
+        
+        # BASE CASE: 4 segments formed
+        if seg
+...(truncated)
+#### 0131_palindrome_partitioning.md
+
+## Variation: Palindrome Partitioning (LeetCode 131)
+
+> **Problem**: Partition a string such that every substring is a palindrome.  
+> **Sub-Pattern**: String segmentation with validity check.  
+> **Key Insight**: Try all cut positions, validate each segment.
+
+### Implementation
+
+```python
+def partition(s: str) -> list[list[str]]:
+    """
+    Partition string so every part is a palindrome.
+    
+    Algorithm:
+    - Try cutting at each position from current start
+    - Check if prefix is palindrome; if yes, recurse on suffix
+    - When start reaches end of string, we have a valid partition
+    
+    Key Insight:
+    - Each "choice" is where to cut the string
+    - Only proceed if the cut-off prefix is a palindrome
+    
+    Optimization:
+    - Precompute palindrome status with DP for O(1) checks
+    - Without precompute: O(n) per check, O(n^3) total
+    - With precompute: O(n^2) preprocessing, O(1) per check
+    
+    Time Complexity: O(n × 2^n) worst case
+        - 2^(n-1) possible partitions (n-1 cut positions)
+        - O(n) to copy each partition
+    
+    Space Complexity: O(n) for recursion
+    
+    Args:
+        s: Input string
+        
+    Returns:
+        All palindrome partitionings
+    """
+    results: list[list[str]] = []
+    path: list[str] = []
+    n = len(s)
+    
+    # Precompute: is_palindrome[i][j] = True if s[i:j+1] is palindrome
+    is_palindrome = [[False] * n for _ in range(n)]
+    for i in range(n - 1, -1, -1):
+        for j in range(i, n):
+            if s[i] == s[j]:
+                if j - i <= 2:
+                    is_palindrome[i][j] = True
+                else:
+                    is_palindrome[i][j] = is_palindrome[i + 1][j - 1]
+    
+    def backtrack(start: int) -> None:
+        # BASE CASE: Reached end of string
+        if start == n:
+            results.append(path[:])
+            return
+        
+        # Try each end position for current segment
+        for end in range(start, n):
+            # VALIDITY CHECK: Only proceed if palindrome
+
+...(truncated)
+#### 0216_combination_sum_iii.md
+
+## Variation: Combination Sum III (LeetCode 216)
+
+> **Problem**: Find k numbers from [1-9] that sum to n. Each number used at most once.  
+> **Delta from Combination Sum II**: Fixed count k + bounded range [1-9].  
+> **Key Insight**: Dual constraint — both count and sum must be satisfied.
+
+### Implementation
+
+```python
+def combination_sum3(k: int, n: int) -> list[list[int]]:
+    """
+    Find all combinations of k numbers from [1-9] that sum to n.
+    
+    Algorithm:
+    - Fixed size k (must have exactly k numbers)
+    - Fixed sum n (must sum to exactly n)
+    - Range is [1-9], all distinct, no reuse
+    
+    Pruning Strategies:
+    1. If current sum exceeds n, stop
+    2. If path length exceeds k, stop
+    3. If remaining numbers can't fill to k, stop
+    
+    Time Complexity: O(C(9,k) × k)
+    Space Complexity: O(k)
+    
+    Args:
+        k: Number of elements required
+        n: Target sum
+        
+    Returns:
+        All valid combinations
+    """
+    results: list[list[int]] = []
+    path: list[int] = []
+    
+    def backtrack(start: int, remaining: int) -> None:
+        # BASE CASE: Have k numbers
+        if len(path) == k:
+            if remaining == 0:
+                results.append(path[:])
+            return
+        
+        # PRUNING: Not enough numbers left to fill path
+        if 9 - start + 1 < k - len(path):
+            return
+        
+        for i in range(start, 10):
+            # PRUNING: Current number too large
+            if i > remaining:
+                break
+            
+            path.append(i)
+            backtrack(i + 1, remaining - i)
+            path.pop()
+    
+    backtrack(1, n)
+    return results
+```
+
+
+#### _comparison.md
+
+## Pattern Comparison Table
+
+| Problem | Sub-Pattern | State | Dedup Strategy | Pruning |
+|---------|-------------|-------|----------------|---------|
+| Permutations (46) | Permutation | used[] | None (distinct) | None |
+| Permutations II (47) | Permutation | used[] | Sort + level skip | Same-level |
+| Subsets (78) | Subset | start_idx | Index ordering | None |
+| Subsets II (90) | Subset | start_idx | Sort + level skip | Same-level |
+| Combinations (77) | Combination | start_idx | Index ordering | Count bound |
+| Combination Sum (39) | Target Search | start_idx | None (distinct) | Target bound |
+| Combination Sum II (40) | Target Search | start_idx | Sort + level skip | Target + level |
+| Combination Sum III (216) | Target Search | start_idx | None (1-9 distinct) | Count + target |
+| N-Queens (51) | Constraint | constraint sets | Row-by-row | Constraints |
+| Palindrome Part. (131) | Segmentation | start_idx | None | Validity check |
+| IP Addresses (93) | Segmentation | start_idx, count | None | Length bounds |
+| Word Search (79) | Grid Path | visited | Path uniqueness | Boundary + char |
+
+
+#### _decision.md
+
+## When to Use Backtracking
+
+### Problem Indicators
+
+✅ **Use backtracking when:**
+- Need to enumerate all solutions (permutations, combinations, etc.)
+- Decision tree structure (sequence of choices)
+- Constraints can be checked incrementally
+- Solution can be built piece by piece
+
+❌ **Consider alternatives when:**
+- Only need count (use DP with counting)
+- Only need one solution (may use greedy or simple DFS)
+- Optimization problem (consider DP or greedy)
+- State space is too large even with pruning
+
+### Decision Guide
+
+```
+Is the problem asking for ALL solutions?
+├── Yes → Does solution have natural ordering/structure?
+│         ├── Permutation → Use used[] array
+│         ├── Subset/Combination → Use start_index
+│         ├── Grid path → Use visited marking
+│         └── Constraint satisfaction → Use constraint sets
+└── No → Need single solution or count?
+         ├── Single solution → Simple DFS may suffice
+         └── Count → Consider DP
+```
+
+
+#### _deduplication.md
+
+## Deduplication Strategies
+
+### Strategy Comparison
+
+| Strategy | When to Use | Example |
+|----------|-------------|---------|
+| **Sorting + Same-Level Skip** | Input has duplicates | Permutations II, Subsets II |
+| **Start Index** | Subsets/Combinations (order doesn't matter) | Subsets, Combinations |
+| **Used Array** | Permutations (all elements, order matters) | Permutations |
+| **Canonical Ordering** | Implicit via index ordering | All subset-like problems |
+
+### Same-Level Skip Pattern
+
+```python
+# Sort first, then skip duplicates at same level
+nums.sort()
+
+for i in range(start, n):
+    # Skip if current equals previous at same tree level
+    if i > start and nums[i] == nums[i - 1]:
+        continue
+    # ... process nums[i]
+```
+
+### Used Array Pattern
+
+```python
+# For permutations with duplicates
+if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+    continue
+# This ensures we use duplicates in order (leftmost first)
+```
+
+
+#### _header.md
+
+# Backtracking Exploration Patterns: Complete Reference
+
+> **API Kernel**: `BacktrackingExploration`  
+> **Core Mechanism**: Systematically explore all candidate solutions by building them incrementally, abandoning paths that violate constraints (pruning), and undoing choices to try alternatives.
+
+This document presents the **canonical backtracking template** and all its major variations. Each implementation follows consistent naming conventions and includes detailed algorithmic explanations.
+
+---
+
+## Core Concepts
+
+### What is Backtracking?
+
+Backtracking is a **systematic trial-and-error** approach that incrementally builds candidates to the solutions and abandons a candidate ("backtracks") as soon as it determines that the candidate cannot lead to a valid solution.
+
+```
+Decision Tree Visualization:
+
+                    []
+           ┌────────┼────────┐
+          [1]      [2]      [3]
+        ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
+      [1,2] [1,3] [2,1] [2,3] [3,1] [3,2]
+        │     │     │     │     │     │
+     [1,2,3] ... (continue building)
+        ↓
+    SOLUTION FOUND → collect and backtrack
+```
+
+### The Three-Step Pattern: Choose → Explore → Unchoose
+
+Every backtracking algorithm follows this fundamental pattern:
+
+```python
+def backtrack(state, choices):
+    """
+    Core backtracking template.
+    
+    1. BASE CASE: Check if current state is a complete solution
+    2. RECURSIVE CASE: For each available choice:
+       a) CHOOSE: Make a choice and update state
+       b) EXPLORE: Recursively explore with updated state
+       c) UNCHOOSE: Undo the choice (backtrack)
+    """
+    # BASE CASE: Is this a complete solution?
+    if is_solution(state):
+        collect_solution(state)
+        return
+    
+    # RECURSIVE CASE: Try each choice
+    for choice in get_available_choices(state, choices):
+        # CHOOSE: Make this choice
+        apply_choice(state, choice)
+        
+        # EXPLORE: Recurse with updated state
+        backtrack(state, remaining_choices(choices, choice
+...(truncated)
+#### _mapping.md
+
+## LeetCode Problem Mapping
+
+| Sub-Pattern | Problems |
+|-------------|----------|
+| **Permutation Enumeration** | 46. Permutations, 47. Permutations II |
+| **Subset/Combination** | 78. Subsets, 90. Subsets II, 77. Combinations |
+| **Target Search** | 39. Combination Sum, 40. Combination Sum II, 216. Combination Sum III |
+| **Constraint Satisfaction** | 51. N-Queens, 52. N-Queens II, 37. Sudoku Solver |
+| **String Partitioning** | 131. Palindrome Partitioning, 93. Restore IP Addresses, 140. Word Break II |
+| **Grid/Path Search** | 79. Word Search, 212. Word Search II |
+
+
+#### _pruning.md
+
+## Pruning Techniques
+
+### Pruning Categories
+
+| Category | Description | Example |
+|----------|-------------|---------|
+| **Feasibility Bound** | Remaining elements can't satisfy constraints | Combinations: not enough elements left |
+| **Target Bound** | Current path already exceeds target | Combination Sum: sum > target |
+| **Constraint Propagation** | Future choices are forced/impossible | N-Queens: no valid columns left |
+| **Sorted Early Exit** | If sorted, larger elements also fail | Combination Sum with sorted candidates |
+
+### Pruning Patterns
+
+```python
+# 1. Not enough elements left (Combinations)
+if remaining_elements < elements_needed:
+    return
+
+# 2. Exceeded target (Combination Sum)
+if current_sum > target:
+    return
+
+# 3. Sorted early break (when candidates sorted)
+if candidates[i] > remaining:
+    break  # All subsequent are larger
+
+# 4. Length/count bound
+if len(path) > max_allowed:
+    return
+```
+
+
+#### _templates.md
+
+## Template Quick Reference
+
+### Permutation Template
+
+```python
+def permute(nums):
+    results = []
+    used = [False] * len(nums)
+    
+    def backtrack(path):
+        if len(path) == len(nums):
+            results.append(path[:])
+            return
+        
+        for i in range(len(nums)):
+            if used[i]:
+                continue
+            used[i] = True
+            path.append(nums[i])
+            backtrack(path)
+            path.pop()
+            used[i] = False
+    
+    backtrack([])
+    return results
+```
+
+### Subset/Combination Template
+
+```python
+def subsets(nums):
+    results = []
+    
+    def backtrack(start, path):
+        results.append(path[:])  # Collect at every node
+        
+        for i in range(start, len(nums)):
+            path.append(nums[i])
+            backtrack(i + 1, path)  # i+1 for no reuse
+            path.pop()
+    
+    backtrack(0, [])
+    return results
+```
+
+### Target Sum Template
+
+```python
+def combination_sum(candidates, target):
+    results = []
+    
+    def backtrack(start, path, remaining):
+        if remaining == 0:
+            results.append(path[:])
+            return
+        if remaining < 0:
+            return
+        
+        for i in range(start, len(candidates)):
+            path.append(candidates[i])
+            backtrack(i, path, remaining - candidates[i])  # i for reuse
+            path.pop()
+    
+    backtrack(0, [], target)
+    return results
+```
+
+### Grid Search Template
+
+```python
+def grid_search(grid, word):
+    rows, cols = len(grid), len(grid[0])
+    
+    def backtrack(r, c, index):
+        if index == len(word):
+            return True
+        if r < 0 or r >= rows or c < 0 or c >= cols:
+            return False
+        if grid[r][c] != word[index]:
+            return False
+        
+        temp = grid[r][c]
+        grid[r][c] = '#'
+        
+        for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
+            if backtrack(r + dr, c + dc, index + 1):
+                grid[r][c] = temp
+                r
+...(truncated)
 ### sliding_window
 
 #### 0003_base.md
@@ -3373,6 +5319,179 @@ def merge(arr1, arr2):
     "solution_file": "solutions/0027_remove_element.py"
   },
   {
+    "id": "0039",
+    "leetcode_id": 39,
+    "title": "Combination Sum",
+    "slug": "0039_combination_sum",
+    "url": "https://leetcode.com/problems/combination-sum/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_combination"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0040",
+      "0077",
+      "0216",
+      "0078"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft",
+      "uber",
+      "airbnb"
+    ],
+    "roadmaps": [
+      "neetcode_150",
+      "blind_75"
+    ],
+    "solution_file": "solutions/0039_combination_sum.py"
+  },
+  {
+    "id": "0040",
+    "leetcode_id": 40,
+    "title": "Combination Sum II",
+    "slug": "0040_combination_sum_ii",
+    "url": "https://leetcode.com/problems/combination-sum-ii/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_combination"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0039",
+      "0090",
+      "0047",
+      "0216"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft"
+    ],
+    "roadmaps": [
+      "neetcode_150"
+    ],
+    "solution_file": "solutions/0040_combination_sum_ii.py"
+  },
+  {
+    "id": "0046",
+    "leetcode_id": 46,
+    "title": "Permutations",
+    "slug": "0046_permutations",
+    "url": "https://leetcode.com/problems/permutations/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_permutation"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0047",
+      "0078",
+      "0077"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft",
+      "apple",
+      "uber"
+    ],
+    "roadmaps": [
+      "neetcode_150"
+    ],
+    "solution_file": "solutions/0046_permutations.py"
+  },
+  {
+    "id": "0047",
+    "leetcode_id": 47,
+    "title": "Permutations II",
+    "slug": "0047_permutations_ii",
+    "url": "https://leetcode.com/problems/permutations-ii/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_permutation"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0046",
+      "0040",
+      "0090"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft"
+    ],
+    "roadmaps": [],
+    "solution_file": "solutions/0047_permutations_ii.py"
+  },
+  {
     "id": "0051",
     "leetcode_id": 51,
     "title": "N-Queens",
@@ -3414,6 +5533,43 @@ def merge(arr1, arr2):
       "neetcode_150"
     ],
     "solution_file": "solutions/0051_n_queens.py"
+  },
+  {
+    "id": "0052",
+    "leetcode_id": 52,
+    "title": "N-Queens II",
+    "slug": "0052_n_queens_ii",
+    "url": "https://leetcode.com/problems/n-queens-ii/",
+    "difficulty": "hard",
+    "topics": [
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_n_queens"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array",
+      "hash_set"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0051"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta"
+    ],
+    "roadmaps": [],
+    "solution_file": "solutions/0052_n_queens_ii.py"
   },
   {
     "id": "0075",
@@ -3515,6 +5671,138 @@ def merge(arr1, arr2):
     "solution_file": "solutions/0076_minimum_window_substring.py"
   },
   {
+    "id": "0077",
+    "leetcode_id": 77,
+    "title": "Combinations",
+    "slug": "0077_combinations",
+    "url": "https://leetcode.com/problems/combinations/",
+    "difficulty": "medium",
+    "topics": [
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_combination"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0078",
+      "0039",
+      "0216"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta"
+    ],
+    "roadmaps": [],
+    "solution_file": "solutions/0077_combinations.py"
+  },
+  {
+    "id": "0078",
+    "leetcode_id": 78,
+    "title": "Subsets",
+    "slug": "0078_subsets",
+    "url": "https://leetcode.com/problems/subsets/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking",
+      "bit_manipulation"
+    ],
+    "patterns": [
+      "backtracking_subset"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0090",
+      "0077",
+      "0046"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft",
+      "apple",
+      "uber"
+    ],
+    "roadmaps": [
+      "neetcode_150"
+    ],
+    "solution_file": "solutions/0078_subsets.py"
+  },
+  {
+    "id": "0079",
+    "leetcode_id": 79,
+    "title": "Word Search",
+    "slug": "0079_word_search",
+    "url": "https://leetcode.com/problems/word-search/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking",
+      "matrix"
+    ],
+    "patterns": [
+      "backtracking_grid_path"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "grid",
+      "array"
+    ],
+    "algorithms": [
+      "backtracking",
+      "dfs"
+    ],
+    "related_problems": [
+      "0212",
+      "0130",
+      "0200"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft",
+      "apple",
+      "uber",
+      "bloomberg"
+    ],
+    "roadmaps": [
+      "neetcode_150",
+      "blind_75"
+    ],
+    "solution_file": "solutions/0079_word_search.py"
+  },
+  {
     "id": "0080",
     "leetcode_id": 80,
     "title": "Remove Duplicates from Sorted Array II",
@@ -3601,6 +5889,89 @@ def merge(arr1, arr2):
     "solution_file": "solutions/0088_merge_sorted_array.py"
   },
   {
+    "id": "0090",
+    "leetcode_id": 90,
+    "title": "Subsets II",
+    "slug": "0090_subsets_ii",
+    "url": "https://leetcode.com/problems/subsets-ii/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking",
+      "bit_manipulation"
+    ],
+    "patterns": [
+      "backtracking_subset"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0078",
+      "0040",
+      "0047"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft"
+    ],
+    "roadmaps": [
+      "neetcode_150"
+    ],
+    "solution_file": "solutions/0090_subsets_ii.py"
+  },
+  {
+    "id": "0093",
+    "leetcode_id": 93,
+    "title": "Restore IP Addresses",
+    "slug": "0093_restore_ip_addresses",
+    "url": "https://leetcode.com/problems/restore-ip-addresses/",
+    "difficulty": "medium",
+    "topics": [
+      "string",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_string_segmentation"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "string",
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0131",
+      "0093"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft"
+    ],
+    "roadmaps": [],
+    "solution_file": "solutions/0093_restore_ip_addresses.py"
+  },
+  {
     "id": "0125",
     "leetcode_id": 125,
     "title": "Valid Palindrome",
@@ -3645,6 +6016,51 @@ def merge(arr1, arr2):
       "grind_75"
     ],
     "solution_file": "solutions/0125_valid_palindrome.py"
+  },
+  {
+    "id": "0131",
+    "leetcode_id": 131,
+    "title": "Palindrome Partitioning",
+    "slug": "0131_palindrome_partitioning",
+    "url": "https://leetcode.com/problems/palindrome-partitioning/",
+    "difficulty": "medium",
+    "topics": [
+      "string",
+      "dynamic_programming",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_string_segmentation"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "string",
+      "array"
+    ],
+    "algorithms": [
+      "backtracking",
+      "dynamic_programming"
+    ],
+    "related_problems": [
+      "0093",
+      "0005"
+    ],
+    "companies": [
+      "google",
+      "amazon",
+      "meta",
+      "microsoft",
+      "apple"
+    ],
+    "roadmaps": [
+      "neetcode_150"
+    ],
+    "solution_file": "solutions/0131_palindrome_partitioning.py"
   },
   {
     "id": "0141",
@@ -3880,6 +6296,44 @@ def merge(arr1, arr2):
       "blind_75"
     ],
     "solution_file": "solutions/0215_kth_largest_element_in_an_array.py"
+  },
+  {
+    "id": "0216",
+    "leetcode_id": 216,
+    "title": "Combination Sum III",
+    "slug": "0216_combination_sum_iii",
+    "url": "https://leetcode.com/problems/combination-sum-iii/",
+    "difficulty": "medium",
+    "topics": [
+      "array",
+      "backtracking"
+    ],
+    "patterns": [
+      "backtracking_combination"
+    ],
+    "api_kernels": [
+      "BacktrackingExploration"
+    ],
+    "families": [
+      "backtracking_combinatorial"
+    ],
+    "data_structures": [
+      "array"
+    ],
+    "algorithms": [
+      "backtracking"
+    ],
+    "related_problems": [
+      "0039",
+      "0040",
+      "0077"
+    ],
+    "companies": [
+      "google",
+      "amazon"
+    ],
+    "roadmaps": [],
+    "solution_file": "solutions/0216_combination_sum_iii.py"
   },
   {
     "id": "0283",

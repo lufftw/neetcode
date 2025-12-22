@@ -10,6 +10,7 @@ Usage:
     python tools/generate_mindmaps_ai.py --config generate_mindmaps_ai.toml
     python tools/generate_mindmaps_ai.py --goal interview
     python tools/generate_mindmaps_ai.py --topic sliding_window
+    python tools/generate_mindmaps_ai.py --html-only                  # Generate HTML from existing Markdown files
 
 Prompt Options:
     When an existing prompt is found, you can choose:
@@ -1106,6 +1107,126 @@ def load_meta_description(lang: str, base_filename: str, config: dict[str, Any])
     return None
 
 
+def generate_html_from_markdown(config: dict[str, Any]) -> int:
+    """Generate HTML files from existing Markdown files without regenerating Markdown.
+    
+    This function reads existing Markdown mind map files and generates HTML versions
+    with proper meta descriptions. Useful when you only want to update HTML without
+    regenerating the entire mind map.
+    
+    Args:
+        config: Configuration dict
+        
+    Returns:
+        0 on success, 1 on error
+    """
+    output_config = config.get("output", {})
+    output_dir = Path(output_config.get("directory", "docs/mindmaps"))
+    html_dir = Path(output_config.get("html_directory", "docs/pages/mindmaps"))
+    
+    # Get base filename
+    base_filename = output_config.get("filename", "neetcode_ontology_ai.md")
+    if not base_filename.endswith(".md"):
+        base_filename = f"{base_filename}.md"
+    base_name = base_filename.replace(".md", "")
+    
+    # Get languages from config
+    advanced = config.get("advanced", {})
+    language_setting = advanced.get("language", "en")
+    
+    # Handle both string and list formats
+    if isinstance(language_setting, list):
+        languages = language_setting
+    elif isinstance(language_setting, str):
+        if language_setting.startswith("[") and language_setting.endswith("]"):
+            import json
+            try:
+                languages = json.loads(language_setting)
+            except:
+                languages = [language_setting]
+        else:
+            languages = [language_setting]
+    else:
+        languages = ["en"]
+    
+    print(f"\n📄 Generating HTML from existing Markdown files...")
+    print(f"   Base filename: {base_filename}")
+    print(f"   Languages: {languages}")
+    print(f"   HTML output: {html_dir}")
+    
+    html_dir.mkdir(parents=True, exist_ok=True)
+    
+    from mindmaps.html import generate_html_mindmap
+    
+    success_count = 0
+    error_count = 0
+    
+    for lang in languages:
+        # Determine Markdown filename
+        if len(languages) > 1:
+            md_filename = f"{base_name}_{lang}.md"
+        else:
+            md_filename = base_filename
+        
+        md_file = output_dir / md_filename
+        
+        if not md_file.exists():
+            print(f"   ⚠️  Markdown file not found: {md_file}")
+            print(f"      Skipping {lang}...")
+            error_count += 1
+            continue
+        
+        print(f"\n🌐 Processing {lang}...")
+        print(f"   Reading: {md_file}")
+        
+        try:
+            # Read Markdown content
+            content = md_file.read_text(encoding="utf-8")
+            
+            # Extract title from frontmatter or use default
+            title = f"LeetCode Ontology Mind Map ({lang})"
+            if content.startswith("---"):
+                for line in content.split("\n"):
+                    if line.startswith("title:"):
+                        title = line.replace("title:", "").strip().strip('"').strip("'")
+                        break
+            
+            # Load meta description for this language
+            meta_description = load_meta_description(lang, base_name, config)
+            if meta_description:
+                print(f"   📝 Using meta description from file ({len(meta_description)} chars)")
+            else:
+                print(f"   ℹ️  No meta description file found for {lang}, using default")
+            
+            # Generate HTML
+            html_content = generate_html_mindmap(title, content, use_autoloader=False, description=meta_description)
+            
+            # Determine HTML filename
+            if len(languages) > 1:
+                html_filename = f"{base_name}_{lang}.html"
+            else:
+                html_filename = base_filename.replace(".md", ".html")
+            
+            html_file = html_dir / html_filename
+            html_file.write_text(html_content, encoding="utf-8")
+            print(f"   ✅ Generated: {html_file}")
+            success_count += 1
+            
+        except Exception as e:
+            print(f"   ❌ Error processing {lang}: {e}")
+            error_count += 1
+            continue
+    
+    print(f"\n{'='*60}")
+    if success_count > 0:
+        print(f"✅ Successfully generated {success_count} HTML file(s)")
+    if error_count > 0:
+        print(f"❌ Failed to generate {error_count} HTML file(s)")
+    print(f"{'='*60}")
+    
+    return 0 if error_count == 0 else 1
+
+
 def generate_mindmap_ai(config: dict[str, Any]) -> str:
     """Main function to generate AI-powered mind map."""
     
@@ -1443,6 +1564,12 @@ def main() -> int:
         action="store_true",
         help="Show current config and exit"
     )
+    parser.add_argument(
+        "--html-only",
+        action="store_true",
+        help="Generate HTML files from existing Markdown files without regenerating Markdown. "
+             "Useful when you only want to update HTML output or meta descriptions."
+    )
     
     args = parser.parse_args()
     
@@ -1470,6 +1597,10 @@ def main() -> int:
     if args.list_config:
         print(json.dumps(config, indent=2, ensure_ascii=False))
         return 0
+    
+    # HTML-only mode: generate HTML from existing Markdown files
+    if args.html_only:
+        return generate_html_from_markdown(config)
     
     generate_mindmap_ai(config)
     return 0

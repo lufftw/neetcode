@@ -214,7 +214,25 @@ python tools/generate_mindmaps_ai.py --goal pattern_mastery  # Pattern mastery
 # Specific topics
 python tools/generate_mindmaps_ai.py --topic sliding_window
 python tools/generate_mindmaps_ai.py --topic dynamic_programming
+
+# Generate HTML only (from existing Markdown files)
+python tools/generate_mindmaps_ai.py --html-only            # Skip Markdown generation, only update HTML
 ```
+
+**HTML-Only Mode (`--html-only`):**
+
+The `--html-only` flag allows you to generate HTML files from existing Markdown mind map files without regenerating the Markdown content. This is useful when:
+
+- You've updated meta description files and want to refresh HTML output
+- You want to regenerate HTML with updated meta descriptions
+- You've manually edited Markdown files and want to update HTML without running the full AI generation
+
+The command reads existing Markdown files from the configured output directory and generates corresponding HTML files with proper meta descriptions. It automatically:
+
+- Detects language-specific Markdown files (e.g., `neetcode_ontology_ai_en.md`, `neetcode_ontology_ai_zh-TW.md`)
+- Loads corresponding meta description files (auto-detects from `tools/mindmaps/meta/`)
+- Generates HTML with proper `<meta name="description">` tags
+- Preserves all Markdown content in the HTML output
 
 **Configuration:** `tools/generate_mindmaps_ai.toml`
 
