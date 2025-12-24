@@ -174,8 +174,7 @@ You solve a problem on LeetCode. It passes. But do you *really* know if your sol
 
 ### 1. Setup Environment
 
-<details>
-<summary><strong>Windows (PowerShell)</strong></summary>
+#### Windows (PowerShell)
 
 ```powershell
 # Clone and navigate to project
@@ -192,10 +191,7 @@ leetcode\Scripts\activate
 pip install -r requirements.txt
 ```
 
-</details>
-
-<details>
-<summary><strong>Linux / macOS</strong></summary>
+#### Linux / macOS
 
 ```bash
 # Using pyenv (recommended)
@@ -212,8 +208,6 @@ pip install -r requirements.txt
 # Make scripts executable
 chmod +x scripts/run_tests.sh scripts/run_case.sh scripts/new_problem.sh
 ```
-
-</details>
 
 ### 2. Create Your First Problem
 
@@ -876,8 +870,7 @@ Documentation is organized by **target audience**:
 
 ## ❓ Frequently Asked Questions
 
-<details>
-<summary><strong>What problems does this framework solve?</strong></summary>
+**What problems does this framework solve?**
 
 - Running multiple algorithm implementations automatically
 - Generating reproducible random test data for stress testing
@@ -885,10 +878,7 @@ Documentation is organized by **target audience**:
 - Debugging LeetCode-style problems with VS Code integration
 - Validating outputs using custom logic beyond simple file comparison
 
-</details>
-
-<details>
-<summary><strong>How is this different from copying LeetCode solutions?</strong></summary>
+**How is this different from copying LeetCode solutions?**
 
 This is not a solution collection — it's a **testing infrastructure**. You write solutions, and the framework:
 
@@ -898,10 +888,7 @@ This is not a solution collection — it's a **testing infrastructure**. You wri
 4. Benchmarks multiple solutions against each other
 5. Estimates time complexity empirically
 
-</details>
-
-<details>
-<summary><strong>Can I use this for interview preparation?</strong></summary>
+**Can I use this for interview preparation?**
 
 Absolutely! The framework is perfect for interview prep:
 
@@ -910,14 +897,9 @@ Absolutely! The framework is perfect for interview prep:
 - See which approach is **actually faster** with benchmarking
 - **Debug easily** with VS Code integration
 
-</details>
-
-<details>
-<summary><strong>What Python version is required?</strong></summary>
+**What Python version is required?**
 
 Python 3.11 — matching the [LeetCode official environment](https://support.leetcode.com/hc/en-us/articles/360011833974-What-are-the-environments-for-the-programming-languages).
-
-</details>
 
 ---
 

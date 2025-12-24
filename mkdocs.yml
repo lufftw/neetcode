@@ -49,11 +49,6 @@ theme:
 
 # Extensions
 markdown_extensions:
-  - abbr
-  - admonition
-  - attr_list
-  - def_list
-  - footnotes
   - md_in_html
   - toc:
       permalink: true
