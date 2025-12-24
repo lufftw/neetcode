@@ -2,6 +2,10 @@
 """
 Test Runner - Multi-solution testing with performance comparison.
 
+📚 Documentation:
+    - Quick Reference: runner/README.md
+    - Complete Spec: docs/runner/README.md
+
 Usage:
     python runner/test_runner.py 0001_two_sum                    # Run default solution
     python runner/test_runner.py 0023 --method heap              # Run specific solution
