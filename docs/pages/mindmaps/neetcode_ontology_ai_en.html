@@ -57,8 +57,19 @@
                 svg.mm.setData(root); svg.mm.fit();
             }
         }
-        document.addEventListener('DOMContentLoaded', function() {
+        function initMarkmap() {
+            // Clear existing markmap if any
+            const existingSvg = document.querySelector('.markmap > svg');
+            if (existingSvg) {
+                existingSvg.remove();
+            }
+            
             const { Transformer, Markmap } = window.markmap;
+            if (!Transformer || !Markmap) {
+                console.warn('Markmap libraries not loaded yet');
+                return;
+            }
+            
             const transformer = new Transformer();
             const markdown = `
 # 🎯 LeetCode Master Map: Kernels → Patterns → Problems
@@ -329,6 +340,28 @@ if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
                         }
                     });
                 }, 200);
+            }
+        }
+        
+        // Initialize on normal page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMarkmap);
+        } else {
+            initMarkmap();
+        }
+        
+        // Re-initialize on PJAX/Instant Navigation events
+        // Support multiple PJAX libraries: pjax, turbolinks, swup, etc.
+        document.addEventListener('pjax:end', initMarkmap);
+        document.addEventListener('pjax:success', initMarkmap);
+        document.addEventListener('turbolinks:load', initMarkmap);
+        document.addEventListener('swup:contentReplaced', initMarkmap);
+        document.addEventListener('swup:pageView', initMarkmap);
+        
+        // Re-initialize on pageshow (handles back/forward cache)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                initMarkmap();
             }
         });
     </script>
