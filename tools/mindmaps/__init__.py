@@ -21,6 +21,7 @@ from .helpers import markmap_frontmatter, format_problem_entry, convert_tables_i
 from .generators import GENERATORS
 from .html import generate_html_mindmap, markdown_to_html_content, setup_pages_directory
 from .templates import INDEX_HTML_TEMPLATE, CARD_TEMPLATE
+from .post_processing import PostProcessor, post_process_content
 
 __all__ = [
     # Config
@@ -39,4 +40,6 @@ __all__ = [
     # HTML
     "generate_html_mindmap", "markdown_to_html_content", "setup_pages_directory",
     "INDEX_HTML_TEMPLATE", "CARD_TEMPLATE",
+    # Post-processing
+    "PostProcessor", "post_process_content",
 ]

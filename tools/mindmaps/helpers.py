@@ -17,9 +17,22 @@ markmap:
 """
 
 
-def format_problem_entry(prob: ProblemData, show_complexity: bool = False) -> str:
-    """Format a problem entry with link and metadata."""
-    entry = prob.markdown_link(include_difficulty=True)
+def format_problem_entry(prob: ProblemData, show_complexity: bool = False, 
+                         simple_format: bool = True) -> str:
+    """
+    Format a problem entry with link and metadata.
+    
+    Args:
+        prob: Problem data
+        show_complexity: Include complexity information
+        simple_format: If True, return simple text format for post-processing.
+                      If False, return formatted link (backward compatibility).
+    
+    Returns:
+        Simple format: "🟢 LeetCode 11 - Title — `O(n)`" (for post-processing)
+        Link format: "🟢 [LeetCode 11 - Title](url) — `O(n)`" (backward compatibility)
+    """
+    entry = prob.markdown_link(include_difficulty=True, simple_format=simple_format)
     if show_complexity and prob.solutions:
         complexity = prob.solutions[0].get("complexity", "")
         if complexity:

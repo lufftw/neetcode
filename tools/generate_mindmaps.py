@@ -32,6 +32,7 @@ from mindmaps import (
     INDEX_HTML_TEMPLATE,
     CARD_TEMPLATE,
     get_config,
+    post_process_content,
 )
 
 # Mind map metadata
@@ -66,6 +67,7 @@ def generate_all_mindmaps(
     generate_html: bool = False,
     pages_dir: Path | None = None,
     use_autoloader: bool = False,
+    enable_post_processing: bool = True,
 ) -> dict[str, str]:
     """Generate all or specified mindmaps."""
     print("Loading ontology...")
@@ -95,6 +97,11 @@ def generate_all_mindmaps(
 
         print(f"\nGenerating: {mm_type}")
         content = GENERATORS[mm_type](ontology, problems)
+
+        # Apply post-processing to add LeetCode and Solution links
+        if enable_post_processing:
+            print("  Applying post-processing (adding links)...")
+            content = post_process_content(content, problems)
 
         output_file = output_dir / f"{mm_type}.md"
         output_file.write_text(content, encoding="utf-8")
@@ -203,6 +210,7 @@ def main() -> int:
     parser.add_argument("--pages-dir", type=Path, default=PAGES_OUTPUT_DIR)
     parser.add_argument("--list", "-l", action="store_true", help="List types")
     parser.add_argument("--convert", "-c", nargs="+", type=Path, help="Convert MD file(s) to HTML")
+    parser.add_argument("--no-post-process", action="store_true", help="Disable post-processing (link addition)")
 
     args = parser.parse_args()
 
@@ -226,6 +234,7 @@ def main() -> int:
         generate_html=args.html,
         pages_dir=args.pages_dir if args.html else None,
         use_autoloader=args.use_autoloader,
+        enable_post_processing=not args.no_post_process,
     )
 
     if results:

@@ -61,10 +61,32 @@ class ProblemData:
     
     def markdown_link(self, include_difficulty: bool = True, 
                       use_github_link: bool | None = None,
-                      open_in_new_tab: bool = True) -> str:
-        """Return markdown/HTML link."""
+                      open_in_new_tab: bool = True,
+                      simple_format: bool = True) -> str:
+        """
+        Return markdown/HTML link or simple text format.
+        
+        Args:
+            include_difficulty: Include difficulty icon
+            use_github_link: Use GitHub links for solutions
+            open_in_new_tab: Add target="_blank" for HTML links
+            simple_format: If True, return simple text format for post-processing.
+                          If False, return formatted link (backward compatibility).
+        
+        Returns:
+            Simple format: "LeetCode 11 - Title" (for post-processing)
+            Link format: "[LeetCode 11 - Title](solution_url)" (backward compatibility)
+        """
         num = self.leetcode_id if self.leetcode_id else int(self.id)
         name = f"LeetCode {num} - {self.title}"
+        
+        # Simple format for post-processing (default)
+        if simple_format:
+            if include_difficulty:
+                return f"{self.difficulty_icon} {name}"
+            return name
+        
+        # Original link format (backward compatibility)
         link = self.solution_link(use_github_link)
         
         if link and open_in_new_tab and link.startswith("http"):
