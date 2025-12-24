@@ -229,6 +229,35 @@ Summary: 15 / 15 cases passed.
 
 ---
 
+## Case Runner
+
+`case_runner.py` runs a **single test case** without comparison — ideal for debugging.
+
+```bash
+python runner/case_runner.py <problem> <case_number>
+```
+
+**Example:**
+
+```bash
+python runner/case_runner.py 0001_two_sum 1
+```
+
+This runs `solutions/0001_two_sum.py` with input from `tests/0001_two_sum_1.in` and displays output directly (no pass/fail comparison).
+
+---
+
+## VSCode Integration
+
+Pre-configured tasks and debug configurations are provided in `.vscode/`.
+
+- **Ctrl+Shift+B**: Run all tests for current problem (default build task)
+- **F5**: Debug with breakpoints
+
+> 📖 See [VSCode Setup Guide](../contributors/VSCODE_SETUP.md) for complete task/debug configuration reference.
+
+---
+
 ## Architecture
 
 ```
@@ -249,6 +278,7 @@ test_runner.py (CLI)
 | [Solution Contract](../SOLUTION_CONTRACT.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
 | [Generator Contract](../GENERATOR_CONTRACT.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Runner README](../../runner/README.md) | Quick reference (in-module) |
+| [VSCode Setup Guide](../contributors/VSCODE_SETUP.md) | Tasks, debug configurations, workflow examples |
 
 ---
 
