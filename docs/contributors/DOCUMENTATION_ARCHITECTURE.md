@@ -165,6 +165,7 @@ neetcode/
 - [ ] Update `docs/MKDOCS_CONTENT_GUIDE.md`
 - [ ] Update `mkdocs.yml` if adding to website
 - [ ] Update README documentation section
+- [ ] Verify all links follow the linking strategy (files in `docs/` use relative paths, files outside `docs/` use GitHub URLs)
 
 ---
 
@@ -244,11 +245,28 @@ Ask: **Who is the primary reader?**
 
 **Note**: Original locations (`.dev/README.md`, `tools/README.md`) contain shortened versions with links to full documentation on the website.
 
+### Link Strategy
+
+When adding links in documentation files, follow this strategy:
+
+- ✅ **Files inside `docs/` directory**: Use relative paths (e.g., `[README](README.md)`, `[Tools](../tools/README.md)`)
+- ✅ **Files outside `docs/` directory**: Use GitHub absolute URLs (e.g., `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)`)
+
+This ensures links work correctly in both GitHub repository browsing and the MkDocs website.
+
+**Examples**:
+- ✅ `docs/contributors/README.md` linking to `docs/contributors/TESTING.md` → Use `[TESTING.md](TESTING.md)`
+- ✅ `docs/SOLUTION_CONTRACT.md` linking to `runner/README.md` → Use `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)`
+- ✅ `docs/tools/README.md` linking to `tools/prompts/README.md` → Use `[Prompts](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md)`
+
+> 📖 See [MkDocs Content Guide](../MKDOCS_CONTENT_GUIDE.md#linking-strategy-guide) for detailed linking strategy documentation.
+
 ---
 
 ## 📝 Update Log
 
 - **2025-12-24**: Migrated maintainer and tools documentation to `docs/contributors/` and `docs/tools/` for MkDocs website integration. Created shortened READMEs in original locations with links to full documentation.
+- **2025-12-24**: Added link strategy section documenting rules for linking to files inside/outside `docs/` directory
 - **2025-12-12**: Initial version - Documented architecture after consolidating tools documentation
 
 ---

@@ -117,7 +117,15 @@ The following files are **intentionally NOT** in the website navigation (GitHub 
 
 ## 🔗 Linking Strategy Guide
 
-When linking to content in README.md, follow these strategies:
+When linking to content in documentation files, follow these strategies:
+
+### 📋 Core Linking Rules
+
+**General Principle**: 
+- ✅ **Files inside `docs/` directory**: Use relative paths (MkDocs automatically handles these)
+- ✅ **Files outside `docs/` directory**: Use GitHub absolute URLs
+
+This ensures links work correctly in both GitHub repository browsing and the MkDocs website.
 
 ### ✅ Recommended Practices
 
@@ -184,7 +192,13 @@ When linking to content in README.md, follow these strategies:
 ```markdown
 - [Solution Example](https://github.com/lufftw/neetcode/blob/main/solutions/0001_two_sum.py)
 - [Test Generator](https://github.com/lufftw/neetcode/blob/main/generators/0001_two_sum.py)
+- [Runner README](https://github.com/lufftw/neetcode/blob/main/runner/README.md)
+- [LICENSE](https://github.com/lufftw/neetcode/blob/main/LICENSE)
+- [pytest.ini](https://github.com/lufftw/neetcode/blob/main/pytest.ini)
+- [requirements.txt](https://github.com/lufftw/neetcode/blob/main/requirements.txt)
 ```
+
+**Why**: These files are not in `docs/` and won't be accessible on the MkDocs website. GitHub URLs ensure they work in both GitHub and website contexts.
 
 #### 5. For Mind Maps (In Website)
 
@@ -222,12 +236,30 @@ To ensure all documentation is accessible via MkDocs website while maintaining G
 - ✅ Links work correctly in both GitHub and website
 - ✅ Single source of truth for full documentation content
 
+### 📐 Link Strategy Summary
+
+| File Location | Link Type | Example |
+|:--------------|:----------|:--------|
+| Inside `docs/` (in `nav`) | Relative path | `[README](README.md)` or `[Tools](../tools/README.md)` |
+| Inside `docs/` (not in `nav`) | GitHub URL | `[Internal Doc](https://github.com/lufftw/neetcode/blob/main/docs/internal.md)` |
+| Outside `docs/` (code/config) | GitHub URL | `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)` |
+| Outside `docs/` (root files) | GitHub URL | `[LICENSE](https://github.com/lufftw/neetcode/blob/main/LICENSE)` |
+
+**Quick Decision Tree**:
+1. Is the file in `docs/` directory? 
+   - ✅ Yes → Check if it's in `nav`:
+     - ✅ In `nav` → Use relative path
+     - ❌ Not in `nav` → Use GitHub URL
+   - ❌ No → Use GitHub URL
+
 ### ❌ Practices to Avoid
 
-1. **Don't** use relative paths for files outside `docs/` directory that aren't in `nav` (they won't work on the website)
-2. **Don't** assume all files in `docs/` are on the website (check `mkdocs.yml` `nav` configuration)
-3. **Don't** use `.md` extensions in website links (MkDocs handles this automatically)
-4. **Don't** create duplicate documentation in multiple locations (use the migration strategy above)
+1. **Don't** use relative paths for files outside `docs/` directory (they won't work on the website)
+2. **Don't** use relative paths like `../runner/README.md` or `../../meta/patterns/README.md` (these point outside `docs/`)
+3. **Don't** assume all files in `docs/` are on the website (check `mkdocs.yml` `nav` configuration)
+4. **Don't** use `.md` extensions in website links (MkDocs handles this automatically)
+5. **Don't** create duplicate documentation in multiple locations (use the migration strategy above)
+6. **Don't** mix relative paths and GitHub URLs inconsistently (follow the strategy above)
 
 ---
 
@@ -431,6 +463,7 @@ After building the documentation, each page in `sitemap.xml` will have its own `
 - **2025-12-17**: Added `backtracking_exploration` pattern to Patterns section
 - **2025-12-20**: Added FAQ section on manually embedding revision dates in Markdown files using git-revision-date-localized plugin template variables
 - **2025-12-20**: Added FAQ section on customizing sitemap.xml to use Git commit dates for lastmod
+- **2025-12-24**: Enhanced linking strategy guide with core rules, decision tree, and examples for files inside/outside `docs/` directory
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---
