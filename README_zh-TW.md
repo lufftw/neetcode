@@ -378,7 +378,7 @@ scripts\run_tests.bat 0001_two_sum
 
 > **注意：** 使用快捷鍵前，請先開啟 `solutions/` 中的解答檔案。
 
-**可用 Tasks**（`Ctrl+Shift+P` → "Tasks: Run Task"）：
+**常用 Tasks**（`Ctrl+Shift+P` → "Tasks: Run Task"）：
 
 | Task | 說明 |
 |:-----|:-----|
@@ -387,8 +387,8 @@ scripts\run_tests.bat 0001_two_sum
 | Benchmark | 顯示執行時間 |
 | Run all solutions | 比較所有實作 |
 | Run with generated (10) | 靜態 + 10 筆生成測資 |
-| Run generated only | 跳過靜態測資 |
-| Save failed cases | 自動儲存失敗輸入 |
+
+> 📖 **完整參考**：詳見 [VSCode 設定指南](docs/contributors/VSCODE_SETUP.md) 以了解全部 14 個 Tasks、11 個 Debug 配置、工作流程範例與自訂設定。
 
 ### 💻 命令列介面
 
@@ -723,8 +723,10 @@ neetcode/
 │
 ├── .vscode/                   # 🔧 VS Code 整合
 │   ├── settings.json          # Python 環境設定
-│   ├── tasks.json             # Ctrl+Shift+B 快捷任務
-│   └── launch.json            # F5 除錯配置
+│   ├── tasks.json             # Ctrl+Shift+B 快捷任務（14 個 Tasks）
+│   └── launch.json            # F5 除錯配置（11 個配置）
+│
+│   📖 詳見 [VSCode 設定指南](docs/contributors/VSCODE_SETUP.md) — Tasks、Debug 配置、工作流程範例
 │
 ├── docs/                      # 📚 文件（MkDocs）
 │   ├── index.md               # 首頁（English）
@@ -993,8 +995,9 @@ scripts\build_docs.bat --serve  # Windows
 ### 文件
 
 **核心文件：**
-- [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — 維護者指南
-- [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — 測試文件
+- [`docs/contributors/README.md`](docs/contributors/README.md) — 維護者指南
+- [`docs/contributors/TESTING.md`](docs/contributors/TESTING.md) — 測試文件
+- [`docs/contributors/VSCODE_SETUP.md`](docs/contributors/VSCODE_SETUP.md) — VS Code Tasks、Debug 配置、工作流程範例
 - [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
 - [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — 生成器檔案規格（generate(), edge cases, complexity）
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — 多型架構遷移指南

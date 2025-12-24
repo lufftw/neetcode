@@ -378,7 +378,7 @@ Each pattern provides **two learning paths**:
 
 > **Note:** Open a solution file in `solutions/` before using shortcuts.
 
-**Available Tasks** (`Ctrl+Shift+P` → "Tasks: Run Task"):
+**Common Tasks** (`Ctrl+Shift+P` → "Tasks: Run Task"):
 
 | Task | Description |
 |:-----|:------------|
@@ -387,8 +387,8 @@ Each pattern provides **two learning paths**:
 | Benchmark | Show execution times |
 | Run all solutions | Compare all implementations |
 | Run with generated (10) | Static + 10 generated cases |
-| Run generated only | Skip static tests |
-| Save failed cases | Auto-save failing inputs |
+
+> 📖 **Complete Reference**: See [VSCode Setup Guide](docs/contributors/VSCODE_SETUP.md) for all 14 tasks, 11 debug configurations, workflow examples, and customization.
 
 ### 💻 Command Line Interface
 
@@ -723,8 +723,10 @@ neetcode/
 │
 ├── .vscode/                   # 🔧 VS Code integration
 │   ├── settings.json          # Python environment settings
-│   ├── tasks.json             # Ctrl+Shift+B shortcuts
-│   └── launch.json            # F5 debug configurations
+│   ├── tasks.json             # Ctrl+Shift+B shortcuts (14 tasks)
+│   └── launch.json            # F5 debug configurations (11 configs)
+│
+│   📖 See [VSCode Setup Guide](docs/contributors/VSCODE_SETUP.md) — Tasks, debug configs, workflow examples
 │
 ├── docs/                      # 📚 Documentation (MkDocs)
 │   ├── index.md               # Homepage (English)
@@ -997,6 +999,7 @@ If you want to test the exact GitHub Actions workflow locally, you can use `act`
 **Core Documentation:**
 - [`docs/contributors/README.md`](docs/contributors/README.md) — Maintainer guide
 - [`docs/contributors/TESTING.md`](docs/contributors/TESTING.md) — Testing documentation
+- [`docs/contributors/VSCODE_SETUP.md`](docs/contributors/VSCODE_SETUP.md) — VS Code tasks, debug configurations, workflow examples
 - [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
 - [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
