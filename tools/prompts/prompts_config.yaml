@@ -1,0 +1,69 @@
+# Prompts Configuration for AI Mind Map Generation
+# This file contains all configurable prompt components
+
+# =============================================================================
+# Language Instructions
+# =============================================================================
+# These instructions tell the LLM which language to use for output
+language_instructions:
+  en: "IMPORTANT: Generate the mind map content in English. All titles, labels, and descriptions should be in English."
+  zh-TW: "IMPORTANT: Generate the mind map content in Traditional Chinese (繁體中文). All titles, labels, and descriptions should be in Traditional Chinese."
+  zh-CN: "IMPORTANT: Generate the mind map content in Simplified Chinese (简体中文). All titles, labels, and descriptions should be in Simplified Chinese."
+
+# =============================================================================
+# Goal Prompts
+# =============================================================================
+# Different generation goals for the mind map
+goal_prompts:
+  interview: "Generate an **interview-focused** mind map, emphasizing high-frequency problems, company preferences, and interview techniques. Mark must-solve problems."
+  systematic: "Generate a **systematic learning roadmap**, sorted by difficulty and dependencies, including progress tracking checkboxes."
+  quick_review: "Generate a **concise review** mind map with only the core patterns and key problems, suitable for quick pre-interview browsing."
+  pattern_mastery: "Generate an **in-depth pattern analysis** mind map showing relationships between patterns, variants, and code templates."
+  weakness_focus: "Analyze problem data to identify less-covered areas and generate a **targeted practice** mind map."
+  creative: "Based on the overall knowledge graph, **creatively** generate a mind map you believe is most helpful for LeetCode practice. It can be a decision tree, learning path, or any innovative structure."
+
+# =============================================================================
+# Style Prompts
+# =============================================================================
+# Different visual and structural styles for the mind map
+style_prompts:
+  creative: "**Style**: Creativity first, use non-traditional structures and visual elements that catch the eye."
+  academic: "**Style**: Academic rigor, focus on logical hierarchy and complexity analysis."
+  practical: "**Style**: Practical orientation, use code templates and concrete examples."
+  minimal: "**Style**: Minimalist style, keep only the most essential content."
+  balanced: "**Style**: Balance beauty and practicality, suitable for most learners."
+
+# =============================================================================
+# User Prompt Templates
+# =============================================================================
+# Templates for different sections of the user prompt
+
+user_prompt_sections:
+  # Data summary section header
+  summary_header: "## 📊 Data Summary\n"
+  
+  # Ontology section header
+  ontology_header: "## 📚 Ontology Knowledge Graph\n"
+  
+  # Pattern documentation section header
+  pattern_docs_header: "\n## 📖 Pattern Documentation\n"
+  
+  # Pattern snippets section header
+  pattern_snippets_header: "\n## 🧩 Pattern Snippets\n"
+  
+  # Problems section header and note
+  problems_header: "\n## 🎯 Problem Data\n"
+  problems_note: "Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.\n"
+  
+  # Generation instructions section header
+  generation_header: "\n## 🎨 Generation Instructions\n"
+  
+  # Focus topic template
+  focus_topic_template: "\n**Focus Topic**: `{topic}` - Please expand the mind map around this core."
+  
+  # Custom instructions template
+  custom_instructions_template: "\n**Additional Instructions**: {instructions}"
+  
+  # Complexity note
+  no_complexity_note: "\nNote: Complexity analysis is not needed."
+

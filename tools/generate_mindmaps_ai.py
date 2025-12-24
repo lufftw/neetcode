@@ -54,10 +54,18 @@ try:
 except ImportError:
     HAS_OPENAI = False
 
+# Try to import yaml
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
+
 # Paths
 PROJECT_ROOT = TOOLS_DIR.parent
 ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
+PROMPTS_DIR = TOOLS_DIR / "prompts"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
 DEFAULT_CONFIG = TOOLS_DIR / "generate_mindmaps_ai.toml"
 # Use a chat model that is available via /v1/chat/completions by default.
@@ -142,6 +150,144 @@ def get_default_config() -> dict[str, Any]:
         "advanced": {"include_full_code": True, "include_complexity": True, "language": "zh-TW"},
         # Note: links config no longer used in prompts - post-processing handles all links automatically
     }
+
+
+# =============================================================================
+# Prompt Loading Functions
+# =============================================================================
+
+# Cache for loaded prompts
+_cached_prompts: dict[str, Any] = {}
+
+
+def load_prompts_config() -> dict[str, Any]:
+    """Load prompts configuration from YAML file."""
+    global _cached_prompts
+    
+    if _cached_prompts:
+        return _cached_prompts
+    
+    config_path = PROMPTS_DIR / "prompts_config.yaml"
+    
+    if not config_path.exists():
+        print(f"⚠️  Prompts config not found: {config_path}")
+        return _get_default_prompts_config()
+    
+    if HAS_YAML:
+        with open(config_path, encoding="utf-8") as f:
+            _cached_prompts = yaml.safe_load(f)
+    else:
+        # Fallback: simple YAML parsing for our specific format
+        _cached_prompts = _parse_simple_yaml(config_path)
+    
+    return _cached_prompts
+
+
+def _get_default_prompts_config() -> dict[str, Any]:
+    """Return default prompts configuration (fallback)."""
+    return {
+        "language_instructions": {
+            "en": "IMPORTANT: Generate the mind map content in English. All titles, labels, and descriptions should be in English.",
+            "zh-TW": "IMPORTANT: Generate the mind map content in Traditional Chinese (繁體中文). All titles, labels, and descriptions should be in Traditional Chinese.",
+            "zh-CN": "IMPORTANT: Generate the mind map content in Simplified Chinese (简体中文). All titles, labels, and descriptions should be in Simplified Chinese.",
+        },
+        "goal_prompts": {
+            "interview": "Generate an **interview-focused** mind map, emphasizing high-frequency problems, company preferences, and interview techniques. Mark must-solve problems.",
+            "systematic": "Generate a **systematic learning roadmap**, sorted by difficulty and dependencies, including progress tracking checkboxes.",
+            "quick_review": "Generate a **concise review** mind map with only the core patterns and key problems, suitable for quick pre-interview browsing.",
+            "pattern_mastery": "Generate an **in-depth pattern analysis** mind map showing relationships between patterns, variants, and code templates.",
+            "weakness_focus": "Analyze problem data to identify less-covered areas and generate a **targeted practice** mind map.",
+            "creative": "Based on the overall knowledge graph, **creatively** generate a mind map you believe is most helpful for LeetCode practice. It can be a decision tree, learning path, or any innovative structure.",
+        },
+        "style_prompts": {
+            "creative": "**Style**: Creativity first, use non-traditional structures and visual elements that catch the eye.",
+            "academic": "**Style**: Academic rigor, focus on logical hierarchy and complexity analysis.",
+            "practical": "**Style**: Practical orientation, use code templates and concrete examples.",
+            "minimal": "**Style**: Minimalist style, keep only the most essential content.",
+            "balanced": "**Style**: Balance beauty and practicality, suitable for most learners.",
+        },
+        "user_prompt_sections": {
+            "summary_header": "## 📊 Data Summary\n",
+            "ontology_header": "## 📚 Ontology Knowledge Graph\n",
+            "pattern_docs_header": "\n## 📖 Pattern Documentation\n",
+            "pattern_snippets_header": "\n## 🧩 Pattern Snippets\n",
+            "problems_header": "\n## 🎯 Problem Data\n",
+            "problems_note": "Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.\n",
+            "generation_header": "\n## 🎨 Generation Instructions\n",
+            "focus_topic_template": "\n**Focus Topic**: `{topic}` - Please expand the mind map around this core.",
+            "custom_instructions_template": "\n**Additional Instructions**: {instructions}",
+            "no_complexity_note": "\nNote: Complexity analysis is not needed.",
+        },
+    }
+
+
+def _parse_simple_yaml(path: Path) -> dict[str, Any]:
+    """Simple YAML parser for our specific format (fallback when PyYAML not available)."""
+    result: dict[str, Any] = {}
+    current_section: str | None = None
+    current_dict: dict[str, str] = {}
+    
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            # Skip comments and empty lines
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            
+            # Check for top-level section (no leading spaces, ends with :)
+            if not line.startswith(" ") and line.rstrip().endswith(":"):
+                # Save previous section
+                if current_section and current_dict:
+                    result[current_section] = current_dict
+                    current_dict = {}
+                
+                current_section = stripped.rstrip(":")
+                continue
+            
+            # Check for key-value pair (2 spaces, key: "value" or key: value)
+            if line.startswith("  ") and ":" in line and not line.startswith("    "):
+                parts = line.strip().split(":", 1)
+                if len(parts) == 2:
+                    key = parts[0].strip()
+                    value = parts[1].strip().strip('"').strip("'")
+                    if current_section:
+                        current_dict[key] = value
+    
+    # Save last section
+    if current_section and current_dict:
+        result[current_section] = current_dict
+    
+    return result
+
+
+def load_system_prompt_template() -> str:
+    """Load system prompt template from file."""
+    prompt_path = PROMPTS_DIR / "system_prompt.md"
+    
+    if not prompt_path.exists():
+        print(f"⚠️  System prompt not found: {prompt_path}, using built-in default")
+        return _get_default_system_prompt()
+    
+    return prompt_path.read_text(encoding="utf-8")
+
+
+def _get_default_system_prompt() -> str:
+    """Return default system prompt (fallback)."""
+    return dedent("""
+    You are a world-class expert in algorithms and LeetCode problem solving.
+    
+    Your task is to generate Markmap-format mind maps based on the provided data.
+    
+    {{LANGUAGE_INSTRUCTION}}
+    
+    ## CRITICAL: Problem Reference Format
+    
+    When mentioning LeetCode problems, use this simple format: `LeetCode {number}`
+    
+    DO NOT include URLs or links - post-processing will add them automatically.
+    
+    Output Markmap Markdown directly, without any explanations.
+    """).strip()
 
 
 def load_ontology_data(config: dict[str, Any]) -> dict[str, Any]:
@@ -333,7 +479,7 @@ def load_problems_data(config: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def build_system_prompt(config: dict[str, Any]) -> str:
-    """Build system prompt based on config. Prompt is always in English, but output language is configurable."""
+    """Build system prompt based on config. Loads from external file with variable substitution."""
     advanced = config.get("advanced", {})
     language = advanced.get("language", "en")
     
@@ -341,125 +487,18 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     if isinstance(language, list):
         language = language[0] if language else "en"
     
-    # Language instructions for output (prompt itself is always English)
-    lang_instructions = {
-        "en": "IMPORTANT: Generate the mind map content in English. All titles, labels, and descriptions should be in English.",
-        "zh-TW": "IMPORTANT: Generate the mind map content in Traditional Chinese (繁體中文). All titles, labels, and descriptions should be in Traditional Chinese.",
-        "zh-CN": "IMPORTANT: Generate the mind map content in Simplified Chinese (简体中文). All titles, labels, and descriptions should be in Simplified Chinese.",
-    }
+    # Load prompts config and system prompt template
+    prompts_config = load_prompts_config()
+    template = load_system_prompt_template()
     
-    return dedent(f"""
-    You are a world-class expert who seamlessly integrates multiple professional perspectives 
-    into a unified, comprehensive understanding:
+    # Get language instruction
+    lang_instructions = prompts_config.get("language_instructions", {})
+    lang_instruction = lang_instructions.get(language, lang_instructions.get("en", ""))
     
-    **As a Top Software Architect**, you design elegant, scalable system architectures and 
-    understand how algorithms fit into larger software systems. You think in abstractions, 
-    patterns, and maintainable code structures.
+    # Substitute variables in template
+    prompt = template.replace("{{LANGUAGE_INSTRUCTION}}", lang_instruction)
     
-    **As a Distinguished Senior Algorithm Professor**, you have decades of experience teaching 
-    algorithms at the highest level. You understand theoretical foundations, explain complex 
-    concepts clearly, and know how students learn best. You bridge theory and practice seamlessly.
-    
-    **As a Senior Principal Engineer**, you've built production systems at scale. You know 
-    which algorithms work in practice, which fail under load, and how to optimize real-world 
-    performance. You understand trade-offs and engineering constraints.
-    
-    **As a LeetCode Learner & Interview Preparer**, you understand the journey from beginner 
-    to expert. You know which problems build foundational skills, which patterns appear 
-    frequently in interviews, and how to structure learning paths that lead to success.
-    
-    **As a Competitive Programming Champion**, you've solved thousands of problems under 
-    time pressure. You recognize patterns instantly, know optimization tricks, and understand 
-    the mental models that separate good solutions from great ones.
-
-    Your task is to creatively generate Markmap-format mind maps based on the provided LeetCode 
-    knowledge graph data, drawing from this unified expertise to create mind maps that serve 
-    learners, interview candidates, competitive programmers, and contributors alike.
-
-    {lang_instructions.get(language, lang_instructions["en"])}
-
-    ## Your Capabilities
-
-    1. **Deep Understanding of Knowledge Graph**: Analyze relationships between API Kernels, Patterns, 
-       Algorithms, and Data Structures
-    2. **Creative Visualization**: Design intuitive, beautiful, and educational mind map structures
-    3. **Personalized Recommendations**: Adjust content based on user goals
-    4. **Importance Identification**: Automatically determine which content is most important for learners
-
-    ## Markmap Features (Please Utilize Fully)
-
-    - **Styling**: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`
-    - **Checkboxes**: [ ] To-do, [x] Completed
-    - **Math Formulas**: $O(n \\log n)$, $O(n^2)$
-    - **Code Blocks**: ```python ... ```
-    - **Tables**: | A | B | ... | - Tables are supported for comparison information
-    - **Fold**: <!-- markmap: fold -->
-    - **Emoji**: For visual emphasis 🎯📚⚡🔥
-    
-    ## Table Format Guidelines
-    
-    **Tables are encouraged for comparison information** (like Sliding Window pattern comparisons).
-    
-    ✅ GOOD (Table format):
-    ```
-    | Problem | Invariant | State | Window Size | Goal |
-    |---------|-----------|-------|-------------|------|
-    | LeetCode 3 | All unique | freq map | Variable | Max length |
-    | LeetCode 76 | Covers all | maps | Variable | Min length |
-    ```
-
-    ## CRITICAL: Problem Reference Format
-
-    **When mentioning LeetCode problems, use this simple format:**
-    
-    ```
-    LeetCode {{number}}
-    ```
-    
-    Examples:
-    - `LeetCode 3`
-    - `LeetCode 76`
-    - `LeetCode 121`
-    
-    **DO NOT include:**
-    - URLs or links (post-processing will add them automatically)
-    - Problem titles (post-processing will add them from our database)
-    - Solution links (post-processing will add them automatically)
-    
-    **Just use the simple format: `LeetCode {{number}}`**
-    
-    The system will automatically convert `LeetCode 3` to:
-    `[LeetCode 3 - Longest Substring Without Repeating Characters](url) | [Solution](url)`
-
-    ## Output Format
-
-    Must be valid Markmap Markdown, starting with this frontmatter:
-
-    ```
-    ---
-    title: [Mind Map Title]
-    markmap:
-      colorFreezeLevel: 2
-      maxWidth: 300
-    ---
-    ```
-
-    ## Design Principles
-
-    1. **Clear Hierarchy**: 3-5 levels optimal
-    2. **Highlight Key Points**: Use bold and highlight to mark key concepts
-    3. **Practical Orientation**: Associate each concept with specific problems
-    4. **Beautiful and Readable**: Use emoji and color layers effectively
-    5. **Learning-Friendly**: Include progress tracking and difficulty markers
-
-    ## Important Naming Conventions
-
-    - **Always use full name**: Always write "LeetCode" in full, never use abbreviations like "LC" or "LC problem"
-    - **Problem references**: Use format "LeetCode {{number}}" (e.g., "LeetCode 1"), never "LC 1"
-    - **Consistency**: Maintain consistent naming throughout the mind map
-
-    Output Markmap Markdown directly, without any explanations or preambles.
-    """).strip()
+    return prompt.strip()
 
 
 def build_user_prompt(
@@ -469,16 +508,23 @@ def build_user_prompt(
     problems_data: list[dict[str, Any]],
     config: dict[str, Any],
 ) -> str:
-    """Build user prompt with all context from config."""
+    """Build user prompt with all context from config. Uses external prompts config."""
     generation = config.get("generation", {})
     advanced = config.get("advanced", {})
     
     language = advanced.get("language", "en")
     
+    # Load prompts configuration
+    prompts_config = load_prompts_config()
+    sections_config = prompts_config.get("user_prompt_sections", {})
+    goal_prompts = prompts_config.get("goal_prompts", {})
+    style_prompts = prompts_config.get("style_prompts", {})
+    
     sections = []
     
     # === Summary === (Always in English for prompt)
-    summary_lines = ["## 📊 Data Summary\n"]
+    summary_header = sections_config.get("summary_header", "## 📊 Data Summary\n")
+    summary_lines = [summary_header]
     if ontology_data:
         for key, values in ontology_data.items():
             summary_lines.append(f"- **{key}**: {len(values)} items")
@@ -493,14 +539,16 @@ def build_user_prompt(
     
     # === Ontology Data ===
     if ontology_data:
-        sections.append("## 📚 Ontology Knowledge Graph\n")
+        ontology_header = sections_config.get("ontology_header", "## 📚 Ontology Knowledge Graph\n")
+        sections.append(ontology_header)
         sections.append("```json")
         sections.append(json.dumps(ontology_data, indent=2, ensure_ascii=False))
         sections.append("```")
     
     # === Pattern Documentation ===
     if docs_patterns:
-        sections.append("\n## 📖 Pattern Documentation\n")
+        pattern_docs_header = sections_config.get("pattern_docs_header", "\n## 📖 Pattern Documentation\n")
+        sections.append(pattern_docs_header)
         for name, content in docs_patterns.items():
             sections.append(f"### {name}\n")
             # Truncate if too long
@@ -511,7 +559,8 @@ def build_user_prompt(
     
     # === Meta Pattern Snippets ===
     if meta_patterns:
-        sections.append("\n## 🧩 Pattern Snippets\n")
+        pattern_snippets_header = sections_config.get("pattern_snippets_header", "\n## 🧩 Pattern Snippets\n")
+        sections.append(pattern_snippets_header)
         for pattern_name, snippets in meta_patterns.items():
             sections.append(f"### {pattern_name}\n")
             for filename, content in snippets.items():
@@ -542,8 +591,10 @@ def build_user_prompt(
                 "roadmaps": p.get("roadmaps", []),
             })
         
-        sections.append("\n## 🎯 Problem Data\n")
-        sections.append("Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.\n")
+        problems_header = sections_config.get("problems_header", "\n## 🎯 Problem Data\n")
+        problems_note = sections_config.get("problems_note", "Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.\n")
+        sections.append(problems_header)
+        sections.append(problems_note)
         sections.append("```json")
         sections.append(json.dumps(simplified_problems, indent=2, ensure_ascii=False))
         sections.append("```")
@@ -556,42 +607,34 @@ def build_user_prompt(
         language = language[0] if language else "en"
     
     if language == "en":
-        sections.append("\n## 🎨 Generation Instructions\n")
+        generation_header = sections_config.get("generation_header", "\n## 🎨 Generation Instructions\n")
+        sections.append(generation_header)
         
         goal = generation.get("goal", "creative")
         focus_topic = generation.get("focus_topic", "")
         style = generation.get("style", "balanced")
         custom = generation.get("custom_instructions", "")
         
-        goal_prompts = {
-            "interview": "Generate an **interview-focused** mind map, emphasizing high-frequency problems, company preferences, and interview techniques. Mark must-solve problems.",
-            "systematic": "Generate a **systematic learning roadmap**, sorted by difficulty and dependencies, including progress tracking checkboxes.",
-            "quick_review": "Generate a **concise review** mind map with only the core patterns and key problems, suitable for quick pre-interview browsing.",
-            "pattern_mastery": "Generate an **in-depth pattern analysis** mind map showing relationships between patterns, variants, and code templates.",
-            "weakness_focus": "Analyze problem data to identify less-covered areas and generate a **targeted practice** mind map.",
-            "creative": "Based on the overall knowledge graph, **creatively** generate a mind map you believe is most helpful for LeetCode practice. It can be a decision tree, learning path, or any innovative structure.",
-        }
-        
+        # Use goal prompts from config
         sections.append(goal_prompts.get(goal, f"Goal: {goal}"))
         
         if focus_topic:
-            sections.append(f"\n**Focus Topic**: `{focus_topic}` - Please expand the mind map around this core.")
+            focus_template = sections_config.get("focus_topic_template", "\n**Focus Topic**: `{topic}` - Please expand the mind map around this core.")
+            sections.append(focus_template.format(topic=focus_topic))
         
-        style_prompts = {
-            "creative": "**Style**: Creativity first, use non-traditional structures and visual elements that catch the eye.",
-            "academic": "**Style**: Academic rigor, focus on logical hierarchy and complexity analysis.",
-            "practical": "**Style**: Practical orientation, use code templates and concrete examples.",
-            "minimal": "**Style**: Minimalist style, keep only the most essential content.",
-            "balanced": "**Style**: Balance beauty and practicality, suitable for most learners.",
-        }
-        sections.append(f"\n{style_prompts.get(style, '')}")
+        # Use style prompts from config
+        style_prompt = style_prompts.get(style, "")
+        if style_prompt:
+            sections.append(f"\n{style_prompt}")
         
         if custom:
-            sections.append(f"\n**Additional Instructions**: {custom}")
+            custom_template = sections_config.get("custom_instructions_template", "\n**Additional Instructions**: {instructions}")
+            sections.append(custom_template.format(instructions=custom))
         
         # Advanced options
         if not advanced.get("include_complexity", True):
-            sections.append("\nNote: Complexity analysis is not needed.")
+            no_complexity = sections_config.get("no_complexity_note", "\nNote: Complexity analysis is not needed.")
+            sections.append(no_complexity)
     
     return "\n".join(sections)
 

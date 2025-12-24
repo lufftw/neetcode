@@ -73,12 +73,14 @@ python tools/generate_mindmaps_ai.py --style academic
 
 ## 🔗 連結生成規則
 
-生成的心智圖會自動為題目添加連結：
+生成的心智圖會**自動**為題目添加連結（後處理）：
 
 | 情況 | 連結類型 |
 |------|----------|
-| 題目有解答 (`solution_file` 不為空) | GitHub 解答連結 |
-| 題目無解答 | LeetCode 題目頁面連結 |
+| 題目有解答 | `[LeetCode X - Title](url) \| [Solution](github_url)` |
+| 題目無解答 | `[LeetCode X - Title](leetcode_url)` |
+
+> **Note**: LLM 只需輸出 `LeetCode {number}` 格式，後處理會自動添加標題和連結。
 
 ---
 
@@ -86,12 +88,44 @@ python tools/generate_mindmaps_ai.py --style academic
 
 ```
 tools/
-├── generate_mindmaps_ai.py   # 主程式
+├── generate_mindmaps_ai.py      # 主程式
 ├── generate_mindmaps_ai.toml    # 配置檔案
 └── prompts/
-    ├── README.md             # 本說明文件
+    ├── README.md                # 本說明文件
+    ├── system_prompt.md         # System Prompt（可自訂）
+    ├── prompts_config.yaml      # Prompt 配置（語言、目標、風格）
     └── generated/
-        └── mindmap_prompt.md # 自動生成的 prompt（供手動使用）
+        └── mindmap_prompt.md    # 自動生成的 prompt（供手動使用）
+```
+
+## 🛠️ 自訂 Prompt
+
+### System Prompt
+
+編輯 `tools/prompts/system_prompt.md` 可修改 LLM 的角色設定和行為規則。
+
+支援變數替換：
+- `{{LANGUAGE_INSTRUCTION}}` - 會被替換為對應語言的指示
+
+### Prompts Config
+
+編輯 `tools/prompts/prompts_config.yaml` 可修改：
+
+```yaml
+# 語言指示
+language_instructions:
+  en: "Generate in English..."
+  zh-TW: "以繁體中文生成..."
+
+# 目標類型
+goal_prompts:
+  interview: "Generate an interview-focused..."
+  creative: "Creatively generate..."
+
+# 風格類型
+style_prompts:
+  academic: "Academic rigor..."
+  minimal: "Minimalist style..."
 ```
 
 ---
