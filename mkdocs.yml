@@ -5,6 +5,10 @@ site_url: https://lufftw.github.io/neetcode/
 repo_url: https://github.com/lufftw/neetcode
 repo_name: neetcode
 
+# Exclude files from build
+exclude_docs: |
+  mindmaps/README.md
+
 # Theme
 theme:
   name: material
