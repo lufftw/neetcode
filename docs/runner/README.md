@@ -6,133 +6,87 @@
 > **Created**: {{ git_creation_date_localized }}  
 > **Related**: [Runner README](../../runner/README.md) (Quick Reference)
 
-This document defines the **complete specification** for the Test Runner (`test_runner.py`), the core testing engine that executes solutions against test cases, supports multi-solution benchmarking, random test generation, and complexity estimation.
+The Test Runner is the core testing engine for executing solutions against test cases. It supports multi-solution benchmarking, random test generation, and complexity estimation.
 
 ---
 
-## A. Overview
-
-### A.1 Purpose
-
-The Test Runner is the primary interface for:
-- Running solutions against static test cases from `tests/`
-- Generating random test cases via generators
-- Comparing multiple solution approaches with performance benchmarks
-- Estimating time complexity empirically
-- Validating solutions using custom judge functions or comparison modes
-
-### A.2 Key Features
-
-| Feature | Description | Use Case |
-|---------|-------------|----------|
-| **Multi-Solution Testing** | Test all solution variants in one run | Compare different approaches |
-| **Performance Benchmarking** | Measure and compare execution times | Identify fastest solution |
-| **Random Test Generation** | Generate test cases with seed support | Stress testing, edge case discovery |
-| **Custom Validation** | JUDGE_FUNC or COMPARE_MODE | Handle multiple correct answers |
-| **Complexity Estimation** | Empirical Big-O analysis | Verify theoretical claims |
-| **Reproducible Testing** | Seed-based generation | Debug failures reliably |
-
-### A.3 Architecture
-
-```
-test_runner.py (CLI entry point)
-├── module_loader.py      # Load solution/generator modules
-├── executor.py           # Execute individual test cases
-├── reporter.py           # Format and display results
-├── compare.py            # Output validation logic
-└── complexity_estimator.py  # Big-O estimation
-```
-
----
-
-## B. Command-Line Interface
-
-### B.1 Basic Syntax
+## Quick Start
 
 ```bash
-python runner/test_runner.py <problem> [OPTIONS]
-```
-
-### B.2 Required Arguments
-
-| Argument | Format | Example | Description |
-|----------|--------|---------|-------------|
-| `problem` | `{id}_{slug}` | `0001_two_sum` | Problem identifier (4-digit ID + snake_case name) |
-
-### B.3 Solution Selection Options
-
-| Option | Short | Description | Example |
-|--------|-------|-------------|---------|
-| `--method` | `-m` | Test specific solution method | `--method heap` |
-| `--all` | `-a` | Test all solutions in SOLUTIONS | `--all` |
-| *(none)* | | Test default solution | *(default behavior)* |
-
-**Solution Selection Logic:**
-1. If `--all` → test all methods in `SOLUTIONS`
-2. If `--method X` → test only method `X`
-3. If no flag → test `"default"` method (or legacy mode if no SOLUTIONS)
-
-### B.4 Test Source Options
-
-| Option | Short | Description | Example |
-|--------|-------|-------------|---------|
-| `--tests-dir` | `-t` | Tests directory (default: `tests`) | `--tests-dir custom_tests` |
-| `--generate` | `-g` | Generate N cases (runs with `tests/`) | `--generate 10` |
-| `--generate-only` | | Generate N cases (skip `tests/`) | `--generate-only 20` |
-| `--seed` | `-s` | Random seed for reproducibility | `--seed 12345` |
-| `--save-failed` | | Save failed generated cases to `tests/` | `--save-failed` |
-
-**Test Source Priority:**
-- Static tests from `tests/{problem}_*.in` (excludes `*_failed_*.in`)
-- Generated tests from `generators/{problem}.py` (if `--generate` specified)
-- Both can run together (static + generated)
-
-### B.5 Output Options
-
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--benchmark` | `-b` | Show execution time for each case |
-| `--estimate` | `-e` | Estimate time complexity (requires `generate_for_complexity`) |
-
----
-
-## C. Usage Examples
-
-### C.1 Basic Testing
-
-```bash
-# Run default solution against static tests
+# Run default solution
 python runner/test_runner.py 0001_two_sum
 
 # Run specific solution method
 python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
 
-# Test all solutions
-python runner/test_runner.py 0023_merge_k_sorted_lists --all
-
-# With performance timing
+# Compare all solutions with timing
 python runner/test_runner.py 0023 --all --benchmark
 ```
 
-### C.2 Random Test Generation
+---
+
+## Common Use Cases
+
+### Testing a Single Solution
 
 ```bash
-# Generate 10 cases (runs with static tests)
-python runner/test_runner.py 0004_median_of_two_sorted_arrays --generate 10
+# Default solution against static tests
+python runner/test_runner.py 0001_two_sum
+
+# Specific method
+python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
+
+# With execution timing
+python runner/test_runner.py 0001_two_sum --benchmark
+```
+
+### Comparing Multiple Solutions
+
+```bash
+# Test all solutions in SOLUTIONS dict
+python runner/test_runner.py 0023 --all
+
+# All solutions with performance comparison
+python runner/test_runner.py 0023 --all --benchmark
+```
+
+**Output:**
+```
+============================================================
+📊 Performance Comparison
+============================================================
+Method               Avg Time    Complexity      Static    Generated
+------------------------------------------------------------
+heap                 12.34ms     O(N log k)      5/5       5/5
+divide               15.67ms     O(N log k)      5/5       5/5
+============================================================
+```
+
+### Random Test Generation
+
+Requires a generator file at `generators/{problem}.py` and `JUDGE_FUNC` in solution.
+
+```bash
+# Generate 10 cases (runs together with static tests)
+python runner/test_runner.py 0004 --generate 10
 
 # Generate only (skip static tests)
 python runner/test_runner.py 0004 --generate-only 20
 
-# Reproducible generation
+# Reproducible generation with seed
 python runner/test_runner.py 0004 --generate 10 --seed 12345
 
 # Save failed cases for debugging
 python runner/test_runner.py 0004 --generate 10 --save-failed
 ```
 
-### C.3 Complexity Estimation
+### Complexity Estimation
+
+Requires `generate_for_complexity(n)` in generator and `big-O` package.
 
 ```bash
+pip install big-O
+
 # Estimate time complexity
 python runner/test_runner.py 0004 --estimate
 
@@ -143,67 +97,54 @@ python runner/test_runner.py 0004 --method binary --estimate
 python runner/test_runner.py 0004 --all --estimate
 ```
 
-**Requirements:**
-- Generator must implement `generate_for_complexity(n: int) -> str`
-- `big-O` package must be installed: `pip install big-O`
+**Output:**
+```
+📌 Estimating: heap
 
-### C.4 Combined Usage
-
-```bash
-# All solutions + generated tests + benchmark
-python runner/test_runner.py 0023 --all --generate 50 --benchmark
-
-# Specific method + generated + save failed
-python runner/test_runner.py 0004 --method binary --generate 100 --save-failed
+   ✅ Estimated: O(n log n)
+      Confidence: 0.95
+      Details: Best fit: O(n log n), R² = 0.98
 ```
 
 ---
 
-## D. Test Execution Flow
+## Command Reference
 
-### D.1 Static Test Execution
+### Basic Syntax
 
-1. **Find Test Files**: `tests/{problem}_*.in` (excludes `*_failed_*.in`)
-2. **Load Solution Module**: `solutions/{problem}.py`
-3. **For Each Test Case**:
-   - Read input: `{problem}_{n}.in`
-   - Read expected output: `{problem}_{n}.out` (if exists)
-   - Execute solution via subprocess
-   - Validate output (JUDGE_FUNC or COMPARE_MODE)
-   - Report result (PASS/FAIL/SKIP)
+```bash
+python runner/test_runner.py <problem> [OPTIONS]
+```
 
-### D.2 Generated Test Execution
+| Argument | Format | Example |
+|----------|--------|---------|
+| `problem` | `{id}_{slug}` or `{id}` | `0001_two_sum` or `0001` |
 
-1. **Load Generator Module**: `generators/{problem}.py`
-2. **Check JUDGE_FUNC**: Required for generated tests (no `.out` files)
-3. **Generate Test Cases**: Call `generate(count, seed)`
-4. **For Each Generated Case**:
-   - Execute solution with generated input
-   - Validate via JUDGE_FUNC only
-   - Report result
-   - Save failed cases if `--save-failed` specified
+### All Options
 
-### D.3 Validation Modes
-
-| Mode | Trigger | Description |
-|------|---------|-------------|
-| `judge` | JUDGE_FUNC + `.out` exists | Custom validation + expected output check |
-| `judge-only` | JUDGE_FUNC, no `.out` | Custom validation only (generated tests) |
-| `exact` | COMPARE_MODE="exact" | Exact string match |
-| `sorted` | COMPARE_MODE="sorted" | Sort before comparison |
-| `set` | COMPARE_MODE="set" | Set comparison (ignore order/duplicates) |
-| `skip` | No `.out`, no JUDGE_FUNC | Cannot validate, skipped |
-
-**Priority:**
-1. JUDGE_FUNC (if defined) → always used
-2. COMPARE_MODE (if `.out` exists) → fallback
-3. Skip (if neither available)
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--method NAME` | `-m` | Test specific solution method |
+| `--all` | `-a` | Test all solutions in SOLUTIONS |
+| `--tests-dir DIR` | `-t` | Custom tests directory (default: `tests`) |
+| `--generate N` | `-g` | Generate N random cases (with static tests) |
+| `--generate-only N` | | Generate N cases only (skip static tests) |
+| `--seed N` | `-s` | Random seed for reproducibility |
+| `--save-failed` | | Save failed generated cases to `tests/` |
+| `--benchmark` | `-b` | Show execution time for each case |
+| `--estimate` | `-e` | Estimate time complexity |
 
 ---
 
-## E. Output Format
+## Understanding Output
 
-### E.1 Test Case Results
+### Test Case Results
+
+| Symbol | Meaning |
+|--------|---------|
+| ✅ PASS | Test passed |
+| ❌ FAIL | Test failed (shows expected vs actual) |
+| ⚠️ SKIP | Cannot validate (missing `.out` and no JUDGE_FUNC) |
 
 **Pass:**
 ```
@@ -218,11 +159,6 @@ python runner/test_runner.py 0004 --method binary --generate 100 --save-failed
       Actual:   [1, 0]...
 ```
 
-**Skip:**
-```
-   case_3: ⚠️ SKIP (missing .out, no JUDGE_FUNC)
-```
-
 **Generated Test Fail:**
 ```
    gen_5: ❌ FAIL [generated]
@@ -235,7 +171,7 @@ python runner/test_runner.py 0004 --method binary --generate 100 --save-failed
       💾 Saved to: tests/0001_two_sum_failed_1.in
 ```
 
-### E.2 Summary
+### Summary
 
 **Single Solution:**
 ```
@@ -250,306 +186,165 @@ Average Time: 15.23ms
    Result: 10 / 10 cases passed.
       ├─ Static: 5/5
       └─ Generated: 5/5
-
-============================================================
-📊 Performance Comparison
-============================================================
-Method               Avg Time    Complexity      Static    Generated
-------------------------------------------------------------
-heap                 12.34ms     O(N log k)      5/5       5/5
-divide               15.67ms     O(N log k)      5/5       5/5
-============================================================
-```
-
-### E.3 Complexity Estimation Output
-
-```
-============================================================
-📈 Complexity Estimation
-============================================================
-
-📌 Estimating: heap
-
-   ✅ Estimated: O(n log n)
-      Confidence: 0.95
-      Details: Best fit: O(n log n), R² = 0.98
 ```
 
 ---
 
-## F. Integration with Solution Files
+## Validation Modes
 
-### F.1 Solution Module Requirements
+The runner validates output in different ways depending on what's defined:
 
-The runner expects solutions to follow the [Solution Contract](../SOLUTION_CONTRACT.md):
+| Mode | When Used | Description |
+|------|-----------|-------------|
+| `judge` | JUDGE_FUNC + `.out` exists | Custom validation + expected output |
+| `judge-only` | JUDGE_FUNC, no `.out` | Custom validation only |
+| `exact` | COMPARE_MODE="exact" | Exact string match |
+| `sorted` | COMPARE_MODE="sorted" | Sort before comparison |
+| `set` | COMPARE_MODE="set" | Set comparison (ignore order/duplicates) |
+| `skip` | No `.out`, no JUDGE_FUNC | Cannot validate |
 
-| Element | Required | Purpose |
-|---------|----------|---------|
-| `SOLUTIONS` dict | ✅ | Metadata for multi-solution support |
-| `solve()` function | ✅ | Entry point for execution |
-| `COMPARE_MODE` | ⭕ | Output comparison mode |
-| `JUDGE_FUNC` | ⭕ | Custom validation function |
+**Priority:** JUDGE_FUNC → COMPARE_MODE → Skip
 
-### F.2 Method Selection
+---
 
-**Environment Variable:**
-- `SOLUTION_METHOD` is set by the runner to select which solution class/method to use
+## Required File Structure
 
-**Example:**
+### Solution File
+
+Location: `solutions/{problem}.py`
+
 ```python
-# solutions/0023_merge_k_sorted_lists.py
 SOLUTIONS = {
-    "heap": {"class": "SolutionHeap", "method": "mergeKLists"},
-    "divide": {"class": "SolutionDivide", "method": "mergeKLists"},
+    "default": {"class": "Solution", "method": "solve"},
+    "heap": {"class": "SolutionHeap", "method": "solve"},
 }
 
-# Runner sets: env['SOLUTION_METHOD'] = "heap"
-# _runner.get_solver() uses this to instantiate SolutionHeap
-```
+# Optional: for multiple correct answers
+COMPARE_MODE = "sorted"  # or "exact", "set"
 
----
+# Optional: custom validation
+def JUDGE_FUNC(input_str, expected, actual):
+    return validate(input_str, actual)
 
-## G. Integration with Generator Files
-
-### G.1 Generator Module Requirements
-
-The runner expects generators to follow the [Generator Contract](../GENERATOR_CONTRACT.md):
-
-| Element | Required | Purpose |
-|---------|----------|---------|
-| `generate(count, seed)` | ✅ | Main test generation function |
-| `generate_for_complexity(n)` | ⭕ | For complexity estimation |
-
-### G.2 Generator Usage
-
-**For Random Testing:**
-```python
-# generators/0001_two_sum.py
-def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
-    if seed is not None:
-        random.seed(seed)
-    # ... yield test inputs ...
-```
-
-**For Complexity Estimation:**
-```python
-def generate_for_complexity(n: int) -> str:
-    """Generate test case with input size = n."""
-    # Return test input string for size n
+def solve():
+    # Entry point
     ...
 ```
 
-**JUDGE_FUNC Requirement:**
-- Generated tests require `JUDGE_FUNC` in solution file (no `.out` files)
-- Runner will error if generator is used without JUDGE_FUNC
+### Generator File
 
----
+Location: `generators/{problem}.py`
 
-## H. Error Handling
+```python
+def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
+    """Required: Generate random test cases."""
+    if seed is not None:
+        random.seed(seed)
+    for _ in range(count):
+        yield create_test_input()
 
-### H.1 Common Errors
-
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `No test input files found` | No `tests/{problem}_*.in` and no `--generate` | Add test files or use `--generate` |
-| `Solution method 'X' not found` | `--method X` but X not in SOLUTIONS | Check available methods |
-| `Generator requires JUDGE_FUNC` | Using `--generate` but no JUDGE_FUNC | Add JUDGE_FUNC to solution |
-| `No generator found` | `--generate` but no `generators/{problem}.py` | Create generator file |
-| `big-O package not installed` | `--estimate` without big-O | `pip install big-O` |
-
-### H.2 Validation Failures
-
-**Missing `.out` File:**
-- If no JUDGE_FUNC → case is skipped
-- If JUDGE_FUNC exists → validated via judge-only mode
-
-**Failed Generated Cases:**
-- Display input and actual output
-- If `--save-failed` → saved to `tests/{problem}_failed_{n}.in`
-- Reproduction hint shown if `--seed` was used
-
----
-
-## I. Advanced Features
-
-### I.1 Multi-Solution Benchmarking
-
-When `--all --benchmark` is used:
-- All solutions run against same test cases
-- Execution times collected per method
-- Summary table shows performance comparison
-- Includes complexity metadata from SOLUTIONS
-
-**Use Case:** Compare heap vs divide-and-conquer approaches
-
-### I.2 Reproducible Testing
-
-**Seed-Based Generation:**
-```bash
-# First run
-python runner/test_runner.py 0004 --generate 10 --seed 12345
-
-# Reproduce exact same cases
-python runner/test_runner.py 0004 --generate 10 --seed 12345
+def generate_for_complexity(n: int) -> str:
+    """Optional: For --estimate. Generate test of size n."""
+    return create_test_input(size=n)
 ```
 
-**Failed Case Reproduction:**
-- Failed cases saved with `--save-failed`
-- Can be re-run with `case_runner.py` for debugging
+### Test Files
 
-### I.3 Complexity Estimation
-
-**How It Works:**
-1. Generator provides `generate_for_complexity(n)` for different input sizes
-2. Runner executes solution with increasing sizes: n=10, 20, 40, 80, ...
-3. Measures execution time for each size
-4. Fits curve to determine Big-O complexity
-5. Reports estimated complexity with confidence score
-
-**Requirements:**
-- `big-O` package installed
-- Generator implements `generate_for_complexity(n: int) -> str`
-- Solution must be deterministic
-
----
-
-## J. Module Dependencies
-
-### J.1 Internal Modules
-
-| Module | Purpose | Used By |
-|--------|---------|---------|
-| `module_loader.py` | Load solution/generator modules | test_runner |
-| `executor.py` | Execute individual test cases | test_runner, reporter |
-| `reporter.py` | Format and display results | test_runner |
-| `compare.py` | Output validation logic | executor |
-| `complexity_estimator.py` | Big-O estimation | test_runner |
-
-### J.2 External Dependencies
-
-| Package | Required For | Installation |
-|---------|--------------|--------------|
-| `big-O` | Complexity estimation | `pip install big-O` |
-
----
-
-## K. File Structure
-
-### K.1 Test Files
+Location: `tests/`
 
 ```
 tests/
-├── {problem}_1.in          # Static test input
-├── {problem}_1.out         # Expected output (optional)
-├── {problem}_2.in
-├── {problem}_2.out
-└── {problem}_failed_1.in    # Saved failed case (excluded from normal runs)
-```
-
-### K.2 Solution Files
-
-```
-solutions/
-└── {problem}.py            # Solution module with SOLUTIONS dict
-```
-
-### K.3 Generator Files
-
-```
-generators/
-└── {problem}.py            # Generator module with generate() function
+├── 0001_two_sum_1.in       # Input file
+├── 0001_two_sum_1.out      # Expected output (optional if JUDGE_FUNC)
+├── 0001_two_sum_2.in
+├── 0001_two_sum_2.out
+└── 0001_two_sum_failed_1.in  # Saved failed case (excluded from normal runs)
 ```
 
 ---
 
-## L. Best Practices
+## Troubleshooting
 
-### L.1 Testing Workflow
+### Common Errors
 
-1. **Start with Static Tests**: Create `tests/{problem}_*.in` files
-2. **Add JUDGE_FUNC**: For problems with multiple correct answers
-3. **Create Generator**: For stress testing and edge case discovery
-4. **Run with Seed**: Use `--seed` for reproducible debugging
-5. **Save Failed Cases**: Use `--save-failed` to capture problematic inputs
-6. **Benchmark Solutions**: Use `--all --benchmark` to compare approaches
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `No test input files found` | No `tests/{problem}_*.in` files | Add test files or use `--generate` |
+| `Solution method 'X' not found` | Method not in SOLUTIONS | Check SOLUTIONS dict keys |
+| `Generator requires JUDGE_FUNC` | Using `--generate` without JUDGE_FUNC | Add JUDGE_FUNC to solution |
+| `No generator found` | No `generators/{problem}.py` | Create generator file |
+| `big-O package not installed` | Using `--estimate` | Run `pip install big-O` |
 
-### L.2 Debugging Failed Tests
+### Common Issues
 
-1. **Check Output**: Compare actual vs expected in failure message
-2. **Reproduce**: Use saved failed case or `--seed` to reproduce
-3. **Run Single Case**: Use `case_runner.py` for detailed debugging
-4. **Validate Input**: Check if input format matches solution expectations
+**Tests pass locally but fail in runner**
+- Check output format (whitespace, newlines)
+- Use COMPARE_MODE or normalize output
 
-### L.3 Performance Optimization
+**"SKIP" cases appearing**
+- Add `.out` files or implement JUDGE_FUNC
 
-1. **Benchmark First**: Identify slow solutions with `--benchmark`
-2. **Compare Approaches**: Use `--all` to see relative performance
-3. **Estimate Complexity**: Verify theoretical claims with `--estimate`
-4. **Profile Large Cases**: Use `--generate-only` with large N for profiling
-
----
-
-## M. Troubleshooting
-
-### M.1 Test Runner Issues
-
-**Problem:** "No test input files found"
-- **Check:** `tests/{problem}_*.in` files exist
-- **Solution:** Create test files or use `--generate`
-
-**Problem:** "Solution method 'X' not found"
-- **Check:** `SOLUTIONS` dict in solution file
-- **Solution:** Verify method name matches SOLUTIONS key
-
-**Problem:** "Generator requires JUDGE_FUNC"
-- **Check:** Solution file has `JUDGE_FUNC` defined
-- **Solution:** Add JUDGE_FUNC or use static tests only
-
-### M.2 Validation Issues
-
-**Problem:** Tests pass locally but fail in runner
-- **Check:** Output format (whitespace, newlines)
-- **Solution:** Use `normalize_output()` or adjust COMPARE_MODE
-
-**Problem:** "SKIP" cases appearing
-- **Check:** `.out` files exist or JUDGE_FUNC defined
-- **Solution:** Add expected outputs or implement JUDGE_FUNC
+**Reproduce a failed generated test**
+- Use `--seed` with same value
+- Check `--save-failed` output files
 
 ---
 
-## N. Related Documentation
+## Architecture
 
-- **[Solution Contract](../SOLUTION_CONTRACT.md)**: Solution file specification
-- **[Generator Contract](../GENERATOR_CONTRACT.md)**: Generator file specification
-- **[Runner README](../../runner/README.md)**: Quick reference guide
-- **[Architecture Migration](../ARCHITECTURE_MIGRATION.md)**: Migration guide for multi-solution support
+```
+test_runner.py (CLI entry point)
+├── module_loader.py      # Load solution/generator modules
+├── executor.py           # Execute individual test cases
+├── reporter.py           # Format and display results
+├── compare.py            # Output validation logic
+└── complexity_estimator.py  # Big-O estimation
+```
+
+### Execution Flow
+
+1. **Load** solution module from `solutions/{problem}.py`
+2. **Find** test files from `tests/{problem}_*.in`
+3. **Execute** each test case via subprocess
+4. **Validate** output (JUDGE_FUNC or COMPARE_MODE)
+5. **Report** results (PASS/FAIL/SKIP)
+
+For generated tests:
+1. Load generator from `generators/{problem}.py`
+2. Check JUDGE_FUNC exists (required for generated tests)
+3. Generate test cases
+4. Execute and validate via JUDGE_FUNC
 
 ---
 
-## O. Version History
+## Best Practices
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | Initial | Basic test execution |
-| 2.0 | Multi-solution | Added `--method`, `--all`, SOLUTIONS support |
-| 2.1 | Generator | Added `--generate`, `--seed`, `--save-failed` |
-| 2.2 | Complexity | Added `--estimate` for Big-O estimation |
-| 2.3 | Benchmark | Enhanced `--benchmark` with comparison table |
+1. **Start with static tests** → Create `tests/{problem}_*.in` files first
+2. **Add JUDGE_FUNC** → When problems have multiple correct answers
+3. **Create generator** → For stress testing and edge case discovery
+4. **Use `--seed`** → For reproducible debugging
+5. **Use `--save-failed`** → Capture problematic inputs automatically
+6. **Use `--all --benchmark`** → Compare solution approaches
+
+---
+
+## Related Documentation
+
+- **[Solution Contract](../SOLUTION_CONTRACT.md)** - Solution file specification
+- **[Generator Contract](../GENERATOR_CONTRACT.md)** - Generator file specification
+- **[Runner README](../../runner/README.md)** - Quick reference guide
 
 ---
 
 ## Documentation Maintenance
 
-⚠️ **Important:** When modifying `test_runner.py` or its behavior:
+⚠️ **When modifying `test_runner.py`:**
 
-1. **Update this document** (`docs/runner/README.md`) - Complete specification
-2. **Update quick reference** (`runner/README.md`) - Quick start guide
-3. **Update docstring** (`runner/test_runner.py`) - Inline documentation
-
-These three files must stay in sync. For quick reference, see [Runner README](../../runner/README.md).
+1. Update this document (`docs/runner/README.md`)
+2. Update quick reference (`runner/README.md`)
+3. Update docstring (`runner/test_runner.py`)
 
 ---
 
-**Last Updated:** {{ git_revision_date_localized }}  
 **Maintainer:** See [Contributors](../contributors/README.md)
 
