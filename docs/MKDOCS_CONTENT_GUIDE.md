@@ -18,7 +18,7 @@ This document explains which content is **NOT** included in the MkDocs-generated
 
 ---
 
-## 🌐 Content Included in Website {#content-included-in-website}
+## Content Included in Website
 
 Based on the `nav` configuration in `mkdocs.yml`, the following content is included in the MkDocs website:
 
@@ -57,7 +57,7 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 
 ---
 
-## ❌ Content NOT Included in Website {#content-not-included-in-website}
+## Content NOT Included in Website
 
 The following directories and files **do NOT** appear in the MkDocs website and can only be accessed via the GitHub repository:
 
@@ -115,7 +115,7 @@ The following files are **intentionally NOT** in the website navigation (GitHub 
 
 ---
 
-## 🔗 Linking Strategy Guide {#linking-strategy-guide}
+## Linking Strategy Guide
 
 When linking to content in documentation files, follow these strategies:
 
@@ -263,7 +263,7 @@ To ensure all documentation is accessible via MkDocs website while maintaining G
 
 ---
 
-## ❓ Frequently Asked Questions {#frequently-asked-questions}
+## Frequently Asked Questions
 
 ### Q: How do I check if a file is on the website?
 
