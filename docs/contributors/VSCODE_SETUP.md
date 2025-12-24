@@ -268,7 +268,7 @@ python -m venv leetcode
 | Document | Content |
 |----------|---------|
 | [Virtual Environment Setup](VIRTUAL_ENV_SETUP.md) | Python environment setup |
-| [Test Runner Specification](../runner/README.md) | CLI options and usage |
+| [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options and usage |
 | [Testing Guide](TESTING.md) | Unit testing framework |
 
 ---

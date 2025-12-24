@@ -154,7 +154,7 @@ python runner/test_runner.py 0023 --method divide
 python runner/test_runner.py 0023 --all
 ```
 
-> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+> 📖 See [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) for full CLI reference.
 
 The `solve()` function uses `get_solver()` to dispatch:
 
@@ -772,12 +772,12 @@ python runner/test_runner.py {problem} --all        # All solutions
 python runner/test_runner.py {problem} --benchmark  # With timing
 ```
 
-> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+> 📖 See [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) for full CLI reference.
 
 ### Related Documentation
 
 | Document | Content |
 |----------|---------|
 | [Generator Contract](GENERATOR_CONTRACT.md) | `generate()`, `generate_for_complexity()`, edge cases |
-| [Test Runner Specification](runner/README.md) | CLI options, output format, troubleshooting |
+| [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
 | [Architecture Migration](ARCHITECTURE_MIGRATION.md) | Polymorphic pattern migration guide |

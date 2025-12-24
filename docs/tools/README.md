@@ -247,7 +247,7 @@ The command reads existing Markdown files from the configured output directory a
 
 **No API Key?** After running, copy `tools/prompts/generated/mindmap_prompt.md` to ChatGPT/Claude.
 
-> 📖 **Detailed usage guide:** [prompts/README.md](prompts/README.md)
+> 📖 **Detailed usage guide:** [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md)
 
 ---
 
@@ -512,7 +512,7 @@ pre-commit run generate-ai-mindmaps --all-files
 | [ARCHITECTURE_MIGRATION.md](../ARCHITECTURE_MIGRATION.md) | Architecture migration guide |
 | [mindmaps/README.md](mindmaps/README.md) | Mind map module technical docs |
 | [patterndocs/README.md](patterndocs/README.md) | Pattern docs module technical docs |
-| [prompts/README.md](prompts/README.md) | AI prompts usage guide |
+| [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md) | AI prompts usage guide |
 
 ---
 

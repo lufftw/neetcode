@@ -296,7 +296,7 @@ The `--estimate` flag uses this function to:
 2. Measure execution time for each size
 3. Fit curve to estimate Big-O complexity
 
-> 📖 See [Test Runner § Complexity Estimation](runner/README.md#complexity-estimation) for usage.
+> 📖 See [Test Runner § Complexity Estimation](https://github.com/lufftw/neetcode/blob/main/runner/README.md#complexity-estimation) for usage.
 
 ### Example
 
@@ -452,7 +452,7 @@ python runner/test_runner.py {problem} --generate N --save-failed
 python runner/test_runner.py {problem} --estimate
 ```
 
-> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+> 📖 See [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) for full CLI reference.
 
 ### Output Format
 
@@ -589,12 +589,12 @@ python runner/test_runner.py {problem} --generate N --save-failed
 python runner/test_runner.py {problem} --estimate
 ```
 
-> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+> 📖 See [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) for full CLI reference.
 
 ### Related Documentation
 
 | Document | Content |
 |----------|---------|
 | [Solution Contract](SOLUTION_CONTRACT.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
-| [Test Runner Specification](runner/README.md) | CLI options, output format, troubleshooting |
+| [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
 | [Architecture Migration](ARCHITECTURE_MIGRATION.md) | Polymorphic pattern migration guide |

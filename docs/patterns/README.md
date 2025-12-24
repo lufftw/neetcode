@@ -120,7 +120,7 @@ footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
 - **If `_config.toml` exists**: Files are ordered exactly as specified
 - **If `_config.toml` doesn't exist**: Falls back to default ordering (alphabetical for problems)
 
-See [`meta/patterns/README.md`](../../meta/patterns/README.md) for detailed documentation.
+See [`meta/patterns/README.md`](https://github.com/lufftw/neetcode/blob/main/meta/patterns/README.md) for detailed documentation.
 
 ---
 

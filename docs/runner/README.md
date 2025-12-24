@@ -4,7 +4,7 @@
 > **Scope**: `runner/test_runner.py` - Main test execution engine  
 > **Last Updated**: {{ git_revision_date_localized }}  
 > **Created**: {{ git_creation_date_localized }}  
-> **Related**: [Runner README](../../runner/README.md) (Quick Reference)
+> **Related**: [Runner README](https://github.com/lufftw/neetcode/blob/main/runner/README.md) (Quick Reference)
 
 The Test Runner is the core testing engine for executing solutions against test cases. It supports multi-solution benchmarking, random test generation, and complexity estimation.
 
@@ -277,7 +277,7 @@ test_runner.py (CLI)
 |----------|---------|
 | [Solution Contract](../SOLUTION_CONTRACT.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
 | [Generator Contract](../GENERATOR_CONTRACT.md) | `generate()`, `generate_for_complexity()`, edge cases |
-| [Runner README](../../runner/README.md) | Quick reference (in-module) |
+| [Runner README](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | Quick reference (in-module) |
 | [VSCode Setup Guide](../contributors/VSCODE_SETUP.md) | Tasks, debug configurations, workflow examples |
 
 ---
@@ -287,7 +287,7 @@ test_runner.py (CLI)
 When modifying `test_runner.py`:
 
 1. Update this spec (`docs/runner/README.md`)
-2. Update quick reference (`runner/README.md`)
+2. Update quick reference ([runner/README.md](https://github.com/lufftw/neetcode/blob/main/runner/README.md))
 3. Update docstring (`runner/test_runner.py`)
 
 ---

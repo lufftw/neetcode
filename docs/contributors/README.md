@@ -6,7 +6,7 @@
 > **Created**: {{ git_creation_date_localized }}
 
 > ⚠️ **Note**: This folder is for project maintainers only, containing unit tests, development documentation, and maintenance tools.  
-> For general users, please refer to the root [README.md](../README.md)
+> For general users, please refer to the root [README.md](https://github.com/lufftw/neetcode/blob/main/README.md)
 
 ---
 
@@ -142,8 +142,8 @@ tools/run_format_tests.sh
 | [TESTING.md](TESTING.md) | Complete testing documentation (strategy, principles, workflow) |
 | [VIRTUAL_ENV_SETUP.md](VIRTUAL_ENV_SETUP.md) | Virtual environment setup guide |
 | [DOCUMENTATION_ARCHITECTURE.md](DOCUMENTATION_ARCHITECTURE.md) | Documentation structure and best practices |
-| [tests/README.md](tests/README.md) | Component tests detailed description |
-| [tests_solutions/README.md](tests_solutions/README.md) | Solution tests detailed description |
+| [tests/README.md](https://github.com/lufftw/neetcode/blob/main/.dev/tests/README.md) | Component tests detailed description |
+| [tests_solutions/README.md](https://github.com/lufftw/neetcode/blob/main/.dev/tests_solutions/README.md) | Solution tests detailed description |
 | [../tools/README.md](../tools/README.md) | Developer tools reference |
 
 ---
@@ -231,9 +231,9 @@ python -m pytest .dev/tests --cov=runner --cov-report=html
 
 ## 🔗 Related Links
 
-- [Project Main README](../README.md) - Project overview
-- [Root pytest.ini](../pytest.ini) - pytest configuration file
-- [requirements.txt](../requirements.txt) - Project dependencies
+- [Project Main README](https://github.com/lufftw/neetcode/blob/main/README.md) - Project overview
+- [Root pytest.ini](https://github.com/lufftw/neetcode/blob/main/pytest.ini) - pytest configuration file
+- [requirements.txt](https://github.com/lufftw/neetcode/blob/main/requirements.txt) - Project dependencies
 
 ---
 

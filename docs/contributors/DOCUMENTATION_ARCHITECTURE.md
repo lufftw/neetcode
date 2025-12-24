@@ -255,8 +255,8 @@ Ask: **Who is the primary reader?**
 
 ## 🔗 Related Documents
 
-- [Maintainer Guide](contributors/README.md)
-- [Testing Documentation](contributors/TESTING.md)
-- [MkDocs Content Guide](MKDOCS_CONTENT_GUIDE.md)
-- [Tools Reference](tools/README.md)
+- [Maintainer Guide](README.md)
+- [Testing Documentation](TESTING.md)
+- [MkDocs Content Guide](../MKDOCS_CONTENT_GUIDE.md)
+- [Tools Reference](../tools/README.md)
 

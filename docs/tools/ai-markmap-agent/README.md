@@ -4,7 +4,7 @@
 
 [![LangGraph](https://img.shields.io/badge/LangGraph-v1.0.4-blue)](https://github.com/langchain-ai/langgraph)
 [![Python](https://img.shields.io/badge/Python-3.10+-green)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/lufftw/neetcode/blob/main/LICENSE)
 
 ## 📋 Table of Contents
 
@@ -1059,7 +1059,7 @@ See [Post-Processing Links Documentation](docs/POST_PROCESSING_LINKS.md) for det
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+MIT License - See [LICENSE](https://github.com/lufftw/neetcode/blob/main/LICENSE) for details.
 
 ---
 
