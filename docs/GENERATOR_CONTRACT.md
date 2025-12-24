@@ -9,9 +9,23 @@ This document defines the **contract** for test case generator files. Generators
 
 ---
 
-## A. Generator File Structure
+## Table of Contents
 
-### A.1 File Naming Convention
+- [File Structure](#file-structure)
+- [generate() Function](#generate-function)
+- [Generator Design Patterns](#generator-design-patterns)
+- [Complexity Estimation Generator](#complexity-estimation-generator)
+- [Input Format Specifications](#input-format-specifications)
+- [JUDGE_FUNC Requirement](#judge_func-requirement)
+- [Running Generated Tests](#running-generated-tests)
+- [Best Practices](#best-practices)
+- [Quick Reference](#quick-reference)
+
+---
+
+## File Structure
+
+### Naming Convention
 
 ```
 generators/{problem_id}_{slug}.py
@@ -27,7 +41,7 @@ generators/{problem_id}_{slug}.py
 - `generators/0004_median_of_two_sorted_arrays.py`
 - `generators/0051_n_queens.py`
 
-### A.2 Required Elements
+### Required Elements
 
 Every generator file MUST contain:
 
@@ -37,7 +51,7 @@ Every generator file MUST contain:
 | Docstring with constraints | ✅ | LeetCode constraints documentation |
 | Edge cases | ✅ | Known edge cases yielded first |
 
-### A.3 Optional Elements
+### Optional Elements
 
 | Element | Optional | Description |
 |---------|----------|-------------|
@@ -47,9 +61,9 @@ Every generator file MUST contain:
 
 ---
 
-## B. generate() Function Specification
+## generate() Function
 
-### B.1 Function Signature
+### Function Signature
 
 ```python
 def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
@@ -65,7 +79,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     """
 ```
 
-### B.2 Contract Rules
+### Contract Rules
 
 | Rule | Requirement | Rationale |
 |------|-------------|-----------|
@@ -75,7 +89,9 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 | **Constraint compliance** | Respect LeetCode constraints | Ensure valid test cases |
 | **JUDGE_FUNC required** | Solution must have `JUDGE_FUNC` | No `.out` file for generated cases |
 
-### B.3 Minimal Example
+> 📖 See [JUDGE_FUNC Specification](SOLUTION_CONTRACT.md#judge_func-specification) for validation details.
+
+### Minimal Example
 
 ```python
 # generators/0001_two_sum.py
@@ -114,9 +130,9 @@ def _generate_case() -> str:
 
 ---
 
-## C. Generator Design Patterns
+## Generator Design Patterns
 
-### C.1 Standard Template
+### Standard Template
 
 ```python
 # generators/{problem_id}_{slug}.py
@@ -191,7 +207,7 @@ def generate_for_complexity(n: int) -> str:
     pass
 ```
 
-### C.2 Edge Case Design
+### Edge Case Design
 
 Edge cases should cover:
 
@@ -215,7 +231,7 @@ edge_cases = [
 ]
 ```
 
-### C.3 Guaranteed Valid Input
+### Guaranteed Valid Input
 
 For problems requiring valid solutions exist, ensure generated inputs are solvable:
 
@@ -236,7 +252,7 @@ def _generate_case(size: int) -> str:
     return f"{','.join(map(str, nums))}\n{target}"
 ```
 
-### C.4 Weighted Random Distribution
+### Weighted Random Distribution
 
 For more thorough testing, weight towards challenging cases:
 
@@ -256,9 +272,9 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 ---
 
-## D. Complexity Estimation Generator
+## Complexity Estimation Generator
 
-### D.1 Function Signature
+### Function Signature
 
 ```python
 def generate_for_complexity(n: int) -> str:
@@ -273,14 +289,16 @@ def generate_for_complexity(n: int) -> str:
     """
 ```
 
-### D.2 Purpose
+### Purpose
 
 The `--estimate` flag uses this function to:
 1. Generate test cases of increasing sizes
 2. Measure execution time for each size
 3. Fit curve to estimate Big-O complexity
 
-### D.3 Example
+> 📖 See [Test Runner § Complexity Estimation](runner/README.md#complexity-estimation) for usage.
+
+### Example
 
 ```python
 def generate_for_complexity(n: int) -> str:
@@ -295,7 +313,7 @@ def generate_for_complexity(n: int) -> str:
     return _generate_case(n)
 ```
 
-### D.4 Size Semantics
+### Size Semantics
 
 Define what "n" means for your problem:
 
@@ -309,9 +327,9 @@ Define what "n" means for your problem:
 
 ---
 
-## E. Input Format Specifications
+## Input Format Specifications
 
-### E.1 Format Rules
+### Format Rules
 
 | Rule | Requirement |
 |------|-------------|
@@ -320,7 +338,7 @@ Define what "n" means for your problem:
 | Consistent separators | Use `,` or `\n` consistently |
 | No Python repr spaces | `[1,2,3]` not `[1, 2, 3]` |
 
-### E.2 Common Formats
+### Common Formats
 
 **Single array:**
 ```python
@@ -354,7 +372,7 @@ Define what "n" means for your problem:
 "4"
 ```
 
-### E.3 Removing Spaces from Lists
+### Removing Spaces from Lists
 
 ```python
 # Wrong: has spaces
@@ -366,11 +384,9 @@ f"{nums1}\n{nums2}".replace(' ', '')  # -> "[1,2,3]\n[4,5,6]"
 
 ---
 
-## F. JUDGE_FUNC Requirement
+## JUDGE_FUNC Requirement
 
-> **Full Specification**: See [`SOLUTION_CONTRACT.md`](SOLUTION_CONTRACT.md#c-judge--validation-contract) for complete JUDGE_FUNC documentation.
-
-### F.1 Why JUDGE_FUNC is Required
+### Why JUDGE_FUNC is Required
 
 Generated test cases have **no expected output** (`.out` file). The solution MUST validate correctness using `JUDGE_FUNC`:
 
@@ -378,7 +394,9 @@ Generated test cases have **no expected output** (`.out` file). The solution MUS
 Generator → Input only → Solution → Output → JUDGE_FUNC validates
 ```
 
-### F.2 Generator-Specific Considerations
+> 📖 See [JUDGE_FUNC Specification](SOLUTION_CONTRACT.md#judge_func-specification) for complete documentation.
+
+### Generator-Specific Considerations
 
 When `JUDGE_FUNC` is used with generators (judge-only mode):
 
@@ -390,7 +408,7 @@ When `JUDGE_FUNC` is used with generators (judge-only mode):
 
 The `JUDGE_FUNC` MUST be able to validate using **only** `actual` and `input_data` when `expected` is `None`.
 
-### F.3 Example Pattern
+### Example Pattern
 
 ```python
 def judge(actual, expected, input_data: str) -> bool:
@@ -413,9 +431,9 @@ JUDGE_FUNC = judge
 
 ---
 
-## G. Running Generated Tests
+## Running Generated Tests
 
-### G.1 Command Line Usage
+### Command Line Usage
 
 ```bash
 # Static tests + N generated tests
@@ -434,7 +452,9 @@ python runner/test_runner.py {problem} --generate N --save-failed
 python runner/test_runner.py {problem} --estimate
 ```
 
-### G.2 Output Format
+> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+
+### Output Format
 
 ```
 ============================================================
@@ -458,7 +478,7 @@ gen_3: ❌ FAIL [judge-only]              0.38ms
 ============================================================
 ```
 
-### G.3 Failure Reproduction
+### Failure Reproduction
 
 When a generated test fails:
 
@@ -480,9 +500,9 @@ When a generated test fails:
 
 ---
 
-## H. Best Practices
+## Best Practices
 
-### H.1 Generator Checklist
+### Generator Checklist
 
 - [ ] Docstring with LeetCode constraints
 - [ ] `seed` parameter for reproducibility
@@ -492,7 +512,7 @@ When a generated test fails:
 - [ ] Solution has `JUDGE_FUNC` defined
 - [ ] `generate_for_complexity()` if using `--estimate`
 
-### H.2 Performance Considerations
+### Performance Considerations
 
 | Consideration | Recommendation |
 |---------------|----------------|
@@ -500,7 +520,7 @@ When a generated test fails:
 | Constraint limits | Use LeetCode max constraints for stress tests |
 | Practical limits | Don't exceed O(N!) or exponential complexity bounds |
 
-### H.3 Testing Your Generator
+### Testing Your Generator
 
 ```python
 # Manual test
@@ -514,7 +534,7 @@ for i, test_input in enumerate(generate(count=5, seed=42)):
 
 ---
 
-## Appendix: Quick Reference
+## Quick Reference
 
 ### Generator Template
 
@@ -569,10 +589,12 @@ python runner/test_runner.py {problem} --generate N --save-failed
 python runner/test_runner.py {problem} --estimate
 ```
 
+> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+
 ### Related Documentation
 
-- [`SOLUTION_CONTRACT.md`](SOLUTION_CONTRACT.md) — Solution file specification  
-  - Section C: JUDGE_FUNC and COMPARE_MODE specifications
-  - Section D: Test file format and static tests
-- [`ARCHITECTURE_MIGRATION.md`](ARCHITECTURE_MIGRATION.md) — Polymorphic pattern guide
-
+| Document | Content |
+|----------|---------|
+| [Solution Contract](SOLUTION_CONTRACT.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
+| [Test Runner Specification](runner/README.md) | CLI options, output format, troubleshooting |
+| [Architecture Migration](ARCHITECTURE_MIGRATION.md) | Polymorphic pattern migration guide |

@@ -9,9 +9,20 @@ This document defines the **contract** for solution files in this repository. Al
 
 ---
 
-## A. Solution File Structure
+## Table of Contents
 
-### A.1 File Naming Convention
+- [File Structure](#file-structure)
+- [SOLUTIONS Metadata](#solutions-metadata)
+- [Validation (JUDGE_FUNC / COMPARE_MODE)](#validation-judge_func--compare_mode)
+- [Test Files](#test-files)
+- [Metadata Layers](#metadata-layers)
+- [Quick Reference](#quick-reference)
+
+---
+
+## File Structure
+
+### Naming Convention
 
 ```
 solutions/{problem_id}_{slug}.py
@@ -27,7 +38,7 @@ solutions/{problem_id}_{slug}.py
 - `solutions/0023_merge_k_sorted_lists.py`
 - `solutions/0051_n_queens.py`
 
-### A.2 Required Elements
+### Required Elements
 
 Every solution file MUST contain:
 
@@ -38,7 +49,7 @@ Every solution file MUST contain:
 | `solve()` function | ✅ | Entry point for stdin/stdout execution |
 | `_runner` import | ✅ | For polymorphic dispatch |
 
-### A.3 Minimal Solution File
+### Minimal Solution File
 
 ```python
 # solutions/0001_two_sum.py
@@ -78,7 +89,7 @@ if __name__ == "__main__":
     solve()
 ```
 
-### A.4 Multi-Solution File (Polymorphic Pattern)
+### Multi-Solution File (Polymorphic Pattern)
 
 When a problem has multiple solution approaches, use **separate classes with the same method name**:
 
@@ -128,7 +139,7 @@ def solve():
 
 **Key Polymorphism Rule**: All solution classes MUST implement the **same method name** (the LeetCode original method name). The runner selects the class via `SOLUTION_METHOD` environment variable.
 
-### A.5 Runner Method Selection
+### Runner Method Selection
 
 The test runner selects solutions via the `SOLUTION_METHOD` environment variable:
 
@@ -143,6 +154,8 @@ python runner/test_runner.py 0023 --method divide
 python runner/test_runner.py 0023 --all
 ```
 
+> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
+
 The `solve()` function uses `get_solver()` to dispatch:
 
 ```python
@@ -153,7 +166,7 @@ def solve():
     result = solver.methodName(args)  # Natural LeetCode-style call
 ```
 
-### A.6 Deprecated Patterns
+### Deprecated Patterns
 
 The following patterns are **DEPRECATED** and should not be used in new code:
 
@@ -177,11 +190,11 @@ SOLUTIONS = {
 }
 ```
 
-### A.7 Solution Comment Format
+### Solution Comment Format
 
-Solutions SHOULD include structured comments to explain the algorithm, approach, and key insights. This section defines the standard comment format.
+Solutions SHOULD include structured comments to explain the algorithm, approach, and key insights.
 
-#### A.7.1 File-Level Docstring
+#### File-Level Docstring
 
 Every solution file SHOULD start with a docstring describing the problem:
 
@@ -208,7 +221,7 @@ Constraints:
 | Description | Recommended | Brief problem statement |
 | `Constraints` | Recommended | Key constraints affecting algorithm choice |
 
-#### A.7.2 Solution Block Comments
+#### Solution Block Comments
 
 Each solution class SHOULD be preceded by a block comment explaining the approach.
 
@@ -222,7 +235,7 @@ Each solution class SHOULD be preceded by a block comment explaining the approac
 #   - Uses last-seen-index array for O(1) duplicate detection
 #   - Direct position jumping instead of incremental contraction
 # ============================================================================
-class SolutionSlidingWindow:   # ← 緊接著，無空行
+class SolutionSlidingWindow:   # ← No blank line
     ...
 ```
 
@@ -245,70 +258,11 @@ class ClassName:   # ← No blank line before class/function
 | Bullet points | Recommended | Key insights, implementation details |
 | **No blank line** | ✅ | Comment block directly followed by class/function |
 
-**More examples:**
-
-```python
-# ============================================
-# Solution 1: Single Pass
-# Time: O(max(m,n)), Space: O(max(m,n))
-#   - Single pass through both lists
-#   - Result list has at most max(m,n) + 1 nodes
-# ============================================
-class Solution:
-    ...
-```
-
-```python
-# ============================================================================
-# Solution 2: Using Dictionary (More Flexible for Unicode)
-# Time: O(n), Space: O(min(n, σ))
-#   - Same sliding window approach with dictionary instead of array
-#   - More flexible for Unicode strings but slightly slower
-# ============================================================================
-class SolutionDict:
-    ...
-```
-
-```python
-# ============================================================================
-# Solution 3: Using Set (Standard While-Loop Pattern)
-# Time: O(n), Space: O(min(n, σ))
-#   - Uses set to track current window characters
-#   - Demonstrates standard while-loop contraction pattern
-# ============================================================================
-class SolutionSet:
-    ...
-```
-
-#### A.7.3 JUDGE_FUNC Comments (Optional)
-
-When defining a `JUDGE_FUNC`, you MAY include a block comment explaining its purpose and complexity.
-
-Same rule: **no blank line** between comment and function:
-
-```python
-# ============================================
-# JUDGE_FUNC - Required for generator support
-# ============================================
-# Uses brute force O(m+n) merge to compute the correct answer,
-# then compares with the solution output.
-# ============================================
-def judge(actual, expected, input_data: str) -> bool:   # ← 無空行
-    ...
-
-JUDGE_FUNC = judge
-```
-
-This is optional but recommended when:
-- The judge uses a different algorithm than the solution
-- The judge has notable complexity characteristics
-- Generator support requires custom validation
-
 ---
 
-## B. SOLUTIONS Metadata Schema
+## SOLUTIONS Metadata
 
-### B.1 Required Schema
+### Required Schema
 
 ```python
 SOLUTIONS = {
@@ -321,7 +275,7 @@ SOLUTIONS = {
 }
 ```
 
-### B.2 Field Definitions
+### Field Definitions
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -330,12 +284,12 @@ SOLUTIONS = {
 | `complexity` | `str` | Recommended | Time and/or space complexity (e.g., `"O(n) time, O(1) space"`) |
 | `description` | `str` | Recommended | Brief description of the approach |
 
-### B.3 Required Keys
+### Required Keys
 
 - **`"default"`** key is REQUIRED. This is used when no `--method` flag is specified.
 - Additional keys are optional and represent alternative solution approaches.
 
-### B.4 Validation Rules
+### Validation Rules
 
 The runner validates `SOLUTIONS` at load time:
 
@@ -357,7 +311,7 @@ The runner validates `SOLUTIONS` at load time:
    }
 ```
 
-### B.5 Complete Example
+### Complete Example
 
 ```python
 SOLUTIONS = {
@@ -382,7 +336,7 @@ SOLUTIONS = {
 }
 ```
 
-### B.6 Optional Extended Fields
+### Optional Extended Fields
 
 For integration with the ontology system, these optional fields may be included:
 
@@ -397,9 +351,9 @@ For integration with the ontology system, these optional fields may be included:
 
 ---
 
-## C. Judge / Validation Contract
+## Validation (JUDGE_FUNC / COMPARE_MODE)
 
-### C.1 Validation Priority Order
+### Validation Priority Order
 
 The runner validates solution output in this priority order:
 
@@ -409,7 +363,7 @@ The runner validates solution output in this priority order:
 | 2 | `COMPARE_MODE` | `COMPARE_MODE` defined in module | Framework-provided comparators |
 | 3 | Exact | Default | String equality comparison |
 
-### C.2 JUDGE_FUNC Specification
+### JUDGE_FUNC Specification
 
 #### Definition
 
@@ -456,6 +410,8 @@ When `.out` file is missing:
 - `JUDGE_FUNC` MUST validate using only `actual` and `input_data`
 - This enables validation without precomputed expected outputs
 
+> 📖 This mode is required for generated tests. See [Generator Contract](GENERATOR_CONTRACT.md#judge_func-requirement).
+
 **Example (N-Queens with judge-only support):**
 
 ```python
@@ -489,7 +445,24 @@ def judge(actual: list, expected, input_data: str) -> bool:
 JUDGE_FUNC = judge
 ```
 
-### C.3 COMPARE_MODE Specification
+#### JUDGE_FUNC Comments (Optional)
+
+When defining a `JUDGE_FUNC`, you MAY include a block comment explaining its purpose:
+
+```python
+# ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+# Uses brute force O(m+n) merge to compute the correct answer,
+# then compares with the solution output.
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:   # ← No blank line
+    ...
+
+JUDGE_FUNC = judge
+```
+
+### COMPARE_MODE Specification
 
 #### Definition
 
@@ -526,7 +499,7 @@ expected = [["..Q.", "Q..."], [".Q..", "...Q"]]
 # After sorting: both become the same → PASS
 ```
 
-### C.4 Validation Mode Reporting
+### Validation Mode Reporting
 
 The runner reports validation mode for each test case:
 
@@ -548,9 +521,9 @@ The runner reports validation mode for each test case:
 
 ---
 
-## D. Test Files Contract
+## Test Files
 
-### D.1 Directory Conventions
+### Directory Structure
 
 ```
 neetcode/
@@ -562,7 +535,9 @@ neetcode/
 │   └── {problem_id}_{slug}.py      # Generator module
 ```
 
-### D.2 Static Test Files
+> 📖 For generator files, see [Generator Contract](GENERATOR_CONTRACT.md).
+
+### Static Test Files
 
 #### Naming Convention
 
@@ -603,27 +578,7 @@ tests/{problem_id}_{slug}_{case_number}.{in|out}
 `.out` files are optional when:
 - `JUDGE_FUNC` is defined (judge-only mode)
 
-### D.3 Generator Requirements
-
-> 📖 **Full Specification**: See [`GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md) for complete generator documentation.
-
-#### Overview
-
-Generators enable dynamic test case generation for stress testing and edge case discovery.
-
-| Requirement | Description |
-|-------------|-------------|
-| File location | `generators/{problem_id}_{slug}.py` |
-| Required function | `generate(count: int, seed: Optional[int]) -> Iterator[str]` |
-| JUDGE_FUNC | Solutions using generators MUST define `JUDGE_FUNC` |
-
-#### Key Rules
-
-1. Generator output MUST match `.in` file format
-2. Same `seed` MUST produce identical output (reproducibility)
-3. Edge cases should be yielded before random cases
-
-### D.4 Running Tests
+### Running Tests
 
 #### Static Tests
 
@@ -633,8 +588,6 @@ python runner/test_runner.py 0001_two_sum
 
 #### With Generated Tests
 
-> 📖 **Full CLI Reference**: See [`GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md#g-running-generated-tests) for all generator options.
-
 ```bash
 # Static + N generated tests
 python runner/test_runner.py 0001_two_sum --generate 10
@@ -643,11 +596,13 @@ python runner/test_runner.py 0001_two_sum --generate 10
 python runner/test_runner.py 0001_two_sum --generate 10 --seed 12345
 ```
 
+> 📖 See [Generator Contract § Running Generated Tests](GENERATOR_CONTRACT.md#running-generated-tests) for all options.
+
 ---
 
-## E. Required Metadata Layers
+## Metadata Layers
 
-### E.1 Metadata Hierarchy
+### Metadata Hierarchy
 
 | Layer | Location | Scope | Change Frequency |
 |-------|----------|-------|------------------|
@@ -655,7 +610,7 @@ python runner/test_runner.py 0001_two_sum --generate 10 --seed 12345
 | **Problem-level** | `meta/problems/{problem}.toml` | Per-problem | Moderate |
 | **Ontology-level** | `ontology/*.toml` | Global definitions | Rarely |
 
-### E.2 Solution-Level Metadata (Required)
+### Solution-Level Metadata (Required)
 
 Located in the solution file itself:
 
@@ -674,7 +629,7 @@ JUDGE_FUNC = judge        # Custom validation
 COMPARE_MODE = "sorted"   # Comparison mode
 ```
 
-### E.3 Problem-Level Metadata (Optional)
+### Problem-Level Metadata (Optional)
 
 Located in `meta/problems/{problem_id}_{slug}.toml`:
 
@@ -697,7 +652,7 @@ api_kernels = []
 patterns = ["hash_lookup"]
 ```
 
-### E.4 Ontology-Level Metadata
+### Ontology-Level Metadata
 
 Located in `ontology/` directory:
 
@@ -713,7 +668,7 @@ Located in `ontology/` directory:
 | `companies.toml` | Company tags |
 | `roadmaps.toml` | Learning path metadata |
 
-### E.5 Consistency Checklist
+### Consistency Checklist
 
 When adding or modifying a solution, verify:
 
@@ -739,16 +694,11 @@ When adding or modifying a solution, verify:
 - [ ] `JUDGE_FUNC` is defined in solution (required for generators)
 - [ ] Edge cases are included in generator
 
-#### Ontology Consistency (if applicable)
-
-- [ ] Referenced `api_kernels` exist in `ontology/api_kernels.toml`
-- [ ] Referenced `patterns` exist in `ontology/patterns.toml`
-- [ ] Referenced `families` exist in `ontology/families.toml`
-- [ ] Problem metadata in `meta/problems/` aligns with solution file
+> 📖 See [Generator Contract](GENERATOR_CONTRACT.md) for generator requirements.
 
 ---
 
-## Appendix: Quick Reference
+## Quick Reference
 
 ### File Structure Template
 
@@ -820,16 +770,14 @@ python runner/test_runner.py {problem}              # Default solution
 python runner/test_runner.py {problem} --method X   # Specific solution
 python runner/test_runner.py {problem} --all        # All solutions
 python runner/test_runner.py {problem} --benchmark  # With timing
-
-# Generator (see GENERATOR_CONTRACT.md for full options)
-python runner/test_runner.py {problem} --generate N          # Static + N generated
-python runner/test_runner.py {problem} --generate N --seed S # Reproducible
 ```
+
+> 📖 See [Test Runner Specification](runner/README.md) for full CLI reference.
 
 ### Related Documentation
 
-- [`GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md) — Generator file specification
-  - Full `generate()` function spec
-  - Generator design patterns
-  - Complexity estimation
-  - Running generated tests CLI
+| Document | Content |
+|----------|---------|
+| [Generator Contract](GENERATOR_CONTRACT.md) | `generate()`, `generate_for_complexity()`, edge cases |
+| [Test Runner Specification](runner/README.md) | CLI options, output format, troubleshooting |
+| [Architecture Migration](ARCHITECTURE_MIGRATION.md) | Polymorphic pattern migration guide |
