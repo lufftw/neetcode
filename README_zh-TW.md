@@ -22,7 +22,7 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 
 **一個可擴展的 Python 框架，將 LeetCode 風格的演算法練習轉化為知識圖譜驅動、資料驅動、可測試且高效能的工作流程 — 搭配 AI 心智圖、工業級測試與模式學習，幫助開發者更快成長、更深入理解演算法。**
 
-[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/)
+[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/) • [🧪 測試與驗證](docs/runner/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -254,8 +254,8 @@ scripts\run_tests.bat 0001_two_sum
 
 | 功能 | 說明 |
 |:-----|:-----|
+| 🧪 **測試與驗證引擎** | ⭐ **核心功能** — 自動化測試、效能基準測試、隨機測資生成、複雜度估算。詳見 [測試與驗證指南](docs/runner/README.md) |
 | 🤖 **AI 本體論分析** | AI 驅動的知識圖譜合成 — 發現人類遺漏的模式關聯 |
-| 🧪 **自動化測試** | 自動執行多筆測資，清晰的通過/失敗報告與計時 |
 | 🎲 **隨機測資生成** | 帶 Seed 確保可重現，支援 1000+ 筆壓力測試，自動儲存失敗測資 |
 | ⚖️ **自訂 Judge 函式** | 驗證多個正確答案，ICPC 風格驗證，可不需要預期輸出 |
 | 📊 **效能分析** | 多解法效能比較，自動時間複雜度估算，並排比較表格 |
@@ -391,6 +391,8 @@ scripts\run_tests.bat 0001_two_sum
 | Save failed cases | 自動儲存失敗輸入 |
 
 ### 💻 命令列介面
+
+> 📖 **完整參考**：詳見 [測試與驗證指南](docs/runner/README.md) 以了解完整的 CLI 選項、使用範例與進階功能。這是驅動自動化測試、效能基準測試、隨機測資生成與複雜度估算的**核心測試引擎**。
 
 ```bash
 # 執行所有測資
@@ -699,7 +701,7 @@ neetcode/
 ├── generators/                # 🎲 隨機測資生成器（可選）
 │   └── 0001_two_sum.py        # generate(count, seed) 函式
 │
-├── runner/                    # ⚙️ 測試執行引擎
+├── runner/                    # 🧪 核心測試與驗證引擎
 │   ├── test_runner.py         # CLI 入口點 & 主要流程
 │   ├── case_runner.py         # 單一測資執行器（除錯用）
 │   ├── executor.py            # 測試案例執行（subprocess）
@@ -709,7 +711,10 @@ neetcode/
 │   ├── complexity_estimator.py # 時間複雜度估算（big_O）
 │   ├── paths.py               # 路徑工具
 │   ├── io_utils.py            # 檔案 I/O 操作
-│   └── util.py                # Re-exports（向後兼容）
+│   ├── util.py                # Re-exports（向後兼容）
+│   └── README.md              # 快速參考指南
+│
+│   📖 詳見 [測試與驗證指南](docs/runner/README.md) — 驅動自動化測試、效能基準測試、隨機測資生成與複雜度估算的核心引擎
 │
 ├── templates/                 # 📄 題目模板
 │   ├── template_solution.py       # 單一解法模板
