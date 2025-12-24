@@ -148,27 +148,28 @@ nav:
     - Problem Relations: mindmaps/problem_relations.md
     - Solution Variants: mindmaps/solution_variants.md
     - Difficulty × Topics: mindmaps/difficulty_topics.md
+  - 🔧 Guides:
+    - Testing & Validation Engine: runner/README.md
   - 📚 Reference:
     - Solution Contract: SOLUTION_CONTRACT.md
     - Generator Contract: GENERATOR_CONTRACT.md
     - Architecture Migration: ARCHITECTURE_MIGRATION.md
     - Ontology Design: ONTOLOGY_DESIGN.md
-  - 🔧 Guides:
-    - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
-    - Build Documentation Locally (Manual): BUILD_DOCS_MANUAL.md
-    - Local Docs Build Options: LOCAL_DOCS_BUILD.md
-    - Run GitHub Actions Locally (Act): ACT_LOCAL_GITHUB_ACTIONS.md
-    - MkDocs Content Guide: MKDOCS_CONTENT_GUIDE.md
-  - 👥 Contributors:
-    - Overview: contributors/README.md
-    - Testing Documentation: contributors/TESTING.md
-    - Documentation Architecture: contributors/DOCUMENTATION_ARCHITECTURE.md
-    - Virtual Environment Setup: contributors/VIRTUAL_ENV_SETUP.md
   - 🛠️ Tools:
     - Overview: tools/README.md
     - AI Markmap Agent: tools/ai-markmap-agent/README.md
     - Mind Maps Generator: tools/mindmaps/README.md
     - Pattern Docs Generator: tools/patterndocs/README.md
+  - 👥 Contributors:
+    - Overview: contributors/README.md
+    - Testing Documentation: contributors/TESTING.md
+    - Documentation Architecture: contributors/DOCUMENTATION_ARCHITECTURE.md
+    - Virtual Environment Setup: contributors/VIRTUAL_ENV_SETUP.md
+    - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
+    - Build Documentation Locally (Manual): BUILD_DOCS_MANUAL.md
+    - Local Docs Build Options: LOCAL_DOCS_BUILD.md
+    - Run GitHub Actions Locally (Act): ACT_LOCAL_GITHUB_ACTIONS.md
+    - MkDocs Content Guide: MKDOCS_CONTENT_GUIDE.md
 
 # Extra
 extra:
