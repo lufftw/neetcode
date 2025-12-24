@@ -121,16 +121,37 @@ When linking to content in README.md, follow these strategies:
 
 ### ✅ Recommended Practices
 
-#### 1. For `.dev/` Directory Files (Not in Website)
+#### 1. For Maintainer Documentation (Now in `docs/contributors/`)
 
-**Use full GitHub URLs:**
+**Full documentation has been moved to `docs/contributors/` and is available on the website. Use relative paths:**
 
 ```markdown
-- [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
-- [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
+- [Contributors Overview](docs/contributors/README.md) — Maintainer guide
+- [Testing Documentation](docs/contributors/TESTING.md) — Testing documentation
+- [Documentation Architecture](docs/contributors/DOCUMENTATION_ARCHITECTURE.md) — Documentation structure
+- [Virtual Environment Setup](docs/contributors/VIRTUAL_ENV_SETUP.md) — Environment setup guide
 ```
 
-#### 2. For `docs/` Directory Files (May Not Be in Website)
+**Why relative paths work**: All files in `docs/contributors/` are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
+
+**Note**: The original `.dev/README.md` now contains a shortened version with links to the full documentation on the website. This maintains GitHub browsing context while centralizing full content in `docs/`.
+
+#### 2. For Tools Documentation (Now in `docs/tools/`)
+
+**Full documentation has been moved to `docs/tools/` and is available on the website. Use relative paths:**
+
+```markdown
+- [Tools Overview](docs/tools/README.md) — Complete tools reference
+- [AI Markmap Agent](docs/tools/ai-markmap-agent/README.md) — AI-powered mind map generation
+- [Mind Maps Generator](docs/tools/mindmaps/README.md) — Rule-based mind map generation
+- [Pattern Docs Generator](docs/tools/patterndocs/README.md) — Pattern documentation generation
+```
+
+**Why relative paths work**: All files in `docs/tools/` are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
+
+**Note**: The original `tools/README.md` now contains a shortened version with links to the full documentation on the website. This maintains GitHub browsing context while centralizing full content in `docs/`.
+
+#### 3. For Other `docs/` Directory Files (May Not Be in Website)
 
 **If the document IS configured in `nav`:**
 - Use relative paths (MkDocs will automatically convert to website links)
@@ -156,7 +177,7 @@ When linking to content in README.md, follow these strategies:
 - [MkDocs Content Guide](docs/MKDOCS_CONTENT_GUIDE.md) — Content guide (this file)
 ```
 
-#### 3. For Code Files (Not in Website)
+#### 4. For Code Files (Not in Website)
 
 **Always use full GitHub URLs:**
 
@@ -165,7 +186,7 @@ When linking to content in README.md, follow these strategies:
 - [Test Generator](https://github.com/lufftw/neetcode/blob/main/generators/0001_two_sum.py)
 ```
 
-#### 4. For Mind Maps (In Website)
+#### 5. For Mind Maps (In Website)
 
 **Use relative paths for Static links (they're in nav), and website URLs for Interactive:**
 
@@ -177,11 +198,36 @@ When linking to content in README.md, follow these strategies:
 
 **Why relative paths work**: All `docs/mindmaps/*.md` files are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
 
+### 📋 Document Migration Strategy
+
+To ensure all documentation is accessible via MkDocs website while maintaining GitHub browsing context, we follow this migration pattern:
+
+1. **Move full documentation to `docs/` directory**:
+   - Maintainer documentation → `docs/contributors/`
+   - Tools documentation → `docs/tools/`
+
+2. **Create shortened READMEs in original locations**:
+   - `.dev/README.md` → Brief overview + links to full docs on website
+   - `tools/README.md` → Brief overview + links to full docs on website
+
+3. **Update navigation in `mkdocs.yml`**:
+   - Add new sections to `nav` for migrated documentation
+
+4. **Update all links to use relative paths**:
+   - Since migrated files are in `docs/` and in `nav`, relative paths work in both GitHub and website
+
+**Benefits of this approach**:
+- ✅ All documentation accessible on MkDocs website
+- ✅ Maintains GitHub browsing context with shortened READMEs
+- ✅ Links work correctly in both GitHub and website
+- ✅ Single source of truth for full documentation content
+
 ### ❌ Practices to Avoid
 
-1. **Don't** use relative paths in README.md for `.dev/` directory files (they don't exist on the website)
+1. **Don't** use relative paths for files outside `docs/` directory that aren't in `nav` (they won't work on the website)
 2. **Don't** assume all files in `docs/` are on the website (check `mkdocs.yml` `nav` configuration)
 3. **Don't** use `.md` extensions in website links (MkDocs handles this automatically)
+4. **Don't** create duplicate documentation in multiple locations (use the migration strategy above)
 
 ---
 
@@ -204,7 +250,7 @@ A: ✅ Yes! The "📚 Reference" section is now configured in `nav` and includes
 - Architecture Migration at `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/`
 - Ontology Design at `https://lufftw.github.io/neetcode/ONTOLOGY_DESIGN/`
 
-**Note**: Tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (GitHub only, not on website).
+**Note**: Tools documentation has been moved to `docs/tools/` and is now available on the website under the "Tools" navigation section. The original `tools/README.md` now contains a shortened version with links to the full documentation.
 
 ### Q: What patterns are available on the website?
 
@@ -235,15 +281,33 @@ A: For content not on the website, use GitHub absolute URLs. For content on the 
 1. Use relative paths (MkDocs handles this automatically)
 2. Or provide both GitHub and website links
 
-### Q: Why are `.dev/` documents not added to the website navigation?
+### Q: Where are maintainer and tools documents now?
 
-A: Maintainer documentation (`.dev/README.md`, `.dev/TESTING.md`) is intentionally kept out of the website navigation because:
-- **Target Audience**: These documents are for maintainers only (🔧 Maintainers), not general users
-- **Better Context**: Maintainer docs are better viewed in GitHub where they're alongside the code and tests
-- **Navigation Clarity**: Keeping internal documentation out of public website navigation keeps the site focused on user-facing content
-- **Badge Links**: Badge links pointing to `.dev/tests/` should use GitHub URLs since they reference code directories, not documentation pages
+A: Full maintainer and tools documentation has been **migrated to the website**:
 
-If you need to access these documents, use the GitHub absolute URLs provided in README.md.
+- **Maintainer documentation** → `docs/contributors/` (available on website under "Contributors" section)
+  - `docs/contributors/README.md` - Full maintainer guide
+  - `docs/contributors/TESTING.md` - Complete testing documentation
+  - `docs/contributors/DOCUMENTATION_ARCHITECTURE.md` - Documentation structure
+  - `docs/contributors/VIRTUAL_ENV_SETUP.md` - Virtual environment setup
+
+- **Tools documentation** → `docs/tools/` (available on website under "Tools" section)
+  - `docs/tools/README.md` - Complete tools reference
+  - `docs/tools/ai-markmap-agent/README.md` - AI Markmap Agent documentation
+  - `docs/tools/mindmaps/README.md` - Mind Maps Generator documentation
+  - `docs/tools/patterndocs/README.md` - Pattern Docs Generator documentation
+
+**Original locations now contain shortened versions**:
+- `.dev/README.md` - Shortened version with links to full docs on website
+- `tools/README.md` - Shortened version with links to full docs on website
+
+**Why this migration?**
+- ✅ Makes all documentation accessible via MkDocs website
+- ✅ Maintains GitHub browsing context with shortened READMEs
+- ✅ Single source of truth for full documentation content
+- ✅ Links work correctly in both GitHub and website using relative paths
+
+**How to link to these documents**: Use relative paths (e.g., `docs/contributors/README.md`) since they're now in `docs/` and configured in `nav`.
 
 ### Q: How do I manually embed revision dates in Markdown files?
 

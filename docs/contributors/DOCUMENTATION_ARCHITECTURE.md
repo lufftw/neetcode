@@ -15,12 +15,13 @@ This document explains the documentation structure of the NeetCode Practice Fram
 
 Documentation is organized by **target audience**, not by file type:
 
-| Directory | Purpose | Target Audience |
-|-----------|---------|-----------------|
-| `docs/` | User-facing documentation | Users, learners |
-| `tools/README.md` | Developer tools reference | Contributors |
-| `tools/*/README.md` | Module technical details | Deep contributors |
-| `.dev/` | Maintainer documentation | Maintainers |
+| Directory | Purpose | Target Audience | Location |
+|-----------|---------|-----------------|----------|
+| `docs/` | User-facing documentation | Users, learners | Website |
+| `docs/tools/` | Developer tools reference (full docs) | Contributors | Website |
+| `docs/contributors/` | Maintainer documentation (full docs) | Maintainers | Website |
+| `tools/README.md` | Tools overview (shortened) | Contributors | GitHub only |
+| `.dev/README.md` | Maintainer overview (shortened) | Maintainers | GitHub only |
 
 ### Single Source of Truth
 
@@ -31,11 +32,11 @@ Each topic has **one authoritative document**:
 
 ### Proximity Principle
 
-Documentation lives **close to the code** it describes:
+Documentation follows a **migration strategy** for accessibility:
 
-- Tool documentation → `tools/README.md`
-- Module documentation → `tools/<module>/README.md`
-- Test documentation → `.dev/TESTING.md`
+- Full documentation → `docs/tools/` and `docs/contributors/` (accessible on website)
+- Shortened READMEs → Original locations (`tools/README.md`, `.dev/README.md`) with links to full docs
+- Code proximity → Tool scripts remain in `tools/`, tests remain in `.dev/`
 
 ---
 
@@ -47,7 +48,7 @@ neetcode/
 ├── README.md                    # 🏠 Project overview (users)
 ├── README_zh-TW.md              # 🏠 Project overview (繁體中文)
 │
-├── docs/                        # 📚 User documentation (MkDocs website)
+├── docs/                        # 📚 Documentation (MkDocs website)
 │   ├── index.md                 # Homepage (includes README.md)
 │   ├── index_zh-TW.md           # Homepage (繁體中文)
 │   │
@@ -58,33 +59,44 @@ neetcode/
 │   │
 │   ├── patterns/                # Pattern documentation
 │   │   ├── README.md
-│   │   ├── sliding_window.md
-│   │   └── two_pointers.md
+│   │   ├── sliding_window/
+│   │   └── two_pointers/
 │   │
 │   ├── mindmaps/                # Mind map documentation
 │   │   ├── index.md
 │   │   └── *.md
 │   │
-│   ├── ONTOLOGY_DESIGN.md       # Ontology design (not in nav)
-│   └── MKDOCS_CONTENT_GUIDE.md  # Content guide (not in nav)
+│   ├── contributors/            # 👥 Maintainer documentation (website)
+│   │   ├── README.md            # Full maintainer guide
+│   │   ├── TESTING.md           # Complete testing documentation
+│   │   ├── DOCUMENTATION_ARCHITECTURE.md  # This file
+│   │   └── VIRTUAL_ENV_SETUP.md # Virtual environment setup
+│   │
+│   ├── tools/                   # 🛠️ Tools documentation (website)
+│   │   ├── README.md            # Complete tools reference
+│   │   ├── ai-markmap-agent/
+│   │   │   └── README.md        # AI Markmap Agent docs
+│   │   ├── mindmaps/
+│   │   │   └── README.md        # Mind Maps Generator docs
+│   │   └── patterndocs/
+│   │       └── README.md        # Pattern Docs Generator docs
+│   │
+│   ├── ONTOLOGY_DESIGN.md       # Ontology design
+│   └── MKDOCS_CONTENT_GUIDE.md  # Content guide
 │
-├── tools/                       # 🔧 Developer tools
-│   ├── README.md                # Tools reference (comprehensive)
-│   │
-│   ├── mindmaps/
-│   │   └── README.md            # Mind map module technical docs
-│   │
-│   ├── patterndocs/
-│   │   └── README.md            # Pattern docs module technical docs
-│   │
+├── tools/                       # 🔧 Developer tools (code + scripts)
+│   ├── README.md                # Shortened version (links to docs/tools/)
+│   ├── *.py                     # Tool scripts
+│   ├── ai-markmap-agent/        # AI Markmap Agent (code only)
+│   ├── mindmaps/                # Mind Maps Generator (code only)
+│   ├── patterndocs/             # Pattern Docs Generator (code only)
 │   └── prompts/
 │       └── README.md            # AI prompts documentation
 │
-└── .dev/                        # 🔒 Maintainer documentation
-    ├── README.md                # Maintainer guide
-    ├── TESTING.md               # Testing documentation
-    ├── VIRTUAL_ENV_SETUP.md     # Virtual environment guide
-    └── DOCUMENTATION_ARCHITECTURE.md  # This file
+└── .dev/                        # 🔒 Maintainer zone (tests + scripts)
+    ├── README.md                # Shortened version (links to docs/contributors/)
+    ├── tests/                   # Component tests
+    └── tests_solutions/         # Solution correctness tests
 ```
 
 ---
@@ -111,9 +123,9 @@ neetcode/
 - Testing requirements
 
 **Where to find:**
-- `tools/README.md` → Tools reference
+- `docs/tools/README.md` → Complete tools reference (website)
 - `docs/SOLUTION_CONTRACT.md` → Solution format
-- `.dev/TESTING.md` → Test requirements
+- `docs/contributors/TESTING.md` → Complete testing documentation (website)
 
 ### 🛠️ Maintainers (Core Team)
 
@@ -123,9 +135,9 @@ neetcode/
 - Module deep-dives
 
 **Where to find:**
-- `.dev/README.md` → Maintainer guide
-- `tools/*/README.md` → Module details
-- `.dev/DOCUMENTATION_ARCHITECTURE.md` → This file
+- `docs/contributors/README.md` → Full maintainer guide (website)
+- `docs/tools/*/README.md` → Complete module documentation (website)
+- `docs/contributors/DOCUMENTATION_ARCHITECTURE.md` → Documentation structure (this file)
 
 ---
 
@@ -140,14 +152,16 @@ neetcode/
 
 ### When Adding a New Tool
 
-- [ ] Add to `tools/README.md` quick reference table
-- [ ] Add detailed section in `tools/README.md`
-- [ ] Create `tools/<module>/README.md` if complex
+- [ ] Add to `docs/tools/README.md` quick reference table (full documentation)
+- [ ] Add detailed section in `docs/tools/README.md`
+- [ ] Create `docs/tools/<module>/README.md` if complex
+- [ ] Update `tools/README.md` (shortened version) if needed
 - [ ] Add tests to `.dev/tests/` or `tools/tests/`
+- [ ] Update `mkdocs.yml` navigation if adding new documentation page
 
 ### When Modifying Documentation Structure
 
-- [ ] Update this file (`DOCUMENTATION_ARCHITECTURE.md`)
+- [ ] Update this file (`docs/contributors/DOCUMENTATION_ARCHITECTURE.md`)
 - [ ] Update `docs/MKDOCS_CONTENT_GUIDE.md`
 - [ ] Update `mkdocs.yml` if adding to website
 - [ ] Update README documentation section
@@ -189,24 +203,34 @@ neetcode/
 
 ## ❓ FAQ
 
-### Why separate `docs/` from `tools/`?
+### Why migrate documentation to `docs/`?
 
-- `docs/` → Published to website, user-facing
-- `tools/` → GitHub-only, developer-facing
+**Migration Strategy**: Full documentation has been moved to `docs/contributors/` and `docs/tools/` to make it accessible via the MkDocs website, while maintaining GitHub browsing context through shortened READMEs in original locations.
 
-Different audiences, different update cycles, different review requirements.
+**Benefits**:
+- ✅ All documentation accessible on MkDocs website
+- ✅ Maintains GitHub browsing context with shortened READMEs
+- ✅ Links work correctly in both GitHub and website using relative paths
+- ✅ Single source of truth for full documentation content
 
-### Why `.dev/` for maintainer docs?
+**Structure**:
+- `docs/contributors/` → Full maintainer documentation (on website)
+- `docs/tools/` → Full tools documentation (on website)
+- `.dev/README.md` → Shortened version (links to full docs on website)
+- `tools/README.md` → Shortened version (links to full docs on website)
 
-- Clearly signals "internal" documentation
+### Why `.dev/` for maintainer zone?
+
+- Clearly signals "internal" directory
 - Keeps root directory clean
 - Groups with test files (same audience)
+- Shortened README maintains GitHub browsing context
 
-### Why not put everything in `docs/`?
+### Why separate code from documentation in `tools/`?
 
-- MkDocs publishes everything in `docs/` to the website
-- Internal documentation shouldn't be public-facing
-- Separation allows different access controls
+- `tools/` → Contains actual tool scripts (`.py` files) and shortened README
+- `docs/tools/` → Contains full documentation (on website)
+- Clear separation between code and documentation
 
 ### How do I know where to add new documentation?
 
@@ -214,14 +238,17 @@ Ask: **Who is the primary reader?**
 
 | Reader | Location |
 |--------|----------|
-| User learning the framework | `docs/` |
-| Contributor adding features | `tools/README.md` |
-| Maintainer debugging issues | `.dev/` |
+| User learning the framework | `docs/` (patterns, guides, contracts) |
+| Contributor adding features | `docs/tools/README.md` (full reference on website) |
+| Maintainer debugging issues | `docs/contributors/` (full docs on website) |
+
+**Note**: Original locations (`.dev/README.md`, `tools/README.md`) contain shortened versions with links to full documentation on the website.
 
 ---
 
 ## 📝 Update Log
 
+- **2025-12-XX**: Migrated maintainer and tools documentation to `docs/contributors/` and `docs/tools/` for MkDocs website integration. Created shortened READMEs in original locations with links to full documentation.
 - **2025-12-12**: Initial version - Documented architecture after consolidating tools documentation
 
 ---

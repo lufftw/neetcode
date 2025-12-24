@@ -74,10 +74,10 @@ tools/
 
 For complete documentation, please see:
 
-- **[Tools Overview](https://lufftw.github.io/neetcode/tools/README/)** - Complete tools reference with detailed usage guides
-- **[AI Markmap Agent](https://lufftw.github.io/neetcode/tools/ai-markmap-agent/README/)** - AI-powered mind map generation architecture
-- **[Mind Maps Generator](https://lufftw.github.io/neetcode/tools/mindmaps/README/)** - Rule-based mind map generation technical docs
-- **[Pattern Docs Generator](https://lufftw.github.io/neetcode/tools/patterndocs/README/)** - Pattern documentation generation guide
+- **[Tools Overview](../docs/tools/README.md)** - Complete tools reference with detailed usage guides
+- **[AI Markmap Agent](../docs/tools/ai-markmap-agent/README.md)** - AI-powered mind map generation architecture
+- **[Mind Maps Generator](../docs/tools/mindmaps/README.md)** - Rule-based mind map generation technical docs
+- **[Pattern Docs Generator](../docs/tools/patterndocs/README.md)** - Pattern documentation generation guide
 
 ---
 
