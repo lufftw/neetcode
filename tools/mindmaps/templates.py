@@ -97,6 +97,7 @@ HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
                     const svg = d3.select('.markmap').append('svg');
                     const mm = Markmap.create(svg.node(), {{ color: (node) => node.payload?.color || '#f59e0b' }}, root);
                     svg.node().mm = mm;
+                    mm.fit();
                     
                     if (window.markmap && window.markmap.Toolbar) {{
                         const toolbar = new window.markmap.Toolbar();
@@ -154,27 +155,34 @@ HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
             window.expandAll = expandAll;
             window.collapseAll = collapseAll;
 
-            // Initialize on DOMContentLoaded
-            document.addEventListener('DOMContentLoaded', ensureAndInit, {{ once: true }});
+            // Expose init function for re-entry (for instant navigation)
+            window.__initMindmap = ensureAndInit;
 
-            // Re-initialize on PJAX/Instant Navigation events
-            document.addEventListener('pjax:end', ensureAndInit);
-            document.addEventListener('pjax:success', ensureAndInit);
-            document.addEventListener('turbolinks:load', ensureAndInit);
-            document.addEventListener('swup:contentReplaced', ensureAndInit);
-            document.addEventListener('swup:pageView', ensureAndInit);
-            
-            // Re-initialize on pageshow (handles back/forward cache)
+            // 1) Full page reload - initialize on DOMContentLoaded or immediately if DOM ready
+            if (document.readyState === 'loading') {{
+                document.addEventListener('DOMContentLoaded', ensureAndInit, {{ once: true }});
+            }} else {{
+                ensureAndInit();
+            }}
+
+            // 2) MkDocs Material instant navigation (key lifecycle hook)
+            if (window.document$ && typeof window.document$.subscribe === 'function') {{
+                window.document$.subscribe(() => ensureAndInit());
+            }}
+
+            // 3) Back/forward cache (BFCache) restoration
             window.addEventListener('pageshow', function(event) {{
                 if (event.persisted) {{
                     ensureAndInit();
                 }}
             }});
 
-            // Support document$ subscription (for some SPA frameworks)
-            if (window.document$ && window.document$.subscribe) {{
-                window.document$.subscribe(() => ensureAndInit());
-            }}
+            // 4) Additional PJAX/Instant Navigation event support
+            document.addEventListener('pjax:end', ensureAndInit);
+            document.addEventListener('pjax:success', ensureAndInit);
+            document.addEventListener('turbolinks:load', ensureAndInit);
+            document.addEventListener('swup:contentReplaced', ensureAndInit);
+            document.addEventListener('swup:pageView', ensureAndInit);
         }})();
     </script>
 </head>
