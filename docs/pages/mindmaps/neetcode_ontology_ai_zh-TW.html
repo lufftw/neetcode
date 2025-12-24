@@ -24,54 +24,70 @@
         #topbar button:hover { background: #f3f4f6; }
         .markmap { margin-top: 40px; height: calc(100% - 40px); }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
     <script>
-        function fitView() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) svg.mm.fit();
-        }
-        function expandAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                (function expand(n) {
-                    n.payload = Object.assign({}, n.payload, { fold: 0 });
-                    if (n.children) n.children.forEach(expand);
-                })(root);
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        function collapseAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                root.children && root.children.forEach(function collapse(n) {
-                    if (n.children && n.children.length) {
-                        n.payload = Object.assign({}, n.payload, { fold: 1 });
-                        n.children.forEach(collapse);
+        (function () {
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    // Check if script already exists
+                    const existing = document.querySelector(`script[src="${src}"]`);
+                    if (existing) {
+                        // If script exists and is loaded, resolve immediately
+                        if (existing.getAttribute('data-loaded') === 'true') {
+                            resolve();
+                            return;
+                        }
+                        // If script exists but not loaded, wait for it
+                        existing.addEventListener('load', resolve, { once: true });
+                        existing.addEventListener('error', reject, { once: true });
+                        return;
                     }
+                    
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.defer = true;
+                    s.onload = function() {
+                        s.setAttribute('data-loaded', 'true');
+                        resolve();
+                    };
+                    s.onerror = reject;
+                    document.head.appendChild(s);
                 });
-                svg.mm.setData(root); svg.mm.fit();
             }
-        }
-        function initMarkmap() {
-            // Clear existing markmap if any
-            const existingSvg = document.querySelector('.markmap > svg');
-            if (existingSvg) {
-                existingSvg.remove();
-            }
-            
-            const { Transformer, Markmap } = window.markmap;
-            if (!Transformer || !Markmap) {
-                console.warn('Markmap libraries not loaded yet');
-                return;
-            }
-            
-            const transformer = new Transformer();
-            const markdown = `
+
+            async function ensureAndInit() {
+                const container = document.querySelector('.markmap');
+                if (!container) return;
+
+                try {
+                    // Ensure window.markmap exists
+                    if (!window.markmap) {
+                        window.markmap = {};
+                    }
+
+                    // Load scripts in order if not already loaded
+                    if (!window.d3) {
+                        await loadScript('https://cdn.jsdelivr.net/npm/d3@7');
+                    }
+                    if (!window.markmap.Transformer) {
+                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-lib');
+                    }
+                    if (!window.markmap.Markmap) {
+                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-view');
+                    }
+                    if (!window.markmap.Toolbar) {
+                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-toolbar');
+                    }
+
+                    // Clear existing markmap if any
+                    const existingSvg = document.querySelector('.markmap > svg');
+                    if (existingSvg) {
+                        existingSvg.remove();
+                    }
+
+                    // Initialize markmap
+                    const { Transformer, Markmap } = window.markmap;
+                    const transformer = new Transformer();
+                    const markdown = `
 ## 🎯 這份知識圖要解決什麼？
 - **把「API Kernel → Pattern → 題目」串成可複用的解題 API**
 - 面試/競賽常見高頻：==滑動視窗、雙指針、回溯、K-way merge、多源 BFS、TopK/選擇==
@@ -281,50 +297,89 @@
 - 看到「K 個已排序序列合併」→ **KWayMerge（heap 或分治）**
 - 看到「網格擴散、最短步數、傳染」→ **Multi-source BFS**
 - 看到「第 K 大/TopK」→ **Heap / Quickselect**`;
-            const { root } = transformer.transform(markdown);
-            const svg = d3.select('.markmap').append('svg');
-            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-            svg.node().mm = mm;
-            if (window.markmap && window.markmap.Toolbar) {
-                const toolbar = new window.markmap.Toolbar();
-                toolbar.attach(mm);
-                setTimeout(function() {
-                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                        });
-                        var brand = toolbar.querySelector('.mm-toolbar-brand');
-                        if (brand) {
-                            brand.innerHTML = '🟡 NeetCode';
-                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                            brand.style.fontSize = '12px'; brand.style.color = '#666';
+                    const { root } = transformer.transform(markdown);
+                    const svg = d3.select('.markmap').append('svg');
+                    const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
+                    svg.node().mm = mm;
+                    
+                    if (window.markmap && window.markmap.Toolbar) {
+                        const toolbar = new window.markmap.Toolbar();
+                        toolbar.attach(mm);
+                        setTimeout(function() {
+                            document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
+                                toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
+                                    if ((item.title || '').toLowerCase().includes('dark')) item.remove();
+                                });
+                                var brand = toolbar.querySelector('.mm-toolbar-brand');
+                                if (brand) {
+                                    brand.innerHTML = '🟡 NeetCode';
+                                    brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
+                                    brand.style.fontSize = '12px'; brand.style.color = '#666';
+                                }
+                            });
+                        }, 200);
+                    }
+                } catch (error) {
+                    console.error('Failed to load markmap libraries:', error);
+                }
+            }
+
+            function fitView() {
+                var svg = document.querySelector('.markmap > svg');
+                if (svg && svg.mm) svg.mm.fit();
+            }
+            function expandAll() {
+                var svg = document.querySelector('.markmap > svg');
+                if (svg && svg.mm) {
+                    var root = svg.mm.state.data;
+                    (function expand(n) {
+                        n.payload = Object.assign({}, n.payload, { fold: 0 });
+                        if (n.children) n.children.forEach(expand);
+                    })(root);
+                    svg.mm.setData(root); svg.mm.fit();
+                }
+            }
+            function collapseAll() {
+                var svg = document.querySelector('.markmap > svg');
+                if (svg && svg.mm) {
+                    var root = svg.mm.state.data;
+                    root.children && root.children.forEach(function collapse(n) {
+                        if (n.children && n.children.length) {
+                            n.payload = Object.assign({}, n.payload, { fold: 1 });
+                            n.children.forEach(collapse);
                         }
                     });
-                }, 200);
+                    svg.mm.setData(root); svg.mm.fit();
+                }
             }
-        }
-        
-        // Initialize on normal page load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initMarkmap);
-        } else {
-            initMarkmap();
-        }
-        
-        // Re-initialize on PJAX/Instant Navigation events
-        // Support multiple PJAX libraries: pjax, turbolinks, swup, etc.
-        document.addEventListener('pjax:end', initMarkmap);
-        document.addEventListener('pjax:success', initMarkmap);
-        document.addEventListener('turbolinks:load', initMarkmap);
-        document.addEventListener('swup:contentReplaced', initMarkmap);
-        document.addEventListener('swup:pageView', initMarkmap);
-        
-        // Re-initialize on pageshow (handles back/forward cache)
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                initMarkmap();
+
+            // Make functions globally available
+            window.fitView = fitView;
+            window.expandAll = expandAll;
+            window.collapseAll = collapseAll;
+
+            // Initialize on DOMContentLoaded
+            document.addEventListener('DOMContentLoaded', ensureAndInit, { once: true });
+
+            // Re-initialize on PJAX/Instant Navigation events
+            document.addEventListener('pjax:end', ensureAndInit);
+            document.addEventListener('pjax:success', ensureAndInit);
+            document.addEventListener('turbolinks:load', ensureAndInit);
+            document.addEventListener('swup:contentReplaced', ensureAndInit);
+            document.addEventListener('swup:pageView', ensureAndInit);
+            
+            // Re-initialize on pageshow (handles back/forward cache)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    ensureAndInit();
+                }
+            });
+
+            // Support document$ subscription (for some SPA frameworks)
+            if (window.document$ && window.document$.subscribe) {
+                window.document$.subscribe(() => ensureAndInit());
             }
-        });
+        })();
     </script>
 </head>
 <body>

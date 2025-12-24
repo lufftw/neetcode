@@ -26,98 +26,165 @@
         #topbar button:hover { background: #f3f4f6; }
         .markmap { margin-top: 40px; height: calc(100% - 40px); }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
     <script>
-        function fitView() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) svg.mm.fit();
-        }
-        function expandAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                (function expand(n) {
-                    n.payload = Object.assign({}, n.payload, { fold: 0 });
-                    if (n.children) n.children.forEach(expand);
-                })(root);
-                svg.mm.setData(root); svg.mm.fit();
-            }
-        }
-        function collapseAll() {
-            var svg = document.querySelector('.markmap > svg');
-            if (svg && svg.mm) {
-                var root = svg.mm.state.data;
-                root.children && root.children.forEach(function collapse(n) {
-                    if (n.children && n.children.length) {
-                        n.payload = Object.assign({}, n.payload, { fold: 1 });
-                        n.children.forEach(collapse);
+        (function () {
+            // Load script only once, return Promise that resolves when loaded
+            function loadScriptOnce(src) {
+                return new Promise((resolve, reject) => {
+                    // Check if script already exists
+                    if ([...document.scripts].some(s => s.src === src)) {
+                        return resolve();
                     }
+
+                    const s = document.createElement("script");
+                    s.src = src;
+                    s.defer = true;
+                    s.onload = () => resolve();
+                    s.onerror = () => reject(new Error("Failed to load: " + src));
+                    document.head.appendChild(s);
                 });
-                svg.mm.setData(root); svg.mm.fit();
             }
-        }
-        function initMarkmap() {
-            // Clear existing markmap if any
-            const existingSvg = document.querySelector('.markmap > svg');
-            if (existingSvg) {
-                existingSvg.remove();
+
+            // Ensure all required markmap libraries are loaded
+            async function ensureMarkmapLoaded() {
+                // Ensure window.markmap exists
+                if (!window.markmap) {
+                    window.markmap = {};
+                }
+
+                // Load d3 first (required by markmap-view)
+                if (!window.d3) {
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/d3@7");
+                }
+                // Load markmap-lib (provides Transformer)
+                if (!window.markmap.Transformer) {
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-lib/dist/browser/index.min.js");
+                }
+                // Load markmap-view (provides Markmap)
+                if (!window.markmap.Markmap) {
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-view/dist/browser/index.min.js");
+                }
+                // Load markmap-toolbar (provides Toolbar)
+                if (!window.markmap.Toolbar) {
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-toolbar/dist/browser/index.min.js");
+                }
             }
-            
-            const { Transformer, Markmap } = window.markmap;
-            if (!Transformer || !Markmap) {
-                console.warn('Markmap libraries not loaded yet');
-                return;
+
+            // Initialize markmap visualization
+            async function initMindmap() {
+                const container = document.querySelector(".markmap");
+                if (!container) return;
+
+                try {
+                    // Ensure libraries are loaded before initialization
+                    await ensureMarkmapLoaded();
+
+                    const mm = window.markmap;
+                    if (!mm?.Transformer || !mm?.Markmap) {
+                        console.warn("Markmap libraries not available");
+                        return;
+                    }
+
+                    // Prevent duplicate rendering by removing existing SVG
+                    container.querySelector("svg")?.remove();
+
+                    // Initialize markmap
+                    const { Transformer, Markmap } = mm;
+                    const transformer = new Transformer();
+                    const markdown = `{{ markdown_content | safe }}`;
+                    const { root } = transformer.transform(markdown);
+
+                    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    container.appendChild(svg);
+                    const m = Markmap.create(svg, { color: (node) => node.payload?.color || '#f59e0b' }, root);
+                    svg.mm = m;
+                    m.fit();
+
+                    // Attach toolbar if available
+                    if (mm.Toolbar) {
+                        const toolbar = new mm.Toolbar();
+                        toolbar.attach(m);
+                        setTimeout(function() {
+                            document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
+                                toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
+                                    if ((item.title || '').toLowerCase().includes('dark')) item.remove();
+                                });
+                                var brand = toolbar.querySelector('.mm-toolbar-brand');
+                                if (brand) {
+                                    brand.innerHTML = '🟡 NeetCode';
+                                    brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
+                                    brand.style.fontSize = '12px'; brand.style.color = '#666';
+                                }
+                            });
+                        }, 200);
+                    }
+                } catch (error) {
+                    console.error("Failed to initialize markmap:", error);
+                }
             }
-            
-            const transformer = new Transformer();
-            const markdown = `{{ markdown_content | safe }}`;
-            const { root } = transformer.transform(markdown);
-            const svg = d3.select('.markmap').append('svg');
-            const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-            svg.node().mm = mm;
-            if (window.markmap && window.markmap.Toolbar) {
-                const toolbar = new window.markmap.Toolbar();
-                toolbar.attach(mm);
-                setTimeout(function() {
-                    document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                        toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                            if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                        });
-                        var brand = toolbar.querySelector('.mm-toolbar-brand');
-                        if (brand) {
-                            brand.innerHTML = '🟡 NeetCode';
-                            brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                            brand.style.fontSize = '12px'; brand.style.color = '#666';
+
+            // Utility functions for topbar buttons
+            function fitView() {
+                var svg = document.querySelector('.markmap > svg');
+                if (svg && svg.mm) svg.mm.fit();
+            }
+            function expandAll() {
+                var svg = document.querySelector('.markmap > svg');
+                if (svg && svg.mm) {
+                    var root = svg.mm.state.data;
+                    (function expand(n) {
+                        n.payload = Object.assign({}, n.payload, { fold: 0 });
+                        if (n.children) n.children.forEach(expand);
+                    })(root);
+                    svg.mm.setData(root); svg.mm.fit();
+                }
+            }
+            function collapseAll() {
+                var svg = document.querySelector('.markmap > svg');
+                if (svg && svg.mm) {
+                    var root = svg.mm.state.data;
+                    root.children && root.children.forEach(function collapse(n) {
+                        if (n.children && n.children.length) {
+                            n.payload = Object.assign({}, n.payload, { fold: 1 });
+                            n.children.forEach(collapse);
                         }
                     });
-                }, 200);
+                    svg.mm.setData(root); svg.mm.fit();
+                }
             }
-        }
-        
-        // Initialize on normal page load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initMarkmap);
-        } else {
-            initMarkmap();
-        }
-        
-        // Re-initialize on PJAX/Instant Navigation events
-        // Support multiple PJAX libraries: pjax, turbolinks, swup, etc.
-        document.addEventListener('pjax:end', initMarkmap);
-        document.addEventListener('pjax:success', initMarkmap);
-        document.addEventListener('turbolinks:load', initMarkmap);
-        document.addEventListener('swup:contentReplaced', initMarkmap);
-        document.addEventListener('swup:pageView', initMarkmap);
-        
-        // Re-initialize on pageshow (handles back/forward cache)
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                initMarkmap();
+
+            // Make functions globally available
+            window.fitView = fitView;
+            window.expandAll = expandAll;
+            window.collapseAll = collapseAll;
+
+            // Expose init function for re-entry (for instant navigation)
+            window.__initMindmap = initMindmap;
+
+            // 1) Full page reload - initialize on DOMContentLoaded
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", () => initMindmap(), { once: true });
+            } else {
+                initMindmap();
             }
-        });
+
+            // 2) MkDocs Material instant navigation (key lifecycle hook)
+            if (window.document$ && typeof window.document$.subscribe === "function") {
+                window.document$.subscribe(() => initMindmap());
+            }
+
+            // 3) Back/forward cache (BFCache) restoration
+            window.addEventListener("pageshow", (e) => {
+                if (e.persisted) initMindmap();
+            });
+
+            // 4) Additional PJAX/Instant Navigation event support
+            document.addEventListener('pjax:end', initMindmap);
+            document.addEventListener('pjax:success', initMindmap);
+            document.addEventListener('turbolinks:load', initMindmap);
+            document.addEventListener('swup:contentReplaced', initMindmap);
+            document.addEventListener('swup:pageView', initMindmap);
+        })();
     </script>
 </head>
 <body>
