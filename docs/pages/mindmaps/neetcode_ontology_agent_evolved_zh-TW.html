@@ -58,15 +58,15 @@
                 }
                 // Load markmap-lib (provides Transformer)
                 if (!window.markmap.Transformer) {
-                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-lib/dist/browser/index.min.js");
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-lib");
                 }
                 // Load markmap-view (provides Markmap)
                 if (!window.markmap.Markmap) {
-                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-view/dist/browser/index.min.js");
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-view");
                 }
                 // Load markmap-toolbar (provides Toolbar)
                 if (!window.markmap.Toolbar) {
-                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-toolbar/dist/browser/index.min.js");
+                    await loadScriptOnce("https://cdn.jsdelivr.net/npm/markmap-toolbar");
                 }
             }
 
