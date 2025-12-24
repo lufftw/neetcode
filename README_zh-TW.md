@@ -22,7 +22,7 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 
 **一個可擴展的 Python 框架，將 LeetCode 風格的演算法練習轉化為知識圖譜驅動、資料驅動、可測試且高效能的工作流程 — 搭配 AI 心智圖、工業級測試與模式學習，幫助開發者更快成長、更深入理解演算法。**
 
-[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/) • [🧪 測試與驗證](docs/runner/README.md)
+[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/README.md) • [🧪 測試與驗證](docs/runner/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -333,9 +333,9 @@ scripts\run_tests.bat 0001_two_sum
 | **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
 | **HTML** | `docs/pages/mindmaps/*.html` |
 
-> 📖 **Evolved Agent**：詳見 [`tools/ai-markmap-agent/README.md`](../tools/ai-markmap-agent/README.md) 了解架構、專家角色與配置。
+> 📖 **Evolved Agent**：詳見 [`tools/ai-markmap-agent/README.md`](docs/tools/ai-markmap-agent/README.md) 了解架構、專家角色與配置。
 >
-> 📖 **Basic AI**：詳見 [`tools/README.md`](../tools/README.md) 了解配置選項。
+> 📖 **Basic AI**：詳見 [`tools/README.md`](docs/tools/README.md) 了解配置選項。
 
 ---
 
@@ -856,7 +856,7 @@ neetcode/
 | 位置 | 用途 | 對象 |
 |:-----|:-----|:-----|
 | `docs/` | 使用者文件（發布到網站） | ✅ 使用者 |
-| [`tools/README.md`](../tools/README.md) | 開發者工具參考 | 🔧 貢獻者 |
+| [`tools/README.md`](docs/tools/README.md) | 開發者工具參考 | 🔧 貢獻者 |
 | `tools/*/README.md` | 模組技術細節 | 🔧 貢獻者 |
 | `.dev/` | 維護者文件 | 🔧 維護者 |
 
@@ -864,11 +864,11 @@ neetcode/
 
 | 文件 | 說明 |
 |:-----|:-----|
-| [`docs/SOLUTION_CONTRACT.md`](SOLUTION_CONTRACT.md) | 解答檔案規格 |
-| [`docs/GENERATOR_CONTRACT.md`](GENERATOR_CONTRACT.md) | 生成器檔案規格 |
-| [`tools/README.md`](../tools/README.md) | 完整工具參考 |
+| [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | 解答檔案規格 |
+| [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | 生成器檔案規格 |
+| [`tools/README.md`](docs/tools/README.md) | 完整工具參考 |
 | [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) | 維護者指南 |
-| [`.dev/DOCUMENTATION_ARCHITECTURE.md`](../contributors/DOCUMENTATION_ARCHITECTURE.md) | 文件架構說明 |
+| [`docs/contributors/DOCUMENTATION_ARCHITECTURE.md`](docs/contributors/DOCUMENTATION_ARCHITECTURE.md) | 文件架構說明 |
 
 ---
 

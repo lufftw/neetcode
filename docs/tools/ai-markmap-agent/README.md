@@ -1039,7 +1039,7 @@ python tools/sync_leetcode_data.py --check
 - Missing URLs are auto-generated from API data
 - No configuration required
 
-See [Post-Processing Links Documentation](docs/POST_PROCESSING_LINKS.md) for details.
+See [Post-Processing Links Documentation](https://github.com/lufftw/neetcode/blob/main/tools/ai-markmap-agent/docs/POST_PROCESSING_LINKS.md) for details.
 
 ---
 

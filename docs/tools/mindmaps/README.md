@@ -283,6 +283,6 @@ Test coverage includes:
 ## See Also
 
 - [Main Tools README](../README.md)
-- [CLI Usage](../generate_mindmaps.py)
-- [Test Suite](../../.dev/tests/test_generate_mindmaps.py)
+- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/generate_mindmaps.py)
+- [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_mindmaps.py)
 

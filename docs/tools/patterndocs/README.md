@@ -426,8 +426,8 @@ meta/patterns/binary_search/
 ## See Also
 
 - [Main Tools README](../README.md)
-- [CLI Usage](../generate_pattern_docs.py)
-- [Test Suite](../../.dev/tests/test_generate_pattern_docs.py)
-- [Pattern Documentation Output](../../docs/patterns/)
+- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/generate_pattern_docs.py)
+- [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_pattern_docs.py)
+- [Pattern Documentation Output](../../patterns/)
 
 
