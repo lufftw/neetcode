@@ -45,6 +45,7 @@ from mindmaps import load_ontology, load_problems, DEFAULT_OUTPUT_DIR
 from mindmaps.helpers import fix_table_links
 from mindmaps.data import ProblemData
 from mindmaps.toml_parser import parse_toml_simple
+from mindmaps.post_processing import post_process_content
 
 # Try to import OpenAI
 try:
@@ -138,13 +139,8 @@ def get_default_config() -> dict[str, Any]:
         }},
         "problems": {"enabled": True, "limit": 50, "difficulties": [], "topics": [], "api_kernels": [], "roadmaps": [], "specific_ids": []},
         "generation": {"goal": "creative", "focus_topic": "", "style": "balanced", "custom_instructions": ""},
-        "advanced": {"include_full_code": True, "include_complexity": True, "include_leetcode_links": True, "include_solution_links": True, "language": "zh-TW"},
-        "links": {
-            "leetcode_base": "https://leetcode.com/problems",
-            "github_repo": "https://github.com/lufftw/neetcode",
-            "github_branch": "main",
-            "solution_path_template": "solutions/{slug}.py",
-        },
+        "advanced": {"include_full_code": True, "include_complexity": True, "language": "zh-TW"},
+        # Note: links config no longer used in prompts - post-processing handles all links automatically
     }
 
 
@@ -345,12 +341,6 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     if isinstance(language, list):
         language = language[0] if language else "en"
     
-    # Get link configuration for GitHub repo and branch
-    links_config = config.get("links", {})
-    github_repo = links_config.get("github_repo", "https://github.com/lufftw/neetcode")
-    github_branch = links_config.get("github_branch", "main")
-    leetcode_base = links_config.get("leetcode_base", "https://leetcode.com/problems")
-    
     # Language instructions for output (prompt itself is always English)
     lang_instructions = {
         "en": "IMPORTANT: Generate the mind map content in English. All titles, labels, and descriptions should be in English.",
@@ -374,10 +364,6 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     which algorithms work in practice, which fail under load, and how to optimize real-world 
     performance. You understand trade-offs and engineering constraints.
     
-    **As a Technical Architecture & Language API Provider**, you design APIs and language 
-    features used by millions. You know how to expose algorithmic concepts through clean 
-    interfaces and structure knowledge for maximum usability.
-    
     **As a LeetCode Learner & Interview Preparer**, you understand the journey from beginner 
     to expert. You know which problems build foundational skills, which patterns appear 
     frequently in interviews, and how to structure learning paths that lead to success.
@@ -385,17 +371,6 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     **As a Competitive Programming Champion**, you've solved thousands of problems under 
     time pressure. You recognize patterns instantly, know optimization tricks, and understand 
     the mental models that separate good solutions from great ones.
-    
-    **As a Project Contributor & Open Source Advocate**, you understand what makes a project 
-    valuable to the community. You know how to structure knowledge so it's discoverable, 
-    maintainable, and helps others contribute effectively.
-    
-    These perspectives are not separate—they inform each other. Your architectural thinking 
-    enhances your teaching. Your engineering experience grounds your theoretical knowledge. 
-    Your competitive programming skills inform your interview preparation. Your API design 
-    sense helps you structure knowledge for learners. You synthesize all these insights 
-    into mind maps that are simultaneously theoretically sound, practically applicable, 
-    pedagogically effective, and architecturally elegant.
 
     Your task is to creatively generate Markmap-format mind maps based on the provided LeetCode 
     knowledge graph data, drawing from this unified expertise to create mind maps that serve 
@@ -413,7 +388,6 @@ def build_system_prompt(config: dict[str, Any]) -> str:
 
     ## Markmap Features (Please Utilize Fully)
 
-    - **Links**: [Problem Name](URL) - Use links for all problem references!
     - **Styling**: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`
     - **Checkboxes**: [ ] To-do, [x] Completed
     - **Math Formulas**: $O(n \\log n)$, $O(n^2)$
@@ -426,47 +400,36 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     
     **Tables are encouraged for comparison information** (like Sliding Window pattern comparisons).
     
-    ✅ GOOD (Table format with proper links):
+    ✅ GOOD (Table format):
     ```
     | Problem | Invariant | State | Window Size | Goal |
     |---------|-----------|-------|-------------|------|
-    | [LeetCode 3 - Longest Substring](URL) | All unique | freq map | Variable | Max length |
-    | [LeetCode 76 - Minimum Window](URL) | Covers all | maps | Variable | Min length |
+    | LeetCode 3 | All unique | freq map | Variable | Max length |
+    | LeetCode 76 | Covers all | maps | Variable | Min length |
+    ```
+
+    ## CRITICAL: Problem Reference Format
+
+    **When mentioning LeetCode problems, use this simple format:**
+    
+    ```
+    LeetCode {{number}}
     ```
     
-    **Important**: When using tables:
-    1. **Always use proper Markdown link format**: `[Text](URL)` inside table cells
-    2. **Keep table rows concise** - avoid very long text that makes nodes too wide
-    3. **Use tables for comparison** - they're great for showing differences between patterns/problems
-    4. **Ensure links are clickable** - test that links work correctly in the rendered Markmap
-    
-    Tables will be displayed as text nodes in Markmap, but they're useful for structured comparison
-    information. Make sure all links in tables use the proper `[Text](URL)` format.
-
-    ## CRITICAL: Problem Links Rule
-
-    **Every time you mention a LeetCode problem with its number, you MUST add a clickable link.**
-
-    Link Selection Logic (check Problem Data in user prompt):
-    1. Find the problem in the provided Problem Data JSON
-    2. Check the `solution_file` field:
-       - **If `solution_file` is NOT empty AND not null** → Link to GitHub solution
-         Format: `{github_repo}/blob/{github_branch}/{{solution_file}}`
-       - **If `solution_file` is empty, null, or missing** → Link to LeetCode problem page
-         Format: `{leetcode_base}/{{slug}}/`
-    
-    IMPORTANT: 
-    - Check `solution_file` field value carefully - it must be a non-empty string
-    - Empty string `""` or `null` means NO solution file exists
-    - Only use GitHub link when `solution_file` has an actual file path value
-
     Examples:
-    - Problem WITH solution (solution_file = "solutions/0003_xxx.py"):
-      `[LeetCode 3 - Longest Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0003_xxx.py)`
-    - Problem WITHOUT solution (solution_file = "" or null):
-      `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/)`
-
-    **Never mention a problem number without a link!**
+    - `LeetCode 3`
+    - `LeetCode 76`
+    - `LeetCode 121`
+    
+    **DO NOT include:**
+    - URLs or links (post-processing will add them automatically)
+    - Problem titles (post-processing will add them from our database)
+    - Solution links (post-processing will add them automatically)
+    
+    **Just use the simple format: `LeetCode {{number}}`**
+    
+    The system will automatically convert `LeetCode 3` to:
+    `[LeetCode 3 - Longest Substring Without Repeating Characters](url) | [Solution](url)`
 
     ## Output Format
 
@@ -492,7 +455,7 @@ def build_system_prompt(config: dict[str, Any]) -> str:
     ## Important Naming Conventions
 
     - **Always use full name**: Always write "LeetCode" in full, never use abbreviations like "LC" or "LC problem"
-    - **Problem references**: Use format "LeetCode 1 - Two Sum" or "LeetCode Problem 1", never "LC 1"
+    - **Problem references**: Use format "LeetCode {{number}}" (e.g., "LeetCode 1"), never "LC 1"
     - **Consistency**: Maintain consistent naming throughout the mind map
 
     Output Markmap Markdown directly, without any explanations or preambles.
@@ -559,53 +522,31 @@ def build_user_prompt(
                     sections.append(content)
     
     # === Problems ===
+    # Only include essential fields for LLM (links will be added by post-processing)
     if problems_data:
+        # Simplify problem data - remove link-related fields
+        simplified_problems = []
+        for p in problems_data:
+            simplified_problems.append({
+                "id": p.get("id"),
+                "leetcode_id": p.get("leetcode_id"),
+                "difficulty": p.get("difficulty"),
+                "topics": p.get("topics", []),
+                "patterns": p.get("patterns", []),
+                "api_kernels": p.get("api_kernels", []),
+                "families": p.get("families", []),
+                "data_structures": p.get("data_structures", []),
+                "algorithms": p.get("algorithms", []),
+                "related_problems": p.get("related_problems", []),
+                "companies": p.get("companies", []),
+                "roadmaps": p.get("roadmaps", []),
+            })
+        
         sections.append("\n## 🎯 Problem Data\n")
+        sections.append("Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.\n")
         sections.append("```json")
-        sections.append(json.dumps(problems_data, indent=2, ensure_ascii=False))
+        sections.append(json.dumps(simplified_problems, indent=2, ensure_ascii=False))
         sections.append("```")
-    
-    # === Link Format Instructions ===
-    links_config = config.get("links", {})
-    if links_config:
-        sections.append("\n## 🔗 Link Format Instructions\n")
-        
-        leetcode_base = links_config.get("leetcode_base", "https://leetcode.com/problems")
-        github_repo = links_config.get("github_repo", "https://github.com/lufftw/neetcode")
-        github_branch = links_config.get("github_branch", "main")
-        solution_template = links_config.get("solution_path_template", "solutions/{slug}.py")
-        
-        link_instructions = [
-            "## Link Generation Rules",
-            "",
-            "**EVERY problem mention with a number MUST have a clickable link.**",
-            "",
-            "### Decision Logic",
-            "1. Look up the problem in the Problem Data above",
-            "2. Check `solution_file` field:",
-            f"   - **NOT empty** → GitHub: `{github_repo}/blob/{github_branch}/{{solution_file}}`",
-            f"   - **Empty or not found** → LeetCode: `{leetcode_base}/{{slug}}/`",
-            "",
-            "### Link Format in Markdown",
-            "```markdown",
-            "[LeetCode {{id}} - {{title}}](URL)",
-            "```",
-            "",
-            "### Examples from Problem Data",
-            "",
-            "**Problem 3 (HAS solution):**",
-            "- `solution_file`: `solutions/0003_longest_substring_without_repeating_characters.py`",
-            f"- Link: `[LeetCode 3 - Longest Substring...]({github_repo}/blob/{github_branch}/solutions/0003_longest_substring_without_repeating_characters.py)`",
-            "",
-            "**Problem not in data (NO solution):**",
-            f"- Link: `[LeetCode 121 - Best Time to Buy...]({leetcode_base}/best-time-to-buy-and-sell-stock/)`",
-            "",
-            "### Slug Format",
-            "- LeetCode slug: lowercase with hyphens (e.g., `two-sum`, `best-time-to-buy-and-sell-stock`)",
-            "- Can extract from `url` field in problem data",
-        ]
-        
-        sections.append("\n".join(link_instructions))
     
     # === Generation Instructions ===
     language = advanced.get("language", "en")
@@ -649,8 +590,6 @@ def build_user_prompt(
             sections.append(f"\n**Additional Instructions**: {custom}")
         
         # Advanced options
-        if not advanced.get("include_leetcode_links", True):
-            sections.append("\nNote: Do not include LeetCode links.")
         if not advanced.get("include_complexity", True):
             sections.append("\nNote: Complexity analysis is not needed.")
     
@@ -1432,6 +1371,13 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             
             # Fix link formats in tables to ensure they're clickable
             content = fix_table_links(content)
+            
+            # Apply post-processing to standardize links and add titles from cache
+            # This ensures consistent link format: [LeetCode 11 - Container With Most Water](url) | [Solution](url)
+            problems = load_problems()
+            content = post_process_content(content, problems)
+            print(f"   ✅ Post-processing applied (links standardized with titles)")
+            
             all_contents[lang] = content
             
             # Save with language suffix
