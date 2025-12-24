@@ -60,8 +60,19 @@ HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
                 svg.mm.setData(root); svg.mm.fit();
             }}
         }}
-        document.addEventListener('DOMContentLoaded', function() {{
+        function initMarkmap() {{
+            // Clear existing markmap if any
+            const existingSvg = document.querySelector('.markmap > svg');
+            if (existingSvg) {{
+                existingSvg.remove();
+            }}
+            
             const {{ Transformer, Markmap }} = window.markmap;
+            if (!Transformer || !Markmap) {{
+                console.warn('Markmap libraries not loaded yet');
+                return;
+            }}
+            
             const transformer = new Transformer();
             const markdown = `{markdown_content}`;
             const {{ root }} = transformer.transform(markdown);
@@ -84,6 +95,28 @@ HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
                         }}
                     }});
                 }}, 200);
+            }}
+        }}
+        
+        // Initialize on normal page load
+        if (document.readyState === 'loading') {{
+            document.addEventListener('DOMContentLoaded', initMarkmap);
+        }} else {{
+            initMarkmap();
+        }}
+        
+        // Re-initialize on PJAX/Instant Navigation events
+        // Support multiple PJAX libraries: pjax, turbolinks, swup, etc.
+        document.addEventListener('pjax:end', initMarkmap);
+        document.addEventListener('pjax:success', initMarkmap);
+        document.addEventListener('turbolinks:load', initMarkmap);
+        document.addEventListener('swup:contentReplaced', initMarkmap);
+        document.addEventListener('swup:pageView', initMarkmap);
+        
+        // Re-initialize on pageshow (handles back/forward cache)
+        window.addEventListener('pageshow', function(event) {{
+            if (event.persisted) {{
+                initMarkmap();
             }}
         }});
     </script>
@@ -173,7 +206,65 @@ HTML_TEMPLATE_AUTOLOADER = '''<!DOCTYPE html>
                 svg.mm.setData(root); svg.mm.fit();
             }}
         }}
+        
+        function reinitAutoloader() {{
+            // Clear existing markmap if any
+            const existingSvg = document.querySelector('.markmap > svg');
+            if (existingSvg) {{
+                existingSvg.remove();
+            }}
+            // Manually trigger autoloader by re-running its initialization
+            // The autoloader script scans for .markmap elements on load
+            // We need to manually initialize if libraries are available
+            if (window.markmap && window.markmap.Transformer && window.markmap.Markmap) {{
+                const markmapEl = document.querySelector('.markmap');
+                if (markmapEl && markmapEl.textContent.trim()) {{
+                    const {{ Transformer, Markmap }} = window.markmap;
+                    const transformer = new Transformer();
+                    const markdown = markmapEl.textContent.trim();
+                    const {{ root }} = transformer.transform(markdown);
+                    const svg = d3.select('.markmap').append('svg');
+                    const mm = Markmap.create(svg.node(), {{ color: (node) => node.payload?.color || '#f59e0b' }}, root);
+                    svg.node().mm = mm;
+                    if (window.markmap && window.markmap.Toolbar) {{
+                        const toolbar = new window.markmap.Toolbar();
+                        toolbar.attach(mm);
+                        setTimeout(function() {{
+                            document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {{
+                                toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {{
+                                    if ((item.title || '').toLowerCase().includes('dark')) item.remove();
+                                }});
+                                var brand = toolbar.querySelector('.mm-toolbar-brand');
+                                if (brand) {{
+                                    brand.innerHTML = '🟡 NeetCode';
+                                    brand.href = '#'; brand.onclick = function(e) {{ e.preventDefault(); }};
+                                    brand.style.fontSize = '12px'; brand.style.color = '#666';
+                                }}
+                            }});
+                        }}, 200);
+                    }}
+                }}
+            }}
+        }}
+        
+        // Re-initialize on PJAX/Instant Navigation events
+        document.addEventListener('pjax:end', reinitAutoloader);
+        document.addEventListener('pjax:success', reinitAutoloader);
+        document.addEventListener('turbolinks:load', reinitAutoloader);
+        document.addEventListener('swup:contentReplaced', reinitAutoloader);
+        document.addEventListener('swup:pageView', reinitAutoloader);
+        
+        // Re-initialize on pageshow (handles back/forward cache)
+        window.addEventListener('pageshow', function(event) {{
+            if (event.persisted) {{
+                reinitAutoloader();
+            }}
+        }});
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar"></script>
     <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
 </head>
 <body>
