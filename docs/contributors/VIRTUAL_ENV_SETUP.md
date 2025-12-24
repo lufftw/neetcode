@@ -270,8 +270,8 @@ mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 ## 📞 Need Help?
 
 If you have questions, please refer to:
-- [.dev/README.md](.dev/README.md) - Maintainer Guide
-- [.dev/TESTING.md](.dev/TESTING.md) - Complete Testing Documentation
+- [Contributors README](contributors/README.md) - Maintainer Guide
+- [Testing Documentation](contributors/TESTING.md) - Complete Testing Documentation
 - Project main README.md - Python Environment section
 
 ---

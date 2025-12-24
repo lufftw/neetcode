@@ -159,6 +159,16 @@ nav:
     - Local Docs Build Options: LOCAL_DOCS_BUILD.md
     - Run GitHub Actions Locally (Act): ACT_LOCAL_GITHUB_ACTIONS.md
     - MkDocs Content Guide: MKDOCS_CONTENT_GUIDE.md
+  - 👥 Contributors:
+    - Overview: contributors/README.md
+    - Testing Documentation: contributors/TESTING.md
+    - Documentation Architecture: contributors/DOCUMENTATION_ARCHITECTURE.md
+    - Virtual Environment Setup: contributors/VIRTUAL_ENV_SETUP.md
+  - 🛠️ Tools:
+    - Overview: tools/README.md
+    - AI Markmap Agent: tools/ai-markmap-agent/README.md
+    - Mind Maps Generator: tools/mindmaps/README.md
+    - Pattern Docs Generator: tools/patterndocs/README.md
 
 # Extra
 extra:

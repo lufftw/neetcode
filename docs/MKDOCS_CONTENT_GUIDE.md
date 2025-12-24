@@ -52,7 +52,8 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 - **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, `ARCHITECTURE_MIGRATION.md`, and `ONTOLOGY_DESIGN.md` are now configured in `nav`.
 - **Guides**: ✅ `MKDOCS_CONTENT_GUIDE.md` is now configured in `nav`.
 - **Patterns**: ✅ `backtracking_exploration` pattern is now available in `nav` alongside `sliding_window` and `two_pointers`.
-- **Tools docs**: Developer tools documentation is in [`tools/README.md`](https://github.com/lufftw/neetcode/blob/main/tools/README.md) (not on website, GitHub only).
+- **Contributors docs**: ✅ Maintainer documentation is now in `docs/contributors/` and available on the website.
+- **Tools docs**: ✅ Developer tools documentation is now in `docs/tools/` and available on the website.
 
 ---
 
@@ -75,12 +76,13 @@ The following directories and files **do NOT** appear in the MkDocs website and 
 | Directory/File | Description | GitHub Link Format |
 |:---------------|:------------|:-------------------|
 | `tools/*.py` | Tool scripts (code only) | `https://github.com/lufftw/neetcode/blob/main/tools/...` |
-| `tools/README.md` | Comprehensive tools reference | `https://github.com/lufftw/neetcode/blob/main/tools/README.md` |
 | `ontology/` | Algorithm ontology data (TOML) | `https://github.com/lufftw/neetcode/blob/main/ontology/...` |
 | `meta/` | Problem and pattern metadata | `https://github.com/lufftw/neetcode/blob/main/meta/...` |
 | `roadmaps/` | Learning path definitions | `https://github.com/lufftw/neetcode/blob/main/roadmaps/...` |
 | `.vscode/` | VS Code configuration | `https://github.com/lufftw/neetcode/blob/main/.vscode/...` |
 | `.github/` | GitHub Actions configuration | `https://github.com/lufftw/neetcode/blob/main/.github/...` |
+
+**Note**: Tools documentation (`tools/README.md` and module-specific READMEs) has been moved to `docs/tools/` and is now available on the website. See [Content Included in Website](#content-included-in-website) section above.
 
 ### 📚 Documentation (Not in nav)
 
@@ -94,14 +96,13 @@ The following files are **intentionally NOT** in the website navigation (GitHub 
 
 | Directory/File | Description | GitHub Link Format |
 |:---------------|:------------|:-------------------|
-| `.dev/` | Maintainer zone (unit tests) | `https://github.com/lufftw/neetcode/blob/main/.dev/...` |
-| `.dev/README.md` | Maintainer guide | `https://github.com/lufftw/neetcode/blob/main/.dev/README.md` |
-| `.dev/TESTING.md` | Testing documentation | `https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md` |
+| `.dev/` | Maintainer zone (unit tests, test scripts) | `https://github.com/lufftw/neetcode/blob/main/.dev/...` |
+| `.dev/README.md` | Maintainer guide (shortened version, links to full docs) | `https://github.com/lufftw/neetcode/blob/main/.dev/README.md` |
+| `tools/README.md` | Tools overview (shortened version, links to full docs) | `https://github.com/lufftw/neetcode/blob/main/tools/README.md` |
 
-**Note**: Maintainer documentation (`.dev/` directory) is **intentionally NOT** added to the website navigation (`nav` in `mkdocs.yml`) because:
-- These are maintainer-only documents (Target Audience: 🔧 Maintainers)
-- They are better suited for GitHub repository viewing rather than public website navigation
-- Adding them to nav would expose internal documentation to all website visitors
+**Note**: Full maintainer documentation (`.dev/README.md`, `.dev/TESTING.md`, `.dev/DOCUMENTATION_ARCHITECTURE.md`, `.dev/VIRTUAL_ENV_SETUP.md`) has been moved to `docs/contributors/` and is now available on the website. The original `.dev/README.md` and `tools/README.md` now contain shortened versions with links to the full documentation on the website.
+
+**Note**: Full maintainer and tools documentation has been moved to `docs/contributors/` and `docs/tools/` respectively, and is now available on the website under the "Contributors" and "Tools" navigation sections. The original `.dev/README.md` and `tools/README.md` contain shortened versions for GitHub repository browsing convenience, with links to the full documentation on the website.
 - Badge links (e.g., `.dev/tests/`) should use GitHub absolute URLs since they point to code directories, not documentation pages
 
 ### 🐍 Environment Files

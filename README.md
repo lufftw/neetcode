@@ -333,9 +333,9 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 | **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
 | **HTML** | `docs/pages/mindmaps/*.html` |
 
-> 📖 **Evolved Agent**: See [`tools/ai-markmap-agent/README.md`](tools/ai-markmap-agent/README.md) for architecture, expert roles, and configuration.
+> 📖 **Evolved Agent**: See [`tools/ai-markmap-agent/README.md`](docs/tools/ai-markmap-agent/README.md) for architecture, expert roles, and configuration.
 >
-> 📖 **Basic AI**: See [`tools/README.md`](tools/README.md) for configuration options.
+> 📖 **Basic AI**: See [`tools/README.md`](docs/tools/README.md) for configuration options.
 
 ---
 
@@ -835,9 +835,9 @@ Documentation is organized by **target audience**:
 |:---------|:------------|
 | [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | Solution file specification |
 | [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | Generator file specification |
-| [`tools/README.md`](tools/README.md) | Complete tools reference |
-| [`.dev/README.md`](.dev/README.md) | Maintainer guide |
-| [`.dev/DOCUMENTATION_ARCHITECTURE.md`](.dev/DOCUMENTATION_ARCHITECTURE.md) | Documentation structure |
+| [`docs/tools/README.md`](docs/tools/README.md) | Complete tools reference |
+| [`docs/contributors/README.md`](docs/contributors/README.md) | Maintainer guide |
+| [`docs/contributors/DOCUMENTATION_ARCHITECTURE.md`](docs/contributors/DOCUMENTATION_ARCHITECTURE.md) | Documentation structure |
 
 ---
 
@@ -965,8 +965,8 @@ If you want to test the exact GitHub Actions workflow locally, you can use `act`
 ### Documentation
 
 **Core Documentation:**
-- [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) — Maintainer guide
-- [`.dev/TESTING.md`](https://github.com/lufftw/neetcode/blob/main/.dev/TESTING.md) — Testing documentation
+- [`docs/contributors/README.md`](docs/contributors/README.md) — Maintainer guide
+- [`docs/contributors/TESTING.md`](docs/contributors/TESTING.md) — Testing documentation
 - [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
 - [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
 - [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
