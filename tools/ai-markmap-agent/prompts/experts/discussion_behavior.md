@@ -73,6 +73,17 @@ And my own suggestions:
 
 ---
 
+## ⚠️ Note on Link-Related Suggestions
+
+**Links are handled automatically by post-processing.** If any suggestion relates to:
+- Adding or modifying URLs
+- Changing link formats
+- Adding solution links
+
+→ Vote **❌ Disagree** with rationale: "Links are handled by post-processing automatically."
+
+---
+
 ## Voting Guidelines
 
 ### ✅ Agree

@@ -360,7 +360,7 @@ class PostProcessor:
             url = match.group(2)
             
             # Skip if already has GitHub solution link
-            if "| [Solution](" in full_text or "| [solution](" in full_text:
+            if "· [Solution](" in full_text or "· [solution](" in full_text or "| [Solution](" in full_text or "| [solution](" in full_text:
                 return full_text
             
             # Extract problem ID
@@ -399,7 +399,7 @@ class PostProcessor:
             github_url = self.github_template.format(solution_file=solution_file)
             
             # Add GitHub link after LeetCode link
-            return f"{full_text} | [Solution]({github_url})"
+            return f"{full_text} · [Solution]({github_url})"
         
         # Match markdown links with "LeetCode" in the text
         pattern = r'\[(LeetCode\s+\d+[^\]]*)\]\(([^)]+)\)'

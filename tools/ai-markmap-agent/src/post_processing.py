@@ -3,12 +3,79 @@
 # =============================================================================
 # Applies text transformations to final output.
 # Done by code (not LLM) for 100% consistency.
+#
+# Also provides input preprocessing to simplify content before sending to LLM,
+# reducing token usage.
 # =============================================================================
 
 from __future__ import annotations
 
 import re
 from typing import Any
+
+
+def simplify_leetcode_links(content: str) -> str:
+    """
+    Simplify LeetCode markdown links to plain text format.
+    
+    This reduces input tokens by removing URLs and solution links.
+    Post-processing will add them back automatically.
+    
+    Transformations:
+    - `[LeetCode 79 – Word Search](url) · [Solution](github_url)` → `LeetCode 79`
+    - `[LeetCode 79 – Word Search](url)` → `LeetCode 79`
+    - `[LeetCode 79](url) · [Solution](github_url)` → `LeetCode 79`
+    - `[LeetCode 79](url)` → `LeetCode 79`
+    
+    Args:
+        content: Markdown content with LeetCode links
+        
+    Returns:
+        Simplified content with plain text LeetCode references
+    """
+    # Pattern 1: [LeetCode N – Title](url) · [Solution](url) → LeetCode N
+    # Pattern 2: [LeetCode N – Title](url) | [Solution](url) → LeetCode N (backward compat)
+    # Note: [^\]]* matches any chars except ], handles various dashes (–, -, —)
+    # Use \xb7 for middle dot (·) and handle both | and · separators
+    content = re.sub(
+        r'\[LeetCode\s+(\d+)[^\]]*\]\([^)]+\)\s*(?:·|\xb7|\|)\s*\[Solution\]\([^)]+\)',
+        r'LeetCode \1',
+        content,
+        flags=re.IGNORECASE
+    )
+    
+    # Pattern 3: [LeetCode N – Title](url) → LeetCode N (without solution link)
+    content = re.sub(
+        r'\[LeetCode\s+(\d+)[^\]]*\]\([^)]+\)',
+        r'LeetCode \1',
+        content,
+        flags=re.IGNORECASE
+    )
+    
+    return content
+
+
+def preprocess_for_llm(content: str) -> str:
+    """
+    Preprocess content before sending to LLM to reduce token usage.
+    
+    This function:
+    1. Simplifies LeetCode links to plain text (LeetCode N)
+    2. Removes redundant whitespace
+    
+    Args:
+        content: Raw markdown content
+        
+    Returns:
+        Simplified content ready for LLM input
+    """
+    # Simplify LeetCode links
+    content = simplify_leetcode_links(content)
+    
+    # Clean up multiple blank lines
+    content = re.sub(r'\n{3,}', '\n\n', content)
+    
+    return content
 
 
 class PostProcessor:
@@ -348,7 +415,7 @@ class PostProcessor:
         Automatically add GitHub solution links when seeing "LeetCode {id}".
         
         Pattern: [LeetCode {id}](leetcode_url)
-        Result: [LeetCode {id}](leetcode_url) | [Solution](github_url)
+        Result: [LeetCode {id}](leetcode_url) · [Solution](github_url)
         
         Note: Only adds if not already present (avoids duplicates).
         """
@@ -371,7 +438,7 @@ class PostProcessor:
             url = match.group(2)  # The URL
             
             # Skip if already has GitHub solution link
-            if "| [Solution](" in full_text or "| [solution](" in full_text:
+            if "· [Solution](" in full_text or "· [solution](" in full_text or "| [Solution](" in full_text or "| [solution](" in full_text:
                 return full_text
             
             # Extract problem ID from link text
@@ -420,11 +487,11 @@ class PostProcessor:
             github_url = self.github_template.format(solution_file=solution_file)
             
             # Add GitHub link after LeetCode link
-            # Format: [LeetCode {id}](leetcode_url) | [Solution](github_url)
+            # Format: [LeetCode {id}](leetcode_url) · [Solution](github_url)
             links_added += 1
             if links_added <= 5:  # Show first few successful additions
                 print(f"    ✓ Added Solution link for LeetCode {problem_id}")
-            return f"{full_text} | [Solution]({github_url})"
+            return f"{full_text} · [Solution]({github_url})"
         
         # Match markdown links with "LeetCode" in the text
         # Pattern: [LeetCode {id}](url) or [LeetCode {id} - ...](url)

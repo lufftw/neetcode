@@ -2,14 +2,34 @@
 
 ## Overview
 
-The post-processing module (`post_processing.py`) is responsible for converting LeetCode problem references in AI-generated mindmap content into standardized link formats.
+The post-processing module (`post_processing.py`) handles two key functions:
+
+1. **Input Preprocessing**: Simplifies links before sending to LLM to reduce tokens
+2. **Output Post-processing**: Converts plain text references back to full links
+
+## Input Preprocessing (Token Reduction)
+
+Before content is sent to the LLM, links are simplified:
+
+```
+[LeetCode 79 – Word Search](url) · [Solution](github_url)
+→ LeetCode 79
+```
+
+This significantly reduces input tokens. The full links are restored by post-processing.
+
+---
+
+## Output Post-Processing
+
+The post-processing module is responsible for converting LeetCode problem references in AI-generated mindmap content into standardized link formats.
 
 ## Link Format
 
 ### Target Format
 
 ```
-[LeetCode 11 - Container With Most Water](leetcode_url) | [Solution](github_url)
+[LeetCode 11 – Container With Most Water](leetcode_url) · [Solution](github_url)
 ```
 
 **Features:**
@@ -92,7 +112,7 @@ If a problem has a corresponding solution file, automatically add GitHub link:
 
 **Output:**
 ```
-[LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+[LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 ```
 
 ## Data Sources
@@ -167,14 +187,14 @@ After each post-processing execution, a comparison file is automatically generat
 
 **English:**
 ```
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](...)
-- [LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](...)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](...)
+- [LeetCode 3 – Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](...)
 ```
 
 **Chinese:**
 ```
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](...)
-- [LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](...)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](...)
+- [LeetCode 3 – Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](...)
 ```
 
 **Debug Output:**
@@ -197,8 +217,8 @@ After each post-processing execution, a comparison file is automatically generat
 
 **After:**
 ```markdown
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-- [LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+- [LeetCode 3 – Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
 ```
 
 ### Example 2: Correcting Incorrect URLs
@@ -210,7 +230,7 @@ After each post-processing execution, a comparison file is automatically generat
 
 **After:**
 ```markdown
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 ```
 
 ### Example 3: Handling Multiple Formats
@@ -224,9 +244,9 @@ After each post-processing execution, a comparison file is automatically generat
 
 **After:**
 ```markdown
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
-- [LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
+- [LeetCode 11 – Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 ```
 
 ## Configuration

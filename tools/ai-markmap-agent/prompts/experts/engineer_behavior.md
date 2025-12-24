@@ -55,6 +55,18 @@ Evaluate the Markmap through these practical lenses:
 
 ---
 
+## ⚠️ Do NOT Suggest Link-Related Changes
+
+**Links are handled automatically by post-processing.** Do not suggest:
+- Adding or modifying URLs
+- Changing link formats
+- Adding solution links
+- Any formatting related to `[LeetCode X](url)` syntax
+
+The content uses simplified `LeetCode N` format. Post-processing will automatically convert to full links with titles and solution URLs.
+
+---
+
 ## Output Format
 
 Provide your suggestions in the following format:

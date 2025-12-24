@@ -118,8 +118,8 @@ experts:
   
   # Suggestion limits per expert
   suggestions:
-    min_per_expert: 5
-    max_per_expert: 10
+    min_per_expert: 20
+    max_per_expert: 50
     # Encourage more suggestions for specific focus areas
     encourage_focus_areas: true
   
@@ -132,7 +132,7 @@ experts:
       persona_prompt: "prompts/experts/architect_persona.md"
       behavior_prompt: "prompts/experts/architect_behavior.md"
       temperature: 0.6
-      max_tokens: 4096
+      max_tokens: 8192
       focus: "api_kernel_design"
       focus_areas:
         - "API Kernel abstraction and composability"
@@ -147,7 +147,7 @@ experts:
       persona_prompt: "prompts/experts/professor_persona.md"
       behavior_prompt: "prompts/experts/professor_behavior.md"
       temperature: 0.5
-      max_tokens: 4096
+      max_tokens: 8192
       focus: "correctness_pedagogy"
       focus_areas:
         - "Concept accuracy and precision"
@@ -162,7 +162,7 @@ experts:
       persona_prompt: "prompts/experts/engineer_persona.md"
       behavior_prompt: "prompts/experts/engineer_behavior.md"
       temperature: 0.6
-      max_tokens: 4096
+      max_tokens: 8192
       focus: "practical_value"
       focus_areas:
         - "Interview frequency and importance"

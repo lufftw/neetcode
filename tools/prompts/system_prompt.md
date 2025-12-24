@@ -80,7 +80,7 @@ Examples:
 **Just use the simple format: `LeetCode {number}`**
 
 The system will automatically convert `LeetCode 3` to:
-`[LeetCode 3 - Longest Substring Without Repeating Characters](url) | [Solution](url)`
+`[LeetCode 3 – Longest Substring Without Repeating Characters](url) · [Solution](url)`
 
 ## Output Format
 

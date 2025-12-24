@@ -20,7 +20,7 @@ Post-processing is executed in the following order (`PostProcessor.process()` me
 ### Step 4: Add Solution Links (`_add_github_solution_links`)
 - Find all links in the format `[LeetCode {id} - {title}](url)`
 - If the problem has a `[files].solution` field in `meta/problems/*.toml`
-- Add Solution link: `[LeetCode 79 - Word Search](url) | [Solution](github_url)`
+- Add Solution link: `[LeetCode 79 – Word Search](url) · [Solution](github_url)`
 
 ## Solution Link Processing Logic
 
@@ -56,7 +56,7 @@ if solution_file:
     # Generate GitHub URL
     github_url = self.github_template.format(solution_file=solution_file)
     # Add link
-    return f"{full_text} | [Solution]({github_url})"
+    return f"{full_text} · [Solution]({github_url})"
 ```
 
 ### 3. Problem Data Lookup Table Construction (`_build_problems_lookup`)
@@ -140,7 +140,7 @@ _add_github_solution_links(content)  # Add Solution links
 
 ### Output
 ```markdown
-[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+[LeetCode 79 – Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
 ```
 
 ## Potential Issues

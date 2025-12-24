@@ -77,7 +77,7 @@ python tools/generate_mindmaps_ai.py --style academic
 
 | 情況 | 連結類型 |
 |------|----------|
-| 題目有解答 | `[LeetCode X - Title](url) \| [Solution](github_url)` |
+| 題目有解答 | `[LeetCode X – Title](url) · [Solution](github_url)` |
 | 題目無解答 | `[LeetCode X - Title](leetcode_url)` |
 
 > **Note**: LLM 只需輸出 `LeetCode {number}` 格式，後處理會自動添加標題和連結。

@@ -1,46 +1,42 @@
 # System Prompt
 
-You are a world-class expert who synthesizes multiple professional perspectives into a single, coherent, learner-centric understanding. You simultaneously think like:
+for AI Mind Map Generation
 
-- **Top Software Architect**: Connect algorithms to scalable, maintainable system design; emphasize abstractions, patterns, and clean structure.  
-- **Distinguished Senior Algorithm Professor**: Explain fundamentals clearly; connect theory to practice; optimize for how learners internalize concepts.  
-- **Senior Principal Engineer**: Prioritize real-world performance, constraints, and trade-offs; highlight practical optimizations and failure modes.  
-- **Technical Architecture & Language API Provider**: Organize knowledge into usable interfaces; structure concepts for maximum discoverability and reuse.  
-- **LeetCode Learner & Interview Preparer**: Build progressive learning paths; focus on common interview patterns and skill scaffolding.  
-- **Competitive Programming Champion**: Recognize patterns quickly; include key tricks, invariants, and time/space insights.  
-- **Project Contributor & Open Source Advocate**: Make output navigable, consistent, and maintainable for community use.
+You are a world-class expert who integrates multiple professional perspectives into a single, cohesive mental model and presentation:
 
-These perspectives reinforce each other. Your output should feel simultaneously **theoretically sound, practically useful, pedagogically effective, and structurally elegant**.
+- **Top Software Architect**: You design elegant, scalable architectures and map algorithms/patterns to real system contexts.
+- **Distinguished Senior Algorithm Professor**: You explain theory clearly, connect fundamentals to practice, and structure knowledge for learning.
+- **Senior Principal Engineer**: You prioritize real-world performance, constraints, and trade-offs; you know what works at scale.
+- **LeetCode Learner & Interview Preparer**: You build step-by-step learning paths, highlight high-frequency patterns, and support progression.
+- **Competitive Programming Champion**: You recognize patterns quickly, surface optimizations, and provide strong problem-to-technique mapping.
 
-## Core Task
+## Mission
+Creatively generate **Markmap-format mind maps** from the provided **LeetCode knowledge graph data**. The mind maps must be useful for learners, interview candidates, competitive programmers, and contributors.
 
-Creatively generate **Markmap-format mind maps** from the provided LeetCode knowledge graph data (APIs/Kernels, Patterns, Algorithms, Data Structures, Problems, and their relationships). The mind map must serve learners, interview candidates, competitive programmers, and contributors.
+**Language requirement (CRITICAL):** Output must be entirely in **English** (titles, labels, descriptions, annotations).
 
-**Language requirement:** Generate the entire mind map in **English** (titles, labels, descriptions, notes).
-
-## Your Capabilities (Use Them)
-
-1. **Knowledge Graph Reasoning**: Infer and explain relationships among Patterns, Algorithms, Data Structures, and API Kernels.
-2. **Visualization & Information Design**: Produce intuitive, readable, aesthetically pleasing Markmap hierarchies.
-3. **Personalization**: Adjust emphasis and recommendations based on user goals (when provided).
-4. **Importance Ranking**: Automatically surface the most valuable concepts and problems first.
+## Your Capabilities
+1. **Knowledge Graph Reasoning**: Infer and organize relationships among API Kernels, Patterns, Algorithms, and Data Structures.
+2. **Educational Visualization**: Produce intuitive, aesthetically clean mind map hierarchies.
+3. **Goal-Aware Emphasis**: Adapt focus and recommendations based on user goals (if provided).
+4. **Importance Ranking**: Automatically surface what matters most (core concepts first; details later).
 
 ## Markmap Features (Use Actively)
-
-- **Links**: `[Problem Name](URL)` — use for **all** problem references.
 - **Styling**: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`
-- **Checkboxes**: `[ ]` to-do, `[x]` completed (use for learning/progress sections)
-- **Math**: `$O(n \log n)$`, `$O(n^2)$`
-- **Code blocks**: fenced blocks (e.g., ```python)
-- **Tables**: use for comparisons (pattern variants, invariants, trade-offs)
-- **Fold**: `<!-- markmap: fold -->` for large branches
-- **Emoji**: use sparingly for visual anchors (🎯📚⚡🔥)
+- **Checkboxes**: [ ] To-do, [x] Completed
+- **Math**: $O(n \log n)$, $O(n^2)$
+- **Code Blocks**:
+  ```python
+  # example
+  ```
+- **Tables**: Use for comparisons and quick references
+- **Fold**: `<!-- markmap: fold -->` to collapse dense sections
+- **Emoji**: Use sparingly for emphasis 🎯📚⚡🔥
 
-## Table Format Guidelines (Strict)
+## Table Format Guidelines
+**Use tables for comparison information** (e.g., Sliding Window variants, DS trade-offs).
 
-Tables are encouraged for comparison-heavy content (e.g., Sliding Window variants).
-
-✅ Good example (keep concise; links must be valid):
+✅ GOOD (Table format):
 ```
 | Problem | Invariant | State | Window Size | Goal |
 |
@@ -50,41 +46,31 @@ Tables are encouraged for comparison-heavy content (e.g., Sliding Window variant
 # User Prompt
 
 ------|-----------|-------|-------------|------|
-| [LeetCode 3 - Longest Substring](URL) | All unique | freq map | Variable | Max length |
-| [LeetCode 76 - Minimum Window](URL) | Covers all | maps | Variable | Min length |
+| LeetCode 3 | All unique | freq map | Variable | Max length |
+| LeetCode 76 | Covers all | maps | Variable | Min length |
 ```
 
-When using tables:
-1. Always use Markdown link format `[Text](URL)` inside cells.
-2. Keep rows short to avoid overly wide nodes.
-3. Use tables primarily for comparisons/differences.
-4. Ensure links are clickable and correctly formatted.
+## CRITICAL: Problem Reference Format
+When referencing LeetCode problems, you **must** use exactly:
 
-## CRITICAL: Problem Links Rule (Non-Negotiable)
-
-**Every time you mention a LeetCode problem with its number, you MUST include a clickable link.**  
-Never write a problem number without a link.
-
-### Link Selection Logic (Use Problem Data in the user prompt)
-1. Locate the problem in the provided Problem Data JSON.
-2. Read `solution_file`:
-   - If `solution_file` exists and is a **non-empty string** → link to GitHub solution:  
-     `https://github.com/lufftw/neetcode/blob/main/{solution_file}`
-   - If `solution_file` is `""`, `null`, missing, or otherwise empty → link to LeetCode:  
-     `https://leetcode.com/problems/{slug}/`
-
-**Be precise:** `""` and `null` mean *no solution file*.
+```
+LeetCode {number}
+```
 
 Examples:
-- With solution file (`"solutions/0003_xxx.py"`):  
-  `[LeetCode 3 - Longest Substring](https://github.com/lufftw/neetcode/blob/main/solutions/0003_xxx.py)`
-- Without solution file (`""` or `null`):  
-  `[LeetCode 999 - Some Problem](https://leetcode.com/problems/some-problem/)`
+- `LeetCode 3`
+- `LeetCode 76`
+- `LeetCode 121`
 
-## Output Format (Strict)
+**Do NOT include:**
+- URLs/links
+- Problem titles
+- Solution links
 
-Output **only** valid Markmap Markdown (no preamble, no explanation).  
-Must begin with this frontmatter:
+(These will be added automatically downstream.)
+
+## Output Format (CRITICAL)
+Output must be **valid Markmap Markdown** and must start with this frontmatter:
 
 ```
 ---
@@ -95,66 +81,84 @@ markmap:
 ---
 ```
 
-## Design Principles (Follow)
+## Design Principles
+1. **Clear hierarchy**: Target **3–5 levels** depth for readability.
+2. **Emphasis**: Use **bold** and ==highlight== for key concepts, pitfalls, and must-know items.
+3. **Practice linkage**: Tie concepts to specific `LeetCode {number}` references.
+4. **Readable beauty**: Use folding for dense areas; keep nodes concise; use emoji lightly.
+5. **Learning-friendly**: Include progress cues (checkboxes), difficulty markers, and “next steps”.
 
-1. **Clear hierarchy**: Prefer 3–5 levels; avoid deep, noisy nesting.
-2. **Highlight key points**: Use **bold** and ==highlight== for core ideas, invariants, and common pitfalls.
-3. **Practical orientation**: Tie concepts to specific linked problems.
-4. **Readable & beautiful**: Use folds for large sections; use emoji as section anchors, not decoration.
-5. **Learning-friendly**: Include progress tracking (checkboxes), difficulty cues, and “when to use” guidance.
+## Naming Conventions (CRITICAL)
+- Always write **“LeetCode”** in full (never “LC”).
+- Always reference problems as **“LeetCode {number}”** (never “LC 1”).
+- Maintain consistent naming and formatting throughout.
 
-## Naming Conventions (Strict)
-
-- Always write **“LeetCode”** in full; never use “LC”.
-- Problem references must be in the format **“LeetCode N - Title”** (or “LeetCode Problem N”), never “LC N”.
-- Keep naming consistent across the entire mind map.
+**Output the Markmap Markdown only. No explanations, preambles, or extra commentary.**
 
 ---
 
+You will generate a **single Markmap mind map** from the provided LeetCode knowledge graph data.
 
+## What You Will Receive
+After these instructions, you will see a section titled **“## 📊 Data Summary”** containing large JSON blocks.  
+**Do not modify, rewrite, reformat, or paraphrase any JSON.** Treat it as read-only input.
 
-You will generate a single **Markmap mind map** using the instructions below and the data appended after **“## 📊 Data Summary”** (JSON blocks).  
+## Your Task
+Create a learning-optimized mind map that:
+1. **Synthesizes** the data into a coherent structure (not a raw dump).
+2. **Prioritizes** the most important concepts and relationships for practical problem solving.
+3. **Connects** Patterns ⇄ Algorithms ⇄ Data Structures ⇄ API Kernels ⇄ LeetCode problems.
+4. **Guides progression** from fundamentals → common patterns → advanced/edge cases.
 
-## Objectives
+## Required Output
+- Output **only** valid **Markmap Markdown**.
+- Begin with the required frontmatter exactly as specified in the System Prompt.
+- Use **English only**.
 
-1. Build an **organized, learner-friendly** mind map from the provided knowledge graph.
-2. Emphasize **high-leverage patterns**, core invariants, and common interview applications.
-3. Connect each concept to **specific linked LeetCode problems** (following the **CRITICAL: Problem Links Rule** from the system prompt).
+## Content & Structure Requirements
+- Use a **clear hierarchy** (aim for **3–5 levels** deep).
+- The root should be a concise, descriptive title (e.g., “LeetCode Patterns & Techniques” tailored to the provided data).
+- Include the following sections when supported by the data (merge/rename only if it improves clarity):
+  - **Core Patterns / Techniques**
+  - **Key Data Structures**
+  - **Common Algorithms**
+  - **API Kernels / Useful Primitives**
+  - **Problem Mapping** (organized by pattern or technique)
+  - **Pitfalls & Edge Cases**
+  - **Complexity & Trade-offs**
+  - **Study Plan / Progress Tracker** (checkboxes)
 
-## What to Include (Content Requirements)
+## Problem-Linking Rules (CRITICAL)
+- Whenever you mention a problem, use **only** `LeetCode {number}`.
+- **No titles, no URLs, no extra annotations** next to the problem reference.
 
-- A clear top-level structure (recommended: **Patterns → Algorithms/Data Structures → Techniques/Invariants → Problems**).
-- For each major pattern/technique:
-  - **When to use / recognition signals**
-  - **Core invariant(s)** and typical state representation
-  - **Complexity** (time/space) where relevant
-  - **Common pitfalls** / edge cases
-  - A curated set of representative problems (each with a **mandatory clickable link**)
-- Use **tables** for compact comparisons (e.g., Sliding Window variants, DFS vs BFS, Union-Find vs DFS connectivity).
-- Add **checkbox-based learning paths** (e.g., “Start here”, “Must know”, “Stretch”) where it improves learning flow.
+## Emphasis & Pedagogy
+- Mark the most important nodes with **bold** and ==highlight==.
+- Add brief “why it matters” notes for key patterns (1 short line per node max).
+- Include common invariants, templates, and “when to use” cues where relevant.
+- Use **tables** for comparisons (e.g., variants of a pattern, DS trade-offs, complexity comparisons).
+- Use `<!-- markmap: fold -->` to collapse dense reference sections (e.g., long problem lists or detailed subcases).
 
-## Organization & Styling Rules
+## Practicality Requirements
+- Include at least:
+  - One **comparison table** (if the data supports comparisons).
+  - One **template/code block** (language: `python`) for a high-value pattern (if applicable).
+  - A **progress tracker** using checkboxes (e.g., by pattern or difficulty).
+- Complexity: annotate major techniques with time/space complexity using math notation (e.g., $O(n)$, $O(n \log n)$).
 
-- Keep the mind map **readable**: avoid overly long nodes; prefer short phrases and nested bullets.
-- Use **folds** for large categories to prevent overwhelming branches.
-- Use **bold** for key terms and ==highlight== for “must-know” rules/invariants.
-- Use `code` formatting for important state variables (e.g., `left`, `right`, `freq`, `parent`, `rank`, `dp[i]`).
-- Use emoji **sparingly** as section markers (e.g., 🎯 for goals, 📚 for study path, ⚡ for tricks).
+## Quality Bar
+- Prefer **actionable, interview-relevant** organization over encyclopedic completeness.
+- Avoid redundant nodes; consolidate near-duplicates.
+- Keep node text concise; use deeper nesting instead of long sentences.
 
-## Problem Linking Rules (Reminder)
+## Final Check (Before You Output)
+- Frontmatter present and correct.
+- English-only.
+- LeetCode references follow `LeetCode {number}` exactly.
+- No JSON echoed back.
+- No explanations—**Markmap Markdown only**.
 
-- Every time you mention a problem number, it must be written as a **linked** “LeetCode N - Title”.
-- Choose GitHub vs LeetCode links strictly based on `solution_file` in the provided Problem Data JSON.
-
-## Output Constraints
-
-- Output **only** Markmap Markdown.
-- Include the required frontmatter exactly as specified in the system prompt.
-- Do not reference or modify the raw JSON; only use it to derive correct structure, relationships, and links.
-
-## 📊 Data Summary
-
-(Do not modify or include the data sections here; they will be appended after this header.)
+(Next comes: **## 📊 Data Summary** with JSON. Do not edit it.)
 
 ## 📊 Data Summary
 
@@ -2607,9 +2611,9 @@ This document presents the **canonical two pointers template** and all its major
 1. [Core Concepts](#1-core-concepts)
 2. [Opposite Pointers (Two-End)](#2-opposite-pointers-two-end)
 3. [Same-Direction Pointers (Writer Pattern)](#3-same-direction-pointers-writer-pattern)
-4. [Fast–Slow Pointers (Cycle Detection)](#4-fast–slow-pointers-cycle-detection)
-5. [Partitioning / Dutch National Flag](#5-partitioning-dutch-national-flag)
-6. [Dedup + Sorted Two-Pointer Enumeration](#6-dedup-+-sorted-two-pointer-enumeration)
+4. [Fast–Slow Pointers (Cycle Detection)](#4-fastslow-pointers-cycle-detection)
+5. [Partitioning / Dutch National Flag](#5-partitioning--dutch-national-flag)
+6. [Dedup + Sorted Two-Pointer Enumeration](#6-dedup--sorted-two-pointer-enumeration)
 7. [Merge Pattern](#7-merge-pattern)
 8. [Pattern Comparison Table](#8-pattern-comparison-table)
 9. [When to Use Two Pointers](#9-when-to-use-two-pointers)
@@ -2816,7 +2820,7 @@ def same_direction_template(arr, condition):
 - Finding **middle element** of a linked list
 - **Happy number** and similar sequence convergence problems
 
-### 4.2 Why It Works (Floyd's Cycle Det
+### 4.2 Why It Works (Floyd's Cycle Dete
 ...(truncated)
 
 ## 🧩 Pattern Snippets
@@ -4738,14 +4742,13 @@ def merge(arr1, arr2):
 
 ## 🎯 Problem Data
 
+Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.
+
 ```json
 [
   {
     "id": "0001",
     "leetcode_id": 1,
-    "title": "Two Sum",
-    "slug": "0001_two_sum",
-    "url": "https://leetcode.com/problems/two-sum/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -4785,15 +4788,11 @@ def merge(arr1, arr2):
       "blind_75",
       "grind_75",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0001_two_sum.py"
+    ]
   },
   {
     "id": "0002",
     "leetcode_id": 2,
-    "title": "Add Two Numbers",
-    "slug": "0002_add_two_numbers",
-    "url": "https://leetcode.com/problems/add-two-numbers/",
     "difficulty": "medium",
     "topics": [
       "linked_list",
@@ -4828,15 +4827,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0002_add_two_numbers.py"
+    ]
   },
   {
     "id": "0003",
     "leetcode_id": 3,
-    "title": "Longest Substring Without Repeating Characters",
-    "slug": "0003_longest_substring_without_repeating_characters",
-    "url": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
     "difficulty": "medium",
     "topics": [
       "string",
@@ -4886,15 +4881,11 @@ def merge(arr1, arr2):
       "grind_75",
       "leetcode_top_100",
       "sliding_window_path"
-    ],
-    "solution_file": "solutions/0003_longest_substring_without_repeating_characters.py"
+    ]
   },
   {
     "id": "0004",
     "leetcode_id": 4,
-    "title": "Median of Two Sorted Arrays",
-    "slug": "0004_median_of_two_sorted_arrays",
-    "url": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
     "difficulty": "hard",
     "topics": [
       "array",
@@ -4937,15 +4928,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0004_median_of_two_sorted_arrays.py"
+    ]
   },
   {
     "id": "0011",
     "leetcode_id": 11,
-    "title": "Container With Most Water",
-    "slug": "0011_container_with_most_water",
-    "url": "https://leetcode.com/problems/container-with-most-water/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -4985,15 +4972,11 @@ def merge(arr1, arr2):
       "neetcode_150",
       "blind_75",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0011_container_with_most_water.py"
+    ]
   },
   {
     "id": "0015",
     "leetcode_id": 15,
-    "title": "3Sum",
-    "slug": "0015_3sum",
-    "url": "https://leetcode.com/problems/3sum/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5036,15 +5019,11 @@ def merge(arr1, arr2):
       "neetcode_150",
       "blind_75",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0015_3sum.py"
+    ]
   },
   {
     "id": "0016",
     "leetcode_id": 16,
-    "title": "3Sum Closest",
-    "slug": "0016_3sum_closest",
-    "url": "https://leetcode.com/problems/3sum-closest/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5080,15 +5059,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0016_3sum_closest.py"
+    ]
   },
   {
     "id": "0021",
     "leetcode_id": 21,
-    "title": "Merge Two Sorted Lists",
-    "slug": "0021_merge_two_sorted_lists",
-    "url": "https://leetcode.com/problems/merge-two-sorted-lists/",
     "difficulty": "easy",
     "topics": [
       "linked_list",
@@ -5130,15 +5105,11 @@ def merge(arr1, arr2):
       "blind_75",
       "grind_75",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0021_merge_two_sorted_lists.py"
+    ]
   },
   {
     "id": "0023",
     "leetcode_id": 23,
-    "title": "Merge k Sorted Lists",
-    "slug": "0023_merge_k_sorted_lists",
-    "url": "https://leetcode.com/problems/merge-k-sorted-lists/",
     "difficulty": "hard",
     "topics": [
       "linked_list",
@@ -5183,15 +5154,11 @@ def merge(arr1, arr2):
       "neetcode_150",
       "blind_75",
       "leetcode_top_100"
-    ],
-    "solution_file": "solutions/0023_merge_k_sorted_lists.py"
+    ]
   },
   {
     "id": "0025",
     "leetcode_id": 25,
-    "title": "Reverse Nodes in k-Group",
-    "slug": "0025_reverse_nodes_in_k_group",
-    "url": "https://leetcode.com/problems/reverse-nodes-in-k-group/",
     "difficulty": "hard",
     "topics": [
       "linked_list",
@@ -5226,15 +5193,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0025_reverse_nodes_in_k_group.py"
+    ]
   },
   {
     "id": "0026",
     "leetcode_id": 26,
-    "title": "Remove Duplicates from Sorted Array",
-    "slug": "0026_remove_duplicates_from_sorted_array",
-    "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -5272,15 +5235,11 @@ def merge(arr1, arr2):
       "neetcode_150",
       "blind_75",
       "grind_75"
-    ],
-    "solution_file": "solutions/0026_remove_duplicates_from_sorted_array.py"
+    ]
   },
   {
     "id": "0027",
     "leetcode_id": 27,
-    "title": "Remove Element",
-    "slug": "0027_remove_element",
-    "url": "https://leetcode.com/problems/remove-element/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -5315,15 +5274,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "grind_75"
-    ],
-    "solution_file": "solutions/0027_remove_element.py"
+    ]
   },
   {
     "id": "0039",
     "leetcode_id": 39,
-    "title": "Combination Sum",
-    "slug": "0039_combination_sum",
-    "url": "https://leetcode.com/problems/combination-sum/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5361,15 +5316,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "blind_75"
-    ],
-    "solution_file": "solutions/0039_combination_sum.py"
+    ]
   },
   {
     "id": "0040",
     "leetcode_id": 40,
-    "title": "Combination Sum II",
-    "slug": "0040_combination_sum_ii",
-    "url": "https://leetcode.com/problems/combination-sum-ii/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5404,15 +5355,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0040_combination_sum_ii.py"
+    ]
   },
   {
     "id": "0046",
     "leetcode_id": 46,
-    "title": "Permutations",
-    "slug": "0046_permutations",
-    "url": "https://leetcode.com/problems/permutations/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5448,15 +5395,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0046_permutations.py"
+    ]
   },
   {
     "id": "0047",
     "leetcode_id": 47,
-    "title": "Permutations II",
-    "slug": "0047_permutations_ii",
-    "url": "https://leetcode.com/problems/permutations-ii/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5488,15 +5431,11 @@ def merge(arr1, arr2):
       "meta",
       "microsoft"
     ],
-    "roadmaps": [],
-    "solution_file": "solutions/0047_permutations_ii.py"
+    "roadmaps": []
   },
   {
     "id": "0051",
     "leetcode_id": 51,
-    "title": "N-Queens",
-    "slug": "0051_n_queens",
-    "url": "https://leetcode.com/problems/n-queens/",
     "difficulty": "hard",
     "topics": [
       "array",
@@ -5531,15 +5470,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0051_n_queens.py"
+    ]
   },
   {
     "id": "0052",
     "leetcode_id": 52,
-    "title": "N-Queens II",
-    "slug": "0052_n_queens_ii",
-    "url": "https://leetcode.com/problems/n-queens-ii/",
     "difficulty": "hard",
     "topics": [
       "backtracking"
@@ -5568,15 +5503,11 @@ def merge(arr1, arr2):
       "amazon",
       "meta"
     ],
-    "roadmaps": [],
-    "solution_file": "solutions/0052_n_queens_ii.py"
+    "roadmaps": []
   },
   {
     "id": "0075",
     "leetcode_id": 75,
-    "title": "Sort Colors",
-    "slug": "0075_sort_colors",
-    "url": "https://leetcode.com/problems/sort-colors/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5613,15 +5544,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "blind_75"
-    ],
-    "solution_file": "solutions/0075_sort_colors.py"
+    ]
   },
   {
     "id": "0076",
     "leetcode_id": 76,
-    "title": "Minimum Window Substring",
-    "slug": "0076_minimum_window_substring",
-    "url": "https://leetcode.com/problems/minimum-window-substring/",
     "difficulty": "hard",
     "topics": [
       "string",
@@ -5667,15 +5594,11 @@ def merge(arr1, arr2):
       "blind_75",
       "grind_75",
       "sliding_window_path"
-    ],
-    "solution_file": "solutions/0076_minimum_window_substring.py"
+    ]
   },
   {
     "id": "0077",
     "leetcode_id": 77,
-    "title": "Combinations",
-    "slug": "0077_combinations",
-    "url": "https://leetcode.com/problems/combinations/",
     "difficulty": "medium",
     "topics": [
       "backtracking"
@@ -5705,15 +5628,11 @@ def merge(arr1, arr2):
       "amazon",
       "meta"
     ],
-    "roadmaps": [],
-    "solution_file": "solutions/0077_combinations.py"
+    "roadmaps": []
   },
   {
     "id": "0078",
     "leetcode_id": 78,
-    "title": "Subsets",
-    "slug": "0078_subsets",
-    "url": "https://leetcode.com/problems/subsets/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5750,15 +5669,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0078_subsets.py"
+    ]
   },
   {
     "id": "0079",
     "leetcode_id": 79,
-    "title": "Word Search",
-    "slug": "0079_word_search",
-    "url": "https://leetcode.com/problems/word-search/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5799,15 +5714,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "blind_75"
-    ],
-    "solution_file": "solutions/0079_word_search.py"
+    ]
   },
   {
     "id": "0080",
     "leetcode_id": 80,
-    "title": "Remove Duplicates from Sorted Array II",
-    "slug": "0080_remove_duplicates_from_sorted_array_ii",
-    "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5841,15 +5752,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0080_remove_duplicates_from_sorted_array_ii.py"
+    ]
   },
   {
     "id": "0088",
     "leetcode_id": 88,
-    "title": "Merge Sorted Array",
-    "slug": "0088_merge_sorted_array",
-    "url": "https://leetcode.com/problems/merge-sorted-array/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -5885,15 +5792,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "grind_75"
-    ],
-    "solution_file": "solutions/0088_merge_sorted_array.py"
+    ]
   },
   {
     "id": "0090",
     "leetcode_id": 90,
-    "title": "Subsets II",
-    "slug": "0090_subsets_ii",
-    "url": "https://leetcode.com/problems/subsets-ii/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -5928,15 +5831,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0090_subsets_ii.py"
+    ]
   },
   {
     "id": "0093",
     "leetcode_id": 93,
-    "title": "Restore IP Addresses",
-    "slug": "0093_restore_ip_addresses",
-    "url": "https://leetcode.com/problems/restore-ip-addresses/",
     "difficulty": "medium",
     "topics": [
       "string",
@@ -5968,15 +5867,11 @@ def merge(arr1, arr2):
       "meta",
       "microsoft"
     ],
-    "roadmaps": [],
-    "solution_file": "solutions/0093_restore_ip_addresses.py"
+    "roadmaps": []
   },
   {
     "id": "0125",
     "leetcode_id": 125,
-    "title": "Valid Palindrome",
-    "slug": "0125_valid_palindrome",
-    "url": "https://leetcode.com/problems/valid-palindrome/",
     "difficulty": "easy",
     "topics": [
       "two_pointers",
@@ -6014,15 +5909,11 @@ def merge(arr1, arr2):
       "neetcode_150",
       "blind_75",
       "grind_75"
-    ],
-    "solution_file": "solutions/0125_valid_palindrome.py"
+    ]
   },
   {
     "id": "0131",
     "leetcode_id": 131,
-    "title": "Palindrome Partitioning",
-    "slug": "0131_palindrome_partitioning",
-    "url": "https://leetcode.com/problems/palindrome-partitioning/",
     "difficulty": "medium",
     "topics": [
       "string",
@@ -6059,15 +5950,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0131_palindrome_partitioning.py"
+    ]
   },
   {
     "id": "0141",
     "leetcode_id": 141,
-    "title": "Linked List Cycle",
-    "slug": "0141_linked_list_cycle",
-    "url": "https://leetcode.com/problems/linked-list-cycle/",
     "difficulty": "easy",
     "topics": [
       "linked_list",
@@ -6105,15 +5992,11 @@ def merge(arr1, arr2):
       "neetcode_150",
       "blind_75",
       "grind_75"
-    ],
-    "solution_file": "solutions/0141_linked_list_cycle.py"
+    ]
   },
   {
     "id": "0142",
     "leetcode_id": 142,
-    "title": "Linked List Cycle II",
-    "slug": "0142_linked_list_cycle_ii",
-    "url": "https://leetcode.com/problems/linked-list-cycle-ii/",
     "difficulty": "medium",
     "topics": [
       "linked_list",
@@ -6149,15 +6032,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "blind_75"
-    ],
-    "solution_file": "solutions/0142_linked_list_cycle_ii.py"
+    ]
   },
   {
     "id": "0202",
     "leetcode_id": 202,
-    "title": "Happy Number",
-    "slug": "0202_happy_number",
-    "url": "https://leetcode.com/problems/happy-number/",
     "difficulty": "easy",
     "topics": [
       "hash_table",
@@ -6191,15 +6070,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0202_happy_number.py"
+    ]
   },
   {
     "id": "0209",
     "leetcode_id": 209,
-    "title": "Minimum Size Subarray Sum",
-    "slug": "0209_minimum_size_subarray_sum",
-    "url": "https://leetcode.com/problems/minimum-size-subarray-sum/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -6241,15 +6116,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "sliding_window_path"
-    ],
-    "solution_file": "solutions/0209_minimum_size_subarray_sum.py"
+    ]
   },
   {
     "id": "0215",
     "leetcode_id": 215,
-    "title": "Kth Largest Element in an Array",
-    "slug": "0215_kth_largest_element_in_an_array",
-    "url": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -6294,15 +6165,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "blind_75"
-    ],
-    "solution_file": "solutions/0215_kth_largest_element_in_an_array.py"
+    ]
   },
   {
     "id": "0216",
     "leetcode_id": 216,
-    "title": "Combination Sum III",
-    "slug": "0216_combination_sum_iii",
-    "url": "https://leetcode.com/problems/combination-sum-iii/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -6332,15 +6199,11 @@ def merge(arr1, arr2):
       "google",
       "amazon"
     ],
-    "roadmaps": [],
-    "solution_file": "solutions/0216_combination_sum_iii.py"
+    "roadmaps": []
   },
   {
     "id": "0283",
     "leetcode_id": 283,
-    "title": "Move Zeroes",
-    "slug": "0283_move_zeroes",
-    "url": "https://leetcode.com/problems/move-zeroes/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -6376,15 +6239,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "grind_75"
-    ],
-    "solution_file": "solutions/0283_move_zeroes.py"
+    ]
   },
   {
     "id": "0340",
     "leetcode_id": 340,
-    "title": "Longest Substring with At Most K Distinct Characters",
-    "slug": "0340_longest_substring_with_at_most_k_distinct",
-    "url": "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/",
     "difficulty": "medium",
     "topics": [
       "string",
@@ -6424,15 +6283,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "sliding_window_path"
-    ],
-    "solution_file": "solutions/0340_longest_substring_with_at_most_k_distinct.py"
+    ]
   },
   {
     "id": "0438",
     "leetcode_id": 438,
-    "title": "Find All Anagrams in a String",
-    "slug": "0438_find_all_anagrams_in_a_string",
-    "url": "https://leetcode.com/problems/find-all-anagrams-in-a-string/",
     "difficulty": "medium",
     "topics": [
       "string",
@@ -6472,15 +6327,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "sliding_window_path"
-    ],
-    "solution_file": "solutions/0438_find_all_anagrams_in_a_string.py"
+    ]
   },
   {
     "id": "0567",
     "leetcode_id": 567,
-    "title": "Permutation in String",
-    "slug": "0567_permutation_in_string",
-    "url": "https://leetcode.com/problems/permutation-in-string/",
     "difficulty": "medium",
     "topics": [
       "string",
@@ -6521,15 +6372,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "sliding_window_path"
-    ],
-    "solution_file": "solutions/0567_permutation_in_string.py"
+    ]
   },
   {
     "id": "0680",
     "leetcode_id": 680,
-    "title": "Valid Palindrome II",
-    "slug": "0680_valid_palindrome_ii",
-    "url": "https://leetcode.com/problems/valid-palindrome-ii/",
     "difficulty": "easy",
     "topics": [
       "two_pointers",
@@ -6564,15 +6411,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0680_valid_palindrome_ii.py"
+    ]
   },
   {
     "id": "0876",
     "leetcode_id": 876,
-    "title": "Middle of the Linked List",
-    "slug": "0876_middle_of_the_linked_list",
-    "url": "https://leetcode.com/problems/middle-of-the-linked-list/",
     "difficulty": "easy",
     "topics": [
       "linked_list",
@@ -6607,15 +6450,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "grind_75"
-    ],
-    "solution_file": "solutions/0876_middle_of_the_linked_list.py"
+    ]
   },
   {
     "id": "0905",
     "leetcode_id": 905,
-    "title": "Sort Array By Parity",
-    "slug": "0905_sort_array_by_parity",
-    "url": "https://leetcode.com/problems/sort-array-by-parity/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -6648,15 +6487,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0905_sort_array_by_parity.py"
+    ]
   },
   {
     "id": "0922",
     "leetcode_id": 922,
-    "title": "Sort Array By Parity II",
-    "slug": "0922_sort_array_by_parity_ii",
-    "url": "https://leetcode.com/problems/sort-array-by-parity-ii/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -6687,15 +6522,11 @@ def merge(arr1, arr2):
     ],
     "roadmaps": [
       "neetcode_150"
-    ],
-    "solution_file": "solutions/0922_sort_array_by_parity_ii.py"
+    ]
   },
   {
     "id": "0977",
     "leetcode_id": 977,
-    "title": "Squares of a Sorted Array",
-    "slug": "0977_squares_of_a_sorted_array",
-    "url": "https://leetcode.com/problems/squares-of-a-sorted-array/",
     "difficulty": "easy",
     "topics": [
       "array",
@@ -6731,15 +6562,11 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "grind_75"
-    ],
-    "solution_file": "solutions/0977_squares_of_a_sorted_array.py"
+    ]
   },
   {
     "id": "0994",
     "leetcode_id": 994,
-    "title": "Rotting Oranges",
-    "slug": "0994_rotting_oranges",
-    "url": "https://leetcode.com/problems/rotting-oranges/",
     "difficulty": "medium",
     "topics": [
       "array",
@@ -6780,41 +6607,10 @@ def merge(arr1, arr2):
     "roadmaps": [
       "neetcode_150",
       "graph_bfs_path"
-    ],
-    "solution_file": "solutions/0994_rotting_oranges.py"
+    ]
   }
 ]
 ```
-
-## 🔗 Link Format Instructions
-
-## Link Generation Rules
-
-**EVERY problem mention with a number MUST have a clickable link.**
-
-### Decision Logic
-1. Look up the problem in the Problem Data above
-2. Check `solution_file` field:
-   - **NOT empty** → GitHub: `https://github.com/lufftw/neetcode/blob/main/{solution_file}`
-   - **Empty or not found** → LeetCode: `https://leetcode.com/problems/{slug}/`
-
-### Link Format in Markdown
-```markdown
-[LeetCode {{id}} - {{title}}](URL)
-```
-
-### Examples from Problem Data
-
-**Problem 3 (HAS solution):**
-- `solution_file`: `solutions/0003_longest_substring_without_repeating_characters.py`
-- Link: `[LeetCode 3 - Longest Substring...](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)`
-
-**Problem not in data (NO solution):**
-- Link: `[LeetCode 121 - Best Time to Buy...](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)`
-
-### Slug Format
-- LeetCode slug: lowercase with hyphens (e.g., `two-sum`, `best-time-to-buy-and-sell-stock`)
-- Can extract from `url` field in problem data
 
 ## 🎨 Generation Instructions
 

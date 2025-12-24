@@ -42,7 +42,7 @@ __all__ = [
     "load_baseline_markmap",
     "handle_versioning_mode",
 ]
-from .post_processing import PostProcessor
+from .post_processing import PostProcessor, preprocess_for_llm
 from .debug_output import get_debug_manager, reset_debug_manager
 from .config_loader import ConfigLoader
 from .resume import (
@@ -406,8 +406,15 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         if not state.get("baseline_markmap"):
             try:
                 baseline = load_baseline_markmap(config)
+                
+                # Apply preprocessing to simplify links and reduce tokens
+                original_len = len(baseline)
+                baseline = preprocess_for_llm(baseline)
+                simplified_len = len(baseline)
+                
                 state["baseline_markmap"] = baseline
-                print(f"  ✓ Loaded baseline ({len(baseline)} chars, ~{len(baseline.splitlines())} lines)")
+                print(f"  ✓ Loaded baseline ({original_len} → {simplified_len} chars, saved {original_len - simplified_len} chars)")
+                print(f"    ~{len(baseline.splitlines())} lines after simplification")
                 
                 # Save baseline to debug
                 if debug.enabled:
