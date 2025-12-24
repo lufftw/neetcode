@@ -734,8 +734,9 @@ neetcode/
 │   ├── contributors/          # Maintainer documentation
 │   │   ├── README.md          # Full maintainer guide
 │   │   ├── TESTING.md         # Complete testing documentation
-│   │   ├── DOCUMENTATION_ARCHITECTURE.md  # Documentation structure
-│   │   └── VIRTUAL_ENV_SETUP.md  # Virtual environment setup
+│   │   ├── VSCODE_SETUP.md    # VS Code tasks & debug configs
+│   │   ├── VIRTUAL_ENV_SETUP.md  # Virtual environment setup
+│   │   └── DOCUMENTATION_ARCHITECTURE.md  # Documentation structure
 │   ├── tools/                 # Tools documentation
 │   │   ├── README.md          # Complete tools reference
 │   │   ├── ai-markmap-agent/  # AI Markmap Agent docs

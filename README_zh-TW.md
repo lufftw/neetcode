@@ -734,8 +734,9 @@ neetcode/
 │   ├── contributors/          # 維護者文件
 │   │   ├── README.md          # 完整維護者指南
 │   │   ├── TESTING.md         # 完整測試文件
-│   │   ├── DOCUMENTATION_ARCHITECTURE.md  # 文件架構
-│   │   └── VIRTUAL_ENV_SETUP.md  # 虛擬環境設定
+│   │   ├── VSCODE_SETUP.md    # VS Code Tasks 與 Debug 配置
+│   │   ├── VIRTUAL_ENV_SETUP.md  # 虛擬環境設定
+│   │   └── DOCUMENTATION_ARCHITECTURE.md  # 文件架構
 │   ├── tools/                 # 工具文件
 │   │   ├── README.md          # 完整工具參考
 │   │   ├── ai-markmap-agent/  # AI Markmap Agent 文件
