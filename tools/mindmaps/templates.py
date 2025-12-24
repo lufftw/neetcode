@@ -52,7 +52,9 @@ HTML_TEMPLATE_MANUAL = '''<!DOCTYPE html>
                         s.setAttribute('data-loaded', 'true');
                         resolve();
                     }};
-                    s.onerror = reject;
+                    s.onerror = function() {{
+                        reject(new Error('Failed to load: ' + src));
+                    }};
                     document.head.appendChild(s);
                 }});
             }}
