@@ -150,6 +150,7 @@ nav:
     - Difficulty × Topics: mindmaps/difficulty_topics.md
   - 🔧 Guides:
     - Testing & Validation Engine: runner/README.md
+    - VSCode Setup: contributors/VSCODE_SETUP.md
   - 📚 Reference:
     - Solution Contract: SOLUTION_CONTRACT.md
     - Generator Contract: GENERATOR_CONTRACT.md
