@@ -610,4 +610,4 @@ Variables are formatted using Python's `.format()`:
 
 ---
 
-*Last updated: 2025-01-XX*
+*Last updated: 2025-12-22*
