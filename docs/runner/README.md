@@ -158,6 +158,77 @@ divide               15.67ms     O(N log k)      5/5       5/5
 
 ---
 
+## Complete Reference
+
+### All Options
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--method NAME` | `-m` | Run specific solution |
+| `--all` | `-a` | Run all solutions in `SOLUTIONS` |
+| `--benchmark` | `-b` | Show execution time per case |
+| `--tests-dir DIR` | `-t` | Custom tests directory (default: `tests`) |
+| `--generate N` | `-g` | Static tests + N generated cases |
+| `--generate-only N` | — | Skip static, generate N cases only |
+| `--seed N` | `-s` | Reproducible generation |
+| `--save-failed` | — | Save failed cases to `tests/` |
+| `--estimate` | `-e` | Estimate time complexity |
+
+### Advanced Combinations
+
+```bash
+# Full comparison: all methods, benchmarked, with generated tests
+python runner/test_runner.py 0023 -a -b -g 50 -s 12345
+
+# Stress test only (skip static tests)
+python runner/test_runner.py 0023 --generate-only 100 --all
+
+# Estimate complexity for all solutions
+python runner/test_runner.py 0023 --all --estimate
+
+# Debug failed case with saved input
+python runner/test_runner.py 0023 --generate 100 --save-failed
+```
+
+### Output Details
+
+**Failed Generated Case Box:**
+
+```
+   gen_3: ❌ FAIL [generated]
+      ┌─ Input ─────────────────────────────────
+      │ [1,3,5,7]
+      │ [2,4,6,8]
+      ├─ Actual ────────────────────────────────
+      │ 4.5
+      └─────────────────────────────────────────
+      💾 Saved to: tests/0004_failed_1.in
+```
+
+**Reproduction Hint (when using `--seed`):**
+
+```
+💡 To reproduce: python runner/test_runner.py 0004 --generate 10 --seed 12345
+```
+
+**Summary Breakdown (static + generated):**
+
+```
+Summary: 15 / 15 cases passed.
+   ├─ Static (tests/): 5/5
+   └─ Generated: 10/10
+```
+
+### Internal Behaviors
+
+| Behavior | Description |
+|----------|-------------|
+| Failed file exclusion | Files matching `*_failed_*.in` are excluded from normal test runs |
+| Legacy mode | When no `SOLUTIONS` dict exists, runs single default solution |
+| Exit codes | Exits with code `1` on missing tests, invalid method, or missing generator |
+
+---
+
 ## Architecture
 
 ```
