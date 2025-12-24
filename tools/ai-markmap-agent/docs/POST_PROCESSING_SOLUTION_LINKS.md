@@ -9,18 +9,18 @@ Post-processing is executed in the following order (`PostProcessor.process()` me
 - `LC-11` → `LeetCode 11`
 
 ### Step 2: Convert Plain Text to Links (`_convert_plain_leetcode_to_links`)
-- Process existing links: `[LeetCode 79 - Word Search](wrong_url)` → `[LeetCode 79](correct_url)`
-- Process plain text: `LeetCode 79` → `[LeetCode 79](url)`
-- Uses URL data from `meta/problems/*.toml`
+- Process existing links: `[LeetCode 79 - Word Search](wrong_url)` → `[LeetCode 79 - Word Search](correct_url)`
+- Process plain text: `LeetCode 79` → `[LeetCode 79 - Word Search](url)`
+- Uses URL and title data from `tools/.cache/leetcode_problems.json` (lookup by `frontend_question_id`)
 
 ### Step 3: Normalize LeetCode Links (`_normalize_leetcode_links`)
 - Fix URL format to ensure it ends with `/description/`
 - Example: `https://leetcode.com/problems/word-search/` → `https://leetcode.com/problems/word-search/description/`
 
 ### Step 4: Add Solution Links (`_add_github_solution_links`)
-- Find all links in the format `[LeetCode {id}](url)`
+- Find all links in the format `[LeetCode {id} - {title}](url)`
 - If the problem has a `[files].solution` field in `meta/problems/*.toml`
-- Add Solution link: `[LeetCode 79](url) | [Solution](github_url)`
+- Add Solution link: `[LeetCode 79 - Word Search](url) | [Solution](github_url)`
 
 ## Solution Link Processing Logic
 
@@ -131,14 +131,16 @@ _add_github_solution_links(content)  # Add Solution links
 ```
 
 ### Processing Steps
-1. Step 2: Normalize URL → `[LeetCode 79](https://leetcode.com/problems/word-search/description/)`
-2. Step 4: Lookup problem ID "79" → Found `0079_word_search.toml`
-3. Step 4: Check `files.solution` → Found `"solutions/0079_word_search.py"`
-4. Step 4: Generate GitHub URL → `https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py`
+1. Step 2: Convert to link with title → `[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/)`
+   - Title "Word Search" sourced from `tools/.cache/leetcode_problems.json`
+2. Step 3: Normalize URL → ensure ends with `/description/`
+3. Step 4: Lookup problem ID "79" → Found in cache and TOML
+4. Step 4: Check `files.solution` → Found `"solutions/0079_word_search.py"`
+5. Step 4: Generate GitHub URL → `https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py`
 
 ### Output
 ```markdown
-[LeetCode 79](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) | [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
 ```
 
 ## Potential Issues
@@ -158,4 +160,6 @@ _add_github_solution_links(content)  # Add Solution links
 
 1. ✅ Improved: Problem ID lookup logic, supports multiple formats
 2. ✅ Improved: Clearer lookup key list
-3. 🔄 Optional: Add debug mode to output lookup process
+3. ✅ Improved: Links now include full title (e.g., `[LeetCode 79 - Word Search](url)`)
+4. ✅ Improved: Title sourced from `tools/.cache/leetcode_problems.json` using `frontend_question_id`
+5. 🔄 Optional: Add debug mode to output lookup process

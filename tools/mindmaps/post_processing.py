@@ -13,14 +13,35 @@ from .data import ProblemData
 
 
 def load_leetcode_cache() -> dict[str, dict[str, Any]] | None:
-    """Load LeetCode API cache data."""
+    """
+    Load LeetCode API cache data and build lookup by frontend_question_id.
+    
+    The cache file uses internal question_id as keys, but we need to lookup
+    by frontend_question_id (the number users see, like "LeetCode 1").
+    
+    Returns:
+        Dict with frontend_question_id (zero-padded) as keys, or None if cache doesn't exist
+    """
     cache_file = PROJECT_ROOT / "tools" / ".cache" / "leetcode_problems.json"
     if not cache_file.exists():
         return None
     
     try:
         with open(cache_file, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            raw_cache = json.load(f)
+        
+        # Build lookup by frontend_question_id (the number users see)
+        lookup = {}
+        for _, problem in raw_cache.items():
+            frontend_id = problem.get("frontend_question_id")
+            if frontend_id:
+                # Store with zero-padded key for consistent lookup
+                key = str(frontend_id).zfill(4)
+                lookup[key] = problem
+                # Also store without padding
+                lookup[str(frontend_id)] = problem
+        
+        return lookup
     except (json.JSONDecodeError, IOError):
         return None
 
@@ -88,13 +109,19 @@ def merge_leetcode_api_data(
                     break
             
             if api_data:
+                # Use API cache data as source of truth for consistency
+                # Title from API cache takes priority (ensures consistency)
+                api_title = api_data.get("title", "")
+                if api_title:
+                    problem_data["title"] = api_title
+                
                 # Supplement missing fields from API
                 if not problem_data.get("url"):
                     problem_data["url"] = api_data.get("url", "")
                 if not problem_data.get("slug"):
                     problem_data["slug"] = api_data.get("slug", "")
-                if not problem_data.get("title"):
-                    problem_data["title"] = api_data.get("title", "")
+                if not problem_data.get("difficulty"):
+                    problem_data["difficulty"] = api_data.get("difficulty", "")
     
     return result
 
@@ -229,7 +256,10 @@ class PostProcessor:
             if not problem_url.endswith("/description/"):
                 problem_url = problem_url.rstrip("/") + "/description/"
             
-            # Simple format: [LeetCode {id}](url)
+            # Include title in link: [LeetCode {id} - {title}](url)
+            title = problem.get("title", "")
+            if title:
+                return f"[LeetCode {problem_id} - {title}]({problem_url})"
             return f"[LeetCode {problem_id}]({problem_url})"
         
         # Replace existing links
@@ -260,8 +290,11 @@ class PostProcessor:
             if not url.endswith("/description/"):
                 url = url.rstrip("/") + "/description/"
             
-            # Simple format: [LeetCode {id}](url) (preserve icon if present)
+            # Include title in link: [LeetCode {id} - {title}](url) (preserve icon if present)
             icon_prefix = f"{difficulty_icon} " if difficulty_icon else ""
+            title = problem.get("title", "")
+            if title:
+                return f"{icon_prefix}[LeetCode {problem_id} - {title}]({url})"
             return f"{icon_prefix}[LeetCode {problem_id}]({url})"
         
         # Pattern: Plain text "LeetCode XXX" or "LeetCode XXX - Title"

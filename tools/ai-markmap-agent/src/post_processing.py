@@ -289,7 +289,10 @@ class PostProcessor:
             if not problem_url.endswith("/description/"):
                 problem_url = problem_url.rstrip("/") + "/description/"
             
-            # Simple format: [LeetCode {id}](url) without title
+            # Include title in link: [LeetCode {id} - {title}](url)
+            title = problem.get("title", "")
+            if title:
+                return f"[LeetCode {problem_id} - {title}]({problem_url})"
             return f"[LeetCode {problem_id}]({problem_url})"
         
         # Pattern: [LeetCode XXX...](url)
@@ -323,7 +326,10 @@ class PostProcessor:
             if not url.endswith("/description/"):
                 url = url.rstrip("/") + "/description/"
             
-            # Simple format: [LeetCode {id}](url) without title
+            # Include title in link: [LeetCode {id} - {title}](url)
+            title = problem.get("title", "")
+            if title:
+                return f"[LeetCode {problem_id} - {title}]({url})"
             return f"[LeetCode {problem_id}]({url})"
         
         # Pattern: Plain text "LeetCode XXX" or "LeetCode XXX - Title" 

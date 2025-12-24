@@ -18,10 +18,13 @@ CACHE_FILE = PROJECT_ROOT / "tools" / ".cache" / "leetcode_problems.json"
 
 def load_leetcode_cache() -> Dict[str, Dict[str, Any]] | None:
     """
-    載入 LeetCode API 快取資料。
+    載入 LeetCode API 快取資料，並建立以 frontend_question_id 為 key 的查找表。
+    
+    快取檔案使用內部 question_id 作為 key，但我們需要用 frontend_question_id
+    （用戶看到的題號，如 "LeetCode 1"）來查找。
     
     Returns:
-        問題資料字典，key 為標準化的 4 位數 ID（如 "0011"），
+        問題資料字典，key 為 frontend_question_id（零填充格式如 "0011"），
         如果快取不存在則返回 None
     """
     if not CACHE_FILE.exists():
@@ -29,7 +32,20 @@ def load_leetcode_cache() -> Dict[str, Dict[str, Any]] | None:
     
     try:
         with open(CACHE_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            raw_cache = json.load(f)
+        
+        # 建立以 frontend_question_id 為 key 的查找表
+        lookup = {}
+        for _, problem in raw_cache.items():
+            frontend_id = problem.get("frontend_question_id")
+            if frontend_id:
+                # 存儲零填充格式以便一致查找
+                key = str(frontend_id).zfill(4)
+                lookup[key] = problem
+                # 也存儲無填充格式
+                lookup[str(frontend_id)] = problem
+        
+        return lookup
     except (json.JSONDecodeError, IOError):
         return None
 
@@ -70,15 +86,21 @@ def merge_leetcode_api_data(
         
         api_data = api_problems.get(normalized_id)
         if api_data:
-            # 補充 API 資料（不覆蓋現有欄位）
+            # 使用 API 快取資料作為一致性來源
+            # Title 優先使用 API 快取（確保資料一致）
+            api_title = api_data.get("title", "")
+            if api_title:
+                problem_data["title"] = api_title
+            
+            # 補充缺失欄位
             if "url" not in problem_data or not problem_data.get("url"):
                 problem_data["url"] = api_data.get("url", "")
             
             if "slug" not in problem_data or not problem_data.get("slug"):
                 problem_data["slug"] = api_data.get("slug", "")
             
-            if "title" not in problem_data or not problem_data.get("title"):
-                problem_data["title"] = api_data.get("title", "")
+            if "difficulty" not in problem_data or not problem_data.get("difficulty"):
+                problem_data["difficulty"] = api_data.get("difficulty", "")
             
             # 添加 API 特有的欄位（如果不存在）
             if "question_id" not in problem_data:
