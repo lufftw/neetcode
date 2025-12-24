@@ -9,14 +9,14 @@ The post-processing module (`post_processing.py`) handles two key functions:
 
 ## Input Preprocessing (Token Reduction)
 
-Before content is sent to the LLM, links are simplified:
+Before content is sent to the LLM, links are simplified while preserving titles:
 
 ```
 [LeetCode 79 – Word Search](url) · [Solution](github_url)
-→ LeetCode 79
+→ LeetCode 79 – Word Search
 ```
 
-This significantly reduces input tokens. The full links are restored by post-processing.
+This significantly reduces input tokens while keeping the problem title for LLM context. The full links are restored by post-processing.
 
 ---
 

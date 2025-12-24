@@ -18,12 +18,13 @@ def simplify_leetcode_links(content: str) -> str:
     """
     Simplify LeetCode markdown links to plain text format.
     
-    This reduces input tokens by removing URLs and solution links.
-    Post-processing will add them back automatically.
+    This reduces input tokens by removing URLs and solution links,
+    while preserving the problem title for LLM context.
+    Post-processing will add the links back automatically.
     
     Transformations:
-    - `[LeetCode 79 – Word Search](url) · [Solution](github_url)` → `LeetCode 79`
-    - `[LeetCode 79 – Word Search](url)` → `LeetCode 79`
+    - `[LeetCode 79 – Word Search](url) · [Solution](github_url)` → `LeetCode 79 – Word Search`
+    - `[LeetCode 79 – Word Search](url)` → `LeetCode 79 – Word Search`
     - `[LeetCode 79](url) · [Solution](github_url)` → `LeetCode 79`
     - `[LeetCode 79](url)` → `LeetCode 79`
     
@@ -31,23 +32,24 @@ def simplify_leetcode_links(content: str) -> str:
         content: Markdown content with LeetCode links
         
     Returns:
-        Simplified content with plain text LeetCode references
+        Simplified content with plain text LeetCode references (with titles preserved)
     """
-    # Pattern 1: [LeetCode N – Title](url) · [Solution](url) → LeetCode N
-    # Pattern 2: [LeetCode N – Title](url) | [Solution](url) → LeetCode N (backward compat)
-    # Note: [^\]]* matches any chars except ], handles various dashes (–, -, —)
+    # Pattern 1: [LeetCode N – Title](url) · [Solution](url) → LeetCode N – Title
+    # Pattern 2: [LeetCode N – Title](url) | [Solution](url) → LeetCode N – Title (backward compat)
+    # Capture the entire link text to preserve the title
     # Use \xb7 for middle dot (·) and handle both | and · separators
     content = re.sub(
-        r'\[LeetCode\s+(\d+)[^\]]*\]\([^)]+\)\s*(?:·|\xb7|\|)\s*\[Solution\]\([^)]+\)',
-        r'LeetCode \1',
+        r'\[(LeetCode\s+\d+[^\]]*)\]\([^)]+\)\s*(?:·|\xb7|\|)\s*\[Solution\]\([^)]+\)',
+        r'\1',
         content,
         flags=re.IGNORECASE
     )
     
-    # Pattern 3: [LeetCode N – Title](url) → LeetCode N (without solution link)
+    # Pattern 3: [LeetCode N – Title](url) → LeetCode N – Title (without solution link)
+    # Capture the entire link text to preserve the title
     content = re.sub(
-        r'\[LeetCode\s+(\d+)[^\]]*\]\([^)]+\)',
-        r'LeetCode \1',
+        r'\[(LeetCode\s+\d+[^\]]*)\]\([^)]+\)',
+        r'\1',
         content,
         flags=re.IGNORECASE
     )
@@ -60,14 +62,14 @@ def preprocess_for_llm(content: str) -> str:
     Preprocess content before sending to LLM to reduce token usage.
     
     This function:
-    1. Simplifies LeetCode links to plain text (LeetCode N)
+    1. Simplifies LeetCode links to plain text (LeetCode N – Title)
     2. Removes redundant whitespace
     
     Args:
         content: Raw markdown content
         
     Returns:
-        Simplified content ready for LLM input
+        Simplified content ready for LLM input (with titles preserved)
     """
     # Simplify LeetCode links
     content = simplify_leetcode_links(content)
