@@ -250,15 +250,37 @@ class PostProcessor:
                 except re.error as e:
                     print(f"  ⚠ Invalid regex pattern '{pattern}': {e}")
         
-        # Step 2: Convert plain text "LeetCode XXX" to links using our metadata
+        # Step 2: Remove plain text "· Solution" (LLM artifacts from preprocessing)
+        # This handles cases where LLM outputs "· Solution" as plain text
+        result = self._remove_plain_solution_text(result)
+        
+        # Step 3: Convert plain text "LeetCode XXX" to links using our metadata
         result = self._convert_plain_leetcode_to_links(result)
         
-        # Step 3: Normalize LeetCode links (fix wrong URLs)
+        # Step 4: Normalize LeetCode links (fix wrong URLs)
         result = self._normalize_leetcode_links(result)
         
-        # Step 4: Add GitHub solution links automatically
+        # Step 5: Add GitHub solution links automatically
         result = self._add_github_solution_links(result)
         
+        return result
+    
+    def _remove_plain_solution_text(self, content: str) -> str:
+        """
+        Remove plain text "· Solution" that LLM may have added.
+        
+        When preprocessing simplifies "[LeetCode X](url) · [Solution](url)" to
+        "LeetCode X", the LLM may learn to output "· Solution" as plain text.
+        This method removes such artifacts before we add proper Solution links.
+        
+        Patterns removed:
+        - "· Solution" (plain text, not a link)
+        - "| Solution" (old separator, plain text)
+        """
+        # Remove "· Solution" or "| Solution" that is NOT part of a markdown link
+        # Negative lookahead ensures we don't match "[Solution]"
+        # Use (?:·|\xb7|\|) to match middle dot (both forms) and pipe
+        result = re.sub(r'\s*(?:·|\xb7|\|)\s*Solution(?!\])', '', content, flags=re.IGNORECASE)
         return result
     
     def _normalize_leetcode_links(self, content: str) -> str:
