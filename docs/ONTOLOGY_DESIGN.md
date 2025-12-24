@@ -7,18 +7,18 @@
 
 ---
 
-## 1. Overview
+## Overview
 
 This document describes the **Ontology + Metadata** system for the NeetCode project.
 
-### 1.1 Goals
+### Goals
 
 - **API Kernels**: Define reusable algorithmic core patterns as "standard library-level" abstractions.
 - **Patterns & Problem Families**: Organize problems by shared solving patterns and variations.
 - **Structured Metadata**: Enable automatic generation of indexes, roadmaps, and learning paths.
 - **Human Readable + Machine Parseable**: Use TOML format for clarity and tooling support.
 
-### 1.2 Core Concepts
+### Core Concepts
 
 | Concept | Description |
 |---------|-------------|
@@ -30,7 +30,7 @@ This document describes the **Ontology + Metadata** system for the NeetCode proj
 
 ---
 
-## 2. Directory Structure
+## Directory Structure
 
 ```text
 neetcode/
@@ -65,9 +65,9 @@ neetcode/
 
 ---
 
-## 3. Ontology Files Specification
+## Ontology Files Specification
 
-### 3.1 `ontology/api_kernels.toml`
+### `ontology/api_kernels.toml`
 
 Defines the **mechanism-level** algorithmic cores.
 
@@ -107,7 +107,7 @@ summary = "Reverse linked list nodes in-place with pointer manipulation."
 
 ---
 
-### 3.2 `ontology/patterns.toml`
+### `ontology/patterns.toml`
 
 Defines **problem-solving patterns** that instantiate API Kernels.
 
@@ -175,7 +175,7 @@ summary = "Reverse linked list in groups of K nodes."
 
 ---
 
-### 3.3 `ontology/families.toml`
+### `ontology/families.toml`
 
 Defines **problem families** (groups of related problems).
 
@@ -219,7 +219,7 @@ summary = "DP problems on sequences (LIS, LCS, etc.)."
 
 ---
 
-### 3.4 `ontology/algorithms.toml`
+### `ontology/algorithms.toml`
 
 Defines **algorithms and techniques**.
 
@@ -339,7 +339,7 @@ summary = "Algorithms for ordering elements."
 
 ---
 
-### 3.5 `ontology/data_structures.toml`
+### `ontology/data_structures.toml`
 
 Defines **data structures**.
 
@@ -438,7 +438,7 @@ summary = "Hierarchical node structure."
 
 ---
 
-### 3.6 `ontology/topics.toml`
+### `ontology/topics.toml`
 
 Defines **LeetCode-style topics/tags**.
 
@@ -554,7 +554,7 @@ summary = "Problems on 2D matrices."
 
 ---
 
-### 3.7 `ontology/difficulties.toml`
+### `ontology/difficulties.toml`
 
 Defines **difficulty levels**.
 
@@ -580,7 +580,7 @@ summary = "Advanced problems."
 
 ---
 
-### 3.8 `ontology/companies.toml`
+### `ontology/companies.toml`
 
 Defines **companies** that ask these problems.
 
@@ -648,7 +648,7 @@ name = "ByteDance"
 
 ---
 
-### 3.9 `ontology/roadmaps.toml`
+### `ontology/roadmaps.toml`
 
 Defines **available roadmaps** (metadata only, content in `roadmaps/`).
 
@@ -696,11 +696,11 @@ summary = "Step-by-step path to master BFS patterns."
 
 ---
 
-## 4. Roadmap Files Specification
+## Roadmap Files Specification
 
 Detailed roadmap content lives in `roadmaps/*.toml`.
 
-### 4.1 Topic-based Roadmap (e.g., NeetCode 150)
+### Topic-based Roadmap (e.g., NeetCode 150)
 
 ```toml
 # roadmaps/neetcode_150.toml
@@ -760,7 +760,7 @@ problems = [
 # ... more groups ...
 ```
 
-### 4.2 Pattern-based Roadmap (Learning Path)
+### Pattern-based Roadmap (Learning Path)
 
 ```toml
 # roadmaps/sliding_window_path.toml
@@ -841,11 +841,11 @@ note = "Binary array variant."
 
 ---
 
-## 5. Problem Metadata Specification
+## Problem Metadata Specification
 
 Each problem has a `.toml` file in `meta/problems/`.
 
-### 5.1 Full Example: `0003_longest_substring_without_repeating_characters.toml`
+### Full Example: `0003_longest_substring_without_repeating_characters.toml`
 
 ```toml
 # ===== Problem Info =====
@@ -892,7 +892,7 @@ complexity = "O(n) time, O(min(n, Σ)) space"
 notes      = "Canonical sliding window with last-seen index map."
 ```
 
-### 5.2 Example: `0994_rotting_oranges.toml`
+### Example: `0994_rotting_oranges.toml`
 
 ```toml
 id = "0994"
@@ -934,7 +934,7 @@ complexity = "O(m*n)"
 notes      = "Classic multi-source BFS on 2D grid."
 ```
 
-### 5.3 Example: `0023_merge_k_sorted_lists.toml`
+### Example: `0023_merge_k_sorted_lists.toml`
 
 ```toml
 id = "0023"
@@ -1014,7 +1014,7 @@ complexity = "O(kN)"
 notes      = "Naive greedy approach for comparison."
 ```
 
-### 5.4 Example: `0051_n_queens.toml`
+### Example: `0051_n_queens.toml`
 
 ```toml
 id = "0051"
@@ -1058,7 +1058,7 @@ notes      = "Classic backtracking with column/diagonal tracking."
 
 ---
 
-## 6. Solution-Level Metadata Fields
+## Solution-Level Metadata Fields
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -1080,7 +1080,7 @@ notes      = "Classic backtracking with column/diagonal tracking."
 
 ---
 
-## 7. Summary: What Goes Where?
+## Summary: What Goes Where?
 
 | Content | Location | Change Frequency |
 |---------|----------|------------------|
@@ -1098,7 +1098,7 @@ notes      = "Classic backtracking with column/diagonal tracking."
 
 ---
 
-## 8. Future Tooling Ideas
+## Future Tooling Ideas
 
 Once this structure is in place, we can build tools to:
 
@@ -1125,19 +1125,19 @@ Once this structure is in place, we can build tools to:
 
 ---
 
-## 9. Implementation Plan
+## Implementation Plan
 
-### Phase 1: Create Ontology Files
+### Create Ontology Files
 - [ ] Create `ontology/` directory
 - [ ] Create all ontology `.toml` files with initial entries
 - [ ] Validate TOML syntax
 
-### Phase 2: Create Roadmap Files
+### Create Roadmap Files
 - [ ] Create `roadmaps/` directory
 - [ ] Create `neetcode_150.toml` with groups
 - [ ] Create `sliding_window_path.toml` as pattern-based example
 
-### Phase 3: Create Problem Metadata
+### Create Problem Metadata
 - [ ] Create `meta/problems/` directory
 - [ ] Create `.toml` files for existing solutions:
   - [ ] 0001_two_sum.toml
@@ -1149,13 +1149,13 @@ Once this structure is in place, we can build tools to:
   - [ ] 0051_n_queens.toml
   - [ ] 0994_rotting_oranges.toml
 
-### Phase 4: Validation & Tooling
+### Validation & Tooling
 - [ ] Write Python script to validate all metadata
 - [ ] Write script to generate problem index README
 
 ---
 
-## 10. Open Questions
+## Open Questions
 
 1. Should `topics` in problem meta mirror LeetCode exactly, or can we add custom topics?
 2. How to handle problems that don't fit any existing API Kernel?
