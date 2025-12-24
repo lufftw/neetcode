@@ -560,7 +560,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 使用模板建立：`scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema)。
+> 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#solutions-metadata)。
 
 ### 🔀 彈性輸出驗證
 
@@ -603,7 +603,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # 選項："exact" | "sorted" | "set"
 ```
 
-> 📖 完整 JUDGE_FUNC 簽章和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#c-judge--validation-contract)。
+> 📖 完整 JUDGE_FUNC 簽章和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#validation-judge_func--compare_mode)。
 
 ### 🎲 隨機測資生成
 

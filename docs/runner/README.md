@@ -142,7 +142,7 @@ divide               15.67ms     O(N log k)      5/5       5/5
 | `[set]` | `COMPARE_MODE="set"` |
 | `[skip]` | No `.out`, no `JUDGE_FUNC` |
 
-> 📖 See [Solution Contract § Validation](../SOLUTION_CONTRACT.md#c-judge--validation-contract) for `JUDGE_FUNC` and `COMPARE_MODE` details.
+> 📖 See [Solution Contract § Validation](../SOLUTION_CONTRACT.md#validation-judge_func--compare_mode) for `JUDGE_FUNC` and `COMPARE_MODE` details.
 
 ---
 

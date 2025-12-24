@@ -428,6 +428,6 @@ meta/patterns/binary_search/
 - [Main Tools README](../README.md)
 - [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/generate_pattern_docs.py)
 - [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_pattern_docs.py)
-- [Pattern Documentation Output](../../patterns/)
+- [Pattern Documentation Output](../../patterns/README.md)
 
 

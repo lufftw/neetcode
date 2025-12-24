@@ -101,7 +101,7 @@ act -W .github/workflows/deploy-pages.yml -j build
    docker ps
    ```
 
-**Important for Windows:** Docker Desktop requires WSL 2. If you encounter issues, see [Windows-specific setup](#windows-wsl-setup) in the Troubleshooting section.
+**Important for Windows:** Docker Desktop requires WSL 2. If you encounter issues, see [Windows WSL Setup](#windows-wsl-setup) in the Troubleshooting section.
 
 #### macOS
 
@@ -582,7 +582,7 @@ Common issues:
    - Settings → Resources → WSL Integration
    - Confirm your WSL distribution is enabled
 
-**Windows WSL Setup:**
+### Windows WSL Setup
 
 If you see `failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine`, the most common cause is **no WSL 2 distribution installed**.
 

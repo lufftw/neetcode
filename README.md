@@ -9,7 +9,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 [![GitHub stars](https://img.shields.io/github/stars/lufftw/neetcode?style=for-the-badge&logo=github&color=gold)](https://github.com/lufftw/neetcode/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/lufftw/neetcode?style=for-the-badge&logo=github&color=silver)](https://github.com/lufftw/neetcode/network)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://github.com/lufftw/neetcode/blob/main/LICENSE)
 
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![OpenAI](https://img.shields.io/badge/GPT--Powered-412991?style=flat-square&logo=openai&logoColor=white)](https://openai.com/)
@@ -23,7 +23,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 **A scalable Python framework that transforms LeetCode-style algorithm practice into a knowledge-graph-driven, data-driven, testable, and high-performance workflow — with AI-powered mind maps, industrial-strength testing, and pattern-based learning to help developers grow faster and understand algorithms more deeply.**
 
-[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/) • [🧪 Testing & Validation](docs/runner/README.md)
+[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/README.md) • [🧪 Testing & Validation](docs/runner/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -554,7 +554,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#b-solutions-metadata-schema) for complete SOLUTIONS schema and validation rules.
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
 
 ### 🔀 Flexible Output Validation
 
@@ -597,7 +597,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 ```
 
-> 📖 See [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#c-judge--validation-contract) for complete JUDGE_FUNC signature and validation rules.
+> 📖 See [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
 
 ### 🎲 Random Test Generation
 
