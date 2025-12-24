@@ -23,7 +23,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 **A scalable Python framework that transforms LeetCode-style algorithm practice into a knowledge-graph-driven, data-driven, testable, and high-performance workflow — with AI-powered mind maps, industrial-strength testing, and pattern-based learning to help developers grow faster and understand algorithms more deeply.**
 
-[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/)
+[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/) • [🧪 Testing & Validation](docs/runner/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -254,8 +254,8 @@ scripts\run_tests.bat 0001_two_sum
 
 | Feature | Description |
 |:--------|:------------|
+| 🧪 **Testing & Validation Engine** | ⭐ **Core Feature** — Automated testing, benchmarking, random test generation, complexity estimation. See [Testing & Validation Guide](docs/runner/README.md) |
 | 🤖 **AI Ontology Analysis** | AI-powered knowledge graph synthesis — discover pattern relationships humans miss |
-| 🧪 **Automated Testing** | Run multiple test cases automatically with clear pass/fail reporting and timing |
 | 🎲 **Random Test Generation** | Seeded generators for reproducibility, stress test with 1000+ cases, auto-save failing cases |
 | ⚖️ **Custom Judge Functions** | Validate multiple correct answers, ICPC-style validation, works without expected output |
 | 📊 **Performance Analysis** | Benchmark multiple solutions, automatic time complexity estimation, side-by-side comparison |
@@ -391,6 +391,8 @@ Each pattern provides **two learning paths**:
 | Save failed cases | Auto-save failing inputs |
 
 ### 💻 Command Line Interface
+
+> 📖 **Complete Reference**: See [Testing & Validation Guide](docs/runner/README.md) for full CLI options, usage examples, and advanced features. This is the **core testing engine** that powers automated testing, benchmarking, random test generation, and complexity estimation.
 
 ```bash
 # Run all test cases
@@ -699,7 +701,7 @@ neetcode/
 ├── generators/                # 🎲 Random test generators (optional)
 │   └── 0001_two_sum.py        # generate(count, seed) function
 │
-├── runner/                    # ⚙️ Test execution engine
+├── runner/                    # 🧪 Core testing & validation engine
 │   ├── test_runner.py         # CLI entry point & main orchestration
 │   ├── case_runner.py         # Single case runner (for debugging)
 │   ├── executor.py            # Test case execution (subprocess)
@@ -709,7 +711,10 @@ neetcode/
 │   ├── complexity_estimator.py # Time complexity estimation (big_O)
 │   ├── paths.py               # Path utilities
 │   ├── io_utils.py            # File I/O operations
-│   └── util.py                # Re-exports (backward compatible)
+│   ├── util.py                # Re-exports (backward compatible)
+│   └── README.md              # Quick reference guide
+│
+│   📖 See [Testing & Validation Guide](docs/runner/README.md) — Core engine for automated testing, benchmarking, random test generation, and complexity estimation
 │
 ├── templates/                 # 📄 Problem templates
 │   ├── template_solution.py       # Single solution template
