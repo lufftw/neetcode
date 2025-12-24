@@ -724,9 +724,22 @@ neetcode/
 ├── docs/                      # 📚 Documentation (MkDocs)
 │   ├── index.md               # Homepage (English)
 │   ├── index_zh-TW.md         # Homepage (繁體中文)
+│   ├── contributors/          # Maintainer documentation
+│   │   ├── README.md          # Full maintainer guide
+│   │   ├── TESTING.md         # Complete testing documentation
+│   │   ├── DOCUMENTATION_ARCHITECTURE.md  # Documentation structure
+│   │   └── VIRTUAL_ENV_SETUP.md  # Virtual environment setup
+│   ├── tools/                 # Tools documentation
+│   │   ├── README.md          # Complete tools reference
+│   │   ├── ai-markmap-agent/  # AI Markmap Agent docs
+│   │   ├── mindmaps/          # Mind Maps Generator docs
+│   │   └── patterndocs/       # Pattern Docs Generator docs
 │   ├── mindmaps/              # Generated mind map markdown
 │   ├── patterns/              # Generated pattern documentation
 │   ├── pages/                 # Generated HTML (gitignored)
+│   ├── assets/                # Documentation assets (images, CSS, JS)
+│   ├── overrides/             # MkDocs theme overrides
+│   ├── getting-started/       # Getting started guides
 │   └── stylesheets/           # Custom CSS
 │
 ├── tools/                     # 🛠️ Utility scripts
@@ -741,13 +754,21 @@ neetcode/
 │   ├── check_solutions.py         # Solution validation tool
 │   ├── prepare_llm_input.py       # Prepare LLM input data
 │   ├── text_to_mindmap.py         # Convert text to mindmap
+│   ├── ai-markmap-agent/          # 🤖 AI Markmap Agent (multi-agent pipeline)
+│   │   ├── main.py                # Entry point
+│   │   ├── src/                   # Source code (agents, config, etc.)
+│   │   ├── prompts/               # Expert prompts
+│   │   ├── config/                # Configuration files
+│   │   └── outputs/               # Generated outputs
 │   ├── mindmaps/                  # Mind map generator modules
 │   ├── patterndocs/               # Pattern docs generator modules
 │   ├── shared/                    # Shared utilities
+│   ├── hooks/                     # Pre-commit hooks
 │   ├── prompts/                   # AI prompt management
 │   │   ├── README.md              # Prompt documentation
 │   │   └── generated/             # Auto-generated prompts
-│   └── tests/                     # Format validation tests
+│   ├── tests/                     # Format validation tests
+│   └── outputs/                   # Tool output files (gitignored)
 │
 ├── ontology/                  # 🧬 Algorithm ontology (TOML)
 │   ├── api_kernels.toml       # API kernel definitions
@@ -793,7 +814,11 @@ neetcode/
 │   ├── run_case.bat / .sh     # Run single test case
 │   └── build_docs.bat / .sh   # Build documentation site
 │
+├── mkdocs_plugins/            # 🔌 MkDocs plugins
+│   └── mindmaps_lastmod.py    # Last modified date plugin
+│
 ├── requirements.txt           # Python dependencies
+├── pyproject.toml             # Project configuration
 ├── mkdocs.yml                 # MkDocs configuration
 ├── pytest.ini                 # pytest configuration
 ├── README.md                  # This file (English)
