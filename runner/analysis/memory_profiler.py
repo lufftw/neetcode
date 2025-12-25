@@ -24,6 +24,13 @@ try:
 except ImportError:
     HAS_PSUTIL = False
 
+# Try to import sparklines for memory trace visualization
+try:
+    from sparklines import sparklines as _sparklines
+    HAS_SPARKLINES = True
+except ImportError:
+    HAS_SPARKLINES = False
+
 
 @dataclass
 class CaseMemoryMetrics:
@@ -175,54 +182,95 @@ def format_bytes(bytes_val: Optional[int]) -> str:
     
     Rules (from CLI_OUTPUT_CONTRACT.md):
     - ≥ 1 MB -> display in MB (e.g., 25.4MB)
-    - < 1 MB -> display in KB (e.g., 512KB)
-    - Zero -> 0KB
+    - ≥ 1 KB -> display in KB (e.g., 512KB)
+    - < 1 KB -> display in B (e.g., 256B)
+    - Zero -> 0B
     - None -> Unavailable
     """
     if bytes_val is None:
         return "Unavailable"
     if bytes_val == 0:
-        return "0KB"
+        return "0B"
     
     mb = bytes_val / (1024 * 1024)
     if mb >= 1.0:
         return f"{mb:.1f}MB"
-    else:
-        kb = bytes_val / 1024
+    
+    kb = bytes_val / 1024
+    if kb >= 1.0:
         return f"{kb:.0f}KB"
+    
+    return f"{bytes_val}B"
 
 
 # --- Memory Trace Visualization ---
 
-def generate_memory_trace(rss_samples: List[int], width: int = 10) -> str:
+def generate_memory_trace(rss_samples: List[int], width: int = 20, 
+                          min_width: int = 10) -> str:
     """
     Generate ASCII sparkline for memory trace.
     
-    Uses block characters: ▁▂▃▄▅▆▇█
+    Uses sparklines package if available, falls back to custom implementation.
+    
+    Args:
+        rss_samples: List of RSS values in bytes
+        width: Maximum width of sparkline
+        min_width: Minimum width (pads with interpolation if fewer samples)
+    
+    Returns:
+        Sparkline string, e.g., "▁▂▅▇█▆▃▂▁"
     """
     if not rss_samples:
         return "N/A"
     
+    # Determine target width
+    target_width = max(min_width, min(width, len(rss_samples)))
+    
+    # Resample to target width if needed
+    if len(rss_samples) != target_width:
+        sampled = _resample_data(rss_samples, target_width)
+    else:
+        sampled = list(rss_samples)
+    
+    # Use sparklines package if available
+    if HAS_SPARKLINES:
+        result = _sparklines(sampled)
+        return result[0] if result else "N/A"
+    
+    # Fallback to custom implementation
+    return _generate_sparkline_custom(sampled)
+
+
+def _resample_data(data: List[int], target_width: int) -> List[float]:
+    """Resample data to target width using linear interpolation."""
+    if len(data) == 1:
+        return [float(data[0])] * target_width
+    
+    sampled = []
+    for i in range(target_width):
+        src_idx = i * (len(data) - 1) / (target_width - 1)
+        lower_idx = int(src_idx)
+        upper_idx = min(lower_idx + 1, len(data) - 1)
+        frac = src_idx - lower_idx
+        val = data[lower_idx] * (1 - frac) + data[upper_idx] * frac
+        sampled.append(val)
+    return sampled
+
+
+def _generate_sparkline_custom(data: List[float]) -> str:
+    """Custom sparkline generation (fallback when sparklines package unavailable)."""
     blocks = '▁▂▃▄▅▆▇█'
     
-    min_val = min(rss_samples)
-    max_val = max(rss_samples)
-    
-    if max_val == min_val:
-        return blocks[4] * min(width, len(rss_samples))
-    
-    # Sample down to width if needed
-    if len(rss_samples) > width:
-        step = len(rss_samples) / width
-        sampled = [rss_samples[int(i * step)] for i in range(width)]
-    else:
-        sampled = rss_samples
+    min_val = min(data)
+    max_val = max(data)
     
     result = []
-    for val in sampled:
-        # Normalize to 0-7 index
-        idx = int((val - min_val) / (max_val - min_val) * 7)
-        idx = max(0, min(7, idx))
+    for val in data:
+        if max_val == min_val:
+            idx = 4  # Middle block for uniform data
+        else:
+            idx = int((val - min_val) / (max_val - min_val) * 7)
+            idx = max(0, min(7, idx))
         result.append(blocks[idx])
     
     return ''.join(result)
@@ -230,6 +278,7 @@ def generate_memory_trace(rss_samples: List[int], width: int = 10) -> str:
 
 __all__ = [
     'HAS_PSUTIL',
+    'HAS_SPARKLINES',
     'CaseMemoryMetrics',
     'MethodMemoryMetrics',
     'MemoryProfiler',

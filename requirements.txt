@@ -15,6 +15,7 @@ big-O>=0.10.0           # Time complexity estimation
 
 # Optional packages (for memory profiling):
 psutil>=5.9.0           # Cross-platform process/system utilities (RSS measurement)
+sparklines>=0.4.0       # Unicode sparkline generation for memory traces
 
 # Documentation generation (MkDocs):
 mkdocs>=1.6.0           # MkDocs static site generator
