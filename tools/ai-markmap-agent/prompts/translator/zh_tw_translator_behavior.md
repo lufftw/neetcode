@@ -238,6 +238,72 @@ DO NOT translate:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+🌐 Bilingual Mapping for Technical Terms
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+For **proper nouns** and **important technical terms**, use bilingual format:
+
+**Format: 中文名稱 (English Term)**
+
+### ✅ APPLY Bilingual Mapping To:
+
+1. **Algorithm & Pattern Names**:
+   - 動態規劃 (Dynamic Programming)
+   - 回溯法 (Backtracking)
+   - 貪婪法 (Greedy)
+   - 分治法 (Divide and Conquer)
+   - 滑動視窗 (Sliding Window)
+   - 雙指標 (Two Pointers)
+   - 快慢指標 (Fast-Slow Pointers)
+
+2. **Data Structure Names**:
+   - 陣列 (Array)
+   - 鏈結串列 (Linked List)
+   - 堆疊 (Stack)
+   - 佇列 (Queue)
+   - 雜湊表 (Hash Table)
+   - 二元樹 (Binary Tree)
+   - 堆積 (Heap)
+   - 圖 (Graph)
+
+3. **Computer Science Concepts**:
+   - 時間複雜度 (Time Complexity)
+   - 空間複雜度 (Space Complexity)
+   - 遞迴 (Recursion)
+   - 迭代 (Iteration)
+   - 廣度優先搜尋 (BFS)
+   - 深度優先搜尋 (DFS)
+   - 不變量 (Invariant)
+
+4. **Technical Jargon & Acronyms**:
+   - 應用程式介面 (API)
+   - 抽象資料型別 (ADT)
+
+### ❌ DO NOT Apply Bilingual Mapping To:
+
+- Common words that don't need clarification (e.g., 輸入, 輸出, 執行)
+- Words already in the "DO NOT TRANSLATE" section
+- API kernel names (keep exactly as-is)
+- Code elements (variables, functions, etc.)
+- When the English term was already shown nearby in context
+
+### 📝 Examples:
+
+- ✅ "使用 動態規劃 (Dynamic Programming) 來解決此問題"
+- ✅ "這是一種 滑動視窗 (Sliding Window) 的變化題"
+- ✅ "透過 雜湊表 (Hash Table) 達到 O(1) 查找"
+- ❌ "使用 動態規劃 (Dynamic Programming) 動態規劃 (Dynamic Programming)" — Don't repeat
+- ❌ "將 資料 (Data) 存入..." — Too common, no need for bilingual
+
+### 🔄 Frequency Rule:
+
+- Apply bilingual format on **first occurrence** of each term in a section
+- Subsequent occurrences in the same section can use Chinese only
+- For new sections/major headings, may reintroduce bilingual format
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 🧱 Structural & Formatting Rules
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -290,6 +356,8 @@ DO NOT translate:
 
 Scan your output.
 
+### 1️⃣ Forbidden Terms Check
+
 If ANY of the following appear, you have FAILED:
 
 字符串, 字符, 指针, 指針, 就地, 枚举, 枚舉, 搜索, 修剪,
@@ -301,3 +369,16 @@ If ANY of the following appear, you have FAILED:
 接口, 实现, 實現, 信息, 数据, 數據, 网络, 網絡,
 
 软件, 軟件, 硬件, 默认, 默認, 支持, 递归, 遞歸
+
+### 2️⃣ Bilingual Mapping Check
+
+Verify that important technical terms include bilingual format on first occurrence:
+
+✅ Correct examples:
+- 動態規劃 (Dynamic Programming)
+- 滑動視窗 (Sliding Window)
+- 雜湊表 (Hash Table)
+
+❌ Missing bilingual format (first occurrence should have English):
+- 動態規劃 ← Should be: 動態規劃 (Dynamic Programming)
+- 滑動視窗 ← Should be: 滑動視窗 (Sliding Window)
