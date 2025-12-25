@@ -14,6 +14,7 @@ from runner.analysis.memory_profiler import (
     format_bytes,
     generate_memory_trace,
 )
+from runner.analysis.input_scale import format_input_scale
 
 # Try to import tabulate for pretty tables
 try:
@@ -112,8 +113,8 @@ def print_memory_per_case(all_results: List[Dict[str, Any]], top_k: int = 5) -> 
             print(f"Top {len(top_cases)} memory cases (by peak RSS):")
             print()
             
-            # Build table data
-            headers = ["Rank", "Case ID", "Peak RSS", "Time", "Input Bytes"]
+            # Build table data with Input Scale column
+            headers = ["Rank", "Case ID", "Peak RSS", "Time", "Input Bytes", "Input Scale"]
             rows = []
             for rank, case in enumerate(top_cases, 1):
                 rows.append([
@@ -122,16 +123,17 @@ def print_memory_per_case(all_results: List[Dict[str, Any]], top_k: int = 5) -> 
                     format_bytes(case.peak_rss_bytes),
                     f"{case.elapsed_ms:.1f}ms",
                     format_bytes(case.input_bytes),
+                    format_input_scale(case.input_scale),
                 ])
             
             if HAS_TABULATE:
                 print(tabulate(rows, headers=headers, tablefmt="simple"))
             else:
                 # Fallback to manual formatting
-                print(f"{'Rank':<5} | {'Case ID':<30} | {'Peak RSS':>10} | {'Time':>10} | {'Input Bytes':>12}")
-                print(f"{'-'*5}-+-{'-'*30}-+-{'-'*10}-+-{'-'*10}-+-{'-'*12}")
+                print(f"{'Rank':<5} | {'Case ID':<30} | {'Peak RSS':>10} | {'Time':>10} | {'Input Bytes':>12} | {'Input Scale':<20}")
+                print(f"{'-'*5}-+-{'-'*30}-+-{'-'*10}-+-{'-'*10}-+-{'-'*12}-+-{'-'*20}")
                 for row in rows:
-                    print(f"{row[0]:<5} | {row[1]:<30} | {row[2]:>10} | {row[3]:>10} | {row[4]:>12}")
+                    print(f"{row[0]:<5} | {row[1]:<30} | {row[2]:>10} | {row[3]:>10} | {row[4]:>12} | {row[5]:<20}")
         
         print()
 

@@ -9,9 +9,11 @@ import time
 import threading
 from typing import Optional, Any, Tuple, List
 
+import ast
+from typing import Dict
 from runner.utils.compare import compare_result
 from runner.analysis.memory_profiler import HAS_PSUTIL
-from runner.analysis.input_scale import compute_input_bytes
+from runner.analysis.input_scale import compute_input_bytes, estimate_input_scale
 
 PYTHON_EXE = sys.executable
 
@@ -41,10 +43,50 @@ def _sample_subprocess_rss(pid: int, interval: float,
         pass
 
 
+def _estimate_input_scale_from_string(input_data: str) -> Optional[Dict[str, Any]]:
+    """
+    Try to estimate input scale from raw input string.
+    
+    Attempts to parse input as Python literals and derive scale metrics.
+    Returns dict like {'n': 100, 'm': 50} or None if estimation fails.
+    """
+    if not input_data.strip():
+        return None
+    
+    lines = input_data.strip().split('\n')
+    parsed_args: Dict[str, Any] = {}
+    
+    for i, line in enumerate(lines):
+        line = line.strip()
+        if not line:
+            continue
+        
+        try:
+            # Try to parse as Python literal
+            obj = ast.literal_eval(line)
+            parsed_args[f'arg{i}'] = obj
+        except (ValueError, SyntaxError):
+            # Try to parse as simple number
+            try:
+                if '.' in line:
+                    parsed_args[f'arg{i}'] = float(line)
+                else:
+                    parsed_args[f'arg{i}'] = int(line)
+            except ValueError:
+                # Store as string (for length calculation)
+                parsed_args[f'arg{i}'] = line
+    
+    if not parsed_args:
+        return None
+    
+    # Use estimate_input_scale to derive metrics
+    return estimate_input_scale(parsed_args)
+
+
 def run_one_case(problem: str, input_path: str, output_path: str, 
                  method: Optional[str] = None, benchmark: bool = False,
                  compare_mode: str = "exact", module: Any = None,
-                 profile_memory: bool = False) -> Tuple[Optional[bool], float, str, Optional[str], str, Optional[int], int]:
+                 profile_memory: bool = False) -> Tuple[Optional[bool], float, str, Optional[str], str, Optional[int], int, Optional[Dict[str, Any]]]:
     """
     Run a single test case with optional memory profiling.
     
@@ -59,7 +101,7 @@ def run_one_case(problem: str, input_path: str, output_path: str,
         profile_memory: Whether to capture RSS measurements
     
     Returns: 
-        tuple: (passed, elapsed_ms, actual, expected, validation_mode, peak_rss_bytes, input_bytes)
+        tuple: (passed, elapsed_ms, actual, expected, validation_mode, peak_rss_bytes, input_bytes, input_scale)
             - passed: bool or None (None = skipped)
             - elapsed_ms: float
             - actual: str
@@ -67,6 +109,7 @@ def run_one_case(problem: str, input_path: str, output_path: str,
             - validation_mode: "judge" | "judge-only" | "exact" | "sorted" | "set" | "skip"
             - peak_rss_bytes: int or None (peak RSS of subprocess)
             - input_bytes: int (raw input size)
+            - input_scale: dict or None (e.g., {'n': 100, 'm': 50})
     """
     # Check if .out file exists
     has_out_file = os.path.exists(output_path)
@@ -78,6 +121,9 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     
     input_bytes = compute_input_bytes(input_data)
     
+    # Try to estimate input scale from input data
+    input_scale_str = _estimate_input_scale_from_string(input_data)
+    
     # Read expected output (if exists)
     if has_out_file:
         with open(output_path, "r", encoding="utf-8") as f:
@@ -88,12 +134,12 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     # Handle missing .out file
     if not has_out_file and not judge_func:
         # No .out and no JUDGE_FUNC -> skip
-        return None, 0.0, "", None, "skip", None, input_bytes
+        return None, 0.0, "", None, "skip", None, input_bytes, input_scale_str
     
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
         print(f"❌ Solution file not found: {solution_path}")
-        return False, 0.0, "", expected, "error", None, input_bytes
+        return False, 0.0, "", expected, "error", None, input_bytes, input_scale_str
     
     # Prepare environment variables to pass method parameter
     env = os.environ.copy()
@@ -162,29 +208,30 @@ def run_one_case(problem: str, input_path: str, output_path: str,
         ok = compare_result(actual, expected, input_data, module, compare_mode)
         validation_mode = compare_mode  # "exact" / "sorted" / "set"
     
-    return ok, elapsed_ms, actual, expected, validation_mode, peak_rss_bytes, input_bytes
+    return ok, elapsed_ms, actual, expected, validation_mode, peak_rss_bytes, input_bytes, input_scale_str
 
 
 def run_generated_case(problem: str, input_data: str, case_name: str,
                        method: Optional[str], benchmark: bool,
                        compare_mode: str, module: Any,
-                       profile_memory: bool = False) -> Tuple[Optional[bool], float, str, str, Optional[int], int]:
+                       profile_memory: bool = False) -> Tuple[Optional[bool], float, str, str, Optional[int], int, Optional[Dict[str, Any]]]:
     """
     Run a single generated test case with optional memory profiling.
     
     Returns:
-        tuple: (passed, elapsed_ms, actual, input_data, peak_rss_bytes, input_bytes)
+        tuple: (passed, elapsed_ms, actual, input_data, peak_rss_bytes, input_bytes, input_scale)
     """
     judge_func = getattr(module, 'JUDGE_FUNC', None) if module else None
     input_bytes = compute_input_bytes(input_data)
+    input_scale_str = _estimate_input_scale_from_string(input_data)
     
     if not judge_func:
         # Generated cases require JUDGE_FUNC
-        return None, 0.0, "", input_data, None, input_bytes
+        return None, 0.0, "", input_data, None, input_bytes, input_scale_str
     
     solution_path = os.path.join("solutions", f"{problem}.py")
     if not os.path.exists(solution_path):
-        return False, 0.0, "", input_data, None, input_bytes
+        return False, 0.0, "", input_data, None, input_bytes, input_scale_str
     
     # Prepare environment variables
     env = os.environ.copy()
@@ -241,7 +288,7 @@ def run_generated_case(problem: str, input_data: str, case_name: str,
     # Validate using JUDGE_FUNC (expected is None for generated cases)
     ok = compare_result(actual, None, input_data, module, compare_mode)
     
-    return ok, elapsed_ms, actual, input_data, peak_rss_bytes, input_bytes
+    return ok, elapsed_ms, actual, input_data, peak_rss_bytes, input_bytes, input_scale_str
 
 
 __all__ = [

@@ -133,7 +133,7 @@ def _run_static_tests(results: Dict[str, Any], problem: str, method_name: str,
         out_path = in_path.replace(".in", ".out")
         case_name = os.path.basename(in_path).replace(".in", "")
         
-        ok, elapsed_ms, actual, expected, validation_mode, peak_rss, input_bytes = run_one_case(
+        ok, elapsed_ms, actual, expected, validation_mode, peak_rss, input_bytes, input_scale = run_one_case(
             problem, in_path, out_path, method_name, benchmark, compare_mode, module,
             profile_memory=profile_memory
         )
@@ -157,6 +157,7 @@ def _run_static_tests(results: Dict[str, Any], problem: str, method_name: str,
                 case_name=case_name,
                 peak_rss_bytes=peak_rss,
                 input_bytes=input_bytes,
+                input_scale=input_scale,
                 elapsed_ms=elapsed_ms
             )
             memory_metrics.add_case(case_metrics)
@@ -203,7 +204,7 @@ def _run_generated_tests(results: Dict[str, Any], problem: str, method_name: str
     for i, input_data in enumerate(gen_iter, 1):
         case_name = f"gen_{i}"
         
-        ok, elapsed_ms, actual, input_used, peak_rss, input_bytes = run_generated_case(
+        ok, elapsed_ms, actual, input_used, peak_rss, input_bytes, input_scale = run_generated_case(
             problem, input_data, case_name, method_name,
             benchmark, compare_mode, module,
             profile_memory=profile_memory
@@ -222,6 +223,7 @@ def _run_generated_tests(results: Dict[str, Any], problem: str, method_name: str
                 case_name=case_name,
                 peak_rss_bytes=peak_rss,
                 input_bytes=input_bytes,
+                input_scale=input_scale,
                 elapsed_ms=elapsed_ms
             )
             memory_metrics.add_case(case_metrics)
@@ -312,7 +314,7 @@ def _run_static_tests_legacy(results: Dict[str, Any], problem: str,
         out_path = in_path.replace(".in", ".out")
         case_name = os.path.basename(in_path).replace(".in", "")
         
-        ok, elapsed_ms, actual, expected, validation_mode, peak_rss, input_bytes = run_one_case(
+        ok, elapsed_ms, actual, expected, validation_mode, peak_rss, input_bytes, input_scale = run_one_case(
             problem, in_path, out_path, None, benchmark, compare_mode, module,
             profile_memory=profile_memory
         )
@@ -334,6 +336,7 @@ def _run_static_tests_legacy(results: Dict[str, Any], problem: str,
                 case_name=case_name,
                 peak_rss_bytes=peak_rss,
                 input_bytes=input_bytes,
+                input_scale=input_scale,
                 elapsed_ms=elapsed_ms
             )
             memory_metrics.add_case(case_metrics)
@@ -373,7 +376,7 @@ def _run_generated_tests_legacy(results: Dict[str, Any], problem: str,
     for i, input_data in enumerate(gen_iter, 1):
         case_name = f"gen_{i}"
         
-        ok, elapsed_ms, actual, input_used, peak_rss, input_bytes = run_generated_case(
+        ok, elapsed_ms, actual, input_used, peak_rss, input_bytes, input_scale = run_generated_case(
             problem, input_data, case_name, None, benchmark, compare_mode, module,
             profile_memory=profile_memory
         )
@@ -391,6 +394,7 @@ def _run_generated_tests_legacy(results: Dict[str, Any], problem: str,
                 case_name=case_name,
                 peak_rss_bytes=peak_rss,
                 input_bytes=input_bytes,
+                input_scale=input_scale,
                 elapsed_ms=elapsed_ms
             )
             memory_metrics.add_case(case_metrics)
