@@ -975,23 +975,29 @@ Post-processing automatically converts LeetCode problem references to standardiz
 
 **Format:**
 ```
-[LeetCode 11](leetcode_url) | [Solution](github_url)
+[LeetCode 11 - Container With Most Water](leetcode_url) · [Solution](github_url)
 ```
 
 **Features:**
-- Simple format: Only problem ID, no title
-- Handles multiple AI-generated formats
+- Includes problem number and title for clarity
+- Handles multiple AI-generated formats (plain text, links, with/without Solution)
 - Auto-generates LeetCode URLs from API cache
 - Adds GitHub solution links when available
 
+### Processing Steps (3 Steps)
+
+1. **Text Replacement**: `LC 11` → `LeetCode 11`
+2. **Remove Artifacts**: Plain text `· Solution` removed
+3. **Convert to Complete Links**: All references → `[LeetCode N - Title](url) · [Solution](github_url)`
+
 ### Data Sources
 
-1. **Local TOML files** (`meta/problems/`) - Primary source
+1. **Local TOML files** (`meta/problems/`) - Primary source (with solution files)
 2. **LeetCode API cache** (`tools/.cache/leetcode_problems.json`) - Auto-supplement
 
-**Priority:** Local TOML > API cache
+**Priority:** Local TOML with solution > API cache
 
-### Processing Flow
+### Workflow Integration
 
 1. **Writer Phase**: Generates raw markdown (no post-processing)
    - Saved to debug output: `llm_output_writer_write.md`
@@ -1004,7 +1010,7 @@ Post-processing automatically converts LeetCode problem references to standardiz
 3. **Post-Processing Phase**: Processes both English and translated outputs
    - Input: Raw markdown from writer (English) + translations (e.g., Chinese)
    - Output: Post-processed markdown with normalized links for all languages
-   - Debug output: `post_processing_before_*.md` and `post_processing_after_*.md` for each language
+   - Stats output: `✓ Converted X LeetCode references, Y with Solution links`
 
 ### Comparison Files
 

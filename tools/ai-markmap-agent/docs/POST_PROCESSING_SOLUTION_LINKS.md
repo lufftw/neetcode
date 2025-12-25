@@ -1,165 +1,174 @@
-# Post-Processing Solution Links Check Report
+# Post-Processing Solution Links - Technical Reference
 
-## Processing Flow
+## Overview
 
-Post-processing is executed in the following order (`PostProcessor.process()` method):
+This document describes the technical implementation of Solution link generation in the post-processing module.
 
-### Step 1: Text Replacement
-- `LC 11` → `LeetCode 11`
-- `LC-11` → `LeetCode 11`
-
-### Step 2: Convert Plain Text to Links (`_convert_plain_leetcode_to_links`)
-- Process existing links: `[LeetCode 79 - Word Search](wrong_url)` → `[LeetCode 79 - Word Search](correct_url)`
-- Process plain text: `LeetCode 79` → `[LeetCode 79 - Word Search](url)`
-- Uses URL and title data from `tools/.cache/leetcode_problems.json` (lookup by `frontend_question_id`)
-
-### Step 3: Normalize LeetCode Links (`_normalize_leetcode_links`)
-- Fix URL format to ensure it ends with `/description/`
-- Example: `https://leetcode.com/problems/word-search/` → `https://leetcode.com/problems/word-search/description/`
-
-### Step 4: Add Solution Links (`_add_github_solution_links`)
-- Find all links in the format `[LeetCode {id} - {title}](url)`
-- If the problem has a `[files].solution` field in `meta/problems/*.toml`
-- Add Solution link: `[LeetCode 79 – Word Search](url) · [Solution](github_url)`
-
-## Solution Link Processing Logic
-
-### 1. Problem Lookup (`_add_github_solution_links`)
+## Processing Flow (3 Steps)
 
 ```python
-# Extract problem ID from link text
-id_match = re.search(r'LeetCode\s+(\d+)', link_text)
-problem_id = id_match.group(1)  # Example: "79"
-
-# Try multiple ID formats for lookup
-lookup_keys = [
-    problem_id.zfill(4),      # "0079"
-    problem_id,              # "79"
-    str(int(problem_id)).zfill(4),  # "0079" (normalized)
-    str(int(problem_id))     # "79" (normalized)
-]
-
-for key in lookup_keys:
-    problem = self.problems_lookup.get(key)
-    if problem:
-        break
+def process(self, content: str) -> str:
+    # Step 1: Text replacements (LC → LeetCode)
+    result = self._apply_text_replacements(content)
+    
+    # Step 2: Remove "· Solution" artifacts
+    result = self._remove_solution_artifacts(result)
+    
+    # Step 3: Convert all LeetCode references to complete links
+    result = self._convert_to_complete_links(result)
+    
+    return result
 ```
 
-### 2. Solution File Check
+## Key Method: `_convert_to_complete_links`
+
+This method handles all LeetCode reference conversions in one pass:
+
+### First Pass: Handle Existing Links
 
 ```python
-# Check if solution file exists
-files = problem.get("files", {})
-solution_file = files.get("solution", "")
-
-if solution_file:
-    # Generate GitHub URL
-    github_url = self.github_template.format(solution_file=solution_file)
-    # Add link
-    return f"{full_text} · [Solution]({github_url})"
+# Pattern matches [LeetCode...](url) with optional Solution link
+pattern = r'\[(LeetCode\s+\d+[^\]]*)\]\(([^)]+)\)(\s*(?:·|\xb7|\|)?\s*\[Solution\]\([^)]+\))?'
 ```
 
-### 3. Problem Data Lookup Table Construction (`_build_problems_lookup`)
+**Key Feature**: The pattern captures existing Solution links (group 3) so the entire match is replaced, preventing duplicate Solution links.
 
-Load data from `meta/problems/*.toml` files:
+### Second Pass: Handle Plain Text
 
-```toml
-# 0079_word_search.toml
-id = "0079"
-leetcode_id = 79
-[files]
-solution = "solutions/0079_word_search.py"
+```python
+# Pattern matches plain text LeetCode references
+pattern = r'(?<!\[)LeetCode\s+(\d+)(\s*[-–—:]\s*[^\[\]\n(]+)?(?!\]\()'
 ```
 
-The lookup table stores multiple key formats:
-- `"0079"` → problem data
-- `"79"` → problem data
-- `str(int("0079"))` → problem data (if different)
+## Solution File Lookup
+
+### Data Normalization
+
+The `_normalize_problem_data` method handles both data formats:
+
+```python
+def _normalize_problem_data(self, data: dict) -> dict:
+    normalized = {
+        "url": data.get("url", ""),
+        "title": data.get("title", ""),
+        "solution_file": None,
+    }
+    
+    # Get solution file from either format
+    if data.get("solution_file"):
+        normalized["solution_file"] = data["solution_file"]
+    elif data.get("files", {}).get("solution"):
+        normalized["solution_file"] = data["files"]["solution"]
+    
+    return normalized
+```
+
+This ensures compatibility with:
+- Direct format: `{"solution_file": "path"}`
+- Nested format: `{"files": {"solution": "path"}}`
+
+### Problem ID Lookup
+
+Problems are stored with multiple key formats:
+
+```python
+# For problem ID "79":
+lookup["0079"] = normalized_data  # 4-digit padded
+lookup["79"] = normalized_data    # Integer string
+```
+
+## Complete Link Generation
+
+### `_build_complete_link` Method
+
+```python
+def _build_complete_link(self, problem_id: str) -> str:
+    problem = self.problems_lookup.get(problem_id.zfill(4)) or \
+              self.problems_lookup.get(problem_id)
+    
+    if not problem:
+        return f"LeetCode {problem_id}"
+    
+    # Build LeetCode link with title
+    url = problem.get("url", "")
+    title = problem.get("title", "")
+    link_text = f"LeetCode {problem_id} - {title}" if title else f"LeetCode {problem_id}"
+    leetcode_link = f"[{link_text}]({url})"
+    
+    # Add Solution link if available
+    solution_file = problem.get("solution_file")
+    if solution_file:
+        github_url = self.github_template.format(solution_file=solution_file)
+        return f"{leetcode_link} · [Solution]({github_url})"
+    
+    return leetcode_link
+```
 
 ## Data Flow
 
 ```
-state.get("problems", {})  # Loaded from DataSourcesLoader
+meta/problems/*.toml + tools/.cache/leetcode_problems.json
     ↓
-PostProcessor(config, problems=problems)
+merge_leetcode_api_data()
     ↓
-merge_leetcode_api_data(problems)  # Merge API cache data
+_build_problems_lookup() → _normalize_problem_data()
     ↓
-_build_problems_lookup(problems)  # Build ID lookup table
+problems_lookup = {"0079": {url, title, solution_file}, ...}
     ↓
-_add_github_solution_links(content)  # Add Solution links
+_convert_to_complete_links() → _build_complete_link()
+    ↓
+[LeetCode 79 - Word Search](url) · [Solution](github_url)
 ```
 
-## Verification Checkpoints
-
-### ✅ Checked Items
-
-1. **Problems Data Passing**
-   - `graph.py:1053`: `PostProcessor(config, problems=state.get("problems", {}))`
-   - ✅ Correctly passed
-
-2. **Lookup Table Construction**
-   - `_build_problems_lookup`: Supports multiple ID formats
-   - ✅ Logic is correct
-
-3. **Solution Link Addition**
-   - `_add_github_solution_links`: Checks `files.solution` field
-   - ✅ Logic is correct
-
-4. **Regular Expression Matching**
-   - Pattern: `r'\[(LeetCode\s+\d+[^\]]*)\]\(([^)]+)\)'`
-   - ✅ Can match `[LeetCode 79](url)` and `[LeetCode 79 - Title](url)`
-
-### 🔍 Items to Verify
-
-1. **Whether Problems Data is Correctly Loaded to State**
-   - Check `graph.py:1188`: `"problems": data.get("problems", {})`
-   - Check `main.py:293`: `data = loader.load_all()`
-
-2. **Files Field Format in TOML Files**
-   - Confirm format is: `[files] solution = "solutions/0079_word_search.py"`
-   - Not: `files.solution` or `files["solution"]`
-
-3. **Data Flow at Runtime**
-   - May need to add debug output for verification
-
-## Example
+## Example Transformation
 
 ### Input
 ```markdown
-[LeetCode 79](https://leetcode.com/problems/word-search/)
+[LeetCode 79](https://leetcode.com/problems/word-search/) · [Solution](old_url)
 ```
 
-### Processing Steps
-1. Step 2: Convert to link with title → `[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/)`
-   - Title "Word Search" sourced from `tools/.cache/leetcode_problems.json`
-2. Step 3: Normalize URL → ensure ends with `/description/`
-3. Step 4: Lookup problem ID "79" → Found in cache and TOML
-4. Step 4: Check `files.solution` → Found `"solutions/0079_word_search.py"`
-5. Step 4: Generate GitHub URL → `https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py`
+### Processing
+1. **Regex Match**: Captures entire string including existing Solution
+   - Group 1: `LeetCode 79`
+   - Group 2: `https://leetcode.com/problems/word-search/`
+   - Group 3: ` · [Solution](old_url)` (captured but ignored)
+
+2. **Problem Lookup**: Find ID "79" → normalized data with title and solution_file
+
+3. **Build Complete Link**: Generate new link with correct URL and fresh Solution link
 
 ### Output
 ```markdown
-[LeetCode 79 – Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
+[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
 ```
 
-## Potential Issues
+## Troubleshooting
 
-1. **If Solution links are not added, possible reasons:**
-   - Problems data not correctly loaded to state
-   - Missing `[files].solution` field in TOML files
-   - Problem ID matching failed (lookup logic has been improved)
-   - Regular expression matching failed (verified should be able to match)
+### Solution Links Not Added
 
-2. **Debugging Suggestions:**
-   - Add debug output in `_add_github_solution_links`
-   - Check contents of `self.problems_lookup`
-   - Verify structure of `problem.get("files", {})`
+1. **Check problem data**: Ensure `solution_file` exists in normalized data
+2. **Check lookup**: Verify problem ID format matches lookup keys
+3. **Check stats output**: Look for "✓ Converted X LeetCode references, Y with Solution links"
 
-## Improvement Suggestions
+### Duplicate Solution Links
 
-1. ✅ Improved: Problem ID lookup logic, supports multiple formats
-2. ✅ Improved: Clearer lookup key list
-3. ✅ Improved: Links now include full title (e.g., `[LeetCode 79 - Word Search](url)`)
-4. ✅ Improved: Title sourced from `tools/.cache/leetcode_problems.json` using `frontend_question_id`
-5. 🔄 Optional: Add debug mode to output lookup process
+This should not happen with the new implementation. The regex pattern captures existing Solution links:
+
+```python
+r'...\)(\s*(?:·|\xb7|\|)?\s*\[Solution\]\([^)]+\))?'
+#      ↑ Captures existing Solution link
+```
+
+The entire match (including existing Solution) is replaced with the new complete link.
+
+## Stats Output
+
+The module outputs a single summary line:
+
+```
+✓ Converted 15 LeetCode references, 12 with Solution links
+```
+
+This shows:
+- Total LeetCode references converted
+- How many had solution files available
