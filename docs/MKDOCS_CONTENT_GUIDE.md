@@ -449,6 +449,43 @@ A: By default, MkDocs generates a `sitemap.xml` where all pages have the same `l
 
 After building the documentation, each page in `sitemap.xml` will have its own `lastmod` date based on when it was last committed to Git, rather than all pages sharing the same build date.
 
+### Q: How is the privacy plugin configured for external links?
+
+A: The privacy plugin is configured in `mkdocs.yml` to enhance security and user experience for external links. The current configuration includes:
+
+**Configuration in `mkdocs.yml`:**
+
+```yaml
+plugins:
+  - privacy:
+      links: true
+      links_attr_map:
+        target: _blank
+      links_noopener: true
+```
+
+**What this configuration does:**
+
+1. **`links: true`**: Enables processing of external links
+2. **`links_attr_map: target: _blank`**: Adds `target="_blank"` attribute to all external links, causing them to open in a new tab
+3. **`links_noopener: true`**: Automatically adds `rel="noopener"` to external links that open in a new window for improved security
+
+**Security benefits:**
+
+- **`rel="noopener"`** prevents the new page from accessing the `window.opener` property, which protects against potential security vulnerabilities (e.g., tabnabbing attacks)
+
+**Additional notes:**
+
+- The privacy plugin is built into Material for MkDocs and doesn't require separate installation
+- The plugin cache directory (`.cache/plugin/privacy`) is excluded from version control via `.gitignore`
+- The plugin can also download and self-host external assets for GDPR compliance (currently not enabled)
+
+**External references:**
+
+- [Material for MkDocs - Privacy Plugin Documentation](https://squidfunk.github.io/mkdocs-material/plugins/privacy/)
+- [Privacy Plugin - External Links Configuration](https://squidfunk.github.io/mkdocs-material/plugins/privacy/?h=blank#external-links)
+- [Privacy Plugin - links_noopener Setting](https://squidfunk.github.io/mkdocs-material/plugins/privacy/?h=blank#config.links_noopener)
+
 ---
 
 ## 📝 Update Log
@@ -464,6 +501,7 @@ After building the documentation, each page in `sitemap.xml` will have its own `
 - **2025-12-20**: Added FAQ section on manually embedding revision dates in Markdown files using git-revision-date-localized plugin template variables
 - **2025-12-20**: Added FAQ section on customizing sitemap.xml to use Git commit dates for lastmod
 - **2025-12-24**: Enhanced linking strategy guide with core rules, decision tree, and examples for files inside/outside `docs/` directory
+- **2025-12-25**: Added FAQ section on privacy plugin configuration for external links security (links_noopener)
 - Check `mkdocs.yml` `nav` configuration for the latest list
 
 ---
