@@ -15,6 +15,13 @@ from runner.analysis.memory_profiler import (
     generate_memory_trace,
 )
 
+# Try to import tabulate for pretty tables
+try:
+    from tabulate import tabulate
+    HAS_TABULATE = True
+except ImportError:
+    HAS_TABULATE = False
+
 
 def print_memory_trace(all_results: List[Dict[str, Any]]) -> None:
     """
@@ -104,14 +111,27 @@ def print_memory_per_case(all_results: List[Dict[str, Any]], top_k: int = 5) -> 
         if top_cases:
             print(f"Top {len(top_cases)} memory cases (by peak RSS):")
             print()
-            print(f"{'Rank':<5} | {'Case ID':<12} | {'Case Peak RSS':>14} | {'Time':>8} | {'Input Bytes':>12}")
-            print(f"{'-'*5}-+-{'-'*12}-+-{'-'*14}-+-{'-'*8}-+-{'-'*12}")
             
+            # Build table data
+            headers = ["Rank", "Case ID", "Peak RSS", "Time", "Input Bytes"]
+            rows = []
             for rank, case in enumerate(top_cases, 1):
-                rss_str = format_bytes(case.peak_rss_bytes)
-                time_str = f"{case.elapsed_ms:.1f}ms"
-                input_str = format_bytes(case.input_bytes)
-                print(f"{rank:<5} | {case.case_name:<12} | {rss_str:>14} | {time_str:>8} | {input_str:>12}")
+                rows.append([
+                    rank,
+                    case.case_name,
+                    format_bytes(case.peak_rss_bytes),
+                    f"{case.elapsed_ms:.1f}ms",
+                    format_bytes(case.input_bytes),
+                ])
+            
+            if HAS_TABULATE:
+                print(tabulate(rows, headers=headers, tablefmt="simple"))
+            else:
+                # Fallback to manual formatting
+                print(f"{'Rank':<5} | {'Case ID':<30} | {'Peak RSS':>10} | {'Time':>10} | {'Input Bytes':>12}")
+                print(f"{'-'*5}-+-{'-'*30}-+-{'-'*10}-+-{'-'*10}-+-{'-'*12}")
+                for row in rows:
+                    print(f"{row[0]:<5} | {row[1]:<30} | {row[2]:>10} | {row[3]:>10} | {row[4]:>12}")
         
         print()
 
@@ -171,12 +191,9 @@ def print_trace_compare(all_results: List[Dict[str, Any]]) -> None:
             best_peak = m["peak_rss"]
             break
     
-    # Print ranking table
-    max_method_len = max(len(m["method"]) for m in method_data)
-    
-    print(f"{'Rank':<5} | {'Method':<{max_method_len}} | {'Peak RSS':>10} | {'P95 RSS':>10} | "
-          f"{'Δ Peak (vs best)':>18} | {'Stability':>20} | Notes")
-    print(f"{'-'*5}-+-{'-'*max_method_len}-+-{'-'*10}-+-{'-'*10}-+-{'-'*18}-+-{'-'*20}-+-{'-'*15}")
+    # Build ranking table data
+    headers = ["Rank", "Method", "Peak RSS", "P95 RSS", "Δ Peak (vs best)", "Stability", "Notes"]
+    rows = []
     
     for rank, m in enumerate(method_data, 1):
         method = m["method"]
@@ -202,8 +219,20 @@ def print_trace_compare(all_results: List[Dict[str, Any]]) -> None:
         if m["stability"] is not None and m["stability"] > 15:
             notes = "higher spikes"
         
-        print(f"{rank:<5} | {method:<{max_method_len}} | {peak_str:>10} | {p95_str:>10} | "
-              f"{delta_str:>18} | {stability_str:>20} | {notes}")
+        rows.append([rank, method, peak_str, p95_str, delta_str, stability_str, notes])
+    
+    # Print table
+    if HAS_TABULATE:
+        print(tabulate(rows, headers=headers, tablefmt="simple"))
+    else:
+        # Fallback to manual formatting
+        max_method_len = max(len(m["method"]) for m in method_data)
+        print(f"{'Rank':<5}  {'Method':<{max_method_len}}  {'Peak RSS':>10}  {'P95 RSS':>10}  "
+              f"{'Δ Peak (vs best)':>18}  {'Stability':>20}  Notes")
+        print("-" * (5 + max_method_len + 10 + 10 + 18 + 20 + 15 + 12))
+        for row in rows:
+            print(f"{row[0]:<5}  {row[1]:<{max_method_len}}  {row[2]:>10}  {row[3]:>10}  "
+                  f"{row[4]:>18}  {row[5]:>20}  {row[6]}")
     
     # Supporting traces
     print()
