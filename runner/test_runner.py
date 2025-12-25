@@ -353,14 +353,8 @@ Generator examples:
                 print(f"      ├─ Static: {result['passed']}/{result['total']}")
                 print(f"      └─ Generated: {result['gen_passed']}/{result['gen_total']}")
     
-    # Print benchmark summary for multi-solution mode
-    if len(all_results) > 1 and args.benchmark:
-        print_benchmark_summary(all_results, problem_name=problem, approach_mapping=approach_mapping)
-    elif len(all_results) == 1:
-        result = all_results[0]
-        print(f"\nSummary: {result['passed']} / {result['total']} cases passed.")
-    
-    # Complexity estimation (separate from random test generation)
+    # Complexity estimation (run before benchmark display to include results in charts)
+    estimation_results = {}  # method -> ComplexityResult
     if args.estimate:
         from runner.complexity_estimator import ComplexityEstimator
         
@@ -394,14 +388,28 @@ Generator examples:
                     solution_module=module,
                     method=method
                 )
-                result = estimator.estimate()
+                est_result = estimator.estimate()
                 
-                if result:
-                    print(f"\n   ✅ Estimated: {result.complexity}")
-                    print(f"      Confidence: {result.confidence:.2f}")
-                    print(f"      Details: {result.details}")
+                if est_result:
+                    estimation_results[method_name] = est_result
+                    print(f"\n   ✅ Estimated: {est_result.complexity}")
+                    print(f"      Confidence: {est_result.confidence:.2f}")
+                    print(f"      Details: {est_result.details}")
                 else:
                     print(f"\n   ❌ Estimation failed")
+            
+            # Store estimation results in all_results for chart display
+            for result in all_results:
+                method_name = result["method"]
+                if method_name in estimation_results:
+                    result["estimated_complexity"] = estimation_results[method_name]
+    
+    # Print benchmark summary for multi-solution mode
+    if len(all_results) > 1 and args.benchmark:
+        print_benchmark_summary(all_results, problem_name=problem, approach_mapping=approach_mapping)
+    elif len(all_results) == 1:
+        result = all_results[0]
+        print(f"\nSummary: {result['passed']} / {result['total']} cases passed.")
 
 
 if __name__ == "__main__":

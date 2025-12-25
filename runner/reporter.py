@@ -72,10 +72,15 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
        ║ Two Sum - Performance Comparison           ║
        ╠════════════════════════════════════════════╣
        ║ default: ████████░░░░░░░░░░░░  85ms        ║
-       ║   → Hash Map (O(n))                        ║
        ║ naive:   ████████████████████  450ms       ║
-       ║   → Brute Force (O(n²))                    ║
        ╚════════════════════════════════════════════╝
+       
+       default  → Hash Map
+       naive    → Brute Force
+       
+       📈 Estimated Complexity:
+       default: O(n)      [confidence: 0.95]
+       naive:   O(n²)     [confidence: 0.92]
     """
     if not all_results:
         return
@@ -102,6 +107,7 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
         avg_time = sum(result["times"]) / len(result["times"]) if result["times"] else 0
         approach = None
         complexity = result.get("complexity", "")
+        estimated = result.get("estimated_complexity")  # ComplexityResult object
         
         # Get approach info if available
         if approach_mapping and method in approach_mapping:
@@ -110,16 +116,16 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
             if not complexity:
                 complexity = info.get('complexity', '')
         
-        method_times.append((method, avg_time, approach, complexity))
+        method_times.append((method, avg_time, approach, complexity, estimated))
     
     # Find max time for scaling
-    max_time = max(t for _, t, _, _ in method_times) if method_times else 1
+    max_time = max(t for _, t, _, _, _ in method_times) if method_times else 1
     if max_time == 0:
         max_time = 1  # Avoid division by zero
     
     # Calculate widths
-    max_method_len = max(len(m) for m, _, _, _ in method_times)
-    max_time_str_len = max(len(f"{t:.0f}ms") for _, t, _, _ in method_times)
+    max_method_len = max(len(m) for m, _, _, _, _ in method_times)
+    max_time_str_len = max(len(f"{t:.0f}ms") for _, t, _, _, _ in method_times)
     
     # Content width for bar line: method + ": " + bar + "  " + time
     bar_line_width = max_method_len + 2 + bar_width + 2 + max_time_str_len
@@ -145,7 +151,7 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
     print(f"   {ML}{H * inner_width}{MR}")
     
     # Bar rows (no approach in box)
-    for method, avg_time, approach, complexity in method_times:
+    for method, avg_time, approach, complexity, estimated in method_times:
         # Calculate bar length proportional to time
         if max_time > 0:
             bar_len = int((avg_time / max_time) * bar_width)
@@ -171,12 +177,28 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
     print(f"   {BL}{H * inner_width}{BR}")
     
     # Print legend below the box (method -> approach mapping)
-    has_approaches = any(approach for _, _, approach, _ in method_times)
+    has_approaches = any(approach for _, _, approach, _, _ in method_times)
     if has_approaches:
         print()
-        for method, _, approach, _ in method_times:
+        for method, _, approach, _, _ in method_times:
             if approach:
                 print(f"   {method:<{max_method_len}}  {ARROW} {approach}")
+    
+    # Print estimated complexity section if available
+    has_estimates = any(est for _, _, _, _, est in method_times)
+    if has_estimates:
+        print()
+        print("   📈 Estimated Complexity:")
+        max_complexity_len = max(
+            len(est.complexity) for _, _, _, _, est in method_times if est
+        ) if any(est for _, _, _, _, est in method_times) else 0
+        
+        for method, _, _, _, estimated in method_times:
+            if estimated:
+                complexity_str = estimated.complexity.ljust(max_complexity_len)
+                confidence = estimated.confidence
+                print(f"   {method:<{max_method_len}}: {complexity_str}  [confidence: {confidence:.2f}]")
+    
     print()
 
 
@@ -192,8 +214,9 @@ def print_benchmark_summary(all_results: List[Dict[str, Any]],
     print("Performance Comparison (Details)")
     print("=" * 70)
     
-    # Check if any results have generated tests
+    # Check if any results have generated tests or estimated complexity
     has_generated = any(r.get("gen_total", 0) > 0 for r in all_results)
+    has_estimated = any(r.get("estimated_complexity") for r in all_results)
     
     # Build approach lookup
     approach_lookup = {}
@@ -208,27 +231,44 @@ def print_benchmark_summary(all_results: List[Dict[str, Any]],
     
     # Print table header
     print()
-    if has_generated:
-        print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Static':>8}  {'Generated':>10}  Complexity")
-        print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 8}  {'-' * 10}  {'-' * 20}")
+    if has_estimated:
+        if has_generated:
+            print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Static':>8}  {'Generated':>10}  {'Declared':>12}  {'Estimated':>12}")
+            print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 8}  {'-' * 10}  {'-' * 12}  {'-' * 12}")
+        else:
+            print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Pass Rate':>10}  {'Declared':>12}  {'Estimated':>12}")
+            print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 10}  {'-' * 12}  {'-' * 12}")
     else:
-        print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Pass Rate':>10}  Complexity")
-        print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 10}  {'-' * 20}")
+        if has_generated:
+            print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Static':>8}  {'Generated':>10}  Complexity")
+            print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 8}  {'-' * 10}  {'-' * 20}")
+        else:
+            print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Pass Rate':>10}  Complexity")
+            print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 10}  {'-' * 20}")
     
     for result in all_results:
         method = result["method"]
         complexity = result["complexity"]
         avg_time = sum(result["times"]) / len(result["times"]) if result["times"] else 0
+        estimated = result.get("estimated_complexity")
         
         static_rate = f"{result['passed']}/{result['total']}"
         gen_passed = result.get("gen_passed", 0)
         gen_total = result.get("gen_total", 0)
         
-        if has_generated and gen_total > 0:
-            gen_rate = f"{gen_passed}/{gen_total}"
-            print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>8}  {gen_rate:>10}  {complexity}")
+        if has_estimated:
+            est_str = estimated.complexity if estimated else "-"
+            if has_generated and gen_total > 0:
+                gen_rate = f"{gen_passed}/{gen_total}"
+                print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>8}  {gen_rate:>10}  {complexity:>12}  {est_str:>12}")
+            else:
+                print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>10}  {complexity:>12}  {est_str:>12}")
         else:
-            print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>10}  {complexity}")
+            if has_generated and gen_total > 0:
+                gen_rate = f"{gen_passed}/{gen_total}"
+                print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>8}  {gen_rate:>10}  {complexity}")
+            else:
+                print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>10}  {complexity}")
     
     # Print legend below the table (method -> approach mapping)
     has_approaches = any(approach_lookup.get(r["method"]) for r in all_results)

@@ -121,8 +121,8 @@ When running `--all --benchmark`, the test runner displays a **visual bar chart*
    ║ naive:   ███████████████████░  152ms                                          ║
    ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-   default  → Solution 1 — Backtracking + DP-precomputed palindrome table
-   naive    → Solution 2 — Backtracking + on-the-fly palindrome checking
+   default  → Backtracking with DP-Precomputed Palindrome Table
+   naive    → Backtracking with On-the-Fly Checking
 ```
 
 The bar length is proportional to execution time (longest time = full bar). The approach descriptions are shown in a legend below the chart, parsed from class header comments.
@@ -151,15 +151,78 @@ Method         Avg Time   Pass Rate  Complexity
 default        158.17ms         2/2  O(n × 2^n) time, O(n^2) space
 naive          152.00ms         2/2  O(n × 2^n × n) time, O(n) space
 
-default      → Solution 1 — Backtracking + DP-precomputed palindrome table
-naive        → Solution 2 — Backtracking + on-the-fly palindrome checking
+default      → Backtracking with DP-Precomputed Palindrome Table
+naive        → Backtracking with On-the-Fly Checking
 
 ======================================================================
 ```
 
 The approach descriptions are shown in a legend below the table, matching the format used in the visual bar chart.
 
-### Complexity Estimation
+### Complexity Estimation with Visual Charts
+
+Use `--all --benchmark --estimate` to integrate complexity estimation into the visual performance comparison:
+
+```bash
+python runner/test_runner.py 0215 --all --benchmark --estimate
+```
+
+This displays:
+
+1. **Visual bar chart** with execution times
+2. **Approach legend** (method → approach name)
+3. **Estimated complexity section** with confidence scores
+4. **Detailed table** showing both declared and estimated complexity
+
+**Example Output:**
+
+```
+   ╔════════════════════════════════════════════════════╗
+   ║ 0215_kth_largest_element_in_an_array - Performance ║
+   ╠════════════════════════════════════════════════════╣
+   ║ default:     █████████████████░░░  170ms           ║
+   ║ quickselect: ███████████████████░  191ms           ║
+   ║ heap:        ████████████████████  199ms           ║
+   ╚════════════════════════════════════════════════════╝
+
+   default      → Quickselect Algorithm
+   quickselect  → Quickselect Algorithm
+   heap         → Heap-Based Solution
+
+   📈 Estimated Complexity:
+   default    : O(n)        [confidence: 1.00]
+   quickselect: O(n log n)  [confidence: 1.00]
+   heap       : O(n log n)  [confidence: 1.00]
+
+======================================================================
+Performance Comparison (Details)
+======================================================================
+
+Method         Avg Time   Pass Rate      Declared     Estimated
+-----------  ----------  ----------  ------------  ------------
+default        169.59ms         3/3  O(n) average          O(n)
+quickselect    190.74ms         3/3  O(n) average    O(n log n)
+heap           198.63ms         3/3  O(n log k)      O(n log n)
+
+default      → Quickselect Algorithm
+quickselect  → Quickselect Algorithm
+heap         → Heap-Based Solution
+
+======================================================================
+```
+
+**Requirements for Complexity Estimation:**
+
+- Generator must provide `generate_for_complexity(n)` function
+- Install `pip install big-O` package
+
+### Standalone Complexity Estimation
+
+For complexity estimation without benchmark comparison:
+
+```bash
+python runner/test_runner.py 0004 --estimate
+```
 
 ```
 📌 Estimating: heap
@@ -224,6 +287,9 @@ python runner/test_runner.py 0023 --generate-only 100 --all
 
 # Estimate complexity for all solutions
 python runner/test_runner.py 0023 --all --estimate
+
+# Full benchmark with complexity estimation (visual charts)
+python runner/test_runner.py 0215 --all --benchmark --estimate
 
 # Debug failed case with saved input
 python runner/test_runner.py 0023 --generate 100 --save-failed

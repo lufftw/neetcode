@@ -31,6 +31,7 @@ python runner/test_runner.py 0004 --generate 10 --seed 12345
 | `python runner/test_runner.py <problem> --method <name>` | Run specific method |
 | `python runner/test_runner.py <problem> --all` | Test all solutions |
 | `python runner/test_runner.py <problem> --all --benchmark` | Compare performance |
+| `python runner/test_runner.py <problem> --all --benchmark --estimate` | Compare with complexity estimation |
 | `python runner/test_runner.py <problem> --generate N` | Generate N test cases |
 | `python runner/test_runner.py <problem> --generate N --seed S` | Reproducible generation |
 | `python runner/test_runner.py <problem> --estimate` | Estimate complexity |
@@ -55,9 +56,55 @@ When running multiple solutions with `--all --benchmark`, the test runner displa
    ║ naive:   ███████████████████░  152ms                                          ║
    ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-   default  → Solution 1 — Backtracking + DP-precomputed palindrome table
-   naive    → Solution 2 — Backtracking + on-the-fly palindrome checking
+   default  → Backtracking with DP-Precomputed Palindrome Table
+   naive    → Backtracking with On-the-Fly Checking
 ```
+
+### Integrated Complexity Estimation
+
+Use `--all --benchmark --estimate` to include estimated complexity in the visual charts:
+
+```bash
+python runner/test_runner.py 0215 --all --benchmark --estimate
+```
+
+Output includes estimated complexity alongside approach descriptions:
+
+```
+   ╔════════════════════════════════════════════════════╗
+   ║ 0215_kth_largest_element_in_an_array - Performance ║
+   ╠════════════════════════════════════════════════════╣
+   ║ default:     █████████████████░░░  170ms           ║
+   ║ quickselect: ███████████████████░  191ms           ║
+   ║ heap:        ████████████████████  199ms           ║
+   ╚════════════════════════════════════════════════════╝
+
+   default      → Quickselect Algorithm
+   quickselect  → Quickselect Algorithm
+   heap         → Heap-Based Solution
+
+   📈 Estimated Complexity:
+   default    : O(n)        [confidence: 1.00]
+   quickselect: O(n log n)  [confidence: 1.00]
+   heap       : O(n log n)  [confidence: 1.00]
+```
+
+The detailed table also shows both declared and estimated complexity:
+
+```
+======================================================================
+Performance Comparison (Details)
+======================================================================
+
+Method         Avg Time   Pass Rate      Declared     Estimated
+-----------  ----------  ----------  ------------  ------------
+default        169.59ms         3/3  O(n) average          O(n)
+quickselect    190.74ms         3/3  O(n) average    O(n log n)
+heap           198.63ms         3/3  O(n log k)      O(n log n)
+======================================================================
+```
+
+> **Note:** Complexity estimation requires `generate_for_complexity(n)` function in the generator and `pip install big-O`.
 
 **Enhanced Method Display:**
 
@@ -86,6 +133,7 @@ class SolutionDP:
 **Usage:**
 ```bash
 python runner/test_runner.py 0131 --all --benchmark
+python runner/test_runner.py 0215 --all --benchmark --estimate
 ```
 
 > **Note:** On terminals that don't support Unicode (e.g., some Windows terminals), ASCII fallback characters are used automatically.
