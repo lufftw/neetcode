@@ -103,6 +103,9 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     if method:
         env['SOLUTION_METHOD'] = method
     
+    # Enable shape reporting from solution subprocess
+    env['NEETCODE_SHAPE_REPORT'] = '1'
+    
     # Memory profiling setup
     rss_samples: List[int] = []
     stop_event: Optional[threading.Event] = None
@@ -193,6 +196,9 @@ def run_generated_case(problem: str, input_data: str, case_name: str,
     env = os.environ.copy()
     if method:
         env['SOLUTION_METHOD'] = method
+    
+    # Enable shape reporting from solution subprocess
+    env['NEETCODE_SHAPE_REPORT'] = '1'
     
     # Memory profiling setup
     rss_samples: List[int] = []

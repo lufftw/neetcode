@@ -44,9 +44,9 @@ def estimate_input_scale(signature_args: Dict[str, Any]) -> Optional[Dict[str, A
                 scale['n'] = len(value)
             continue
         
-        # List (check for matrix first)
-        if isinstance(value, list):
-            if value and isinstance(value[0], list):
+        # List or Tuple (check for matrix first)
+        if isinstance(value, (list, tuple)):
+            if value and isinstance(value[0], (list, tuple)):
                 # Matrix / Grid
                 rows = len(value)
                 cols = len(value[0]) if value else 0
@@ -54,7 +54,7 @@ def estimate_input_scale(signature_args: Dict[str, Any]) -> Optional[Dict[str, A
                 scale['cols'] = cols
                 scale['n'] = rows * cols
             else:
-                # 1D array
+                # 1D array/tuple
                 if 'n' not in scale:
                     scale['n'] = len(value)
                 elif 'm' not in scale:
@@ -65,18 +65,9 @@ def estimate_input_scale(signature_args: Dict[str, Any]) -> Optional[Dict[str, A
         if isinstance(value, dict):
             scale['u'] = len(value)  # unique keys
             # Check if it's an adjacency list
-            if value and all(isinstance(v, list) for v in value.values()):
+            if value and all(isinstance(v, (list, tuple)) for v in value.values()):
                 scale['V'] = len(value)
                 scale['E'] = sum(len(adj) for adj in value.values())
-            continue
-        
-        # Tuple list (edges)
-        if isinstance(value, list) and value and isinstance(value[0], tuple):
-            scale['E'] = len(value)
-            vertices = set()
-            for edge in value:
-                vertices.update(edge[:2])
-            scale['V'] = len(vertices)
             continue
     
     return scale if scale else None
@@ -121,17 +112,89 @@ def _deep_sizeof(obj: Any, seen: set) -> int:
 
 
 def format_input_scale(scale: Optional[Dict[str, Any]]) -> str:
-    """Format input scale as compact string."""
+    """
+    Format input scale as shape string.
+    
+    Format:
+        [a]       = 1D length
+        [a,b]     = 2D shape (rows×cols)
+        [a,b,c]   = 3D shape
+        n=X       = total elements (always shown)
+    
+    Examples:
+        {'s': {'shape': [8]}}
+        → "s:[8] n=8"
+        
+        {'matrix': {'shape': [3, 4]}}
+        → "matrix:[3,4] n=12"
+        
+        {'lists': {'shape': [3], 'total': 8}}
+        → "lists:[3] n=8"
+    """
     if not scale:
         return "N/A"
     
     parts = []
-    # Priority order: n, m, rows, cols, V, E, u
-    for key in ['n', 'm', 'rows', 'cols', 'V', 'E', 'u', 'k', 'd']:
-        if key in scale:
-            parts.append(f"{key}={scale[key]}")
     
-    return ', '.join(parts) if parts else "N/A"
+    for key, value in scale.items():
+        # New auto_shape format: {'shape': [...], 'total': N, ...}
+        if isinstance(value, dict):
+            shape = value.get('shape')
+            total = value.get('total')
+            
+            if shape is not None:
+                if len(shape) == 0:
+                    # Scalar - skip (doesn't contribute to "scale")
+                    continue
+                
+                # Format as [d1,d2,...]
+                shape_str = f"[{','.join(str(d) for d in shape)}]"
+                
+                # Calculate n (total elements)
+                if total is not None:
+                    n = total
+                else:
+                    # For uniform shapes, n = product of dimensions
+                    n = 1
+                    for d in shape:
+                        n *= d
+                
+                parts.append(f"{key}:{shape_str} n={n}")
+            else:
+                parts.append(f"{key}:{value}")
+        
+        # Legacy format: direct values
+        elif isinstance(value, (list, tuple)) and len(value) == 2:
+            dims, total = value
+            if isinstance(dims, list):
+                shape_str = f"[{','.join(str(d) for d in dims)}]"
+                parts.append(f"{key}:{shape_str} n={total}")
+        elif isinstance(value, list):
+            shape_str = f"[{','.join(str(d) for d in value)}]"
+            n = 1
+            for d in value:
+                n *= d
+            parts.append(f"{key}:{shape_str} n={n}")
+        elif isinstance(value, int):
+            parts.append(f"{key}={value}")
+        else:
+            parts.append(f"{key}={value}")
+    
+    return ' '.join(parts) if parts else "N/A"
+
+
+def get_input_scale_legend() -> str:
+    """
+    Return legend text explaining the Input Scale format.
+    
+    Returns:
+        Multi-line string with format explanation.
+    """
+    return """Input Scale Legend:
+  [a]     = 1D length
+  [a,b]   = 2D shape (rows×cols)
+  [a,b,c] = 3D shape
+  n       = total elements"""
 
 
 __all__ = [
@@ -139,5 +202,6 @@ __all__ = [
     'compute_input_bytes',
     'compute_signature_payload',
     'format_input_scale',
+    'get_input_scale_legend',
 ]
 

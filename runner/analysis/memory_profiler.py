@@ -36,11 +36,12 @@ except ImportError:
 class CaseMemoryMetrics:
     """Memory metrics for a single test case."""
     case_name: str
-    peak_rss_bytes: Optional[int] = None  # Peak RSS in bytes
+    peak_rss_bytes: Optional[int] = None  # Peak RSS in bytes (subprocess) or Peak Alloc (tracemalloc)
     input_bytes: int = 0  # Raw input size in bytes
     input_scale: Optional[Dict[str, Any]] = None  # Derived scale metrics (n, m, etc.)
     signature_payload_bytes: Optional[int] = None  # Deep size of input objects
     elapsed_ms: float = 0.0  # Execution time
+    measurement_type: str = "rss"  # "rss" (subprocess/psutil) or "alloc" (in-process/tracemalloc)
 
 
 @dataclass

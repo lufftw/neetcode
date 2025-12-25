@@ -23,7 +23,8 @@ import os
 import sys
 import io
 import time
-from typing import Optional, List, Any
+import tracemalloc
+from typing import Optional, List, Any, Tuple
 from dataclasses import dataclass
 
 # Try to import big_O package
@@ -66,7 +67,8 @@ class ComplexityEstimator:
     def __init__(self, generator_module: Any, problem: str, 
                  solution_module: Any = None,
                  method: Optional[str] = None, 
-                 sizes: Optional[List[int]] = None):
+                 sizes: Optional[List[int]] = None,
+                 profile_memory: bool = False):
         """
         Initialize the estimator.
         
@@ -76,12 +78,17 @@ class ComplexityEstimator:
             solution_module: Loaded solution module
             method: Solution method name (optional)
             sizes: Custom sizes to test (optional)
+            profile_memory: Whether to collect memory metrics using tracemalloc
         """
         self.generator_module = generator_module
         self.problem = problem
         self.solution_module = solution_module
         self.method = method
         self.sizes = sizes or self.DEFAULT_SIZES
+        self.profile_memory = profile_memory
+        
+        # Memory metrics collected during estimation
+        self.memory_samples: List[Tuple[int, int, float, int]] = []  # (size, peak_bytes, elapsed_ms, input_bytes)
         
         # Get generator function
         self.gen_func = getattr(generator_module, 'generate_for_complexity', None)
@@ -135,34 +142,53 @@ class ComplexityEstimator:
         - Generic: works with any solution that has solve()
         - No subprocess overhead
         - Maintains stdin abstraction
+        - Optionally tracks memory using tracemalloc
         """
         print(f"\n   📈 Running complexity estimation...")
         print(f"      Mode: Direct call (Mock stdin, no subprocess overhead)")
         print(f"      Sizes: {self.sizes}")
         print(f"      Runs per size: {self.RUNS_PER_SIZE}")
+        if self.profile_memory:
+            print(f"      Memory: tracemalloc enabled")
         
         solve_func = self.solution_module.solve
         
         sizes = []
         times = []
         
+        # Clear previous memory samples
+        self.memory_samples = []
+        
         for size in self.sizes:
             try:
                 # Generate input for this size
                 input_data = self.gen_func(size)
+                input_bytes = len(input_data.encode('utf-8'))
                 
                 # Run multiple times and average
                 run_times = []
-                for _ in range(self.RUNS_PER_SIZE):
-                    elapsed_ms = self._run_with_mock_stdin(solve_func, input_data)
+                run_memories = []
+                for run_idx in range(self.RUNS_PER_SIZE):
+                    elapsed_ms, peak_bytes = self._run_with_mock_stdin(solve_func, input_data)
                     if elapsed_ms is not None:
                         run_times.append(elapsed_ms)
+                        if peak_bytes is not None:
+                            run_memories.append(peak_bytes)
+                            # Store each run as a memory sample
+                            self.memory_samples.append((
+                                size, peak_bytes, elapsed_ms, input_bytes
+                            ))
                 
                 if run_times:
                     avg_time = sum(run_times) / len(run_times)
                     sizes.append(size)
                     times.append(avg_time)
-                    print(f"      n={size:>5}: {avg_time:.4f}ms (avg of {len(run_times)} runs)")
+                    
+                    if run_memories:
+                        avg_mem = sum(run_memories) / len(run_memories)
+                        print(f"      n={size:>5}: {avg_time:.4f}ms, mem={avg_mem/1024:.1f}KB (avg of {len(run_times)} runs)")
+                    else:
+                        print(f"      n={size:>5}: {avg_time:.4f}ms (avg of {len(run_times)} runs)")
                 
             except Exception as e:
                 print(f"      ⚠️ Failed at size {size}: {e}")
@@ -174,19 +200,29 @@ class ComplexityEstimator:
         
         return self._fit_complexity(sizes, times)
     
-    def _run_with_mock_stdin(self, solve_func, input_data: str) -> Optional[float]:
+    def get_memory_metrics(self) -> List[Tuple[int, int, float, int]]:
         """
-        Run solve() with mocked stdin and capture execution time.
+        Get collected memory metrics from estimation runs.
+        
+        Returns:
+            List of tuples: (input_size, peak_bytes, elapsed_ms, input_bytes)
+        """
+        return self.memory_samples
+    
+    def _run_with_mock_stdin(self, solve_func, input_data: str) -> Tuple[Optional[float], Optional[int]]:
+        """
+        Run solve() with mocked stdin and capture execution time + memory.
         
         Args:
             solve_func: The solve() function to call
             input_data: Input string to feed via stdin
         
         Returns:
-            Execution time in milliseconds, or None on error
+            Tuple of (elapsed_ms, peak_memory_bytes) or (None, None) on error
         """
         original_stdin = sys.stdin
         original_stdout = sys.stdout
+        peak_bytes = None
         
         try:
             # Mock stdin with input data
@@ -194,15 +230,30 @@ class ComplexityEstimator:
             # Capture stdout to avoid output interference
             sys.stdout = io.StringIO()
             
+            # Start memory tracking if enabled
+            if self.profile_memory:
+                tracemalloc.start()
+                tracemalloc.reset_peak()
+            
             # Measure execution time
             start_time = time.perf_counter()
             solve_func()
             elapsed_ms = (time.perf_counter() - start_time) * 1000
             
-            return elapsed_ms
+            # Get peak memory if tracking
+            if self.profile_memory:
+                _, peak_bytes = tracemalloc.get_traced_memory()
+                tracemalloc.stop()
+            
+            return elapsed_ms, peak_bytes
             
         except Exception:
-            return None
+            if self.profile_memory:
+                try:
+                    tracemalloc.stop()
+                except Exception:
+                    pass
+            return None, None
         finally:
             # Restore original stdin/stdout
             sys.stdin = original_stdin

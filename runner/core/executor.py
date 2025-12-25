@@ -10,12 +10,20 @@ import threading
 from typing import Optional, Any, Tuple, List
 
 import ast
+import re
+import json
 from typing import Dict
 from runner.utils.compare import compare_result
 from runner.analysis.memory_profiler import HAS_PSUTIL
-from runner.analysis.input_scale import compute_input_bytes, estimate_input_scale
+from runner.analysis.input_scale import compute_input_bytes
+from runner.analysis.input_shape import shape_of, InputShape
 
 PYTHON_EXE = sys.executable
+
+# Shape protocol for subprocess communication
+_SHAPE_START = "__SHAPE__:"
+_SHAPE_END = "__END_SHAPE__"
+_SHAPE_PATTERN = re.compile(rf'{re.escape(_SHAPE_START)}(.+?){re.escape(_SHAPE_END)}')
 
 
 def _sample_subprocess_rss(pid: int, interval: float, 
@@ -45,42 +53,189 @@ def _sample_subprocess_rss(pid: int, interval: float,
 
 def _estimate_input_scale_from_string(input_data: str) -> Optional[Dict[str, Any]]:
     """
-    Try to estimate input scale from raw input string.
+    Estimate input scale from raw input string using PyTorch-style shape inference.
     
-    Attempts to parse input as Python literals and derive scale metrics.
-    Returns dict like {'n': 100, 'm': 50} or None if estimation fails.
+    Parses input into Python objects, then uses shape_of() to compute
+    semantic dimensions (n, m, k, rows, cols, V, E, etc.)
+    
+    Returns dict like {'n': 100, 'k': 3} or None if estimation fails.
     """
     if not input_data.strip():
         return None
     
     lines = input_data.strip().split('\n')
-    parsed_args: Dict[str, Any] = {}
+    parsed_objects: List[Any] = []
     
-    for i, line in enumerate(lines):
+    for line in lines:
         line = line.strip()
         if not line:
             continue
         
-        try:
-            # Try to parse as Python literal
-            obj = ast.literal_eval(line)
-            parsed_args[f'arg{i}'] = obj
-        except (ValueError, SyntaxError):
-            # Try to parse as simple number
-            try:
-                if '.' in line:
-                    parsed_args[f'arg{i}'] = float(line)
-                else:
-                    parsed_args[f'arg{i}'] = int(line)
-            except ValueError:
-                # Store as string (for length calculation)
-                parsed_args[f'arg{i}'] = line
+        obj = _parse_input_line(line)
+        if obj is not None:
+            parsed_objects.append(obj)
     
-    if not parsed_args:
+    if not parsed_objects:
         return None
     
-    # Use estimate_input_scale to derive metrics
-    return estimate_input_scale(parsed_args)
+    # Use shape_of() for PyTorch-style shape inference
+    return _compute_aggregate_shape(parsed_objects)
+
+
+def _compute_aggregate_shape(objects: List[Any]) -> Optional[Dict[str, Any]]:
+    """
+    Compute aggregate shape from multiple parsed input objects.
+    
+    Smart aggregation:
+    - If multiple lists of similar type → treat as k-lists
+    - If single list of lists → use its shape directly
+    - Otherwise combine individual shapes
+    """
+    if not objects:
+        return None
+    
+    # Check if first object is an integer count followed by that many lists
+    # Pattern: k\n list1\n list2\n ... (common for k-way merge problems)
+    if (len(objects) >= 2 and 
+        isinstance(objects[0], int) and 
+        all(isinstance(o, (list, tuple)) for o in objects[1:])):
+        
+        k = objects[0]
+        lists = objects[1:]
+        
+        # Verify k matches number of lists (or close)
+        if abs(k - len(lists)) <= 1:  # Allow off-by-one
+            total_elements = sum(len(lst) for lst in lists)
+            return {'k': len(lists), 'n': total_elements}
+    
+    # Single object - use its shape directly
+    if len(objects) == 1:
+        shape = shape_of(objects[0])
+        result = shape.to_dict()
+        return result if result else None
+    
+    # Multiple objects - try to find the most meaningful shape
+    # Priority: list of lists > single list > scalar
+    best_shape = None
+    best_priority = -1
+    
+    for obj in objects:
+        shape = shape_of(obj)
+        priority = _shape_priority(shape)
+        
+        if priority > best_priority:
+            best_priority = priority
+            best_shape = shape
+    
+    if best_shape:
+        result = best_shape.to_dict()
+        return result if result else None
+    
+    return None
+
+
+def _shape_priority(shape: InputShape) -> int:
+    """Determine priority of a shape (higher = more informative)."""
+    if shape.k is not None or shape.V is not None:
+        return 4  # k-lists or graph
+    if shape.rows is not None:
+        return 3  # matrix
+    if shape.n is not None and shape.n > 0:
+        return 2  # array/string
+    if shape.u is not None:
+        return 1  # dict
+    return 0
+
+
+def _parse_input_line(line: str) -> Optional[Any]:
+    """
+    Parse a single line of input into a Python object.
+    
+    Handles:
+    - Python literals: [1,2,3], {"a": 1}, (1, 2)
+    - Comma-separated values: 1,4,5 -> [1, 4, 5]
+    - Space-separated values: 1 4 5 -> [1, 4, 5]
+    - Single numbers: 42, 3.14
+    - Strings (fallback)
+    """
+    line = line.strip()
+    if not line:
+        return None
+    
+    # 1. Try Python literal first
+    try:
+        return ast.literal_eval(line)
+    except (ValueError, SyntaxError):
+        pass
+    
+    # 2. Try comma-separated values (e.g., "1,4,5")
+    if ',' in line:
+        parts = [p.strip() for p in line.split(',')]
+        if len(parts) > 1:
+            parsed_list = _try_parse_list(parts)
+            if parsed_list is not None:
+                return parsed_list
+    
+    # 3. Try space-separated values (e.g., "1 4 5")
+    if ' ' in line:
+        parts = line.split()
+        if len(parts) > 1:
+            parsed_list = _try_parse_list(parts)
+            if parsed_list is not None:
+                return parsed_list
+    
+    # 4. Try single number
+    try:
+        if '.' in line:
+            return float(line)
+        return int(line)
+    except ValueError:
+        pass
+    
+    # 5. Return as string (for length calculation)
+    return line
+
+
+def _try_parse_list(parts: List[str]) -> Optional[List[Any]]:
+    """Try to parse list of string parts into typed list."""
+    result = []
+    for p in parts:
+        p = p.strip()
+        if not p:
+            continue
+        try:
+            # Try int first
+            result.append(int(p))
+        except ValueError:
+            try:
+                # Try float
+                result.append(float(p))
+            except ValueError:
+                # Keep as string
+                result.append(p)
+    return result if result else None
+
+
+def _parse_shape_from_stderr(stderr: str) -> Optional[Dict[str, Any]]:
+    """
+    Parse shape information reported by subprocess via stderr.
+    
+    Solutions can call report_shape() to emit shape info.
+    This is the authoritative source since subprocess has actual parsed objects.
+    
+    Returns:
+        Shape dict if found, None otherwise
+    """
+    if not stderr:
+        return None
+    
+    match = _SHAPE_PATTERN.search(stderr)
+    if match:
+        try:
+            return json.loads(match.group(1))
+        except json.JSONDecodeError:
+            return None
+    return None
 
 
 def run_one_case(problem: str, input_path: str, output_path: str, 
@@ -146,6 +301,9 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     if method:
         env['SOLUTION_METHOD'] = method
     
+    # Enable shape reporting from solution subprocess
+    env['NEETCODE_SHAPE_REPORT'] = '1'
+    
     # Memory profiling setup
     rss_samples: List[int] = []
     stop_event: Optional[threading.Event] = None
@@ -153,6 +311,8 @@ def run_one_case(problem: str, input_path: str, output_path: str,
     peak_rss_bytes: Optional[int] = None
     
     start_time = time.perf_counter()
+    
+    stderr_output = ""
     
     # Use Popen for memory profiling to get PID
     if profile_memory and HAS_PSUTIL:
@@ -174,7 +334,7 @@ def run_one_case(problem: str, input_path: str, output_path: str,
         sampler_thread.start()
         
         # Communicate with process
-        stdout, stderr = proc.communicate(input=input_data)
+        stdout, stderr_output = proc.communicate(input=input_data)
         
         # Stop sampling
         stop_event.set()
@@ -197,6 +357,13 @@ def run_one_case(problem: str, input_path: str, output_path: str,
         )
         elapsed_ms = (time.perf_counter() - start_time) * 1000
         actual = result.stdout
+        stderr_output = result.stderr
+    
+    # Parse shape from subprocess stderr (if reported by solution)
+    # This is the authoritative source - solution has actual parsed objects
+    reported_shape = _parse_shape_from_stderr(stderr_output)
+    if reported_shape:
+        input_scale_str = reported_shape  # Prefer subprocess-reported shape
     
     # Determine validation mode and run comparison
     if judge_func:
@@ -237,6 +404,9 @@ def run_generated_case(problem: str, input_data: str, case_name: str,
     env = os.environ.copy()
     if method:
         env['SOLUTION_METHOD'] = method
+    
+    # Enable shape reporting from solution subprocess
+    env['NEETCODE_SHAPE_REPORT'] = '1'
     
     # Memory profiling setup
     rss_samples: List[int] = []

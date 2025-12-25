@@ -27,7 +27,7 @@ import os
 import re
 import sys
 import argparse
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 
 # Enable UTF-8 output on Windows for emoji support
 if sys.platform == 'win32':
@@ -178,11 +178,18 @@ def _load_modules(problem: str, input_files: List[str], generate_count: int,
 
 def _run_complexity_estimation(args: argparse.Namespace, generator_module: Any,
                                problem: str, module: Any, 
-                               methods_to_test: List[str]) -> Dict[str, Any]:
-    """Run complexity estimation for all methods."""
+                               methods_to_test: List[str],
+                               profile_memory: bool = False) -> Tuple[Dict[str, Any], Dict[str, List]]:
+    """
+    Run complexity estimation for all methods.
+    
+    Returns:
+        Tuple of (estimation_results, memory_samples_by_method)
+    """
     from runner.analysis.complexity import ComplexityEstimator
     
     estimation_results = {}
+    memory_samples_by_method = {}
     
     print(f"\n{'=' * 60}")
     print(f"📈 Complexity Estimation")
@@ -191,7 +198,7 @@ def _run_complexity_estimation(args: argparse.Namespace, generator_module: Any,
     if not ComplexityEstimator.is_available():
         print(f"❌ big-O package not installed")
         print(f"   Install with: pip install big-O")
-        return estimation_results
+        return estimation_results, memory_samples_by_method
     
     if not ComplexityEstimator.can_estimate(generator_module):
         reason = ComplexityEstimator.get_unavailable_reason(generator_module)
@@ -203,7 +210,7 @@ def _run_complexity_estimation(args: argparse.Namespace, generator_module: Any,
         print(f"       # Return test input string for size n")
         print(f"       ...")
         print(f"   ```")
-        return estimation_results
+        return estimation_results, memory_samples_by_method
     
     # Run estimation for each method
     methods = methods_to_test if methods_to_test[0] is not None else [None]
@@ -215,7 +222,8 @@ def _run_complexity_estimation(args: argparse.Namespace, generator_module: Any,
             generator_module=generator_module,
             problem=problem,
             solution_module=module,
-            method=method
+            method=method,
+            profile_memory=profile_memory
         )
         est_result = estimator.estimate()
         
@@ -226,8 +234,12 @@ def _run_complexity_estimation(args: argparse.Namespace, generator_module: Any,
             print(f"      Details: {est_result.details}")
         else:
             print(f"\n   ❌ Estimation failed")
+        
+        # Collect memory samples if profiling enabled
+        if profile_memory:
+            memory_samples_by_method[method_name] = estimator.get_memory_metrics()
     
-    return estimation_results
+    return estimation_results, memory_samples_by_method
 
 
 def _print_summary(result: Dict[str, Any], input_files: List[str], 
@@ -367,14 +379,31 @@ def main():
     # Complexity estimation (run before benchmark display)
     estimation_results = {}
     if args.estimate:
-        estimation_results = _run_complexity_estimation(
-            args, generator_module, problem, module, methods_to_test
+        estimation_results, memory_samples = _run_complexity_estimation(
+            args, generator_module, problem, module, methods_to_test,
+            profile_memory=profile_memory
         )
         # Store estimation results in all_results
         for result in all_results:
             method_name = result["method"]
             if method_name in estimation_results:
                 result["estimated_complexity"] = estimation_results[method_name]
+            
+            # Merge estimation memory samples into method's memory_metrics
+            if profile_memory and method_name in memory_samples:
+                from runner.memory_profiler import CaseMemoryMetrics
+                memory_metrics = result.get("memory_metrics")
+                if memory_metrics:
+                    for i, (size, peak_bytes, elapsed_ms, input_bytes) in enumerate(memory_samples[method_name]):
+                        case_metrics = CaseMemoryMetrics(
+                            case_name=f"est_n{size}_{i+1}",
+                            peak_rss_bytes=peak_bytes,
+                            input_bytes=input_bytes,
+                            input_scale={'n': size},
+                            elapsed_ms=elapsed_ms,
+                            measurement_type="alloc"  # tracemalloc measurement
+                        )
+                        memory_metrics.add_case(case_metrics)
     
     # Print benchmark summary (with memory columns if profiling enabled)
     # Output order per CLI_OUTPUT_CONTRACT.md Section 6:

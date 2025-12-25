@@ -6,6 +6,7 @@ Provides:
 - Complexity estimation (Big-O analysis)
 - Memory profiling (RSS measurement)
 - Input scale estimation
+- Input shape inference (PyTorch-style)
 """
 from runner.analysis.complexity import (
     HAS_BIG_O,
@@ -27,6 +28,14 @@ from runner.analysis.input_scale import (
     compute_signature_payload,
     format_input_scale,
 )
+from runner.analysis.input_shape import (
+    InputShape,
+    infer_shape,
+    infer_shapes_from_signature,
+    compute_aggregate_shape,
+    shape_of,
+    format_shape,
+)
 
 __all__ = [
     # complexity
@@ -46,5 +55,12 @@ __all__ = [
     'compute_input_bytes',
     'compute_signature_payload',
     'format_input_scale',
+    # input_shape (PyTorch-style)
+    'InputShape',
+    'infer_shape',
+    'infer_shapes_from_signature',
+    'compute_aggregate_shape',
+    'shape_of',
+    'format_shape',
 ]
 

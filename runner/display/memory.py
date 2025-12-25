@@ -14,7 +14,7 @@ from runner.analysis.memory_profiler import (
     format_bytes,
     generate_memory_trace,
 )
-from runner.analysis.input_scale import format_input_scale
+from runner.analysis.input_scale import format_input_scale, get_input_scale_legend
 
 # Try to import tabulate for pretty tables
 try:
@@ -72,70 +72,199 @@ def print_memory_per_case(all_results: List[Dict[str, Any]], top_k: int = 5) -> 
     
     Per Cli_Output_Memory.md Section 4:
     - Debug-only flag
-    - Compact method-level summary first
-    - Then Top-K cases by peak RSS
+    - First: Per-method case summary with Top-K
+    - Last: Global Top-K across all methods (separate tables for RSS vs Alloc)
     """
-    print()
+    from runner.analysis.memory_profiler import CaseMemoryMetrics
     
+    print()
+    print("Memory Per-Case Analysis")
+    print("=" * 60)
+    
+    # Collect ALL cases from ALL methods, separated by measurement type
+    rss_cases: List[tuple] = []    # (method_name, case_metrics) - subprocess/psutil
+    alloc_cases: List[tuple] = []  # (method_name, case_metrics) - in-process/tracemalloc
+    
+    # =========================================
+    # 1. Per-method Case Memory Summary
+    # =========================================
     for r in all_results:
         method = r["method"]
         memory_metrics: Optional[MethodMemoryMetrics] = r.get("memory_metrics")
         
         if not memory_metrics or not memory_metrics.case_metrics:
-            print(f"Case Memory Summary ({method})")
+            print(f"\nCase Memory Summary ({method})")
             print("N/A (no memory data)")
-            print()
             continue
         
-        # Method-level summary
-        total_cases = len(memory_metrics.case_metrics)
-        valid_cases = [m for m in memory_metrics.case_metrics if m.peak_rss_bytes is not None]
+        # Separate cases by measurement type
+        method_rss_cases = []
+        method_alloc_cases = []
+        for c in memory_metrics.case_metrics:
+            if c.peak_rss_bytes is not None:
+                mtype = getattr(c, 'measurement_type', 'rss')
+                if mtype == "alloc":
+                    method_alloc_cases.append((method, c))
+                    alloc_cases.append((method, c))
+                else:
+                    method_rss_cases.append((method, c))
+                    rss_cases.append((method, c))
         
-        if not valid_cases:
-            print(f"Case Memory Summary ({method})")
-            print(f"cases={total_cases} | Peak=N/A | P95=N/A | Median=N/A")
-            print()
+        if not method_rss_cases and not method_alloc_cases:
+            print(f"\nCase Memory Summary ({method})")
+            print("N/A (measurement unavailable)")
             continue
         
-        # Calculate median
-        sorted_rss = sorted(m.peak_rss_bytes for m in valid_cases if m.peak_rss_bytes)
-        median_rss = sorted_rss[len(sorted_rss) // 2] if sorted_rss else None
+        # Print method summary
+        print(f"\nCase Memory Summary ({method})")
         
-        print(f"Case Memory Summary ({method})")
-        print(f"cases={total_cases} | Peak={format_bytes(memory_metrics.peak_rss_bytes)} | "
-              f"P95={format_bytes(memory_metrics.p95_rss_bytes)} | "
-              f"Median={format_bytes(median_rss)}")
-        print()
+        # RSS cases (subprocess)
+        if method_rss_cases:
+            method_rss_values = [c[1].peak_rss_bytes for c in method_rss_cases]
+            rss_peak = max(method_rss_values)
+            sorted_rss = sorted(method_rss_values)
+            rss_p95 = sorted_rss[min(int(len(sorted_rss) * 0.95), len(sorted_rss) - 1)]
+            rss_median = sorted_rss[len(sorted_rss) // 2]
+            
+            print(f"[RSS] cases={len(method_rss_cases)} | "
+                  f"Peak={format_bytes(rss_peak)} | "
+                  f"P95={format_bytes(rss_p95)} | "
+                  f"Median={format_bytes(rss_median)}")
         
-        # Top K cases table
-        top_cases = memory_metrics.get_top_cases(top_k)
-        if top_cases:
-            print(f"Top {len(top_cases)} memory cases (by peak RSS):")
+        # Alloc cases (tracemalloc)
+        if method_alloc_cases:
+            method_alloc_values = [c[1].peak_rss_bytes for c in method_alloc_cases]
+            alloc_peak = max(method_alloc_values)
+            sorted_alloc = sorted(method_alloc_values)
+            alloc_p95 = sorted_alloc[min(int(len(sorted_alloc) * 0.95), len(sorted_alloc) - 1)]
+            alloc_median = sorted_alloc[len(sorted_alloc) // 2]
+            
+            print(f"[Alloc] cases={len(method_alloc_cases)} | "
+                  f"Peak={format_bytes(alloc_peak)} | "
+                  f"P95={format_bytes(alloc_p95)} | "
+                  f"Median={format_bytes(alloc_median)}")
+        
+        # Print Top-K for RSS cases
+        if method_rss_cases:
             print()
+            method_rss_cases.sort(key=lambda x: x[1].peak_rss_bytes or 0, reverse=True)
+            top_rss = method_rss_cases[:top_k]
             
-            # Build table data with Input Scale column
-            headers = ["Rank", "Case ID", "Peak RSS", "Time", "Input Bytes", "Input Scale"]
-            rows = []
-            for rank, case in enumerate(top_cases, 1):
-                rows.append([
-                    rank,
-                    case.case_name,
-                    format_bytes(case.peak_rss_bytes),
-                    f"{case.elapsed_ms:.1f}ms",
-                    format_bytes(case.input_bytes),
-                    format_input_scale(case.input_scale),
-                ])
-            
-            if HAS_TABULATE:
-                print(tabulate(rows, headers=headers, tablefmt="simple"))
-            else:
-                # Fallback to manual formatting
-                print(f"{'Rank':<5} | {'Case ID':<30} | {'Peak RSS':>10} | {'Time':>10} | {'Input Bytes':>12} | {'Input Scale':<20}")
-                print(f"{'-'*5}-+-{'-'*30}-+-{'-'*10}-+-{'-'*10}-+-{'-'*12}-+-{'-'*20}")
-                for row in rows:
-                    print(f"{row[0]:<5} | {row[1]:<30} | {row[2]:>10} | {row[3]:>10} | {row[4]:>12} | {row[5]:<20}")
+            print(f"Top {len(top_rss)} by Peak RSS (subprocess):")
+            _print_case_table(top_rss, "Peak RSS")
         
+        # Print Top-K for Alloc cases
+        if method_alloc_cases:
+            print()
+            method_alloc_cases.sort(key=lambda x: x[1].peak_rss_bytes or 0, reverse=True)
+            top_alloc = method_alloc_cases[:top_k]
+            
+            print(f"Top {len(top_alloc)} by Peak Alloc (in-process):")
+            _print_case_table(top_alloc, "Peak Alloc")
+    
+    # =========================================
+    # 2. Global Top-K (separate tables)
+    # =========================================
+    print()
+    print("=" * 60)
+    print(f"Global Summary")
+    
+    # Global RSS summary
+    if rss_cases:
+        all_rss_values = [c[1].peak_rss_bytes for c in rss_cases]
+        print(f"[RSS] {len(rss_cases)} cases | "
+              f"Peak={format_bytes(max(all_rss_values))} | "
+              f"Median={format_bytes(sorted(all_rss_values)[len(all_rss_values)//2])}")
+    
+    # Global Alloc summary
+    if alloc_cases:
+        all_alloc_values = [c[1].peak_rss_bytes for c in alloc_cases]
+        print(f"[Alloc] {len(alloc_cases)} cases | "
+              f"Peak={format_bytes(max(all_alloc_values))} | "
+              f"Median={format_bytes(sorted(all_alloc_values)[len(all_alloc_values)//2])}")
+    
+    # Global Top-K for RSS
+    if rss_cases:
         print()
+        rss_cases.sort(key=lambda x: x[1].peak_rss_bytes or 0, reverse=True)
+        top_global_rss = rss_cases[:top_k]
+        
+        print(f"Top {len(top_global_rss)} by Peak RSS (subprocess, across all methods):")
+        _print_global_case_table(top_global_rss, "Peak RSS")
+    
+    # Global Top-K for Alloc
+    if alloc_cases:
+        print()
+        alloc_cases.sort(key=lambda x: x[1].peak_rss_bytes or 0, reverse=True)
+        top_global_alloc = alloc_cases[:top_k]
+        
+        print(f"Top {len(top_global_alloc)} by Peak Alloc (in-process, across all methods):")
+        _print_global_case_table(top_global_alloc, "Peak Alloc")
+    
+    if not rss_cases and not alloc_cases:
+        print("N/A (no memory data collected)")
+    
+    print()
+    
+    # Print legend once at the very end
+    print(get_input_scale_legend())
+    print()
+
+
+def _print_case_table(cases: List[tuple], metric_name: str) -> None:
+    """Print a per-method case table."""
+    print()
+    headers = ["Rank", "Case ID", metric_name, "Time", "Input Scale", "Input Bytes"]
+    rows = []
+    for rank, (_, case) in enumerate(cases, 1):
+        rows.append([
+            rank,
+            case.case_name,
+            format_bytes(case.peak_rss_bytes),
+            f"{case.elapsed_ms:.1f}ms",
+            format_input_scale(case.input_scale),
+            format_bytes(case.input_bytes),
+        ])
+    
+    if HAS_TABULATE:
+        print(tabulate(rows, headers=headers, tablefmt="simple"))
+    else:
+        max_case = max(len(r[1]) for r in rows) if rows else 20
+        print(f"{'Rank':<5} | {'Case ID':<{max_case}} | {metric_name:>14} | "
+              f"{'Time':>10} | {'Input Scale':<20} | {'Input Bytes':>12}")
+        print("-" * (5 + max_case + 14 + 10 + 20 + 12 + 15))
+        for row in rows:
+            print(f"{row[0]:<5} | {row[1]:<{max_case}} | {row[2]:>14} | "
+                  f"{row[3]:>10} | {row[4]:<20} | {row[5]:>12}")
+
+
+def _print_global_case_table(cases: List[tuple], metric_name: str) -> None:
+    """Print a global case table with method column."""
+    print()
+    headers = ["Rank", "Method", "Case ID", metric_name, "Time", "Input Scale", "Input Bytes"]
+    rows = []
+    for rank, (method, case) in enumerate(cases, 1):
+        rows.append([
+            rank,
+            method,
+            case.case_name,
+            format_bytes(case.peak_rss_bytes),
+            f"{case.elapsed_ms:.1f}ms",
+            format_input_scale(case.input_scale),
+            format_bytes(case.input_bytes),
+        ])
+    
+    if HAS_TABULATE:
+        print(tabulate(rows, headers=headers, tablefmt="simple"))
+    else:
+        max_method = max(len(r[1]) for r in rows) if rows else 10
+        max_case = max(len(r[2]) for r in rows) if rows else 20
+        print(f"{'Rank':<5} | {'Method':<{max_method}} | {'Case ID':<{max_case}} | "
+              f"{metric_name:>10} | {'Time':>10} | {'Input Scale':<20} | {'Input Bytes':>12}")
+        print("-" * (5 + max_method + max_case + 10 + 10 + 20 + 12 + 18))
+        for row in rows:
+            print(f"{row[0]:<5} | {row[1]:<{max_method}} | {row[2]:<{max_case}} | "
+                  f"{row[3]:>10} | {row[4]:>10} | {row[5]:<20} | {row[6]:>12}")
 
 
 def print_trace_compare(all_results: List[Dict[str, Any]]) -> None:
