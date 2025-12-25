@@ -254,13 +254,15 @@ class PostProcessor:
         # This handles cases where LLM outputs "· Solution" as plain text
         result = self._remove_plain_solution_text(result)
         
-        # Step 3: Convert plain text "LeetCode XXX" to links using our metadata
+        # Step 3: Convert LeetCode references to complete links (with Solution)
+        # One-step: LeetCode 11 → [LeetCode 11 - Title](url) · [Solution](github_url)
         result = self._convert_plain_leetcode_to_links(result)
         
         # Step 4: Normalize LeetCode links (fix wrong URLs)
         result = self._normalize_leetcode_links(result)
         
-        # Step 5: Add GitHub solution links automatically
+        # Step 5: Add GitHub solution links for any remaining links without Solution
+        # (handles edge cases not covered by Step 3)
         result = self._add_github_solution_links(result)
         
         return result
@@ -343,15 +345,14 @@ class PostProcessor:
     
     def _convert_plain_leetcode_to_links(self, content: str) -> str:
         """
-        Convert plain text "LeetCode XXX" to proper links.
+        Convert plain text "LeetCode XXX" to complete links with Solution.
         
-        Only converts if we have metadata for the problem.
-        Uses simple format: [LeetCode {id}](url) without title.
+        One-step conversion: LeetCode 11 → [LeetCode 11 - Title](url) · [Solution](github_url)
         
         Patterns handled:
-        - "LeetCode 11" -> "[LeetCode 11](url)"
-        - "LeetCode 11 - Container With Most Water" -> "[LeetCode 11](url)"
-        - "[LeetCode 11 - Title](wrong_url)" -> "[LeetCode 11](correct_url)"
+        - "LeetCode 11" → complete link with Solution
+        - "LeetCode 11 - Title" → complete link with Solution
+        - "[LeetCode 11](url)" → corrected link with Solution
         """
         # First, handle existing markdown links with LeetCode - replace with our data
         def replace_existing_link(match: re.Match) -> str:
@@ -370,21 +371,8 @@ class PostProcessor:
                 # We don't have this problem - keep AI's link
                 return match.group(0)
             
-            # Use our metadata
-            problem_url = problem.get("url", "")
-            
-            if not problem_url:
-                return match.group(0)
-            
-            # Ensure URL ends with /description/
-            if not problem_url.endswith("/description/"):
-                problem_url = problem_url.rstrip("/") + "/description/"
-            
-            # Include title in link: [LeetCode {id} - {title}](url)
-            title = problem.get("title", "")
-            if title:
-                return f"[LeetCode {problem_id} - {title}]({problem_url})"
-            return f"[LeetCode {problem_id}]({problem_url})"
+            # Build complete link with Solution
+            return self._build_complete_link(problem_id, problem)
         
         # Pattern: [LeetCode XXX...](url)
         result = re.sub(
@@ -397,31 +385,16 @@ class PostProcessor:
         def convert_plain_text(match: re.Match) -> str:
             full_match = match.group(0)
             problem_id = match.group(1)
-            # Ignore title_part - we only use ID
             
             # Look up in our metadata
             problem = self.problems_lookup.get(problem_id.zfill(4)) or self.problems_lookup.get(problem_id)
             
             if not problem:
                 # We don't have this problem - keep as plain text
-                # (AI should have provided a link if it's important)
                 return full_match
             
-            # Use our metadata
-            url = problem.get("url", "")
-            
-            if not url:
-                return full_match
-            
-            # Ensure URL ends with /description/
-            if not url.endswith("/description/"):
-                url = url.rstrip("/") + "/description/"
-            
-            # Include title in link: [LeetCode {id} - {title}](url)
-            title = problem.get("title", "")
-            if title:
-                return f"[LeetCode {problem_id} - {title}]({url})"
-            return f"[LeetCode {problem_id}]({url})"
+            # Build complete link with Solution
+            return self._build_complete_link(problem_id, problem)
         
         # Pattern: Plain text "LeetCode XXX" or "LeetCode XXX - Title" 
         # But NOT inside [] (which would be a link)
@@ -433,6 +406,38 @@ class PostProcessor:
         )
         
         return result
+    
+    def _build_complete_link(self, problem_id: str, problem: dict) -> str:
+        """
+        Build complete link with LeetCode URL and Solution link.
+        
+        Output: [LeetCode {id} - {title}](url) · [Solution](github_url)
+        """
+        # Get LeetCode URL
+        url = problem.get("url", "")
+        if not url:
+            return f"LeetCode {problem_id}"
+        
+        # Ensure URL ends with /description/
+        if not url.endswith("/description/"):
+            url = url.rstrip("/") + "/description/"
+        
+        # Build link text with title
+        title = problem.get("title", "")
+        if title:
+            link_text = f"LeetCode {problem_id} - {title}"
+        else:
+            link_text = f"LeetCode {problem_id}"
+        
+        leetcode_link = f"[{link_text}]({url})"
+        
+        # Add Solution link if available
+        solution_file = problem.get("solution_file", "")
+        if solution_file:
+            github_url = f"https://github.com/lufftw/neetcode/blob/main/{solution_file}"
+            return f"{leetcode_link} · [Solution]({github_url})"
+        
+        return leetcode_link
     
     def _add_github_solution_links(self, content: str) -> str:
         """
