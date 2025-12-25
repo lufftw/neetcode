@@ -16,11 +16,11 @@ import io
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from runner.complexity_estimator import (
+from runner.analysis.complexity import (
     ComplexityEstimator,
     ComplexityResult,
     format_complexity_result,
-    HAS_BIG_O
+    HAS_BIG_O,
 )
 
 

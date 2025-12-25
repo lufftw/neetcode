@@ -184,16 +184,43 @@ python runner/test_runner.py 0215 --all --benchmark --estimate
 
 ```
 runner/
-├── test_runner.py          # Main CLI entry point (~380 lines)
-├── module_loader.py         # Load solution/generator modules (~120 lines)
-├── executor.py              # Execute test cases (~240 lines)
-├── method_runner.py         # Run tests per method (~410 lines)
-├── reporter.py              # Format results (~440 lines)
-├── compare.py               # Output validation (~190 lines)
-├── complexity_estimator.py  # Big-O estimation (~290 lines)
-├── memory_profiler.py       # RSS measurement and metrics (~340 lines)
-└── solution_parser.py       # Parse solution class comments (~250 lines)
+├── __init__.py              # Public API re-exports
+├── test_runner.py           # Main CLI entry point (~380 lines)
+├── util.py                  # Legacy compatibility layer (~150 lines)
+├── io_utils.py              # File I/O utilities (~45 lines)
+│
+├── utils/                   # Utility modules
+│   ├── __init__.py
+│   ├── loader.py            # Load solution/generator modules (~120 lines)
+│   ├── compare.py           # Output validation (~190 lines)
+│   ├── parser.py            # Parse solution class comments (~230 lines)
+│   └── paths.py             # Path helpers (~60 lines)
+│
+├── display/                 # Display/output modules
+│   ├── __init__.py
+│   ├── reporter.py          # Core formatting (~60 lines)
+│   ├── benchmark.py         # Performance charts (~180 lines)
+│   └── memory.py            # Memory profiling output (~180 lines)
+│
+├── analysis/                # Analysis modules
+│   ├── __init__.py
+│   ├── complexity.py        # Big-O estimation (~270 lines)
+│   ├── memory_profiler.py   # RSS measurement (~180 lines)
+│   └── input_scale.py       # Input scale estimation (~90 lines)
+│
+└── core/                    # Core execution modules
+    ├── __init__.py
+    ├── executor.py          # Execute test cases (~230 lines)
+    └── method_runner.py     # Run tests per method (~390 lines)
 ```
+
+### Legacy Files (kept for backward compatibility)
+
+Original files are preserved until migration is complete:
+- `module_loader.py`, `compare.py`, `paths.py` → now in `utils/`
+- `reporter.py` → split into `display/`
+- `complexity_estimator.py`, `memory_profiler.py` → now in `analysis/`
+- `executor.py`, `method_runner.py` → now in `core/`
 
 ## Requirements
 

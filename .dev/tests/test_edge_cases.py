@@ -26,10 +26,10 @@ from runner.util import (
     read_file,
     write_file
 )
-from runner.test_runner import (
+from runner import (
     truncate_input,
     save_failed_case,
-    run_one_case
+    run_one_case,
 )
 
 

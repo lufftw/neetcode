@@ -39,23 +39,31 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-# Import from submodules
-from runner.module_loader import load_solution_module, load_generator_module
-from runner.executor import run_one_case, run_generated_case, PYTHON_EXE
-from runner.reporter import (
-    truncate_input, 
-    format_validation_label, 
-    save_failed_case, 
+# Import from runner package (new subpackage structure)
+from runner import (
+    # utils
+    load_solution_module,
+    load_generator_module,
+    normalize_output,
+    build_method_mapping,
+    # display
+    truncate_input,
+    format_validation_label,
+    save_failed_case,
     print_benchmark_summary,
     print_visual_benchmark,
     print_memory_trace,
     print_memory_per_case,
     print_trace_compare,
+    # analysis
+    HAS_PSUTIL,
+    # core
+    run_one_case,
+    run_generated_case,
+    PYTHON_EXE,
+    run_method_tests,
+    run_legacy_tests,
 )
-from runner.method_runner import run_method_tests, run_legacy_tests
-from runner.compare import normalize_output
-from runner.solution_parser import build_method_mapping
-from runner.memory_profiler import HAS_PSUTIL
 
 # Re-export for backward compatibility
 __all__ = [
@@ -172,7 +180,7 @@ def _run_complexity_estimation(args: argparse.Namespace, generator_module: Any,
                                problem: str, module: Any, 
                                methods_to_test: List[str]) -> Dict[str, Any]:
     """Run complexity estimation for all methods."""
-    from runner.complexity_estimator import ComplexityEstimator
+    from runner.analysis.complexity import ComplexityEstimator
     
     estimation_results = {}
     

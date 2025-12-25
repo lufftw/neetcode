@@ -27,7 +27,7 @@ def file_exists(path: str) -> bool:
 
 def print_diff(expected: str, actual: str) -> None:
     """Print diff between expected and actual output."""
-    from runner.compare import normalize_output
+    from runner.utils.compare import normalize_output
     
     exp_norm = normalize_output(expected)
     act_norm = normalize_output(actual)
