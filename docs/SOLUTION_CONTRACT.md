@@ -289,6 +289,37 @@ SOLUTIONS = {
 - **`"default"`** key is REQUIRED. This is used when no `--method` flag is specified.
 - Additional keys are optional and represent alternative solution approaches.
 
+### Solution Keys (Shorthand Names)
+
+The keys in `SOLUTIONS` are shorthand identifiers used to select solution variants via the `--method` flag:
+
+| Key | Description | Example |
+|-----|-------------|---------|
+| `"default"` | Default solution approach (required) | `"default"` |
+| `"divide"` | Divide and conquer approach | `"divide"` |
+| `"greedy"` | Greedy algorithm approach | `"greedy"` |
+| `"heap"` | Heap/priority queue approach | `"heap"` |
+| `"sets"` | Hash set-based approach | `"sets"` |
+| `"bitmask"` | Bitmask-based approach | `"bitmask"` |
+| `"dp"` | Dynamic programming approach | `"dp"` |
+| `"backtrack"` | Backtracking approach | `"backtrack"` |
+
+**Naming Guidelines:**
+- Use lowercase, descriptive names
+- Keep names short (typically 1-2 words)
+- Use snake_case for multi-word names (e.g., `"sliding_window"`)
+- Names should reflect the algorithm or data structure used
+
+**Usage:**
+```bash
+# Run default solution
+python runner/test_runner.py 0023
+
+# Run specific solution by shorthand name
+python runner/test_runner.py 0023 --method divide
+python runner/test_runner.py 0023 --method greedy
+```
+
 ### Validation Rules
 
 The runner validates `SOLUTIONS` at load time:
