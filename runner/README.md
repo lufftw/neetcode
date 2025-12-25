@@ -52,10 +52,11 @@ When running multiple solutions with `--all --benchmark`, the test runner displa
    ║                  0131_palindrome_partitioning - Performance                   ║
    ╠═══════════════════════════════════════════════════════════════════════════════╣
    ║ default: ████████████████████  158ms                                          ║
-   ║   → Backtracking with DP-Precomputed Palindrome Table (O(n × 2^n) time)       ║
    ║ naive:   ███████████████████░  152ms                                          ║
-   ║   → Backtracking with On-the-Fly Checking (O(n × 2^n × n) time)               ║
    ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+   default  → Solution 1 — Backtracking + DP-precomputed palindrome table
+   naive    → Solution 2 — Backtracking + on-the-fly palindrome checking
 ```
 
 **Enhanced Method Display:**

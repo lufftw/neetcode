@@ -111,20 +111,21 @@ python runner/test_runner.py 0004 --all --estimate
 
 When running `--all --benchmark`, the test runner displays a **visual bar chart** followed by a detailed comparison table:
 
-**Visual Bar Chart with Approach Info:**
+**Visual Bar Chart with Approach Legend:**
 
 ```
    ╔═══════════════════════════════════════════════════════════════════════════════╗
    ║                  0131_palindrome_partitioning - Performance                   ║
    ╠═══════════════════════════════════════════════════════════════════════════════╣
    ║ default: ████████████████████  158ms                                          ║
-   ║   → Backtracking with DP-Precomputed Palindrome Table (O(n × 2^n) time)       ║
    ║ naive:   ███████████████████░  152ms                                          ║
-   ║   → Backtracking with On-the-Fly Checking (O(n × 2^n × n) time)               ║
    ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+   default  → Solution 1 — Backtracking + DP-precomputed palindrome table
+   naive    → Solution 2 — Backtracking + on-the-fly palindrome checking
 ```
 
-The bar length is proportional to execution time (longest time = full bar). Each method shows both the shorthand name and the full approach description parsed from class header comments.
+The bar length is proportional to execution time (longest time = full bar). The approach descriptions are shown in a legend below the chart, parsed from class header comments.
 
 **Enhanced Method Header:**
 
@@ -141,15 +142,22 @@ The bar length is proportional to execution time (longest time = full bar). Each
 **Detailed Table:**
 
 ```
-============================================================
+======================================================================
 Performance Comparison (Details)
-============================================================
-Method               Avg Time    Complexity      Static    Generated
-------------------------------------------------------------
-heap                 12.34ms     O(N log k)      5/5       5/5
-divide               15.67ms     O(N log k)      5/5       5/5
-============================================================
+======================================================================
+
+Method         Avg Time   Pass Rate  Complexity
+-----------  ----------  ----------  --------------------
+default        158.17ms         2/2  O(n × 2^n) time, O(n^2) space
+naive          152.00ms         2/2  O(n × 2^n × n) time, O(n) space
+
+default      → Solution 1 — Backtracking + DP-precomputed palindrome table
+naive        → Solution 2 — Backtracking + on-the-fly palindrome checking
+
+======================================================================
 ```
+
+The approach descriptions are shown in a legend below the table, matching the format used in the visual bar chart.
 
 ### Complexity Estimation
 
