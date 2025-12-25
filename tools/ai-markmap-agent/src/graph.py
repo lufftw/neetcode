@@ -1028,9 +1028,8 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         1. Takes raw markdown from writer_outputs (English)
         2. Takes raw markdown from translated_outputs (e.g., Chinese)
         3. Applies link normalization to both:
-           - Convert 'LC 11' → '[LeetCode 11](url)'
+           - Convert 'LeetCode 11' → '[LeetCode 11 - Title](url) · [Solution](github_url)'
            - Normalize LeetCode URLs
-           - Add GitHub solution links
         4. Generates comparison file (before/after)
         
         Output: final_outputs (post-processed markdown for both languages)
@@ -1120,9 +1119,8 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         
         # Ask user if they want to run post-processing
         print("\n  Post-processing will:")
-        print("    - Convert 'LC 11' → '[LeetCode 11](url)'")
+        print("    - Convert 'LeetCode 11' → '[LeetCode 11 - Title](url) · [Solution](github_url)'")
         print("    - Normalize LeetCode URLs")
-        print("    - Add GitHub solution links")
         print("    - Generate comparison file")
         
         while True:
