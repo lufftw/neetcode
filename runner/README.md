@@ -222,13 +222,70 @@ Original files are preserved until migration is complete:
 - `complexity_estimator.py`, `memory_profiler.py` → now in `analysis/`
 - `executor.py`, `method_runner.py` → now in `core/`
 
+## Execution Methods
+
+The test runner supports two execution methods:
+
+### Method 1: Virtual Environment (Recommended)
+
+Use the project's virtual environment for isolated dependencies:
+
+```bash
+# Windows (PowerShell)
+leetcode\Scripts\python.exe runner/test_runner.py 0023 --all --benchmark
+
+# Windows (CMD)
+leetcode\Scripts\python.exe runner/test_runner.py 0023 --all --benchmark
+
+# Linux/macOS
+./leetcode/bin/python runner/test_runner.py 0023 --all --benchmark
+```
+
+**Pros:** Isolated environment, consistent dependencies, recommended for development.
+
+### Method 2: System Python
+
+Use system Python directly (requires dependencies installed globally):
+
+```bash
+python runner/test_runner.py 0023 --all --benchmark
+```
+
+**Pros:** Simpler command, works if dependencies are globally installed.
+
 ## Requirements
 
 - Solution files in `solutions/` (see [Solution Contract](../docs/SOLUTION_CONTRACT.md))
 - Test files in `tests/` (optional, can use generators)
 - Generator files in `generators/` (optional, for random testing)
-- `big-O` package (optional, for complexity estimation): `pip install big-O`
-- `psutil` package (optional, for memory profiling): `pip install psutil`
+
+### Optional Dependencies
+
+| Package | Feature | Install Command |
+|---------|---------|-----------------|
+| `big-O` | Complexity estimation (`--estimate`) | `pip install big-O` |
+| `psutil` | Memory profiling (`--memory-trace`, `--trace-compare`) | `pip install psutil` |
+
+**Install all optional dependencies:**
+
+```bash
+# Using venv
+leetcode\Scripts\pip.exe install big-O psutil
+
+# Or system-wide
+pip install big-O psutil
+```
+
+### Graceful Degradation
+
+When optional packages are not installed:
+
+| Missing Package | Behavior |
+|-----------------|----------|
+| `big-O` | `--estimate` flag is ignored, complexity shown as "Unknown" |
+| `psutil` | Memory columns show "Unavailable", warning message displayed |
+
+Both cases allow the test runner to continue functioning normally.
 
 ## Validation Modes
 

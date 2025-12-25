@@ -64,6 +64,10 @@ Aux Space is **theoretical** and must never be inferred from RSS values.
 RSS (Resident Set Size) reflects the actual physical memory footprint of the process
 as observed by the operating system during execution.
 
+> **Dependency:** RSS measurement requires the `psutil` package.  
+> Install with: `pip install psutil`  
+> Without psutil, memory metrics display "Unavailable" and the system continues without memory data.
+
 ### 4.1 Case-level Measurement
 
 For each test case, the following value is recorded:
