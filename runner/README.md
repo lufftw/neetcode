@@ -35,6 +35,9 @@ python runner/test_runner.py 0004 --generate 10 --seed 12345
 | `python runner/test_runner.py <problem> --generate N` | Generate N test cases |
 | `python runner/test_runner.py <problem> --generate N --seed S` | Reproducible generation |
 | `python runner/test_runner.py <problem> --estimate` | Estimate complexity |
+| `python runner/test_runner.py <problem> --all --memory-trace` | Show memory traces |
+| `python runner/test_runner.py <problem> --all --trace-compare` | Compare memory usage |
+| `python runner/test_runner.py <problem> --memory-per-case` | Debug: Top-K cases by RSS |
 
 ## Key Features
 
@@ -43,6 +46,7 @@ python runner/test_runner.py 0004 --generate 10 --seed 12345
 - ✅ **Random Test Generation**: Stress testing with seed support
 - ✅ **Custom Validation**: JUDGE_FUNC or COMPARE_MODE
 - ✅ **Complexity Estimation**: Empirical Big-O analysis
+- ✅ **Memory Profiling**: RSS measurement and comparison (requires `psutil`)
 
 ## Visual Performance Comparison
 
@@ -106,6 +110,44 @@ heap           198.63ms         3/3  O(n log k)      O(n log n)
 
 > **Note:** Complexity estimation requires `generate_for_complexity(n)` function in the generator and `pip install big-O`.
 
+## Memory Profiling
+
+The `--benchmark` flag automatically includes memory metrics (Peak RSS, P95 RSS) in the comparison table when `psutil` is installed.
+
+```bash
+# Memory metrics in benchmark table
+python runner/test_runner.py 0023 --all --benchmark
+
+# Run-level memory traces
+python runner/test_runner.py 0023 --all --memory-trace
+
+# Multi-method memory comparison with ranking
+python runner/test_runner.py 0023 --all --trace-compare
+
+# Debug: Top 5 cases by peak RSS
+python runner/test_runner.py 0023 --memory-per-case
+```
+
+**Benchmark Table with Memory Columns:**
+
+```
+Method     Avg Time   Pass Rate  Aux Space  Peak RSS   P95 RSS
+default      83.2ms     50/50     O(N)       25.4MB     23.1MB
+native      120.5ms     50/50     O(1)       21.1MB     20.8MB
+```
+
+**Memory Trace Output:**
+
+```
+Memory Trace (Run-level RSS)
+
+default:
+▁▂▃▅▇▆▅▃▂▁
+Peak 25.4MB | P95 23.1MB
+```
+
+> **Note:** Memory profiling requires `pip install psutil`. The system gracefully degrades without it.
+
 **Enhanced Method Display:**
 
 Each method also shows detailed information when running:
@@ -142,12 +184,15 @@ python runner/test_runner.py 0215 --all --benchmark --estimate
 
 ```
 runner/
-├── test_runner.py          # Main CLI entry point
-├── module_loader.py         # Load solution/generator modules
-├── executor.py              # Execute test cases
-├── reporter.py              # Format results
-├── compare.py               # Output validation
-└── complexity_estimator.py  # Big-O estimation
+├── test_runner.py          # Main CLI entry point (~380 lines)
+├── module_loader.py         # Load solution/generator modules (~120 lines)
+├── executor.py              # Execute test cases (~240 lines)
+├── method_runner.py         # Run tests per method (~410 lines)
+├── reporter.py              # Format results (~440 lines)
+├── compare.py               # Output validation (~190 lines)
+├── complexity_estimator.py  # Big-O estimation (~290 lines)
+├── memory_profiler.py       # RSS measurement and metrics (~340 lines)
+└── solution_parser.py       # Parse solution class comments (~250 lines)
 ```
 
 ## Requirements
@@ -156,6 +201,7 @@ runner/
 - Test files in `tests/` (optional, can use generators)
 - Generator files in `generators/` (optional, for random testing)
 - `big-O` package (optional, for complexity estimation): `pip install big-O`
+- `psutil` package (optional, for memory profiling): `pip install psutil`
 
 ## Validation Modes
 
