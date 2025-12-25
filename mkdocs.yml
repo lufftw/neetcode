@@ -116,6 +116,11 @@ plugins:
       locale: en               # Language: en
   - mindmaps-lastmod
   - open-in-new-tab           # Open external links and PDFs in a new tab
+  - privacy:
+      links: true
+      links_attr_map:
+        target: _blank
+      links_noopener: true
 
 # Navigation
 nav:
