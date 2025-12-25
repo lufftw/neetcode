@@ -85,23 +85,38 @@ We don't just store knowledge — we **synthesize insight**:
 
 ## 🌟 What Sets Us Apart
 
-> 💡 **"The difference between a good programmer and a great one isn't the algorithm they choose — it's how they prove it works."**
+> 💡 **"Great algorithmic skill isn’t about finding an answer — it’s about building systems that make correctness, performance, and learning provable."**
 
 | 📦 Other LeetCode Repos | 🚀 NeetCode |
 |:------------------------|:------------|
-| ❌ Binary feedback ("Accepted / Wrong") | ✅ **Evidence-driven loop**: golden tests + seeded fuzz + edge-case stress |
-| ❌ Single solution, unknown behavior | ✅ Multiple implementations + side-by-side benchmarks |
-| ❌ Shallow pattern tags | ✅ **Ontology + AI mind maps**: problems ↔ patterns ↔ kernels |
-| ❌ Manual runs, inconsistent environments | ✅ Deterministic CLI + VS Code tasks/debug |
-| ❌ "Accepted" without proof | ✅ **Invariant-aware solutions** + explicit failure modes |
-| ❌ Ad-hoc edge cases | ✅ **Systematic edge-case taxonomy** |
-| ❌ Solution-first memorization | ✅ **Pattern-first transfer learning** (interview-ready) |
-| ❌ Big-O as documentation only | ✅ **Measured time / space trade-offs** under identical inputs |
-| ❌ Complexity claimed, not verified | ✅ Complexity + empirical benchmarks under identical conditions |
-| ❌ Results hard to reproduce | ✅ **Deterministic, reproducible experiments** |
-| ❌ Flat problem collection | ✅ **Skill & pattern progression tracking** |
-| ❌ Silent failures | ✅ **Auto-captured counterexamples** for debugging |
-| ❌ Human-written notes only | ✅ **AI-augmented reasoning layer** (summaries, maps, kernels) |
+| ❌ Binary feedback ("Accepted / Wrong") | 🧩 **Evidence-driven loop**: golden tests + seeded fuzz + edge-case stress |
+| ❌ Single solution, unknown behavior | 🧩 **Multiple implementations** + side-by-side benchmarks |
+| ❌ Flat, tag-only pattern labels | 🧩 **Interactive mind maps** linking problems, patterns, and kernels |
+| ❌ No AI-assisted discovery | 🤖 **AI-powered connections** across related problems, patterns, and approaches |
+| ❌ Patterns limited to static notes | 🧠 **Dual learning paths per pattern:** intuition-driven explanations for mental models, plus reusable templates for interviews and fast recall |
+| ❌ Manual runs, inconsistent environments | ⚙️ **Deterministic CLI + VS Code tasks/debug** |
+| ❌ "Accepted" without proof | 🔍 **Invariant-aware solutions** + explicit failure modes |
+| ❌ Ad-hoc edge cases | 🧠 **Systematic edge-case taxonomy** |
+| ❌ Solution-first memorization | 🧠 **Pattern-first transfer learning** (interview-ready) |
+| ❌ Big-O as documentation only | 📊 **Measured time / space trade-offs** under identical inputs |
+| ❌ Complexity claimed, not verified | 📊 **Complexity + empirical benchmarks** under identical conditions |
+| ❌ Results hard to reproduce | ⚙️ **Deterministic, reproducible experiments** |
+| ❌ Flat problem collection | 🧩 **Skill & pattern progression tracking** |
+| ❌ Silent failures | 🔍 **Auto-captured counterexamples** for debugging |
+| ❌ Human-written notes only | 🤖 **AI-augmented reasoning layer** (summaries, maps, kernels) |
+
+<sub>
+
+**Legend — Capability Categories**  
+🧠 Learning & reasoning layer  
+🧩 System architecture & structure  
+⚙️ Execution & tooling infrastructure  
+📊 Empirical measurement & benchmarks  
+🔍 Debugging & correctness analysis  
+🤖 AI-assisted augmentation  
+
+</sub>
+
 
 ### 🧠 The Knowledge Graph Advantage
 
