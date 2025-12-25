@@ -43,6 +43,7 @@ theme:
     - search.highlight
     - content.code.copy
     - content.code.annotate
+    - external_links
   
   icon:
     repo: fontawesome/brands/github
