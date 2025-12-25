@@ -41,6 +41,7 @@ from runner.reporter import (
     format_validation_label, 
     save_failed_case, 
     print_benchmark_summary,
+    print_visual_benchmark,
     run_method_tests
 )
 from runner.compare import normalize_output
@@ -56,6 +57,7 @@ __all__ = [
     'format_validation_label',
     'save_failed_case',
     'print_benchmark_summary',
+    'print_visual_benchmark',
     'run_method_tests',
     'PYTHON_EXE',
     'main',
@@ -314,7 +316,7 @@ Generator examples:
     
     # Print benchmark summary for multi-solution mode
     if len(all_results) > 1 and args.benchmark:
-        print_benchmark_summary(all_results)
+        print_benchmark_summary(all_results, problem_name=problem)
     elif len(all_results) == 1:
         result = all_results[0]
         print(f"\nSummary: {result['passed']} / {result['total']} cases passed.")
