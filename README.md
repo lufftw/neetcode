@@ -19,11 +19,19 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 
 ---
 
-### 🎯 Stop Memorizing. Start Engineering.
+**Solve. Forget. Repeat. Let’s Fix That.**
 
-**A scalable Python framework that transforms LeetCode-style algorithm practice into a knowledge-graph-driven, data-driven, testable, and high-performance workflow — with AI-powered mind maps, industrial-strength testing, and pattern-based learning to help developers grow faster and understand algorithms more deeply.**
+### 🎯 Build Algorithmic Intuition
 
-[📚 Docs](https://lufftw.github.io/neetcode/) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/README.md) • [🧪 Testing & Validation](docs/runner/README.md)
+**NeetCode is a scalable Python practice framework for algorithm learning and interview prep — build intuition and pattern recognition, turn ideas into clean implementations, and accumulate *verifiable evidence* (tests, stress cases, benchmarks, complexity checks) so your progress is real, repeatable, and interview-ready.**
+
+- **Learn the transferable skills**: modeling, state/invariants, edge cases, complexity awareness, and reusable solution templates.
+- **Interview-ready practice**: time-boxed workflows, explain-while-coding, fewer “small bugs”, stronger trade-off discussions.
+- **Prove correctness & robustness**: static + seeded random + edge-case stress tests, custom judges, failure reproduction.
+- **Measure and compare**: benchmark multiple implementations and empirically estimate complexity.
+- **See the big picture**: ontology + AI mind maps reveal pattern relationships and learning paths.
+
+[📚 Docs](https://lufftw.github.io/neetcode/) • [🧪 Testing & Validation](docs/runner/README.md) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -81,11 +89,19 @@ We don't just store knowledge — we **synthesize insight**:
 
 | 📦 Other LeetCode Repos | 🚀 NeetCode |
 |:------------------------|:------------|
-| ❌ Copy solutions, hope they work | ✅ **Prove** your solution is correct |
-| ❌ Manual test cases only | ✅ Auto-generate 1000+ test cases |
-| ❌ No way to compare approaches | ✅ Benchmark N solutions side-by-side |
-| ❌ Memorize patterns blindly | ✅ **Visualize** patterns with mind maps |
-| ❌ No systematic learning path | ✅ Structured roadmaps (NeetCode 150, Blind 75) |
+| ❌ Binary feedback ("Accepted / Wrong") | ✅ **Evidence-driven loop**: golden tests + seeded fuzz + edge-case stress |
+| ❌ Single solution, unknown behavior | ✅ Multiple implementations + side-by-side benchmarks |
+| ❌ Shallow pattern tags | ✅ **Ontology + AI mind maps**: problems ↔ patterns ↔ kernels |
+| ❌ Manual runs, inconsistent environments | ✅ Deterministic CLI + VS Code tasks/debug |
+| ❌ "Accepted" without proof | ✅ **Invariant-aware solutions** + explicit failure modes |
+| ❌ Ad-hoc edge cases | ✅ **Systematic edge-case taxonomy** |
+| ❌ Solution-first memorization | ✅ **Pattern-first transfer learning** (interview-ready) |
+| ❌ Big-O as documentation only | ✅ **Measured time / space trade-offs** under identical inputs |
+| ❌ Complexity claimed, not verified | ✅ Complexity + empirical benchmarks under identical conditions |
+| ❌ Results hard to reproduce | ✅ **Deterministic, reproducible experiments** |
+| ❌ Flat problem collection | ✅ **Skill & pattern progression tracking** |
+| ❌ Silent failures | ✅ **Auto-captured counterexamples** for debugging |
+| ❌ Human-written notes only | ✅ **AI-augmented reasoning layer** (summaries, maps, kernels) |
 
 ### 🧠 The Knowledge Graph Advantage
 
