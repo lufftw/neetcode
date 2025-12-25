@@ -172,3 +172,17 @@ The module outputs a single summary line:
 This shows:
 - Total LeetCode references converted
 - How many had solution files available
+
+## Unit Tests
+
+Run tests:
+```bash
+python -m pytest tools/tests/test_post_processing.py -v
+```
+
+24 tests covering:
+- `TestSimplifyLeetcodeLinks` - Input preprocessing
+- `TestSolutionArtifactsRemoval` - Artifact cleanup
+- `TestLinkPatternMatching` - Regex pattern validation
+- `TestDuplicatePrevention` - No duplicate Solution links
+- `TestPreprocessForLLM` - Full preprocessing pipeline

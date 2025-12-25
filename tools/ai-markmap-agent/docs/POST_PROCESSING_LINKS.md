@@ -183,6 +183,20 @@ workflow:
 - `src/post_processing.py` - Post-processing main module (280 lines)
 - `src/leetcode_api.py` - LeetCode API data loading
 - `src/graph.py` - Workflow integration
+- `../../tests/test_post_processing.py` - Unit tests (24 tests)
+
+## Testing
+
+Run unit tests:
+```bash
+python -m pytest tools/tests/test_post_processing.py -v
+```
+
+Test coverage:
+- Input preprocessing (simplify links for LLM)
+- Solution artifact removal
+- Link pattern matching (all formats)
+- Duplicate prevention
 
 ## Notes
 

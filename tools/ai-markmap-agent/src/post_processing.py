@@ -24,14 +24,15 @@ def simplify_leetcode_links(content: str) -> str:
     
     Transformations:
     - `[LeetCode 79 – Word Search](url) · [Solution](github_url)` → `LeetCode 79 – Word Search`
+    - `[LeetCode 79 – Word Search](url)[Solution](github_url)` → `LeetCode 79 – Word Search`
     - `[LeetCode 79 – Word Search](url)` → `LeetCode 79 – Word Search`
     - `[LeetCode 79](url) · [Solution](github_url)` → `LeetCode 79`
     - `[LeetCode 79](url)` → `LeetCode 79`
     """
     # Pattern: [LeetCode N...](url) with optional Solution link
-    # Capture the link text (group 1) and discard the rest
+    # Handles: with separator (· or |), without separator, or no Solution at all
     content = re.sub(
-        r'\[(LeetCode\s+\d+[^\]]*)\]\([^)]+\)(\s*(?:·|\xb7|\|)\s*\[Solution\]\([^)]+\))?',
+        r'\[(LeetCode\s+\d+[^\]]*)\]\([^)]+\)(\s*(?:·|\xb7|\|)?\s*\[Solution\]\([^)]+\))?',
         r'\1',
         content,
         flags=re.IGNORECASE

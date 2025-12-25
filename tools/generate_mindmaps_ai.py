@@ -134,7 +134,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             parts = prompt_content.split("\n---\n")
             system_prompt = parts[0].replace("# System Prompt", "").strip() if len(parts) >= 2 else build_system_prompt(config)
             user_prompt = parts[1].replace("# User Prompt", "").strip() if len(parts) >= 2 else build_user_prompt(ontology_data, docs_patterns, meta_patterns, problems_data, config)
-        else:
+            else:
             system_prompt = build_system_prompt(config)
             user_prompt = build_user_prompt(ontology_data, docs_patterns, meta_patterns, problems_data, config)
     elif prompt_action == "regenerate_and_optimize":
