@@ -38,10 +38,56 @@ python runner/test_runner.py 0004 --generate 10 --seed 12345
 ## Key Features
 
 - ✅ **Multi-Solution Testing**: Test all solution variants in one run
-- ✅ **Performance Benchmarking**: Compare execution times
+- ✅ **Performance Benchmarking**: Compare execution times with visual bar chart
 - ✅ **Random Test Generation**: Stress testing with seed support
 - ✅ **Custom Validation**: JUDGE_FUNC or COMPARE_MODE
 - ✅ **Complexity Estimation**: Empirical Big-O analysis
+
+## Visual Performance Comparison
+
+When running multiple solutions with `--all --benchmark`, the test runner displays a visual bar chart with approach names extracted from class comments:
+
+```
+   ╔═══════════════════════════════════════════════════════════════════════════════╗
+   ║                  0131_palindrome_partitioning - Performance                   ║
+   ╠═══════════════════════════════════════════════════════════════════════════════╣
+   ║ default: ████████████████████  158ms                                          ║
+   ║   → Backtracking with DP-Precomputed Palindrome Table (O(n × 2^n) time)       ║
+   ║ naive:   ███████████████████░  152ms                                          ║
+   ║   → Backtracking with On-the-Fly Checking (O(n × 2^n × n) time)               ║
+   ╚═══════════════════════════════════════════════════════════════════════════════╝
+```
+
+**Enhanced Method Display:**
+
+Each method also shows detailed information when running:
+
+```
+──────────────────────────────────────────────────
+📌 Shorthand: default
+   Approach: Backtracking with DP-Precomputed Palindrome Table
+   Complexity: O(n × 2^n) time, O(n^2) space
+──────────────────────────────────────────────────
+```
+
+The approach names are automatically parsed from the class header comments in the solution file:
+
+```python
+# ============================================================================
+# Solution 1: Backtracking with DP-Precomputed Palindrome Table
+# Time: O(n × 2^n), Space: O(n^2)
+#   - Key insight or implementation detail
+# ============================================================================
+class SolutionDP:
+    ...
+```
+
+**Usage:**
+```bash
+python runner/test_runner.py 0131 --all --benchmark
+```
+
+> **Note:** On terminals that don't support Unicode (e.g., some Windows terminals), ASCII fallback characters are used automatically.
 
 ## File Structure
 

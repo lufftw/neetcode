@@ -1,9 +1,15 @@
 # runner/reporter.py
 """
 Test Result Reporter - Format and display test results.
+
+Enhanced display features:
+- Visual ASCII bar chart for performance comparison
+- Approach name extraction from class comments
+- Adaptive table formatting
 """
 import sys
-from typing import List, Dict, Any
+import os
+from typing import List, Dict, Any, Optional
 
 from runner.compare import normalize_output
 
@@ -56,7 +62,8 @@ def save_failed_case(problem: str, input_data: str, tests_dir: str) -> str:
 
 def print_visual_benchmark(all_results: List[Dict[str, Any]], 
                            problem_name: str = "Performance Comparison",
-                           bar_width: int = 20) -> None:
+                           bar_width: int = 20,
+                           approach_mapping: Optional[Dict[str, dict]] = None) -> None:
     """
     Print a visual ASCII bar chart for performance comparison.
     
@@ -64,19 +71,11 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
        ╔════════════════════════════════════════════╗
        ║ Two Sum - Performance Comparison           ║
        ╠════════════════════════════════════════════╣
-       ║ HashMap:      ████████░░░░░░░░░░░░  85ms   ║
-       ║ Two Pass:     ████████████░░░░░░░░  120ms  ║
-       ║ Brute Force:  ████████████████████  450ms  ║
+       ║ default: ████████░░░░░░░░░░░░  85ms        ║
+       ║   → Hash Map (O(n))                        ║
+       ║ naive:   ████████████████████  450ms       ║
+       ║   → Brute Force (O(n²))                    ║
        ╚════════════════════════════════════════════╝
-    
-    Example output (ASCII fallback):
-       +============================================+
-       | Two Sum - Performance Comparison           |
-       +============================================+
-       | HashMap:      ########............  85ms   |
-       | Two Pass:     ############........  120ms  |
-       | Brute Force:  ####################  450ms  |
-       +============================================+
     """
     if not all_results:
         return
@@ -88,37 +87,49 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
         H, V = '═', '║'  # horizontal and vertical
         ML, MR = '╠', '╣'  # middle left/right
         BAR_FULL, BAR_EMPTY = '█', '░'
+        ARROW = '→'
     else:
         TL, TR, BL, BR = '+', '+', '+', '+'
         H, V = '=', '|'
         ML, MR = '+', '+'
         BAR_FULL, BAR_EMPTY = '#', '.'
+        ARROW = '->'
     
     # Calculate average times for each method
     method_times = []
     for result in all_results:
         method = result["method"]
         avg_time = sum(result["times"]) / len(result["times"]) if result["times"] else 0
-        method_times.append((method, avg_time))
+        approach = None
+        complexity = result.get("complexity", "")
+        
+        # Get approach info if available
+        if approach_mapping and method in approach_mapping:
+            info = approach_mapping[method]
+            approach = info.get('approach')
+            if not complexity:
+                complexity = info.get('complexity', '')
+        
+        method_times.append((method, avg_time, approach, complexity))
     
     # Find max time for scaling
-    max_time = max(t for _, t in method_times) if method_times else 1
+    max_time = max(t for _, t, _, _ in method_times) if method_times else 1
     if max_time == 0:
         max_time = 1  # Avoid division by zero
     
     # Calculate widths
-    max_method_len = max(len(m) for m, _ in method_times)
-    max_time_str_len = max(len(f"{t:.0f}ms") for _, t in method_times)
+    max_method_len = max(len(m) for m, _, _, _ in method_times)
+    max_time_str_len = max(len(f"{t:.0f}ms") for _, t, _, _ in method_times)
     
-    # Content width: method + ": " + bar + "  " + time
-    content_width = max_method_len + 2 + bar_width + 2 + max_time_str_len
+    # Content width for bar line: method + ": " + bar + "  " + time
+    bar_line_width = max_method_len + 2 + bar_width + 2 + max_time_str_len
     
     # Title line (no emoji for better compatibility)
     title = f"{problem_name} - Performance"
     title_len = len(title)
     
     # Box width (content + 2 spaces padding on each side)
-    box_width = max(content_width + 4, title_len + 4)
+    box_width = max(bar_line_width + 4, title_len + 4)
     inner_width = box_width - 2  # Inside the box (excluding V on each side)
     
     # Print the box
@@ -133,8 +144,8 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
     
     print(f"   {ML}{H * inner_width}{MR}")
     
-    # Bar rows
-    for method, avg_time in method_times:
+    # Bar rows (no approach in box)
+    for method, avg_time, approach, complexity in method_times:
         # Calculate bar length proportional to time
         if max_time > 0:
             bar_len = int((avg_time / max_time) * bar_width)
@@ -148,41 +159,61 @@ def print_visual_benchmark(all_results: List[Dict[str, Any]],
         # Format time string
         time_str = f"{avg_time:.0f}ms"
         
-        # Build the row content
+        # Build the bar row content
         method_padded = f"{method}:".ljust(max_method_len + 1)
         time_padded = time_str.rjust(max_time_str_len)
-        row_content = f" {method_padded} {bar}  {time_padded} "
+        bar_content = f" {method_padded} {bar}  {time_padded} "
         
         # Pad to fill the box
-        row_padding = inner_width - len(row_content)
-        print(f"   {V}{row_content}{' ' * row_padding}{V}")
+        bar_padding = inner_width - len(bar_content)
+        print(f"   {V}{bar_content}{' ' * bar_padding}{V}")
     
     print(f"   {BL}{H * inner_width}{BR}")
+    
+    # Print legend below the box (method -> approach mapping)
+    has_approaches = any(approach for _, _, approach, _ in method_times)
+    if has_approaches:
+        print()
+        for method, _, approach, _ in method_times:
+            if approach:
+                print(f"   {method:<{max_method_len}}  {ARROW} {approach}")
     print()
 
 
 def print_benchmark_summary(all_results: List[Dict[str, Any]], 
-                            problem_name: str = "Performance Comparison") -> None:
+                            problem_name: str = "Performance Comparison",
+                            approach_mapping: Optional[Dict[str, dict]] = None) -> None:
     """Print performance comparison table with visual bar chart."""
     # Print visual bar chart first
     if len(all_results) > 1:
-        print_visual_benchmark(all_results, problem_name)
+        print_visual_benchmark(all_results, problem_name, approach_mapping=approach_mapping)
     
-    print("=" * 60)
-    # Use ASCII-safe header (emojis may not display on all terminals)
+    print("=" * 70)
     print("Performance Comparison (Details)")
-    print("=" * 60)
+    print("=" * 70)
     
     # Check if any results have generated tests
     has_generated = any(r.get("gen_total", 0) > 0 for r in all_results)
     
-    # Header
+    # Build approach lookup
+    approach_lookup = {}
+    if approach_mapping:
+        for method in approach_mapping:
+            info = approach_mapping[method]
+            approach_lookup[method] = info.get('approach', '')
+    
+    # Calculate column widths
+    max_method_len = max(len(r["method"]) for r in all_results)
+    max_method_len = max(max_method_len, 6)  # "Method"
+    
+    # Print table header
+    print()
     if has_generated:
-        print(f"{'Method':<20} {'Avg Time':<12} {'Complexity':<15} {'Static':<10} {'Generated'}")
-        print("-" * 75)
+        print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Static':>8}  {'Generated':>10}  Complexity")
+        print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 8}  {'-' * 10}  {'-' * 20}")
     else:
-        print(f"{'Method':<20} {'Avg Time':<12} {'Complexity':<15} {'Pass Rate'}")
-        print("-" * 60)
+        print(f"{'Method':<{max_method_len}}  {'Avg Time':>10}  {'Pass Rate':>10}  Complexity")
+        print(f"{'-' * max_method_len}  {'-' * 10}  {'-' * 10}  {'-' * 20}")
     
     for result in all_results:
         method = result["method"]
@@ -193,13 +224,24 @@ def print_benchmark_summary(all_results: List[Dict[str, Any]],
         gen_passed = result.get("gen_passed", 0)
         gen_total = result.get("gen_total", 0)
         
-        if has_generated:
-            gen_rate = f"{gen_passed}/{gen_total}" if gen_total > 0 else "-"
-            print(f"{method:<20} {avg_time:>8.2f}ms   {complexity:<15} {static_rate:<10} {gen_rate}")
+        if has_generated and gen_total > 0:
+            gen_rate = f"{gen_passed}/{gen_total}"
+            print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>8}  {gen_rate:>10}  {complexity}")
         else:
-            print(f"{method:<20} {avg_time:>8.2f}ms   {complexity:<15} {static_rate}")
+            print(f"{method:<{max_method_len}}  {avg_time:>8.2f}ms  {static_rate:>10}  {complexity}")
     
-    print("=" * (75 if has_generated else 60))
+    # Print legend below the table (method -> approach mapping)
+    has_approaches = any(approach_lookup.get(r["method"]) for r in all_results)
+    if has_approaches:
+        print()
+        for result in all_results:
+            method = result["method"]
+            approach = approach_lookup.get(method)
+            if approach:
+                print(f"{method:<{max_method_len}}  → {approach}")
+    
+    print()
+    print("=" * 70)
 
 
 def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any],
@@ -207,15 +249,24 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
                      compare_mode: str = "exact", module: Any = None,
                      generator_module: Any = None, generate_count: int = 0,
                      seed: int = None, save_failed: bool = False,
-                     tests_dir: str = "tests") -> Dict[str, Any]:
+                     tests_dir: str = "tests",
+                     approach_info: Optional[dict] = None) -> Dict[str, Any]:
     """Run all test cases for a specific solution method."""
     from runner.executor import run_one_case, run_generated_case
+    
+    # Get approach from parsed class comments or fallback to description
+    approach = None
+    if approach_info:
+        approach = approach_info.get('approach')
+    if not approach:
+        approach = method_info.get('description')
     
     results = {
         "method": method_name,
         "display_name": method_info.get("method", method_name),
         "complexity": method_info.get("complexity", "Unknown"),
         "description": method_info.get("description", ""),
+        "approach": approach,
         "cases": [],
         "passed": 0,
         "total": 0,
@@ -226,12 +277,14 @@ def run_method_tests(problem: str, method_name: str, method_info: Dict[str, Any]
         "gen_total": 0
     }
     
-    print(f"\n📌 Method: {method_name}")
+    # Enhanced method header display
+    print(f"\n{'─' * 50}")
+    print(f"📌 Shorthand: {method_name}")
+    if approach:
+        print(f"   Approach: {approach}")
     if method_info.get("complexity"):
         print(f"   Complexity: {method_info['complexity']}")
-    if method_info.get("description"):
-        print(f"   Description: {method_info['description']}")
-    print()
+    print(f"{'─' * 50}")
     
     import os
     

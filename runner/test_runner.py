@@ -24,9 +24,15 @@ Complexity estimation:
 """
 import glob
 import os
+import re
 import sys
 import argparse
 from typing import Optional
+
+# Enable UTF-8 output on Windows for emoji support
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 # Add project root to path for imports
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -45,6 +51,7 @@ from runner.reporter import (
     run_method_tests
 )
 from runner.compare import normalize_output
+from runner.solution_parser import build_method_mapping
 
 # Re-export for backward compatibility
 __all__ = [
@@ -59,6 +66,7 @@ __all__ = [
     'print_benchmark_summary',
     'print_visual_benchmark',
     'run_method_tests',
+    'build_method_mapping',
     'PYTHON_EXE',
     'main',
 ]
@@ -124,11 +132,35 @@ Generator examples:
         print(f"⚠️ No test input files found and no --generate specified")
         sys.exit(1)
     
-    # Load solution module to get SOLUTIONS metadata and COMPARE_MODE
-    module, solutions_meta, compare_mode = load_solution_module(problem)
+    # If solution file not found with given problem name, try to extract full name from test files
+    if input_files:
+        # Try to load solution module with given problem name
+        module, solutions_meta, compare_mode = load_solution_module(problem)
+        
+        # If not found, extract full problem name from first test file
+        if module is None:
+            first_test_file = os.path.basename(input_files[0])
+            # Extract problem name: remove _<number>.in suffix
+            # Pattern: 0215_kth_largest_element_in_an_array_1.in -> 0215_kth_largest_element_in_an_array
+            match = re.match(r'^(.+?)_\d+\.in$', first_test_file)
+            if match:
+                full_problem_name = match.group(1)
+                if full_problem_name != problem:
+                    print(f"💡 Problem name '{problem}' not found, trying '{full_problem_name}'...")
+                    problem = full_problem_name
+                    module, solutions_meta, compare_mode = load_solution_module(problem)
+    else:
+        # No test files, just try to load with given problem name
+        module, solutions_meta, compare_mode = load_solution_module(problem)
     
     # Check if JUDGE_FUNC is defined
     has_judge_func = hasattr(module, 'JUDGE_FUNC') if module else False
+    
+    # Build approach mapping from class comments
+    approach_mapping = None
+    if solutions_meta:
+        solution_path = os.path.join("solutions", f"{problem}.py")
+        approach_mapping = build_method_mapping(solution_path, solutions_meta)
     
     # Load generator module if needed (for generation or complexity estimation)
     generator_module = None
@@ -300,9 +332,16 @@ Generator examples:
         else:
             # Multi-solution mode
             method_info = solutions_meta.get(method, {"method": method}) if solutions_meta else {"method": method}
+            
+            # Get approach info for this method
+            approach_info = None
+            if approach_mapping and method in approach_mapping:
+                approach_info = approach_mapping[method]
+            
             result = run_method_tests(
                 problem, method, method_info, input_files, args.benchmark, compare_mode, module,
-                generator_module, generate_count, args.seed, args.save_failed, tests_dir
+                generator_module, generate_count, args.seed, args.save_failed, tests_dir,
+                approach_info=approach_info
             )
             all_results.append(result)
             
@@ -316,7 +355,7 @@ Generator examples:
     
     # Print benchmark summary for multi-solution mode
     if len(all_results) > 1 and args.benchmark:
-        print_benchmark_summary(all_results, problem_name=problem)
+        print_benchmark_summary(all_results, problem_name=problem, approach_mapping=approach_mapping)
     elif len(all_results) == 1:
         result = all_results[0]
         print(f"\nSummary: {result['passed']} / {result['total']} cases passed.")

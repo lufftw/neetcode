@@ -109,9 +109,40 @@ python runner/test_runner.py 0004 --all --estimate
 
 ### Multi-Solution Comparison
 
+When running `--all --benchmark`, the test runner displays a **visual bar chart** followed by a detailed comparison table:
+
+**Visual Bar Chart with Approach Info:**
+
+```
+   ╔═══════════════════════════════════════════════════════════════════════════════╗
+   ║                  0131_palindrome_partitioning - Performance                   ║
+   ╠═══════════════════════════════════════════════════════════════════════════════╣
+   ║ default: ████████████████████  158ms                                          ║
+   ║   → Backtracking with DP-Precomputed Palindrome Table (O(n × 2^n) time)       ║
+   ║ naive:   ███████████████████░  152ms                                          ║
+   ║   → Backtracking with On-the-Fly Checking (O(n × 2^n × n) time)               ║
+   ╚═══════════════════════════════════════════════════════════════════════════════╝
+```
+
+The bar length is proportional to execution time (longest time = full bar). Each method shows both the shorthand name and the full approach description parsed from class header comments.
+
+**Enhanced Method Header:**
+
+```
+──────────────────────────────────────────────────
+📌 Shorthand: default
+   Approach: Backtracking with DP-Precomputed Palindrome Table
+   Complexity: O(n × 2^n) time, O(n^2) space
+──────────────────────────────────────────────────
+```
+
+> **Note:** On terminals that don't support Unicode, ASCII fallback characters are used.
+
+**Detailed Table:**
+
 ```
 ============================================================
-📊 Performance Comparison
+Performance Comparison (Details)
 ============================================================
 Method               Avg Time    Complexity      Static    Generated
 ------------------------------------------------------------

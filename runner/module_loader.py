@@ -8,8 +8,15 @@ Validates SOLUTIONS dictionary format per ARCHITECTURE_MIGRATION.md:
 - 'default' key is required
 """
 import os
+import sys
 import importlib.util
 from typing import Optional, Tuple, Any
+
+# Ensure solutions/ is in sys.path for _runner imports
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_SOLUTIONS_DIR = os.path.join(_PROJECT_ROOT, "solutions")
+if _SOLUTIONS_DIR not in sys.path:
+    sys.path.insert(0, _SOLUTIONS_DIR)
 
 
 def validate_solutions_meta(solutions_meta: Optional[dict], problem: str) -> bool:
