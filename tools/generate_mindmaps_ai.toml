@@ -81,7 +81,7 @@ save = true
 # Prompt storage directory (relative to project root)
 directory = "tools/prompts/generated"
 # Prompt filename (fixed filename, will overwrite old ones)
-filename = "mindmap_prompt"
+filename = "mindmap-prompt"
 
 # =============================================================================
 # Ontology Data Selection

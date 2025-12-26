@@ -103,7 +103,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     # Check for existing prompt
     prompt_config = config.get("prompt", {})
     prompt_dir = Path(prompt_config.get("directory", "tools/prompts/generated"))
-    prompt_filename = prompt_config.get("filename", "mindmap_prompt")
+    prompt_filename = prompt_config.get("filename", "mindmap-prompt")
     existing_prompt_file = find_existing_prompt(prompt_dir, prompt_filename)
     
     # Ask user what to do with existing prompt
