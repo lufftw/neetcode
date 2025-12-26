@@ -17,6 +17,38 @@ No conversion is performed between these values.
 
 ---
 
+## 1.1 Display Format (PyTorch-style)
+
+Input Scale uses a **PyTorch-inspired shape notation**:
+
+| Type | Notation | Example | Description |
+|------|----------|---------|-------------|
+| 1D array | `[a]` | `s:[8]` | Length 8 |
+| 2D matrix | `[a,b]` | `matrix:[3,4]` | 3 rows × 4 cols |
+| 3D tensor | `[a,b,c]` | `tensor:[2,3,4]` | 3D shape |
+| k-lists | `[k] n=N` | `lists:[3] n=8` | 3 lists, 8 total elements |
+| Scalar | (skipped) | — | Not displayed |
+
+**Legend (displayed once at end of output):**
+```
+Input Scale Legend:
+  [a]     = 1D length
+  [a,b]   = 2D shape (rows×cols)
+  [a,b,c] = 3D shape
+  n       = total elements
+```
+
+### Implementation
+
+Shape is inferred from actual parameter values in the subprocess using:
+1. `inspect.signature()` to get method parameter names
+2. `inspect.currentframe().f_locals` to get actual values
+3. `_compute_shape()` to derive PyTorch-style shape
+
+This approach leverages Python's introspection rather than text parsing.
+
+---
+
 ## 2. Input Scale Metrics
 
 **Definition**
@@ -182,15 +214,18 @@ Below are canonical mappings from common problem signatures to scale metrics.
 
 Scalar parameters (`k`, `target`, `threshold`, etc.):
 
-* Are displayed as parameters.
-* Are **not** treated as scale metrics.
+* Are **skipped** in Input Scale display (shape = `[]` in PyTorch terms).
+* Do not contribute to the "scale" of the problem.
+* Only array-like inputs (lists, matrices, trees, graphs) are displayed.
 
 Example:
 
 ```
-Input Scale: n = 100000
-Parameters: k = 50
+Input Scale: nums:[100] n=100
 ```
+
+Note: Scalar parameters like `target=5` are not shown because they don't
+represent the computational scale of the problem.
 
 ---
 

@@ -264,17 +264,28 @@ python runner/test_runner.py 0023 --all --benchmark
 | Package | Feature | Install Command |
 |---------|---------|-----------------|
 | `big-O` | Complexity estimation (`--estimate`) | `pip install big-O` |
-| `psutil` | Memory profiling (`--memory-trace`, `--trace-compare`) | `pip install psutil` |
+| `psutil` | RSS memory profiling (subprocess) | `pip install psutil` |
+| `sparklines` | Memory trace visualization | `pip install sparklines` |
+| `tabulate` | CLI table formatting | `pip install tabulate` |
 
 **Install all optional dependencies:**
 
 ```bash
 # Using venv
-leetcode\Scripts\pip.exe install big-O psutil
+leetcode\Scripts\pip.exe install big-O psutil sparklines tabulate
 
 # Or system-wide
-pip install big-O psutil
+pip install big-O psutil sparklines tabulate
 ```
+
+### Memory Measurement Types
+
+| Type | Source | Method | Measures |
+|------|--------|--------|----------|
+| **RSS** | Static/Generated tests | `psutil` (subprocess) | Full process memory |
+| **Alloc** | `--estimate` runs | `tracemalloc` (in-process) | Python allocations only |
+
+> **Note:** `--memory-per-case` displays RSS and Alloc separately because they are not comparable.
 
 ### Graceful Degradation
 
@@ -283,9 +294,11 @@ When optional packages are not installed:
 | Missing Package | Behavior |
 |-----------------|----------|
 | `big-O` | `--estimate` flag is ignored, complexity shown as "Unknown" |
-| `psutil` | Memory columns show "Unavailable", warning message displayed |
+| `psutil` | RSS memory columns show "Unavailable", warning message displayed |
+| `sparklines` | Falls back to simple ASCII visualization |
+| `tabulate` | Falls back to manual column formatting |
 
-Both cases allow the test runner to continue functioning normally.
+All cases allow the test runner to continue functioning normally.
 
 ## Validation Modes
 

@@ -89,33 +89,69 @@ Enable targeted debugging when specific test cases cause abnormal memory usage.
 
 ### Rules
 - Debug-only flag.
-- Prints a **compact method-level summary first**.
-- Then prints **Top-K cases by peak RSS** (default K = 5).
-- Full per-case dumps are intentionally avoided.
+- Prints a **compact method-level summary first** (per method).
+- Separates **RSS (subprocess)** and **Alloc (in-process)** measurements.
+- Then prints **Top-K cases** for each measurement type (default K = 5).
+- Finally prints **Global Top-K** across all methods.
+
+### Measurement Types
+
+| Type | Source | Measurement | Typical Values |
+|------|--------|-------------|----------------|
+| **RSS** | Static tests, Generated | `psutil` (subprocess) | 4-25MB |
+| **Alloc** | `--estimate` runs | `tracemalloc` (in-process) | 4KB-300KB |
+
+> **Note:** RSS and Alloc are **not comparable** — RSS includes Python interpreter
+> and OS overhead, while Alloc measures Python allocations only.
 
 ### Example
 
 ```
-
 Case Memory Summary (default)
-cases=200 | Peak=25.4MB | P95=23.1MB | Median=18.2MB
+[RSS] cases=3 | Peak=4.6MB | P95=4.6MB | Median=4.6MB
+[Alloc] cases=24 | Peak=282KB | P95=281KB | Median=30KB
 
-Top 5 memory cases (by peak RSS):
+Top 3 by Peak RSS (subprocess):
 
-Rank | Case ID | Case Peak RSS | Time   | Input Scale (case) | Input Bytes
------|---------|---------------|--------|--------------------|-------------
-1    | gen_137 | 25.4MB        | 2.1ms  | n=100000           | 0.9MB
-2    | gen_088 | 24.9MB        | 1.9ms  | n=98000            | 0.88MB
-3    | case_3  | 24.2MB        | 1.8ms  | n=100000           | 0.9MB
-4    | gen_012 | 24.0MB        | 1.7ms  | n=95000            | 0.85MB
-5    | case_7  | 23.9MB        | 1.6ms  | n=200              | 4KB
+Rank | Case ID                     | Peak RSS | Time    | Input Scale   | Input Bytes
+-----|-----------------------------| ---------|---------|---------------|-------------
+1    | 0023_merge_k_sorted_lists_1 | 4.6MB    | 176.4ms | lists:[3] n=8 | 18B
+2    | 0023_merge_k_sorted_lists_2 | 4.6MB    | 173.3ms | lists:[0] n=0 | 2B
+3    | 0023_merge_k_sorted_lists_3 | 4.6MB    | 174.0ms | lists:[1] n=0 | 8B
 
-Notes:
-- `Input Scale (case)` is derived from generator metadata or signature-based heuristics.
+Top 5 by Peak Alloc (in-process):
+
+Rank | Case ID      | Peak Alloc | Time   | Input Scale | Input Bytes
+-----|--------------|------------|--------|-------------|-------------
+1    | est_n2000_22 | 282KB      | 21.4ms | n=2000      | 9KB
+2    | est_n2000_23 | 281KB      | 23.3ms | n=2000      | 9KB
+3    | est_n2000_24 | 281KB      | 21.1ms | n=2000      | 9KB
+4    | est_n1000_19 | 143KB      | 12.0ms | n=1000      | 4KB
+5    | est_n1000_20 | 142KB      | 10.5ms | n=1000      | 4KB
+
+============================================================
+Global Summary
+[RSS] 12 cases | Peak=4.6MB | Median=4.6MB
+[Alloc] 96 cases | Peak=282KB | Median=30KB
+
+Top 5 by Peak RSS (subprocess, across all methods):
+...
+
+Top 5 by Peak Alloc (in-process, across all methods):
+...
+
+Input Scale Legend:
+  [a]     = 1D length
+  [a,b]   = 2D shape (rows×cols)
+  [a,b,c] = 3D shape
+  n       = total elements
+```
+
+### Notes
+- `Input Scale` uses PyTorch-style shape notation derived from method signatures.
 - `Input Bytes` reflects the raw input size for the individual case.
 - Missing values are shown as `N/A`.
-
-```
+- When `--estimate` is used, Alloc measurements from complexity estimation are included.
 
 ---
 
