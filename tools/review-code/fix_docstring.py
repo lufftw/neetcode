@@ -196,19 +196,22 @@ class DocstringFixer:
         
         slug = info['slug']
         
-        # Check if we need to fetch from network (rate limiting only for network calls)
+        # Check if data exists in local SQLite cache
         from question_api import get_default_api
         api = get_default_api()
         is_cached = api.exists(slug)
         
-        if not is_cached or self.force_refresh:
-            print(f"  Fetching {slug}...", end=" ", flush=True)
-            self._random_delay()
-        else:
-            print(f"  Using cached {slug}...", end=" ", flush=True)
+        # Only apply delay for network requests, skip delay for local cache
+        if is_cached and not self.force_refresh:
+            # Local cache hit - no delay needed
+            print(f"  [cache] {slug}...", end=" ", flush=True)
             self.cached_count += 1
+        else:
+            # Network fetch required - apply delay to avoid rate limiting
+            print(f"  [network] {slug}...", end=" ", flush=True)
+            self._random_delay()
         
-        # Get full docstring data using new API
+        # Get full docstring data (uses cache if available, otherwise fetches)
         data = get_full_docstring_data(slug)
         
         if not data.get('title'):
@@ -267,10 +270,12 @@ class DocstringFixer:
     
     def print_summary(self) -> None:
         """Print summary of fixes."""
+        network_count = self.fixed_count - self.cached_count
+        
         print("\n" + "=" * 50)
         print(f"Summary: Fixed {self.fixed_count} files")
-        print(f"  - From cache: {self.cached_count}")
-        print(f"  - From network: {self.fixed_count - self.cached_count}")
+        print(f"  - From cache (no delay): {self.cached_count}")
+        print(f"  - From network (with delay): {network_count}")
         if self.errors:
             print(f"Errors: {len(self.errors)}")
             for name, msg in self.errors:
