@@ -192,7 +192,7 @@ class TestAllSolutions:
             for i, input_data in enumerate(gen_iter, 1):
                 case_name = f"gen_{i}"
                 
-                ok, elapsed_ms, actual, input_used = run_generated_case(
+                ok, elapsed_ms, actual, input_used, peak_rss_bytes, input_bytes, input_scale = run_generated_case(
                     problem, input_data, case_name, method,
                     benchmark=False, compare_mode=compare_mode, module=module
                 )
