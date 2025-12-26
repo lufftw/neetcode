@@ -16,11 +16,11 @@ import io
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from runner.complexity_estimator import (
+from runner.analysis.complexity import (
     ComplexityEstimator,
     ComplexityResult,
     format_complexity_result,
-    HAS_BIG_O
+    HAS_BIG_O,
 )
 
 
@@ -291,10 +291,12 @@ class TestRunWithMockStdin:
             )
             
             input_data = "42\n"
-            elapsed_ms = estimator._run_with_mock_stdin(MockSolution().solve, input_data)
+            elapsed_ms, peak_bytes = estimator._run_with_mock_stdin(MockSolution().solve, input_data)
             
             assert elapsed_ms is not None
             assert elapsed_ms >= 0
+            # peak_bytes is None when profile_memory=False (default)
+            assert peak_bytes is None
     
     def test_mock_stdin_restores_original(self):
         """Test that original stdin is restored after mock."""
@@ -339,10 +341,11 @@ class TestRunWithMockStdin:
                 solution_module=MockSolution()
             )
             
-            result = estimator._run_with_mock_stdin(MockSolution().solve, "test\n")
+            elapsed_ms, peak_bytes = estimator._run_with_mock_stdin(MockSolution().solve, "test\n")
             
-            # Should return None on error
-            assert result is None
+            # Should return (None, None) on error
+            assert elapsed_ms is None
+            assert peak_bytes is None
             # stdin should still be restored
             assert sys.stdin == original_stdin
 

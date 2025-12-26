@@ -13,6 +13,11 @@ pytest-cov>=4.1.0       # Coverage reporting
 big-O>=0.10.0           # Time complexity estimation
 # numpy                 # Required by big-O (installed automatically)
 
+# Optional packages (for memory profiling):
+psutil>=5.9.0           # Cross-platform process/system utilities (RSS measurement)
+sparklines>=0.4.0       # Unicode sparkline generation for memory traces
+tabulate>=0.9.0         # Pretty-print tabular data in CLI
+
 # Documentation generation (MkDocs):
 mkdocs>=1.6.0           # MkDocs static site generator
 mkdocs-material>=9.5.0  # Material theme for MkDocs

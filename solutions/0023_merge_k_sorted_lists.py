@@ -280,17 +280,24 @@ def solve():
     lines = sys.stdin.read().strip().split('\n')
     k = int(lines[0])
 
-    lists = []
+    # Keep raw lists for shape detection, then convert to LinkedList
+    raw_lists = []
     for i in range(1, k + 1):
         if i < len(lines) and lines[i] and lines[i] != 'empty':
             values = list(map(int, lines[i].split(',')))
-            lists.append(list_to_linkedlist(values))
+            raw_lists.append(values)
         else:
-            lists.append(None)
+            raw_lists.append([])
 
-    # Get solver and call method naturally (like LeetCode)
+    # Variable 'lists' holds raw data for shape inference by get_solver()
+    lists = raw_lists
+
+    # Convert to LinkedList for the actual method call
+    linked_lists = [list_to_linkedlist(lst) if lst else None for lst in raw_lists]
+
+    # Get solver - auto-reports shape of 'lists' (the raw List[List[int]])
     solver = get_solver(SOLUTIONS)
-    result = solver.mergeKLists(lists)
+    result = solver.mergeKLists(linked_lists)
 
     # Output result as list
     print(linkedlist_to_list(result))

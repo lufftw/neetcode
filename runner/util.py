@@ -93,8 +93,8 @@ def invoke_solution(solutions_meta: Dict[str, Any], caller_globals: Dict[str, An
     return method(*args, **kwargs)
 
 
-# Re-export from compare.py
-from runner.compare import (
+# Re-export from utils/compare.py
+from runner.utils.compare import (
     normalize_output,
     compare_outputs,
     compare_result,
@@ -102,8 +102,8 @@ from runner.compare import (
     _compare_set,
 )
 
-# Re-export from paths.py
-from runner.paths import (
+# Re-export from utils/paths.py
+from runner.utils.paths import (
     PROJECT_ROOT,
     SOLUTIONS_DIR,
     TESTS_DIR,
@@ -113,7 +113,7 @@ from runner.paths import (
     get_test_output_path,
 )
 
-# Re-export from io_utils.py
+# Re-export from io_utils.py (not moved to subpackage - simple I/O)
 from runner.io_utils import (
     read_file,
     write_file,

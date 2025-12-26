@@ -250,7 +250,7 @@ if __name__ == "__main__":
         try:
             os.chdir(env['tmp_path'])
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "test_problem",
                 env['input_file'],
                 env['output_file'],
@@ -277,7 +277,7 @@ if __name__ == "__main__":
             os.chdir(env['tmp_path'])
             
             # Use non-existent output file
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "test_problem",
                 env['input_file'],
                 "nonexistent.out",
@@ -307,7 +307,7 @@ if __name__ == "__main__":
         try:
             os.chdir(env['tmp_path'])
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "test_problem",
                 env['input_file'],
                 env['output_file'],
@@ -497,7 +497,7 @@ class TestEdgeCases:
         try:
             os.chdir(tmp_path)
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "test_problem",
                 str(input_file),
                 str(output_file),
@@ -542,7 +542,7 @@ print(sys.stdin.read().strip())
         try:
             os.chdir(tmp_path)
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "test_problem",
                 str(input_file),
                 str(output_file),
@@ -583,7 +583,7 @@ print(sys.stdin.read().strip())
         try:
             os.chdir(tmp_path)
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "test_problem",
                 str(input_file),
                 str(output_file),

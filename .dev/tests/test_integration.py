@@ -192,7 +192,7 @@ if __name__ == "__main__":
             for in_path in input_files:
                 out_path = in_path.replace(".in", ".out")
                 
-                ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+                ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                     "0001_two_sum",
                     in_path,
                     out_path,
@@ -329,7 +329,7 @@ if __name__ == "__main__":
             os.chdir(env['tmp_path'])
             
             # Test brute_force method
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "multi_solution",
                 "tests/multi_solution_1.in",
                 "tests/multi_solution_1.out",
@@ -412,7 +412,7 @@ if __name__ == "__main__":
             module, solutions_meta, compare_mode = test_runner.load_solution_module("sorted_problem")
             assert compare_mode == "sorted"
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "sorted_problem",
                 "tests/sorted_problem_1.in",
                 "tests/sorted_problem_1.out",
@@ -439,7 +439,7 @@ if __name__ == "__main__":
             module, solutions_meta, compare_mode = test_runner.load_solution_module("set_problem")
             assert compare_mode == "set"
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "set_problem",
                 "tests/set_problem_1.in",
                 "tests/set_problem_1.out",
@@ -525,7 +525,7 @@ if __name__ == "__main__":
             module, solutions_meta, compare_mode = test_runner.load_solution_module("judge_problem")
             assert hasattr(module, 'JUDGE_FUNC')
             
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "judge_problem",
                 "tests/judge_problem_1.in",
                 "tests/judge_problem_1.out",
@@ -551,7 +551,7 @@ if __name__ == "__main__":
             module, solutions_meta, compare_mode = test_runner.load_solution_module("judge_problem")
             
             # Use non-existent .out file
-            ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+            ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                 "judge_problem",
                 "tests/judge_problem_1.in",
                 "tests/judge_problem_nonexistent.out",
@@ -631,7 +631,7 @@ if __name__ == "__main__":
             for in_path in input_files:
                 out_path = in_path.replace(".in", ".out")
                 
-                ok, elapsed_ms, actual, expected, validation_mode = test_runner.run_one_case(
+                ok, elapsed_ms, actual, expected, validation_mode, *_ = test_runner.run_one_case(
                     "complete_problem",
                     in_path,
                     out_path,

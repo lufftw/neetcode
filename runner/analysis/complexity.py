@@ -1,4 +1,4 @@
-# runner/complexity_estimator.py
+# runner/analysis/complexity.py
 """
 Complexity Estimator - Estimate time complexity using big_O methodology.
 
@@ -12,14 +12,13 @@ Feature Levels:
 - Level 1: + generate_for_complexity(n)  - Enable complexity estimation
 
 Usage:
-    from runner.complexity_estimator import ComplexityEstimator
+    from runner.analysis.complexity import ComplexityEstimator
     
     if ComplexityEstimator.can_estimate(generator_module):
         estimator = ComplexityEstimator(generator_module, problem, solution_module)
         result = estimator.estimate()
         print(f"Estimated: {result.complexity}")
 """
-import os
 import sys
 import io
 import time
@@ -345,3 +344,12 @@ def format_complexity_result(result: Optional[ComplexityResult],
             return f"{estimated} (估算)"
     else:
         return user if has_user else "Unknown"
+
+
+__all__ = [
+    'HAS_BIG_O',
+    'ComplexityResult',
+    'ComplexityEstimator',
+    'format_complexity_result',
+]
+

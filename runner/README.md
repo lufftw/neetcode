@@ -35,6 +35,9 @@ python runner/test_runner.py 0004 --generate 10 --seed 12345
 | `python runner/test_runner.py <problem> --generate N` | Generate N test cases |
 | `python runner/test_runner.py <problem> --generate N --seed S` | Reproducible generation |
 | `python runner/test_runner.py <problem> --estimate` | Estimate complexity |
+| `python runner/test_runner.py <problem> --all --memory-trace` | Show memory traces |
+| `python runner/test_runner.py <problem> --all --trace-compare` | Compare memory usage |
+| `python runner/test_runner.py <problem> --memory-per-case` | Debug: Top-K cases by RSS |
 
 ## Key Features
 
@@ -43,6 +46,7 @@ python runner/test_runner.py 0004 --generate 10 --seed 12345
 - ✅ **Random Test Generation**: Stress testing with seed support
 - ✅ **Custom Validation**: JUDGE_FUNC or COMPARE_MODE
 - ✅ **Complexity Estimation**: Empirical Big-O analysis
+- ✅ **Memory Profiling**: RSS measurement and comparison (requires `psutil`)
 
 ## Visual Performance Comparison
 
@@ -106,6 +110,44 @@ heap           198.63ms         3/3  O(n log k)      O(n log n)
 
 > **Note:** Complexity estimation requires `generate_for_complexity(n)` function in the generator and `pip install big-O`.
 
+## Memory Profiling
+
+The `--benchmark` flag automatically includes memory metrics (Peak RSS, P95 RSS) in the comparison table when `psutil` is installed.
+
+```bash
+# Memory metrics in benchmark table
+python runner/test_runner.py 0023 --all --benchmark
+
+# Run-level memory traces
+python runner/test_runner.py 0023 --all --memory-trace
+
+# Multi-method memory comparison with ranking
+python runner/test_runner.py 0023 --all --trace-compare
+
+# Debug: Top 5 cases by peak RSS
+python runner/test_runner.py 0023 --memory-per-case
+```
+
+**Benchmark Table with Memory Columns:**
+
+```
+Method     Avg Time   Pass Rate  Aux Space  Peak RSS   P95 RSS
+default      83.2ms     50/50     O(N)       25.4MB     23.1MB
+native      120.5ms     50/50     O(1)       21.1MB     20.8MB
+```
+
+**Memory Trace Output:**
+
+```
+Memory Trace (Run-level RSS)
+
+default:
+▁▂▃▅▇▆▅▃▂▁
+Peak 25.4MB | P95 23.1MB
+```
+
+> **Note:** Memory profiling requires `pip install psutil`. The system gracefully degrades without it.
+
 **Enhanced Method Display:**
 
 Each method also shows detailed information when running:
@@ -142,20 +184,121 @@ python runner/test_runner.py 0215 --all --benchmark --estimate
 
 ```
 runner/
-├── test_runner.py          # Main CLI entry point
-├── module_loader.py         # Load solution/generator modules
-├── executor.py              # Execute test cases
-├── reporter.py              # Format results
-├── compare.py               # Output validation
-└── complexity_estimator.py  # Big-O estimation
+├── __init__.py              # Public API re-exports
+├── test_runner.py           # Main CLI entry point (~380 lines)
+├── util.py                  # Legacy compatibility layer (~150 lines)
+├── io_utils.py              # File I/O utilities (~45 lines)
+│
+├── utils/                   # Utility modules
+│   ├── __init__.py
+│   ├── loader.py            # Load solution/generator modules (~120 lines)
+│   ├── compare.py           # Output validation (~190 lines)
+│   ├── parser.py            # Parse solution class comments (~230 lines)
+│   └── paths.py             # Path helpers (~60 lines)
+│
+├── display/                 # Display/output modules
+│   ├── __init__.py
+│   ├── reporter.py          # Core formatting (~60 lines)
+│   ├── benchmark.py         # Performance charts (~180 lines)
+│   └── memory.py            # Memory profiling output (~180 lines)
+│
+├── analysis/                # Analysis modules
+│   ├── __init__.py
+│   ├── complexity.py        # Big-O estimation (~270 lines)
+│   ├── memory_profiler.py   # RSS measurement (~180 lines)
+│   └── input_scale.py       # Input scale estimation (~90 lines)
+│
+└── core/                    # Core execution modules
+    ├── __init__.py
+    ├── executor.py          # Execute test cases (~230 lines)
+    └── method_runner.py     # Run tests per method (~390 lines)
 ```
+
+### Legacy Files (kept for backward compatibility)
+
+Original files are preserved until migration is complete:
+- `module_loader.py`, `compare.py`, `paths.py` → now in `utils/`
+- `reporter.py` → split into `display/`
+- `complexity_estimator.py`, `memory_profiler.py` → now in `analysis/`
+- `executor.py`, `method_runner.py` → now in `core/`
+
+## Execution Methods
+
+The test runner supports two execution methods:
+
+### Method 1: Virtual Environment (Recommended)
+
+Use the project's virtual environment for isolated dependencies:
+
+```bash
+# Windows (PowerShell)
+leetcode\Scripts\python.exe runner/test_runner.py 0023 --all --benchmark
+
+# Windows (CMD)
+leetcode\Scripts\python.exe runner/test_runner.py 0023 --all --benchmark
+
+# Linux/macOS
+./leetcode/bin/python runner/test_runner.py 0023 --all --benchmark
+```
+
+**Pros:** Isolated environment, consistent dependencies, recommended for development.
+
+### Method 2: System Python
+
+Use system Python directly (requires dependencies installed globally):
+
+```bash
+python runner/test_runner.py 0023 --all --benchmark
+```
+
+**Pros:** Simpler command, works if dependencies are globally installed.
 
 ## Requirements
 
 - Solution files in `solutions/` (see [Solution Contract](../docs/SOLUTION_CONTRACT.md))
 - Test files in `tests/` (optional, can use generators)
 - Generator files in `generators/` (optional, for random testing)
-- `big-O` package (optional, for complexity estimation): `pip install big-O`
+
+### Optional Dependencies
+
+| Package | Feature | Install Command |
+|---------|---------|-----------------|
+| `big-O` | Complexity estimation (`--estimate`) | `pip install big-O` |
+| `psutil` | RSS memory profiling (subprocess) | `pip install psutil` |
+| `sparklines` | Memory trace visualization | `pip install sparklines` |
+| `tabulate` | CLI table formatting | `pip install tabulate` |
+
+**Install all optional dependencies:**
+
+```bash
+# Using venv
+leetcode\Scripts\pip.exe install big-O psutil sparklines tabulate
+
+# Or system-wide
+pip install big-O psutil sparklines tabulate
+```
+
+### Memory Measurement Types
+
+| Type | Source | Method | Measures |
+|------|--------|--------|----------|
+| **RSS** | Static/Generated tests | `psutil` (subprocess) | Full process memory |
+| **Alloc** | `--estimate` runs | `tracemalloc` (in-process) | Python allocations only |
+
+> **Note:** `--memory-per-case` displays RSS and Alloc separately because they are not comparable.
+
+### Graceful Degradation
+
+When optional packages are not installed:
+
+| Missing Package | Behavior |
+|-----------------|----------|
+| `big-O` | `--estimate` flag is ignored, complexity shown as "Unknown" |
+| `psutil` | RSS memory columns show "Unavailable", warning message displayed |
+| `sparklines` | Falls back to simple ASCII visualization |
+| `tabulate` | Falls back to manual column formatting |
+
+All cases allow the test runner to continue functioning normally.
 
 ## Validation Modes
 

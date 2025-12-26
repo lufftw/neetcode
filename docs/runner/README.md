@@ -54,10 +54,20 @@ python runner/test_runner.py <problem> [OPTIONS]
 
 | Option | Description |
 |--------|-------------|
-| `--benchmark` | Show execution time per case |
+| `--benchmark` | Show execution time per case (includes memory metrics if psutil installed) |
 | `--estimate` | Estimate time complexity |
 
 > 📖 `--estimate` requires `generate_for_complexity(n)` and `pip install big-O`.
+
+### Memory Profiling
+
+| Option | Description |
+|--------|-------------|
+| `--memory-trace` | Show run-level memory traces (sparklines) per method |
+| `--trace-compare` | Multi-method memory comparison with ranking table |
+| `--memory-per-case` | Debug: Top-K cases by peak RSS |
+
+> 📖 Memory profiling requires `pip install psutil`. Without it, memory columns show "Unavailable".
 
 ### Other
 
@@ -373,6 +383,76 @@ test_runner.py (CLI)
 ├── compare.py            # Output validation
 └── complexity_estimator.py  # Big-O estimation
 ```
+
+---
+
+## Execution Methods
+
+The test runner supports two execution methods:
+
+### Method 1: Virtual Environment (Recommended)
+
+Use the project's virtual environment for isolated dependencies:
+
+```bash
+# Windows (PowerShell/CMD)
+leetcode\Scripts\python.exe runner/test_runner.py 0023 --all --benchmark
+
+# Linux/macOS
+./leetcode/bin/python runner/test_runner.py 0023 --all --benchmark
+```
+
+### Method 2: System Python
+
+Use system Python directly (requires dependencies installed globally):
+
+```bash
+python runner/test_runner.py 0023 --all --benchmark
+```
+
+---
+
+## Dependencies
+
+### Required
+
+- Python 3.10+
+- Solution files in `solutions/`
+- Test files in `tests/` (or use generators)
+
+### Optional Packages
+
+| Package | Feature | Install |
+|---------|---------|---------|
+| `big-O` | Complexity estimation (`--estimate`) | `pip install big-O` |
+| `psutil` | RSS memory profiling (`--memory-trace`, `--trace-compare`, `--memory-per-case`) | `pip install psutil` |
+| `sparklines` | Memory trace visualization (sparkline charts) | `pip install sparklines` |
+| `tabulate` | CLI table formatting | `pip install tabulate` |
+
+**Install all optional packages:**
+
+```bash
+pip install big-O psutil sparklines tabulate
+```
+
+### Memory Measurement Types
+
+| Type | Source | Method | Description |
+|------|--------|--------|-------------|
+| **RSS** | Static/Generated tests | `psutil` (subprocess) | Full process memory including interpreter |
+| **Alloc** | `--estimate` runs | `tracemalloc` (in-process) | Python allocations only |
+
+> **Note:** RSS and Alloc metrics are displayed separately in `--memory-per-case`
+> output because they measure different things and are not directly comparable.
+
+### Graceful Degradation
+
+| Missing Package | Behavior |
+|-----------------|----------|
+| `big-O` | `--estimate` ignored, complexity shown as "Unknown" |
+| `psutil` | RSS memory columns show "Unavailable", warning displayed |
+| `sparklines` | Falls back to simple ASCII visualization |
+| `tabulate` | Falls back to manual column formatting |
 
 ---
 
