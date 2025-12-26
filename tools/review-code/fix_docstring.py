@@ -6,7 +6,7 @@ This tool automatically fixes solution file docstrings to comply with
 review-code.md specification.
 
 Usage:
-    python tools/review-code/fix_docstring.py [--range START END] [--file FILE] [--dry-run] [--fetch-online]
+    python tools/review-code/fix_docstring.py [--range START END] [--file FILE] [--dry-run] [--fetch-online] [--delay-min SEC] [--delay-max SEC]
     
 Examples:
     # Fix all files
@@ -24,8 +24,11 @@ Examples:
     # Fetch missing Problem and Link from LeetCode API cache
     python tools/review-code/fix_docstring.py --fetch-online
     
-    # Combine: preview with online fetching
-    python tools/review-code/fix_docstring.py --range 0077 0142 --fetch-online --dry-run
+    # Set custom delay range to avoid anti-crawling (1-5 seconds)
+    python tools/review-code/fix_docstring.py --range 0077 0142 --delay-min 1.0 --delay-max 5.0
+    
+    # Combine: preview with online fetching and custom delay
+    python tools/review-code/fix_docstring.py --range 0077 0142 --fetch-online --dry-run --delay-min 2.0 --delay-max 4.0
 """
 
 import re
@@ -33,6 +36,8 @@ import sys
 import argparse
 import json
 import requests
+import time
+import random
 from pathlib import Path
 from typing import Optional, Dict, Tuple, List
 
@@ -47,9 +52,24 @@ GRAPHQL_URL = "https://leetcode.com/graphql"
 class LeetCodeDataFetcher:
     """Fetch LeetCode problem data from cache or online via GraphQL."""
     
-    def __init__(self):
+    def __init__(self, delay_min: float = 1.0, delay_max: float = 3.0):
+        """
+        Initialize LeetCode data fetcher.
+        
+        Args:
+            delay_min: Minimum delay in seconds between requests (default: 1.0)
+            delay_max: Maximum delay in seconds between requests (default: 3.0)
+        """
         self.cache = None
+        self.delay_min = delay_min
+        self.delay_max = delay_max
         self._load_cache()
+    
+    def _random_delay(self) -> None:
+        """Sleep for a random duration between delay_min and delay_max to avoid anti-crawling."""
+        if self.delay_min > 0 and self.delay_max > 0:
+            delay = random.uniform(self.delay_min, self.delay_max)
+            time.sleep(delay)
     
     def _load_cache(self) -> None:
         """Load LeetCode problems cache."""
@@ -62,6 +82,9 @@ class LeetCodeDataFetcher:
     
     def _fetch_online(self, slug: str) -> Optional[Dict]:
         """Fetch problem data online using GraphQL."""
+        # Add random delay before making request to avoid anti-crawling
+        self._random_delay()
+        
         query = """
         query questionData($titleSlug: String!) {
           question(titleSlug: $titleSlug) {
@@ -134,6 +157,8 @@ class LeetCodeDataFetcher:
     
     def get_description_and_constraints(self, slug: str) -> Tuple[List[str], List[str]]:
         """Fetch description and constraints from online (fallback to cache if needed)."""
+        # Add random delay before making request to avoid anti-crawling
+        self._random_delay()
         online_data = self._fetch_online(slug)
         if online_data:
             from bs4 import BeautifulSoup
@@ -178,13 +203,23 @@ class LeetCodeDataFetcher:
 class DocstringFixer:
     """Fix docstrings to comply with review-code.md format."""
     
-    def __init__(self, dry_run: bool = False, fetch_online: bool = False):
+    def __init__(self, dry_run: bool = False, fetch_online: bool = False, 
+                 delay_min: float = 1.0, delay_max: float = 3.0):
+        """
+        Initialize docstring fixer.
+        
+        Args:
+            dry_run: If True, don't modify files (default: False)
+            fetch_online: If True, fetch data from LeetCode online (default: False)
+            delay_min: Minimum delay in seconds between requests (default: 1.0)
+            delay_max: Maximum delay in seconds between requests (default: 3.0)
+        """
         self.dry_run = dry_run
         self.fetch_online = fetch_online
         self.fixed_count = 0
         self.skipped_count = 0
         self.errors = []
-        self.leetcode_fetcher = LeetCodeDataFetcher()
+        self.leetcode_fetcher = LeetCodeDataFetcher(delay_min=delay_min, delay_max=delay_max)
     
     # ... (extract_problem_id_from_filename, extract_docstring, parse_docstring remain unchanged)
     
@@ -319,7 +354,78 @@ class DocstringFixer:
     
     # ... (fix_range, fix_single_file, fix_all, print_summary remain unchanged)
 
-# main() remains the same, with --fetch-online default=True
+def main():
+    """Main entry point for the script."""
+    parser = argparse.ArgumentParser(
+        description="Auto-fix File-Level Docstring for solution files",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__
+    )
+    parser.add_argument("--range", nargs=2, metavar=("START", "END"), type=int,
+                        help="Fix files in numeric range")
+    parser.add_argument("--file", type=str, help="Fix a specific file")
+    parser.add_argument("--dry-run", action="store_true", help="Preview changes only")
+    parser.add_argument("--fetch-online", action="store_true", default=True,
+                        help="Fetch Problem/Link/Description/Constraints from LeetCode (default: True)")
+    parser.add_argument("--no-fetch", action="store_true", help="Disable online fetching")
+    parser.add_argument("--delay-min", type=float, default=1.0,
+                        help="Minimum delay in seconds between requests (default: 1.0)")
+    parser.add_argument("--delay-max", type=float, default=3.0,
+                        help="Maximum delay in seconds between requests (default: 3.0)")
+    
+    args = parser.parse_args()
+    fetch_online = args.fetch_online and not args.no_fetch
+    
+    # Validate delay parameters
+    if args.delay_min < 0 or args.delay_max < 0:
+        print("Error: Delay values must be non-negative")
+        return 1
+    if args.delay_min > args.delay_max:
+        print("Error: delay-min must be <= delay-max")
+        return 1
+    
+    fixer = DocstringFixer(
+        dry_run=args.dry_run, 
+        fetch_online=fetch_online,
+        delay_min=args.delay_min,
+        delay_max=args.delay_max
+    )
+    
+    if args.file:
+        fixer.fix_single_file(args.file, replace_mode=False)
+    elif args.range:
+        start, end = args.range
+        print(f"\nProcessing {start:04d} ~ {end:04d} (replace mode + online fetch)\n")
+        fixer.fix_range(start, end, replace_mode=True)
+    else:
+        # Interactive mode: prompt for range
+        print("\n" + "=" * 60)
+        print("File-Level Docstring Auto-Fix Tool")
+        print("=" * 60)
+        print("\nPlease enter the range of files to fix:")
+        
+        while True:
+            try:
+                min_num = int(input("Min (inclusive): ").strip())
+                break
+            except ValueError:
+                print("Invalid number.")
+        
+        while True:
+            try:
+                max_num = int(input("Max (inclusive): ").strip())
+                if max_num >= min_num:
+                    break
+                print(f"Max must be >= {min_num}")
+            except ValueError:
+                print("Invalid number.")
+        
+        print(f"\nProcessing {min_num:04d} ~ {max_num:04d} (replace mode + online fetch)\n")
+        fixer.fix_range(min_num, max_num, replace_mode=True)
+    
+    fixer.print_summary()
+    return 0 if not fixer.errors else 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
