@@ -5,12 +5,6 @@ Link: https://leetcode.com/problems/subsets-ii/
 
 Given an integer array nums that may contain duplicates, return all possible
 subsets (the power set). The solution set must not contain duplicate subsets.
-
-Sub-Pattern: Subset enumeration with duplicates (sort + same-level skip)
-Key Insight: Sort the array, then skip duplicate values at the same tree level.
-The condition "i > start_index" ensures we only skip duplicates, not the first
-occurrence at each level.
-
 Delta from Base (LeetCode 78):
 - Sort the input array to bring duplicates together
 - Add same-level deduplication: skip nums[i] if i > start_index and nums[i] == nums[i-1]

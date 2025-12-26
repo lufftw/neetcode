@@ -30,7 +30,7 @@ Constraints:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `Problem` | ✅ | Problem title (matches LeetCode title) |
-| `Link` | ✅ | LeetCode problem URL |
+| `Link` | ✅ | LeetCode problem URL (must include `/description/` suffix) |
 | Description | Recommended | Brief problem statement explaining what the problem asks |
 | `Constraints` | Recommended | Key constraints affecting algorithm choice |
 

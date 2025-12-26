@@ -7,12 +7,6 @@ Given an m×n grid of characters and a word, return true if the word exists
 in the grid. The word can be constructed from letters of sequentially
 adjacent cells, where adjacent cells are horizontally or vertically
 neighboring. The same letter cell may not be used more than once.
-
-Sub-Pattern: Grid/Path DFS with visited marking
-Key Insight: Mark cells as visited during exploration, unmark on backtrack.
-This ensures each cell is used at most once per path while allowing
-different paths to reuse cells.
-
 The decision at each step: which adjacent cell to visit next?
 Only proceed if the cell is unvisited and matches the next character.
 

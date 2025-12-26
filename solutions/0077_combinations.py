@@ -5,11 +5,6 @@ Link: https://leetcode.com/problems/combinations/
 
 Given two integers n and k, return all possible combinations of k numbers
 chosen from the range [1, n].
-
-Sub-Pattern: Fixed-size subset enumeration
-Key Insight: Same as subsets, but only collect when path length equals k.
-Add pruning to skip branches that can't possibly reach size k.
-
 Delta from Subsets (LeetCode 78):
 - Only collect when len(path) == k (not at every node)
 - Add count-based pruning: stop early if not enough elements remain

@@ -214,10 +214,12 @@ Constraints:
 """
 ```
 
+**Note:** The Link field should NOT include `/description/` suffix. Use the format: `https://leetcode.com/problems/{slug}/`
+
 | Field | Required | Description |
 |-------|----------|-------------|
 | `Problem` | ✅ | Problem title |
-| `Link` | ✅ | LeetCode URL |
+| `Link` | ✅ | LeetCode URL (format: `https://leetcode.com/problems/{slug}/`, without `/description/` suffix) |
 | Description | Recommended | Brief problem statement |
 | `Constraints` | Recommended | Key constraints affecting algorithm choice |
 
@@ -745,6 +747,10 @@ Constraints:
 - {constraint 1}
 - {constraint 2}
 """
+
+**Note:** Link format must be `https://leetcode.com/problems/{slug}/` (without `/description/` suffix).
+
+```python
 from typing import List
 from _runner import get_solver
 

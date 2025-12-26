@@ -7,10 +7,6 @@ Given head, the head of a linked list, determine if the linked list has a cycle
 in it. A cycle exists if some node can be reached again by continuously
 following the next pointer.
 
-Sub-Pattern: Fast-slow (Floyd's cycle detection)
-Key Insight: Use two pointers moving at different speeds. If there's a cycle,
-the fast pointer will eventually catch up to the slow pointer.
-
 Constraints:
 - The number of the nodes in the list is in the range [0, 10^4]
 - -10^5 <= Node.val <= 10^5

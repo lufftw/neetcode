@@ -6,12 +6,7 @@ Link: https://leetcode.com/problems/valid-palindrome/
 A phrase is a palindrome if, after converting all uppercase letters into
 lowercase letters and removing all non-alphanumeric characters, it reads the
 same forward and backward.
-
 Given a string s, return true if it is a palindrome, or false otherwise.
-
-Sub-Pattern: Opposite pointers (symmetric check)
-Key Insight: Use two pointers from both ends, skip non-alphanumeric characters,
-and compare case-insensitively.
 
 Constraints:
 - 1 <= s.length <= 2 * 10^5

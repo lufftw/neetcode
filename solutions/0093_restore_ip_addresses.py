@@ -5,16 +5,11 @@ Link: https://leetcode.com/problems/restore-ip-addresses/
 
 A valid IP address consists of exactly four integers separated by single dots.
 Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
-
 Given a string s containing only digits, return all possible valid IP addresses
 that can be formed by inserting dots into s.
-
-Sub-Pattern: String segmentation with multi-constraint validity
-Key Insight: IP address has exactly 4 segments (octets), each with constraints:
 - Length: 1-3 characters
 - Value: 0-255
 - No leading zeros (except "0" itself)
-
 Prune aggressively based on remaining length bounds.
 
 Constraints:

@@ -7,10 +7,6 @@ Given an integer array nums sorted in non-decreasing order, remove some
 duplicates in-place such that each unique element appears at most twice.
 The relative order of the elements should be kept the same.
 
-Sub-Pattern: Same-direction writer with K-allowance
-Key Insight: Check nums[write-K] instead of nums[write-1] to allow K copies.
-For K=2, compare with nums[write-2] to determine if we already have 2 copies.
-
 Constraints:
 - 1 <= nums.length <= 3 * 10^4
 - -10^4 <= nums[i] <= 10^4

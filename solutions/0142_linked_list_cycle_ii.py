@@ -6,10 +6,6 @@ Link: https://leetcode.com/problems/linked-list-cycle-ii/
 Given the head of a linked list, return the node where the cycle begins.
 If there is no cycle, return null.
 
-Sub-Pattern: Fast-slow (Floyd's algorithm - phase 2)
-Key Insight: After detecting a cycle, use mathematical property to find
-the cycle start. Reset one pointer to head and move both at same speed.
-
 Constraints:
 - The number of the nodes in the list is in the range [0, 10^4]
 - -10^5 <= Node.val <= 10^5
