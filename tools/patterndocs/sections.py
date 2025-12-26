@@ -20,14 +20,19 @@ def create_anchor(section_num: int, title: str) -> str:
     - Spaces and dashes (including en-dash, em-dash) → hyphen
     - Remove parentheses, slashes, colons, and other special chars
     - Collapse multiple consecutive hyphens
+    - Remove leading number prefix (e.g., "4. " from "4. Title")
     """
     import re
     
+    # Remove leading number prefix (e.g., "4. " or "4.")
+    title = re.sub(r'^\d+\.\s*', '', title)
+    
     anchor = f"{section_num}-{title.lower()}"
-    # Replace spaces and various Unicode dashes with hyphens
+    # Replace spaces with hyphens
     anchor = anchor.replace(" ", "-")
-    anchor = anchor.replace("–", "-")  # en-dash (U+2013)
-    anchor = anchor.replace("—", "-")  # em-dash (U+2014)
+    # Remove Unicode dashes (GFM removes them, not converts to hyphen)
+    anchor = anchor.replace("–", "")  # en-dash (U+2013)
+    anchor = anchor.replace("—", "")  # em-dash (U+2014)
     # Remove parentheses, slashes, colons, and other special characters
     anchor = re.sub(r'[()/:]', '', anchor)
     # Remove other non-word characters (keep only alphanumeric and hyphens)

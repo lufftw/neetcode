@@ -12,7 +12,7 @@ This document presents the **canonical two pointers template** and all its major
 1. [Core Concepts](#1-core-concepts)
 2. [Opposite Pointers (Two-End)](#2-opposite-pointers-two-end)
 3. [Same-Direction Pointers (Writer Pattern)](#3-same-direction-pointers-writer-pattern)
-4. [Fast–Slow Pointers (Cycle Detection)](#4-fast-slow-pointers-cycle-detection)
+4. [Fast–Slow Pointers (Cycle Detection)](#4-fastslow-pointers-cycle-detection)
 5. [Partitioning / Dutch National Flag](#5-partitioning-dutch-national-flag)
 6. [Dedup + Sorted Two-Pointer Enumeration](#6-dedup-sorted-two-pointer-enumeration)
 7. [Merge Pattern](#7-merge-pattern)
