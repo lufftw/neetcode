@@ -11,6 +11,8 @@ Developer tools for checking, validating, and generating project content.
 | **Checking** | [`check_solutions.py`](#check_solutionspy) | Validate solution file architecture compliance |
 | | [`run_format_tests.py`](#run_format_testspy) | Run format unit tests |
 | | [`check_test_files.py`](#check_test_filespy) | Check and fix test files with double newline endings |
+| **Review** | [`fix_docstring.py`](#fix_docstringpy) | Auto-fix file-level docstrings from LeetCode |
+| **Data** | [`leetcode-api`](leetcode-api/README.md) | SQLite-backed cache for LeetCode question data |
 | **Generation** | [`generate_mindmaps.py`](#generate_mindmapspy) | Rule-based mind map generation |
 | | [`generate_mindmaps_ai.py`](#generate_mindmaps_aipy) | AI-powered mind map generation |
 | | [`generate_pattern_docs.py`](#generate_pattern_docspy) | Pattern documentation generation |
@@ -68,6 +70,18 @@ tools/
 │
 ├── hooks/                         # Pre-commit hooks
 │   └── generate_ai_mindmaps_hook.py  # AI mind map generation hook
+│
+├── review-code/                   # Code review tools
+│   ├── fix_docstring.py           # Auto-fix file-level docstrings
+│   └── leetscrape_fetcher.py      # LeetCode data fetcher module
+│
+├── leetcode-api/                  # LeetCode data cache module
+│   ├── README.md                  # 📖 Detailed technical docs
+│   ├── question_api.py            # Unified public API
+│   ├── question_store.py          # SQLite storage layer
+│   ├── question_serializer.py     # Data serialization
+│   ├── import_all_json.py         # Bulk import script
+│   └── data/                      # LeetScrape data files
 │
 ├── mindmaps/                      # Mind map generation module
 │   └── README.md                  # 📖 Detailed technical docs
@@ -166,6 +180,61 @@ Found 3 files ending with two newlines:
 
 Tip: Use --fix to automatically fix these issues.
 ```
+
+---
+
+## 📝 Code Review Tools
+
+### `fix_docstring.py`
+
+Auto-fix file-level docstrings for solution files by fetching data from LeetCode.
+
+Located in: `tools/review-code/fix_docstring.py`
+
+```bash
+# Fix files in range (e.g., 0077-0142)
+python tools/review-code/fix_docstring.py --range 77 142
+
+# Fix single file (e.g., 0202)
+python tools/review-code/fix_docstring.py --range 202 202
+
+# Custom delay to avoid rate limiting
+python tools/review-code/fix_docstring.py --range 77 142 --delay-min 3.0 --delay-max 8.0
+
+python tools/review-code/fix_docstring.py --range 209 1000 --delay-min 60.0 --delay-max 120.0
+```
+
+**Parameters:**
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--range START END` | Required | Problem number range to process |
+| `--delay-min` | 3.0 | Minimum delay between requests (seconds) |
+| `--delay-max` | 8.0 | Maximum delay between requests (seconds) |
+
+**What It Does:**
+
+1. Reads problem info from local cache (`tools/.cache/leetcode_problems.json`)
+2. Fetches description and constraints from LeetCode via `leetscrape`
+3. Generates docstring following [review-code.md](../review-code.md) format
+4. Updates the solution file
+
+**Example Output:**
+```
+Processing 0202 ~ 0202
+Delay: 3.0s ~ 8.0s
+
+  Fetching happy-number... (1 constraints)
+[OK] 0202_happy_number.py: Updated
+
+==================================================
+Summary: Fixed 1 files
+==================================================
+```
+
+**Dependencies:**
+- `leetscrape` library for fetching LeetCode data
+- Local cache file with problem metadata
 
 ---
 
