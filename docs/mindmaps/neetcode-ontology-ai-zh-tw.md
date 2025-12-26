@@ -1,95 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive mind map visualization of LeetCode 核心模式知識圖（Sliding Window / Two Pointers / Backtracking / BFS / Merge / Binary Search / Heap） from NeetCode Practice Framework. Explore algorithm patterns, problem relationships, and learning paths.">
-    <title>LeetCode 核心模式知識圖（Sliding Window / Two Pointers / Backtracking / BFS / Merge / Binary Search / Heap） - NeetCode Mind Maps</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
-        .markmap { width: 100%; height: 100%; }
-        .markmap > svg { width: 100%; height: 100%; }
-        #topbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: #fff; border-bottom: 1px solid #e5e7eb;
-            padding: 8px 16px; display: flex; gap: 8px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 13px;
-        }
-        #topbar button {
-            padding: 4px 12px; border: 1px solid #d1d5db;
-            border-radius: 4px; background: #fff; cursor: pointer;
-        }
-        #topbar button:hover { background: #f3f4f6; }
-        .markmap { margin-top: 40px; height: calc(100% - 40px); }
-    </style>
-    <script>
-        (function () {
-            function loadScript(src) {
-                return new Promise((resolve, reject) => {
-                    // Check if script already exists
-                    const existing = document.querySelector(`script[src="${src}"]`);
-                    if (existing) {
-                        // If script exists and is loaded, resolve immediately
-                        if (existing.getAttribute('data-loaded') === 'true') {
-                            resolve();
-                            return;
-                        }
-                        // If script exists but not loaded, wait for it
-                        existing.addEventListener('load', resolve, { once: true });
-                        existing.addEventListener('error', reject, { once: true });
-                        return;
-                    }
-                    
-                    const s = document.createElement('script');
-                    s.src = src;
-                    s.defer = true;
-                    s.onload = function() {
-                        s.setAttribute('data-loaded', 'true');
-                        resolve();
-                    };
-                    s.onerror = function() {
-                        reject(new Error('Failed to load: ' + src));
-                    };
-                    document.head.appendChild(s);
-                });
-            }
+---
+title: LeetCode 核心模式知識圖（Sliding Window / Two Pointers / Backtracking / BFS / Merge / Binary Search / Heap）
+markmap:
+  colorFreezeLevel: 2
+  maxWidth: 300
+---
 
-            async function ensureAndInit() {
-                const container = document.querySelector('.markmap');
-                if (!container) return;
-
-                try {
-                    // Ensure window.markmap exists
-                    if (!window.markmap) {
-                        window.markmap = {};
-                    }
-
-                    // Load scripts in order if not already loaded
-                    if (!window.d3) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/d3@7');
-                    }
-                    if (!window.markmap.Transformer) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-lib');
-                    }
-                    if (!window.markmap.Markmap) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-view');
-                    }
-                    if (!window.markmap.Toolbar) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-toolbar');
-                    }
-
-                    // Clear existing markmap if any
-                    const existingSvg = document.querySelector('.markmap > svg');
-                    if (existingSvg) {
-                        existingSvg.remove();
-                    }
-
-                    // Initialize markmap
-                    const { Transformer, Markmap } = window.markmap;
-                    const transformer = new Transformer();
-                    const markdown = `
 ## 🎯 總覽：從「API Kernel」到「可重用解題引擎」
 - **API Kernel（可重用核心）**：把一類題的「狀態機 + 不變量」抽象成模板  
 - **Pattern（子模式）**：同一 Kernel 下的具體不變量/目標（最大化/最小化/存在性）  
@@ -110,23 +25,23 @@
 
 ## ⚡ API Kernel ①：SubstringSlidingWindow（滑動視窗狀態機）
 - **一句話**：右指標只前進；左指標負責恢復不變量  
-- **典型複雜度**：\$O(n)\$（每元素最多進/出視窗一次）
-- **狀態資料結構**：\`hash_map/counter\`（字元頻率）、或 \`last_seen_index\`
+- **典型複雜度**：$O(n)$（每元素最多進/出視窗一次）
+- **狀態資料結構**：`hash_map/counter`（字元頻率）、或 `last_seen_index`
 
 ### 🎯 子模式（Patterns）
 <!-- markmap: fold -->
 - **sliding_window_unique（全唯一）**
   - 不變量：視窗內無重複
-  - 狀態：\`last_seen_index\` 或 freq
+  - 狀態：`last_seen_index` 或 freq
   - 代表題：[LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
 - **sliding_window_at_most_k_distinct（至多 K 種）**
-  - 不變量：\`distinct_count ≤ K\`
+  - 不變量：`distinct_count ≤ K`
   - 狀態：freq map（計數歸零要刪 key）
   - 代表題：[LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
-  - 不變量：\`have\` 覆蓋 \`need\`（每個字元都滿足頻率）
-  - 狀態：need/have + \`satisfied/required\`
+  - 不變量：`have` 覆蓋 `need`（每個字元都滿足頻率）
+  - 狀態：need/have + `satisfied/required`
   - 代表題：[LeetCode 76 - Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)、[LeetCode 438 - Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)、[LeetCode 567 - Permutation in String](https://leetcode.com/problems/permutation-in-string/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py)
-  - 不變量：例如 \`sum ≥ target\`（最小化）或 \`sum ≤ budget\`（最大化）
+  - 不變量：例如 `sum ≥ target`（最小化）或 `sum ≤ budget`（最大化）
   - 狀態：整數 sum
   - 代表題：[LeetCode 209 - Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
   - 不變量：window size = k
@@ -149,7 +64,7 @@
 
 ## ⚡ API Kernel ②：TwoPointersTraversal（雙指標遍歷）
 - **一句話**：每次移動都是「永久排除」一部分可能性  
-- **典型複雜度**：\$O(n)\$（或排序後 \$O(n\log n)+O(n)\$）
+- **典型複雜度**：$O(n)$（或排序後 $O(n\log n)+O(n)$）
 
 ### 🎯 子模式（Patterns）與代表題
 - **相向（Opposite）**
@@ -172,12 +87,12 @@
 ### 🧠 速記：Two Pointers 六型比較
 | 型態 | 指標初始化 | 移動規則 | 常用 DS | 代表題 |
 |---|---|---|---|---|
-| 相向 | \`l=0,r=n-1\` | 依單調性縮小區間 | array/string |[LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py), 125 |
-| 同向 Writer | \`w=0,r=0\` | r 掃描，w 收集 | array |[LeetCode 26 - Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py), 27, 283 |
-| 快慢 | \`slow=head, fast=head\` | 1× vs 2× | linked_list |[LeetCode 141 - Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py), 142 |
-| Partition | \`low,mid,high\` | 依 pivot 分區 | array |[LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py), 905 |
-| 去重枚舉 | \`i + (l,r)\` | skip duplicates | array |[LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py) |
-| Merge | \`i,j\` | 取小者前進 | array/list |[LeetCode 21 - Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), 88 |
+| 相向 | `l=0,r=n-1` | 依單調性縮小區間 | array/string |[LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py), 125 |
+| 同向 Writer | `w=0,r=0` | r 掃描，w 收集 | array |[LeetCode 26 - Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py), 27, 283 |
+| 快慢 | `slow=head, fast=head` | 1× vs 2× | linked_list |[LeetCode 141 - Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py), 142 |
+| Partition | `low,mid,high` | 依 pivot 分區 | array |[LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py), 905 |
+| 去重枚舉 | `i + (l,r)` | skip duplicates | array |[LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py) |
+| Merge | `i,j` | 取小者前進 | array/list |[LeetCode 21 - Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py), 88 |
 
 ### 🧩 練習路線（Roadmap）
 - **two_pointers_path**
@@ -195,31 +110,31 @@
 <!-- markmap: fold -->
 - **Permutation（排列）**
   - backtracking_permutation / permutation_dedup
-  - 狀態：\`used[]\`
+  - 狀態：`used[]`
   - 代表題：[LeetCode 46 - Permutations](https://leetcode.com/problems/permutations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py)、[LeetCode 47 - Permutations II](https://leetcode.com/problems/permutations-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py)
   - backtracking_subset / subset_dedup / combination
-  - 狀態：\`start_index\`（保證 canonical ordering）
+  - 狀態：`start_index`（保證 canonical ordering）
   - 代表題：[LeetCode 78 - Subsets](https://leetcode.com/problems/subsets/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py)、[LeetCode 90 - Subsets II](https://leetcode.com/problems/subsets-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py)、[LeetCode 77 - Combinations](https://leetcode.com/problems/combinations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py)
   - backtracking_combination_sum / combination_dedup
-  - 狀態：\`remaining\`
+  - 狀態：`remaining`
   - 代表題：[LeetCode 39 - Combination Sum](https://leetcode.com/problems/combination-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)、[LeetCode 40 - Combination Sum II](https://leetcode.com/problems/combination-sum-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py)、[LeetCode 216 - Combination Sum III](https://leetcode.com/problems/combination-sum-iii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0216_combination_sum_iii.py)
   - backtracking_n_queens / sudoku
   - 狀態：columns + diagonals sets
   - 代表題：[LeetCode 51 - N-Queens](https://leetcode.com/problems/n-queens/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)、[LeetCode 52 - N-Queens II](https://leetcode.com/problems/n-queens-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0052_n_queens_ii.py)
   - backtracking_string_segmentation
-  - 狀態：\`start_index\` + validity check（可加 DP 預處理）
+  - 狀態：`start_index` + validity check（可加 DP 預處理）
   - 代表題：[LeetCode 93 - Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0093_restore_ip_addresses.py)、[LeetCode 131 - Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py)
   - backtracking_grid_path
   - 狀態：visited（in-place 標記）
   - 代表題：[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
 
 ### 🧷 去重/剪枝（面試高頻失分點）
-- **同層去重**：排序後 \`if i>start and nums[i]==nums[i-1]: continue\`
-- **排列去重**：\`if i>0 and nums[i]==nums[i-1] and not used[i-1]: continue\`
+- **同層去重**：排序後 `if i>start and nums[i]==nums[i-1]: continue`
+- **排列去重**：`if i>0 and nums[i]==nums[i-1] and not used[i-1]: continue`
 - **界限剪枝**：
   - remaining < 0 立刻 return
-  - sorted early break：\`if candidates[i] > remaining: break\`
-  - 組合不足剪枝：\`if n - start + 1 < need: return\`
+  - sorted early break：`if candidates[i] > remaining: break`
+  - 組合不足剪枝：`if n - start + 1 < need: return`
 
 ---
 
@@ -243,8 +158,8 @@
   - merge_k_sorted_heap：min-heap 維護當前最小頭
   - merge_k_sorted_divide：分治兩兩合併
 - **複雜度**
-  - heap：\$O(N\log K)\$
-  - divide：\$O(N\log K)\$（常數不同）
+  - heap：$O(N\log K)$
+  - divide：$O(N\log K)$（常數不同）
 
 ### 代表題
 -[LeetCode 23 - Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)（heap / divide）
@@ -261,8 +176,8 @@
 ## ⚡ API Kernel ⑦：TwoPointerPartition（分區 / Dutch Flag / Quickselect）
 - **三向分區**：dutch_flag_partition →[LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
 - **選第 K 大**：
-  - quickselect_partition（平均 \$O(n)\$）  
-  - heap_kth_element（\$O(n\log k)\$ 或 \$O(n + k\log n)\$ 變體）
+  - quickselect_partition（平均 $O(n)$）  
+  - heap_kth_element（$O(n\log k)$ 或 $O(n + k\log n)$ 變體）
   - 代表題：[LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
 
 ## ⚡ API Kernel ⑧：FastSlowPointers（快慢指標）
@@ -295,106 +210,4 @@
 ## 🏁 一頁式「先刷哪幾題」清單（高覆蓋）
 - Sliding Window：[LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) →[LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) →[LeetCode 209 - Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) →[LeetCode 76 - Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) →[LeetCode 567 - Permutation in String](https://leetcode.com/problems/permutation-in-string/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) →[LeetCode 438 - Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py)
 - Backtracking：[LeetCode 46 - Permutations](https://leetcode.com/problems/permutations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py) →[LeetCode 47 - Permutations II](https://leetcode.com/problems/permutations-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py) →[LeetCode 78 - Subsets](https://leetcode.com/problems/subsets/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py) →[LeetCode 90 - Subsets II](https://leetcode.com/problems/subsets-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py) →[LeetCode 39 - Combination Sum](https://leetcode.com/problems/combination-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py) →[LeetCode 40 - Combination Sum II](https://leetcode.com/problems/combination-sum-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py) →[LeetCode 51 - N-Queens](https://leetcode.com/problems/n-queens/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py) →[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py) →[LeetCode 131 - Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0131_palindrome_partitioning.py) →[LeetCode 93 - Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0093_restore_ip_addresses.py)
-- Heap / Merge：[LeetCode 23 - Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py) →[LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py) →[LeetCode 21 - Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py) →[LeetCode 88 - Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py) →[LeetCode 977 - Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)`;
-                    const { root } = transformer.transform(markdown);
-                    const svg = d3.select('.markmap').append('svg');
-                    const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-                    svg.node().mm = mm;
-                    mm.fit();
-                    
-                    if (window.markmap && window.markmap.Toolbar) {
-                        const toolbar = new window.markmap.Toolbar();
-                        toolbar.attach(mm);
-                        setTimeout(function() {
-                            document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                                toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                                    if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                                });
-                                var brand = toolbar.querySelector('.mm-toolbar-brand');
-                                if (brand) {
-                                    brand.innerHTML = '🟡 NeetCode';
-                                    brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                                    brand.style.fontSize = '12px'; brand.style.color = '#666';
-                                }
-                            });
-                        }, 200);
-                    }
-                } catch (error) {
-                    console.error('Failed to load markmap libraries:', error);
-                }
-            }
-
-            function fitView() {
-                var svg = document.querySelector('.markmap > svg');
-                if (svg && svg.mm) svg.mm.fit();
-            }
-            function expandAll() {
-                var svg = document.querySelector('.markmap > svg');
-                if (svg && svg.mm) {
-                    var root = svg.mm.state.data;
-                    (function expand(n) {
-                        n.payload = Object.assign({}, n.payload, { fold: 0 });
-                        if (n.children) n.children.forEach(expand);
-                    })(root);
-                    svg.mm.setData(root); svg.mm.fit();
-                }
-            }
-            function collapseAll() {
-                var svg = document.querySelector('.markmap > svg');
-                if (svg && svg.mm) {
-                    var root = svg.mm.state.data;
-                    root.children && root.children.forEach(function collapse(n) {
-                        if (n.children && n.children.length) {
-                            n.payload = Object.assign({}, n.payload, { fold: 1 });
-                            n.children.forEach(collapse);
-                        }
-                    });
-                    svg.mm.setData(root); svg.mm.fit();
-                }
-            }
-
-            // Make functions globally available
-            window.fitView = fitView;
-            window.expandAll = expandAll;
-            window.collapseAll = collapseAll;
-
-            // Expose init function for re-entry (for instant navigation)
-            window.__initMindmap = ensureAndInit;
-
-            // 1) Full page reload - initialize on DOMContentLoaded or immediately if DOM ready
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', ensureAndInit, { once: true });
-            } else {
-                ensureAndInit();
-            }
-
-            // 2) MkDocs Material instant navigation (key lifecycle hook)
-            if (window.document$ && typeof window.document$.subscribe === 'function') {
-                window.document$.subscribe(() => ensureAndInit());
-            }
-
-            // 3) Back/forward cache (BFCache) restoration
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    ensureAndInit();
-                }
-            });
-
-            // 4) Additional PJAX/Instant Navigation event support
-            document.addEventListener('pjax:end', ensureAndInit);
-            document.addEventListener('pjax:success', ensureAndInit);
-            document.addEventListener('turbolinks:load', ensureAndInit);
-            document.addEventListener('swup:contentReplaced', ensureAndInit);
-            document.addEventListener('swup:pageView', ensureAndInit);
-        })();
-    </script>
-</head>
-<body>
-    <div id="topbar">
-        <button onclick="fitView()">Fit View</button>
-        <button onclick="expandAll()">Expand All</button>
-        <button onclick="collapseAll()">Collapse All</button>
-    </div>
-    <div class="markmap"></div>
-</body>
-</html>
+- Heap / Merge：[LeetCode 23 - Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py) →[LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py) →[LeetCode 21 - Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py) →[LeetCode 88 - Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0088_merge_sorted_array.py) →[LeetCode 977 - Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0977_squares_of_a_sorted_array.py)

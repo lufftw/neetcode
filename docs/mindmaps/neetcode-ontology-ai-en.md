@@ -1,95 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive mind map visualization of LeetCode Core Patterns Mind Map (API Kernels → Patterns → Problems) from NeetCode Practice Framework. Explore algorithm patterns, problem relationships, and learning paths.">
-    <title>LeetCode Core Patterns Mind Map (API Kernels → Patterns → Problems) - NeetCode Mind Maps</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
-        .markmap { width: 100%; height: 100%; }
-        .markmap > svg { width: 100%; height: 100%; }
-        #topbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: #fff; border-bottom: 1px solid #e5e7eb;
-            padding: 8px 16px; display: flex; gap: 8px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 13px;
-        }
-        #topbar button {
-            padding: 4px 12px; border: 1px solid #d1d5db;
-            border-radius: 4px; background: #fff; cursor: pointer;
-        }
-        #topbar button:hover { background: #f3f4f6; }
-        .markmap { margin-top: 40px; height: calc(100% - 40px); }
-    </style>
-    <script>
-        (function () {
-            function loadScript(src) {
-                return new Promise((resolve, reject) => {
-                    // Check if script already exists
-                    const existing = document.querySelector(`script[src="${src}"]`);
-                    if (existing) {
-                        // If script exists and is loaded, resolve immediately
-                        if (existing.getAttribute('data-loaded') === 'true') {
-                            resolve();
-                            return;
-                        }
-                        // If script exists but not loaded, wait for it
-                        existing.addEventListener('load', resolve, { once: true });
-                        existing.addEventListener('error', reject, { once: true });
-                        return;
-                    }
-                    
-                    const s = document.createElement('script');
-                    s.src = src;
-                    s.defer = true;
-                    s.onload = function() {
-                        s.setAttribute('data-loaded', 'true');
-                        resolve();
-                    };
-                    s.onerror = function() {
-                        reject(new Error('Failed to load: ' + src));
-                    };
-                    document.head.appendChild(s);
-                });
-            }
+---
+title: LeetCode Core Patterns Mind Map (API Kernels → Patterns → Problems)
+markmap:
+  colorFreezeLevel: 2
+  maxWidth: 300
+---
 
-            async function ensureAndInit() {
-                const container = document.querySelector('.markmap');
-                if (!container) return;
-
-                try {
-                    // Ensure window.markmap exists
-                    if (!window.markmap) {
-                        window.markmap = {};
-                    }
-
-                    // Load scripts in order if not already loaded
-                    if (!window.d3) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/d3@7');
-                    }
-                    if (!window.markmap.Transformer) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-lib');
-                    }
-                    if (!window.markmap.Markmap) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-view');
-                    }
-                    if (!window.markmap.Toolbar) {
-                        await loadScript('https://cdn.jsdelivr.net/npm/markmap-toolbar');
-                    }
-
-                    // Clear existing markmap if any
-                    const existingSvg = document.querySelector('.markmap > svg');
-                    if (existingSvg) {
-                        existingSvg.remove();
-                    }
-
-                    // Initialize markmap
-                    const { Transformer, Markmap } = window.markmap;
-                    const transformer = new Transformer();
-                    const markdown = `
 ## 🎯 How to use this map (fast)
 - **Start from API Kernels** → pick a pattern → solve the mapped problems
 - Keep one invariant per pattern: **expand** (add right / go deeper) then **contract** (move left / undo)
@@ -100,7 +15,7 @@
 
 ## 🧠 Big Picture: From Technique → Kernel → Pattern → Problem
 - **Technique** (e.g., *Two Pointers*)  
-  - **API Kernel** (reusable “engine”, e.g., \`SubstringSlidingWindow\`)  
+  - **API Kernel** (reusable “engine”, e.g., `SubstringSlidingWindow`)  
     - **Pattern** (invariant + state)  
       - **LeetCode {number}** (practice + recognition)
 
@@ -108,35 +23,35 @@
 
 ## 🪟 SubstringSlidingWindow (API Kernel)
 - **Summary**: 1D window state machine over sequences with dynamic invariants  
-- **Cost model**: each element enters/exits window ≤ 1 time ⇒ typically \$O(n)\$
-- **State toolbelt**: \`hash_map\` / \`counter\`, sometimes integer sum
+- **Cost model**: each element enters/exits window ≤ 1 time ⇒ typically $O(n)$
+- **State toolbelt**: `hash_map` / `counter`, sometimes integer sum
 
 <!-- markmap: fold -->
 ### ✅ Pattern comparison table (must-know)
 | Problem | Invariant | State | Window Size | Goal |
 |---------|-----------|-------|-------------|------|
-|[LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | all unique | \`last_index\` map | variable | maximize |
+|[LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py) | all unique | `last_index` map | variable | maximize |
 |[LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py) | ≤ K distinct | freq map | variable | maximize |
-|[LeetCode 76 - Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | covers all of \`t\` | need/have maps | variable | minimize |
+|[LeetCode 76 - Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py) | covers all of `t` | need/have maps | variable | minimize |
 |[LeetCode 567 - Permutation in String](https://leetcode.com/problems/permutation-in-string/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0567_permutation_in_string.py) | exact multiset match | freq + matched count | fixed | exists |
 |[LeetCode 438 - Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0438_find_all_anagrams_in_a_string.py) | exact multiset match | freq + matched count | fixed | all positions |
 |[LeetCode 209 - Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py) | sum ≥ target | integer sum | variable | minimize |
 
 ### sliding_window_unique
 - **Invariant**: ==no duplicates in window==
-- **State**: \`last_seen_index[char]\` (jump-left optimization)
+- **State**: `last_seen_index[char]` (jump-left optimization)
 - **Anchor problems**
   - [ ][LeetCode 3 - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0003_longest_substring_without_repeating_characters.py)
 
 ### sliding_window_at_most_k_distinct
 - **Invariant**: ==distinct_count ≤ K==
-- **State**: frequency \`hash_map\`, maintain \`len(map)\`
+- **State**: frequency `hash_map`, maintain `len(map)`
 - **Anchor problems**
   - [ ][LeetCode 340 - Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0340_longest_substring_with_at_most_k_distinct.py)
 
 ### sliding_window_freq_cover
 - **Invariant**: ==window meets required frequencies==
-- **State**: \`need_frequency\`, \`have_frequency\`, \`chars_satisfied\`
+- **State**: `need_frequency`, `have_frequency`, `chars_satisfied`
 - **Two flavors**
   - *Minimize while valid* → classic “cover”
     - [ ][LeetCode 76 - Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0076_minimum_window_substring.py)
@@ -144,7 +59,7 @@
 
 ### sliding_window_cost_bounded
 - **Invariant**: ==sum/cost constraint satisfied==
-- **State**: integer \`window_sum\`
+- **State**: integer `window_sum`
 - **Anchor problems**
   - [ ][LeetCode 209 - Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0209_minimum_size_subarray_sum.py)
 
@@ -156,9 +71,9 @@
 ### ✅ Two pointers pattern comparison table
 | Pattern | Init | Movement | Typical invariant | Time | Space |
 |--------|------|----------|-------------------|------|-------|
-| Opposite | \`0, n-1\` | toward center | solution lies within [L,R] | \$O(n)\$ | \$O(1)\$ |
-| Writer | \`write=0, read=0\` | both forward | \`a[0:write]\` is “kept” | \$O(n)\$ | \$O(1)\$ |
-| Dedup enumeration | \`i + (L,R)\` | nested + skips | unique tuples only | \$O(n^2)\$ | \$O(1)\$ |
+| Opposite | `0, n-1` | toward center | solution lies within [L,R] | $O(n)$ | $O(1)$ |
+| Writer | `write=0, read=0` | both forward | `a[0:write]` is “kept” | $O(n)$ | $O(1)$ |
+| Dedup enumeration | `i + (L,R)` | nested + skips | unique tuples only | $O(n^2)$ | $O(1)$ |
 
 ### two_pointer_opposite_maximize
 - **Goal**: maximize a function while shrinking search space
@@ -166,17 +81,17 @@
   - [ ][LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py)
 
 ### two_pointer_three_sum (dedup enumeration)
-- **Recipe**: sort → fix \`i\` → opposite pointers → skip duplicates
+- **Recipe**: sort → fix `i` → opposite pointers → skip duplicates
 - **Anchor problems**
   - [ ][LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py)[ ][LeetCode 16 - 3Sum Closest](https://leetcode.com/problems/3sum-closest/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0016_3sum_closest.py)
 
 ### two_pointer_writer_dedup (same-direction)
-- **Invariant**: \`arr[0:write)\` is deduplicated
+- **Invariant**: `arr[0:write)` is deduplicated
 - **Anchor problems**
   - [ ][LeetCode 26 - Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py)[ ][LeetCode 80 - Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0080_remove_duplicates_from_sorted_array_ii.py)
 
 ### two_pointer_writer_remove (same-direction)
-- **Invariant**: \`arr[0:write)\` contains all kept elements
+- **Invariant**: `arr[0:write)` contains all kept elements
 - **Anchor problems**
   - [ ][LeetCode 27 - Remove Element](https://leetcode.com/problems/remove-element/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py)
 
@@ -192,7 +107,7 @@
 
 ## 🐢🐇 FastSlowPointers (API Kernel)
 - **Summary**: two pointers at different speeds for cycle detection / midpoint
-- **Key theorem**: if a cycle exists, fast meets slow in \$O(n)\$
+- **Key theorem**: if a cycle exists, fast meets slow in $O(n)$
 
 ### fast_slow_cycle_detect
 - [ ][LeetCode 141 - Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py)
@@ -211,7 +126,7 @@
 
 ## 🔀 MergeSortedSequences (API Kernel)
 - **Summary**: merge two sorted sequences using two pointers
-- **When it wins**: stable linear merge, \$O(m+n)\$
+- **When it wins**: stable linear merge, $O(m+n)$
 
 ### merge_two_sorted_lists
 - [ ][LeetCode 21 - Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py)
@@ -226,8 +141,8 @@
 ## 🧺 KWayMerge (API Kernel)
 - **Summary**: merge K sorted sequences using heap or divide-and-conquer
 - **Two standard strategies**
-  - **Min-heap**: push heads, pop+advance ⇒ \$O(N \log K)\$
-  - **Divide & conquer**: pairwise merge ⇒ \$O(N \log K)\$
+  - **Min-heap**: push heads, pop+advance ⇒ $O(N \log K)$
+  - **Divide & conquer**: pairwise merge ⇒ $O(N \log K)$
 
 ### merge_k_sorted_heap
 - [ ][LeetCode 23 - Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py)
@@ -242,7 +157,7 @@
 - **Summary**: partition array using two pointers (Dutch flag, quickselect)
 
 ### dutch_flag_partition
-- **Regions**: \`< pivot | = pivot | unknown | > pivot\`
+- **Regions**: `< pivot | = pivot | unknown | > pivot`
 - [ ][LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
 
 ### two_way_partition
@@ -250,14 +165,14 @@
 - [ ][LeetCode 905 - Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0905_sort_array_by_parity.py)[ ][LeetCode 922 - Sort Array By Parity II](https://leetcode.com/problems/sort-array-by-parity-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0922_sort_array_by_parity_ii.py)
 
 ### quickselect_partition
-- **Goal**: kth element without full sort (avg \$O(n)\$)
+- **Goal**: kth element without full sort (avg $O(n)$)
 - [ ][LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
 
 ## 🏔️ HeapTopK (API Kernel)
 - **Summary**: maintain top K / kth using heap
 - **Rule of thumb**
-  - \`min_heap\` of size K for **top K largest**
-  - \`max_heap\` of size K for **top K smallest**
+  - `min_heap` of size K for **top K largest**
+  - `max_heap` of size K for **top K smallest**
 - **Anchor problems**
   - [ ][LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py)
 
@@ -269,12 +184,12 @@
 ### ✅ Backtracking “shape” cheat sheet
 | Shape | What you track | Canonical trick | Anchor |
 |------|-----------------|-----------------|--------|
-| Permutation | \`used[]\` | each element once |[LeetCode 46 - Permutations](https://leetcode.com/problems/permutations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py) |
-| Permutation + dup | \`used[]\` + sort | skip if prev unused |[LeetCode 47 - Permutations II](https://leetcode.com/problems/permutations-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py) |
-| Subset | \`start_index\` | collect every node |[LeetCode 78 - Subsets](https://leetcode.com/problems/subsets/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py) |
-| Subset + dup | \`start_index\` + sort | same-level skip |[LeetCode 90 - Subsets II](https://leetcode.com/problems/subsets-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py) |
-| Combination | \`start_index\` + size | stop when size==k |[LeetCode 77 - Combinations](https://leetcode.com/problems/combinations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py) |
-| Target sum | \`remaining\` | prune remaining<0 |[LeetCode 39 - Combination Sum](https://leetcode.com/problems/combination-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)/40/216 |
+| Permutation | `used[]` | each element once |[LeetCode 46 - Permutations](https://leetcode.com/problems/permutations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py) |
+| Permutation + dup | `used[]` + sort | skip if prev unused |[LeetCode 47 - Permutations II](https://leetcode.com/problems/permutations-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0047_permutations_ii.py) |
+| Subset | `start_index` | collect every node |[LeetCode 78 - Subsets](https://leetcode.com/problems/subsets/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py) |
+| Subset + dup | `start_index` + sort | same-level skip |[LeetCode 90 - Subsets II](https://leetcode.com/problems/subsets-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0090_subsets_ii.py) |
+| Combination | `start_index` + size | stop when size==k |[LeetCode 77 - Combinations](https://leetcode.com/problems/combinations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py) |
+| Target sum | `remaining` | prune remaining<0 |[LeetCode 39 - Combination Sum](https://leetcode.com/problems/combination-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py)/40/216 |
 | Constraint sat. | constraint sets | propagate constraints |[LeetCode 51 - N-Queens](https://leetcode.com/problems/n-queens/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)/52 |
 | Grid path | visited mark | undo on return |[LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py) |
 | String cuts | cut positions | validate segment |[LeetCode 93 - Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0093_restore_ip_addresses.py)/131 |
@@ -301,7 +216,7 @@
 - [ ][LeetCode 51 - N-Queens](https://leetcode.com/problems/n-queens/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)[ ][LeetCode 52 - N-Queens II](https://leetcode.com/problems/n-queens-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0052_n_queens_ii.py)
 
 ### backtracking_grid_path
-- **Visited marking**: in-place \`'#'\` or \`set()\`
+- **Visited marking**: in-place `'#'` or `set()`
 - [ ][LeetCode 79 - Word Search](https://leetcode.com/problems/word-search/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0079_word_search.py)
 
 ### backtracking_string_segmentation
@@ -311,7 +226,7 @@
 ## 🌊 GridBFSMultiSource (API Kernel)
 - **Summary**: multi-source BFS wavefront propagation on grid graph
 - **Invariant**: first time visiting a cell is shortest time (unweighted)
-- **State**: \`queue\`, visited, distance/time layers
+- **State**: `queue`, visited, distance/time layers
 
 ### grid_bfs_propagation
 - [ ][LeetCode 994 - Rotting Oranges](https://leetcode.com/problems/rotting-oranges/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0994_rotting_oranges.py)
@@ -329,106 +244,4 @@
   - [ ][LeetCode 26 - Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0026_remove_duplicates_from_sorted_array.py) → [ ][LeetCode 27 - Remove Element](https://leetcode.com/problems/remove-element/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0027_remove_element.py) → [ ][LeetCode 283 - Move Zeroes](https://leetcode.com/problems/move-zeroes/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0283_move_zeroes.py) → [ ][LeetCode 11 - Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0011_container_with_most_water.py) → [ ][LeetCode 15 - 3Sum](https://leetcode.com/problems/3sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0015_3sum.py) → [ ][LeetCode 75 - Sort Colors](https://leetcode.com/problems/sort-colors/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0075_sort_colors.py)
   - [ ][LeetCode 78 - Subsets](https://leetcode.com/problems/subsets/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0078_subsets.py) → [ ][LeetCode 77 - Combinations](https://leetcode.com/problems/combinations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0077_combinations.py) → [ ][LeetCode 46 - Permutations](https://leetcode.com/problems/permutations/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0046_permutations.py) → [ ][LeetCode 39 - Combination Sum](https://leetcode.com/problems/combination-sum/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0039_combination_sum.py) → [ ][LeetCode 40 - Combination Sum II](https://leetcode.com/problems/combination-sum-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0040_combination_sum_ii.py) → [ ][LeetCode 51 - N-Queens](https://leetcode.com/problems/n-queens/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0051_n_queens.py)
   - [ ][LeetCode 21 - Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0021_merge_two_sorted_lists.py) → [ ][LeetCode 141 - Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0141_linked_list_cycle.py) → [ ][LeetCode 142 - Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0142_linked_list_cycle_ii.py) → [ ][LeetCode 876 - Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0876_middle_of_the_linked_list.py) → [ ][LeetCode 25 - Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0025_reverse_nodes_in_k_group.py)
-  - [ ][LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py) → [ ][LeetCode 23 - Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py) → [ ][LeetCode 4 - Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)`;
-                    const { root } = transformer.transform(markdown);
-                    const svg = d3.select('.markmap').append('svg');
-                    const mm = Markmap.create(svg.node(), { color: (node) => node.payload?.color || '#f59e0b' }, root);
-                    svg.node().mm = mm;
-                    mm.fit();
-                    
-                    if (window.markmap && window.markmap.Toolbar) {
-                        const toolbar = new window.markmap.Toolbar();
-                        toolbar.attach(mm);
-                        setTimeout(function() {
-                            document.querySelectorAll('.mm-toolbar').forEach(function(toolbar) {
-                                toolbar.querySelectorAll('.mm-toolbar-item').forEach(function(item) {
-                                    if ((item.title || '').toLowerCase().includes('dark')) item.remove();
-                                });
-                                var brand = toolbar.querySelector('.mm-toolbar-brand');
-                                if (brand) {
-                                    brand.innerHTML = '🟡 NeetCode';
-                                    brand.href = '#'; brand.onclick = function(e) { e.preventDefault(); };
-                                    brand.style.fontSize = '12px'; brand.style.color = '#666';
-                                }
-                            });
-                        }, 200);
-                    }
-                } catch (error) {
-                    console.error('Failed to load markmap libraries:', error);
-                }
-            }
-
-            function fitView() {
-                var svg = document.querySelector('.markmap > svg');
-                if (svg && svg.mm) svg.mm.fit();
-            }
-            function expandAll() {
-                var svg = document.querySelector('.markmap > svg');
-                if (svg && svg.mm) {
-                    var root = svg.mm.state.data;
-                    (function expand(n) {
-                        n.payload = Object.assign({}, n.payload, { fold: 0 });
-                        if (n.children) n.children.forEach(expand);
-                    })(root);
-                    svg.mm.setData(root); svg.mm.fit();
-                }
-            }
-            function collapseAll() {
-                var svg = document.querySelector('.markmap > svg');
-                if (svg && svg.mm) {
-                    var root = svg.mm.state.data;
-                    root.children && root.children.forEach(function collapse(n) {
-                        if (n.children && n.children.length) {
-                            n.payload = Object.assign({}, n.payload, { fold: 1 });
-                            n.children.forEach(collapse);
-                        }
-                    });
-                    svg.mm.setData(root); svg.mm.fit();
-                }
-            }
-
-            // Make functions globally available
-            window.fitView = fitView;
-            window.expandAll = expandAll;
-            window.collapseAll = collapseAll;
-
-            // Expose init function for re-entry (for instant navigation)
-            window.__initMindmap = ensureAndInit;
-
-            // 1) Full page reload - initialize on DOMContentLoaded or immediately if DOM ready
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', ensureAndInit, { once: true });
-            } else {
-                ensureAndInit();
-            }
-
-            // 2) MkDocs Material instant navigation (key lifecycle hook)
-            if (window.document$ && typeof window.document$.subscribe === 'function') {
-                window.document$.subscribe(() => ensureAndInit());
-            }
-
-            // 3) Back/forward cache (BFCache) restoration
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    ensureAndInit();
-                }
-            });
-
-            // 4) Additional PJAX/Instant Navigation event support
-            document.addEventListener('pjax:end', ensureAndInit);
-            document.addEventListener('pjax:success', ensureAndInit);
-            document.addEventListener('turbolinks:load', ensureAndInit);
-            document.addEventListener('swup:contentReplaced', ensureAndInit);
-            document.addEventListener('swup:pageView', ensureAndInit);
-        })();
-    </script>
-</head>
-<body>
-    <div id="topbar">
-        <button onclick="fitView()">Fit View</button>
-        <button onclick="expandAll()">Expand All</button>
-        <button onclick="collapseAll()">Collapse All</button>
-    </div>
-    <div class="markmap"></div>
-</body>
-</html>
+  - [ ][LeetCode 215 - Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0215_kth_largest_element_in_an_array.py) → [ ][LeetCode 23 - Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0023_merge_k_sorted_lists.py) → [ ][LeetCode 4 - Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/description/) · [Solution](https://github.com/lufftw/neetcode/blob/main/solutions/0004_median_of_two_sorted_arrays.py)

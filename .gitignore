@@ -57,15 +57,15 @@ site/
 # Ignore generated HTML mindmaps
 docs/pages/**
 !docs/pages/mindmaps/
-!docs/pages/mindmaps/neetcode_ontology_ai_*.html
-!docs/pages/mindmaps/neetcode_ontology_agent_evolved_*.html
+!docs/pages/mindmaps/neetcode-ontology-ai-*.html
+!docs/pages/mindmaps/neetcode-ontology-agent-evolved-*.html
 
 # Ignore generated Markdown mindmaps
 docs/mindmaps/*.md
 !docs/mindmaps/index.md
 !docs/mindmaps/README.md
-!docs/mindmaps/neetcode_ontology_ai_*.md
-!docs/mindmaps/neetcode_ontology_agent_evolved_*.md
+!docs/mindmaps/neetcode-ontology-ai-*.md
+!docs/mindmaps/neetcode-ontology-agent-evolved-*.md
 
 # =============================================================================
 # AI Markmap Agent (tools/ai-markmap-agent/)
