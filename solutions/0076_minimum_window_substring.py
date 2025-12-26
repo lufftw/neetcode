@@ -1,41 +1,17 @@
 # solutions/0076_minimum_window_substring.py
 """
-================================================================================
-LeetCode 76: Minimum Window Substring
-================================================================================
+Problem: Minimum Window Substring
+Link: https://leetcode.com/problems/minimum-window-substring/
 
-Problem: Given two strings s and t, find the minimum window in s which contains
-         all characters of t (including duplicates).
+Given two strings s and t, find the minimum window in s which contains
+all characters of t (including duplicates). If no such window exists,
+return the empty string "".
 
-API Kernel: SubstringSlidingWindow
-Pattern: sliding_window_freq_cover
-Family: substring_window
-
---------------------------------------------------------------------------------
-RELATIONSHIP TO BASE KERNEL (LeetCode 3)
---------------------------------------------------------------------------------
-
-Base (LeetCode 3):
-    INVARIANT: All characters in window are unique
-    GOAL: Maximize window size
-
-This Variant (LeetCode 76):
-    INVARIANT: Window contains all required characters with sufficient frequency
-    GOAL: Minimize window size (reverse optimization direction!)
-
-Delta from Base:
-    - Track "need" (required) and "have" (current) frequencies separately
-    - Use a "satisfied counter" to efficiently check if all requirements are met
-    - Contract WHILE valid (to minimize), not UNTIL valid (to maximize)
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(|s| + |t|) - Linear in both string lengths
-Space: O(|t|) - Frequency maps bounded by t's unique characters
-
-================================================================================
+Constraints:
+- m == s.length
+- n == t.length
+- 1 <= m, n <= 10^5
+- s and t consist of uppercase and lowercase English letters
 """
 from typing import Dict
 from collections import Counter

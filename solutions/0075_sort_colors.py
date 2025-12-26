@@ -1,50 +1,16 @@
 # solutions/0075_sort_colors.py
 """
-================================================================================
-LeetCode 75: Sort Colors
-================================================================================
+Problem: Sort Colors
+Link: https://leetcode.com/problems/sort-colors/
 
-Problem: Given an array nums with n objects colored red, white, or blue (0, 1, 2),
-         sort them in-place so that objects of the same color are adjacent,
-         with the colors in the order red, white, and blue.
+Given an array nums with n objects colored red, white, or blue (0, 1, 2),
+sort them in-place so that objects of the same color are adjacent,
+with the colors in the order red, white, and blue.
 
-API Kernel: TwoPointersTraversal
-Pattern: dutch_national_flag
-Family: partitioning
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: DUTCH NATIONAL FLAG (THREE-WAY PARTITION)
---------------------------------------------------------------------------------
-
-This is the canonical Dutch National Flag problem, named after the Dutch flag's
-three horizontal stripes. It partitions an array into three sections in one pass.
-
-Three Pointers:
-- LOW: Boundary for elements < pivot (0s)
-- MID: Current element being examined
-- HIGH: Boundary for elements > pivot (2s)
-
-INVARIANT:
-- nums[0:low] contains all 0s (red)
-- nums[low:mid] contains all 1s (white)  
-- nums[high+1:n] contains all 2s (blue)
-- nums[mid:high+1] is unclassified
-
-Why This Works:
-    Each element is examined once. Based on its value:
-    - 0: Swap with low, increment both low and mid (0 goes to red section)
-    - 1: Just increment mid (1 is already in white section)
-    - 2: Swap with high, decrement high (2 goes to blue section)
-         Note: Don't increment mid — swapped element needs examination
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each element examined once
-Space: O(1) - In-place swaps only
-
-================================================================================
+Constraints:
+- n == nums.length
+- 1 <= n <= 300
+- nums[i] is either 0, 1, or 2
 """
 from typing import List
 from _runner import get_solver

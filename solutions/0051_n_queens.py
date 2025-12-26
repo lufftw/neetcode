@@ -1,40 +1,14 @@
 # solutions/0051_n_queens.py
 """
-================================================================================
-LeetCode 51: N-Queens
-================================================================================
+Problem: N-Queens
+Link: https://leetcode.com/problems/n-queens/
 
-Problem: The n-queens puzzle is the problem of placing n queens on an n x n
-         chessboard such that no two queens attack each other.
-         Given an integer n, return all distinct solutions to the n-queens puzzle.
+The n-queens puzzle is the problem of placing n queens on an n x n
+chessboard such that no two queens attack each other.
+Given an integer n, return all distinct solutions to the n-queens puzzle.
 
-API Kernel: Backtracking
-Pattern: constraint_satisfaction_backtrack
-Family: backtracking
-
---------------------------------------------------------------------------------
-BACKTRACKING PATTERN: CONSTRAINT SATISFACTION
---------------------------------------------------------------------------------
-
-The N-Queens problem is a classic constraint satisfaction problem (CSP).
-We use backtracking to systematically explore all possible queen placements
-while pruning invalid branches early.
-
-KEY INSIGHT:
-- Place queens row by row (one queen per row is guaranteed)
-- For each row, try each column and check three constraints:
-  1. Column constraint: no two queens in same column
-  2. Main diagonal (\): characterized by (row - col) = constant
-  3. Anti-diagonal (/): characterized by (row + col) = constant
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(N!) - At row 0, we have N choices; at row 1, at most N-1 choices, etc.
-Space: O(N) - board array, three constraint sets, and recursion stack
-
-================================================================================
+Constraints:
+- 1 <= n <= 9
 """
 from typing import List, Set
 from _runner import get_solver

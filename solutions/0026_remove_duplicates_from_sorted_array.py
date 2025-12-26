@@ -1,48 +1,17 @@
 # solutions/0026_remove_duplicates_from_sorted_array.py
 """
-================================================================================
-LeetCode 26: Remove Duplicates from Sorted Array
-================================================================================
+Problem: Remove Duplicates from Sorted Array
+Link: https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 
-Problem: Given an integer array nums sorted in non-decreasing order, remove the
-         duplicates in-place such that each unique element appears only once.
-         Return the number of unique elements (k), with the first k elements of
-         nums containing the unique elements in their original order.
+Given an integer array nums sorted in non-decreasing order, remove the
+duplicates in-place such that each unique element appears only once.
+Return the number of unique elements (k), with the first k elements of
+nums containing the unique elements in their original order.
 
-API Kernel: TwoPointersTraversal
-Pattern: same_direction_writer
-Family: in_place_array_modification
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: SAME-DIRECTION (READER/WRITER)
---------------------------------------------------------------------------------
-
-This is the canonical same-direction two-pointer pattern for in-place modification.
-
-Pointer Roles:
-- READ pointer (fast): Scans through all elements
-- WRITE pointer (slow): Marks where the next unique element should be placed
-
-INVARIANT: nums[0:write] contains all unique elements seen in nums[0:read].
-
-Key Insight:
-    Since the array is SORTED, duplicates are always adjacent. We only need to
-    compare nums[read] with nums[write-1] (the last written element).
-
-Algorithm:
-1. Start write at 1 (first element is always unique)
-2. For each read position from 1 to n-1:
-   - If nums[read] != nums[write-1], copy to write position and increment write
-3. Return write (the count of unique elements)
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Single pass through the array
-Space: O(1) - In-place modification, only two indices
-
-================================================================================
+Constraints:
+- 1 <= nums.length <= 3 * 10^4
+- -10^4 <= nums[i] <= 10^4
+- nums is sorted in non-decreasing order
 """
 from typing import List
 from _runner import get_solver

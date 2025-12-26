@@ -1,44 +1,16 @@
 # solutions/0027_remove_element.py
 """
-================================================================================
-LeetCode 27: Remove Element
-================================================================================
+Problem: Remove Element
+Link: https://leetcode.com/problems/remove-element/
 
-Problem: Given an integer array nums and an integer val, remove all occurrences
-         of val in nums in-place. The order of elements may be changed.
-         Return the number of elements not equal to val.
+Given an integer array nums and an integer val, remove all occurrences
+of val in nums in-place. The order of elements may be changed.
+Return the number of elements not equal to val.
 
-API Kernel: TwoPointersTraversal
-Pattern: same_direction_writer
-Family: in_place_array_modification
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: SAME-DIRECTION (READER/WRITER)
---------------------------------------------------------------------------------
-
-This problem uses the same-direction pattern with a simple keep condition:
-keep the element if it's not equal to the target value.
-
-DELTA from Remove Duplicates (LeetCode 26):
-- Condition changes from "different from last written" to "not equal to val"
-- Array need not be sorted
-- Write index starts at 0 (no guaranteed first element to keep)
-
-INVARIANT: nums[0:write] contains all elements != val from nums[0:read].
-
-Algorithm:
-1. Scan through array with read pointer
-2. If current element != val, copy to write position and increment write
-3. Return write (count of elements kept)
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Single pass through the array
-Space: O(1) - In-place modification
-
-================================================================================
+Constraints:
+- 0 <= nums.length <= 100
+- 0 <= nums[i] <= 50
+- 0 <= val <= 100
 """
 from typing import List
 from _runner import get_solver

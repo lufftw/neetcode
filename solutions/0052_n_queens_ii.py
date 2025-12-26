@@ -5,14 +5,8 @@ Link: https://leetcode.com/problems/n-queens-ii/
 
 Return the number of distinct solutions to the n-queens puzzle.
 
-Sub-Pattern: Constraint satisfaction counting (optimized N-Queens)
-Key Insight: Same algorithm as N-Queens, but only count solutions
-instead of building board representations. Uses hash sets for O(1)
-constraint checking.
-
-Delta from N-Queens (LeetCode 51):
-- Only count solutions, don't build board strings
-- More memory efficient (no need to store board state)
+Constraints:
+- 1 <= n <= 9
 """
 from _runner import get_solver
 
