@@ -1,48 +1,14 @@
 # solutions/0003_longest_substring_without_repeating_characters.py
 """
-================================================================================
-LeetCode 3: Longest Substring Without Repeating Characters
-================================================================================
+Problem: Longest Substring Without Repeating Characters
+Link: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 
-Problem: Given a string s, find the length of the longest substring without
-         repeating characters.
+Given a string s, find the length of the longest substring without
+repeating characters.
 
-API Kernel: SubstringSlidingWindow (BASE TEMPLATE)
-Pattern: sliding_window_unique
-Family: substring_window
-
-This is the canonical sliding window kernel. All other sliding window variations
-build upon the principles established here.
-
---------------------------------------------------------------------------------
-SLIDING WINDOW CORE CONCEPT
---------------------------------------------------------------------------------
-
-The sliding window technique maintains a dynamic window [left, right] over a
-sequence while preserving an INVARIANT - a condition that must always hold.
-
-For this problem:
-    INVARIANT: All characters in window [left, right] are unique.
-
-Window Operations:
-    1. EXPAND: Always move right pointer forward, adding elements
-    2. CONTRACT: Move left pointer to restore invariant when violated
-    3. UPDATE: Record answer when window is valid
-
-Key Insight (Jump Optimization):
-    Instead of incrementally shrinking with a while-loop, we directly jump
-    `left` to `last_seen[char] + 1`. This works because:
-    - Any position before last_seen[char] would still include the duplicate
-    - Position last_seen[char] + 1 is the first that excludes the duplicate
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each character is visited at most twice
-Space: O(min(n, σ)) - Where σ is the alphabet size (128 for ASCII)
-
-================================================================================
+Constraints:
+- 0 <= s.length <= 5 * 10^4
+- s consists of English letters, digits, symbols and spaces.
 """
 from typing import Dict
 from _runner import get_solver

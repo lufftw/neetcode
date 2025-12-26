@@ -1,46 +1,16 @@
 # solutions/0011_container_with_most_water.py
 """
-================================================================================
-LeetCode 11: Container With Most Water
-================================================================================
+Problem: Container With Most Water
+Link: https://leetcode.com/problems/container-with-most-water/
 
-Problem: Given n non-negative integers representing heights of vertical lines,
-         find two lines that together with the x-axis form a container that
-         holds the most water.
+Given n non-negative integers representing heights of vertical lines,
+find two lines that together with the x-axis form a container that
+holds the most water.
 
-API Kernel: TwoPointersTraversal
-Pattern: opposite_pointers_maximize
-Family: two_pointers_optimization
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: OPPOSITE POINTERS (MAXIMIZE)
---------------------------------------------------------------------------------
-
-This problem demonstrates the classic opposite pointers pattern for optimization.
-We start with pointers at both ends and greedily move the pointer pointing to
-the shorter line.
-
-INVARIANT: The maximum area must involve lines at or between left and right.
-
-Key Insight:
-    Area = min(height[left], height[right]) × (right - left)
-    
-    Moving the pointer with the LARGER height can only DECREASE area because:
-    - Width definitely decreases
-    - min(heights) can only stay same or decrease
-    
-    Moving the pointer with the SMALLER height MIGHT increase area because:
-    - Width decreases, but
-    - min(heights) might increase enough to compensate
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each pointer moves at most n times
-Space: O(1) - Only two pointer indices stored
-
-================================================================================
+Constraints:
+- n == height.length
+- 2 <= n <= 10^5
+- 0 <= height[i] <= 10^4
 """
 from typing import List
 from _runner import get_solver

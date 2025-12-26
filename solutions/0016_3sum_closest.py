@@ -1,46 +1,16 @@
 # solutions/0016_3sum_closest.py
 """
-================================================================================
-LeetCode 16: 3Sum Closest
-================================================================================
+Problem: 3Sum Closest
+Link: https://leetcode.com/problems/3sum-closest/
 
-Problem: Given an integer array nums and an integer target, find three integers
-         in nums such that the sum is closest to target. Return the sum.
-         You may assume that each input would have exactly one solution.
+Given an integer array nums and an integer target, find three integers
+in nums such that the sum is closest to target. Return the sum.
+You may assume that each input would have exactly one solution.
 
-API Kernel: TwoPointersTraversal
-Pattern: opposite_pointers_closest
-Family: multi_sum_problems
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: OPPOSITE POINTERS (CLOSEST VARIANT)
---------------------------------------------------------------------------------
-
-This problem is a variant of 3Sum where instead of finding exact matches,
-we track the closest sum seen so far.
-
-DELTA from 3Sum:
-- No deduplication needed (we return a single value, not all triplets)
-- Track |current_sum - target| instead of checking equality
-- Update closest_sum when a closer sum is found
-
-INVARIANT: closest_sum is the sum nearest to target among all triplets
-           examined so far.
-
-Key Insight:
-    The two-pointer technique still works because:
-    - If current_sum < target, we need a larger sum → move left pointer right
-    - If current_sum > target, we need a smaller sum → move right pointer left
-    - If current_sum == target, we found the optimal → return immediately
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n²) - O(n log n) sorting + O(n²) for nested iteration
-Space: O(1) extra (excluding sorting space)
-
-================================================================================
+Constraints:
+- 3 <= nums.length <= 500
+- -1000 <= nums[i] <= 1000
+- -10^4 <= target <= 10^4
 """
 from typing import List
 from _runner import get_solver

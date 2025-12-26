@@ -1,47 +1,16 @@
 # solutions/0021_merge_two_sorted_lists.py
 """
-================================================================================
-LeetCode 21: Merge Two Sorted Lists
-================================================================================
+Problem: Merge Two Sorted Lists
+Link: https://leetcode.com/problems/merge-two-sorted-lists/
 
-Problem: You are given the heads of two sorted linked lists list1 and list2.
-         Merge the two lists into one sorted list by splicing together the nodes
-         of the first two lists. Return the head of the merged linked list.
+You are given the heads of two sorted linked lists list1 and list2.
+Merge the two lists into one sorted list by splicing together the nodes
+of the first two lists. Return the head of the merged linked list.
 
-API Kernel: TwoPointersTraversal
-Pattern: merge_sorted_sequences
-Family: merge_pattern
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: MERGE SORTED SEQUENCES
---------------------------------------------------------------------------------
-
-This is the canonical merge pattern for two sorted sequences.
-
-Two Approaches:
-1. ITERATIVE: Use a dummy head and build the merged list node by node
-2. RECURSIVE: Recursively choose the smaller head and merge remaining
-
-INVARIANT: At each step, the next node in the merged list is the smaller of
-           the two current nodes being compared.
-
-Key Insight:
-    Both lists are already sorted. The smallest unprocessed element is always
-    at the head of one of the two remaining lists. Compare heads, take smaller,
-    and advance that list's pointer.
-
-Why Dummy Node:
-    Using a dummy node simplifies edge cases. We don't need special handling
-    for initializing the merged list's head — we just return dummy.next.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(m + n) - Each node visited once
-Space: O(1) iterative, O(m + n) recursive (call stack)
-
-================================================================================
+Constraints:
+- The number of nodes in both lists is in the range [0, 50].
+- -100 <= Node.val <= 100
+- Both list1 and list2 are sorted in non-decreasing order.
 """
 from typing import Optional
 from _runner import get_solver

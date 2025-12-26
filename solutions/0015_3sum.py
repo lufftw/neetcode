@@ -1,46 +1,15 @@
 # solutions/0015_3sum.py
 """
-================================================================================
-LeetCode 15: 3Sum
-================================================================================
+Problem: 3Sum
+Link: https://leetcode.com/problems/3sum/
 
-Problem: Given an integer array nums, return all triplets [nums[i], nums[j], nums[k]]
-         such that i != j != k and nums[i] + nums[j] + nums[k] == 0.
-         The solution set must not contain duplicate triplets.
+Given an integer array nums, return all triplets [nums[i], nums[j], nums[k]]
+such that i != j != k and nums[i] + nums[j] + nums[k] == 0.
+The solution set must not contain duplicate triplets.
 
-API Kernel: TwoPointersTraversal
-Pattern: dedup_sorted_enumeration
-Family: multi_sum_problems
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: DEDUP + SORTED ENUMERATION
---------------------------------------------------------------------------------
-
-This problem combines sorting, opposite pointers, and duplicate skipping into
-a unified approach for finding all unique triplets.
-
-Algorithm:
-1. Sort the array to enable two-pointer search and deduplication
-2. Fix the first element with an outer loop
-3. Use opposite pointers to find pairs that sum to the complement
-4. Skip duplicates at all three levels to avoid duplicate triplets
-
-INVARIANT: After processing index i, all triplets starting with nums[i] have
-           been found exactly once.
-
-Key Deduplication Rules:
-- Skip nums[i] if nums[i] == nums[i-1] (same first element)
-- Skip nums[left] if nums[left] == nums[left+1] after finding a triplet
-- Skip nums[right] if nums[right] == nums[right-1] after finding a triplet
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n²) - O(n log n) sorting + O(n²) for nested iteration
-Space: O(1) extra (excluding output and sorting space)
-
-================================================================================
+Constraints:
+- 3 <= nums.length <= 3000
+- -10^5 <= nums[i] <= 10^5
 """
 from typing import List
 from _runner import get_solver

@@ -6,8 +6,11 @@ Link: https://leetcode.com/problems/two-sum/
 Given an array of integers nums and an integer target, 
 return indices of the two numbers such that they add up to target.
 
-Time Complexity: O(n) - single pass with hash map
-Space Complexity: O(n) - hash map storage
+Constraints:
+- 2 <= nums.length <= 10^4
+- -10^9 <= nums[i] <= 10^9
+- -10^9 <= target <= 10^9
+- Only one valid answer exists.
 """
 from typing import List
 from _runner import get_solver
