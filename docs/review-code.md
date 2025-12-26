@@ -4,7 +4,12 @@
 > **Scope**: All solution files in `solutions/`  
 > **Last Updated**: {{ git_revision_date_localized }}
 
-This document defines the **File-Level Docstring** format for solution files. All solution files SHOULD conform to this specification.
+This document defines the **File-Level Docstring** format for solution files.
+
+!!! info "Auto-Generated Docstrings"
+    This specification is for **auto-generated docstrings** maintained by project tooling (e.g., `review-code` tool). The format is intentionally detailed to preserve all LeetCode problem information.
+    
+    **For manual contribution**, follow the simpler format in [solution-contract.md#file-level-docstring](solution-contract.md#file-level-docstring) instead.
 
 ---
 
@@ -19,9 +24,27 @@ Link: https://leetcode.com/problems/{slug}/
 
 {Brief problem description}
 
+Example 1:
+    <img ...>  # if present, preserve the img tag
+    Input: {input}
+    Output: {output}
+    Explanation: {explanation line 1}
+    {continuation lines...}
+
+Example 2:
+    Input: {input}
+    Output: {output}
+
+... (include ALL examples from LeetCode, Explanation may span multiple lines)
+
 Constraints:
 - {constraint 1}
 - {constraint 2}
+
+Note: {optional additional notes}
+
+Follow-up: {optional follow-up question 1}
+Follow-up: {optional follow-up question 2}
 """
 ```
 
@@ -32,14 +55,23 @@ Constraints:
 | `Problem` | ✅ | Problem title (matches LeetCode title) |
 | `Link` | ✅ | LeetCode problem URL (must include `/description/` suffix) |
 | Description | Recommended | Brief problem statement explaining what the problem asks |
+| `Example` | Recommended | All examples from LeetCode (Input/Output with optional Explanation). Preserve `<img>` tags if present. |
 | `Constraints` | Recommended | Key constraints affecting algorithm choice |
+| `Note` | Optional | Additional notes from LeetCode (if present). Blank line before it. |
+| `Follow-up` | Optional | Follow-up challenge questions from LeetCode (if present). Blank line before it. May have multiple. |
 
 ### Format Rules
 
 1. **No decorative separators**: Do NOT use `===` or `---` separators
 2. **Simple structure**: Keep it concise and focused on essential information
-3. **Constraints format**: Use bullet points with `-` prefix
-4. **Line breaks**: Use single blank line between sections
+3. **Examples format**: Use 4-space indentation for Input/Output/Explanation lines. Explanation may span multiple lines (align continuation with first line). Include ALL examples from LeetCode. Preserve `<img>` tags for visual examples. Preserve ASCII art (trees/graphs) as-is.
+4. **Constraints format**: Use bullet points with `-` prefix
+5. **Line breaks**: Use single blank line between sections
+6. **HTML tag handling**:
+   - `<img>` → Preserve as-is
+   - `<sup>` → Convert to `^` notation (e.g., `10<sup>9</sup>` → `10^9`)
+   - `<strong>`, `<code>`, `<b>`, `<em>` → Strip tags, keep plain text
+   - `<pre>` → Preserve code block content
 
 ---
 
@@ -56,33 +88,54 @@ Link: https://leetcode.com/problems/two-sum/
 Given an array of integers nums and an integer target, 
 return indices of the two numbers such that they add up to target.
 
+Example 1:
+    Input: nums = [2,7,11,15], target = 9
+    Output: [0,1]
+    Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+Example 2:
+    Input: nums = [3,2,4], target = 6
+    Output: [1,2]
+
 Constraints:
 - 2 <= nums.length <= 10^4
 - -10^9 <= nums[i] <= 10^9
 - -10^9 <= target <= 10^9
 - Only one valid answer exists.
+
+Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
 """
 ```
 
-### Example 2: Multi-line Description
+### Example 2: With Image in Examples
 
 ```python
-# solutions/0025_reverse_nodes_in_k_group.py
+# solutions/0011_container_with_most_water.py
 """
-Problem: Reverse Nodes in k-Group
-Link: https://leetcode.com/problems/reverse-nodes-in-k-group/
+Problem: Container With Most Water
+Link: https://leetcode.com/problems/container-with-most-water/
 
-Given the head of a linked list, reverse the nodes of the list k at a time,
-and return the modified list.
+You are given an integer array height of length n. There are n vertical lines
+drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
 
-k is a positive integer and is less than or equal to the length of the linked list.
-If the number of nodes is not a multiple of k then left-out nodes, in the end,
-should remain as it is.
+Find two lines that together with the x-axis form a container, such that the
+container contains the most water.
+
+Example 1:
+    <img alt="" src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/07/17/question_11.jpg" style="width: 600px; height: 287px;">
+    Input: height = [1,8,6,2,5,4,8,3,7]
+    Output: 49
+    Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7].
+                 In this case, the max area of water (blue section) the container can contain is 49.
+
+Example 2:
+    Input: height = [1,1]
+    Output: 1
 
 Constraints:
-- The number of nodes in the list is n.
-- 1 <= k <= n <= 5000
-- 0 <= Node.val <= 1000
+- n == height.length
+- 2 <= n <= 10^5
+- 0 <= height[i] <= 10^4
 """
 ```
 
@@ -100,6 +153,14 @@ Given an array of distinct integers and a target, return all unique
 combinations where the chosen numbers sum to target. Each number may
 be used unlimited times.
 
+Example 1:
+    Input: candidates = [2,3,6,7], target = 7
+    Output: [[2,2,3],[7]]
+
+Example 2:
+    Input: candidates = [2,3,5], target = 8
+    Output: [[2,2,2,2],[2,3,3],[3,5]]
+
 Sub-Pattern: Target search with element reuse
 Key Insight: Allow reuse by NOT incrementing start_index when recursing.
 Prune branches where remaining target < 0 or current element > remaining.
@@ -109,6 +170,42 @@ Constraints:
 - 2 <= candidates[i] <= 40
 - All elements of candidates are distinct
 - 1 <= target <= 40
+"""
+```
+
+### Example 4: With ASCII Tree and Note
+
+```python
+# solutions/0104_maximum_depth_of_binary_tree.py
+"""
+Problem: Maximum Depth of Binary Tree
+Link: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+Given the root of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the longest path
+from the root node down to the farthest leaf node.
+
+Example 1:
+        3
+       / \
+      9  20
+        /  \
+       15   7
+    Input: root = [3,9,20,null,null,15,7]
+    Output: 3
+
+Example 2:
+    Input: root = [1,null,2]
+    Output: 2
+
+Constraints:
+- The number of nodes in the tree is in the range [0, 10^4].
+- -100 <= Node.val <= 100
+
+Note: The tree is represented as level-order traversal where null indicates missing nodes.
+
+Follow-up: Can you solve it both recursively and iteratively?
 """
 ```
 
@@ -182,7 +279,10 @@ When reviewing or creating a solution file, verify:
 - [ ] `Problem:` field is present and matches LeetCode title
 - [ ] `Link:` field is present and points to correct LeetCode URL
 - [ ] Brief problem description is included
-- [ ] `Constraints:` section is included with bullet points
+- [ ] `Example:` section includes ALL examples (Input/Output), with `<img>` tags and ASCII art preserved
+- [ ] `Constraints:` section is included with bullet points (use `^` for superscripts)
+- [ ] `Note:` included if present in LeetCode (with blank line before it)
+- [ ] `Follow-up:` included if present in LeetCode (with blank line before it, may have multiple)
 - [ ] No decorative separators (`===`, `---`)
 - [ ] Format is concise and readable
 - [ ] Optional extension fields (if used) are placed before Constraints
@@ -191,6 +291,7 @@ When reviewing or creating a solution file, verify:
 
 ## Related Documentation
 
+- [Solution Contract § File-Level Docstring](solution-contract.md#file-level-docstring) - **Simplified format for manual contribution**
 - [Solution Contract](solution-contract.md) - Complete solution file specification
 - [Generator Contract](generator-contract.md) - Test generator requirements
 
