@@ -41,6 +41,9 @@ import random
 from pathlib import Path
 from typing import Optional, Dict, Tuple, List
 
+# Import leetscrape_fetcher for fetching description and constraints
+from leetscrape_fetcher import get_description_and_constraints as leetscrape_get_desc_and_const
+
 # Project root directory
 ROOT = Path(__file__).parent.parent.parent
 SOLUTIONS_DIR = ROOT / "solutions"
@@ -156,49 +159,12 @@ class LeetCodeDataFetcher:
         return None
     
     def get_description_and_constraints(self, slug: str) -> Tuple[List[str], List[str]]:
-        """Fetch description and constraints from online (fallback to cache if needed)."""
+        """Fetch description and constraints using leetscrape_fetcher module."""
         # Add random delay before making request to avoid anti-crawling
         self._random_delay()
-        online_data = self._fetch_online(slug)
-        if online_data:
-            from bs4 import BeautifulSoup
-            
-            def parse_html_to_lines(html: str) -> List[str]:
-                if not html:
-                    return []
-                soup = BeautifulSoup(html, "html.parser")
-                lines = []
-                for elem in soup.descendants:
-                    if isinstance(elem, str) and elem.strip():
-                        lines.append(elem.strip())
-                    elif elem.name in ['br', 'p', 'li']:
-                        lines.append("")  # empty line for separation
-                # Clean up: join consecutive non-empty, keep structure
-                cleaned = []
-                current = []
-                for line in lines:
-                    if line:
-                        current.append(line)
-                    elif current:
-                        cleaned.append(" ".join(current))
-                        current = []
-                if current:
-                    cleaned.append(" ".join(current))
-                return cleaned
-            
-            desc_lines = parse_html_to_lines(online_data.get("description_html"))
-            const_lines = []
-            const_html = online_data.get("constraints_html")
-            if const_html:
-                soup = BeautifulSoup(const_html, "html.parser")
-                for li in soup.find_all('li'):
-                    text = li.get_text(strip=True)
-                    if text:
-                        const_lines.append(f"- {text}")
-            
-            return desc_lines, const_lines
         
-        return [], []
+        # Use leetscrape_fetcher which has proper HTML parsing logic
+        return leetscrape_get_desc_and_const(slug)
 
 class DocstringFixer:
     """Fix docstrings to comply with review-code.md format."""
@@ -221,7 +187,92 @@ class DocstringFixer:
         self.errors = []
         self.leetcode_fetcher = LeetCodeDataFetcher(delay_min=delay_min, delay_max=delay_max)
     
-    # ... (extract_problem_id_from_filename, extract_docstring, parse_docstring remain unchanged)
+    def extract_problem_id_from_filename(self, filename: str) -> Optional[str]:
+        """Extract problem ID from filename (e.g., '0077_combinations.py' -> '0077')."""
+        match = re.match(r'^(\d{4})_', filename)
+        return match.group(1) if match else None
+    
+    def extract_docstring(self, content: str) -> Optional[Tuple[int, int, str]]:
+        """Extract docstring from file content."""
+        match = re.search(r'^"""', content, re.MULTILINE)
+        if not match:
+            return None
+        start_pos = match.start()
+        remaining = content[start_pos + 3:]
+        end_match = re.search(r'"""', remaining)
+        if not end_match:
+            return None
+        end_pos = start_pos + 3 + end_match.end()
+        docstring = content[start_pos + 3:end_pos - 3]
+        return (start_pos, end_pos, docstring)
+    
+    def parse_docstring(self, docstring: str) -> Dict:
+        """Parse docstring into structured fields."""
+        result = {
+            "problem": None,
+            "link": None,
+            "description": [],
+            "optional_fields": {},
+            "constraints": [],
+            "has_decorative_separators": False,
+        }
+        
+        lines = docstring.split('\n')
+        current_section = None
+        i = 0
+        
+        while i < len(lines):
+            line = lines[i]
+            stripped = line.strip()
+            
+            if re.match(r'^={3,}$|^-{3,}$', stripped):
+                result["has_decorative_separators"] = True
+                i += 1
+                continue
+            
+            if re.match(r'^Problem:\s*(.+)$', line, re.IGNORECASE):
+                result["problem"] = re.match(r'^Problem:\s*(.+)$', line, re.IGNORECASE).group(1).strip()
+                i += 1
+                continue
+            
+            if re.match(r'^Link:\s*(.+)$', line, re.IGNORECASE):
+                result["link"] = re.match(r'^Link:\s*(.+)$', line, re.IGNORECASE).group(1).strip()
+                i += 1
+                continue
+            
+            optional_match = re.match(r'^(Sub-Pattern|Key Insight|API Kernel|Pattern|Family|Delta from .+?):\s*(.*)$', line, re.IGNORECASE)
+            if optional_match:
+                field_name = optional_match.group(1)
+                field_value = optional_match.group(2).strip()
+                value_lines = [field_value] if field_value else []
+                i += 1
+                while i < len(lines) and lines[i].strip() and not re.match(r'^(Problem|Link|Constraints?|Sub-Pattern|Key Insight|API Kernel|Pattern|Family|Delta from):', lines[i], re.IGNORECASE):
+                    if not lines[i].strip().startswith('-'):
+                        value_lines.append(lines[i].strip())
+                    else:
+                        break
+                    i += 1
+                result["optional_fields"][field_name] = '\n'.join(value_lines)
+                continue
+            
+            if re.match(r'^Constraints?:?\s*$', line, re.IGNORECASE):
+                current_section = "constraints"
+                i += 1
+                continue
+            
+            if current_section == "constraints" and re.match(r'^-\s*(.+)$', stripped):
+                result["constraints"].append(stripped)
+                i += 1
+                continue
+            
+            if result["link"] and not current_section and stripped:
+                if not re.match(r'^(Sub-Pattern|Key Insight|API Kernel|Pattern|Family|Constraints?|Delta from):', line, re.IGNORECASE):
+                    result["description"].append(line.rstrip())
+            
+            i += 1
+        
+        result["description"] = [l for l in result["description"] if l.strip()]
+        return result
     
     def build_docstring(self, parsed: Dict, replace_mode: bool = False) -> str:
         """Build properly formatted docstring from parsed fields."""
@@ -258,6 +309,13 @@ class DocstringFixer:
         
         return '\n'.join(parts)
     
+    def _has_missing_placeholder(self, items: List[str]) -> bool:
+        """Check if items contain [MISSING - NEEDS MANUAL FIX] placeholder."""
+        for item in items:
+            if "[MISSING" in item or "NEEDS MANUAL FIX" in item:
+                return True
+        return False
+    
     def fix_file(self, file_path: Path, replace_mode: bool = False) -> Tuple[bool, List[str]]:
         """Fix docstring in a single file."""
         issues = []
@@ -293,10 +351,16 @@ class DocstringFixer:
                 parsed["link"] = leetcode_info.get('url', '')
                 issues.append("Updated Link from cache" if not replace_mode else "Replaced Link from cache")
         
-        # In replace_mode, fetch description and constraints online
-        if replace_mode and slug and self.fetch_online:
+        # Check if constraints have placeholder that needs fixing
+        constraints_need_fix = (
+            not parsed["constraints"] or 
+            self._has_missing_placeholder(parsed["constraints"])
+        )
+        
+        # Fetch description and constraints online if needed
+        if slug and self.fetch_online and (replace_mode or constraints_need_fix):
             desc_lines, const_lines = self.leetcode_fetcher.get_description_and_constraints(slug)
-            if desc_lines:
+            if desc_lines and (replace_mode or not parsed["description"]):
                 parsed["description"] = desc_lines
                 issues.append("Fetched description online")
             if const_lines:
@@ -323,9 +387,9 @@ class DocstringFixer:
                 needs_fix = True
                 fix_reasons.append("Missing Link field")
             
-            if not parsed["constraints"]:
+            if not parsed["constraints"] or self._has_missing_placeholder(parsed["constraints"]):
                 needs_fix = True
-                fix_reasons.append("Missing Constraints section")
+                fix_reasons.append("Missing or placeholder Constraints")
             
             if not needs_fix:
                 return True, ["No fixes needed"]
@@ -352,7 +416,66 @@ class DocstringFixer:
             self.fixed_count += 1
             return True, fix_reasons + ["(DRY RUN - no changes made)"]
     
-    # ... (fix_range, fix_single_file, fix_all, print_summary remain unchanged)
+    def fix_range(self, start_num: int, end_num: int, replace_mode: bool = False) -> None:
+        """Fix files in a numeric range."""
+        pattern = re.compile(r'^(\d{4})_')
+        for file_path in sorted(SOLUTIONS_DIR.glob("*.py")):
+            m = pattern.match(file_path.name)
+            if not m:
+                continue
+            num = int(m.group(1))
+            if start_num <= num <= end_num:
+                success, issues = self.fix_file(file_path, replace_mode=replace_mode)
+                if success:
+                    if issues[0] != "No fixes needed":
+                        print(f"[OK] {file_path.name}: {', '.join(issues)}")
+                    else:
+                        self.skipped_count += 1
+                else:
+                    print(f"[ERROR] {file_path.name}: {', '.join(issues)}")
+                    self.errors.append((file_path.name, issues))
+    
+    def fix_single_file(self, filename: str, replace_mode: bool = False) -> None:
+        """Fix a single file."""
+        file_path = SOLUTIONS_DIR / filename
+        if not file_path.exists():
+            print(f"Error: File not found: {filename}")
+            return
+        success, issues = self.fix_file(file_path, replace_mode=replace_mode)
+        if success:
+            if issues[0] != "No fixes needed":
+                print(f"[OK] {file_path.name}: {', '.join(issues)}")
+            else:
+                print(f"[SKIPPED] {file_path.name}: No fixes needed")
+        else:
+            print(f"[ERROR] {file_path.name}: {', '.join(issues)}")
+    
+    def fix_all(self) -> None:
+        """Fix all files in solutions directory."""
+        for file_path in sorted(SOLUTIONS_DIR.glob("*.py")):
+            success, issues = self.fix_file(file_path)
+            if success:
+                if issues[0] != "No fixes needed":
+                    print(f"[OK] {file_path.name}: {', '.join(issues)}")
+                else:
+                    self.skipped_count += 1
+            else:
+                print(f"[ERROR] {file_path.name}: {', '.join(issues)}")
+                self.errors.append((file_path.name, issues))
+    
+    def print_summary(self) -> None:
+        """Print summary of fixes."""
+        print("\n" + "=" * 60)
+        print("Summary:")
+        print(f"  Fixed: {self.fixed_count}")
+        print(f"  Skipped: {self.skipped_count}")
+        if self.errors:
+            print(f"  Errors: {len(self.errors)}")
+            for name, msgs in self.errors:
+                print(f"    - {name}: {', '.join(msgs)}")
+        if self.dry_run:
+            print("\n  (DRY RUN - no files modified)")
+        print("=" * 60)
 
 def main():
     """Main entry point for the script."""
