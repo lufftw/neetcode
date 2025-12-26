@@ -28,9 +28,13 @@ SOLUTIONS_DIR = PROJECT_ROOT / "solutions"
 if str(SOLUTIONS_DIR) not in sys.path:
     sys.path.insert(0, str(SOLUTIONS_DIR))
 
-from runner.module_loader import load_solution_module, load_generator_module
-from runner.executor import run_one_case, run_generated_case
-from runner.reporter import run_method_tests
+from runner import (
+    load_solution_module,
+    load_generator_module,
+    run_one_case,
+    run_generated_case,
+    run_method_tests,
+)
 
 
 def get_all_solution_files() -> List[str]:
