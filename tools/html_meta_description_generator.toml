@@ -32,7 +32,7 @@ outputDir = "tools/mindmaps/meta"
 # OpenAI model to use (e.g., "gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo")
 model = "gpt-5.2"
 
-# Prompt templates are loaded from html_meta_description_generator.md
+# Prompt templates are loaded from html-meta-description-generator.md
 # Edit that file to customize the prompts
 
 [files]
@@ -54,10 +54,10 @@ model = "gpt-5.2"
 #"docs/mindmaps/problem_relations.md" = { }
 #"docs/mindmaps/solution_variants.md" = { }
 #"docs/mindmaps/difficulty_topics.md" = { }
-#"docs/mindmaps/neetcode_ontology_ai_en.md" = { }
-#"docs/mindmaps/neetcode_ontology_ai_zh-TW.md" = { languageMode = "zh-TW" }
-"docs/mindmaps/neetcode_ontology_agent_evolved_en.md" = { minLen = 100, maxLen = 155 }
-"docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md" = { minLen = 100, maxLen = 155, languageMode = "zh-TW" }
+#"docs/mindmaps/neetcode-ontology-ai-en.md" = { }
+#"docs/mindmaps/neetcode-ontology-ai-zh-tw.md" = { languageMode = "zh-TW" }
+"docs/mindmaps/neetcode-ontology-agent-evolved-en.md" = { minLen = 100, maxLen = 155 }
+"docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md" = { minLen = 100, maxLen = 155, languageMode = "zh-TW" }
 
 # Example with custom settings:
 # "docs/mindmaps/pattern_hierarchy.md" = { minLen = 100, maxLen = 155, languageMode = "en" }

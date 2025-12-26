@@ -374,8 +374,8 @@ def create_integrator(config: dict[str, Any]) -> IntegratorAgent:
     if not integrator_config:
         integrator_config = {
             "model": "gpt-4o",
-            "persona_prompt": "prompts/integrator/integrator_persona.md",
-            "behavior_prompt": "prompts/integrator/integrator_behavior.md",
+            "persona_prompt": "prompts/integrator/integrator-persona.md",
+            "behavior_prompt": "prompts/integrator/integrator-behavior.md",
             "temperature": 0.5,
             "max_tokens": 4096,
         }

@@ -1,0 +1,9 @@
+# Documentation Filename Rename Mapping
+
+Total files to rename: 3
+
+| Old Path | New Path |
+|----------|----------|
+| `docs/contributors/TESTING.md` | `docs/contributors/testing.md` |
+| `tools/ai-markmap-agent/docs/DESIGN.md` | `tools/ai-markmap-agent/docs/design.md` |
+| `tools/ai-markmap-agent/docs/PROMPTS.md` | `tools/ai-markmap-agent/docs/prompts.md` |

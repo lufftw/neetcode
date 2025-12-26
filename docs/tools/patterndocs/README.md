@@ -99,7 +99,7 @@ Categorizes source files into three types and applies ordering from `_config.tom
 
 **File Categories:**
 1. **Header files** (`_header.md`) - Introduction and core concepts
-2. **Problem files** (`0003_base.md`, `0076_variant.md`) - Problem examples
+2. **Problem files** (`0003-base.md`, `0076-variant.md`) - Problem examples
 3. **Footer files** (`_comparison.md`, `_decision.md`, `_mapping.md`, `_templates.md`) - Additional sections
 
 **Key Functions:**
@@ -123,9 +123,9 @@ header_files = [
 ]
 
 problem_files = [
-    "0003_base.md",
-    "0076_variant.md",
-    "0209_another.md"
+    "0003-base.md",
+    "0076-variant.md",
+    "0209-another.md"
 ]
 
 footer_files = [
@@ -175,9 +175,9 @@ Introduction (from _header.md)
 ---
 Core Concepts (from _header.md)
 ---
-Problem 1 (from 0003_base.md)
+Problem 1 (from 0003-base.md)
 ---
-Problem 2 (from 0076_variant.md)
+Problem 2 (from 0076-variant.md)
 ---
 Comparison (from _comparison.md)
 ---
@@ -251,8 +251,8 @@ Pattern documentation is organized in `meta/patterns/<pattern_name>/`:
 meta/patterns/sliding_window/
 ├── _config.toml            # File ordering configuration (optional)
 ├── _header.md              # Introduction and core concepts
-├── 0003_base.md            # Base template problem (LeetCode 3)
-├── 0076_variant.md         # Variant problem (LeetCode 76)
+├── 0003-base.md            # Base template problem (LeetCode 3)
+├── 0076-variant.md         # Variant problem (LeetCode 76)
 ├── _comparison.md          # Pattern comparison table
 ├── _decision.md            # Decision guide (when to use)
 ├── _mapping.md             # LeetCode problem mapping (optional)
@@ -262,7 +262,7 @@ meta/patterns/sliding_window/
 ### File Naming Conventions
 
 - **Header files**: Start with `_` (e.g., `_header.md`)
-- **Problem files**: Problem number prefix (e.g., `0003_base.md`)
+- **Problem files**: Problem number prefix (e.g., `0003-base.md`)
 - **Footer files**: Start with `_` (e.g., `_comparison.md`, `_mapping.md`)
 - **Config file**: `_config.toml` (excluded from final document)
 
@@ -277,12 +277,12 @@ Each pattern directory can include `_config.toml` to control the order of files 
 ```toml
 # Order problems by LeetCode number: 3, 340, 76, 567, 438, 209
 problem_files = [
-    "0003_base.md",
-    "0340_k_distinct.md",
-    "0076_min_window.md",
-    "0567_permutation.md",
-    "0438_anagrams.md",
-    "0209_min_subarray.md"
+    "0003-base.md",
+    "0340-k-distinct.md",
+    "0076-min-window.md",
+    "0567-permutation.md",
+    "0438-anagrams.md",
+    "0209-min-subarray.md"
 ]
 ```
 
@@ -332,7 +332,7 @@ Content from _header.md
 
 ## 2. Base Template: LeetCode 3
 
-Content from 0003_base.md
+Content from 0003-base.md
 
 ---
 
@@ -364,12 +364,12 @@ Test coverage includes:
 
 1. Create directory: `meta/patterns/<pattern_name>/`
 2. Add `_header.md` with introduction (required)
-3. Add problem files (e.g., `0003_base.md`)
+3. Add problem files (e.g., `0003-base.md`)
 4. Optionally add footer files (`_comparison.md`, `_decision.md`, `_mapping.md`, `_templates.md`)
 5. Optionally create `_config.toml` to control file order:
    ```toml
    header_files = ["_header.md"]
-   problem_files = ["0003_base.md", "0076_variant.md"]
+   problem_files = ["0003-base.md", "0076-variant.md"]
    footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
    ```
 6. Run generator:
@@ -407,9 +407,9 @@ Modify `add_section_numbers()` in `sections.py` to change:
 ```
 meta/patterns/sliding_window/
 ├── _header.md
-├── 0003_base.md          # Base template
-├── 0076_variant.md       # Variant 1
-├── 0209_variant.md       # Variant 2
+├── 0003-base.md          # Base template
+├── 0076-variant.md       # Variant 1
+├── 0209-variant.md       # Variant 2
 └── _comparison.md
 ```
 
@@ -418,7 +418,7 @@ meta/patterns/sliding_window/
 ```
 meta/patterns/binary_search/
 ├── _header.md
-├── 0704_base.md
+├── 0704-base.md
 ├── _decision.md          # When to use binary search
 └── _templates.md
 ```

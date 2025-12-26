@@ -6,7 +6,7 @@ Extracted from reporter.py for better separation of concerns.
 This module handles the actual test execution logic, while reporter.py
 focuses on display formatting.
 
-Memory profiling integrated per Memory_Metrics.md specification:
+Memory profiling integrated per memory-metrics.md specification:
 - Method-level aggregation by default (Peak RSS, P95 RSS)
 - Case-level metrics collected for --memory-per-case debugging
 """

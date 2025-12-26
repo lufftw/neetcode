@@ -36,8 +36,8 @@ from tools.mindmaps.toml_parser import parse_toml_simple
 
 
 CONFIG_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.toml"
-PROMPT_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.md"
-PROMPT_FILE_ZH_TW = Path(__file__).resolve().parent / "html_meta_description_generator_zh-TW.md"
+PROMPT_FILE = Path(__file__).resolve().parent / "html-meta-description-generator.md"
+PROMPT_FILE_ZH_TW = Path(__file__).resolve().parent / "html-meta-description-generator-zh-tw.md"
 
 # Default configuration
 DEFAULT_CONFIG = {

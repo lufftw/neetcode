@@ -139,7 +139,7 @@ def _print_table(all_results: List[Dict[str, Any]], max_method_len: int,
     print()
     
     # Build header based on available data
-    # Column order per CLI_OUTPUT_CONTRACT.md:
+    # Column order per cli-output-contract.md:
     # Method | Avg Time | Pass Rate | Declared | Estimated | Peak RSS | P95 RSS
     
     header_parts = [f"{'Method':<{max_method_len}}", f"{'Avg Time':>10}"]

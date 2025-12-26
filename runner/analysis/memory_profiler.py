@@ -2,7 +2,7 @@
 """
 Memory Profiler - RSS measurement and memory metrics for benchmarking.
 
-Design Principles (from Memory_Metrics.md):
+Design Principles (from memory-metrics.md):
 1. Theory ≠ Measurement: Big-O space complexity is separate from measured RSS
 2. Method-level by Default: Aggregate memory at method level
 3. Explicit Debugging: Case-level memory via --memory-per-case only
@@ -181,7 +181,7 @@ def format_bytes(bytes_val: Optional[int]) -> str:
     """
     Format bytes as human-readable string.
     
-    Rules (from CLI_OUTPUT_CONTRACT.md):
+    Rules (from cli-output-contract.md):
     - ≥ 1 MB -> display in MB (e.g., 25.4MB)
     - ≥ 1 KB -> display in KB (e.g., 512KB)
     - < 1 KB -> display in B (e.g., 256B)

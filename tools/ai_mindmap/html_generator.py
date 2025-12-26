@@ -17,7 +17,7 @@ def load_meta_description(lang: str, base_filename: str, config: dict[str, Any])
     
     Args:
         lang: Language code (e.g., "en", "zh-TW")
-        base_filename: Base filename without extension (e.g., "neetcode_ontology_ai")
+        base_filename: Base filename without extension (e.g., "neetcode-ontology-ai")
         config: Configuration dict
         
     Returns:
@@ -39,9 +39,10 @@ def load_meta_description(lang: str, base_filename: str, config: dict[str, Any])
             except Exception as e:
                 print(f"   ⚠️  Failed to read meta description from {desc_path}: {e}")
     
-    # Auto-detect: try tools/mindmaps/meta/{base_filename}_{lang}.txt
+    # Auto-detect: try tools/mindmaps/meta/{base_filename}-{lang}.txt (kebab-case)
     from mindmaps.config import META_DESCRIPTIONS_DIR
-    auto_path = META_DESCRIPTIONS_DIR / f"{base_filename}_{lang}.txt"
+    lang_lower = lang.lower().replace("_", "-")
+    auto_path = META_DESCRIPTIONS_DIR / f"{base_filename}-{lang_lower}.txt"
     if auto_path.exists():
         try:
             return auto_path.read_text(encoding="utf-8").strip()
@@ -79,7 +80,7 @@ def generate_html_from_markdown(config: dict[str, Any]) -> int:
     html_dir = Path(output_config.get("html_directory", "docs/pages/mindmaps"))
     
     # Get base filename
-    base_filename = output_config.get("filename", "neetcode_ontology_ai.md")
+    base_filename = output_config.get("filename", "neetcode-ontology-ai.md")
     if not base_filename.endswith(".md"):
         base_filename = f"{base_filename}.md"
     base_name = base_filename.replace(".md", "")
@@ -115,9 +116,11 @@ def generate_html_from_markdown(config: dict[str, Any]) -> int:
     error_count = 0
     
     for lang in languages:
-        # Determine Markdown filename
+        # Determine Markdown filename (kebab-case)
         if len(languages) > 1:
-            md_filename = f"{base_name}_{lang}.md"
+            # Convert language code to lowercase and use hyphen separator
+            lang_lower = lang.lower().replace("_", "-")
+            md_filename = f"{base_name}-{lang_lower}.md"
         else:
             md_filename = base_filename
         
@@ -154,9 +157,11 @@ def generate_html_from_markdown(config: dict[str, Any]) -> int:
             # Generate HTML
             html_content = generate_html_mindmap(title, content, use_autoloader=False, description=meta_description)
             
-            # Determine HTML filename
+            # Determine HTML filename (kebab-case)
             if len(languages) > 1:
-                html_filename = f"{base_name}_{lang}.html"
+                # Convert language code to lowercase and use hyphen separator
+                lang_lower = lang.lower().replace("_", "-")
+                html_filename = f"{base_name}-{lang_lower}.html"
             else:
                 html_filename = base_filename.replace(".md", ".html")
             

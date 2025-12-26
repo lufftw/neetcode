@@ -103,7 +103,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     # Check for existing prompt
     prompt_config = config.get("prompt", {})
     prompt_dir = Path(prompt_config.get("directory", "tools/prompts/generated"))
-    prompt_filename = prompt_config.get("filename", "mindmap_prompt")
+    prompt_filename = prompt_config.get("filename", "mindmap-prompt")
     existing_prompt_file = find_existing_prompt(prompt_dir, prompt_filename)
     
     # Ask user what to do with existing prompt
@@ -134,7 +134,7 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             parts = prompt_content.split("\n---\n")
             system_prompt = parts[0].replace("# System Prompt", "").strip() if len(parts) >= 2 else build_system_prompt(config)
             user_prompt = parts[1].replace("# User Prompt", "").strip() if len(parts) >= 2 else build_user_prompt(ontology_data, docs_patterns, meta_patterns, problems_data, config)
-            else:
+        else:
             system_prompt = build_system_prompt(config)
             user_prompt = build_user_prompt(ontology_data, docs_patterns, meta_patterns, problems_data, config)
     elif prompt_action == "regenerate_and_optimize":
@@ -239,9 +239,11 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             
             all_contents[lang] = content
             
-            # Save with language suffix
+            # Save with language suffix (kebab-case)
             if len(languages) > 1:
-                lang_filename = f"{base_name}_{lang}.md"
+                # Convert language code to lowercase and use hyphen separator
+                lang_lower = lang.lower().replace("_", "-")
+                lang_filename = f"{base_name}-{lang_lower}.md"
             else:
                 lang_filename = base_filename
             

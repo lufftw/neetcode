@@ -11,15 +11,15 @@ from .variants import generate_solution_variants
 from .difficulty import generate_difficulty_topics
 
 GENERATORS = {
-    "pattern_hierarchy": generate_pattern_hierarchy,
-    "family_derivation": generate_family_derivation,
-    "algorithm_usage": generate_algorithm_usage,
-    "data_structure": generate_data_structure,
-    "company_coverage": generate_company_coverage,
-    "roadmap_paths": generate_roadmap_paths,
-    "problem_relations": generate_problem_relations,
-    "solution_variants": generate_solution_variants,
-    "difficulty_topics": generate_difficulty_topics,
+    "pattern-hierarchy": generate_pattern_hierarchy,
+    "family-derivation": generate_family_derivation,
+    "algorithm-usage": generate_algorithm_usage,
+    "data-structure": generate_data_structure,
+    "company-coverage": generate_company_coverage,
+    "roadmap-paths": generate_roadmap_paths,
+    "problem-relations": generate_problem_relations,
+    "solution-variants": generate_solution_variants,
+    "difficulty-topics": generate_difficulty_topics,
 }
 
 __all__ = [

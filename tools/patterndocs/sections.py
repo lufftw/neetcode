@@ -13,11 +13,32 @@ def generate_toc(sections_info: list[tuple[int, str, str]]) -> str:
 
 
 def create_anchor(section_num: int, title: str) -> str:
-    """Create a markdown anchor from section number and title."""
+    """Create a markdown anchor from section number and title.
+    
+    Converts title to GitHub Flavored Markdown compatible anchor:
+    - Lowercase
+    - Spaces → hyphen
+    - Remove special chars (parentheses, slashes, colons, +, etc.)
+    - Keep multiple consecutive hyphens (GFM does NOT collapse them)
+    - Remove leading number prefix (e.g., "4. " from "4. Title")
+    """
+    import re
+    
+    # Remove leading number prefix (e.g., "4. " or "4.")
+    title = re.sub(r'^\d+\.\s*', '', title)
+    
     anchor = f"{section_num}-{title.lower()}"
-    for char in " ()/:":
-        anchor = anchor.replace(char, "-" if char == " " else "")
-    return anchor.replace("--", "-")
+    # Replace spaces with hyphens
+    anchor = anchor.replace(" ", "-")
+    # Remove Unicode dashes (GFM removes them, not converts to hyphen)
+    anchor = anchor.replace("–", "")  # en-dash (U+2013)
+    anchor = anchor.replace("—", "")  # em-dash (U+2014)
+    # Remove parentheses, slashes, colons, and other special characters
+    anchor = re.sub(r'[()/:]', '', anchor)
+    # Remove other non-word characters (keep only alphanumeric and hyphens)
+    # Note: GFM does NOT collapse multiple hyphens, so we preserve them
+    anchor = re.sub(r'[^\w\-]', '', anchor)
+    return anchor.strip('-')
 
 
 def add_section_numbers(content: str, section_num: int) -> tuple[str, list[tuple[int, str, str]]]:

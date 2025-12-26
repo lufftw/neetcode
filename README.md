@@ -31,7 +31,7 @@ AEO/GEO: A scalable Python framework with knowledge graph-driven learning, AI-po
 - **Measure and compare**: benchmark multiple implementations and empirically estimate complexity.
 - **See the big picture**: ontology + AI mind maps reveal pattern relationships and learning paths.
 
-[📚 Docs](https://lufftw.github.io/neetcode/) • [🧪 Testing & Validation](docs/runner/README.md) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/README.md)
+[📚 Docs](https://lufftw.github.io/neetcode/) • [🧪 Testing & Validation](docs/runner/README.md) • [🤖 AI Mind Maps](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) • [🧠 Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 Quick Start](#-quick-start) • [📐 Patterns](docs/patterns/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -124,13 +124,13 @@ Most people practice algorithms in isolation. We built an **interconnected knowl
 
 | Mind Map | Description | Link |
 |:---------|:------------|:----:|
-| 🤖 **AI Ontology Analysis (Evolved)** | Generated via a multi-agent pipeline | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
-| 🤖 **AI Ontology Analysis** | AI-powered deep pattern synthesis | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
-| 📐 **Pattern Hierarchy** | API kernels → patterns → solutions | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
-| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → derived variants | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
-| ⚡ **Algorithm Usage** | Know which algorithm applies where | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
-| 🏢 **Company Coverage** | Target preparation for specific companies | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
-| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
+| 🤖 **AI Ontology Analysis (Evolved)** | Generated via a multi-agent pipeline | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) |
+| 🤖 **AI Ontology Analysis** | AI-powered deep pattern synthesis | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-zh-tw.html) |
+| 📐 **Pattern Hierarchy** | API kernels → patterns → solutions | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
+| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → derived variants | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family-derivation.html) |
+| ⚡ **Algorithm Usage** | Know which algorithm applies where | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm-usage.html) |
+| 🏢 **Company Coverage** | Target preparation for specific companies | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company-coverage.html) |
+| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap-paths.html) |
 
 **[→ Explore 10+ Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -301,10 +301,10 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 | Language | Description | Links |
 |:---------|:------------|:------|
-| **English (Evolved)** | Generated via a multi-agent pipeline | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) |
-| **繁體中文 (Evolved)** | 由多代理（multi-agent）流程產生 | [Static](docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
-| **English** | AI-synthesized pattern relationships | [Static](docs/mindmaps/neetcode_ontology_ai_en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
-| **繁體中文** | AI 智能分析模式關聯 | [Static](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
+| **English (Evolved)** | Generated via a multi-agent pipeline | [Static](docs/mindmaps/neetcode-ontology-agent-evolved-en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) |
+| **繁體中文 (Evolved)** | 由多代理（multi-agent）流程產生 | [Static](docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) |
+| **English** | AI-synthesized pattern relationships | [Static](docs/mindmaps/neetcode-ontology-ai-en.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-en.html) |
+| **繁體中文** | AI 智能分析模式關聯 | [Static](docs/mindmaps/neetcode-ontology-ai-zh-tw.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-zh-tw.html) |
 
 **What makes it special:**
 - 🧬 **Deep Pattern Synthesis** — AI identifies non-obvious connections between patterns
@@ -318,15 +318,15 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 | Mind Map | Description | Links |
 |:---------|:------------|:------|
-| 📐 **Pattern Hierarchy** | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
-| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → Derived variants | [Static](docs/mindmaps/family_derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
-| ⚡ **Algorithm Usage** | Problems by algorithm | [Static](docs/mindmaps/algorithm_usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
-| 🏗️ **Data Structure Usage** | Problems by data structure | [Static](docs/mindmaps/data_structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/data_structure.html) |
-| 🏢 **Company Coverage** | Company-specific problems | [Static](docs/mindmaps/company_coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
-| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [Static](docs/mindmaps/roadmap_paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
-| 🔗 **Problem Relations** | Related problems network | [Static](docs/mindmaps/problem_relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/problem_relations.html) |
-| 🔀 **Solution Variants** | Multiple approaches | [Static](docs/mindmaps/solution_variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/solution_variants.html) |
-| 📊 **Difficulty × Topics** | Topics by difficulty | [Static](docs/mindmaps/difficulty_topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty_topics.html) |
+| 📐 **Pattern Hierarchy** | API Kernels → Patterns → Problems | [Static](docs/mindmaps/pattern-hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
+| 👨‍👩‍👧‍👦 **Family Derivation** | Base templates → Derived variants | [Static](docs/mindmaps/family-derivation.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/family-derivation.html) |
+| ⚡ **Algorithm Usage** | Problems by algorithm | [Static](docs/mindmaps/algorithm-usage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm-usage.html) |
+| 🏗️ **Data Structure Usage** | Problems by data structure | [Static](docs/mindmaps/data-structure.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/data-structure.html) |
+| 🏢 **Company Coverage** | Company-specific problems | [Static](docs/mindmaps/company-coverage.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/company-coverage.html) |
+| 🗺️ **Learning Roadmaps** | NeetCode 150, Blind 75, etc. | [Static](docs/mindmaps/roadmap-paths.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap-paths.html) |
+| 🔗 **Problem Relations** | Related problems network | [Static](docs/mindmaps/problem-relations.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/problem-relations.html) |
+| 🔀 **Solution Variants** | Multiple approaches | [Static](docs/mindmaps/solution-variants.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/solution-variants.html) |
+| 📊 **Difficulty × Topics** | Topics by difficulty | [Static](docs/mindmaps/difficulty-topics.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty-topics.html) |
 
 👉 **[View All Interactive Mind Maps](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -413,7 +413,7 @@ Each pattern provides **two learning paths**:
 | Run all solutions | Compare all implementations |
 | Run with generated (10) | Static + 10 generated cases |
 
-> 📖 **Complete Reference**: See [VSCode Setup Guide](docs/contributors/VSCODE_SETUP.md) for all 14 tasks, 11 debug configurations, workflow examples, and customization.
+> 📖 **Complete Reference**: See [VSCode Setup Guide](docs/contributors/vscode-setup.md) for all 14 tasks, 11 debug configurations, workflow examples, and customization.
 
 ### 💻 Command Line Interface
 
@@ -482,7 +482,7 @@ if __name__ == "__main__":
     solve()
 ```
 
-> 📖 See [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) for the complete specification.
+> 📖 See [`docs/solution-contract.md`](docs/solution-contract.md) for the complete specification.
 
 ### 📋 Test File Format
 
@@ -585,7 +585,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 See [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
+> 📖 See [`docs/solution-contract.md` §B](docs/solution-contract.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
 
 ### 🔀 Flexible Output Validation
 
@@ -628,7 +628,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 ```
 
-> 📖 See [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
+> 📖 See [`docs/solution-contract.md` §C](docs/solution-contract.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
 
 ### 🎲 Random Test Generation
 
@@ -673,7 +673,7 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
-> 📖 See [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) for complete generator specification and best practices.
+> 📖 See [`docs/generator-contract.md`](docs/generator-contract.md) for complete generator specification and best practices.
 
 ### 📈 Time Complexity Estimation
 
@@ -751,17 +751,17 @@ neetcode/
 │   ├── tasks.json             # Ctrl+Shift+B shortcuts (14 tasks)
 │   └── launch.json            # F5 debug configurations (11 configs)
 │
-│   📖 See [VSCode Setup Guide](docs/contributors/VSCODE_SETUP.md) — Tasks, debug configs, workflow examples
+│   📖 See [VSCode Setup Guide](docs/contributors/vscode-setup.md) — Tasks, debug configs, workflow examples
 │
 ├── docs/                      # 📚 Documentation (MkDocs)
 │   ├── index.md               # Homepage (English)
 │   ├── index_zh-TW.md         # Homepage (繁體中文)
 │   ├── contributors/          # Maintainer documentation
 │   │   ├── README.md          # Full maintainer guide
-│   │   ├── TESTING.md         # Complete testing documentation
-│   │   ├── VSCODE_SETUP.md    # VS Code tasks & debug configs
-│   │   ├── VIRTUAL_ENV_SETUP.md  # Virtual environment setup
-│   │   └── DOCUMENTATION_ARCHITECTURE.md  # Documentation structure
+│   │   ├── testing.md         # Complete testing documentation
+│   │   ├── vscode-setup.md    # VS Code tasks & debug configs
+│   │   ├── virtual-env-setup.md  # Virtual environment setup
+│   │   └── documentation-architecture.md  # Documentation structure
 │   ├── tools/                 # Tools documentation
 │   │   ├── README.md          # Complete tools reference
 │   │   ├── ai-markmap-agent/  # AI Markmap Agent docs
@@ -831,8 +831,8 @@ neetcode/
 │   ├── scripts/run_tests.bat/.sh  # Run runner unit tests
 │   ├── run_all_tests.bat/.sh  # Run all unit tests
 │   ├── run_tests_solutions.bat/.sh  # Run solution tests
-│   ├── TESTING.md             # Testing documentation
-│   ├── VIRTUAL_ENV_SETUP.md   # Virtual environment guide
+│   ├── testing.md             # Testing documentation
+│   ├── virtual-env-setup.md   # Virtual environment guide
 │   └── README.md              # Maintainer guide
 │
 ├── .github/                   # 🚀 GitHub configuration
@@ -891,11 +891,11 @@ Documentation is organized by **target audience**:
 
 | Document | Description |
 |:---------|:------------|
-| [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | Solution file specification |
-| [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | Generator file specification |
+| [`docs/solution-contract.md`](docs/solution-contract.md) | Solution file specification |
+| [`docs/generator-contract.md`](docs/generator-contract.md) | Generator file specification |
 | [`docs/tools/README.md`](docs/tools/README.md) | Complete tools reference |
 | [`docs/contributors/README.md`](docs/contributors/README.md) | Maintainer guide |
-| [`docs/contributors/DOCUMENTATION_ARCHITECTURE.md`](docs/contributors/DOCUMENTATION_ARCHITECTURE.md) | Documentation structure |
+| [`docs/contributors/documentation-architecture.md`](docs/contributors/documentation-architecture.md) | Documentation structure |
 
 ---
 
@@ -1000,30 +1000,30 @@ scripts\build_docs.bat --serve  # Windows
 ./scripts/build_docs.sh --serve  # Linux/macOS
 ```
 
-📖 **See [Building Documentation Locally (Manual Method)](docs/BUILD_DOCS_MANUAL.md)** for complete guide.
+📖 **See [Building Documentation Locally (Manual Method)](docs/build-docs-manual.md)** for complete guide.
 
 **Advanced Option (Optional):**
 
 If you want to test the exact GitHub Actions workflow locally, you can use `act`:
 
-📖 **See [Running GitHub Actions Locally with Act](docs/ACT_LOCAL_GITHUB_ACTIONS.md)** — *Note: Requires Docker and act tool. Only needed if you want to test CI/CD workflows.*
+📖 **See [Running GitHub Actions Locally with Act](docs/act-local-github-actions.md)** — *Note: Requires Docker and act tool. Only needed if you want to test CI/CD workflows.*
 
 ### Documentation
 
 **Core Documentation:**
 - [`docs/contributors/README.md`](docs/contributors/README.md) — Maintainer guide
-- [`docs/contributors/TESTING.md`](docs/contributors/TESTING.md) — Testing documentation
-- [`docs/contributors/VSCODE_SETUP.md`](docs/contributors/VSCODE_SETUP.md) — VS Code tasks, debug configurations, workflow examples
-- [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
-- [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — Generator file specification (generate(), edge cases, complexity)
-- [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — Polymorphic architecture migration guide
+- [`docs/contributors/testing.md`](docs/contributors/testing.md) — Testing documentation
+- [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code tasks, debug configurations, workflow examples
+- [`docs/solution-contract.md`](docs/solution-contract.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
+- [`docs/generator-contract.md`](docs/generator-contract.md) — Generator file specification (generate(), edge cases, complexity)
+- [`docs/architecture-migration.md`](docs/architecture-migration.md) — Polymorphic architecture migration guide
 
 **Local Documentation Build (Optional):**
-- [`docs/BUILD_DOCS_MANUAL.md`](docs/BUILD_DOCS_MANUAL.md) — ⭐ **Recommended:** Simple manual build method
-- [`docs/ACT_LOCAL_GITHUB_ACTIONS.md`](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — Advanced: Test CI/CD workflows locally with act (requires Docker)
+- [`docs/build-docs-manual.md`](docs/build-docs-manual.md) — ⭐ **Recommended:** Simple manual build method
+- [`docs/act-local-github-actions.md`](docs/act-local-github-actions.md) — Advanced: Test CI/CD workflows locally with act (requires Docker)
 
 **Deployment:**
-- [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
+- [`docs/github-pages-setup.md`](docs/github-pages-setup.md) — Deployment guide
 
 ---
 

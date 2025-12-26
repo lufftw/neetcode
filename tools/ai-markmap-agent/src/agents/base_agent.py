@@ -188,10 +188,10 @@ class BaseAgent(ABC):
             # Determine filename
             if llm_config.get("save_as_single_file", False):
                 from datetime import datetime
-                timestamp = datetime.now().strftime("%H%M%S_%f")
-                filename = f"llm_input_{self.agent_id}_{call_type}_{timestamp}"
+                timestamp = datetime.now().strftime("%H%M%S-%f")
+                filename = f"llm-input-{self.agent_id}-{call_type}-{timestamp}"
             else:
-                filename = f"llm_input_{self.agent_id}_{call_type}"
+                filename = f"llm-input-{self.agent_id}-{call_type}"
             
             # Save to debug directory
             ext = "md" if fmt == "md" else "json"
@@ -224,10 +224,10 @@ class BaseAgent(ABC):
             # Determine filename
             if llm_config.get("save_as_single_file", False):
                 from datetime import datetime
-                timestamp = datetime.now().strftime("%H%M%S_%f")
-                filename = f"llm_output_{self.agent_id}_{call_type}_{timestamp}"
+                timestamp = datetime.now().strftime("%H%M%S-%f")
+                filename = f"llm-output-{self.agent_id}-{call_type}-{timestamp}"
             else:
-                filename = f"llm_output_{self.agent_id}_{call_type}"
+                filename = f"llm-output-{self.agent_id}-{call_type}"
             
             # Save to debug directory
             filepath = debug.run_dir / f"{filename}.md"

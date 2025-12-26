@@ -74,8 +74,8 @@ class RunInfo:
             # Categorize file - precise pattern matching
             filename_lower = filename.lower()
             
-            # Expert review: llm_input/output with invoke or review, for expert agents
-            if filename.startswith("llm_input_") or filename.startswith("llm_output_"):
+            # Expert review: llm-input/output with invoke or review, for expert agents
+            if filename.startswith("llm-input-") or filename.startswith("llm-output-"):
                 if "invoke" in filename_lower or "review" in filename_lower:
                     # Check if it's an expert agent
                     if any(expert in filename_lower for expert in ["architect", "professor", "engineer", "optimizer"]):
@@ -91,7 +91,7 @@ class RunInfo:
                 else:
                     # Generic LLM input/output (add to both lists for backward compatibility)
                     files_by_phase["llm_input"].append(file_info)
-                    if filename.startswith("llm_output_"):
+                    if filename.startswith("llm-output-"):
                         files_by_phase["llm_output"].append(file_info)
             elif "consensus" in filename_lower:
                 files_by_phase["consensus"].append(file_info)
@@ -280,20 +280,20 @@ def load_expert_responses_from_run(run_info: RunInfo) -> dict[str, dict[str, str
     expert_review_outputs = {}
     discussion_outputs = {}
     
-    # Scan expert_review files (llm_output_*_invoke.md)
+    # Scan expert_review files (llm-output-*-invoke.md)
     for file_info in run_info.files.get("expert_review", []):
         filename = file_info["filename"]
         
-        # Only process llm_output files (skip llm_input)
-        if not filename.startswith("llm_output_"):
+        # Only process llm-output files (skip llm-input)
+        if not filename.startswith("llm-output-"):
             continue
         
-        # Parse filename: llm_output_{agent}_{action}.md
-        parts = filename.replace("llm_output_", "").replace(".md", "").split("_")
+        # Parse filename: llm-output-{agent}-{action}.md
+        parts = filename.replace("llm-output-", "").replace(".md", "").split("-")
         
         if len(parts) >= 2:
             action = parts[-1]  # "invoke"
-            agent = "_".join(parts[:-1])  # "architect", "professor", etc.
+            agent = "-".join(parts[:-1])  # "architect", "professor", etc.
             
             try:
                 content = file_info["path"].read_text(encoding="utf-8")
@@ -301,20 +301,20 @@ def load_expert_responses_from_run(run_info: RunInfo) -> dict[str, dict[str, str
             except Exception as e:
                 print(f"  ⚠ Error loading {filename}: {e}")
     
-    # Scan full_discussion files (llm_output_*_discuss.md)
+    # Scan full_discussion files (llm-output-*-discuss.md)
     for file_info in run_info.files.get("full_discussion", []):
         filename = file_info["filename"]
         
-        # Only process llm_output files (skip llm_input)
-        if not filename.startswith("llm_output_"):
+        # Only process llm-output files (skip llm-input)
+        if not filename.startswith("llm-output-"):
             continue
         
-        # Parse filename: llm_output_{agent}_{action}.md
-        parts = filename.replace("llm_output_", "").replace(".md", "").split("_")
+        # Parse filename: llm-output-{agent}-{action}.md
+        parts = filename.replace("llm-output-", "").replace(".md", "").split("-")
         
         if len(parts) >= 2:
             action = parts[-1]  # "discuss"
-            agent = "_".join(parts[:-1])  # "architect", "professor", etc.
+            agent = "-".join(parts[:-1])  # "architect", "professor", etc.
             
             try:
                 content = file_info["path"].read_text(encoding="utf-8")
@@ -336,7 +336,7 @@ def load_writer_output_from_run(run_info: RunInfo) -> str | None:
     # Look for writer output files
     writer_files = [
         f for f in run_info.files.get("writer", [])
-        if "writer_output" in f["filename"] or "llm_output_writer" in f["filename"]
+        if "writer-output" in f["filename"] or "llm-output-writer" in f["filename"]
     ]
     
     if not writer_files:
@@ -363,7 +363,7 @@ def load_translation_outputs_from_run(run_info: RunInfo) -> dict[str, str] | Non
     # Look for translation result files (after translation, not before)
     translation_files = [
         f for f in run_info.files.get("translation", [])
-        if "translation_result" in f["filename"]
+        if "translation-result" in f["filename"]
     ]
     
     if not translation_files:
@@ -376,26 +376,34 @@ def load_translation_outputs_from_run(run_info: RunInfo) -> dict[str, str] | Non
         filename = file_info["filename"]
         
         # Extract target_key from filename
-        # Format: 05_translation_result_{target_key}_{timestamp}.md
-        # Example: 05_translation_result_general_zh-TW_143022.md
+        # Format: 05-translation-result-{target_key}-{timestamp}.md
+        # Example: 05-translation-result-general-zh-TW-143022.md
         try:
             # Remove extension
             name_without_ext = filename.replace(".md", "").replace(".json", "")
             
-            # Split by underscore
-            parts = name_without_ext.split("_")
+            # Split by dash
+            parts = name_without_ext.split("-")
             
-            # Find "translation_result" and get everything after it
-            if "translation_result" in parts:
-                idx = parts.index("translation_result")
-                # Get all parts after "translation_result"
-                key_parts = parts[idx + 1:]
+            # Find "translation-result" and get everything after it
+            idx = -1
+            if "translation" in parts and "result" in parts:
+                trans_idx = parts.index("translation")
+                res_idx = parts.index("result")
+                if res_idx == trans_idx + 1:
+                    idx = res_idx + 1  # Skip "translation" and "result"
+            
+            if idx > 0:
+                # Get all parts after "translation-result"
+                key_parts = parts[idx:]
                 
                 # Remove timestamp if present (last part if it's 6 digits)
                 if key_parts and len(key_parts[-1]) == 6 and key_parts[-1].isdigit():
                     key_parts = key_parts[:-1]
                 
                 if key_parts:
+                    # Convert kebab-case back to underscore for internal key format
+                    # e.g., "general-zh-TW" -> "general_zh-TW"
                     target_key = "_".join(key_parts)
                     
                     # Read content

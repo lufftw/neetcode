@@ -432,7 +432,7 @@ class TestFileCollection:
             (tmpdir / "_header.md").write_text("# Header")
             (tmpdir / "_comparison.md").write_text("# Comparison")
             (tmpdir / "_templates.md").write_text("# Templates")
-            (tmpdir / "0003_base.md").write_text("# Problem 3")
+            (tmpdir / "0003-base.md").write_text("# Problem 3")
             (tmpdir / "0076_variant.md").write_text("# Problem 76")
             
             header_files, problem_files, footer_files = collect_source_files(tmpdir)
@@ -442,7 +442,7 @@ class TestFileCollection:
             assert header_files[0].name == "_header.md"
             
             assert len(problem_files) == 2
-            assert problem_files[0].name == "0003_base.md"
+            assert problem_files[0].name == "0003-base.md"
             assert problem_files[1].name == "0076_variant.md"
             
             assert len(footer_files) == 2
@@ -505,7 +505,7 @@ Introduction text.
 Content here.
 ''')
             
-            problem = tmpdir / "0003_base.md"
+            problem = tmpdir / "0003-base.md"
             problem.write_text('''## Base Template: LeetCode 3
 
 Problem content.

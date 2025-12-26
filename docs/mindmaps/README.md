@@ -12,39 +12,39 @@ Use [markmap](https://markmap.js.org/) VSCode extension or web viewer.
 
 ## Available Mind Maps
 
-### [📐 Pattern Hierarchy](pattern_hierarchy.md)
+### [📐 Pattern Hierarchy](pattern-hierarchy.md)
 
 API Kernels → Patterns → Problems hierarchy
 
-### [👨‍👩‍👧‍👦 Family Derivation](family_derivation.md)
+### [👨‍👩‍👧‍👦 Family Derivation](family-derivation.md)
 
 Base templates and derived problem variants
 
-### [⚡ Algorithm Usage](algorithm_usage.md)
+### [⚡ Algorithm Usage](algorithm-usage.md)
 
 Which algorithms are used in which problems
 
-### [🏗️ Data Structure Usage](data_structure.md)
+### [🏗️ Data Structure Usage](data-structure.md)
 
 Data structures used across problems
 
-### [🏢 Company Coverage](company_coverage.md)
+### [🏢 Company Coverage](company-coverage.md)
 
 Problems frequently asked by companies
 
-### [🗺️ Learning Roadmaps](roadmap_paths.md)
+### [🗺️ Learning Roadmaps](roadmap-paths.md)
 
 Learning roadmap structures
 
-### [🔗 Problem Relations](problem_relations.md)
+### [🔗 Problem Relations](problem-relations.md)
 
 Related problems network
 
-### [🔀 Solution Variants](solution_variants.md)
+### [🔀 Solution Variants](solution-variants.md)
 
 Problems with multiple solution approaches
 
-### [📊 Difficulty × Topics](difficulty_topics.md)
+### [📊 Difficulty × Topics](difficulty-topics.md)
 
 Topics organized by difficulty level
 

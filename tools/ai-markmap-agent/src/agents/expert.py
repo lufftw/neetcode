@@ -242,7 +242,7 @@ Remember: Only suggestions with majority support will be implemented."""
         
         # Load discussion behavior prompt
         base_dir = Path(__file__).parent.parent.parent
-        discussion_prompt_path = base_dir / "prompts/experts/discussion_behavior.md"
+        discussion_prompt_path = base_dir / "prompts/experts/discussion-behavior.md"
         
         if discussion_prompt_path.exists():
             discussion_template = discussion_prompt_path.read_text(encoding="utf-8")

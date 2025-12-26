@@ -45,7 +45,7 @@ def save_prompt(system_prompt: str, user_prompt: str, config: dict[str, Any]) ->
     prompt_dir = Path(prompt_config.get("directory", "tools/prompts/generated"))
     prompt_dir.mkdir(parents=True, exist_ok=True)
     
-    filename = prompt_config.get("filename", "mindmap_prompt")
+    filename = prompt_config.get("filename", "mindmap-prompt")
     prompt_file = prompt_dir / f"{filename}.md"
     
     prompt_file.write_text(

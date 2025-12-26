@@ -48,9 +48,9 @@ python -m pytest .dev/tests_solutions -v
 For complete documentation, please see:
 
 - **[Contributors Overview](../docs/contributors/README.md)** - Complete maintainer guide
-- **[Testing Documentation](../docs/contributors/TESTING.md)** - Comprehensive testing guide
-- **[Documentation Architecture](../docs/contributors/DOCUMENTATION_ARCHITECTURE.md)** - Documentation structure
-- **[Virtual Environment Setup](../docs/contributors/VIRTUAL_ENV_SETUP.md)** - Environment setup guide
+- **[Testing Documentation](../docs/contributors/testing.md)** - Comprehensive testing guide
+- **[Documentation Architecture](../docs/contributors/documentation-architecture.md)** - Documentation structure
+- **[Virtual Environment Setup](../docs/contributors/virtual-env-setup.md)** - Environment setup guide
 
 ---
 

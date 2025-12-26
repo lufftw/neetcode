@@ -11,7 +11,7 @@
 input:
   # Baseline Markmap to refine (relative to docs/mindmaps/)
   baseline:
-    path: "neetcode_ontology_ai_en.md"
+    path: "neetcode-ontology-ai-en.md"
     # If baseline doesn't exist, fall back to generating from scratch
     fallback_to_generate: true
   
@@ -89,6 +89,10 @@ data_sources:
         path: "two_pointers"
         enabled: true
         config_file: "_config.toml"
+      - name: "backtracking_exploration"
+        path: "backtracking_exploration"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -129,8 +133,8 @@ experts:
       name: "Top Software Architect"
       emoji: "🏗️"
       model: "gpt-5.2"
-      persona_prompt: "prompts/experts/architect_persona.md"
-      behavior_prompt: "prompts/experts/architect_behavior.md"
+      persona_prompt: "prompts/experts/architect-persona.md"
+      behavior_prompt: "prompts/experts/architect-behavior.md"
       temperature: 0.6
       max_tokens: 8192
       focus: "api_kernel_design"
@@ -144,8 +148,8 @@ experts:
       name: "Distinguished Algorithm Professor"
       emoji: "📚"
       model: "gpt-5.2"
-      persona_prompt: "prompts/experts/professor_persona.md"
-      behavior_prompt: "prompts/experts/professor_behavior.md"
+      persona_prompt: "prompts/experts/professor-persona.md"
+      behavior_prompt: "prompts/experts/professor-behavior.md"
       temperature: 0.5
       max_tokens: 8192
       focus: "correctness_pedagogy"
@@ -159,8 +163,8 @@ experts:
       name: "Senior Principal Engineer"
       emoji: "⚙️"
       model: "gpt-5.2"
-      persona_prompt: "prompts/experts/engineer_persona.md"
-      behavior_prompt: "prompts/experts/engineer_behavior.md"
+      persona_prompt: "prompts/experts/engineer-persona.md"
+      behavior_prompt: "prompts/experts/engineer-behavior.md"
       temperature: 0.6
       max_tokens: 8192
       focus: "practical_value"
@@ -262,9 +266,9 @@ workflow:
 # -----------------------------------------------------------------------------
 writer:
   model: "gpt-5.2"  # 128K context for full markmap
-  persona_prompt: "prompts/writer/writer_persona.md"
-  behavior_prompt: "prompts/writer/writer_behavior.md"
-  format_guide: "prompts/writer/markmap_format_guide.md"
+  persona_prompt: "prompts/writer/writer-persona.md"
+  behavior_prompt: "prompts/writer/writer-behavior.md"
+  format_guide: "prompts/writer/markmap-format-guide.md"
   temperature: 0.4
   max_tokens: 128000
   
@@ -346,9 +350,9 @@ output:
         # Default: 8192 if not specified
         translator_max_tokens: 128000
     
-    # Output template: {prefix}_ontology_agent_evolved_{lang}.{ext}
-    # Example: neetcode_ontology_agent_evolved_en.md
-    template: "{prefix}_ontology_agent_evolved_{lang}"
+    # Output template: {prefix}-ontology-agent-evolved-{lang}.{ext}
+    # Example: neetcode-ontology-agent-evolved-en.md
+    template: "{prefix}-ontology-agent-evolved-{lang}"
   
   html:
     template: "templates/markmap.html"
@@ -409,7 +413,7 @@ debug_output:
   format:
     include_timestamp: true
     include_phase_number: true
-    template: "{phase_num:02d}_{phase}_{agent}_{lang}"
+    template: "{phase_num:02d}-{phase}-{agent}-{lang}"
 
 # -----------------------------------------------------------------------------
 # API Configuration

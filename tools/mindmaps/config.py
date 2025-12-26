@@ -24,9 +24,9 @@ DEFAULT_USE_GITHUB_LINKS = True
 
 # Mind map types
 MINDMAP_TYPES = [
-    "pattern_hierarchy", "family_derivation", "algorithm_usage",
-    "data_structure", "company_coverage", "roadmap_paths",
-    "problem_relations", "solution_variants", "difficulty_topics",
+    "pattern-hierarchy", "family-derivation", "algorithm-usage",
+    "data-structure", "company-coverage", "roadmap-paths",
+    "problem-relations", "solution-variants", "difficulty-topics",
 ]
 
 # Difficulty icons

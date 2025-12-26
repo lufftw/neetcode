@@ -36,8 +36,8 @@
 ├── run_all_tests.bat               # ★ Windows - Full project tests
 ├── run_all_tests.sh                # ★ Linux/Mac - Full project tests
 │
-├── TESTING.md                      # Complete testing documentation
-├── VIRTUAL_ENV_SETUP.md            # Virtual environment setup guide
+├── testing.md                      # Complete testing documentation
+├── virtual-env-setup.md            # Virtual environment setup guide
 └── README.md                       # This file
 ```
 
@@ -139,9 +139,9 @@ tools/run_format_tests.sh
 
 | Document | Description |
 |----------|-------------|
-| [TESTING.md](TESTING.md) | Complete testing documentation (strategy, principles, workflow) |
-| [VIRTUAL_ENV_SETUP.md](VIRTUAL_ENV_SETUP.md) | Virtual environment setup guide |
-| [DOCUMENTATION_ARCHITECTURE.md](DOCUMENTATION_ARCHITECTURE.md) | Documentation structure and best practices |
+| [testing.md](testing.md) | Complete testing documentation (strategy, principles, workflow) |
+| [virtual-env-setup.md](virtual-env-setup.md) | Virtual environment setup guide |
+| [documentation-architecture.md](documentation-architecture.md) | Documentation structure and best practices |
 | [tests/README.md](https://github.com/lufftw/neetcode/blob/main/.dev/tests/README.md) | Component tests detailed description |
 | [tests_solutions/README.md](https://github.com/lufftw/neetcode/blob/main/.dev/tests_solutions/README.md) | Solution tests detailed description |
 | [../tools/README.md](../tools/README.md) | Developer tools reference |

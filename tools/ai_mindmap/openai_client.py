@@ -194,7 +194,7 @@ def generate_with_openai(
             print("   - Or use the saved prompt manually:")
             prompt_config = config.get("prompt", {})
             prompt_dir = Path(prompt_config.get("directory", "tools/prompts/generated"))
-            prompt_filename = prompt_config.get("filename", "mindmap_prompt")
+            prompt_filename = prompt_config.get("filename", "mindmap-prompt")
             prompt_file = prompt_dir / f"{prompt_filename}.md"
             if prompt_file.exists():
                 print(f"   Prompt saved at: {prompt_file}")

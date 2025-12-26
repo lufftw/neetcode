@@ -259,13 +259,13 @@ cd tools/ai-markmap-agent
 # This will:
 # 1. Find the latest English output (from version history or final output)
 # 2. Translate it to zh-TW using gpt-5.2
-# 3. Save as neetcode_ontology_agent_evolved_zh-TW.md in the final output directory
+# 3. Save as neetcode-ontology-agent-evolved-zh-tw.md in the final output directory
 python translate_only.py
 ```
 
 The output will be saved to:
-- **Markdown**: `../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md`
-- **HTML** (if using `--html`): `../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html`
+- **Markdown**: `../../docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md`
+- **HTML** (if using `--html`): `../../docs/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html`
 
 **Method 2: Translate a Specific File**
 
@@ -287,17 +287,17 @@ If you want to translate a specific English file:
 cd tools/ai-markmap-agent
 
 # Translate a specific file (auto-detects output to docs/mindmaps/)
-python translate_only.py --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md
+python translate_only.py --input ../../docs/mindmaps/neetcode-ontology-agent-evolved-en.md
 
 # Or with explicit output path to docs/mindmaps/
 python translate_only.py \
-    --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+    --input ../../docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    --output ../../docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
 
 # Translate and generate HTML in one step
 python translate_only.py \
-    --input ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    --output ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
+    --input ../../docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    --output ../../docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md \
     --html
 ```
 
@@ -307,17 +307,17 @@ python translate_only.py \
 cd tools\ai-markmap-agent
 
 # Translate a specific file (auto-detects output to docs\mindmaps\)
-python translate_only.py --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md
+python translate_only.py --input ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md
 
 # Or with explicit output path to docs\mindmaps\
 python translate_only.py `
-    --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
-    --output ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
+    --input ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
+    --output ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md
 
 # Translate and generate HTML in one step
 python translate_only.py `
-    --input ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
-    --output ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    --input ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
+    --output ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
     --html
 ```
 
@@ -327,13 +327,13 @@ python translate_only.py `
 ```bash
 # From project root - relative paths resolved relative to script directory
 python tools/ai-markmap-agent/translate_only.py \
-    --input docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    --output docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+    --input docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    --output docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
 
 # With HTML generation
 python tools/ai-markmap-agent/translate_only.py \
-    --input docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    --output docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
+    --input docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    --output docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md \
     --html
 ```
 
@@ -341,13 +341,13 @@ python tools/ai-markmap-agent/translate_only.py \
 ```powershell
 # From project root - relative paths resolved relative to script directory
 python tools\ai-markmap-agent\translate_only.py `
-    --input docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
-    --output docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
+    --input docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
+    --output docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md
 
 # With HTML generation
 python tools\ai-markmap-agent\translate_only.py `
-    --input docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
-    --output docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    --input docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
+    --output docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
     --html
 ```
 
@@ -357,16 +357,16 @@ python tools\ai-markmap-agent\translate_only.py `
 ```bash
 # From any directory using absolute paths
 python /path/to/neetcode/tools/ai-markmap-agent/translate_only.py \
-    --input /path/to/neetcode/docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    --output /path/to/neetcode/docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+    --input /path/to/neetcode/docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    --output /path/to/neetcode/docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
 ```
 
 **Windows PowerShell:**
 ```powershell
 # From any directory using absolute paths
 python C:\Developer\program\python\neetcode\tools\ai-markmap-agent\translate_only.py `
-    --input C:\Developer\program\python\neetcode\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
-    --output C:\Developer\program\python\neetcode\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md
+    --input C:\Developer\program\python\neetcode\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
+    --output C:\Developer\program\python\neetcode\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md
 ```
 
 **Note on Output Locations:**
@@ -390,10 +390,10 @@ This will:
 
 The translation uses settings from `config/config.yaml`:
 
-- **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-TW.translator_model`)
+- **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-tw.translator_model`)
 - **Source Language**: `en` (default)
 - **Target Language**: `zh-TW` (default)
-- **Max Tokens**: `translator_max_tokens` (configured in `output.naming.languages.zh-TW.translator_max_tokens`)
+- **Max Tokens**: `translator_max_tokens` (configured in `output.naming.languages.zh-tw.translator_max_tokens`)
   - **gpt-5.2**: Recommended `128000` (max output capacity: 128,000 tokens, context window: 400,000 tokens)
   - **gpt-4o**: Recommended `16384` (max output typically 16,384 tokens)
   - **gpt-4**: Recommended `8192` (max output typically 8,192 tokens)
@@ -519,8 +519,8 @@ The converter automatically loads meta descriptions from the `meta_description_f
 ```bash
 # From project root - relative paths resolved relative to script directory
 python tools/ai-markmap-agent/convert_to_html.py \
-    docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    -o docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    -o docs/pages/mindmaps/neetcode-ontology-agent-evolved-en.html \
     -t "NeetCode Agent Evolved Mindmap (EN)"
 ```
 
@@ -528,7 +528,7 @@ python tools/ai-markmap-agent/convert_to_html.py \
 ```powershell
 # From project root - relative paths resolved relative to script directory
 python tools\ai-markmap-agent\convert_to_html.py `
-    docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
     -o docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 ```
@@ -544,14 +544,14 @@ cd tools/ai-markmap-agent
 
 # Convert English version
 python convert_to_html.py \
-    ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    ../../docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    -o ../../docs/pages/mindmaps/neetcode-ontology-agent-evolved-en.html \
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 # Convert Traditional Chinese version
 python convert_to_html.py \
-    ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
-    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html \
+    ../../docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md \
+    -o ../../docs/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html \
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
 
@@ -562,13 +562,13 @@ cd tools\ai-markmap-agent
 
 # Convert English version
 python convert_to_html.py `
-    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
     -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 # Convert Traditional Chinese version
 python convert_to_html.py `
-    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
     -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
@@ -579,13 +579,13 @@ python convert_to_html.py `
 ```bash
 # From project root - relative paths resolved relative to script directory
 python tools/ai-markmap-agent/convert_to_html.py \
-    docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    -o docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    -o docs/pages/mindmaps/neetcode-ontology-agent-evolved-en.html \
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 python tools/ai-markmap-agent/convert_to_html.py \
-    docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
-    -o docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html \
+    docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md \
+    -o docs/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html \
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
 
@@ -593,12 +593,12 @@ python tools/ai-markmap-agent/convert_to_html.py \
 ```powershell
 # From project root - relative paths resolved relative to script directory
 python tools\ai-markmap-agent\convert_to_html.py `
-    docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
     -o docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 python tools\ai-markmap-agent\convert_to_html.py `
-    docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
     -o docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
@@ -618,13 +618,13 @@ It can be used to convert any Markmap Markdown file to interactive HTML.
 ```powershell
 # Convert English version
 python convert_to_html.py `
-    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md `
+    ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
     -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 # Convert Traditional Chinese version
 python convert_to_html.py `
-    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md `
+    ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
     -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
@@ -641,14 +641,14 @@ mkdir -p ../../docs/pages/mindmaps
 
 # Convert English
 python convert_to_html.py \
-    ../../docs/mindmaps/neetcode_ontology_agent_evolved_en.md \
-    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html \
+    ../../docs/mindmaps/neetcode-ontology-agent-evolved-en.md \
+    -o ../../docs/pages/mindmaps/neetcode-ontology-agent-evolved-en.html \
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 # Convert Traditional Chinese
 python convert_to_html.py \
-    ../../docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md \
-    -o ../../docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html \
+    ../../docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md \
+    -o ../../docs/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html \
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 
 echo "✅ All conversions complete!"
@@ -664,13 +664,13 @@ if not exist "..\..\docs\pages\mindmaps" mkdir "..\..\docs\pages\mindmaps"
 
 REM Convert English
 python convert_to_html.py ^
-    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_en.md ^
+    ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md ^
     -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html ^
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 REM Convert Traditional Chinese
 python convert_to_html.py ^
-    ..\..\docs\mindmaps\neetcode_ontology_agent_evolved_zh-TW.md ^
+    ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md ^
     -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html ^
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 
@@ -809,17 +809,17 @@ ai-markmap-agent/
 │   └── config.yaml              # Main configuration
 ├── prompts/
 │   ├── experts/                 # Expert prompts
-│   │   ├── architect_persona.md
-│   │   ├── architect_behavior.md
-│   │   ├── professor_persona.md
-│   │   ├── professor_behavior.md
-│   │   ├── engineer_persona.md
-│   │   ├── engineer_behavior.md
-│   │   └── discussion_behavior.md
+│   │   ├── architect-persona.md
+│   │   ├── architect-behavior.md
+│   │   ├── professor-persona.md
+│   │   ├── professor-behavior.md
+│   │   ├── engineer-persona.md
+│   │   ├── engineer-behavior.md
+│   │   └── discussion-behavior.md
 │   └── writer/
-│       ├── writer_persona.md
-│       ├── writer_behavior.md
-│       └── markmap_format_guide.md
+│       ├── writer-persona.md
+│       ├── writer-behavior.md
+│       └── markmap-format-guide.md
 ├── src/
 │   ├── agents/
 │   │   ├── base_agent.py        # Base agent class
@@ -861,8 +861,8 @@ Each run saves a versioned copy to `outputs/versions/`:
 ```
 outputs/versions/
 ├── v1/
-│   ├── neetcode_ontology_agent_evolved_en.md
-│   └── neetcode_ontology_agent_evolved_zh-TW.md
+│   ├── neetcode-ontology-agent-evolved-en.md
+│   └── neetcode-ontology-agent-evolved-zh-tw.md
 ├── v2/
 │   └── ...
 └── v3/
@@ -1045,7 +1045,7 @@ python tools/sync_leetcode_data.py --check
 - Missing URLs are auto-generated from API data
 - No configuration required
 
-See [Post-Processing Links Documentation](https://github.com/lufftw/neetcode/blob/main/tools/ai-markmap-agent/docs/POST_PROCESSING_LINKS.md) for details.
+See [Post-Processing Links Documentation](https://github.com/lufftw/neetcode/blob/main/tools/ai-markmap-agent/docs/post-processing-links.md) for details.
 
 ---
 

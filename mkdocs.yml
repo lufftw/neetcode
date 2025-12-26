@@ -139,27 +139,27 @@ nav:
       - Templates: patterns/backtracking_exploration/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
-    - AI Analysis (English): mindmaps/neetcode_ontology_ai_en.md
-    - AI Analysis (繁體中文): mindmaps/neetcode_ontology_ai_zh-TW.md
-    - Agent Evolved (English): mindmaps/neetcode_ontology_agent_evolved_en.md
-    - Agent Evolved (繁體中文): mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
-    - Pattern Hierarchy: mindmaps/pattern_hierarchy.md
-    - Family Derivation: mindmaps/family_derivation.md
-    - Algorithm Usage: mindmaps/algorithm_usage.md
-    - Data Structure: mindmaps/data_structure.md
-    - Company Coverage: mindmaps/company_coverage.md
-    - Learning Roadmaps: mindmaps/roadmap_paths.md
-    - Problem Relations: mindmaps/problem_relations.md
-    - Solution Variants: mindmaps/solution_variants.md
-    - Difficulty × Topics: mindmaps/difficulty_topics.md
+    - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
+    - AI Analysis (繁體中文): mindmaps/neetcode-ontology-ai-zh-tw.md
+    - Agent Evolved (English): mindmaps/neetcode-ontology-agent-evolved-en.md
+    - Agent Evolved (繁體中文): mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
+    - Pattern Hierarchy: mindmaps/pattern-hierarchy.md
+    - Family Derivation: mindmaps/family-derivation.md
+    - Algorithm Usage: mindmaps/algorithm-usage.md
+    - Data Structure: mindmaps/data-structure.md
+    - Company Coverage: mindmaps/company-coverage.md
+    - Learning Roadmaps: mindmaps/roadmap-paths.md
+    - Problem Relations: mindmaps/problem-relations.md
+    - Solution Variants: mindmaps/solution-variants.md
+    - Difficulty × Topics: mindmaps/difficulty-topics.md
   - 🔧 Guides:
     - Testing & Validation Engine: runner/README.md
-    - VSCode Setup: contributors/VSCODE_SETUP.md
+    - VSCode Setup: contributors/vscode-setup.md
   - 📚 Reference:
-    - Solution Contract: SOLUTION_CONTRACT.md
-    - Generator Contract: GENERATOR_CONTRACT.md
-    - Architecture Migration: ARCHITECTURE_MIGRATION.md
-    - Ontology Design: ONTOLOGY_DESIGN.md
+    - Solution Contract: solution-contract.md
+    - Generator Contract: generator-contract.md
+    - Architecture Migration: architecture-migration.md
+    - Ontology Design: ontology-design.md
   - 🛠️ Tools:
     - Overview: tools/README.md
     - AI Markmap Agent: tools/ai-markmap-agent/README.md
@@ -167,15 +167,15 @@ nav:
     - Pattern Docs Generator: tools/patterndocs/README.md
   - 👥 Contributors:
     - Overview: contributors/README.md
-    - Testing Documentation: contributors/TESTING.md
-    - Documentation Architecture: contributors/DOCUMENTATION_ARCHITECTURE.md
-    - Documentation Header Spec: DOCUMENTATION_HEADER_SPEC.md
-    - Virtual Environment Setup: contributors/VIRTUAL_ENV_SETUP.md
-    - GitHub Pages Setup: GITHUB_PAGES_SETUP.md
-    - Build Documentation Locally (Manual): BUILD_DOCS_MANUAL.md
-    - Local Docs Build Options: LOCAL_DOCS_BUILD.md
-    - Run GitHub Actions Locally (Act): ACT_LOCAL_GITHUB_ACTIONS.md
-    - MkDocs Content Guide: MKDOCS_CONTENT_GUIDE.md
+    - Testing Documentation: contributors/testing.md
+    - Documentation Architecture: contributors/documentation-architecture.md
+    - Documentation Header Spec: documentation-header-spec.md
+    - Virtual Environment Setup: contributors/virtual-env-setup.md
+    - GitHub Pages Setup: github-pages-setup.md
+    - Build Documentation Locally (Manual): build-docs-manual.md
+    - Local Docs Build Options: local-docs-build.md
+    - Run GitHub Actions Locally (Act): act-local-github-actions.md
+    - MkDocs Content Guide: mkdocs-content-guide.md
 
 # Extra
 extra:

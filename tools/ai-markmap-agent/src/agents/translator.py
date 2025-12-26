@@ -29,8 +29,8 @@ from .base_agent import BaseAgent
 
 # Prompt file paths (relative to project root)
 PROMPT_DIR = Path(__file__).parent.parent.parent / "prompts" / "translator"
-ZH_TW_PROMPT_FILE = PROMPT_DIR / "zh_tw_translator_behavior.md"
-GENERIC_PROMPT_FILE = PROMPT_DIR / "generic_translator_behavior.md"
+ZH_TW_PROMPT_FILE = PROMPT_DIR / "zh-tw-translator-behavior.md"
+GENERIC_PROMPT_FILE = PROMPT_DIR / "generic-translator-behavior.md"
 
 
 class TranslatorAgent(BaseAgent):
@@ -96,7 +96,7 @@ class TranslatorAgent(BaseAgent):
         self._prompt_cache: dict[str, str] = {}
         
         super().__init__(
-            agent_id=f"translator_{source_language}_to_{target_language}",
+            agent_id=f"translator-{source_language.lower()}-to-{target_language.lower()}",
             model_config=model_config,
             config=config,
         )
