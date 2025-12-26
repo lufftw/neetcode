@@ -89,11 +89,11 @@ class ContentCompressor:
                     )
                 else:
                     content_str = str(content)
-                filename = f"llm_input_{agent_id}_{call_type}"
+                filename = f"llm-input-{agent_id}-{call_type}"
             else:
                 # response string
                 content_str = str(content)
-                filename = f"llm_output_{agent_id}_{call_type}"
+                filename = f"llm-output-{agent_id}-{call_type}"
             
             # Save to debug directory
             ext = "md"

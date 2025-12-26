@@ -50,8 +50,8 @@ class DebugOutputManager:
                 print(f"  📁 Debug outputs (resume): {self.run_dir}")
             else:
                 # New run: create run-specific directory with timestamp
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                self.run_dir = self.output_dir / f"run_{timestamp}"
+                timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+                self.run_dir = self.output_dir / f"run-{timestamp}"
                 self.run_dir.mkdir(parents=True, exist_ok=True)
                 print(f"  📁 Debug outputs: {self.run_dir}")
     
@@ -86,7 +86,7 @@ class DebugOutputManager:
         if include_timestamp:
             parts.append(datetime.now().strftime("%H%M%S"))
         
-        return "_".join(parts)
+        return "-".join(parts)
     
     def save(
         self,
@@ -182,7 +182,7 @@ class DebugOutputManager:
         return self.save(
             2, "optimizer",
             suggestion,
-            optimizer_name.lower().replace(" ", "_"),
+            optimizer_name.lower().replace(" ", "-"),
             output_key,
             f"round{round_num}",
         )
@@ -198,10 +198,10 @@ class DebugOutputManager:
         if not config.get("save_each_expert", False):
             return None
         
-        expert_key = expert_name.lower().replace(" ", "_")
+        expert_key = expert_name.lower().replace(" ", "-")
         
         # Save raw response
-        self.save(1, "expert_review", response, expert_key)
+        self.save(1, "expert-review", response, expert_key)
         
         # Save suggestions as JSON if provided
         if suggestions and config.get("save_all_suggestions", False):
@@ -221,7 +221,7 @@ class DebugOutputManager:
         if not config.get("save_votes", False):
             return None
         
-        expert_key = expert_name.lower().replace(" ", "_")
+        expert_key = expert_name.lower().replace(" ", "-")
         
         # Save raw response
         self.save(2, "discussion", response, expert_key)
@@ -259,9 +259,9 @@ class DebugOutputManager:
         if not config.get("save_initial_evaluations", False):
             return None
         return self.save(
-            3, "judge_eval",
+            3, "judge-eval",
             evaluation,
-            judge_name.lower().replace(" ", "_"),
+            judge_name.lower().replace(" ", "-"),
             output_key,
             extension="json",
         )
@@ -305,7 +305,7 @@ class DebugOutputManager:
             return None
         
         # Save markmap
-        self.save(4, "writer_input_markmap", selected_markmap, output_key)
+        self.save(4, "writer-input-markmap", selected_markmap, output_key)
         
         # Save feedback as JSON
         input_data = {
@@ -313,7 +313,7 @@ class DebugOutputManager:
             "consensus_suggestions": suggestions,
         }
         return self.save(
-            4, "writer_input_feedback",
+            4, "writer-input-feedback",
             input_data,
             output_key,
             extension="json",
@@ -328,7 +328,7 @@ class DebugOutputManager:
         config = self.phases_config.get("writer", {})
         if not config.get("save_writer_output", False):
             return None
-        return self.save(4, "writer_output", content, output_key)
+        return self.save(4, "writer-output", content, output_key)
     
     def save_translation(
         self,
@@ -343,11 +343,11 @@ class DebugOutputManager:
         if is_before:
             if not config.get("save_before_translation", False):
                 return None
-            return self.save(5, "translation_source", content, source_key)
+            return self.save(5, "translation-source", content, source_key)
         else:
             if not config.get("save_after_translation", False):
                 return None
-            return self.save(5, "translation_result", content, target_key)
+            return self.save(5, "translation-result", content, target_key)
     
     def save_post_processing(
         self,
@@ -361,11 +361,11 @@ class DebugOutputManager:
         if is_before:
             if not config.get("save_before_processing", False):
                 return None
-            return self.save(6, "postproc_before", content, output_key)
+            return self.save(6, "postproc-before", content, output_key)
         else:
             if not config.get("save_after_processing", False):
                 return None
-            return self.save(6, "postproc_after", content, output_key)
+            return self.save(6, "postproc-after", content, output_key)
 
 
 # Global instance (lazy initialization)

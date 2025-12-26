@@ -89,6 +89,10 @@ data_sources:
         path: "two_pointers"
         enabled: true
         config_file: "_config.toml"
+      - name: "backtracking_exploration"
+        path: "backtracking_exploration"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -409,7 +413,7 @@ debug_output:
   format:
     include_timestamp: true
     include_phase_number: true
-    template: "{phase_num:02d}_{phase}_{agent}_{lang}"
+    template: "{phase_num:02d}-{phase}-{agent}-{lang}"
 
 # -----------------------------------------------------------------------------
 # API Configuration
