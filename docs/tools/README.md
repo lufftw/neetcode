@@ -291,7 +291,7 @@ Generates SEO-friendly HTML meta descriptions from Markdown files using OpenAI G
 python tools/html_meta_description_generator.py
 
 # Generate description for a specific file
-python tools/html_meta_description_generator.py --file docs/mindmaps/pattern_hierarchy.md
+python tools/html_meta_description_generator.py --file docs/mindmaps/pattern-hierarchy.md
 
 # List configured files
 python tools/html_meta_description_generator.py --list
@@ -339,8 +339,8 @@ The OpenAI API key is prompted interactively when running the program (input is 
 
 ```toml
 [files]
-"docs/mindmaps/pattern_hierarchy.md" = { }
-"docs/mindmaps/family_derivation.md" = { minLen = 100, maxLen = 155 }
+"docs/mindmaps/pattern-hierarchy.md" = { }
+"docs/mindmaps/family-derivation.md" = { minLen = 100, maxLen = 155 }
 ```
 
 ---

@@ -207,7 +207,7 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 ```markdown
 | Mind Map | Links |
 |:---------|:------|
-| Pattern Hierarchy | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
+| Pattern Hierarchy | [Static](docs/mindmaps/pattern-hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
 ```
 
 **Why relative paths work**: All `docs/mindmaps/*.md` files are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
