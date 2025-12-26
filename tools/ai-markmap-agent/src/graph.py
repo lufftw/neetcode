@@ -125,8 +125,8 @@ def _save_post_processing_comparison(
     output_path.mkdir(parents=True, exist_ok=True)
     
     # Create comparison file
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    comparison_file = output_path / f"post_processing_comparison_{timestamp}.md"
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    comparison_file = output_path / f"post-processing-comparison-{timestamp}.md"
     
     content_parts = [
         "# Post-Processing Link Comparison",
@@ -214,7 +214,7 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
     # Try alternative paths
     alt_paths = [
         base_dir / "docs" / "mindmaps" / "neetcode-ontology-ai-en.md",
-        base_dir / "docs" / "mindmaps" / "neetcode_general_ai_en.md",
+        base_dir / "docs" / "mindmaps" / "neetcode-general-ai-en.md",
     ]
     
     for alt_path in alt_paths:

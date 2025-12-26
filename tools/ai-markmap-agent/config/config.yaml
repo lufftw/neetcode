@@ -346,9 +346,9 @@ output:
         # Default: 8192 if not specified
         translator_max_tokens: 128000
     
-    # Output template: {prefix}_ontology_agent_evolved_{lang}.{ext}
+    # Output template: {prefix}-ontology-agent-evolved-{lang}.{ext}
     # Example: neetcode-ontology-agent-evolved-en.md
-    template: "{prefix}_ontology_agent_evolved_{lang}"
+    template: "{prefix}-ontology-agent-evolved-{lang}"
   
   html:
     template: "templates/markmap.html"

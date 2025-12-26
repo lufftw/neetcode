@@ -61,7 +61,7 @@ class MarkMapHTMLConverter:
         latest_dir = existing[-1]
         naming = self.config.get("output", {}).get("naming", {})
         prefix = naming.get("prefix", "neetcode")
-        template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
+        template = naming.get("template", "{prefix}-ontology-agent-evolved-{lang}")
         filename = template.format(prefix=prefix, lang=lang) + ".md"
         
         latest_file = latest_dir / filename
@@ -157,7 +157,7 @@ def save_all_markmaps(
     # Get naming configuration
     naming = output_config.get("naming", {})
     prefix = naming.get("prefix", "neetcode")
-    template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
+    template = naming.get("template", "{prefix}-ontology-agent-evolved-{lang}")
     
     # Get template path from config
     html_config = output_config.get("html", {})

@@ -40,7 +40,7 @@ def find_latest_english_output(config: dict) -> Path | None:
     output_config = config.get("output", {})
     naming = output_config.get("naming", {})
     prefix = naming.get("prefix", "neetcode")
-    template = naming.get("template", "{prefix}_ontology_agent_evolved_{lang}")
+    template = naming.get("template", "{prefix}-ontology-agent-evolved-{lang}")
     filename = template.format(prefix=prefix, lang="en") + ".md"
     
     final_dirs = output_config.get("final_dirs", {})
@@ -53,9 +53,9 @@ def find_latest_english_output(config: dict) -> Path | None:
     
     # Try old format filenames (for backwards compatibility)
     old_formats = [
-        f"{prefix}_general_ai_en.md",
-        f"{prefix}_specialist_ai_en.md",
-        f"{prefix}_ontology_ai_en.md",
+        f"{prefix}-general-ai-en.md",
+        f"{prefix}-specialist-ai-en.md",
+        f"{prefix}-ontology-ai-en.md",
     ]
     for old_filename in old_formats:
         old_path = md_dir / old_filename
