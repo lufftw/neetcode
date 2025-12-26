@@ -124,7 +124,7 @@ plugins:
 # Navigation
 nav:
   - 🏠 Home:
-    - English: index.md
+    - index.md
     - 繁體中文: index_zh-TW.md
   - 📐 Patterns:
     - Overview: patterns/README.md
