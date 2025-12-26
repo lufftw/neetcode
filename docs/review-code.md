@@ -41,6 +41,14 @@ Constraints:
 - {constraint 1}
 - {constraint 2}
 
+Topics: {topic1}, {topic2}, ...
+
+Hint 1: {hint 1}
+
+Hint 2: {hint 2}
+
+... (include ALL hints from LeetCode)
+
 Note: {optional additional notes}
 
 Follow-up: {optional follow-up question 1}
@@ -56,7 +64,9 @@ Follow-up: {optional follow-up question 2}
 | `Link` | ✅ | LeetCode problem URL (must include `/description/` suffix) |
 | Description | Recommended | Brief problem statement explaining what the problem asks |
 | `Example` | Recommended | All examples from LeetCode (Input/Output with optional Explanation). Preserve `<img>` tags if present. |
-| `Constraints` | Recommended | Key constraints affecting algorithm choice |
+| `Constraints` | Recommended | ALL constraints from LeetCode (include as many as present). Use bullet points with `-` prefix. |
+| `Topics` | Recommended | Comma-separated topic tags from LeetCode (e.g., Array, Two Pointers, Hash Table). Blank line before it. |
+| `Hints` | Optional | ALL progressive hints from LeetCode (if present). Use numbered format `Hint 1:`, `Hint 2:`, etc. Each hint on its own line with blank line between. |
 | `Note` | Optional | Additional notes from LeetCode (if present). Blank line before it. |
 | `Follow-up` | Optional | Follow-up challenge questions from LeetCode (if present). Blank line before it. May have multiple. |
 
@@ -77,7 +87,7 @@ Follow-up: {optional follow-up question 2}
 
 ## Examples
 
-### Example 1: Basic Format
+### Example 1: Basic Format with Topics and Hints
 
 ```python
 # solutions/0001_two_sum.py
@@ -102,6 +112,14 @@ Constraints:
 - -10^9 <= nums[i] <= 10^9
 - -10^9 <= target <= 10^9
 - Only one valid answer exists.
+
+Topics: Array, Hash Table
+
+Hint 1: A really brute force way would be to search for all possible pairs of numbers but that would be too slow.
+
+Hint 2: Try to reduce the search space by using a hash table.
+
+Hint 3: For each element, check if the complement (target - current) exists in the hash table.
 
 Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
 """
@@ -203,6 +221,8 @@ Constraints:
 - The number of nodes in the tree is in the range [0, 10^4].
 - -100 <= Node.val <= 100
 
+Topics: Tree, Depth-First Search, Breadth-First Search, Binary Tree
+
 Note: The tree is represented as level-order traversal where null indicates missing nodes.
 
 Follow-up: Can you solve it both recursively and iteratively?
@@ -280,7 +300,9 @@ When reviewing or creating a solution file, verify:
 - [ ] `Link:` field is present and points to correct LeetCode URL
 - [ ] Brief problem description is included
 - [ ] `Example:` section includes ALL examples (Input/Output), with `<img>` tags and ASCII art preserved
-- [ ] `Constraints:` section is included with bullet points (use `^` for superscripts)
+- [ ] `Constraints:` section includes ALL constraints with bullet points (use `^` for superscripts)
+- [ ] `Topics:` included with comma-separated topic tags (with blank line before it)
+- [ ] `Hints:` included if present in LeetCode (numbered format: `Hint 1:`, `Hint 2:`, blank line between each)
 - [ ] `Note:` included if present in LeetCode (with blank line before it)
 - [ ] `Follow-up:` included if present in LeetCode (with blank line before it, may have multiple)
 - [ ] No decorative separators (`===`, `---`)
