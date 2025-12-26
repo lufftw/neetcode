@@ -18,7 +18,7 @@ from typing import Optional, Dict, Any, List
 from datetime import datetime
 
 # Default database location
-DEFAULT_DB_PATH = Path(__file__).parent.parent / ".cache" / "leetcode_questions.db"
+DEFAULT_DB_PATH = Path(__file__).parent / "db" / "leetcode.db"
 
 
 class QuestionStore:

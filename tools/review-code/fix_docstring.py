@@ -7,9 +7,11 @@ review-code.md specification by fetching data from LeetCode.
 
 Features:
     - Uses SQLite cache for improved performance
-    - Generates complete docstrings with Examples, Constraints, Note, Follow-up
+    - Generates complete docstrings with Examples, Constraints, Topics, Hints, Note, Follow-up
     - Preserves <img> tags in examples
     - Supports multi-line explanations
+    - Topics: Comma-separated topic tags
+    - Hints: Numbered format (Hint 1:, Hint 2:, etc.) with blank lines between
 
 Usage:
     python tools/review-code/fix_docstring.py --range START END [--delay-min SEC] [--delay-max SEC]
@@ -117,6 +119,23 @@ class DocstringBuilder:
         else:
             parts.append("- [MISSING - NEEDS MANUAL FIX]")
         
+        # Topics (recommended, with blank line before)
+        topics = data.get('topics', '')
+        if topics:
+            parts.append("")
+            parts.append(f"Topics: {topics}")
+        
+        # Hints (optional, with blank line before, numbered format)
+        hints = data.get('hints', [])
+        if hints:
+            parts.append("")
+            for hint in hints:
+                parts.append(hint)
+                parts.append("")  # Blank line between each hint
+            # Remove the trailing blank line (will be added by note/follow-up or end)
+            if parts and parts[-1] == "":
+                parts.pop()
+        
         # Note (optional, with blank line before)
         note = data.get('note')
         if note:
@@ -218,7 +237,10 @@ class DocstringFixer:
             print("(fetch failed)")
             return False, "Failed to fetch question data"
         
-        print(f"({len(data.get('examples', []))} examples, {len(data.get('constraints', []))} constraints)")
+        hints_count = len(data.get('hints', []))
+        topics = data.get('topics', '')
+        topics_count = len(topics.split(',')) if topics else 0
+        print(f"({len(data.get('examples', []))} examples, {len(data.get('constraints', []))} constraints, {topics_count} topics, {hints_count} hints)")
         
         # Build new docstring
         new_docstring = DocstringBuilder.build(data)
