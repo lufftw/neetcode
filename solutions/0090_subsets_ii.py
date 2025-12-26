@@ -3,7 +3,8 @@
 Problem: Subsets II
 Link: https://leetcode.com/problems/subsets-ii/
 
-Given an integer array nums that may contain duplicates, return all unique subsets.
+Given an integer array nums that may contain duplicates, return all possible
+subsets (the power set). The solution set must not contain duplicate subsets.
 
 Sub-Pattern: Subset enumeration with duplicates (sort + same-level skip)
 Key Insight: Sort the array, then skip duplicate values at the same tree level.
@@ -13,6 +14,10 @@ occurrence at each level.
 Delta from Base (LeetCode 78):
 - Sort the input array to bring duplicates together
 - Add same-level deduplication: skip nums[i] if i > start_index and nums[i] == nums[i-1]
+
+Constraints:
+- 1 <= nums.length <= 10
+- -10 <= nums[i] <= 10
 """
 from typing import List
 from _runner import get_solver

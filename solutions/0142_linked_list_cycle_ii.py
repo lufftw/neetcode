@@ -1,51 +1,19 @@
 # solutions/0142_linked_list_cycle_ii.py
 """
-================================================================================
-LeetCode 142: Linked List Cycle II
-================================================================================
+Problem: Linked List Cycle II
+Link: https://leetcode.com/problems/linked-list-cycle-ii/
 
-Problem: Given the head of a linked list, return the node where the cycle begins.
-         If there is no cycle, return null.
+Given the head of a linked list, return the node where the cycle begins.
+If there is no cycle, return null.
 
-API Kernel: TwoPointersTraversal
-Pattern: fast_slow_cycle_start
-Family: linked_list_cycle
+Sub-Pattern: Fast-slow (Floyd's algorithm - phase 2)
+Key Insight: After detecting a cycle, use mathematical property to find
+the cycle start. Reset one pointer to head and move both at same speed.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: FAST–SLOW (FLOYD'S ALGORITHM - PHASE 2)
---------------------------------------------------------------------------------
-
-This problem extends basic cycle detection to find the cycle's starting node.
-
-DELTA from Linked List Cycle (LeetCode 141):
-- Phase 1 (same): Detect if cycle exists by finding meeting point
-- Phase 2 (new): Find the cycle start using mathematical properties
-
-INVARIANT: If cycle exists, meeting point is a fixed distance from cycle start.
-
-Why Phase 2 Works (Mathematical Proof):
-    Let:
-    - F = distance from head to cycle start
-    - C = cycle length
-    - a = distance from cycle start to meeting point
-    
-    When they meet:
-    - Slow traveled: F + a
-    - Fast traveled: F + a + kC (for some integer k ≥ 1)
-    - Fast traveled 2× slow: 2(F + a) = F + a + kC
-    - Therefore: F + a = kC, which means F = kC - a = (k-1)C + (C - a)
-    
-    This means: starting from head and from meeting point, if both move at
-    speed 1, they will meet at the cycle start after F steps.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Phase 1: O(n), Phase 2: O(n)
-Space: O(1) - Only pointer references
-
-================================================================================
+Constraints:
+- The number of the nodes in the list is in the range [0, 10^4]
+- -10^5 <= Node.val <= 10^5
+- pos is -1 or a valid index in the linked-list
 """
 from typing import Optional
 from _runner import get_solver

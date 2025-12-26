@@ -13,6 +13,10 @@ Add pruning to skip branches that can't possibly reach size k.
 Delta from Subsets (LeetCode 78):
 - Only collect when len(path) == k (not at every node)
 - Add count-based pruning: stop early if not enough elements remain
+
+Constraints:
+- 1 <= n <= 20
+- 1 <= k <= n
 """
 from typing import List
 from _runner import get_solver

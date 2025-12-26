@@ -4,7 +4,9 @@ Problem: Word Search
 Link: https://leetcode.com/problems/word-search/
 
 Given an m×n grid of characters and a word, return true if the word exists
-in the grid by traversing adjacent cells. Each cell may only be used once.
+in the grid. The word can be constructed from letters of sequentially
+adjacent cells, where adjacent cells are horizontally or vertically
+neighboring. The same letter cell may not be used more than once.
 
 Sub-Pattern: Grid/Path DFS with visited marking
 Key Insight: Mark cells as visited during exploration, unmark on backtrack.
@@ -13,6 +15,13 @@ different paths to reuse cells.
 
 The decision at each step: which adjacent cell to visit next?
 Only proceed if the cell is unvisited and matches the next character.
+
+Constraints:
+- m == board.length
+- n = board[i].length
+- 1 <= m, n <= 6
+- 1 <= word.length <= 15
+- board and word consists of only lowercase and uppercase English letters
 """
 from typing import List
 from _runner import get_solver

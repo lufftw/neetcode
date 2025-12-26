@@ -1,46 +1,20 @@
 # solutions/0080_remove_duplicates_from_sorted_array_ii.py
 """
-================================================================================
-LeetCode 80: Remove Duplicates from Sorted Array II
-================================================================================
+Problem: Remove Duplicates from Sorted Array II
+Link: https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
 
-Problem: Given a sorted array nums, remove some duplicates in-place such that
-         each unique element appears at most twice. Return the new length.
+Given an integer array nums sorted in non-decreasing order, remove some
+duplicates in-place such that each unique element appears at most twice.
+The relative order of the elements should be kept the same.
 
-API Kernel: TwoPointersTraversal
-Pattern: same_direction_writer_k_allowed
-Family: in_place_array_modification
+Sub-Pattern: Same-direction writer with K-allowance
+Key Insight: Check nums[write-K] instead of nums[write-1] to allow K copies.
+For K=2, compare with nums[write-2] to determine if we already have 2 copies.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: SAME-DIRECTION WITH K-ALLOWANCE
---------------------------------------------------------------------------------
-
-This problem generalizes the basic deduplication pattern to allow up to K copies.
-
-DELTA from Remove Duplicates (LeetCode 26):
-- Instead of "different from nums[write-1]", check "different from nums[write-K]"
-- K=2 for this problem (each element appears at most twice)
-- Generalizes to any K by changing the lookback distance
-
-INVARIANT: nums[0:write] contains at most K copies of each unique element.
-
-Key Insight:
-    We can allow K copies by checking nums[write-K] instead of nums[write-1].
-    If the current element equals nums[write-K], we already have K copies,
-    so we skip it. Otherwise, we write it.
-
-Why This Works:
-    If nums[read] == nums[write-K], then nums[write-K], ..., nums[write-1] are
-    all equal (since array is sorted), meaning we already have K copies.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Single pass through the array
-Space: O(1) - In-place modification
-
-================================================================================
+Constraints:
+- 1 <= nums.length <= 3 * 10^4
+- -10^4 <= nums[i] <= 10^4
+- nums is sorted in non-decreasing order
 """
 from typing import List
 from _runner import get_solver

@@ -1,46 +1,21 @@
 # solutions/0125_valid_palindrome.py
 """
-================================================================================
-LeetCode 125: Valid Palindrome
-================================================================================
+Problem: Valid Palindrome
+Link: https://leetcode.com/problems/valid-palindrome/
 
-Problem: A phrase is a palindrome if, after converting all uppercase letters
-         into lowercase letters and removing all non-alphanumeric characters,
-         it reads the same forward and backward.
-         
-         Given a string s, return true if it is a palindrome, or false otherwise.
+A phrase is a palindrome if, after converting all uppercase letters into
+lowercase letters and removing all non-alphanumeric characters, it reads the
+same forward and backward.
 
-API Kernel: TwoPointersTraversal
-Pattern: opposite_pointers_symmetric
-Family: string_validation
+Given a string s, return true if it is a palindrome, or false otherwise.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: OPPOSITE POINTERS (SYMMETRIC CHECK)
---------------------------------------------------------------------------------
+Sub-Pattern: Opposite pointers (symmetric check)
+Key Insight: Use two pointers from both ends, skip non-alphanumeric characters,
+and compare case-insensitively.
 
-This is the canonical symmetric checking pattern using opposite pointers.
-Start from both ends and move toward the center, verifying that characters
-match at each step.
-
-INVARIANT: s[0:left] and s[right+1:n] form a valid palindrome prefix/suffix pair.
-
-Key Operations:
-1. SKIP: Advance pointers past non-alphanumeric characters
-2. COMPARE: Check if characters at both positions match (case-insensitive)
-3. MOVE: Advance both pointers toward center
-
-Why This Works:
-    A string is a palindrome iff s[i] == s[n-1-i] for all i in [0, n/2).
-    We verify this condition directly by comparing from both ends.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each character visited at most once
-Space: O(1) - Only two pointer indices used
-
-================================================================================
+Constraints:
+- 1 <= s.length <= 2 * 10^5
+- s consists only of printable ASCII characters
 """
 from _runner import get_solver
 

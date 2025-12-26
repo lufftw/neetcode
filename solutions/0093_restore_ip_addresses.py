@@ -3,6 +3,9 @@
 Problem: Restore IP Addresses
 Link: https://leetcode.com/problems/restore-ip-addresses/
 
+A valid IP address consists of exactly four integers separated by single dots.
+Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
+
 Given a string s containing only digits, return all possible valid IP addresses
 that can be formed by inserting dots into s.
 
@@ -13,6 +16,10 @@ Key Insight: IP address has exactly 4 segments (octets), each with constraints:
 - No leading zeros (except "0" itself)
 
 Prune aggressively based on remaining length bounds.
+
+Constraints:
+- 1 <= s.length <= 20
+- s consists of digits only
 """
 from typing import List
 from _runner import get_solver

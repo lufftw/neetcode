@@ -3,7 +3,8 @@
 Problem: Subsets
 Link: https://leetcode.com/problems/subsets/
 
-Given an integer array nums of unique elements, return all possible subsets.
+Given an integer array nums of unique elements, return all possible subsets
+(the power set). The solution set must not contain duplicate subsets.
 
 Sub-Pattern: Subset enumeration with start-index canonicalization
 Key Insight: Use start_index to only consider elements at or after the current
@@ -11,6 +12,11 @@ position. This inherently prevents duplicates like {1,2} and {2,1} and ensures
 we generate each subset exactly once in a canonical order.
 
 Every node in the decision tree (including empty) is a valid subset.
+
+Constraints:
+- 1 <= nums.length <= 10
+- -10 <= nums[i] <= 10
+- All the numbers of nums are unique
 """
 from typing import List
 from _runner import get_solver

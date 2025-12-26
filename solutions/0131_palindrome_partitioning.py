@@ -3,7 +3,7 @@
 Problem: Palindrome Partitioning
 Link: https://leetcode.com/problems/palindrome-partitioning/
 
-Given a string s, partition it such that every substring in the partition
+Given a string s, partition s such that every substring of the partition
 is a palindrome. Return all possible palindrome partitioning of s.
 
 Sub-Pattern: String segmentation with validity check
@@ -12,6 +12,10 @@ all possible first segments; if valid (palindrome), recurse on remainder.
 
 The decision tree is: at each position, where do we make the next cut?
 Only valid (palindrome) prefixes lead to recursive calls.
+
+Constraints:
+- 1 <= s.length <= 16
+- s contains only lowercase English letters
 """
 from typing import List
 from _runner import get_solver

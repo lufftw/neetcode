@@ -1,56 +1,27 @@
 # solutions/0088_merge_sorted_array.py
 """
-================================================================================
-LeetCode 88: Merge Sorted Array
-================================================================================
+Problem: Merge Sorted Array
+Link: https://leetcode.com/problems/merge-sorted-array/
 
-Problem: You are given two integer arrays nums1 and nums2, sorted in non-decreasing
-         order, and two integers m and n, representing the number of elements in
-         nums1 and nums2 respectively.
-         
-         Merge nums2 into nums1 into a single array sorted in non-decreasing order.
-         The final sorted array should be stored inside nums1.
-         
-         nums1 has length m + n, where the last n elements are 0 and should be ignored.
+You are given two integer arrays nums1 and nums2, sorted in non-decreasing
+order, and two integers m and n, representing the number of elements in
+nums1 and nums2 respectively.
 
-API Kernel: TwoPointersTraversal
-Pattern: merge_sorted_in_place
-Family: merge_pattern
+Merge nums2 into nums1 as one sorted array. The final sorted array should
+not be returned by the function, but instead be stored inside the array nums1.
+To accommodate this, nums1 has a length of m + n, where the last n elements
+are set to 0 and should be ignored.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: MERGE IN-PLACE (WRITE FROM END)
---------------------------------------------------------------------------------
+Sub-Pattern: Merge in-place (write from end)
+Key Insight: Write from the end to avoid overwriting unprocessed elements.
+Compare largest elements from both arrays and write backwards.
 
-This problem requires in-place merging where the destination array already
-contains the first input array.
-
-Key Insight:
-    If we write from the BEGINNING, we would overwrite elements of nums1
-    before processing them. Instead, write from the END:
-    - Compare largest elements from both arrays
-    - Write the larger one to the end position
-    - Move backwards
-
-Three Pointers:
-- i: Points to last element of nums1's actual elements (m-1)
-- j: Points to last element of nums2 (n-1)
-- write: Points to last position of nums1 (m+n-1)
-
-INVARIANT: nums1[write+1:] is sorted and contains the largest elements from both arrays.
-
-Why Write From End Works:
-    The "empty" space in nums1 (indices m to m+n-1) is exactly where we can
-    safely write. By writing largest elements first, we never overwrite
-    unprocessed elements.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(m + n) - Each element processed once
-Space: O(1) - In-place modification
-
-================================================================================
+Constraints:
+- nums1.length == m + n
+- nums2.length == n
+- 0 <= m, n <= 200
+- 1 <= m + n <= 200
+- -10^9 <= nums1[i], nums2[j] <= 10^9
 """
 from typing import List
 from _runner import get_solver

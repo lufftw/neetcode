@@ -1,52 +1,20 @@
 # solutions/0141_linked_list_cycle.py
 """
-================================================================================
-LeetCode 141: Linked List Cycle
-================================================================================
+Problem: Linked List Cycle
+Link: https://leetcode.com/problems/linked-list-cycle/
 
-Problem: Given head, the head of a linked list, determine if the linked list
-         has a cycle in it. A cycle exists if some node can be reached again
-         by continuously following the next pointer.
+Given head, the head of a linked list, determine if the linked list has a cycle
+in it. A cycle exists if some node can be reached again by continuously
+following the next pointer.
 
-API Kernel: TwoPointersTraversal
-Pattern: fast_slow_cycle_detection
-Family: linked_list_cycle
+Sub-Pattern: Fast-slow (Floyd's cycle detection)
+Key Insight: Use two pointers moving at different speeds. If there's a cycle,
+the fast pointer will eventually catch up to the slow pointer.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: FAST–SLOW (FLOYD'S CYCLE DETECTION)
---------------------------------------------------------------------------------
-
-This is the canonical fast-slow pointer pattern for cycle detection,
-also known as Floyd's Tortoise and Hare algorithm.
-
-Pointer Movement:
-- SLOW: Moves 1 node per iteration
-- FAST: Moves 2 nodes per iteration
-
-INVARIANT: If no cycle, fast reaches null. If cycle exists, fast eventually
-           catches slow inside the cycle.
-
-Why This Works:
-    If there's a cycle of length C, once both pointers enter the cycle:
-    - The gap between fast and slow decreases by 1 each step
-    - They must meet within C steps
-    
-    If there's no cycle:
-    - Fast reaches the end (null) before they can meet
-
-Mathematical Proof:
-    Let the cycle length be C. When slow enters the cycle, fast is already
-    inside at some position. The distance between them (measured in the
-    direction of travel) decreases by 1 each step, so they meet in ≤C steps.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Fast traverses at most 2n nodes
-Space: O(1) - Only two pointer references
-
-================================================================================
+Constraints:
+- The number of the nodes in the list is in the range [0, 10^4]
+- -10^5 <= Node.val <= 10^5
+- pos is -1 or a valid index in the linked-list
 """
 from typing import Optional
 from _runner import get_solver
