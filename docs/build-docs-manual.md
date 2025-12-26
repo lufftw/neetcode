@@ -7,7 +7,7 @@
 
 This guide shows you how to build documentation locally using simple batch/shell scripts **without requiring Docker or any external CI/CD tools**.
 
-> 📖 **Looking for other options?** See [Local Documentation Build Options](LOCAL_DOCS_BUILD.md) for a comparison of all available methods, including the act method for testing exact CI/CD workflows.
+> 📖 **Looking for other options?** See [Local Documentation Build Options](local-docs-build.md) for a comparison of all available methods, including the act method for testing exact CI/CD workflows.
 
 > ⚠️ **Important: This is an Optional Feature**
 > 
@@ -188,8 +188,8 @@ site/
 ├── index_zh-TW/
 ├── pages/
 │   ├── mindmaps/
-│   │   ├── neetcode_ontology_ai_en.html
-│   │   ├── neetcode_ontology_ai_zh-TW.html
+│   │   ├── neetcode-ontology-ai-en.html
+│   │   ├── neetcode-ontology-ai-zh-tw.html
 │   │   └── ... (other mind maps)
 │   └── assets/
 ├── patterns/
@@ -284,7 +284,7 @@ python -m mkdocs serve -a 127.0.0.1:8001
 | Method | Requires Docker | Requires act | Setup Complexity | Speed |
 |:-------|:---------------|:-------------|:-----------------|:------|
 | **This Method (Manual Scripts)** | ❌ No | ❌ No | ⭐ Simple | ⚡ Fast |
-| [act Method](ACT_LOCAL_GITHUB_ACTIONS.md) | ✅ Yes | ✅ Yes | ⭐⭐⭐ Complex | 🐢 Slower |
+| [act Method](act-local-github-actions.md) | ✅ Yes | ✅ Yes | ⭐⭐⭐ Complex | 🐢 Slower |
 
 **When to use this method:**
 - ✅ You want the simplest setup
@@ -301,9 +301,9 @@ python -m mkdocs serve -a 127.0.0.1:8001
 
 ## Related Documentation
 
-- [Local Documentation Build Options](LOCAL_DOCS_BUILD.md) - Overview of all local build methods
-- [Running GitHub Actions Locally with Act](ACT_LOCAL_GITHUB_ACTIONS.md) - Using act to simulate CI/CD
-- [GitHub Pages Setup Guide](GITHUB_PAGES_SETUP.md) - Complete deployment guide
+- [Local Documentation Build Options](local-docs-build.md) - Overview of all local build methods
+- [Running GitHub Actions Locally with Act](act-local-github-actions.md) - Using act to simulate CI/CD
+- [GitHub Pages Setup Guide](github-pages-setup.md) - Complete deployment guide
 
 ---
 

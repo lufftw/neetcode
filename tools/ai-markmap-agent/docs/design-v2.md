@@ -142,8 +142,8 @@ models:
     - id: "judge_completeness"
       name: "Completeness Judge"
       model: "gpt-4o"
-      persona_prompt: "prompts/judges/judge_completeness_persona.md"
-      behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
+      persona_prompt: "prompts/judges/judge-completeness-persona.md"
+      behavior_prompt: "prompts/judges/judge-completeness-behavior.md"
       temperature: 0.4
       criteria:
         - "coverage"
@@ -206,8 +206,8 @@ workflow:
 models:
   writer:
     model: "gpt-4o"
-    persona_prompt: "prompts/writer/writer_persona.md"
-    behavior_prompt: "prompts/writer/writer_behavior.md"
+    persona_prompt: "prompts/writer/writer-persona.md"
+    behavior_prompt: "prompts/writer/writer-behavior.md"
     temperature: 0.5
     max_tokens: 8192
 ```
@@ -427,8 +427,8 @@ models:
   generalist:
     en:
       model: "gpt-4o"
-      persona_prompt: "prompts/generators/generalist_persona.md"
-      behavior_prompt: "prompts/generators/generalist_behavior.md"
+      persona_prompt: "prompts/generators/generalist-persona.md"
+      behavior_prompt: "prompts/generators/generalist-behavior.md"
       temperature: 0.7
     zh:
       model: "gpt-4o"
@@ -442,8 +442,8 @@ models:
     - id: "optimizer_architect"
       name: "The Software Architect"
       model: "gpt-4o"
-      persona_prompt: "prompts/optimizers/optimizer_architect_persona.md"
-      behavior_prompt: "prompts/optimizers/optimizer_architect_behavior.md"
+      persona_prompt: "prompts/optimizers/optimizer_architect-persona.md"
+      behavior_prompt: "prompts/optimizers/optimizer_architect-behavior.md"
       temperature: 0.6
       focus: "architecture_modularity"
     
@@ -456,8 +456,8 @@ models:
   # Summarizer (Phase 2)
   summarizer:
     model: "gpt-4o"
-    persona_prompt: "prompts/summarizer/summarizer_persona.md"
-    behavior_prompt: "prompts/summarizer/summarizer_behavior.md"
+    persona_prompt: "prompts/summarizer/summarizer-persona.md"
+    behavior_prompt: "prompts/summarizer/summarizer-behavior.md"
     temperature: 0.5
 
   # Judges (Phase 3) - CONFIGURABLE COUNT
@@ -475,8 +475,8 @@ models:
     - id: "judge_completeness"
       name: "Completeness Judge"
       model: "gpt-4o-mini"               # Can use different model
-      persona_prompt: "prompts/judges/judge_completeness_persona.md"
-      behavior_prompt: "prompts/judges/judge_completeness_behavior.md"
+      persona_prompt: "prompts/judges/judge-completeness-persona.md"
+      behavior_prompt: "prompts/judges/judge-completeness-behavior.md"
       temperature: 0.4
       criteria:
         - "coverage"
@@ -487,9 +487,9 @@ models:
   # Markmap Writer (Phase 4) - NEW
   writer:
     model: "gpt-4o"
-    persona_prompt: "prompts/writer/writer_persona.md"
-    behavior_prompt: "prompts/writer/writer_behavior.md"
-    format_guide: "prompts/writer/markmap_format_guide.md"  # Markmap 格式說明
+    persona_prompt: "prompts/writer/writer-persona.md"
+    behavior_prompt: "prompts/writer/writer-behavior.md"
+    format_guide: "prompts/writer/markmap-format-guide.md"  # Markmap 格式說明
     temperature: 0.5
     max_tokens: 8192
 
@@ -564,30 +564,30 @@ output:
 ```
 prompts/
 ├── generators/
-│   ├── generalist_persona.md
-│   ├── generalist_behavior.md
-│   ├── specialist_persona.md
-│   └── specialist_behavior.md
+│   ├── generalist-persona.md
+│   ├── generalist-behavior.md
+│   ├── specialist-persona.md
+│   └── specialist-behavior.md
 ├── optimizers/
-│   ├── optimizer_architect_persona.md
-│   ├── optimizer_architect_behavior.md
-│   ├── optimizer_professor_persona.md
-│   ├── optimizer_professor_behavior.md
-│   ├── optimizer_apidesigner_persona.md
-│   └── optimizer_apidesigner_behavior.md
+│   ├── optimizer-architect-persona.md
+│   ├── optimizer-architect-behavior.md
+│   ├── optimizer-professor-persona.md
+│   ├── optimizer-professor-behavior.md
+│   ├── optimizer-apidesigner-persona.md
+│   └── optimizer-apidesigner-behavior.md
 ├── summarizer/
-│   ├── summarizer_persona.md
-│   └── summarizer_behavior.md
+│   ├── summarizer-persona.md
+│   └── summarizer-behavior.md
 ├── judges/                          # Configurable judges
 │   ├── judge_structure_persona.md
 │   ├── judge_structure_behavior.md
-│   ├── judge_completeness_persona.md
-│   ├── judge_completeness_behavior.md
+│   ├── judge-completeness-persona.md
+│   ├── judge-completeness-behavior.md
 │   └── ...                          # Add more as needed
 └── writer/                          # NEW
-    ├── writer_persona.md
-    ├── writer_behavior.md
-    └── markmap_format_guide.md      # Markmap 格式能力說明
+    ├── writer-persona.md
+    ├── writer-behavior.md
+    └── markmap-format-guide.md      # Markmap 格式能力說明
 ```
 
 ---

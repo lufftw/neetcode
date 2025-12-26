@@ -11,7 +11,7 @@ This guide covers the pre-configured VSCode tasks and debug configurations for r
 
 ## Prerequisites
 
-1. **Virtual environment**: `leetcode/` must exist (see [Virtual Environment Setup](VIRTUAL_ENV_SETUP.md))
+1. **Virtual environment**: `leetcode/` must exist (see [Virtual Environment Setup](virtual-env-setup.md))
 2. **Python extension**: Install [Python extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
 3. **debugpy**: Install via `pip install debugpy`
 
@@ -267,9 +267,9 @@ python -m venv leetcode
 
 | Document | Content |
 |----------|---------|
-| [Virtual Environment Setup](VIRTUAL_ENV_SETUP.md) | Python environment setup |
+| [Virtual Environment Setup](virtual-env-setup.md) | Python environment setup |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options and usage |
-| [Testing Guide](TESTING.md) | Unit testing framework |
+| [Testing Guide](testing.md) | Unit testing framework |
 
 ---
 

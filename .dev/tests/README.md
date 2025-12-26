@@ -180,6 +180,5 @@ When refactoring the Runner system:
 
 ## Related Links
 
-- [../TESTING.md](../TESTING.md) - Complete testing documentation
+- [../testing.md](../testing.md) - Complete testing documentation
 - [../tests_solutions/README.md](../tests_solutions/README.md) - Solution correctness tests
-- [../../tools/FORMAT_CHECKING.md](../../tools/FORMAT_CHECKING.md) - Format checking description

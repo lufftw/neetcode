@@ -35,7 +35,7 @@ This directory contains utility scripts for project maintenance and development.
 - ✅ Fast execution
 - ✅ Interactive prompt for AI mind map generation (optional, requires OPENAI_API_KEY)
 
-📖 **[Full Documentation →](../docs/BUILD_DOCS_MANUAL.md)**
+📖 **[Full Documentation →](../docs/build-docs-manual.md)**
 
 ---
 
@@ -106,9 +106,9 @@ Then visit http://127.0.0.1:8000 in your browser.
 
 ## 📚 Related Documentation
 
-- [Local Documentation Build Options](../docs/LOCAL_DOCS_BUILD.md) - Overview of all local build methods
-- [Manual Build Guide](../docs/BUILD_DOCS_MANUAL.md) - Complete guide for manual script method
-- [Act Guide](../docs/ACT_LOCAL_GITHUB_ACTIONS.md) - Using act to simulate CI/CD
+- [Local Documentation Build Options](../docs/local-docs-build.md) - Overview of all local build methods
+- [Manual Build Guide](../docs/build-docs-manual.md) - Complete guide for manual script method
+- [Act Guide](../docs/act-local-github-actions.md) - Using act to simulate CI/CD
 
 ---
 

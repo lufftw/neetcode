@@ -33,23 +33,23 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 | `docs/patterns/*/templates.md` | Pattern template guides | `https://lufftw.github.io/neetcode/patterns/.../templates/` |
 | `docs/mindmaps/*.md` | All mind map Markdown files | `https://lufftw.github.io/neetcode/mindmaps/...` |
 | `docs/pages/mindmaps/*.html` | Interactive mind map HTML files | `https://lufftw.github.io/neetcode/pages/mindmaps/...` |
-| `docs/SOLUTION_CONTRACT.md` | Solution file specification | `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/` |
-| `docs/GENERATOR_CONTRACT.md` | Generator file specification | `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/` |
-| `docs/ARCHITECTURE_MIGRATION.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
-| `docs/GITHUB_PAGES_SETUP.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
-| `docs/BUILD_DOCS_MANUAL.md` | Local documentation build (manual method) | `https://lufftw.github.io/neetcode/BUILD_DOCS_MANUAL/` |
-| `docs/LOCAL_DOCS_BUILD.md` | Local docs build options | `https://lufftw.github.io/neetcode/LOCAL_DOCS_BUILD/` |
-| `docs/ACT_LOCAL_GITHUB_ACTIONS.md` | Run GitHub Actions locally with act | `https://lufftw.github.io/neetcode/ACT_LOCAL_GITHUB_ACTIONS/` |
-| `docs/ONTOLOGY_DESIGN.md` | Ontology design documentation | `https://lufftw.github.io/neetcode/ONTOLOGY_DESIGN/` |
-| `docs/MKDOCS_CONTENT_GUIDE.md` | MkDocs content guide (this file) | `https://lufftw.github.io/neetcode/MKDOCS_CONTENT_GUIDE/` |
+| `docs/solution-contract.md` | Solution file specification | `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/` |
+| `docs/generator-contract.md` | Generator file specification | `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/` |
+| `docs/architecture-migration.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
+| `docs/github-pages-setup.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
+| `docs/build-docs-manual.md` | Local documentation build (manual method) | `https://lufftw.github.io/neetcode/BUILD_DOCS_MANUAL/` |
+| `docs/local-docs-build.md` | Local docs build options | `https://lufftw.github.io/neetcode/LOCAL_DOCS_BUILD/` |
+| `docs/act-local-github-actions.md` | Run GitHub Actions locally with act | `https://lufftw.github.io/neetcode/ACT_LOCAL_GITHUB_ACTIONS/` |
+| `docs/ontology-design.md` | Ontology design documentation | `https://lufftw.github.io/neetcode/ONTOLOGY_DESIGN/` |
+| `docs/mkdocs-content-guide.md` | MkDocs content guide (this file) | `https://lufftw.github.io/neetcode/MKDOCS_CONTENT_GUIDE/` |
 
 ### 📝 Special Notes
 
 - **README.md** and **README_zh-TW.md**: These files do **NOT** appear as separate pages on the website. Instead, they are included in `docs/index.md` and `docs/index_zh-TW.md` via the `include-markdown` plugin.
 - **docs/patterns/**: ✅ Now configured in `nav` and available on the website.
-- **docs/GITHUB_PAGES_SETUP.md**: ✅ Now configured in `nav` and available on the website.
-- **Local build guides**: ✅ `BUILD_DOCS_MANUAL.md` (recommended), `LOCAL_DOCS_BUILD.md`, and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) are now configured in `nav`.
-- **Reference docs**: ✅ `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, `ARCHITECTURE_MIGRATION.md`, and `ONTOLOGY_DESIGN.md` are now configured in `nav`.
+- **docs/github-pages-setup.md**: ✅ Now configured in `nav` and available on the website.
+- **Local build guides**: ✅ `build-docs-manual.md` (recommended), `local-docs-build.md`, and `act-local-github-actions.md` (optional) are now configured in `nav`.
+- **Reference docs**: ✅ `solution-contract.md`, `generator-contract.md`, `architecture-migration.md`, and `ontology-design.md` are now configured in `nav`.
 - **Guides**: ✅ `MKDOCS_CONTENT_GUIDE.md` is now configured in `nav`.
 - **Patterns**: ✅ `backtracking_exploration` pattern is now available in `nav` alongside `sliding_window` and `two_pointers`.
 - **Contributors docs**: ✅ Maintainer documentation is now in `docs/contributors/` and available on the website.
@@ -135,9 +135,9 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 
 ```markdown
 - [Contributors Overview](docs/contributors/README.md) — Maintainer guide
-- [Testing Documentation](docs/contributors/TESTING.md) — Testing documentation
-- [Documentation Architecture](docs/contributors/DOCUMENTATION_ARCHITECTURE.md) — Documentation structure
-- [Virtual Environment Setup](docs/contributors/VIRTUAL_ENV_SETUP.md) — Environment setup guide
+- [Testing Documentation](docs/contributors/testing.md) — Testing documentation
+- [Documentation Architecture](docs/contributors/documentation-architecture.md) — Documentation structure
+- [Virtual Environment Setup](docs/contributors/virtual-env-setup.md) — Environment setup guide
 ```
 
 **Why relative paths work**: All files in `docs/contributors/` are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
@@ -177,12 +177,12 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 - [Two Pointers Templates](docs/patterns/two_pointers/templates.md) — Two pointers templates
 - [Backtracking Exploration Intuition](docs/patterns/backtracking_exploration/intuition.md) — Backtracking intuition guide
 - [Backtracking Exploration Templates](docs/patterns/backtracking_exploration/templates.md) — Backtracking templates
-- [GitHub Pages Setup](docs/GITHUB_PAGES_SETUP.md) — Deployment guide
-- [Build Documentation Locally](docs/BUILD_DOCS_MANUAL.md) — Manual build method (recommended)
-- [Local Docs Build Options](docs/LOCAL_DOCS_BUILD.md) — Build options guide
-- [Run GitHub Actions Locally](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — Act method (optional, advanced)
-- [Ontology Design](docs/ONTOLOGY_DESIGN.md) — Ontology design documentation
-- [MkDocs Content Guide](docs/MKDOCS_CONTENT_GUIDE.md) — Content guide (this file)
+- [GitHub Pages Setup](docs/github-pages-setup.md) — Deployment guide
+- [Build Documentation Locally](docs/build-docs-manual.md) — Manual build method (recommended)
+- [Local Docs Build Options](docs/local-docs-build.md) — Build options guide
+- [Run GitHub Actions Locally](docs/act-local-github-actions.md) — Act method (optional, advanced)
+- [Ontology Design](docs/ontology-design.md) — Ontology design documentation
+- [MkDocs Content Guide](docs/mkdocs-content-guide.md) — Content guide (this file)
 ```
 
 #### 4. For Code Files (Not in Website)
@@ -207,7 +207,7 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 ```markdown
 | Mind Map | Links |
 |:---------|:------|
-| Pattern Hierarchy | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
+| Pattern Hierarchy | [Static](docs/mindmaps/pattern_hierarchy.md) · [Interactive ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
 ```
 
 **Why relative paths work**: All `docs/mindmaps/*.md` files are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
@@ -319,9 +319,9 @@ A: Full maintainer and tools documentation has been **migrated to the website**:
 
 - **Maintainer documentation** → `docs/contributors/` (available on website under "Contributors" section)
   - `docs/contributors/README.md` - Full maintainer guide
-  - `docs/contributors/TESTING.md` - Complete testing documentation
-  - `docs/contributors/DOCUMENTATION_ARCHITECTURE.md` - Documentation structure
-  - `docs/contributors/VIRTUAL_ENV_SETUP.md` - Virtual environment setup
+  - `docs/contributors/testing.md` - Complete testing documentation
+  - `docs/contributors/documentation-architecture.md` - Documentation structure
+  - `docs/contributors/virtual-env-setup.md` - Virtual environment setup
 
 - **Tools documentation** → `docs/tools/` (available on website under "Tools" section)
   - `docs/tools/README.md` - Complete tools reference
@@ -491,12 +491,12 @@ plugins:
 ## 📝 Update Log
 
 - **2025-12-12**: Initial version
-- **2025-12-12**: Updated - Added `docs/patterns/` and `docs/GITHUB_PAGES_SETUP.md` to website navigation
+- **2025-12-12**: Updated - Added `docs/patterns/` and `docs/github-pages-setup.md` to website navigation
 - **2025-12-12**: Added "📚 Reference" section to nav with Solution Contract, Generator Contract, Architecture Migration
 - **2025-12-12**: Moved Tools documentation from `docs/TOOLS.md` to `tools/README.md` (developer docs belong with code)
-- **2025-12-13**: Added local documentation build guides - `BUILD_DOCS_MANUAL.md` (recommended) and `ACT_LOCAL_GITHUB_ACTIONS.md` (optional) to Guides section
-- **2025-12-14**: Added `ONTOLOGY_DESIGN.md` to Reference section
-- **2025-12-15**: Added `MKDOCS_CONTENT_GUIDE.md` and `LOCAL_DOCS_BUILD.md` to Guides section
+- **2025-12-13**: Added local documentation build guides - `build-docs-manual.md` (recommended) and `act-local-github-actions.md` (optional) to Guides section
+- **2025-12-14**: Added `ontology-design.md` to Reference section
+- **2025-12-15**: Added `mkdocs-content-guide.md` and `local-docs-build.md` to Guides section
 - **2025-12-17**: Added `backtracking_exploration` pattern to Patterns section
 - **2025-12-20**: Added FAQ section on manually embedding revision dates in Markdown files using git-revision-date-localized plugin template variables
 - **2025-12-20**: Added FAQ section on customizing sitemap.xml to use Git commit dates for lastmod

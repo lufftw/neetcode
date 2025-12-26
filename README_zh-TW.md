@@ -30,7 +30,7 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 - **測量與比較**：基準測試多種實作並經驗性地估算複雜度。
 - **看見全貌**：本體論 + AI 心智圖揭示模式關係與學習路徑。
 
-[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/README.md) • [🧪 測試與驗證](docs/runner/README.md)
+[📚 文件](https://lufftw.github.io/neetcode/) • [🤖 AI 心智圖](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) • [🧠 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/) • [🚀 快速開始](#-快速開始) • [📐 模式](docs/patterns/README.md) • [🧪 測試與驗證](docs/runner/README.md)
 
 [English](https://lufftw.github.io/neetcode/) | [繁體中文](https://lufftw.github.io/neetcode/index_zh-TW/)
 
@@ -122,13 +122,13 @@ AEO/GEO: 可擴展的 Python 框架，結合知識圖譜驅動學習、AI 心智
 
 | 心智圖 | 說明 | 連結 |
 |:-------|:-----|:----:|
-| 🤖 **AI 本體論分析 (Evolved)** | 由多代理（multi-agent）流程產生 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
-| 🤖 **AI 本體論分析** | AI 深度模式合成 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
-| 📐 **模式階層** | API 核心 → 模式 → 解法 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
-| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
-| ⚡ **演算法使用** | 知道哪個演算法適用於哪裡 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
-| 🏢 **公司覆蓋** | 針對特定公司精準準備 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
-| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
+| 🤖 **AI 本體論分析 (Evolved)** | 由多代理（multi-agent）流程產生 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) |
+| 🤖 **AI 本體論分析** | AI 深度模式合成 | [🔗 EN](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-en.html) · [🔗 中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-zh-tw.html) |
+| 📐 **模式階層** | API 核心 → 模式 → 解法 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
+| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/family-derivation.html) |
+| ⚡ **演算法使用** | 知道哪個演算法適用於哪裡 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm-usage.html) |
+| 🏢 **公司覆蓋** | 針對特定公司精準準備 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/company-coverage.html) |
+| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [🔗](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap-paths.html) |
 
 **[→ 探索 10+ 互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -306,10 +306,10 @@ scripts\run_tests.bat 0001_two_sum
 
 | 語言 | 說明 | 連結 |
 |:-----|:-----|:-----|
-| **English (Evolved)** | Generated via a multi-agent pipeline | [靜態](docs/mindmaps/neetcode_ontology_agent_evolved_en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_en.html) |
-| **繁體中文 (Evolved)** | 由多代理（multi-agent）流程產生 | [靜態](docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html) |
-| **English** | AI 合成的模式關聯 | [靜態](docs/mindmaps/neetcode_ontology_ai_en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_en.html) |
-| **繁體中文** | AI 智能分析模式關聯 | [靜態](docs/mindmaps/neetcode_ontology_ai_zh-TW.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode_ontology_ai_zh-TW.html) |
+| **English (Evolved)** | Generated via a multi-agent pipeline | [靜態](docs/mindmaps/neetcode-ontology-agent-evolved-en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) |
+| **繁體中文 (Evolved)** | 由多代理（multi-agent）流程產生 | [靜態](docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) |
+| **English** | AI 合成的模式關聯 | [靜態](docs/mindmaps/neetcode-ontology-ai-en.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-en.html) |
+| **繁體中文** | AI 智能分析模式關聯 | [靜態](docs/mindmaps/neetcode-ontology-ai-zh-tw.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-ai-zh-tw.html) |
 
 **特色：**
 - 🧬 **深度模式合成** — AI 識別模式之間的非顯性連結
@@ -323,15 +323,15 @@ scripts\run_tests.bat 0001_two_sum
 
 | 心智圖 | 說明 | 連結 |
 |:-------|:-----|:-----|
-| 📐 **模式階層** | API 核心 → 模式 → 問題 | [靜態](docs/mindmaps/pattern_hierarchy.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern_hierarchy.html) |
-| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [靜態](docs/mindmaps/family_derivation.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/family_derivation.html) |
-| ⚡ **演算法使用** | 依演算法分類問題 | [靜態](docs/mindmaps/algorithm_usage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm_usage.html) |
-| 🏗️ **資料結構使用** | 依資料結構分類問題 | [靜態](docs/mindmaps/data_structure.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/data_structure.html) |
-| 🏢 **公司覆蓋** | 各公司常見問題 | [靜態](docs/mindmaps/company_coverage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/company_coverage.html) |
-| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [靜態](docs/mindmaps/roadmap_paths.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap_paths.html) |
-| 🔗 **問題關聯** | 相關問題網絡 | [靜態](docs/mindmaps/problem_relations.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/problem_relations.html) |
-| 🔀 **解法變體** | 多種解法方式 | [靜態](docs/mindmaps/solution_variants.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/solution_variants.html) |
-| 📊 **難度 × 主題** | 依難度分類主題 | [靜態](docs/mindmaps/difficulty_topics.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty_topics.html) |
+| 📐 **模式階層** | API 核心 → 模式 → 問題 | [靜態](docs/mindmaps/pattern_hierarchy.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/pattern-hierarchy.html) |
+| 👨‍👩‍👧‍👦 **家族衍生** | 基礎模板 → 衍生變體 | [靜態](docs/mindmaps/family_derivation.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/family-derivation.html) |
+| ⚡ **演算法使用** | 依演算法分類問題 | [靜態](docs/mindmaps/algorithm_usage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/algorithm-usage.html) |
+| 🏗️ **資料結構使用** | 依資料結構分類問題 | [靜態](docs/mindmaps/data_structure.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/data-structure.html) |
+| 🏢 **公司覆蓋** | 各公司常見問題 | [靜態](docs/mindmaps/company_coverage.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/company-coverage.html) |
+| 🗺️ **學習路線圖** | NeetCode 150、Blind 75 等 | [靜態](docs/mindmaps/roadmap_paths.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/roadmap-paths.html) |
+| 🔗 **問題關聯** | 相關問題網絡 | [靜態](docs/mindmaps/problem_relations.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/problem-relations.html) |
+| 🔀 **解法變體** | 多種解法方式 | [靜態](docs/mindmaps/solution_variants.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/solution-variants.html) |
+| 📊 **難度 × 主題** | 依難度分類主題 | [靜態](docs/mindmaps/difficulty_topics.md) · [互動式 ✨](https://lufftw.github.io/neetcode/pages/mindmaps/difficulty-topics.html) |
 
 👉 **[查看所有互動式心智圖](https://lufftw.github.io/neetcode/mindmaps/)**
 
@@ -418,7 +418,7 @@ scripts\run_tests.bat 0001_two_sum
 | Run all solutions | 比較所有實作 |
 | Run with generated (10) | 靜態 + 10 筆生成測資 |
 
-> 📖 **完整參考**：詳見 [VSCode 設定指南](docs/contributors/VSCODE_SETUP.md) 以了解全部 14 個 Tasks、11 個 Debug 配置、工作流程範例與自訂設定。
+> 📖 **完整參考**：詳見 [VSCode 設定指南](docs/contributors/vscode-setup.md) 以了解全部 14 個 Tasks、11 個 Debug 配置、工作流程範例與自訂設定。
 
 ### 💻 命令列介面
 
@@ -487,7 +487,7 @@ if __name__ == "__main__":
     solve()
 ```
 
-> 📖 完整規格請參見 [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md)。
+> 📖 完整規格請參見 [`docs/solution-contract.md`](docs/solution-contract.md)。
 
 ### 📋 測資檔案格式
 
@@ -590,7 +590,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 使用模板建立：`scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §B](docs/SOLUTION_CONTRACT.md#solutions-metadata)。
+> 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/solution-contract.md` §B](docs/solution-contract.md#solutions-metadata)。
 
 ### 🔀 彈性輸出驗證
 
@@ -633,7 +633,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # 選項："exact" | "sorted" | "set"
 ```
 
-> 📖 完整 JUDGE_FUNC 簽章和驗證規則請參見 [`docs/SOLUTION_CONTRACT.md` §C](docs/SOLUTION_CONTRACT.md#validation-judge_func--compare_mode)。
+> 📖 完整 JUDGE_FUNC 簽章和驗證規則請參見 [`docs/solution-contract.md` §C](docs/solution-contract.md#validation-judge_func--compare_mode)。
 
 ### 🎲 隨機測資生成
 
@@ -678,7 +678,7 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
-> 📖 完整生成器規格和最佳實踐請參見 [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md)。
+> 📖 完整生成器規格和最佳實踐請參見 [`docs/generator-contract.md`](docs/generator-contract.md)。
 
 ### 📈 時間複雜度估算
 
@@ -756,17 +756,17 @@ neetcode/
 │   ├── tasks.json             # Ctrl+Shift+B 快捷任務（14 個 Tasks）
 │   └── launch.json            # F5 除錯配置（11 個配置）
 │
-│   📖 詳見 [VSCode 設定指南](docs/contributors/VSCODE_SETUP.md) — Tasks、Debug 配置、工作流程範例
+│   📖 詳見 [VSCode 設定指南](docs/contributors/vscode-setup.md) — Tasks、Debug 配置、工作流程範例
 │
 ├── docs/                      # 📚 文件（MkDocs）
 │   ├── index.md               # 首頁（English）
 │   ├── index_zh-TW.md         # 首頁（繁體中文）
 │   ├── contributors/          # 維護者文件
 │   │   ├── README.md          # 完整維護者指南
-│   │   ├── TESTING.md         # 完整測試文件
-│   │   ├── VSCODE_SETUP.md    # VS Code Tasks 與 Debug 配置
-│   │   ├── VIRTUAL_ENV_SETUP.md  # 虛擬環境設定
-│   │   └── DOCUMENTATION_ARCHITECTURE.md  # 文件架構
+│   │   ├── testing.md         # 完整測試文件
+│   │   ├── vscode-setup.md    # VS Code Tasks 與 Debug 配置
+│   │   ├── virtual-env-setup.md  # 虛擬環境設定
+│   │   └── documentation-architecture.md  # 文件架構
 │   ├── tools/                 # 工具文件
 │   │   ├── README.md          # 完整工具參考
 │   │   ├── ai-markmap-agent/  # AI Markmap Agent 文件
@@ -834,8 +834,8 @@ neetcode/
 │   ├── scripts/run_tests.bat/.sh  # 執行 runner 單元測試
 │   ├── run_all_tests.bat/.sh  # 執行所有單元測試
 │   ├── run_tests_solutions.bat/.sh  # 執行解答測試
-│   ├── TESTING.md             # 測試文件
-│   ├── VIRTUAL_ENV_SETUP.md   # 虛擬環境設定指南
+│   ├── testing.md             # 測試文件
+│   ├── virtual-env-setup.md   # 虛擬環境設定指南
 │   └── README.md              # 維護者指南
 │
 ├── .github/                   # 🚀 GitHub 配置
@@ -894,11 +894,11 @@ neetcode/
 
 | 文件 | 說明 |
 |:-----|:-----|
-| [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) | 解答檔案規格 |
-| [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) | 生成器檔案規格 |
+| [`docs/solution-contract.md`](docs/solution-contract.md) | 解答檔案規格 |
+| [`docs/generator-contract.md`](docs/generator-contract.md) | 生成器檔案規格 |
 | [`tools/README.md`](docs/tools/README.md) | 完整工具參考 |
 | [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) | 維護者指南 |
-| [`docs/contributors/DOCUMENTATION_ARCHITECTURE.md`](docs/contributors/DOCUMENTATION_ARCHITECTURE.md) | 文件架構說明 |
+| [`docs/contributors/documentation-architecture.md`](docs/contributors/documentation-architecture.md) | 文件架構說明 |
 
 ---
 
@@ -1015,30 +1015,30 @@ scripts\build_docs.bat --serve  # Windows
 ./scripts/build_docs.sh --serve  # Linux/macOS
 ```
 
-📖 **詳見 [本地建置文件（手動方法）](docs/BUILD_DOCS_MANUAL.md)** 完整指南。
+📖 **詳見 [本地建置文件（手動方法）](docs/build-docs-manual.md)** 完整指南。
 
 **進階選項（選擇性）：**
 
 如果你想在本地測試完全相同的 GitHub Actions 工作流程，可以使用 `act`：
 
-📖 **詳見 [使用 Act 在本地執行 GitHub Actions](docs/ACT_LOCAL_GITHUB_ACTIONS.md)** — *注意：需要 Docker 和 act 工具。只有在你想測試 CI/CD 工作流程時才需要。*
+📖 **詳見 [使用 Act 在本地執行 GitHub Actions](docs/act-local-github-actions.md)** — *注意：需要 Docker 和 act 工具。只有在你想測試 CI/CD 工作流程時才需要。*
 
 ### 文件
 
 **核心文件：**
 - [`docs/contributors/README.md`](docs/contributors/README.md) — 維護者指南
-- [`docs/contributors/TESTING.md`](docs/contributors/TESTING.md) — 測試文件
-- [`docs/contributors/VSCODE_SETUP.md`](docs/contributors/VSCODE_SETUP.md) — VS Code Tasks、Debug 配置、工作流程範例
-- [`docs/SOLUTION_CONTRACT.md`](docs/SOLUTION_CONTRACT.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
-- [`docs/GENERATOR_CONTRACT.md`](docs/GENERATOR_CONTRACT.md) — 生成器檔案規格（generate(), edge cases, complexity）
-- [`docs/ARCHITECTURE_MIGRATION.md`](docs/ARCHITECTURE_MIGRATION.md) — 多型架構遷移指南
+- [`docs/contributors/testing.md`](docs/contributors/testing.md) — 測試文件
+- [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code Tasks、Debug 配置、工作流程範例
+- [`docs/solution-contract.md`](docs/solution-contract.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
+- [`docs/generator-contract.md`](docs/generator-contract.md) — 生成器檔案規格（generate(), edge cases, complexity）
+- [`docs/architecture-migration.md`](docs/architecture-migration.md) — 多型架構遷移指南
 
 **本地文件建置（選擇性）：**
-- [`docs/BUILD_DOCS_MANUAL.md`](docs/BUILD_DOCS_MANUAL.md) — ⭐ **推薦：** 簡單的手動建置方法
-- [`docs/ACT_LOCAL_GITHUB_ACTIONS.md`](docs/ACT_LOCAL_GITHUB_ACTIONS.md) — 進階：使用 act 在本地測試 CI/CD 工作流程（需要 Docker）
+- [`docs/build-docs-manual.md`](docs/build-docs-manual.md) — ⭐ **推薦：** 簡單的手動建置方法
+- [`docs/act-local-github-actions.md`](docs/act-local-github-actions.md) — 進階：使用 act 在本地測試 CI/CD 工作流程（需要 Docker）
 
 **部署：**
-- [`docs/GITHUB_PAGES_SETUP.md`](docs/GITHUB_PAGES_SETUP.md) — 部署指南
+- [`docs/github-pages-setup.md`](docs/github-pages-setup.md) — 部署指南
 
 ---
 

@@ -89,7 +89,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 | **Constraint compliance** | Respect LeetCode constraints | Ensure valid test cases |
 | **JUDGE_FUNC required** | Solution must have `JUDGE_FUNC` | No `.out` file for generated cases |
 
-> 📖 See [JUDGE_FUNC Specification](SOLUTION_CONTRACT.md#judge_func-specification) for validation details.
+> 📖 See [JUDGE_FUNC Specification](solution-contract.md#judge_func-specification) for validation details.
 
 ### Minimal Example
 
@@ -394,7 +394,7 @@ Generated test cases have **no expected output** (`.out` file). The solution MUS
 Generator → Input only → Solution → Output → JUDGE_FUNC validates
 ```
 
-> 📖 See [JUDGE_FUNC Specification](SOLUTION_CONTRACT.md#judge_func-specification) for complete documentation.
+> 📖 See [JUDGE_FUNC Specification](solution-contract.md#judge_func-specification) for complete documentation.
 
 ### Generator-Specific Considerations
 
@@ -595,6 +595,6 @@ python runner/test_runner.py {problem} --estimate
 
 | Document | Content |
 |----------|---------|
-| [Solution Contract](SOLUTION_CONTRACT.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
+| [Solution Contract](solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
-| [Architecture Migration](ARCHITECTURE_MIGRATION.md) | Polymorphic pattern migration guide |
+| [Architecture Migration](architecture-migration.md) | Polymorphic pattern migration guide |

@@ -40,7 +40,7 @@ scripts\build_docs.bat --serve
 ./scripts/build_docs.sh --serve
 ```
 
-📖 **[Full Guide →](BUILD_DOCS_MANUAL.md)**
+📖 **[Full Guide →](build-docs-manual.md)**
 
 ---
 
@@ -60,7 +60,7 @@ scripts\build_docs.bat --serve
 act -P ubuntu-latest=catthehacker/ubuntu:act-latest -j build
 ```
 
-📖 **[Full Guide →](ACT_LOCAL_GITHUB_ACTIONS.md)**
+📖 **[Full Guide →](act-local-github-actions.md)**
 
 ---
 
@@ -128,9 +128,9 @@ act -P ubuntu-latest=catthehacker/ubuntu:act-latest -j build
 
 ## 📚 Detailed Guides
 
-- **[Manual Scripts Guide](BUILD_DOCS_MANUAL.md)** - Complete guide for batch/shell script method
-- **[Act Guide](ACT_LOCAL_GITHUB_ACTIONS.md)** - Complete guide for act method
-- **[GitHub Pages Setup](GITHUB_PAGES_SETUP.md)** - Production deployment guide
+- **[Manual Scripts Guide](build-docs-manual.md)** - Complete guide for batch/shell script method
+- **[Act Guide](act-local-github-actions.md)** - Complete guide for act method
+- **[GitHub Pages Setup](github-pages-setup.md)** - Production deployment guide
 
 ---
 
@@ -188,9 +188,9 @@ Act provides **exact CI/CD simulation**, which is useful when:
 
 ## 🆘 Need Help?
 
-- **Manual Scripts issues:** See [BUILD_DOCS_MANUAL.md](BUILD_DOCS_MANUAL.md#troubleshooting)
-- **Act issues:** See [ACT_LOCAL_GITHUB_ACTIONS.md](ACT_LOCAL_GITHUB_ACTIONS.md#troubleshooting)
-- **General questions:** Check [GitHub Pages Setup Guide](GITHUB_PAGES_SETUP.md)
+- **Manual Scripts issues:** See [build-docs-manual.md](build-docs-manual.md#troubleshooting)
+- **Act issues:** See [act-local-github-actions.md](act-local-github-actions.md#troubleshooting)
+- **General questions:** Check [GitHub Pages Setup Guide](github-pages-setup.md)
 
 ---
 

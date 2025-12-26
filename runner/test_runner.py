@@ -406,7 +406,7 @@ def main():
                         memory_metrics.add_case(case_metrics)
     
     # Print benchmark summary (with memory columns if profiling enabled)
-    # Output order per CLI_OUTPUT_CONTRACT.md Section 6:
+    # Output order per cli-output-contract.md Section 6:
     # 1. Time visual bar chart (existing)
     # 2. Benchmark table (--benchmark)
     # 3. Run-level memory traces (--memory-trace)

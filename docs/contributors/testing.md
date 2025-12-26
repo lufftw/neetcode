@@ -251,8 +251,8 @@ neetcode/
 │   ├── run_tests_solutions.bat/sh      # Solution test scripts
 │   ├── run_all_tests.bat/sh            # ★ Full project test scripts
 │   │
-│   ├── TESTING.md                      # This file
-│   ├── VIRTUAL_ENV_SETUP.md
+│   ├── testing.md                      # This file
+│   ├── virtual-env-setup.md
 │   └── README.md
 │
 └── tools/

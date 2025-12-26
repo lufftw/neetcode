@@ -12,14 +12,14 @@ meta_descriptions_dir = "tools/mindmaps/meta"
 
 # English version
 [presets.neetcode_ontology_agent_evolved_en]
-input = "docs/mindmaps/neetcode_ontology_agent_evolved_en.md"
-output = "docs/pages/mindmaps/neetcode_ontology_agent_evolved_en.html"
+input = "docs/mindmaps/neetcode-ontology-agent-evolved-en.md"
+output = "docs/pages/mindmaps/neetcode-ontology-agent-evolved-en.html"
 title = "NeetCode Agent Evolved Mindmap"
 meta_description_file = "neetcode_ontology_agent_evolved_en.txt"
 
 # Traditional Chinese version
 [presets.neetcode_ontology_agent_evolved_zh-TW]
-input = "docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md"
-output = "docs/pages/mindmaps/neetcode_ontology_agent_evolved_zh-TW.html"
+input = "docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md"
+output = "docs/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html"
 title = "NeetCode Agent Evolved Mindmap (繁體中文)"
 meta_description_file = "neetcode_ontology_agent_evolved_zh-TW.txt"

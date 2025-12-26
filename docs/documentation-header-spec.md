@@ -42,7 +42,7 @@ Allowed values:
   - The document defines a complete specification or contract for a system or component
   - The document is the authoritative reference that other documents must follow
   - The document defines file formats, data structures, or API contracts
-  - Examples: `SOLUTION_CONTRACT.md`, `GENERATOR_CONTRACT.md`, `ONTOLOGY_DESIGN.md`
+  - Examples: `solution-contract.md`, `generator-contract.md`, `ontology-design.md`
 
 * **Normative**
   Defines rules or constraints that must be followed.
@@ -60,7 +60,7 @@ Allowed values:
   - The document provides guides, tutorials, or explanations
   - The document describes historical context or migration processes
   - The document is helpful but not required to follow
-  - Examples: `ARCHITECTURE_MIGRATION.md`, `GITHUB_PAGES_SETUP.md`, `ACT_LOCAL_GITHUB_ACTIONS.md`
+  - Examples: `architecture-migration.md`, `github-pages-setup.md`, `act-local-github-actions.md`
 
 * **Draft**
   Work in progress; subject to change.

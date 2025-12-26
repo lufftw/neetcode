@@ -9,12 +9,12 @@ header_files = [
 # Problem files (appear in middle, ordered by LeetCode number or custom order)
 # Order matches original document: 3 (base), 340, 76, 567, 438, 209
 problem_files = [
-    "0003_base.md",
-    "0340_k_distinct.md",
-    "0076_min_window.md",
-    "0567_permutation.md",
-    "0438_anagrams.md",
-    "0209_min_subarray.md"
+    "0003-base.md",
+    "0340-k-distinct.md",
+    "0076-min-window.md",
+    "0567-permutation.md",
+    "0438-anagrams.md",
+    "0209-min-subarray.md"
 ]
 
 # Footer files (appear last, typically comparison, decision, templates)

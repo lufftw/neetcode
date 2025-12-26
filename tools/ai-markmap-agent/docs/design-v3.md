@@ -894,13 +894,13 @@ models:
   structure_planner:
     generalist:
       model: "gpt-4o"
-      persona_prompt: "prompts/planners/generalist_planner_persona.md"
-      behavior_prompt: "prompts/planners/generalist_planner_behavior.md"
+      persona_prompt: "prompts/planners/generalist-planner-persona.md"
+      behavior_prompt: "prompts/planners/generalist-planner-behavior.md"
       temperature: 0.7
     specialist:
       model: "gpt-4o"
-      persona_prompt: "prompts/planners/specialist_planner_persona.md"
-      behavior_prompt: "prompts/planners/specialist_planner_behavior.md"
+      persona_prompt: "prompts/planners/specialist-planner-persona.md"
+      behavior_prompt: "prompts/planners/specialist-planner-behavior.md"
       temperature: 0.5
 
   # Phase 2: Content Strategy
@@ -908,29 +908,29 @@ models:
     - id: "architect_strategist"
       name: "Architecture Strategist"
       model: "gpt-4o"
-      persona_prompt: "prompts/strategists/architect_strategist_persona.md"
-      behavior_prompt: "prompts/strategists/architect_strategist_behavior.md"
+      persona_prompt: "prompts/strategists/architect-strategist-persona.md"
+      behavior_prompt: "prompts/strategists/architect-strategist-behavior.md"
       focus: "structure_modularity"
     
     - id: "professor_strategist"
       name: "Academic Strategist"
       model: "gpt-4o"
-      persona_prompt: "prompts/strategists/professor_strategist_persona.md"
-      behavior_prompt: "prompts/strategists/professor_strategist_behavior.md"
+      persona_prompt: "prompts/strategists/professor-strategist-persona.md"
+      behavior_prompt: "prompts/strategists/professor-strategist-behavior.md"
       focus: "correctness_completeness"
     
     - id: "ux_strategist"
       name: "UX Strategist"
       model: "gpt-4o"
-      persona_prompt: "prompts/strategists/ux_strategist_persona.md"
-      behavior_prompt: "prompts/strategists/ux_strategist_behavior.md"
+      persona_prompt: "prompts/strategists/ux-strategist-persona.md"
+      behavior_prompt: "prompts/strategists/ux-strategist-behavior.md"
       focus: "user_experience"
 
   # Phase 2: Integration
   integrator:
     model: "gpt-4o"
-    persona_prompt: "prompts/integrator/integrator_persona.md"
-    behavior_prompt: "prompts/integrator/integrator_behavior.md"
+    persona_prompt: "prompts/integrator/integrator-persona.md"
+    behavior_prompt: "prompts/integrator/integrator-behavior.md"
     temperature: 0.5
 
   # Phase 3: Evaluation
@@ -938,7 +938,7 @@ models:
     - id: "structure_evaluator"
       name: "Structure Evaluator"
       model: "gpt-4o"
-      behavior_prompt: "prompts/evaluators/structure_evaluator_behavior.md"
+      behavior_prompt: "prompts/evaluators/structure-evaluator-behavior.md"
       criteria:
         - "logical_organization"
         - "appropriate_depth"
@@ -947,7 +947,7 @@ models:
     - id: "content_evaluator"
       name: "Content Evaluator"
       model: "gpt-4o"
-      behavior_prompt: "prompts/evaluators/content_evaluator_behavior.md"
+      behavior_prompt: "prompts/evaluators/content-evaluator-behavior.md"
       criteria:
         - "coverage"
         - "learning_progression"
@@ -956,9 +956,9 @@ models:
   # Phase 4: Rendering (unchanged from V2)
   writer:
     model: "gpt-4o"
-    persona_prompt: "prompts/writer/writer_persona.md"
-    behavior_prompt: "prompts/writer/writer_behavior.md"
-    format_guide: "prompts/writer/markmap_format_guide.md"
+    persona_prompt: "prompts/writer/writer-persona.md"
+    behavior_prompt: "prompts/writer/writer-behavior.md"
+    format_guide: "prompts/writer/markmap-format-guide.md"
     temperature: 0.5
     max_tokens: 8192
 ```
@@ -970,27 +970,27 @@ models:
 ```
 prompts/
 ├── planners/                       # NEW (was generators/)
-│   ├── generalist_planner_persona.md
-│   ├── generalist_planner_behavior.md
-│   ├── specialist_planner_persona.md
-│   └── specialist_planner_behavior.md
+│   ├── generalist-planner-persona.md
+│   ├── generalist-planner-behavior.md
+│   ├── specialist-planner-persona.md
+│   └── specialist-planner-behavior.md
 ├── strategists/                    # NEW (was optimizers/)
-│   ├── architect_strategist_persona.md
-│   ├── architect_strategist_behavior.md
-│   ├── professor_strategist_persona.md
-│   ├── professor_strategist_behavior.md
-│   ├── ux_strategist_persona.md
-│   └── ux_strategist_behavior.md
+│   ├── architect-strategist-persona.md
+│   ├── architect-strategist-behavior.md
+│   ├── professor-strategist-persona.md
+│   ├── professor-strategist-behavior.md
+│   ├── ux-strategist-persona.md
+│   └── ux-strategist-behavior.md
 ├── integrator/                     # NEW (was summarizer/)
-│   ├── integrator_persona.md
-│   └── integrator_behavior.md
+│   ├── integrator-persona.md
+│   └── integrator-behavior.md
 ├── evaluators/                     # NEW (was judges/)
-│   ├── structure_evaluator_behavior.md
-│   └── content_evaluator_behavior.md
+│   ├── structure-evaluator-behavior.md
+│   └── content-evaluator-behavior.md
 └── writer/                         # UNCHANGED
-    ├── writer_persona.md
-    ├── writer_behavior.md
-    └── markmap_format_guide.md
+    ├── writer-persona.md
+    ├── writer-behavior.md
+    └── markmap-format-guide.md
 ```
 
 ---
@@ -1327,15 +1327,15 @@ models:
       name: "Architecture Strategist"
       focus: "structure_modularity"
       model: "gpt-4o"
-      persona_prompt: "prompts/strategists/architect_persona.md"
-      behavior_prompt: "prompts/strategists/architect_behavior.md"
+      persona_prompt: "prompts/strategists/architect-persona.md"
+      behavior_prompt: "prompts/strategists/architect-behavior.md"
     
     - id: "professor"
       name: "Academic Strategist"
       focus: "correctness_completeness"
       model: "gpt-4o"
-      persona_prompt: "prompts/strategists/professor_persona.md"
-      behavior_prompt: "prompts/strategists/professor_behavior.md"
+      persona_prompt: "prompts/strategists/professor-persona.md"
+      behavior_prompt: "prompts/strategists/professor-behavior.md"
     
     - id: "ux"
       name: "UX Strategist"

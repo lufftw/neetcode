@@ -4,7 +4,7 @@ Test Result Reporter - Format and display test results.
 
 Note: Test execution logic moved to method_runner.py
 
-Memory Profiling Display (per Cli_Output_Memory.md):
+Memory Profiling Display (per cli-output-memory.md):
 - --benchmark: includes Peak RSS, P95 RSS columns in table
 - --memory-trace: run-level memory traces per method
 - --memory-per-case: Top-K cases by peak RSS (debug)
@@ -184,7 +184,7 @@ def _print_table(all_results: List[Dict[str, Any]], max_method_len: int,
     print()
     
     # Build header based on available data
-    # Column order per CLI_OUTPUT_CONTRACT.md:
+    # Column order per cli-output-contract.md:
     # Method | Avg Time | Pass Rate | Declared | Estimated | Peak RSS | P95 RSS
     
     header_parts = [f"{'Method':<{max_method_len}}", f"{'Avg Time':>10}"]
@@ -260,7 +260,7 @@ def print_memory_trace(all_results: List[Dict[str, Any]]) -> None:
     """
     Print run-level memory traces for each method.
     
-    Per Cli_Output_Memory.md Section 3:
+    Per cli-output-memory.md Section 3:
     - Shows one sparkline per method
     - Does NOT print case-level traces by default
     - Applies strictly to active_methods
@@ -302,7 +302,7 @@ def print_memory_per_case(all_results: List[Dict[str, Any]], top_k: int = 5) -> 
     """
     Print case-level memory debugging info.
     
-    Per Cli_Output_Memory.md Section 4:
+    Per cli-output-memory.md Section 4:
     - Debug-only flag
     - Compact method-level summary first
     - Then Top-K cases by peak RSS
@@ -360,7 +360,7 @@ def print_trace_compare(all_results: List[Dict[str, Any]]) -> None:
     """
     Print multi-method memory comparison.
     
-    Per Cli_Output_Memory.md Section 5:
+    Per cli-output-memory.md Section 5:
     - Memory Ranking Table (primary output)
     - Supporting traces (secondary)
     - Effective when active_methods > 1

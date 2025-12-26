@@ -29,9 +29,9 @@ header_files = [
 
 # Problem files (appear in middle, ordered by LeetCode number or custom order)
 problem_files = [
-    "0003_base.md",
-    "0076_min_window.md",
-    "0209_min_subarray.md"
+    "0003-base.md",
+    "76-min-window.md",
+    "09-min-subarray.md"
 ]
 
 # Footer files (appear last, typically comparison, decision, templates)
@@ -65,12 +65,12 @@ meta/patterns/sliding_window/
 ├── _comparison.md
 ├── _decision.md
 ├── _templates.md
-├── 0003_base.md
-├── 0076_min_window.md
-├── 0209_min_subarray.md
-├── 0340_k_distinct.md
-├── 0438_anagrams.md
-└── 0567_permutation.md
+├──@03-base.md
+├──@76-min-window.md
+├──B09-min-subarray.md
+├──C40-k-distinct.md
+├──D38-anagrams.md
+└──E67-permutation.md
 ```
 
 The `_config.toml` ensures that problems appear in LeetCode number order (0003, 0076, 0209, etc.) rather than alphabetical order.

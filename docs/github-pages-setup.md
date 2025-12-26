@@ -46,14 +46,14 @@ neetcode/
 │   ├── pages/                          # GitHub Pages root (mostly gitignored)
 │   │   ├── mindmaps/
 │   │   │   ├── neetcode_ontology_ai_*.html  # AI (tracked)
-│   │   │   ├── pattern_hierarchy.html       # Rule-based (gitignored)
+│   │   │   ├── pattern-hierarchy.html       # Rule-based (gitignored)
 │   │   │   └── ...
 │   │   └── assets/                     # Shared assets (gitignored)
 │   │
 │   ├── stylesheets/                    # Custom CSS
 │   ├── index.md                        # Homepage (includes README.md)
 │   ├── index_zh-TW.md                  # Homepage (Traditional Chinese)
-│   └── GITHUB_PAGES_SETUP.md           # This file
+│   └── github-pages-setup.md           # This file
 │
 ├── tools/
 │   ├── generate_mindmaps.py            # Generate from ontology
@@ -256,15 +256,15 @@ python tools/generate_mindmaps.py --html --autoloader
    # Check that HTML files were created
    ls docs/pages/mindmaps/neetcode_ontology_ai_*.html
    # Should see:
-   # - neetcode_ontology_ai_en.html
-   # - neetcode_ontology_ai_zh-TW.html
+   # - neetcode-ontology-ai-en.html
+   # - neetcode-ontology-ai-zh-tw.html
    
    # Check that prompt file was updated
-   ls tools/prompts/generated/mindmap_prompt.md
+   ls tools/prompts/generated/mindmap-prompt.md
    ```
 
 4. **Review prompt file (optional but recommended):**
-   - The prompt used for generation is saved to `tools/prompts/generated/mindmap_prompt.md`
+   - The prompt used for generation is saved to `tools/prompts/generated/mindmap-prompt.md`
    - This file is **tracked in Git** for traceability — you can always see which prompt generated each version of the AI mind maps
    - Review the prompt to ensure it matches your expectations
 
@@ -274,7 +274,7 @@ python tools/generate_mindmaps.py --html --autoloader
    git add docs/pages/mindmaps/neetcode_ontology_ai_*.html
    
    # Also commit the prompt file for traceability
-   git add tools/prompts/generated/mindmap_prompt.md
+   git add tools/prompts/generated/mindmap-prompt.md
    
    git commit -m "docs: Update AI mind maps"
    git push
@@ -300,7 +300,7 @@ docs/pages/                    # Ignore all generated HTML
 ```
 
 **Prompt File Tracking:**
-- The prompt file `tools/prompts/generated/mindmap_prompt.md` is **tracked in Git**
+- The prompt file `tools/prompts/generated/mindmap-prompt.md` is **tracked in Git**
 - This ensures full traceability — you can always see which prompt generated each AI mind map version
 - The prompt file is automatically updated each time you run `generate_mindmaps_ai.py`
 
@@ -309,15 +309,15 @@ docs/pages/                    # Ignore all generated HTML
 ```bash
 # Method 1: Open HTML directly
 # Windows
-start docs/pages/mindmaps/pattern_hierarchy.html
+start docs/pages/mindmaps/pattern-hierarchy.html
 
 # Linux/macOS
-open docs/pages/mindmaps/pattern_hierarchy.html
+open docs/pages/mindmaps/pattern-hierarchy.html
 
 # Method 2: Use HTTP server
 cd docs/pages
 python -m http.server 8000
-# Visit http://localhost:8000/mindmaps/pattern_hierarchy.html
+# Visit http://localhost:8000/mindmaps/pattern-hierarchy.html
 ```
 
 ---
@@ -629,7 +629,7 @@ After modifying `ontology/` or `meta/`, push to GitHub. GitHub Actions will auto
 **For AI-powered mind maps:**
 1. Generate locally with `python tools/generate_mindmaps_ai.py`
 2. Commit the generated HTML files (`docs/pages/mindmaps/neetcode_ontology_ai_*.html`)
-3. Also commit the prompt file (`tools/prompts/generated/mindmap_prompt.md`) for traceability
+3. Also commit the prompt file (`tools/prompts/generated/mindmap-prompt.md`) for traceability
 4. Push to GitHub
 5. CI/CD will automatically deploy the committed files
 
@@ -654,12 +654,12 @@ python -m mkdocs serve
 **For interactive mind maps:**
 ```bash
 # Method 1: Open HTML directly
-open docs/pages/mindmaps/pattern_hierarchy.html
+open docs/pages/mindmaps/pattern-hierarchy.html
 
 # Method 2: Use HTTP server
 cd docs/pages
 python -m http.server 8000
-# Visit http://localhost:8000/mindmaps/pattern_hierarchy.html
+# Visit http://localhost:8000/mindmaps/pattern-hierarchy.html
 ```
 
 ### Q: How do I fix MkDocs build warnings?

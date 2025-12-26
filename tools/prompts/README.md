@@ -50,7 +50,7 @@ python tools/generate_mindmaps_ai.py --style academic
    ```
 
 2. **複製生成的 prompt**：
-   - 打開 `tools/prompts/generated/mindmap_prompt.md`
+   - 打開 `tools/prompts/generated/mindmap-prompt.md`
    - 複製全部內容到 ChatGPT/Claude
 
 3. **貼上 AI 輸出**：
@@ -92,17 +92,17 @@ tools/
 ├── generate_mindmaps_ai.toml    # 配置檔案
 └── prompts/
     ├── README.md                # 本說明文件
-    ├── system_prompt.md         # System Prompt（可自訂）
+    ├── system-prompt.md         # System Prompt（可自訂）
     ├── prompts_config.yaml      # Prompt 配置（語言、目標、風格）
     └── generated/
-        └── mindmap_prompt.md    # 自動生成的 prompt（供手動使用）
+        └── mindmap-prompt.md    # 自動生成的 prompt（供手動使用）
 ```
 
 ## 🛠️ 自訂 Prompt
 
 ### System Prompt
 
-編輯 `tools/prompts/system_prompt.md` 可修改 LLM 的角色設定和行為規則。
+編輯 `tools/prompts/system-prompt.md` 可修改 LLM 的角色設定和行為規則。
 
 支援變數替換：
 - `{{LANGUAGE_INSTRUCTION}}` - 會被替換為對應語言的指示

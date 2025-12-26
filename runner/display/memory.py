@@ -2,7 +2,7 @@
 """
 Memory Display - Memory profiling output functions.
 
-Per Cli_Output_Memory.md:
+Per cli-output-memory.md:
 - print_memory_trace: Run-level memory traces per method
 - print_memory_per_case: Top-K cases by peak RSS (debug mode)
 - print_trace_compare: Multi-method memory comparison with ranking
@@ -28,7 +28,7 @@ def print_memory_trace(all_results: List[Dict[str, Any]]) -> None:
     """
     Print run-level memory traces for each method.
     
-    Per Cli_Output_Memory.md Section 3:
+    Per cli-output-memory.md Section 3:
     - Shows one sparkline per method
     - Does NOT print case-level traces by default
     - Applies strictly to active_methods
@@ -70,7 +70,7 @@ def print_memory_per_case(all_results: List[Dict[str, Any]], top_k: int = 5) -> 
     """
     Print case-level memory debugging info.
     
-    Per Cli_Output_Memory.md Section 4:
+    Per cli-output-memory.md Section 4:
     - Debug-only flag
     - First: Per-method case summary with Top-K
     - Last: Global Top-K across all methods (separate tables for RSS vs Alloc)
@@ -271,7 +271,7 @@ def print_trace_compare(all_results: List[Dict[str, Any]]) -> None:
     """
     Print multi-method memory comparison.
     
-    Per Cli_Output_Memory.md Section 5:
+    Per cli-output-memory.md Section 5:
     - Memory Ranking Table (primary output)
     - Supporting traces (secondary)
     - Effective when active_methods > 1

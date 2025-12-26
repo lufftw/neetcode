@@ -52,10 +52,10 @@ neetcode/
 │   ├── index.md                 # Homepage (includes README.md)
 │   ├── index_zh-TW.md           # Homepage (繁體中文)
 │   │
-│   ├── SOLUTION_CONTRACT.md     # Solution file specification
-│   ├── GENERATOR_CONTRACT.md    # Generator file specification
-│   ├── ARCHITECTURE_MIGRATION.md # Architecture migration guide
-│   ├── GITHUB_PAGES_SETUP.md    # Deployment guide
+│   ├── solution-contract.md     # Solution file specification
+│   ├── generator-contract.md    # Generator file specification
+│   ├── architecture-migration.md # Architecture migration guide
+│   ├── github-pages-setup.md    # Deployment guide
 │   │
 │   ├── patterns/                # Pattern documentation
 │   │   ├── README.md
@@ -68,9 +68,9 @@ neetcode/
 │   │
 │   ├── contributors/            # 👥 Maintainer documentation (website)
 │   │   ├── README.md            # Full maintainer guide
-│   │   ├── TESTING.md           # Complete testing documentation
-│   │   ├── DOCUMENTATION_ARCHITECTURE.md  # This file
-│   │   └── VIRTUAL_ENV_SETUP.md # Virtual environment setup
+│   │   ├── testing.md           # Complete testing documentation
+│   │   ├── documentation-architecture.md  # This file
+│   │   └── virtual-env-setup.md # Virtual environment setup
 │   │
 │   ├── tools/                   # 🛠️ Tools documentation (website)
 │   │   ├── README.md            # Complete tools reference
@@ -81,8 +81,8 @@ neetcode/
 │   │   └── patterndocs/
 │   │       └── README.md        # Pattern Docs Generator docs
 │   │
-│   ├── ONTOLOGY_DESIGN.md       # Ontology design
-│   └── MKDOCS_CONTENT_GUIDE.md  # Content guide
+│   ├── ontology-design.md       # Ontology design
+│   └── mkdocs-content-guide.md  # Content guide
 │
 ├── tools/                       # 🔧 Developer tools (code + scripts)
 │   ├── README.md                # Shortened version (links to docs/tools/)
@@ -124,8 +124,8 @@ neetcode/
 
 **Where to find:**
 - `docs/tools/README.md` → Complete tools reference (website)
-- `docs/SOLUTION_CONTRACT.md` → Solution format
-- `docs/contributors/TESTING.md` → Complete testing documentation (website)
+- `docs/solution-contract.md` → Solution format
+- `docs/contributors/testing.md` → Complete testing documentation (website)
 
 ### 🛠️ Maintainers (Core Team)
 
@@ -137,7 +137,7 @@ neetcode/
 **Where to find:**
 - `docs/contributors/README.md` → Full maintainer guide (website)
 - `docs/tools/*/README.md` → Complete module documentation (website)
-- `docs/contributors/DOCUMENTATION_ARCHITECTURE.md` → Documentation structure (this file)
+- `docs/contributors/documentation-architecture.md` → Documentation structure (this file)
 
 ---
 
@@ -161,8 +161,8 @@ neetcode/
 
 ### When Modifying Documentation Structure
 
-- [ ] Update this file (`docs/contributors/DOCUMENTATION_ARCHITECTURE.md`)
-- [ ] Update `docs/MKDOCS_CONTENT_GUIDE.md`
+- [ ] Update this file (`docs/contributors/documentation-architecture.md`)
+- [ ] Update `docs/mkdocs-content-guide.md`
 - [ ] Update `mkdocs.yml` if adding to website
 - [ ] Update README documentation section
 - [ ] Verify all links follow the linking strategy (files in `docs/` use relative paths, files outside `docs/` use GitHub URLs)
@@ -255,11 +255,11 @@ When adding links in documentation files, follow this strategy:
 This ensures links work correctly in both GitHub repository browsing and the MkDocs website.
 
 **Examples**:
-- ✅ `docs/contributors/README.md` linking to `docs/contributors/TESTING.md` → Use `[TESTING.md](TESTING.md)`
-- ✅ `docs/SOLUTION_CONTRACT.md` linking to `runner/README.md` → Use `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)`
+- ✅ `docs/contributors/README.md` linking to `docs/contributors/testing.md` → Use `[testing.md](testing.md)`
+- ✅ `docs/solution-contract.md` linking to `runner/README.md` → Use `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)`
 - ✅ `docs/tools/README.md` linking to `tools/prompts/README.md` → Use `[Prompts](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md)`
 
-> 📖 See [MkDocs Content Guide](../MKDOCS_CONTENT_GUIDE.md#linking-strategy-guide) for detailed linking strategy documentation.
+> 📖 See [MkDocs Content Guide](../mkdocs-content-guide.md#linking-strategy-guide) for detailed linking strategy documentation.
 
 ---
 
@@ -274,7 +274,7 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 ## 🔗 Related Documents
 
 - [Maintainer Guide](README.md)
-- [Testing Documentation](TESTING.md)
-- [MkDocs Content Guide](../MKDOCS_CONTENT_GUIDE.md)
+- [Testing Documentation](testing.md)
+- [MkDocs Content Guide](../mkdocs-content-guide.md)
 - [Tools Reference](../tools/README.md)
 

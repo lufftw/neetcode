@@ -48,7 +48,7 @@ python runner/test_runner.py <problem> [OPTIONS]
 | `--seed N` | Reproducible generation |
 | `--save-failed` | Save failed cases to `tests/` |
 
-> 📖 Requires generator file. See [Generator Contract](../GENERATOR_CONTRACT.md).
+> 📖 Requires generator file. See [Generator Contract](../generator-contract.md).
 
 ### Analysis
 
@@ -254,7 +254,7 @@ python runner/test_runner.py 0004 --estimate
 | `[set]` | `COMPARE_MODE="set"` |
 | `[skip]` | No `.out`, no `JUDGE_FUNC` |
 
-> 📖 See [Solution Contract § Validation](../SOLUTION_CONTRACT.md#validation-judge_func--compare_mode) for `JUDGE_FUNC` and `COMPARE_MODE` details.
+> 📖 See [Solution Contract § Validation](../solution-contract.md#validation-judge_func--compare_mode) for `JUDGE_FUNC` and `COMPARE_MODE` details.
 
 ---
 
@@ -369,7 +369,7 @@ Pre-configured tasks and debug configurations are provided in `.vscode/`.
 - **Ctrl+Shift+B**: Run all tests for current problem (default build task)
 - **F5**: Debug with breakpoints
 
-> 📖 See [VSCode Setup Guide](../contributors/VSCODE_SETUP.md) for complete task/debug configuration reference.
+> 📖 See [VSCode Setup Guide](../contributors/vscode-setup.md) for complete task/debug configuration reference.
 
 ---
 
@@ -460,10 +460,10 @@ pip install big-O psutil sparklines tabulate
 
 | Document | Content |
 |----------|---------|
-| [Solution Contract](../SOLUTION_CONTRACT.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
-| [Generator Contract](../GENERATOR_CONTRACT.md) | `generate()`, `generate_for_complexity()`, edge cases |
+| [Solution Contract](../solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
+| [Generator Contract](../generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Runner README](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | Quick reference (in-module) |
-| [VSCode Setup Guide](../contributors/VSCODE_SETUP.md) | Tasks, debug configurations, workflow examples |
+| [VSCode Setup Guide](../contributors/vscode-setup.md) | Tasks, debug configurations, workflow examples |
 
 ---
 

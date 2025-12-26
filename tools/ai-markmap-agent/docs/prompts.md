@@ -76,40 +76,40 @@ The system uses a **two-phase approach**:
 ```
 prompts/
 ├── planners/          # Structure planning agents
-│   ├── generalist_planner_persona.md
-│   ├── generalist_planner_behavior.md
-│   ├── specialist_planner_persona.md
-│   └── specialist_planner_behavior.md
+│   ├── generalist-planner-persona.md
+│   ├── generalist-planner-behavior.md
+│   ├── specialist-planner-persona.md
+│   └── specialist-planner-behavior.md
 ├── strategists/       # Content strategy agents
-│   ├── architect_strategist_persona.md
-│   ├── architect_strategist_behavior.md
-│   ├── professor_strategist_persona.md
-│   ├── professor_strategist_behavior.md
-│   ├── ux_strategist_persona.md
-│   └── ux_strategist_behavior.md
+│   ├── architect-strategist-persona.md
+│   ├── architect-strategist-behavior.md
+│   ├── professor-strategist-persona.md
+│   ├── professor-strategist-behavior.md
+│   ├── ux-strategist-persona.md
+│   └── ux-strategist-behavior.md
 ├── evaluators/        # Quality evaluation agents
-│   ├── structure_evaluator_behavior.md
-│   └── content_evaluator_behavior.md
+│   ├── structure-evaluator-behavior.md
+│   └── content-evaluator-behavior.md
 ├── integrator/        # Consensus integration agent
-│   ├── integrator_persona.md
-│   └── integrator_behavior.md
+│   ├── integrator-persona.md
+│   └── integrator-behavior.md
 ├── writer/            # Final markdown generation
-│   ├── writer_persona.md
-│   ├── writer_behavior.md
-│   └── markmap_format_guide.md
+│   ├── writer-persona.md
+│   ├── writer-behavior.md
+│   └── markmap-format-guide.md
 ├── experts/           # Baseline review agents
-│   ├── architect_persona.md
-│   ├── architect_behavior.md
-│   ├── discussion_behavior.md
-│   ├── professor_persona.md
-│   ├── professor_behavior.md
-│   ├── engineer_persona.md
-│   └── engineer_behavior.md
+│   ├── architect-persona.md
+│   ├── architect-behavior.md
+│   ├── discussion-behavior.md
+│   ├── professor-persona.md
+│   ├── professor-behavior.md
+│   ├── engineer-persona.md
+│   └── engineer-behavior.md
 ├── translator/        # Translation agents
-│   ├── generic_translator_behavior.md
-│   └── zh_tw_translator_behavior.md
+│   ├── generic-translator-behavior.md
+│   └── zh-tw-translator-behavior.md
 └── compressor/       # Content compression
-    └── compressor_behavior.md
+    └── compressor-behavior.md
 ```
 
 ---

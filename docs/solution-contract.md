@@ -441,7 +441,7 @@ When `.out` file is missing:
 - `JUDGE_FUNC` MUST validate using only `actual` and `input_data`
 - This enables validation without precomputed expected outputs
 
-> 📖 This mode is required for generated tests. See [Generator Contract](GENERATOR_CONTRACT.md#judge_func-requirement).
+> 📖 This mode is required for generated tests. See [Generator Contract](generator-contract.md#judge_func-requirement).
 
 **Example (N-Queens with judge-only support):**
 
@@ -566,7 +566,7 @@ neetcode/
 │   └── {problem_id}_{slug}.py      # Generator module
 ```
 
-> 📖 For generator files, see [Generator Contract](GENERATOR_CONTRACT.md).
+> 📖 For generator files, see [Generator Contract](generator-contract.md).
 
 ### Static Test Files
 
@@ -627,7 +627,7 @@ python runner/test_runner.py 0001_two_sum --generate 10
 python runner/test_runner.py 0001_two_sum --generate 10 --seed 12345
 ```
 
-> 📖 See [Generator Contract § Running Generated Tests](GENERATOR_CONTRACT.md#running-generated-tests) for all options.
+> 📖 See [Generator Contract § Running Generated Tests](generator-contract.md#running-generated-tests) for all options.
 
 ---
 
@@ -725,7 +725,7 @@ When adding or modifying a solution, verify:
 - [ ] `JUDGE_FUNC` is defined in solution (required for generators)
 - [ ] Edge cases are included in generator
 
-> 📖 See [Generator Contract](GENERATOR_CONTRACT.md) for generator requirements.
+> 📖 See [Generator Contract](generator-contract.md) for generator requirements.
 
 ---
 
@@ -809,6 +809,6 @@ python runner/test_runner.py {problem} --benchmark  # With timing
 
 | Document | Content |
 |----------|---------|
-| [Generator Contract](GENERATOR_CONTRACT.md) | `generate()`, `generate_for_complexity()`, edge cases |
+| [Generator Contract](generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
-| [Architecture Migration](ARCHITECTURE_MIGRATION.md) | Polymorphic pattern migration guide |
+| [Architecture Migration](architecture-migration.md) | Polymorphic pattern migration guide |

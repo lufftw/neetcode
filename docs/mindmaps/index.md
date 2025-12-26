@@ -28,20 +28,20 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 AI-synthesized pattern relationships and learning insights.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/neetcode_ontology_ai_en.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/neetcode-ontology-ai-en.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/neetcode_ontology_ai_en.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/neetcode-ontology-ai-en.html){ .md-button }
 
 ### 繁體中文版
 
 AI 智能分析模式關聯與學習洞察。
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/neetcode_ontology_ai_zh-TW.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/neetcode-ontology-ai-zh-tw.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/neetcode_ontology_ai_zh-TW.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/neetcode-ontology-ai-zh-tw.html){ .md-button }
 
 ---
 
@@ -50,10 +50,10 @@ AI 智能分析模式關聯與學習洞察。
 API Kernels → Patterns → Problems hierarchy. Understand how algorithmic building blocks relate to specific patterns and problems.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/pattern_hierarchy.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/pattern-hierarchy.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/pattern_hierarchy.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/pattern-hierarchy.html){ .md-button }
 
 ---
 
@@ -62,10 +62,10 @@ API Kernels → Patterns → Problems hierarchy. Understand how algorithmic buil
 Base template problems and their derived variants. Learn the base pattern first, then apply to variants with small modifications.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/family_derivation.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/family-derivation.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/family_derivation.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/family-derivation.html){ .md-button }
 
 ---
 
@@ -74,10 +74,10 @@ Base template problems and their derived variants. Learn the base pattern first,
 Problems organized by the algorithms they use. Find problems that practice specific algorithmic techniques.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/algorithm_usage.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/algorithm-usage.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/algorithm_usage.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/algorithm-usage.html){ .md-button }
 
 ---
 
@@ -86,10 +86,10 @@ Problems organized by the algorithms they use. Find problems that practice speci
 Problems organized by the primary data structures they use.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/data_structure.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/data-structure.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/data_structure.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/data-structure.html){ .md-button }
 
 ---
 
@@ -98,10 +98,10 @@ Problems organized by the primary data structures they use.
 Problems frequently asked by top tech companies. Prepare strategically for your target companies.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/company_coverage.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/company-coverage.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/company_coverage.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/company-coverage.html){ .md-button }
 
 ---
 
@@ -110,10 +110,10 @@ Problems frequently asked by top tech companies. Prepare strategically for your 
 Curated problem sequences for different learning goals (NeetCode 150, Blind 75, etc.).
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/roadmap_paths.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/roadmap-paths.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/roadmap_paths.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/roadmap-paths.html){ .md-button }
 
 ---
 
@@ -122,10 +122,10 @@ Curated problem sequences for different learning goals (NeetCode 150, Blind 75, 
 Related problems network. Practice related problems together to reinforce patterns.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/problem_relations.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/problem-relations.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/problem_relations.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/problem-relations.html){ .md-button }
 
 ---
 
@@ -134,10 +134,10 @@ Related problems network. Practice related problems together to reinforce patter
 Problems with multiple solution approaches. Understanding different approaches deepens your algorithmic thinking.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/solution_variants.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/solution-variants.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/solution_variants.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/solution-variants.html){ .md-button }
 
 ---
 
@@ -146,8 +146,8 @@ Problems with multiple solution approaches. Understanding different approaches d
 Topics organized by difficulty level. Start with Easy, progress to Hard.
 
 <div class="mindmap-container">
-  <iframe src="../pages/mindmaps/difficulty_topics.html" width="100%" height="500" frameborder="0"></iframe>
+  <iframe src="../pages/mindmaps/difficulty-topics.html" width="100%" height="500" frameborder="0"></iframe>
 </div>
 
-[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/difficulty_topics.html){ .md-button }
+[:octicons-link-external-16: Open Full Screen](../pages/mindmaps/difficulty-topics.html){ .md-button }
 

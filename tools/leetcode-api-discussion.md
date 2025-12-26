@@ -68,4 +68,4 @@ python tools/sync_leetcode_data.py --force
 - [Data sync tool](tools/sync_leetcode_data.py)
 - [API integration module](tools/ai-markmap-agent/src/leetcode_api.py)
 - [Post-processing module](tools/ai-markmap-agent/src/post_processing.py)
-- [Post-processing docs](tools/ai-markmap-agent/docs/POST_PROCESSING_LINKS.md)
+- [Post-processing docs](tools/ai-markmap-agent/docs/post-processing-links.md)

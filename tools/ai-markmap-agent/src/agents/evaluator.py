@@ -235,14 +235,14 @@ def create_evaluators(config: dict[str, Any]) -> list[EvaluatorAgent]:
                 "id": "structure_evaluator",
                 "name": "Structure Evaluator",
                 "model": "gpt-4",
-                "behavior_prompt": "prompts/evaluators/structure_evaluator_behavior.md",
+                "behavior_prompt": "prompts/evaluators/structure-evaluator-behavior.md",
                 "criteria": ["logical_organization", "appropriate_depth", "balanced_sections"],
             },
             {
                 "id": "content_evaluator",
                 "name": "Content Evaluator",
                 "model": "gpt-4",
-                "behavior_prompt": "prompts/evaluators/content_evaluator_behavior.md",
+                "behavior_prompt": "prompts/evaluators/content-evaluator-behavior.md",
                 "criteria": ["coverage", "learning_progression", "practical_value"],
             },
         ]

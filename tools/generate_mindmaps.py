@@ -37,27 +37,27 @@ from mindmaps import (
 
 # Mind map metadata
 TITLES = {
-    "pattern_hierarchy": "Pattern Hierarchy",
-    "family_derivation": "Family Derivation",
-    "algorithm_usage": "Algorithm Usage",
-    "data_structure": "Data Structure Usage",
-    "company_coverage": "Company Coverage",
-    "roadmap_paths": "Learning Roadmaps",
-    "problem_relations": "Problem Relations",
-    "solution_variants": "Solution Variants",
-    "difficulty_topics": "Difficulty × Topics",
+    "pattern-hierarchy": "Pattern Hierarchy",
+    "family-derivation": "Family Derivation",
+    "algorithm-usage": "Algorithm Usage",
+    "data-structure": "Data Structure Usage",
+    "company-coverage": "Company Coverage",
+    "roadmap-paths": "Learning Roadmaps",
+    "problem-relations": "Problem Relations",
+    "solution-variants": "Solution Variants",
+    "difficulty-topics": "Difficulty × Topics",
 }
 
 DESCRIPTIONS = {
-    "pattern_hierarchy": ("📐", "API Kernels → Patterns → Problems hierarchy"),
-    "family_derivation": ("👨‍👩‍👧‍👦", "Base templates and derived problem variants"),
-    "algorithm_usage": ("⚡", "Which algorithms are used in which problems"),
-    "data_structure": ("🏗️", "Data structures used across problems"),
-    "company_coverage": ("🏢", "Problems frequently asked by companies"),
-    "roadmap_paths": ("🗺️", "Learning roadmap structures"),
-    "problem_relations": ("🔗", "Related problems network"),
-    "solution_variants": ("🔀", "Problems with multiple solution approaches"),
-    "difficulty_topics": ("📊", "Topics organized by difficulty level"),
+    "pattern-hierarchy": ("📐", "API Kernels → Patterns → Problems hierarchy"),
+    "family-derivation": ("👨‍👩‍👧‍👦", "Base templates and derived problem variants"),
+    "algorithm-usage": ("⚡", "Which algorithms are used in which problems"),
+    "data-structure": ("🏗️", "Data structures used across problems"),
+    "company-coverage": ("🏢", "Problems frequently asked by companies"),
+    "roadmap-paths": ("🗺️", "Learning roadmap structures"),
+    "problem-relations": ("🔗", "Related problems network"),
+    "solution-variants": ("🔀", "Problems with multiple solution approaches"),
+    "difficulty-topics": ("📊", "Topics organized by difficulty level"),
 }
 
 
@@ -123,7 +123,7 @@ def generate_all_mindmaps(
             if not description_text:
                 _, description_text = DESCRIPTIONS.get(mm_type, ("", ""))
             html = generate_html_mindmap(title, content, use_autoloader, description_text)
-            html_file = pages_dir / "mindmaps" / f"{mm_type}.html"
+            html_file = pages_dir / "mindmaps" / f"{mm_type.replace('_', '-')}.html"
             html_file.write_text(html, encoding="utf-8")
             print(f"  Written: {html_file}")
 

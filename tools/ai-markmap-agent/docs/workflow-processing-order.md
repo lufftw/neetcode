@@ -126,5 +126,5 @@ Post-Processing Phase
 
 ## Related Documents
 
-- [Post-Processing Link Handling](POST_PROCESSING_LINKS.md)
+- [Post-Processing Link Handling](post-processing-links.md)
 - [Main README](../README.md)

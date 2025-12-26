@@ -8,18 +8,18 @@ header_files = [
 
 # Problem files (appear in middle, ordered by LeetCode number or custom order)
 problem_files = [
-    "0046_permutations.md",
-    "0047_permutations_duplicates.md",
-    "0078_subsets.md",
-    "0090_subsets_duplicates.md",
-    "0077_combinations.md",
-    "0039_combination_sum.md",
-    "0040_combination_sum_ii.md",
-    "0216_combination_sum_iii.md",
-    "0051_n_queens.md",
-    "0131_palindrome_partitioning.md",
-    "0093_restore_ip.md",
-    "0079_word_search.md"
+    "0046-permutations.md",
+    "0047-permutations-duplicates.md",
+    "0078-subsets.md",
+    "0090-subsets-duplicates.md",
+    "0077-combinations.md",
+    "0039-combination-sum.md",
+    "0040-combination-sum-ii.md",
+    "0216-combination-sum-iii.md",
+    "0051-n-queens.md",
+    "0131-palindrome-partitioning.md",
+    "0093-restore-ip.md",
+    "0079-word-search.md"
 ]
 
 # Footer files (appear last, typically comparison, decision, mapping, templates)
@@ -37,4 +37,3 @@ footer_files = [
 [output]
 subdirectory = "backtracking_exploration"
 filename = "templates.md"
-

@@ -126,7 +126,7 @@ def _parse_simple_yaml(path: Path) -> dict[str, Any]:
 
 def load_system_prompt_template() -> str:
     """Load system prompt template from file."""
-    prompt_path = PROMPTS_DIR / "system_prompt.md"
+    prompt_path = PROMPTS_DIR / "system-prompt.md"
     
     if not prompt_path.exists():
         print(f"⚠️  System prompt not found: {prompt_path}, using built-in default")

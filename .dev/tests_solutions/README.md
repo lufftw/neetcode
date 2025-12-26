@@ -153,6 +153,5 @@ python -m pytest .dev/tests_solutions -v
 
 ## Related Links
 
-- [../TESTING.md](../TESTING.md) - Complete testing documentation
+- [../testing.md](../testing.md) - Complete testing documentation
 - [../tests/README.md](../tests/README.md) - Component tests
-- [../../tools/FORMAT_CHECKING.md](../../tools/FORMAT_CHECKING.md) - Format checking description

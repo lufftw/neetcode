@@ -2,7 +2,7 @@
 """
 Input Scale Estimation - Derive problem scale from method signatures.
 
-Per Input_Scale_Metrics.md:
+Per input-scale-metrics.md:
 - Input Scale (n, m, V, E): Structural size of the problem
 - Signature Payload (MB): Memory footprint of input objects
 - Input Bytes (MB): Raw size of stdin data
@@ -17,7 +17,7 @@ def estimate_input_scale(signature_args: Dict[str, Any]) -> Optional[Dict[str, A
     """
     Estimate input scale from method signature arguments.
     
-    Standard mappings (from Input_Scale_Metrics.md):
+    Standard mappings (from input-scale-metrics.md):
     - List[int], str -> n = len(...)
     - Two lists -> n = len(a), m = len(b)
     - Matrix -> rows, cols, n = rows * cols

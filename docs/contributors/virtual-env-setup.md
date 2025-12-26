@@ -271,7 +271,7 @@ mkdocs-include-markdown-plugin>=7.0.0  # Include markdown files
 
 If you have questions, please refer to:
 - [Contributors README](README.md) - Maintainer Guide
-- [Testing Documentation](TESTING.md) - Complete Testing Documentation
+- [Testing Documentation](testing.md) - Complete Testing Documentation
 - [Project main README.md](https://github.com/lufftw/neetcode/blob/main/README.md) - Python Environment section
 
 ---

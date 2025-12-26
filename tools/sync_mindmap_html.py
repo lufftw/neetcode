@@ -6,7 +6,7 @@ Reads a markdown file and generates the corresponding HTML file
 with the markdown content embedded for Markmap rendering.
 
 Usage:
-    python tools/sync_mindmap_html.py docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
+    python tools/sync_mindmap_html.py docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
     python tools/sync_mindmap_html.py --all  # Sync all md files in docs/mindmaps/
 """
 

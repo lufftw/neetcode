@@ -22,7 +22,7 @@ File Ordering:
     Each pattern directory can include _config.toml to control file order:
     
     header_files = ["_header.md"]
-    problem_files = ["0003_base.md", "0076_variant.md", ...]
+    problem_files = ["0003-base.md", "0076_variant.md", ...]
     footer_files = ["_comparison.md", "_decision.md", "_mapping.md", "_templates.md"]
     
     If _config.toml is missing, uses default alphabetical ordering.

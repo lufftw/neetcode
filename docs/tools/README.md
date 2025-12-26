@@ -245,7 +245,7 @@ The command reads existing Markdown files from the configured output directory a
 | `[links]` | GitHub repo URL, branch |
 | `[advanced]` | Output language(s) (multi-language support) |
 
-**No API Key?** After running, copy `tools/prompts/generated/mindmap_prompt.md` to ChatGPT/Claude.
+**No API Key?** After running, copy `tools/prompts/generated/mindmap-prompt.md` to ChatGPT/Claude.
 
 > 📖 **Detailed usage guide:** [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md)
 
@@ -273,7 +273,7 @@ python tools/generate_pattern_docs.py --pattern sliding_window
 meta/patterns/sliding_window/
 ├── _config.toml        # File ordering (optional)
 ├── _header.md          # Introduction and core concepts
-├── 0003_base.md        # Base template problem
+├──@03-base.md        # Base template problem
 ├── 0076_variant.md     # Variant problem
 ├── _comparison.md      # Pattern comparison table
 ├── _decision.md        # Decision guide
@@ -507,9 +507,9 @@ pre-commit run generate-ai-mindmaps --all-files
 
 | Document | Description |
 |----------|-------------|
-| [SOLUTION_CONTRACT.md](../SOLUTION_CONTRACT.md) | Solution file specification |
-| [GENERATOR_CONTRACT.md](../GENERATOR_CONTRACT.md) | Generator file specification |
-| [ARCHITECTURE_MIGRATION.md](../ARCHITECTURE_MIGRATION.md) | Architecture migration guide |
+| [solution-contract.md](../solution-contract.md) | Solution file specification |
+| [generator-contract.md](../generator-contract.md) | Generator file specification |
+| [architecture-migration.md](../architecture-migration.md) | Architecture migration guide |
 | [mindmaps/README.md](mindmaps/README.md) | Mind map module technical docs |
 | [patterndocs/README.md](patterndocs/README.md) | Pattern docs module technical docs |
 | [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md) | AI prompts usage guide |

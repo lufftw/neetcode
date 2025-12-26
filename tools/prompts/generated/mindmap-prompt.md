@@ -2827,7 +2827,7 @@ def same_direction_template(arr, condition):
 
 ### backtracking_exploration
 
-#### 0039_combination_sum.md
+####@39-combination-sum.md
 
 ## Variation: Combination Sum (LeetCode 39)
 
@@ -2891,7 +2891,7 @@ def combination_sum(candidates: list[int], target: int) -> list[list[int]]:
             
             # R
 ...(truncated)
-#### 0040_combination_sum_ii.md
+####@40-combination-sum-ii.md
 
 ## Variation: Combination Sum II (LeetCode 40)
 
@@ -2955,7 +2955,7 @@ def combination_sum2(candidates: list[int], target: int) -> list[list[int]]:
             backtrack(i + 1, remaining - candidates[i])
        
 ...(truncated)
-#### 0046_permutations.md
+####@46-permutations.md
 
 ## Base Template: Permutations (LeetCode 46)
 
@@ -3030,7 +3030,7 @@ def permute(nums: list[int]) -> list[list[int]]:
 
 The `used` array ensu
 ...(truncated)
-#### 0047_permutations_duplicates.md
+####@47-permutations-duplicates.md
 
 ## Variation: Permutations with Duplicates (LeetCode 47)
 
@@ -3098,7 +3098,7 @@ def permute_unique(nums: list[int]) -> list[list[int]]:
     
     backtrack()
 ...(truncated)
-#### 0051_n_queens.md
+####@51-n-queens.md
 
 ## Variation: N-Queens (LeetCode 51/52)
 
@@ -3165,7 +3165,7 @@ def solve_n_queens(n: int) -> list[list[str]]:
                 continue
             if diag_main in u
 ...(truncated)
-#### 0077_combinations.md
+####@77-combinations.md
 
 ## Variation: Combinations (LeetCode 77)
 
@@ -3238,7 +3238,7 @@ start=1: try 1,2,3,4
   start=4: try 4     ← only 1 element left, need 1 more → works
   sta
 ...(truncated)
-#### 0078_subsets.md
+####@78-subsets.md
 
 ## Variation: Subsets (LeetCode 78)
 
@@ -3309,7 +3309,7 @@ Decision tree with start_index:
 │  ├─ [1,2]                ← start=2, collect [1,2]
 │  │  
 ...(truncated)
-#### 0079_word_search.md
+####@79-word-search.md
 
 ## Variation: Word Search (LeetCode 79)
 
@@ -3379,7 +3379,7 @@ def exist(board: list[list[str]], word: str) -> bool:
         
         # EXPLORE: Try all 4 dire
 ...(truncated)
-#### 0090_subsets_duplicates.md
+####@90-subsets-duplicates.md
 
 ## Variation: Subsets with Duplicates (LeetCode 90)
 
@@ -3455,7 +3455,7 @@ With deduplication (skip if i > start and nums[i] == nums[i-1]):
 │                        ↑ i=2, start=2, 2==2 but i==start, proceed
 │      → [1,2]  skipped (i
 ...(truncated)
-#### 0093_restore_ip.md
+####@93-restore-ip.md
 
 ## Variation: Restore IP Addresses (LeetCode 93)
 
@@ -3524,7 +3524,7 @@ def restore_ip_addresses(s: str) -> list[str]:
         # BASE CASE: 4 segments formed
         if seg
 ...(truncated)
-#### 0131_palindrome_partitioning.md
+####A31-palindrome-partitioning.md
 
 ## Variation: Palindrome Partitioning (LeetCode 131)
 
@@ -3590,7 +3590,7 @@ def partition(s: str) -> list[list[str]]:
             # VALIDITY CHECK: Only proceed if palindrome
 
 ...(truncated)
-#### 0216_combination_sum_iii.md
+####B16-combination-sum-iii.md
 
 ## Variation: Combination Sum III (LeetCode 216)
 
@@ -3942,7 +3942,7 @@ def grid_search(grid, word):
 ...(truncated)
 ### sliding_window
 
-#### 0003_base.md
+####@03-base.md
 
 ## Base Template: Unique Characters (LeetCode 3)
 
@@ -4000,7 +4000,7 @@ def length_of_longest_substring(s: str) -> int:
 
 The key insight is the **jump optimization**: instead of incrementally shrinking the window with a while
 ...(truncated)
-#### 0076_min_window.md
+####@76-min-window.md
 
 ## Variation: Minimum Window Substring (LeetCode 76)
 
@@ -4060,7 +4060,7 @@ def min_window(s: str, t: str) -> str:
         # Important: Only count when we EXACTLY meet the requirement
         # (not when we exceed it, to avoid double count
 ...(truncated)
-#### 0209_min_subarray.md
+####B09-min-subarray.md
 
 ## Variation: Minimum Size Subarray Sum (LeetCode 209)
 
@@ -4127,7 +4127,7 @@ def min_subarray_len(target: int, nums: list[int]) -> int:
 | Remove element | `freq[c] -= 1` | `sum -= num` |
 | Chec
 ...(truncated)
-#### 0340_k_distinct.md
+####C40-k-distinct.md
 
 ## Variation: At Most K Distinct Characters (LeetCode 340/159)
 
@@ -4185,7 +4185,7 @@ def length_of_longest_substring_k_distinct(s: str, k: int) -> int:
         
         # UPDATE ANSWER: Window [left, right] has
 ...(truncated)
-#### 0438_anagrams.md
+####D38-anagrams.md
 
 ## Variation: Find All Anagrams (LeetCode 438)
 
@@ -4250,7 +4250,7 @@ def find_anagrams(s: str, p: str) -> list[int]:
                     chars_matched -= 1
                 el
 ...(truncated)
-#### 0567_permutation.md
+####E67-permutation.md
 
 ## Variation: Permutation in String (LeetCode 567)
 

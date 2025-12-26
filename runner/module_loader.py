@@ -2,7 +2,7 @@
 """
 Module Loader - Load solution and generator modules dynamically.
 
-Validates SOLUTIONS dictionary format per ARCHITECTURE_MIGRATION.md:
+Validates SOLUTIONS dictionary format per architecture-migration.md:
 - SOLUTIONS dictionary is required
 - Each entry must have 'class' and 'method' fields
 - 'default' key is required

@@ -86,7 +86,7 @@ meta/
         ├── _comparison.md    # Comparison table
         ├── _decision.md      # When to use
         ├── _templates.md     # Quick reference
-        └── XXXX_<name>.md    # Per-problem snippets
+        └── XXXX-<name>.md    # Per-problem snippets
 ```
 
 ### Example: Sliding Window
@@ -98,12 +98,12 @@ meta/patterns/sliding_window/
 ├── _comparison.md           # Pattern comparison table
 ├── _decision.md             # When to use sliding window
 ├── _templates.md            # Maximize/minimize/fixed templates
-├── 0003_base.md             # LeetCode 3 - Base template
-├── 0076_min_window.md       # LeetCode 76 - Minimum Window Substring
-├── 0209_min_subarray.md     # LeetCode 209 - Minimum Size Subarray Sum
-├── 0340_k_distinct.md       # LeetCode 340 - At Most K Distinct
-├── 0438_anagrams.md         # LeetCode 438 - Find All Anagrams
-└── 0567_permutation.md      # LeetCode 567 - Permutation in String
+├── 0003-base.md             # LeetCode 3 - Base template
+├── 0076-min-window.md       # LeetCode 76 - Minimum Window Substring
+├── 0209-min-subarray.md     # LeetCode 209 - Minimum Size Subarray Sum
+├── 0340-k-distinct.md       # LeetCode 340 - At Most K Distinct
+├── 0438-anagrams.md         # LeetCode 438 - Find All Anagrams
+└── 0567-permutation.md      # LeetCode 567 - Permutation in String
 ```
 
 ### File Ordering Configuration
@@ -113,7 +113,7 @@ Each pattern directory can include a `_config.toml` file to control the order of
 ```toml
 # meta/patterns/<pattern_name>/_config.toml
 header_files = ["_header.md"]
-problem_files = ["0003_base.md", "0076_min_window.md", ...]
+problem_files = ["0003-base.md", "0076-min-window.md", "0209-min-subarray.md", ...]
 footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
 ```
 
@@ -174,7 +174,7 @@ meta/patterns/new_kernel/
 ├── _comparison.md
 ├── _decision.md
 ├── _templates.md
-└── XXXX_problem.md
+└── XXXX-problem.md
 ```
 
 ### 3. Generate Documentation

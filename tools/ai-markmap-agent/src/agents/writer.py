@@ -53,7 +53,7 @@ class WriterAgent(BaseAgent):
         """Load the Markmap format guide."""
         format_guide_path = model_config.get(
             "format_guide",
-            "prompts/writer/markmap_format_guide.md"
+            "prompts/writer/markmap-format-guide.md"
         )
         
         base_dir = Path(__file__).parent.parent.parent

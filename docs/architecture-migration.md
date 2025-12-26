@@ -431,5 +431,5 @@ SOLUTIONS = {
   - Deleted deprecated `template_solution_wrapper.py`
   - Updated `scripts/new_problem.bat` and `scripts/new_problem.sh` (removed `--wrapper` option)
   - Updated `scripts/run_tests.bat` to pass all arguments
-  - Created `docs/SOLUTION_CONTRACT.md` as canonical specification
+  - Created `docs/solution-contract.md` as canonical specification
 

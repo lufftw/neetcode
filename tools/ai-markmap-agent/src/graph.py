@@ -185,7 +185,7 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
     """
     input_config = config.get("input", {})
     baseline_config = input_config.get("baseline", {})
-    baseline_path = baseline_config.get("path", "neetcode_ontology_ai_en.md")
+    baseline_path = baseline_config.get("path", "neetcode-ontology-ai-en.md")
     
     # Check versioning mode
     versioning = config.get("output", {}).get("versioning", {})
@@ -213,7 +213,7 @@ def load_baseline_markmap(config: dict[str, Any]) -> str:
     
     # Try alternative paths
     alt_paths = [
-        base_dir / "docs" / "mindmaps" / "neetcode_ontology_ai_en.md",
+        base_dir / "docs" / "mindmaps" / "neetcode-ontology-ai-en.md",
         base_dir / "docs" / "mindmaps" / "neetcode_general_ai_en.md",
     ]
     

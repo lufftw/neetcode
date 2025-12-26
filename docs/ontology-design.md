@@ -60,7 +60,7 @@ neetcode/
       ...
 
   docs/
-    ONTOLOGY_DESIGN.md               # This file
+    ontology-design.md               # This file
 ```
 
 ---
