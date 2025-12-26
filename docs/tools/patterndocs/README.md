@@ -83,7 +83,7 @@ The `config.py` module automatically infers kernel mappings from `ontology/patte
 The module maps directory names to API Kernel IDs (configurable in `generate_pattern_docs.toml`):
 - `sliding_window` → `SubstringSlidingWindow`
 - `bfs_grid` → `GridBFSMultiSource`
-- `backtracking` → `BacktrackingExploration`
+- `backtracking_exploration` → `BacktrackingExploration`
 - `two_pointers` → `TwoPointersTraversal`
 - ... (see `tools/generate_pattern_docs.toml` for full list)
 

@@ -46,7 +46,7 @@ def truncate_input(input_data: str, max_length: int = 200) -> str:
     """Truncate long input for display."""
     if len(input_data) <= max_length:
         return input_data
-    return input_data[:max_length] + f"... ({len(input_data)} chars)"
+    return input_data[:max_length] + f"... ({len(input_data)} chars total)"
 
 
 def format_validation_label(validation_mode: str) -> str:

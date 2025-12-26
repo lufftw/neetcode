@@ -210,8 +210,8 @@ class TestKernelIdMapping:
         assert get_kernel_id_from_dir_name("bfs_grid") == "GridBFSMultiSource"
     
     def test_backtracking_mapping(self):
-        """Test backtracking maps to BacktrackingExploration."""
-        assert get_kernel_id_from_dir_name("backtracking") == "BacktrackingExploration"
+        """Test backtracking_exploration maps to BacktrackingExploration."""
+        assert get_kernel_id_from_dir_name("backtracking_exploration") == "BacktrackingExploration"
     
     def test_binary_search_mapping(self):
         """Test binary_search maps to BinarySearchBoundary."""
@@ -226,7 +226,7 @@ class TestKernelIdMapping:
         mappings = {
             "sliding_window": "SubstringSlidingWindow",
             "bfs_grid": "GridBFSMultiSource",
-            "backtracking": "BacktrackingExploration",
+            "backtracking_exploration": "BacktrackingExploration",
             "k_way_merge": "KWayMerge",
             "binary_search": "BinarySearchBoundary",
             "two_pointers": "TwoPointersTraversal",
