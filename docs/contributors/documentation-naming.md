@@ -134,7 +134,7 @@ When renaming a file:
 
 ## Step-by-Step Operation Guide
 
-This guide uses the automated script `tools/rename_docs_to_kebab_case.py` to perform the migration safely.
+This guide uses the automated script `tools/doc-naming/rename_docs_to_kebab_case.py` to perform the migration safely.
 
 ### Prerequisites
 
@@ -147,7 +147,7 @@ This guide uses the automated script `tools/rename_docs_to_kebab_case.py` to per
 Generate and review the rename mapping before execution:
 
 ```bash
-python tools/rename_docs_to_kebab_case.py --dry-run
+python tools/doc-naming/rename_docs_to_kebab_case.py --dry-run
 ```
 
 This will:
@@ -166,7 +166,7 @@ This will:
 Once the mapping is approved, execute the full migration:
 
 ```bash
-python tools/rename_docs_to_kebab_case.py
+python tools/doc-naming/rename_docs_to_kebab_case.py
 ```
 
 This will:
@@ -198,7 +198,7 @@ git grep -l "VSCODE_SETUP.md" || echo "No old references found"
 git grep -l "SOLUTION_CONTRACT.md" || echo "No old references found"
 
 # Option 3: Use the main script's verification mode
-python tools/rename_docs_to_kebab_case.py --verify-only
+python tools/doc-naming/rename_docs_to_kebab_case.py --verify-only
 ```
 
 **Expected output from `verify_all_renames.py`:**
@@ -296,7 +296,7 @@ git commit -m "chore(docs): standardize filenames to kebab-case (except README a
 
 ### Script Features
 
-The `tools/rename_docs_to_kebab_case.py` script includes:
+The `tools/doc-naming/rename_docs_to_kebab_case.py` script includes:
 
 - **Automatic kebab-case conversion**: Handles underscores, spaces, CamelCase, and acronyms
 - **Collision detection**: Prevents duplicate target filenames
@@ -473,4 +473,4 @@ tools/verify_integration.md
 
 ## Changelog
 - **2025-12-26**: Initial version
-- **2025-12-26**: Added step-by-step operation guide for `tools/rename_docs_to_kebab_case.py`
+- **2025-12-26**: Added step-by-step operation guide for `tools/doc-naming/rename_docs_to_kebab_case.py`
