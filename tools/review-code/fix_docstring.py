@@ -5,6 +5,12 @@ Auto-fix File-Level Docstring for solution files
 This tool automatically fixes solution file docstrings to comply with
 review-code.md specification by fetching data from LeetCode.
 
+Features:
+    - Uses SQLite cache for improved performance
+    - Generates complete docstrings with Examples, Constraints, Note, Follow-up
+    - Preserves <img> tags in examples
+    - Supports multi-line explanations
+
 Usage:
     python tools/review-code/fix_docstring.py --range START END [--delay-min SEC] [--delay-max SEC]
     
@@ -17,6 +23,9 @@ Examples:
     
     # Set custom delay range to avoid rate limiting
     python tools/review-code/fix_docstring.py --range 77 142 --delay-min 3.0 --delay-max 8.0
+    
+    # Force refresh from network (bypass cache)
+    python tools/review-code/fix_docstring.py --range 77 77 --force-refresh
 """
 
 import re
@@ -28,7 +37,12 @@ import random
 from pathlib import Path
 from typing import Optional, Dict, Tuple, List
 
-from leetscrape_fetcher import get_description_and_constraints
+# Add leetcode-api to path for imports
+_LEETCODE_API_PATH = Path(__file__).parent.parent / "leetcode-api"
+if str(_LEETCODE_API_PATH) not in sys.path:
+    sys.path.insert(0, str(_LEETCODE_API_PATH))
+
+from leetscrape_fetcher import get_full_docstring_data
 
 # Project root directory
 ROOT = Path(__file__).parent.parent.parent
@@ -36,19 +50,104 @@ SOLUTIONS_DIR = ROOT / "solutions"
 CACHE_FILE = ROOT / "tools" / ".cache" / "leetcode_problems.json"
 
 
+class DocstringBuilder:
+    """Build docstrings according to review-code.md specification."""
+    
+    INDENT = "    "  # 4-space indentation for examples
+    
+    @classmethod
+    def build(cls, data: dict) -> str:
+        """
+        Build a complete docstring from structured data.
+        
+        Args:
+            data: Dictionary from get_full_docstring_data() containing:
+                  - title, url, description, examples, constraints, follow_ups, note
+        
+        Returns:
+            Formatted docstring content (without triple quotes)
+        """
+        parts = []
+        
+        # Problem and Link (required)
+        parts.append(f"Problem: {data.get('title', '')}")
+        parts.append(f"Link: {data.get('url', '')}")
+        parts.append("")
+        
+        # Description
+        description = data.get('description', [])
+        if description:
+            parts.extend(description)
+            parts.append("")
+        
+        # Examples (all of them, with img tags preserved)
+        examples = data.get('examples', [])
+        for ex in examples:
+            parts.append(f"Example {ex['number']}:")
+            
+            # Preserve <img> tag if present
+            if ex.get('img'):
+                parts.append(f"{cls.INDENT}{ex['img']}")
+            
+            # Input
+            if ex.get('input'):
+                parts.append(f"{cls.INDENT}Input: {ex['input']}")
+            
+            # Output
+            if ex.get('output'):
+                parts.append(f"{cls.INDENT}Output: {ex['output']}")
+            
+            # Explanation (may be multi-line, align to first line)
+            if ex.get('explanation'):
+                expl_lines = ex['explanation'].split('\n')
+                parts.append(f"{cls.INDENT}Explanation: {expl_lines[0]}")
+                # Continuation lines aligned to "Explanation: " (13 chars + 4 indent = 17)
+                continuation_indent = cls.INDENT + " " * 13
+                for line in expl_lines[1:]:
+                    if line.strip():
+                        parts.append(f"{continuation_indent}{line.strip()}")
+            
+            parts.append("")
+        
+        # Constraints
+        parts.append("Constraints:")
+        constraints = data.get('constraints', [])
+        if constraints:
+            parts.extend(constraints)
+        else:
+            parts.append("- [MISSING - NEEDS MANUAL FIX]")
+        
+        # Note (optional, with blank line before)
+        note = data.get('note')
+        if note:
+            parts.append("")
+            parts.append(f"Note: {note}")
+        
+        # Follow-up (optional, with blank line before)
+        follow_ups = data.get('follow_ups', [])
+        if follow_ups:
+            parts.append("")
+            for follow_up in follow_ups:
+                parts.append(f"Follow-up: {follow_up}")
+        
+        return '\n'.join(parts)
+
+
 class DocstringFixer:
     """Fix docstrings to comply with review-code.md format."""
     
-    def __init__(self, delay_min: float = 3.0, delay_max: float = 8.0):
+    def __init__(self, delay_min: float = 3.0, delay_max: float = 8.0, force_refresh: bool = False):
         self.delay_min = delay_min
         self.delay_max = delay_max
+        self.force_refresh = force_refresh
         self.cache = self._load_cache()
         self.fixed_count = 0
         self.skipped_count = 0
+        self.cached_count = 0
         self.errors: List[Tuple[str, str]] = []
     
     def _load_cache(self) -> Optional[Dict]:
-        """Load LeetCode problems cache."""
+        """Load LeetCode problems cache (for slug lookup)."""
         if CACHE_FILE.exists():
             try:
                 with open(CACHE_FILE, 'r', encoding='utf-8') as f:
@@ -81,22 +180,6 @@ class DocstringFixer:
                 }
         return None
     
-    def _build_docstring(self, title: str, url: str, description: List[str], constraints: List[str]) -> str:
-        """Build properly formatted docstring."""
-        parts = [f"Problem: {title}", f"Link: {url}", ""]
-        
-        if description:
-            parts.extend(description)
-            parts.append("")
-        
-        parts.append("Constraints:")
-        if constraints:
-            parts.extend(constraints)
-        else:
-            parts.append("- [MISSING - NEEDS MANUAL FIX]")
-        
-        return '\n'.join(parts)
-    
     def fix_file(self, file_path: Path) -> Tuple[bool, str]:
         """Fix docstring in a single file."""
         # Extract problem ID from filename
@@ -106,27 +189,36 @@ class DocstringFixer:
         
         problem_id = match.group(1)
         
-        # Get problem info from cache
+        # Get problem info from cache (for slug lookup)
         info = self._get_problem_info(problem_id)
         if not info:
             return False, "Problem not found in cache"
         
-        title = info['title']
-        url = info['url']
         slug = info['slug']
         
-        # Fetch description and constraints online
-        print(f"  Fetching {slug}...", end=" ", flush=True)
-        self._random_delay()
-        desc_lines, const_lines = get_description_and_constraints(slug)
+        # Check if we need to fetch from network (rate limiting only for network calls)
+        from question_api import get_default_api
+        api = get_default_api()
+        is_cached = api.exists(slug)
         
-        if not const_lines:
-            print("(no constraints found)")
+        if not is_cached or self.force_refresh:
+            print(f"  Fetching {slug}...", end=" ", flush=True)
+            self._random_delay()
         else:
-            print(f"({len(const_lines)} constraints)")
+            print(f"  Using cached {slug}...", end=" ", flush=True)
+            self.cached_count += 1
+        
+        # Get full docstring data using new API
+        data = get_full_docstring_data(slug)
+        
+        if not data.get('title'):
+            print("(fetch failed)")
+            return False, "Failed to fetch question data"
+        
+        print(f"({len(data.get('examples', []))} examples, {len(data.get('constraints', []))} constraints)")
         
         # Build new docstring
-        new_docstring = self._build_docstring(title, url, desc_lines, const_lines)
+        new_docstring = DocstringBuilder.build(data)
         
         # Read file and replace docstring
         try:
@@ -177,6 +269,8 @@ class DocstringFixer:
         """Print summary of fixes."""
         print("\n" + "=" * 50)
         print(f"Summary: Fixed {self.fixed_count} files")
+        print(f"  - From cache: {self.cached_count}")
+        print(f"  - From network: {self.fixed_count - self.cached_count}")
         if self.errors:
             print(f"Errors: {len(self.errors)}")
             for name, msg in self.errors:
@@ -193,9 +287,11 @@ def main():
     parser.add_argument("--range", nargs=2, metavar=("START", "END"), type=int,
                         required=True, help="Fix files in numeric range (e.g., --range 77 142)")
     parser.add_argument("--delay-min", type=float, default=3.0,
-                        help="Minimum delay between requests in seconds (default: 3.0)")
+                        help="Minimum delay between network requests in seconds (default: 3.0)")
     parser.add_argument("--delay-max", type=float, default=8.0,
-                        help="Maximum delay between requests in seconds (default: 8.0)")
+                        help="Maximum delay between network requests in seconds (default: 8.0)")
+    parser.add_argument("--force-refresh", action="store_true",
+                        help="Force refresh from network, bypassing SQLite cache")
     
     args = parser.parse_args()
     
@@ -205,9 +301,14 @@ def main():
     
     start, end = args.range
     print(f"\nProcessing {start:04d} ~ {end:04d}")
-    print(f"Delay: {args.delay_min:.1f}s ~ {args.delay_max:.1f}s\n")
+    print(f"Delay: {args.delay_min:.1f}s ~ {args.delay_max:.1f}s")
+    print(f"Force refresh: {args.force_refresh}\n")
     
-    fixer = DocstringFixer(delay_min=args.delay_min, delay_max=args.delay_max)
+    fixer = DocstringFixer(
+        delay_min=args.delay_min, 
+        delay_max=args.delay_max,
+        force_refresh=args.force_refresh
+    )
     fixer.fix_range(start, end)
     fixer.print_summary()
     
