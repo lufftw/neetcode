@@ -1,53 +1,17 @@
 # solutions/0202_happy_number.py
 """
-================================================================================
-LeetCode 202: Happy Number
-================================================================================
+Problem: Happy Number
+Link: https://leetcode.com/problems/happy-number/
 
-Problem: Write an algorithm to determine if a number n is happy.
-         A happy number is defined by the following process:
-         - Starting with any positive integer, replace the number by the sum
-           of the squares of its digits.
-         - Repeat the process until the number equals 1 (happy), or it loops
-           endlessly in a cycle (not happy).
+Write an algorithm to determine if a number n is happy.
+A happy number is a number defined by the following process:
+Starting with any positive integer, replace the number by the sum of the squares of its digits.
+Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
+Those numbers for which this process ends in 1 are happy.
+Return true if n is a happy number, and false if not.
 
-API Kernel: TwoPointersTraversal
-Pattern: fast_slow_implicit_cycle
-Family: number_sequence_cycle
-
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: FAST–SLOW ON IMPLICIT LINKED LIST
---------------------------------------------------------------------------------
-
-This problem applies the fast-slow cycle detection pattern to a number sequence.
-
-Key Insight:
-    The sequence of "sum of squares of digits" forms an implicit linked list:
-    - Each number is a "node"
-    - The "next" function is sum_of_squares(n)
-    - If we reach 1, the sequence stays at 1 (1 → 1 → 1...)
-    - If we don't reach 1, we must eventually enter a cycle
-
-INVARIANT: The sequence either reaches 1 or enters a cycle.
-
-Why We Can Use Fast-Slow:
-    The sequence is deterministic: each number has exactly one successor.
-    This is exactly the structure of a linked list with possible cycles.
-    If we detect a cycle at 1, n is happy; otherwise, n is not happy.
-
-Mathematical Note:
-    For any number with d digits, the maximum sum of squares is d × 81.
-    For d ≥ 4, this is less than the original number, so the sequence
-    eventually stays below 243 (for any starting number).
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(log n) iterations, each O(log n) to compute sum of squares
-Space: O(1) - Only two number values stored
-
-================================================================================
+Constraints:
+- 1 <= n <= 2^31 - 1
 """
 from _runner import get_solver
 

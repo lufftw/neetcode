@@ -31,6 +31,11 @@ mkdocs-document-dates>=3.5.0  # Document dates plugin
 # anthropic>=0.18.0    # Anthropic API client (for Claude models)
 # requests>=2.31.0     # HTTP library (for Ollama local LLM)
 
+numpy>=2.4,<3
+pandas>=2.3,<3
+
 # Pre-commit hooks framework (for local CI/CD automation):
 pre-commit>=3.5.0      # Git hooks framework for pre-commit checks
 
+# Optional packages (for tools/review-code):
+leetscrape
