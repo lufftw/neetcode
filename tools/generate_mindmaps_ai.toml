@@ -58,7 +58,7 @@ mindmap_max_completion_tokens = 10000
 directory = "docs/mindmaps"
 
 # Fixed filename (for easy reference in README)
-filename = "neetcode_ontology_ai.md"
+filename = "neetcode-ontology-ai.md"
 
 # Whether to also generate HTML (can be opened directly in browser)
 generate_html = true
@@ -69,8 +69,8 @@ html_directory = "docs/pages/mindmaps"
 # If not specified, will try to auto-detect: tools/mindmaps/meta/{filename}_{lang}.txt
 # Example (uncomment and customize):
 # meta_descriptions = { 
-#     "en" = "tools/mindmaps/meta/neetcode_ontology_ai_en.txt", 
-#     "zh-TW" = "tools/mindmaps/meta/neetcode_ontology_ai_zh-TW.txt" 
+#     "en" = "tools/mindmaps/meta/neetcode-ontology-ai-en.txt", 
+#     "zh-TW" = "tools/mindmaps/meta/neetcode-ontology-ai-zh-tw.txt" 
 # }
 meta_descriptions = { }
 

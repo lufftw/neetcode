@@ -239,9 +239,11 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
             
             all_contents[lang] = content
             
-            # Save with language suffix
+            # Save with language suffix (kebab-case)
             if len(languages) > 1:
-                lang_filename = f"{base_name}_{lang}.md"
+                # Convert language code to lowercase and use hyphen separator
+                lang_lower = lang.lower().replace("_", "-")
+                lang_filename = f"{base_name}-{lang_lower}.md"
             else:
                 lang_filename = base_filename
             

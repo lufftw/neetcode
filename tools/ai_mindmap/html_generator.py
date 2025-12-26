@@ -79,7 +79,7 @@ def generate_html_from_markdown(config: dict[str, Any]) -> int:
     html_dir = Path(output_config.get("html_directory", "docs/pages/mindmaps"))
     
     # Get base filename
-    base_filename = output_config.get("filename", "neetcode_ontology_ai.md")
+    base_filename = output_config.get("filename", "neetcode-ontology-ai.md")
     if not base_filename.endswith(".md"):
         base_filename = f"{base_filename}.md"
     base_name = base_filename.replace(".md", "")
@@ -115,9 +115,11 @@ def generate_html_from_markdown(config: dict[str, Any]) -> int:
     error_count = 0
     
     for lang in languages:
-        # Determine Markdown filename
+        # Determine Markdown filename (kebab-case)
         if len(languages) > 1:
-            md_filename = f"{base_name}_{lang}.md"
+            # Convert language code to lowercase and use hyphen separator
+            lang_lower = lang.lower().replace("_", "-")
+            md_filename = f"{base_name}-{lang_lower}.md"
         else:
             md_filename = base_filename
         
