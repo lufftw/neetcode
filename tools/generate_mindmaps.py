@@ -108,7 +108,7 @@ def generate_all_mindmaps(
         print(f"  Written: {output_file}")
 
         if generate_html and pages_dir:
-            title = TITLES.get(mm_type, mm_type.replace("_", " ").title())
+            title = TITLES.get(mm_type, mm_type.replace("-", " ").title())
             # Get description from config file path, fallback to DESCRIPTIONS dict
             config = get_config()
             description_text = None
@@ -123,7 +123,7 @@ def generate_all_mindmaps(
             if not description_text:
                 _, description_text = DESCRIPTIONS.get(mm_type, ("", ""))
             html = generate_html_mindmap(title, content, use_autoloader, description_text)
-            html_file = pages_dir / "mindmaps" / f"{mm_type.replace('_', '-')}.html"
+            html_file = pages_dir / "mindmaps" / f"{mm_type}.html"
             html_file.write_text(html, encoding="utf-8")
             print(f"  Written: {html_file}")
 
