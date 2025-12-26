@@ -17,9 +17,9 @@ def create_anchor(section_num: int, title: str) -> str:
     
     Converts title to GitHub Flavored Markdown compatible anchor:
     - Lowercase
-    - Spaces and dashes (including en-dash, em-dash) → hyphen
-    - Remove parentheses, slashes, colons, and other special chars
-    - Collapse multiple consecutive hyphens
+    - Spaces → hyphen
+    - Remove special chars (parentheses, slashes, colons, +, etc.)
+    - Keep multiple consecutive hyphens (GFM does NOT collapse them)
     - Remove leading number prefix (e.g., "4. " from "4. Title")
     """
     import re
@@ -36,9 +36,8 @@ def create_anchor(section_num: int, title: str) -> str:
     # Remove parentheses, slashes, colons, and other special characters
     anchor = re.sub(r'[()/:]', '', anchor)
     # Remove other non-word characters (keep only alphanumeric and hyphens)
+    # Note: GFM does NOT collapse multiple hyphens, so we preserve them
     anchor = re.sub(r'[^\w\-]', '', anchor)
-    # Clean up multiple consecutive hyphens
-    anchor = re.sub(r'-+', '-', anchor)
     return anchor.strip('-')
 
 
