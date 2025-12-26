@@ -96,7 +96,7 @@ class TranslatorAgent(BaseAgent):
         self._prompt_cache: dict[str, str] = {}
         
         super().__init__(
-            agent_id=f"translator_{source_language}_to_{target_language}",
+            agent_id=f"translator-{source_language.lower()}-to-{target_language.lower()}",
             model_config=model_config,
             config=config,
         )
