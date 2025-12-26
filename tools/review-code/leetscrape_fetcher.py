@@ -29,19 +29,47 @@ def get_description_and_constraints(slug: str) -> Tuple[List[str], List[str]]:
         q = GetQuestion(titleSlug=slug)
         q.scrape()
         
-        # Process description: split by newlines and filter empty lines
+        # Process description from Body: split by newlines and filter empty lines
         desc_lines = []
-        if q.question_content:
-            desc_lines = [line.strip() for line in q.question_content.split("\n") if line.strip()]
+        if hasattr(q, 'Body') and q.Body:
+            desc_lines = [line.strip() for line in q.Body.split("\n") if line.strip()]
         
-        # Process constraints: remove leading "- " if present, then add it back consistently
+        # Process constraints: check for Constraints attribute or parse from Body
         const_lines = []
-        if q.constraints:
-            # Strip leading "- " from each constraint, then add it back
-            const_lines = [f"- {c[2:].strip()}" if c.strip().startswith("- ") else f"- {c.strip()}" 
-                          for c in q.constraints if c.strip()]
+        constraints_start = None
+        
+        # Try to get constraints from Constraints attribute if available
+        if hasattr(q, 'Constraints') and q.Constraints:
+            if isinstance(q.Constraints, list):
+                const_lines = [f"- {c[2:].strip()}" if c.strip().startswith("- ") else f"- {c.strip()}" 
+                              for c in q.Constraints if c.strip()]
+            elif isinstance(q.Constraints, str):
+                # If Constraints is a string, split by newlines
+                const_lines = [f"- {c[2:].strip()}" if c.strip().startswith("- ") else f"- {c.strip()}" 
+                              for c in q.Constraints.split("\n") if c.strip()]
+        # If no Constraints attribute, try to extract from Body
+        elif desc_lines:
+            # Look for "Constraints:" section in description
+            for i, line in enumerate(desc_lines):
+                if line.lower().startswith("constraints:"):
+                    constraints_start = i
+                    break
+            
+            if constraints_start is not None:
+                # Extract constraints lines (until next section or end)
+                for line in desc_lines[constraints_start + 1:]:
+                    if line.strip().startswith("-"):
+                        const_lines.append(line.strip())
+                    elif line.strip() and not line.strip().startswith("-"):
+                        # Stop if we hit a non-constraint line (new section)
+                        break
+                
+                # Remove constraints section from description
+                desc_lines = desc_lines[:constraints_start]
         
         return desc_lines, const_lines
-    except Exception:
+    except Exception as e:
+        # For debugging, you can uncomment the next line
+        # import traceback; traceback.print_exc()
         return [], []
 
