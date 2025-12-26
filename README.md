@@ -585,7 +585,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 See [`docs/solution-contract.md` §B](docs/solution-contract.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
+> 📖 See [`docs/solution-contract.md`](docs/solution-contract.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
 
 ### 🔀 Flexible Output Validation
 
@@ -628,7 +628,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 ```
 
-> 📖 See [`docs/solution-contract.md` §C](docs/solution-contract.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
+> 📖 See [`docs/solution-contract.md`](docs/solution-contract.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
 
 ### 🎲 Random Test Generation
 
