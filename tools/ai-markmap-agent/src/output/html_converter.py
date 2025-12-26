@@ -62,7 +62,8 @@ class MarkMapHTMLConverter:
         naming = self.config.get("output", {}).get("naming", {})
         prefix = naming.get("prefix", "neetcode")
         template = naming.get("template", "{prefix}-ontology-agent-evolved-{lang}")
-        filename = template.format(prefix=prefix, lang=lang) + ".md"
+        lang_for_filename = lang.lower() if lang else "en"
+        filename = template.format(prefix=prefix, lang=lang_for_filename) + ".md"
         
         latest_file = latest_dir / filename
         if latest_file.exists():
@@ -175,10 +176,11 @@ def save_all_markmaps(
             output_type = parts[0]
             lang = "en"
         
-        # Generate filename
-        filename = template.format(prefix=prefix, lang=lang)
+        # Generate filename (use lowercase language code for filename)
+        lang_for_filename = lang.lower() if lang else "en"
+        filename = template.format(prefix=prefix, lang=lang_for_filename)
         
-        # Generate title
+        # Generate title (keep original language code format for display)
         title = f"NeetCode Agent Evolved Mindmap ({lang.upper()})"
         
         # Save markdown first

@@ -390,10 +390,10 @@ This will:
 
 The translation uses settings from `config/config.yaml`:
 
-- **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-TW.translator_model`)
+- **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-tw.translator_model`)
 - **Source Language**: `en` (default)
 - **Target Language**: `zh-TW` (default)
-- **Max Tokens**: `translator_max_tokens` (configured in `output.naming.languages.zh-TW.translator_max_tokens`)
+- **Max Tokens**: `translator_max_tokens` (configured in `output.naming.languages.zh-tw.translator_max_tokens`)
   - **gpt-5.2**: Recommended `128000` (max output capacity: 128,000 tokens, context window: 400,000 tokens)
   - **gpt-4o**: Recommended `16384` (max output typically 16,384 tokens)
   - **gpt-4**: Recommended `8192` (max output typically 8,192 tokens)

@@ -372,13 +372,22 @@ def main() -> int:
                 output_path = output_path.resolve()
         else:
             # Replace language suffix in filename (only at the end!)
+            # Use lowercase language code for filename (e.g., zh-TW -> zh-tw)
+            target_lang_lower = args.target.lower() if args.target else "en"
+            source_lang_lower = args.source.lower() if args.source else "en"
             stem = input_path.stem
-            suffix = f"_{args.source}"
-            if stem.endswith(suffix):
-                # Only replace if it's at the END of the filename
-                new_stem = stem[:-len(suffix)] + f"_{args.target}"
+            # Try both underscore and dash patterns for backward compatibility
+            suffix_underscore = f"_{source_lang_lower}"
+            suffix_dash = f"-{source_lang_lower}"
+            if stem.endswith(suffix_dash):
+                # Replace dash-separated language code
+                new_stem = stem[:-len(suffix_dash)] + f"-{target_lang_lower}"
+            elif stem.endswith(suffix_underscore):
+                # Replace underscore-separated language code
+                new_stem = stem[:-len(suffix_underscore)] + f"-{target_lang_lower}"
             else:
-                new_stem = f"{stem}_{args.target}"
+                # Append new language code with dash
+                new_stem = f"{stem}-{target_lang_lower}"
             
             # Use final_dirs.markdown from config for consistency with HTML output
             output_path = converter.md_output_dir / f"{new_stem}.md"
