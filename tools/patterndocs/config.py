@@ -8,7 +8,7 @@ from .toml_parser import parse_toml_simple
 
 # Paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-CONFIG_FILE = PROJECT_ROOT / "tools" / "generate_pattern_docs.toml"
+CONFIG_FILE = PROJECT_ROOT / "tools" / "patterndocs" / "generate_pattern_docs.toml"
 
 # Load configuration cache
 _config_cache: dict | None = None
