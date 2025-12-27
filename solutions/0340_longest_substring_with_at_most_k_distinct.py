@@ -1,45 +1,25 @@
 # solutions/0340_longest_substring_with_at_most_k_distinct.py
 """
-================================================================================
-LeetCode 340: Longest Substring with At Most K Distinct Characters
-LeetCode 159: Longest Substring with At Most Two Distinct Characters (K=2)
-================================================================================
+Problem: Longest Substring with At Most K Distinct Characters
+Link: https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 
-Problem: Given a string s and an integer k, find the length of the longest
-         substring that contains at most k distinct characters.
+Given a string s and an integer k, return the length of the longest substring of s that contains at most k distinct characters.
 
-API Kernel: SubstringSlidingWindow
-Pattern: sliding_window_at_most_k_distinct
-Family: substring_window
+Example 1:
+    Input: s = "eceba", k = 2
+    Output: 3
+    Explanation: The substring is "ece" with length 3.
 
---------------------------------------------------------------------------------
-RELATIONSHIP TO BASE KERNEL (LeetCode 3)
---------------------------------------------------------------------------------
+Example 2:
+    Input: s = "aa", k = 1
+    Output: 2
+    Explanation: The substring is "aa" with length 2.
 
-Base (LeetCode 3):
-    INVARIANT: All characters unique (each character appears exactly once)
+Constraints:
+- 1 <= s.length <= 5 * 10^4
+- 0 <= k <= 50
 
-This Variant (LeetCode 340):
-    INVARIANT: Number of distinct characters ≤ K
-
-Delta from Base:
-    - Replace "unique" check with "distinct count ≤ K"
-    - Use frequency map instead of last-seen-index map
-    - Cannot use jump optimization (must shrink incrementally)
-
-Why No Jump Optimization?
-    Finding a duplicate in LeetCode 3 tells us exactly where to jump.
-    Here, exceeding K distinct doesn't give us a specific target position.
-    We must remove characters one by one until we're back under the limit.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each character added and removed at most once
-Space: O(K) - At most K+1 entries in the frequency map
-
-================================================================================
+Topics: Hash Table, String, Sliding Window
 """
 from typing import Dict
 from _runner import get_solver
