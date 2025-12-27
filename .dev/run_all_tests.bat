@@ -6,7 +6,7 @@ REM ============================================================================
 REM
 REM This script runs three categories of tests:
 REM
-REM 1. Solution Format Tests (tools/tests/)
+REM 1. Solution Format Tests (tools/review-code/validation/tests/)
 REM    - Pure Polymorphic Architecture compliance
 REM    - Solution comment format
 REM    - Complexity comments
@@ -74,14 +74,14 @@ echo.
 echo Checking Pure Polymorphic Architecture compliance...
 echo.
 
-"%PYTHON_EXE%" tools/check_solutions.py
+"%PYTHON_EXE%" tools/review-code/validation/check_solutions.py
 if %errorlevel% neq 0 (
     echo.
     echo [WARN] Format checker found issues
 )
 
 echo.
-"%PYTHON_EXE%" -m pytest tools/tests/test_solution_format.py -v --tb=short
+"%PYTHON_EXE%" -m pytest tools/review-code/validation/tests/test_solution_format.py -v --tb=short
 if %errorlevel% neq 0 (
     echo.
     echo [FAIL] Solution format tests failed!
