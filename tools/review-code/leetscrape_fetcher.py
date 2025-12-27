@@ -87,15 +87,22 @@ def _extract_brief_description(html_body: str) -> List[str]:
     text = _extract_text_from_html(html_body)
     lines = [line.strip() for line in text.split("\n") if line.strip()]
     
-    # Find where to stop (Example or Constraints section)
-    stop_keywords = ["example", "constraints:", "follow-up:", "follow-up", "note:"]
+    # Find where to stop (Example, Constraints, or special sections)
+    stop_keywords = [
+        "example",
+        "constraints:",
+        "follow-up:",
+        "follow-up",
+        "note:",
+        "custom judge",  # LeetCode test judge section (contains code)
+    ]
     description_lines = []
     
     for line in lines:
         line_lower = line.lower().strip()
         
-        # Stop if we hit Example, Constraints, or Follow-up
-        if any(line_lower.startswith(kw) for kw in stop_keywords):
+        # Stop if we hit Example, Constraints, Follow-up, or Custom Judge
+        if any(kw in line_lower for kw in stop_keywords):
             break
         
         # Skip empty lines at the start
@@ -154,10 +161,8 @@ def _extract_constraints(html_body: str) -> List[str]:
         constraint_text = re.sub(r'\s+', ' ', constraint_text).strip()
         
         if constraint_text:
-            # Ensure it starts with "- "
-            if not constraint_text.startswith("-"):
-                constraint_text = f"- {constraint_text}"
-            constraints.append(constraint_text)
+            # Always add "- " prefix (constraint is extracted from <li>, never has bullet)
+            constraints.append(f"- {constraint_text}")
     
     return constraints
 
@@ -172,6 +177,10 @@ def _extract_examples(html_body: str) -> List[dict]:
     - Use 4-space indentation for Input/Output/Explanation
     - Explanation may span multiple lines
     
+    Handles two HTML formats:
+    1. New format: <p><strong class="example">Example N:</strong></p><pre>...</pre>
+    2. Old format: <p><strong>Example N:</strong></p><p>Input:...</p>
+    
     Args:
         html_body: HTML content from q.Body
     
@@ -184,8 +193,9 @@ def _extract_examples(html_body: str) -> List[dict]:
     examples = []
     
     # Pattern to find Example blocks
-    # Examples usually start with <p><strong>Example N:</strong></p>
-    example_pattern = r'<p>\s*<strong[^>]*>\s*Example\s*(\d+):\s*</strong>\s*</p>(.*?)(?=<p>\s*<strong[^>]*>\s*(?:Example|Constraints?|Follow[\s-]?up|Note):|$)'
+    # Handles both <strong class="example"> and plain <strong>
+    # Captures until next Example, Constraints, Follow-up, Note, or end
+    example_pattern = r'<p>\s*<strong[^>]*>\s*Example\s*(\d+):\s*</strong>\s*</p>(.*?)(?=<p>\s*<strong[^>]*>\s*(?:Example\s*\d+:|Constraints?:|Follow[\s-]?up|Note:)|<p>\s*&nbsp;\s*</p>\s*<p>\s*<strong>Constraints|<strong>Follow-up|$)'
     matches = re.findall(example_pattern, html_body, re.DOTALL | re.IGNORECASE)
     
     for num, content in matches:
@@ -196,23 +206,44 @@ def _extract_examples(html_body: str) -> List[dict]:
         if img_match:
             example['img'] = img_match.group(1)
         
-        # Extract Input
-        input_match = re.search(r'<strong[^>]*>\s*Input:\s*</strong>\s*(.*?)(?=<strong|$)', content, re.DOTALL | re.IGNORECASE)
-        if input_match:
-            input_text = re.sub(r'<[^>]+>', '', input_match.group(1))
-            example['input'] = html.unescape(input_text).strip()
-        
-        # Extract Output
-        output_match = re.search(r'<strong[^>]*>\s*Output:\s*</strong>\s*(.*?)(?=<strong|$)', content, re.DOTALL | re.IGNORECASE)
-        if output_match:
-            output_text = re.sub(r'<[^>]+>', '', output_match.group(1))
-            example['output'] = html.unescape(output_text).strip()
-        
-        # Extract Explanation (may span multiple lines)
-        expl_match = re.search(r'<strong[^>]*>\s*Explanation:\s*</strong>\s*(.*?)(?=<p>|<strong>|$)', content, re.DOTALL | re.IGNORECASE)
-        if expl_match:
-            expl_text = re.sub(r'<[^>]+>', '', expl_match.group(1))
-            example['explanation'] = html.unescape(expl_text).strip()
+        # Check if content is in <pre> block (new LeetCode format)
+        pre_match = re.search(r'<pre[^>]*>(.*?)</pre>', content, re.DOTALL | re.IGNORECASE)
+        if pre_match:
+            pre_content = pre_match.group(1)
+            
+            # Extract Input from <pre> block
+            input_match = re.search(r'<strong>Input:</strong>\s*(.*?)(?=\n<strong>|$)', pre_content, re.DOTALL | re.IGNORECASE)
+            if input_match:
+                input_text = re.sub(r'<[^>]+>', '', input_match.group(1))
+                example['input'] = html.unescape(input_text).strip()
+            
+            # Extract Output from <pre> block
+            output_match = re.search(r'<strong>Output:</strong>\s*(.*?)(?=\n<strong>|$)', pre_content, re.DOTALL | re.IGNORECASE)
+            if output_match:
+                output_text = re.sub(r'<[^>]+>', '', output_match.group(1))
+                example['output'] = html.unescape(output_text).strip()
+            
+            # Extract Explanation from <pre> block (may span multiple lines)
+            expl_match = re.search(r'<strong>Explanation:</strong>\s*(.*?)$', pre_content, re.DOTALL | re.IGNORECASE)
+            if expl_match:
+                expl_text = re.sub(r'<[^>]+>', '', expl_match.group(1))
+                example['explanation'] = html.unescape(expl_text).strip()
+        else:
+            # Old format: Input/Output in separate elements
+            input_match = re.search(r'<strong[^>]*>\s*Input:\s*</strong>\s*(.*?)(?=<strong|$)', content, re.DOTALL | re.IGNORECASE)
+            if input_match:
+                input_text = re.sub(r'<[^>]+>', '', input_match.group(1))
+                example['input'] = html.unescape(input_text).strip()
+            
+            output_match = re.search(r'<strong[^>]*>\s*Output:\s*</strong>\s*(.*?)(?=<strong|$)', content, re.DOTALL | re.IGNORECASE)
+            if output_match:
+                output_text = re.sub(r'<[^>]+>', '', output_match.group(1))
+                example['output'] = html.unescape(output_text).strip()
+            
+            expl_match = re.search(r'<strong[^>]*>\s*Explanation:\s*</strong>\s*(.*?)(?=<p>|<strong>|$)', content, re.DOTALL | re.IGNORECASE)
+            if expl_match:
+                expl_text = re.sub(r'<[^>]+>', '', expl_match.group(1))
+                example['explanation'] = html.unescape(expl_text).strip()
         
         examples.append(example)
     
@@ -222,6 +253,11 @@ def _extract_examples(html_body: str) -> List[dict]:
 def _extract_follow_up(html_body: str) -> List[str]:
     """
     Extract follow-up questions from HTML Body.
+    
+    Handles multiple HTML formats:
+    1. <p><strong>Follow-up:</strong> text</p>
+    2. <strong>Follow-up:</strong> text (no <p> wrapper)
+    3. <strong>Follow-up:&nbsp;</strong>text (with &nbsp;)
     
     Args:
         html_body: HTML content from q.Body
@@ -234,15 +270,34 @@ def _extract_follow_up(html_body: str) -> List[str]:
     
     follow_ups = []
     
-    # Pattern for Follow-up or Follow up
-    followup_pattern = r'<p>\s*<strong[^>]*>\s*Follow[\s-]?up[^:]*:\s*</strong>\s*(.*?)</p>'
-    matches = re.findall(followup_pattern, html_body, re.DOTALL | re.IGNORECASE)
+    # Pattern 1: Follow-up inside <p> tags
+    # <p><strong>Follow-up:</strong> text</p>
+    pattern1 = r'<p>\s*<strong[^>]*>\s*Follow[\s-]?up\s*:\s*</strong>\s*(.*?)</p>'
     
-    for match in matches:
-        text = re.sub(r'<[^>]+>', '', match)
-        text = html.unescape(text).strip()
-        if text:
-            follow_ups.append(text)
+    # Pattern 2: Follow-up without <p> wrapper (common in LeetCode)
+    # <strong>Follow-up:&nbsp;</strong>text (until end of string)
+    # Note: &nbsp; is literal in HTML, handle both &nbsp; and decoded \xa0
+    pattern2 = r'<strong[^>]*>\s*Follow[\s-]?up\s*:(?:&nbsp;|\s)*</strong>\s*(.+?)$'
+    
+    # Pattern 3: More flexible - just find Follow-up: followed by content
+    # Captures everything after </strong> until end
+    pattern3 = r'<strong[^>]*>\s*Follow[\s-]?up\s*:[^<]*</strong>\s*(.+)$'
+    
+    # Try all patterns
+    for pattern in [pattern1, pattern2, pattern3]:
+        matches = re.findall(pattern, html_body, re.DOTALL | re.IGNORECASE)
+        for match in matches:
+            # Convert <sup> to ^ notation before stripping tags
+            text = re.sub(r'<sup[^>]*>(.*?)</sup>', r'^\1', match, flags=re.IGNORECASE)
+            # Remove remaining HTML tags
+            text = re.sub(r'<[^>]+>', '', text)
+            text = html.unescape(text).strip()
+            # Remove leading/trailing &nbsp; artifacts
+            text = text.strip('\xa0').strip()
+            # Clean up multiple spaces
+            text = re.sub(r'\s+', ' ', text)
+            if text and text not in follow_ups:
+                follow_ups.append(text)
     
     return follow_ups
 
@@ -269,6 +324,60 @@ def _extract_note(html_body: str) -> Optional[str]:
         return html.unescape(text).strip() or None
     
     return None
+
+
+def _format_topics(topic_tags: str) -> str:
+    """
+    Format topic tags as comma-separated list.
+    
+    According to review-code.md format:
+    - Topics: Comma-separated topic tags from LeetCode
+    - e.g., "Array, Hash Table, Two Pointers"
+    
+    Args:
+        topic_tags: Comma-separated lowercase tags (e.g., "array,hash-table")
+    
+    Returns:
+        Formatted topics string (e.g., "Array, Hash Table")
+    """
+    if not topic_tags:
+        return ""
+    
+    # Split by comma and format each tag
+    tags = topic_tags.split(',')
+    formatted = []
+    for tag in tags:
+        tag = tag.strip()
+        if tag:
+            # Convert "hash-table" to "Hash Table"
+            formatted.append(' '.join(word.capitalize() for word in tag.split('-')))
+    
+    return ', '.join(formatted)
+
+
+def _format_hints(hints: List[str]) -> List[str]:
+    """
+    Format hints as numbered list.
+    
+    According to review-code.md format:
+    - Use numbered format: Hint 1:, Hint 2:, etc.
+    - Each hint on its own line with blank line between
+    
+    Args:
+        hints: List of hint strings from Question.Hints
+    
+    Returns:
+        List of formatted hint strings (e.g., ["Hint 1: ...", "Hint 2: ..."])
+    """
+    if not hints:
+        return []
+    
+    formatted = []
+    for i, hint in enumerate(hints, 1):
+        if hint and hint.strip():
+            formatted.append(f"Hint {i}: {hint.strip()}")
+    
+    return formatted
 
 
 def get_question_data(slug: str, force_refresh: bool = False) -> Optional[Question]:
@@ -320,6 +429,8 @@ def get_full_docstring_data(slug: str) -> dict:
     - description: List of description lines
     - examples: List of example dicts (with img, input, output, explanation)
     - constraints: List of constraint lines (starting with "- ")
+    - topics: Formatted topics string (comma-separated)
+    - hints: List of formatted hint strings (Hint 1:, Hint 2:, etc.)
     - follow_ups: List of follow-up question strings
     - note: Optional note string
     
@@ -338,6 +449,8 @@ def get_full_docstring_data(slug: str) -> dict:
             'description': [],
             'examples': [],
             'constraints': [],
+            'topics': '',
+            'hints': [],
             'follow_ups': [],
             'note': None,
         }
@@ -348,6 +461,8 @@ def get_full_docstring_data(slug: str) -> dict:
         'description': _extract_brief_description(q.Body),
         'examples': _extract_examples(q.Body),
         'constraints': _extract_constraints(q.Body),
+        'topics': _format_topics(q.topicTags),
+        'hints': _format_hints(q.Hints),
         'follow_ups': _extract_follow_up(q.Body),
         'note': _extract_note(q.Body),
     }
