@@ -21,7 +21,7 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 - 🧬 **Deep Pattern Synthesis** — AI identifies non-obvious connections between patterns
 - 🎯 **Smart Linking** — Problems link to GitHub solutions (when available) or LeetCode
 - 🌐 **Multi-language** — Generate in English and 繁體中文
-- ♻️ **Regeneratable** — Run `python tools/generate_mindmaps_ai.py` to create fresh insights
+- ♻️ **Regeneratable** — Run `python tools/mindmaps/generate_mindmaps_ai.py` to create fresh insights
 
 ### English Version
 

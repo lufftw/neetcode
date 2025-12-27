@@ -13,7 +13,7 @@ This project has established a comprehensive test suite, divided into **three ma
 |----------|-----------|---------|------------|
 | **1. Component Tests** | `.dev/tests/` | Test Runner module functionality | ~273 |
 | **2. Solution Correctness Tests** | `.dev/tests_solutions/` | Test Solution execution results | ~99 |
-| **3. Format Compliance Tests** | `tools/tests/` | Test Solution format standards | ~10 |
+| **3. Format Compliance Tests** | `tools/review-code/validation/tests/` | Test Solution format standards | ~10 |
 
 ## Test Lead
 
@@ -47,8 +47,8 @@ python -m pip install pytest pytest-cov
 
 ```bash
 # 1. Format Compliance Tests
-tools\run_format_tests.bat      # Windows
-tools/run_format_tests.sh       # Linux/Mac
+tools\review-code\validation\run_format_tests.bat      # Windows
+tools/review-code/validation/run_format_tests.sh       # Linux/Mac
 
 # 2. Component Tests
 .dev\run_tests.bat              # Windows
@@ -65,7 +65,7 @@ tools/run_format_tests.sh       # Linux/Mac
 
 ### 1. Format Compliance Tests (Solution Format Tests)
 
-**Location**: `tools/tests/`
+**Location**: `tools/review-code/validation/tests/`
 
 Tests whether Solution files comply with Pure Polymorphic Architecture standards.
 
@@ -86,11 +86,11 @@ Tests whether Solution files comply with Pure Polymorphic Architecture standards
 
 ```bash
 # Quick check
-python tools/check_solutions.py
-python tools/check_solutions.py --verbose  # Show fix suggestions
+python tools/review-code/validation/check_solutions.py
+python tools/review-code/validation/check_solutions.py --verbose  # Show fix suggestions
 
 # Unit tests
-python -m pytest tools/tests/test_solution_format.py -v
+python -m pytest tools/review-code/validation/tests/test_solution_format.py -v
 ```
 
 ---
@@ -111,8 +111,8 @@ Tests the core functionality of the Runner system, ensuring refactoring doesn't 
 | `test_complexity_estimator.py` | runner/complexity_estimator.py | 25+ |
 | `test_edge_cases.py` | Edge cases | 40+ |
 | `test_integration.py` | Integration tests | 20+ |
-| `test_generate_mindmaps.py` | tools/generate_mindmaps.py | 50+ |
-| `test_generate_pattern_docs.py` | tools/generate_pattern_docs.py | 50+ |
+| `test_generate_mindmaps.py` | tools/mindmaps/generate_mindmaps.py | 50+ |
+| `test_generate_pattern_docs.py` | tools/pattern-docs/generate_pattern_docs.py | 50+ |
 
 #### Test Coverage
 
@@ -256,13 +256,13 @@ neetcode/
 │   └── README.md
 │
 └── tools/
-    ├── tests/                          # Format compliance tests
-    │   └── test_solution_format.py
-    │
-    ├── check_solutions.py              # Format checking tool
-    ├── run_format_tests.py
-    ├── run_format_tests.bat/sh         # Format test scripts
-    └── FORMAT_CHECKING.md
+    └── review-code/
+        └── validation/                     # Format compliance tests
+            ├── tests/
+            │   └── test_solution_format.py
+            ├── check_solutions.py          # Format checking tool
+            ├── run_format_tests.py
+            └── run_format_tests.bat/sh     # Format test scripts
 ```
 
 ---
@@ -274,7 +274,7 @@ neetcode/
 | `run_all_tests.bat/sh` | ★ Run all three test categories | `.dev/` |
 | `run_tests.bat/sh` | Run component tests | `.dev/` |
 | `run_tests_solutions.bat/sh` | Run solution correctness tests | `.dev/` |
-| `run_format_tests.bat/sh` | Run format compliance tests | `tools/` |
+| `run_format_tests.bat/sh` | Run format compliance tests | `tools/review-code/validation/` |
 
 ---
 
@@ -304,7 +304,7 @@ neetcode/
 
 ### Adding New Solutions
 
-1. Ensure compliance with format standards (run `python tools/check_solutions.py`)
+1. Ensure compliance with format standards (run `python tools/review-code/validation/check_solutions.py`)
 2. Add test cases to `tests/` directory
 3. Run `python -m pytest .dev/tests_solutions -v -k "problem_number"`
 4. Commit code
@@ -333,8 +333,8 @@ jobs:
       
       - name: Format Tests
         run: |
-          python tools/check_solutions.py
-          pytest tools/tests/ -v
+          python tools/review-code/validation/check_solutions.py
+          pytest tools/review-code/validation/tests/ -v
       
       - name: Component Tests
         run: pytest .dev/tests/ -v
@@ -353,9 +353,9 @@ jobs:
 .dev/run_all_tests.sh                           # Linux/Mac
 
 # === Format Tests ===
-python tools/check_solutions.py                 # Quick check
-python tools/check_solutions.py --verbose       # Show suggestions
-python -m pytest tools/tests -v                 # Unit tests
+python tools/review-code/validation/check_solutions.py                 # Quick check
+python tools/review-code/validation/check_solutions.py --verbose       # Show suggestions
+python -m pytest tools/review-code/validation/tests -v                 # Unit tests
 
 # === Component Tests ===
 python -m pytest .dev/tests -v                  # All

@@ -152,7 +152,7 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 - [Tools Overview](docs/tools/README.md) — Complete tools reference
 - [AI Markmap Agent](docs/tools/ai-markmap-agent/README.md) — AI-powered mind map generation
 - [Mind Maps Generator](docs/tools/mindmaps/README.md) — Rule-based mind map generation
-- [Pattern Docs Generator](docs/tools/patterndocs/README.md) — Pattern documentation generation
+- [Pattern Docs Generator](docs/tools/pattern-docs/README.md) — Pattern documentation generation
 ```
 
 **Why relative paths work**: All files in `docs/tools/` are configured in `nav`, so relative paths automatically work in both GitHub (points to repository) and website (points to website page).
@@ -327,7 +327,7 @@ A: Full maintainer and tools documentation has been **migrated to the website**:
   - `docs/tools/README.md` - Complete tools reference
   - `docs/tools/ai-markmap-agent/README.md` - AI Markmap Agent documentation
   - `docs/tools/mindmaps/README.md` - Mind Maps Generator documentation
-  - `docs/tools/patterndocs/README.md` - Pattern Docs Generator documentation
+  - `docs/tools/pattern-docs/README.md` - Pattern Docs Generator documentation
 
 **Original locations now contain shortened versions**:
 - `.dev/README.md` - Shortened version with links to full docs on website

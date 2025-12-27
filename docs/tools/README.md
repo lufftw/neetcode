@@ -353,7 +353,7 @@ meta/patterns/sliding_window/
 └── _templates.md       # Template code
 ```
 
-> 📖 **Detailed technical docs:** [patterndocs/README.md](patterndocs/README.md)
+> 📖 **Detailed technical docs:** [pattern-docs/README.md](pattern-docs/README.md)
 
 ### `html_meta_description_generator.py`
 
@@ -587,7 +587,8 @@ pre-commit run generate-ai-mindmaps --all-files
 | [generator-contract.md](../generator-contract.md) | Generator file specification |
 | [architecture-migration.md](../architecture-migration.md) | Architecture migration guide |
 | [mindmaps/README.md](mindmaps/README.md) | Mind map module technical docs |
-| [patterndocs/README.md](patterndocs/README.md) | Pattern docs module technical docs |
+| [pattern-docs/README.md](pattern-docs/README.md) | Pattern docs module technical docs |
+| [mindmaps/ai-markmap-agent/README.md](mindmaps/ai-markmap-agent/README.md) | AI Markmap Agent docs |
 | [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/prompts/README.md) | AI prompts usage guide |
 
 ---
@@ -638,6 +639,6 @@ See [mindmaps/README.md](mindmaps/README.md#adding-a-new-generator)
 4. Optionally add `_config.toml` to control order
 5. Run `python tools/pattern-docs/generate_pattern_docs.py --pattern <name>`
 
-See [patterndocs/README.md](patterndocs/README.md#adding-a-new-pattern)
+See [pattern-docs/README.md](pattern-docs/README.md#adding-a-new-pattern)
 
 </details>

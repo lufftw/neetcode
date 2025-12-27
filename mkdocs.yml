@@ -162,9 +162,11 @@ nav:
     - Ontology Design: ontology-design.md
   - 🛠️ Tools:
     - Overview: tools/README.md
-    - AI Markmap Agent: tools/ai-markmap-agent/README.md
-    - Mind Maps Generator: tools/mindmaps/README.md
-    - Pattern Docs Generator: tools/patterndocs/README.md
+    - Mind Maps:
+      - Generator: tools/mindmaps/README.md
+      - AI Markmap Agent: tools/mindmaps/ai-markmap-agent/README.md
+    - Pattern Docs Generator: tools/pattern-docs/README.md
+    - Review Code: tools/review-code/README.md
   - 👥 Contributors:
     - Overview: contributors/README.md
     - Testing Documentation: contributors/testing.md

@@ -56,10 +56,11 @@ neetcode/
 │   └── github-pages-setup.md           # This file
 │
 ├── tools/
-│   ├── generate_mindmaps.py            # Generate from ontology
-│   ├── generate_mindmaps_ai.py         # AI mind map generator
-│   ├── text_to_mindmap.py              # Generate from any text
-│   └── generate_mindmaps.toml          # Configuration
+│   └── mindmaps/                        # Mindmap tools
+│       ├── generate_mindmaps.py         # Generate from ontology
+│       ├── generate_mindmaps_ai.py      # AI mind map generator
+│       ├── text_to_mindmap.py           # Generate from any text
+│       └── generate_mindmaps.toml       # Configuration
 │
 ├── .github/
 │   └── workflows/

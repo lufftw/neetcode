@@ -74,24 +74,29 @@ neetcode/
 │   │
 │   ├── tools/                   # 🛠️ Tools documentation (website)
 │   │   ├── README.md            # Complete tools reference
-│   │   ├── ai-markmap-agent/
-│   │   │   └── README.md        # AI Markmap Agent docs
 │   │   ├── mindmaps/
-│   │   │   └── README.md        # Mind Maps Generator docs
-│   │   └── patterndocs/
-│   │       └── README.md        # Pattern Docs Generator docs
+│   │   │   ├── README.md        # Mind Maps Generator docs
+│   │   │   └── ai-markmap-agent/
+│   │   │       └── README.md    # AI Markmap Agent docs
+│   │   ├── pattern-docs/
+│   │   │   └── README.md        # Pattern Docs Generator docs
+│   │   └── review-code/
+│   │       └── README.md        # Review Code tools docs
 │   │
 │   ├── ontology-design.md       # Ontology design
 │   └── mkdocs-content-guide.md  # Content guide
 │
 ├── tools/                       # 🔧 Developer tools (code + scripts)
 │   ├── README.md                # Shortened version (links to docs/tools/)
-│   ├── *.py                     # Tool scripts
-│   ├── ai-markmap-agent/        # AI Markmap Agent (code only)
-│   ├── mindmaps/                # Mind Maps Generator (code only)
-│   ├── patterndocs/             # Pattern Docs Generator (code only)
-│   └── prompts/
-│       └── README.md            # AI prompts documentation
+│   ├── mindmaps/                # Mind Maps tools (consolidated)
+│   │   ├── core/                # Core module
+│   │   ├── ai-markmap-agent/    # AI Markmap Agent
+│   │   └── prompts/             # AI prompts
+│   ├── pattern-docs/            # Pattern Docs Generator
+│   ├── review-code/             # Code review tools
+│   │   └── validation/          # Validation tools
+│   ├── docstring/               # Docstring utilities
+│   └── leetcode-api/            # LeetCode API cache
 │
 └── .dev/                        # 🔒 Maintainer zone (tests + scripts)
     ├── README.md                # Shortened version (links to docs/contributors/)
