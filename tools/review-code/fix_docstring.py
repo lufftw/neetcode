@@ -206,6 +206,47 @@ class DocstringFixer:
                 }
         return None
     
+    def _is_paid_only_content(self, data: dict) -> bool:
+        """Check if the question content indicates paid-only access."""
+        description = data.get('description', [])
+        if not description:
+            return False
+        
+        # Check if description contains paid-only message
+        desc_text = ' '.join(description).lower()
+        paid_keywords = [
+            'only for paid',
+            'premium members',
+            'subscribe to unlock',
+            'paid subscribers',
+        ]
+        return any(kw in desc_text for kw in paid_keywords)
+    
+    def _prompt_paid_only(self, file_path: Path, data: dict) -> bool:
+        """
+        Prompt user for paid-only question.
+        
+        Returns:
+            True if user wants to overwrite, False to skip
+        """
+        print()
+        print("=" * 60)
+        print(f"[PAID ONLY] {file_path.name}")
+        print(f"  Title: {data.get('title', 'Unknown')}")
+        print(f"  URL: {data.get('url', 'Unknown')}")
+        print()
+        print("  This question is only for paid LeetCode subscribers.")
+        print("  The docstring will contain limited information.")
+        print("=" * 60)
+        
+        while True:
+            response = input("  Overwrite File-Level Docstring? [y/N]: ").strip().lower()
+            if response in ('y', 'yes'):
+                return True
+            elif response in ('n', 'no', ''):
+                return False
+            print("  Please enter 'y' or 'n'")
+    
     def fix_file(self, file_path: Path) -> Tuple[bool, str]:
         """Fix docstring in a single file."""
         # Extract problem ID from filename
@@ -248,6 +289,12 @@ class DocstringFixer:
         topics = data.get('topics', '')
         topics_count = len(topics.split(',')) if topics else 0
         print(f"({len(data.get('examples', []))} examples, {len(data.get('constraints', []))} constraints, {topics_count} topics, {hints_count} hints)")
+        
+        # Check if this is a paid-only question with limited content
+        if self._is_paid_only_content(data):
+            if not self._prompt_paid_only(file_path, data):
+                self.skipped_count += 1
+                return False, "Skipped (paid-only, user declined)"
         
         # Build new docstring
         new_docstring = DocstringBuilder.build(data)
@@ -305,6 +352,8 @@ class DocstringFixer:
         print(f"Summary: Fixed {self.fixed_count} files")
         print(f"  - From cache (no delay): {self.cached_count}")
         print(f"  - From network (with delay): {network_count}")
+        if self.skipped_count > 0:
+            print(f"Skipped: {self.skipped_count} (paid-only, user declined)")
         if self.errors:
             print(f"Errors: {len(self.errors)}")
             for name, msg in self.errors:

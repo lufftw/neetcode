@@ -49,9 +49,9 @@ def _extract_text_from_html(html_content: str) -> str:
     text = re.sub(r'</(p|div|h[1-6]|pre|br)[^>]*>', '\n', text, flags=re.IGNORECASE)
     text = re.sub(r'<(p|div|h[1-6]|pre)[^>]*>', '\n', text, flags=re.IGNORECASE)
     
-    # Handle <li> tags specially - add newline before and mark for constraint extraction
+    # Handle <li> tags specially - add bullet point prefix for list items
     text = re.sub(r'</li>', '\n', text, flags=re.IGNORECASE)
-    text = re.sub(r'<li[^>]*>', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'<li[^>]*>', '- ', text, flags=re.IGNORECASE)
     
     # Remove all remaining HTML tags (including <code>, <strong>, etc.)
     # But preserve their text content
