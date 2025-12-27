@@ -14,15 +14,15 @@ if sys.platform == 'win32':
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
-TOOLS_DIR = Path(__file__).parent
-CACHE_FILE = TOOLS_DIR / ".cache" / "leetcode_problems.json"
+TOOLS_DIR = Path(__file__).parent.parent
+CACHE_FILE = TOOLS_DIR / "leetcode-api" / "crawler" / ".cache" / "leetcode_problems.json"
 
 
 def load_cached_problems():
     """載入快取的 LeetCode 問題資料"""
     if not CACHE_FILE.exists():
         print(f"❌ 快取檔案不存在: {CACHE_FILE}")
-        print("   請先執行: python tools/sync_leetcode_data.py")
+        print("   請先執行: python tools/leetcode-api/crawler/sync_leetcode_data.py")
         return None
     
     with open(CACHE_FILE, 'r', encoding='utf-8') as f:

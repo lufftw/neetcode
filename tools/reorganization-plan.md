@@ -167,18 +167,21 @@ tools/
 │   ├── question_serializer.py
 │   ├── import_all_question.py
 │   ├── data/
-│   └── db/
+│   ├── db/
+│   └── crawler/                    # 爬蟲工具
+│       ├── sync_leetcode_data.py  # LeetCode 數據同步
+│       └── .cache/                 # 快取目錄（由 sync_leetcode_data.py 產生）
+│           ├── leetcode_problems.json
+│           └── leetcode_cache_meta.json
 │
 ├── maintenance/                   # 🔧 維護工具
 │   └── doc-naming/                # 文檔命名工具
 │
 └── _staging/                      # 📦 暫存區（待整理）
-    ├── sync_leetcode_data.py      # LeetCode 數據同步
     ├── fetch_leetcode_api.py      # LeetCode API 獲取
     ├── test_leetcode_api_integration.py
     ├── leetcode_api_usage_example.py
-    ├── prepare_llm_input.py       # LLM 輸入準備
-    └── .cache/                    # 快取目錄
+    └── prepare_llm_input.py       # LLM 輸入準備
 ```
 
 ---
@@ -236,10 +239,10 @@ tools/
 
 | 文件 | 可能歸屬 | 說明 |
 |------|----------|------|
-| `sync_leetcode_data.py` | `leetcode-api/` ? | LeetCode 數據同步 |
-| `fetch_leetcode_api.py` | `leetcode-api/` ? | API 獲取 |
-| `prepare_llm_input.py` | 待決定 | LLM 輸入準備 |
-| `.cache/` | `_staging/` | 快取目錄 |
+| `sync_leetcode_data.py` | `leetcode-api/crawler/` | LeetCode 數據同步 |
+| `fetch_leetcode_api.py` | `_staging/` | API 獲取 |
+| `prepare_llm_input.py` | `_staging/` | LLM 輸入準備 |
+| `.cache/` | `leetcode-api/crawler/.cache/` | 快取目錄（由 sync_leetcode_data.py 產生） |
 
 ---
 
@@ -334,7 +337,7 @@ pattern_docs = importlib.import_module('pattern-docs')
 |------|------|------|
 | `_staging/` 文件處理 | 後續如何處理？ | 逐步整理到適當位置或刪除 |
 | `ai_mindmap/` vs `ai-markmap-agent/` | 是否有重疊？ | 需要檢查代碼確認 |
-| `sync_leetcode_data.py` | 放 `leetcode-api/` 還是 `_staging/`？ | 建議放 `leetcode-api/` |
+| `sync_leetcode_data.py` | 放 `leetcode-api/crawler/` | ✅ 已決定：放 `leetcode-api/crawler/` |
 
 ---
 
@@ -407,7 +410,7 @@ tools/                                    # 變更前根目錄
 ├── generate_pattern_docs.py              # → patterndocs/
 ├── generate_pattern_docs.toml            # → patterndocs/
 │
-├── sync_leetcode_data.py                 # → _staging/
+├── sync_leetcode_data.py                 # → leetcode-api/crawler/
 ├── fetch_leetcode_api.py                 # → _staging/
 ├── test_leetcode_api_integration.py      # → _staging/
 ├── leetcode_api_usage_example.py         # → _staging/
@@ -571,7 +574,7 @@ tools/                                    # 變更前根目錄
 ├── outputs/                              # → mindmaps/outputs/
 │   └── debug/
 │
-└── .cache/                               # → _staging/.cache/ (由 sync_leetcode_data.py 產生)
+└── .cache/                               # → leetcode-api/crawler/.cache/ (由 sync_leetcode_data.py 產生)
     ├── leetcode_problems.json
     └── leetcode_cache_meta.json
 ```
@@ -590,7 +593,8 @@ tools/                                    # 變更前根目錄
 | `tools/shared/` | `tools/mindmaps/shared/` | 移動 |
 | `tools/tests/` | 分散到各模組 | 拆分 |
 | `tools/outputs/` | `tools/mindmaps/outputs/` | 移動 |
-| `tools/.cache/` | `tools/_staging/.cache/` | 移動 |
+| `tools/.cache/` | `tools/leetcode-api/crawler/.cache/` | 移動 |
+| `tools/_staging/sync_leetcode_data.py` | `tools/leetcode-api/crawler/sync_leetcode_data.py` | 移動 |
 | `tools/check_*.py` | `tools/review-code/validation/` | 移動 |
 | `tools/run_format_tests.*` | `tools/review-code/validation/` | 移動 |
 | `tools/generate_mindmaps*.py` | `tools/mindmaps/` | 移動 |
