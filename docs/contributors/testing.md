@@ -112,7 +112,7 @@ Tests the core functionality of the Runner system, ensuring refactoring doesn't 
 | `test_edge_cases.py` | Edge cases | 40+ |
 | `test_integration.py` | Integration tests | 20+ |
 | `test_generate_mindmaps.py` | tools/mindmaps/generate_mindmaps.py | 50+ |
-| `test_generate_pattern_docs.py` | tools/pattern-docs/generate_pattern_docs.py | 50+ |
+| `test_generate_pattern_docs.py` | tools/patterndocs/generate_pattern_docs.py | 50+ |
 
 #### Test Coverage
 

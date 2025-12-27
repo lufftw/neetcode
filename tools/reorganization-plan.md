@@ -122,7 +122,7 @@ tools/
 │   ├── text_to_mindmap.py         # 文本轉換
 │   └── html_meta_description_generator.py  # SEO 元描述生成
 │
-├── pattern-docs/                  # 📚 模式文檔功能（原 patterndocs）
+├── patterndocs/                   # 📚 模式文檔功能（保持原名）
 │   ├── __init__.py
 │   ├── composer.py
 │   ├── config.py
@@ -205,13 +205,13 @@ tools/
 | `text_to_mindmap.py` | `mindmaps/text_to_mindmap.py` | 文本轉換 |
 | `html_meta_description_generator.py` | `mindmaps/html_meta_description_generator.py` | SEO 工具 |
 
-### 2. 模式文檔功能 (pattern-docs/)
+### 2. 模式文檔功能 (patterndocs/)
 
 | 原位置 | 新位置 | 說明 |
 |--------|--------|------|
-| `tools/patterndocs/` | `pattern-docs/` | 重命名為 kebab-case |
-| `generate_pattern_docs.py` | `pattern-docs/generate_pattern_docs.py` | 入口腳本移入 |
-| `generate_pattern_docs.toml` | `pattern-docs/generate_pattern_docs.toml` | 配置移入 |
+| `tools/patterndocs/` | `patterndocs/` | 保持原名（Python 模組限制） |
+| `generate_pattern_docs.py` | `patterndocs/generate_pattern_docs.py` | 入口腳本移入 |
+| `generate_pattern_docs.toml` | `patterndocs/generate_pattern_docs.toml` | 配置移入 |
 
 ### 3. 代碼審查與驗證 (review-code/)
 
@@ -264,7 +264,7 @@ tools/
 4. [x] 移動 `hooks/`, `prompts/`, `shared/` 到 `mindmaps/`
 5. [x] 移動生成腳本到 `mindmaps/`
 6. [x] 移動驗證工具到 `review-code/validation/`
-7. [x] 重命名 `patterndocs/` 為 `pattern-docs/` 並移入入口腳本
+7. [x] 保持 `patterndocs/` 原名並移入入口腳本（Python 模組不支持連字符）
 8. [x] 移動 `doc-naming/` 到 `maintenance/`
 9. [x] 移動其他到 `_staging/`
 
@@ -295,7 +295,38 @@ tools/
 | hooks/prompts/shared | 跟隨相關模組 |
 | 暫存目錄名稱 | `_staging/`（下劃線開頭，排序時在最前） |
 | doc-naming 位置 | 放到 `maintenance/` 底下 |
-| patterndocs 命名 | 改為 `pattern-docs/`（統一 kebab-case） |
+| patterndocs 命名 | **保持 `patterndocs/`**（見下方說明） |
+
+### ⚠️ patterndocs 命名決定
+
+**決定**：保持原名 `patterndocs/`，不重命名為 `pattern-docs/`。
+
+**原因**：Python 模組名稱限制
+
+```python
+# ❌ 無效語法 - Python 不支持連字符的模組名
+from pattern-docs import composer
+import pattern-docs.loader
+
+# ✅ 有效語法 - 必須使用下劃線或無分隔符
+from patterndocs import composer
+import patterndocs.loader
+```
+
+Python 模組命名規則：
+- 模組名只能包含字母、數字和下劃線 `_`
+- 不能以數字開頭
+- **不能包含連字符 `-`**
+
+如果強制使用 `pattern-docs` 作為目錄名，則需要使用 `importlib` 動態導入：
+```python
+import importlib
+pattern_docs = importlib.import_module('pattern-docs')
+```
+
+這會破壞現有的所有導入語句，增加不必要的複雜性。因此決定保持 `patterndocs` 命名。
+
+**文檔目錄**：`docs/tools/patterndocs/` 也保持一致命名。
 
 ### 2. 🔄 待確認
 
@@ -314,7 +345,7 @@ tools/
 | 項目 | 決定 |
 |------|------|
 | `mindmaps/` | 整合所有思維導圖相關工具 |
-| `pattern-docs/` | 從 `patterndocs` 重命名 |
+| `patterndocs/` | 保持原名（Python 模組限制） |
 | `validation/` | 放到 `review-code/` 底下 |
 | `doc-naming/` | 放到 `maintenance/` 底下 |
 | `_staging/` | 暫存未歸類文件 |
@@ -325,7 +356,7 @@ tools/
 tools/
 ├── README.md
 ├── mindmaps/              # 思維導圖（整合）
-├── pattern-docs/          # 模式文檔（重命名）
+├── patterndocs/           # 模式文檔（保持原名）
 ├── review-code/           # 代碼審查
 │   └── validation/        # 驗證工具
 ├── docstring/             # 文檔字符串
@@ -373,8 +404,8 @@ tools/                                    # 變更前根目錄
 ├── html-meta-description-generator.md    # → mindmaps/
 ├── html-meta-description-generator-zh-tw.md  # → mindmaps/
 │
-├── generate_pattern_docs.py              # → pattern-docs/
-├── generate_pattern_docs.toml            # → pattern-docs/
+├── generate_pattern_docs.py              # → patterndocs/
+├── generate_pattern_docs.toml            # → patterndocs/
 │
 ├── sync_leetcode_data.py                 # → _staging/
 ├── fetch_leetcode_api.py                 # → _staging/
@@ -470,7 +501,7 @@ tools/                                    # 變更前根目錄
 │   ├── prompt_manager.py
 │   └── prompts.py
 │
-├── patterndocs/                          # → pattern-docs/ (重命名)
+├── patterndocs/                          # → patterndocs/ (保持原名)
 │   ├── __init__.py
 │   ├── composer.py
 │   ├── config.py
@@ -552,7 +583,7 @@ tools/                                    # 變更前根目錄
 | `tools/mindmaps/` | `tools/mindmaps/core/` | 移動+重命名 |
 | `tools/ai-markmap-agent/` | `tools/mindmaps/ai-markmap-agent/` | 移動 |
 | `tools/ai_mindmap/` | `tools/mindmaps/ai_mindmap/` | 移動 |
-| `tools/patterndocs/` | `tools/pattern-docs/` | 重命名 |
+| `tools/patterndocs/` | `tools/patterndocs/` | 保持原名 |
 | `tools/doc-naming/` | `tools/maintenance/doc-naming/` | 移動 |
 | `tools/hooks/` | `tools/mindmaps/hooks/` | 移動 |
 | `tools/prompts/` | `tools/mindmaps/prompts/` | 移動 |
@@ -563,7 +594,7 @@ tools/                                    # 變更前根目錄
 | `tools/check_*.py` | `tools/review-code/validation/` | 移動 |
 | `tools/run_format_tests.*` | `tools/review-code/validation/` | 移動 |
 | `tools/generate_mindmaps*.py` | `tools/mindmaps/` | 移動 |
-| `tools/generate_pattern_docs.*` | `tools/pattern-docs/` | 移動 |
+| `tools/generate_pattern_docs.*` | `tools/patterndocs/` | 移動 |
 | `tools/sync_mindmap_html.py` | `tools/mindmaps/` | 移動 |
 | `tools/html_meta_description_generator.*` | `tools/mindmaps/` | 移動 |
 
@@ -582,16 +613,9 @@ from mindmaps.core.generators import pattern
 from mindmaps.ai_mindmap import openai_client
 
 # ═══ patterndocs 相關 ═══
-# 變更前
+# 保持不變（Python 模組名不支持連字符）
 from patterndocs import composer
-
-# 變更後（需處理 kebab-case 問題）
-# 方案 A：使用 importlib
-import importlib
-pattern_docs = importlib.import_module('pattern-docs')
-
-# 方案 B：在 pattern-docs 內保持 patterndocs 作為模組名
-from pattern_docs import composer  # 如果內部用 pattern_docs
+from patterndocs.loader import load_api_kernels
 ```
 
 ### 需要更新的配置文件
@@ -602,7 +626,7 @@ from pattern_docs import composer  # 如果內部用 pattern_docs
 | `.gitignore` | tools 路徑引用 | ✅ 已更新 |
 | `tools/mindmaps/generate_mindmaps.toml` | 相對路徑 | ✅ 無需更新（使用相對路徑） |
 | `tools/mindmaps/generate_mindmaps_ai.toml` | 相對路徑 | ✅ 已更新 |
-| `tools/pattern-docs/generate_pattern_docs.toml` | 相對路徑 | ✅ 無需更新（使用 PROJECT_ROOT 相對路徑） |
+| `tools/patterndocs/generate_pattern_docs.toml` | 相對路徑 | ✅ 無需更新（使用 PROJECT_ROOT 相對路徑） |
 | `tools/mindmaps/hooks/generate_ai_mindmaps_hook.py` | 導入路徑 | ✅ 已更新 |
 | `docs/tools/README.md` | 工具文檔路徑引用 | ✅ 已更新 |
 | `.github/workflows/deploy-pages.yml` | CI/CD 腳本路徑 | ✅ 已更新 |

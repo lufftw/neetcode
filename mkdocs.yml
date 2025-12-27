@@ -165,7 +165,7 @@ nav:
     - Mind Maps:
       - Generator: tools/mindmaps/README.md
       - AI Markmap Agent: tools/mindmaps/ai-markmap-agent/README.md
-    - Pattern Docs Generator: tools/pattern-docs/README.md
+    - Pattern Docs Generator: tools/patterndocs/README.md
     - Review Code: tools/review-code/README.md
   - 👥 Contributors:
     - Overview: contributors/README.md

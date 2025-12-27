@@ -78,7 +78,7 @@ neetcode/
 │   │   │   ├── README.md        # Mind Maps Generator docs
 │   │   │   └── ai-markmap-agent/
 │   │   │       └── README.md    # AI Markmap Agent docs
-│   │   ├── pattern-docs/
+│   │   ├── patterndocs/
 │   │   │   └── README.md        # Pattern Docs Generator docs
 │   │   └── review-code/
 │   │       └── README.md        # Review Code tools docs
@@ -92,7 +92,7 @@ neetcode/
 │   │   ├── core/                # Core module
 │   │   ├── ai-markmap-agent/    # AI Markmap Agent
 │   │   └── prompts/             # AI prompts
-│   ├── pattern-docs/            # Pattern Docs Generator
+│   ├── patterndocs/             # Pattern Docs Generator
 │   ├── review-code/             # Code review tools
 │   │   └── validation/          # Validation tools
 │   ├── docstring/               # Docstring utilities

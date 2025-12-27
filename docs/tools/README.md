@@ -36,7 +36,7 @@ python tools/mindmaps/generate_mindmaps.py --html
 python tools/mindmaps/generate_mindmaps_ai.py --goal interview
 
 # Generate pattern documentation
-python tools/pattern-docs/generate_pattern_docs.py
+python tools/patterndocs/generate_pattern_docs.py
 
 # Generate SEO meta descriptions
 python tools/mindmaps/html_meta_description_generator.py
@@ -66,7 +66,7 @@ tools/
 │   ├── sync_mindmap_html.py       # HTML sync tool
 │   └── html_meta_description_generator.py  # SEO meta generator
 │
-├── pattern-docs/                  # 📚 Pattern documentation generation
+├── patterndocs/                   # 📚 Pattern documentation generation
 │   ├── generate_pattern_docs.py   # Pattern docs generator
 │   └── ...
 │
@@ -332,13 +332,13 @@ Composes pattern documentation from source files in `meta/patterns/`.
 
 ```bash
 # Generate all pattern docs
-python tools/pattern-docs/generate_pattern_docs.py
+python tools/patterndocs/generate_pattern_docs.py
 
 # Generate specific pattern
-python tools/pattern-docs/generate_pattern_docs.py --pattern sliding_window
+python tools/patterndocs/generate_pattern_docs.py --pattern sliding_window
 ```
 
-**Configuration:** `tools/pattern-docs/generate_pattern_docs.toml`
+**Configuration:** `tools/patterndocs/generate_pattern_docs.toml`
 
 **Source Structure:**
 
@@ -353,7 +353,7 @@ meta/patterns/sliding_window/
 └── _templates.md       # Template code
 ```
 
-> 📖 **Detailed technical docs:** [pattern-docs/README.md](pattern-docs/README.md)
+> 📖 **Detailed technical docs:** [patterndocs/README.md](patterndocs/README.md)
 
 ### `html_meta_description_generator.py`
 
@@ -587,7 +587,7 @@ pre-commit run generate-ai-mindmaps --all-files
 | [generator-contract.md](../generator-contract.md) | Generator file specification |
 | [architecture-migration.md](../architecture-migration.md) | Architecture migration guide |
 | [mindmaps/README.md](mindmaps/README.md) | Mind map module technical docs |
-| [pattern-docs/README.md](pattern-docs/README.md) | Pattern docs module technical docs |
+| [patterndocs/README.md](patterndocs/README.md) | Pattern docs module technical docs |
 | [mindmaps/ai-markmap-agent/README.md](mindmaps/ai-markmap-agent/README.md) | AI Markmap Agent docs |
 | [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/prompts/README.md) | AI prompts usage guide |
 
@@ -637,8 +637,8 @@ See [mindmaps/README.md](mindmaps/README.md#adding-a-new-generator)
 2. Add `_header.md` (required)
 3. Add problem files (e.g., `0003_base.md`)
 4. Optionally add `_config.toml` to control order
-5. Run `python tools/pattern-docs/generate_pattern_docs.py --pattern <name>`
+5. Run `python tools/patterndocs/generate_pattern_docs.py --pattern <name>`
 
-See [pattern-docs/README.md](pattern-docs/README.md#adding-a-new-pattern)
+See [patterndocs/README.md](patterndocs/README.md#adding-a-new-pattern)
 
 </details>
