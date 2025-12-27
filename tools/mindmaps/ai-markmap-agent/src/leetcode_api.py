@@ -13,7 +13,7 @@ from typing import Any, Dict
 
 # 快取檔案路徑（相對於專案根目錄）
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
-CACHE_FILE = PROJECT_ROOT / "tools" / ".cache" / "leetcode_problems.json"
+CACHE_FILE = PROJECT_ROOT / "tools" / "_staging" / ".cache" / "leetcode_problems.json"
 
 
 def load_leetcode_cache() -> Dict[str, Dict[str, Any]] | None:

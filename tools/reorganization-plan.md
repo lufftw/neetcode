@@ -571,7 +571,7 @@ tools/                                    # 變更前根目錄
 ├── outputs/                              # → mindmaps/outputs/
 │   └── debug/
 │
-└── .cache/                               # → _staging/.cache/
+└── .cache/                               # → _staging/.cache/ (由 sync_leetcode_data.py 產生)
     ├── leetcode_problems.json
     └── leetcode_cache_meta.json
 ```

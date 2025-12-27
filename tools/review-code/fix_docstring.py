@@ -54,7 +54,7 @@ from docstring.formatter import get_full_docstring_data
 # Project root directory
 ROOT = Path(__file__).parent.parent.parent
 SOLUTIONS_DIR = ROOT / "solutions"
-CACHE_FILE = ROOT / "tools" / ".cache" / "leetcode_problems.json"
+CACHE_FILE = ROOT / "tools" / "_staging" / ".cache" / "leetcode_problems.json"
 
 
 class DocstringBuilder:
