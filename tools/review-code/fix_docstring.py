@@ -39,12 +39,17 @@ import random
 from pathlib import Path
 from typing import Optional, Dict, Tuple, List
 
+# Add tools directory to path for imports
+_TOOLS_PATH = Path(__file__).parent.parent
+if str(_TOOLS_PATH) not in sys.path:
+    sys.path.insert(0, str(_TOOLS_PATH))
+
 # Add leetcode-api to path for imports
 _LEETCODE_API_PATH = Path(__file__).parent.parent / "leetcode-api"
 if str(_LEETCODE_API_PATH) not in sys.path:
     sys.path.insert(0, str(_LEETCODE_API_PATH))
 
-from leetscrape_fetcher import get_full_docstring_data
+from docstring.formatter import get_full_docstring_data
 
 # Project root directory
 ROOT = Path(__file__).parent.parent.parent

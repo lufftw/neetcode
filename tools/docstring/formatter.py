@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 """
-LeetCode Scraper Module
+Docstring Formatter Module
 
-This module provides functions to fetch LeetCode problem descriptions
-and constraints, with SQLite caching for improved performance.
+This module transforms LeetCode Question objects into structured docstring
+specifications. It extracts and normalizes description, examples, constraints,
+topics, hints, and follow-up questions according to the docstring format
+defined in the project specification.
 
 Architecture:
-    - Uses question_api for unified data access (cache + network)
-    - Provides backward-compatible extraction functions
-    - HTML parsing utilities for docstring generation
+    - Consumes Question abstraction via unified API (tools/leetcode-api)
+    - Extracts and normalizes docstring-relevant content
+    - Produces structured, spec-aligned representation
+    - Remains agnostic to data source (cache, network, or future providers)
+
+Key Functions:
+    - get_full_docstring_data(slug): Returns complete docstring payload
+    - get_description_and_constraints(slug): Legacy backward-compatible API
+    - get_question_data(slug): Direct access to Question object
 """
 
 from typing import List, Tuple, Optional, Any
@@ -491,3 +499,4 @@ if __name__ == "__main__":
         print(f"    Output: {ex['output']}")
     print(f"Follow-ups: {data['follow_ups']}")
     print(f"Note: {data['note']}")
+

@@ -242,12 +242,12 @@ Database now has: 2890 questions
 
 ---
 
-## Integration with review-code
+## Integration with docstring module
 
-The `review-code` tool uses this API for fetching question data:
+The `docstring` domain module uses this API for fetching question data:
 
 ```python
-# tools/review-code/leetscrape_fetcher.py
+# tools/docstring/formatter.py
 from question_api import get_question
 
 def get_full_docstring_data(slug: str) -> dict:
@@ -259,6 +259,8 @@ This enables:
 - **Caching**: Avoid repeated LeetCode API calls
 - **Offline support**: Work with cached data without network
 - **Faster processing**: Batch operations use local cache
+
+See [Docstring Domain Refactor](../docstring/refactor.md) for the design rationale.
 
 ---
 

@@ -71,9 +71,12 @@ tools/
 ├── hooks/                         # Pre-commit hooks
 │   └── generate_ai_mindmaps_hook.py  # AI mind map generation hook
 │
+├── docstring/                     # Docstring domain module
+│   ├── formatter.py               # Docstring formatting logic
+│   └── README.md                  # Module documentation
+│
 ├── review-code/                   # Code review tools
-│   ├── fix_docstring.py           # Auto-fix file-level docstrings
-│   └── leetscrape_fetcher.py      # LeetCode data fetcher module
+│   └── fix_docstring.py           # Auto-fix file-level docstrings
 │
 ├── leetcode-api/                  # LeetCode data cache module
 │   ├── README.md                  # 📖 Detailed technical docs

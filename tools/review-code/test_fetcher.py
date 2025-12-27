@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
 """
-Test script for leetscrape_fetcher module
+Test script for docstring formatter module
+
+Tests the get_description_and_constraints function from tools/docstring/formatter.py
 """
 
 import sys
+from pathlib import Path
+
+# Add tools directory to path for imports
+_TOOLS_PATH = Path(__file__).parent.parent
+if str(_TOOLS_PATH) not in sys.path:
+    sys.path.insert(0, str(_TOOLS_PATH))
+
 
 def test_fetcher():
     """Test the get_description_and_constraints function."""
@@ -77,7 +86,7 @@ def test_fetcher():
         print("Testing get_description_and_constraints function:")
         print("=" * 60)
         
-        from leetscrape_fetcher import get_description_and_constraints
+        from docstring.formatter import get_description_and_constraints
         desc_lines, const_lines = get_description_and_constraints(test_slug)
         
         print(f"\n--- Description ({len(desc_lines)} lines) ---")
