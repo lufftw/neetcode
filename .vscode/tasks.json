@@ -429,6 +429,30 @@
                 "panel": "shared",
                 "clear": true
             }
+        },
+        {
+            "label": "Copy git diff to clipboard (pwsh utf8)",
+            "type": "process",
+            "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+            "args": [
+              "-NoProfile",
+              "-STA",
+              "-Command",
+              "& {\n  [Console]::InputEncoding  = [System.Text.UTF8Encoding]::new($false)\n  [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)\n  $OutputEncoding = [System.Text.UTF8Encoding]::new($false)\n\n  $t = git -c i18n.logOutputEncoding=utf-8 -c core.quotepath=false --no-pager diff | Out-String\n  if ($null -eq $t) { $t = '' }\n  Set-Clipboard -Value $t\n  exit 0\n}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Copy git diff --staged to clipboard (pwsh utf8)",
+            "type": "process",
+            "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+            "args": [
+              "-NoProfile",
+              "-STA",
+              "-Command",
+              "& {\n  [Console]::InputEncoding  = [System.Text.UTF8Encoding]::new($false)\n  [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)\n  $OutputEncoding = [System.Text.UTF8Encoding]::new($false)\n\n  $t = git -c i18n.logOutputEncoding=utf-8 -c core.quotepath=false --no-pager diff --staged | Out-String\n  if ($null -eq $t) { $t = '' }\n  Set-Clipboard -Value $t\n  exit 0\n}"
+            ],
+            "problemMatcher": []
         }
     ],
     "inputs": [
