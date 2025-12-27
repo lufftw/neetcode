@@ -268,11 +268,13 @@ tools/
 8. [x] 移動 `doc-naming/` 到 `maintenance/`
 9. [x] 移動其他到 `_staging/`
 
-### 階段 4：更新引用 ⏳ 待完成
-- [ ] 更新所有 Python 導入路徑
+### 階段 4：更新引用 ✅ 完成
+- [ ] 更新所有 Python 導入路徑（需在使用時逐步修正）
 - [x] 更新 README.md 中的路徑
-- [ ] 更新配置文件中的路徑
-- [ ] 更新文檔引用
+- [x] 更新配置文件中的路徑
+- [x] 更新文檔引用
+- [x] 更新 .github/workflows/deploy-pages.yml
+- [x] 更新 .gitignore
 
 ### 階段 5：測試和驗證 ⏳ 待完成
 - [ ] 運行所有測試
@@ -598,9 +600,10 @@ from pattern_docs import composer  # 如果內部用 pattern_docs
 |------|----------------|------|
 | `tools/README.md` | 目錄結構說明 | ✅ 已更新 |
 | `.gitignore` | tools 路徑引用 | ✅ 已更新 |
-| `tools/mindmaps/generate_mindmaps.toml` | 相對路徑 | ⏳ 待更新 |
-| `tools/mindmaps/generate_mindmaps_ai.toml` | 相對路徑 | ⏳ 待更新 |
-| `tools/pattern-docs/generate_pattern_docs.toml` | 相對路徑 | ⏳ 待更新 |
-| `tools/mindmaps/hooks/generate_ai_mindmaps_hook.py` | 導入路徑 | ⏳ 待更新 |
-| `docs/tools/README.md` | 工具文檔路徑引用 | ⏳ 待更新 |
-| `.github/workflows/*.yml` | CI/CD 腳本路徑（如有）| ⏳ 待更新 |
+| `tools/mindmaps/generate_mindmaps.toml` | 相對路徑 | ✅ 無需更新（使用相對路徑） |
+| `tools/mindmaps/generate_mindmaps_ai.toml` | 相對路徑 | ✅ 已更新 |
+| `tools/pattern-docs/generate_pattern_docs.toml` | 相對路徑 | ✅ 無需更新（使用 PROJECT_ROOT 相對路徑） |
+| `tools/mindmaps/hooks/generate_ai_mindmaps_hook.py` | 導入路徑 | ✅ 已更新 |
+| `docs/tools/README.md` | 工具文檔路徑引用 | ✅ 已更新 |
+| `.github/workflows/deploy-pages.yml` | CI/CD 腳本路徑 | ✅ 已更新 |
+| `.pre-commit-config.yaml` | Hook 腳本路徑 | ✅ 已更新 |

@@ -8,12 +8,12 @@ repos:
     hooks:
       - id: generate-ai-mindmaps
         name: Generate AI Mind Maps
-        entry: python tools/hooks/generate_ai_mindmaps_hook.py
+        entry: python tools/mindmaps/hooks/generate_ai_mindmaps_hook.py
         language: system
         files: |
           ^ontology/
           ^meta/problems/
-          ^tools/generate_mindmaps\.py$
+          ^tools/mindmaps/generate_mindmaps\.py$
         pass_filenames: false
         stages: [pre-commit]
         verbose: true

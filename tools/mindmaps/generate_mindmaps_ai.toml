@@ -4,7 +4,7 @@
 # Configure which data sources to include as LLM input for generating Markmap mind maps
 # 
 # Usage:
-#   python tools/generate_mindmaps_ai.py --config tools/generate_mindmaps_ai.toml
+#   python tools/mindmaps/generate_mindmaps_ai.py --config tools/mindmaps/generate_mindmaps_ai.toml
 # =============================================================================
 
 [model]
@@ -79,7 +79,7 @@ meta_descriptions = { }
 # Whether to save prompt (for debugging or manual use)
 save = true
 # Prompt storage directory (relative to project root)
-directory = "tools/prompts/generated"
+directory = "tools/mindmaps/prompts/generated"
 # Prompt filename (fixed filename, will overwrite old ones)
 filename = "mindmap-prompt"
 
