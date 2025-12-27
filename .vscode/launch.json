@@ -227,6 +227,22 @@
             "linux": {
                 "python": "${workspaceFolder}/leetcode/bin/python"
             }
-        }
+        },
+        {
+            "name": "Debug leetscrape_fetcher",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tools/review-code/leetscrape_fetcher.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "${workspaceFolder}/leetcode/Scripts/python.exe",
+            "osx": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            },
+            "linux": {
+                "python": "${workspaceFolder}/leetcode/bin/python"
+            }
+        },
     ]
 }

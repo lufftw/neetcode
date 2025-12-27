@@ -202,6 +202,8 @@ python tools/review-code/fix_docstring.py --range 202 202
 python tools/review-code/fix_docstring.py --range 77 142 --delay-min 3.0 --delay-max 8.0
 
 python tools/review-code/fix_docstring.py --range 209 1000 --delay-min 60.0 --delay-max 120.0
+
+python tools/review-code/fix_docstring.py --range 1 1000 --delay-min 30.0 --delay-max 66.0
 ```
 
 **Parameters:**
