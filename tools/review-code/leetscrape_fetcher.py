@@ -68,7 +68,7 @@ def _extract_brief_description(html_body: str) -> List[str]:
     """
     Extract brief problem description from HTML Body.
     
-    According to review-code.md format:
+    According to README.md format:
     - Should contain only the problem statement
     - Should NOT include Examples
     - Should NOT include Constraints
@@ -118,7 +118,7 @@ def _extract_constraints(html_body: str) -> List[str]:
     """
     Extract constraints from HTML Body.
     
-    According to review-code.md format:
+    According to README.md format:
     - Constraints should be in format: "- {constraint text}"
     - Should extract from <ul><li> tags in HTML
     - Each constraint should start with "- "
@@ -171,7 +171,7 @@ def _extract_examples(html_body: str) -> List[dict]:
     """
     Extract all examples from HTML Body.
     
-    According to review-code.md format:
+    According to README.md format:
     - Include ALL examples from LeetCode
     - Preserve <img> tags
     - Use 4-space indentation for Input/Output/Explanation
@@ -330,7 +330,7 @@ def _format_topics(topic_tags: str) -> str:
     """
     Format topic tags as comma-separated list.
     
-    According to review-code.md format:
+    According to README.md format:
     - Topics: Comma-separated topic tags from LeetCode
     - e.g., "Array, Hash Table, Two Pointers"
     
@@ -359,7 +359,7 @@ def _format_hints(hints: List[str]) -> List[str]:
     """
     Format hints as numbered list.
     
-    According to review-code.md format:
+    According to README.md format:
     - Use numbered format: Hint 1:, Hint 2:, etc.
     - Each hint on its own line with blank line between
     
@@ -425,7 +425,7 @@ def get_full_docstring_data(slug: str) -> dict:
     """
     Get all data needed for generating a complete File-Level Docstring.
     
-    Returns structured data according to review-code.md specification:
+    Returns structured data according to README.md specification:
     - description: List of description lines
     - examples: List of example dicts (with img, input, output, explanation)
     - constraints: List of constraint lines (starting with "- ")

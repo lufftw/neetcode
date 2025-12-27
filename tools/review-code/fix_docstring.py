@@ -3,7 +3,7 @@
 Auto-fix File-Level Docstring for solution files
 
 This tool automatically fixes solution file docstrings to comply with
-review-code.md specification by fetching data from LeetCode.
+README.md specification by fetching data from LeetCode.
 
 Features:
     - Uses SQLite cache for improved performance
@@ -53,7 +53,7 @@ CACHE_FILE = ROOT / "tools" / ".cache" / "leetcode_problems.json"
 
 
 class DocstringBuilder:
-    """Build docstrings according to review-code.md specification."""
+    """Build docstrings according to README.md specification."""
     
     INDENT = "    "  # 4-space indentation for examples
     
@@ -153,7 +153,7 @@ class DocstringBuilder:
 
 
 class DocstringFixer:
-    """Fix docstrings to comply with review-code.md format."""
+    """Fix docstrings to comply with README.md format."""
     
     def __init__(self, delay_min: float = 3.0, delay_max: float = 8.0, force_refresh: bool = False):
         self.delay_min = delay_min

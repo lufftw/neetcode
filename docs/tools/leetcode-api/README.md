@@ -332,5 +332,5 @@ Question data schema follows [LeetScrape](https://github.com/nikhil-ravi/LeetScr
 ## Related Documentation
 
 - [Review Code Tool](../README.md) - File-Level Docstring generator
-- [review-code.md](../../review-code.md) - Docstring format specification
+- [review-code README](../../../tools/review-code/README.md) - Docstring format specification
 

@@ -1,149 +1,318 @@
-# Review Code Tool
+# Code Review: File-Level Docstring
 
-Auto-fix File-Level Docstring for solution files to comply with `docs/review-code.md` specification.
+> **Purpose**: Standard format for solution file docstrings  
+> **Scope**: All solution files in `solutions/`  
+> **Last Updated**: {{ git_revision_date_localized }}
 
-## Features
+This document defines the **File-Level Docstring** format for solution files.
 
-- Automatically remove decorative separators (`===`, `---`)
-- Check and ensure Problem and Link fields exist
-- Check and add missing Constraints section
-- Format docstring to comply with standard format
-- Support range selection and single file processing
-- Support dry-run mode (preview changes without modifying files)
-- Fetch missing Problem and Link from LeetCode API cache
-- Configurable random delays between requests to avoid anti-crawling (default: 1.0-3.0 seconds)
+!!! info "Auto-Generated Docstrings"
+    This specification is for **auto-generated docstrings** maintained by project tooling (e.g., `review-code` tool). The format is intentionally detailed to preserve all LeetCode problem information.
+    
+    **For manual contribution**, follow the simpler format in [solution-contract.md#file-level-docstring](solution-contract.md#file-level-docstring) instead.
 
-## Usage
+---
 
-### Interactive mode (prompts for range)
+## Required Format
 
-When run without arguments, the tool will prompt you to enter min and max range:
+Every solution file SHOULD start with a docstring describing the problem using the following format:
 
-```bash
-python tools/review-code/fix_docstring.py
-# Will prompt:
-# Min (inclusive): 77
-# Max (inclusive): 142
+```python
+"""
+Problem: {Problem Title}
+Link: https://leetcode.com/problems/{slug}/
+
+{Brief problem description}
+
+Example 1:
+    <img ...>  # if present, preserve the img tag
+    Input: {input}
+    Output: {output}
+    Explanation: {explanation line 1}
+    {continuation lines...}
+
+Example 2:
+    Input: {input}
+    Output: {output}
+
+... (include ALL examples from LeetCode, Explanation may span multiple lines)
+
+Constraints:
+- {constraint 1}
+- {constraint 2}
+
+Topics: {topic1}, {topic2}, ...
+
+Hint 1: {hint 1}
+
+Hint 2: {hint 2}
+
+... (include ALL hints from LeetCode)
+
+Note: {optional additional notes}
+
+Follow-up: {optional follow-up question 1}
+Follow-up: {optional follow-up question 2}
+"""
 ```
 
-**Note:** In interactive mode and range mode, all File-Level Docstrings will be **completely replaced** with program-generated content.
+### Field Definitions
 
-### Fix files in a range
+| Field | Required | Description |
+|-------|----------|-------------|
+| `Problem` | ✅ | Problem title (matches LeetCode title) |
+| `Link` | ✅ | LeetCode problem URL (must include `/description/` suffix) |
+| Description | Recommended | Brief problem statement explaining what the problem asks |
+| `Example` | Recommended | All examples from LeetCode (Input/Output with optional Explanation). Preserve `<img>` tags if present. |
+| `Constraints` | Recommended | ALL constraints from LeetCode (include as many as present). Use bullet points with `-` prefix. |
+| `Topics` | Recommended | Comma-separated topic tags from LeetCode (e.g., Array, Two Pointers, Hash Table). Blank line before it. |
+| `Hints` | Optional | ALL progressive hints from LeetCode (if present). Use numbered format `Hint 1:`, `Hint 2:`, etc. Each hint on its own line with blank line between. |
+| `Note` | Optional | Additional notes from LeetCode (if present). Blank line before it. |
+| `Follow-up` | Optional | Follow-up challenge questions from LeetCode (if present). Blank line before it. May have multiple. |
 
-```bash
-# Fix files from 0077 to 0142 (completely replaces docstrings)
-python tools/review-code/fix_docstring.py --range 77 142
-```
+### Format Rules
 
-### Fix a single file
+1. **No decorative separators**: Do NOT use `===` or `---` separators
+2. **Simple structure**: Keep it concise and focused on essential information
+3. **Examples format**: Use 4-space indentation for Input/Output/Explanation lines. Explanation may span multiple lines (align continuation with first line). Include ALL examples from LeetCode. Preserve `<img>` tags for visual examples. Preserve ASCII art (trees/graphs) as-is.
+4. **Constraints format**: Use bullet points with `-` prefix
+5. **Line breaks**: Use single blank line between sections
+6. **HTML tag handling**:
+   - `<img>` → Preserve as-is
+   - `<sup>` → Convert to `^` notation (e.g., `10<sup>9</sup>` → `10^9`)
+   - `<strong>`, `<code>`, `<b>`, `<em>` → Strip tags, keep plain text
+   - `<pre>` → Preserve code block content
 
-```bash
-python tools/review-code/fix_docstring.py --file 0077_combinations.py
-```
-
-### Preview mode (no actual file modification)
-
-```bash
-python tools/review-code/fix_docstring.py --dry-run
-```
-
-### Fetch missing info from LeetCode API
-
-```bash
-# Automatically fetch Problem and Link from LeetCode API cache
-python tools/review-code/fix_docstring.py --fetch-online
-
-# Combine: preview and fetch from online
-python tools/review-code/fix_docstring.py --range 0077 0142 --fetch-online --dry-run
-```
-
-### Anti-Crawling Delay Configuration
-
-To avoid being blocked by anti-crawling mechanisms, the tool includes random delays between requests:
-
-```bash
-# Use default delay (1.0-3.0 seconds)
-python tools/review-code/fix_docstring.py --range 0077 0142
-
-# Custom delay range (2.0-5.0 seconds)
-python tools/review-code/fix_docstring.py --range 0077 0142 --delay-min 2.0 --delay-max 5.0
-
-# Longer delay for safer crawling (3.0-8.0 seconds)
-python tools/review-code/fix_docstring.py --range 0077 0142 --delay-min 3.0 --delay-max 8.0
-```
-
-**Parameters:**
-- `--delay-min`: Minimum delay in seconds between requests (default: 1.0)
-- `--delay-max`: Maximum delay in seconds between requests (default: 3.0)
-
-**Note:** The tool will randomly wait between `delay-min` and `delay-max` seconds before each online request to avoid triggering anti-crawling mechanisms.
+---
 
 ## Examples
 
-```bash
-# Preview changes for range 0077-0142
-python tools/review-code/fix_docstring.py --range 0077 0142 --dry-run
+### Example 1: Basic Format with Topics and Hints
 
-# Actually fix a single file
-python tools/review-code/fix_docstring.py --file 0080_remove_duplicates_from_sorted_array_ii.py
+```python
+# solutions/0001_two_sum.py
+"""
+Problem: Two Sum
+Link: https://leetcode.com/problems/two-sum/
 
-# Fix with online data fetching
-python tools/review-code/fix_docstring.py --range 0077 0142 --fetch-online
+Given an array of integers nums and an integer target, 
+return indices of the two numbers such that they add up to target.
 
-# Fix with custom delay to avoid anti-crawling (recommended for large batches)
-python tools/review-code/fix_docstring.py --range 0077 0142 --fetch-online --delay-min 2.0 --delay-max 5.0
+Example 1:
+    Input: nums = [2,7,11,15], target = 9
+    Output: [0,1]
+    Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
 
-# Preview with longer delay for safety
-python tools/review-code/fix_docstring.py --range 0077 0142 --dry-run --delay-min 3.0 --delay-max 8.0
+Example 2:
+    Input: nums = [3,2,4], target = 6
+    Output: [1,2]
 
-python tools/review-code/fix_docstring.py --range 200 300 --fetch-online --delay-min 30.0 --delay-max 60.0
+Constraints:
+- 2 <= nums.length <= 10^4
+- -10^9 <= nums[i] <= 10^9
+- -10^9 <= target <= 10^9
+- Only one valid answer exists.
+
+Topics: Array, Hash Table
+
+Hint 1: A really brute force way would be to search for all possible pairs of numbers but that would be too slow.
+
+Hint 2: Try to reduce the search space by using a hash table.
+
+Hint 3: For each element, check if the complement (target - current) exists in the hash table.
+
+Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
+"""
 ```
 
-## Notes
+### Example 2: With Image in Examples
 
-### Replacement Mode
+```python
+# solutions/0011_container_with_most_water.py
+"""
+Problem: Container With Most Water
+Link: https://leetcode.com/problems/container-with-most-water/
 
-- **Interactive mode and range mode**: All File-Level Docstrings are **completely replaced** with program-generated content
-- The tool fetches Problem and Link from LeetCode API cache automatically (enabled by default)
-- Existing optional fields (Sub-Pattern, Key Insight, etc.) are **not preserved** in replacement mode
-- Description is preserved if it exists, but Problem and Link are always replaced with LeetCode data
+You are given an integer array height of length n. There are n vertical lines
+drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
 
-### Online Fetching
+Find two lines that together with the x-axis form a container, such that the
+container contains the most water.
 
-- When using `--fetch-online` (default), the tool automatically fills Problem and Link from LeetCode API cache
-- If LeetCode API cache doesn't exist, run `python tools/sync_leetcode_data.py` first to create the cache
-- Use `--no-fetch` to disable online fetching
-- Use `--no-web-fetch` to disable web fetching for Description and Constraints (only use cache for Problem/Link)
+Example 1:
+    <img alt="" src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/07/17/question_11.jpg" style="width: 600px; height: 287px;">
+    Input: height = [1,8,6,2,5,4,8,3,7]
+    Output: 49
+    Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7].
+                 In this case, the max area of water (blue section) the container can contain is 49.
 
-### Anti-Bot Protection
+Example 2:
+    Input: height = [1,1]
+    Output: 1
 
-The tool includes several anti-bot countermeasures:
-- **Random delays between requests**: Configurable delay range (default: 1.0-3.0 seconds)
-  - Use `--delay-min` and `--delay-max` to customize the delay range
-  - Each request waits a random duration within the specified range
-- Random User-Agent rotation (mimics different browsers)
-- Automatic retry mechanism (up to 2 retries)
-- Comprehensive browser headers (Referer, DNT, etc.)
-- Special handling for 403 and 429 errors
+Constraints:
+- n == height.length
+- 2 <= n <= 10^5
+- 0 <= height[i] <= 10^4
+"""
+```
 
-**Delay Configuration:**
-- Default: 1.0-3.0 seconds (balanced speed and safety)
-- Recommended for large batches: 2.0-5.0 seconds
-- For maximum safety: 3.0-8.0 seconds
+### Example 3: With Optional Extension Fields
 
-If you encounter frequent 403 errors, consider:
-- Increasing delay range: `--delay-min 3.0 --delay-max 8.0`
-- Using `--no-fetch` to skip web fetching and manually fill Description/Constraints
-- Processing files in smaller batches
-- Waiting a few minutes between large batch runs
+For problems that benefit from pattern classification, you MAY include optional fields:
 
-### Constraints
+```python
+# solutions/0039_combination_sum.py
+"""
+Problem: Combination Sum
+Link: https://leetcode.com/problems/combination-sum/
 
-- When using `--fetch-online`, the tool will automatically fetch Description and Constraints from LeetCode web pages
-- If fetching fails or fields are missing, placeholders will be added for manual filling
-- Existing constraints are preserved if they exist
+Given an array of distinct integers and a target, return all unique
+combinations where the chosen numbers sum to target. Each number may
+be used unlimited times.
 
-### Best Practices
+Example 1:
+    Input: candidates = [2,3,6,7], target = 7
+    Output: [[2,2,3],[7]]
 
-- It's recommended to use `--dry-run` first to preview changes before actually modifying files
-- Make sure LeetCode API cache is up-to-date: `python tools/sync_leetcode_data.py`
+Example 2:
+    Input: candidates = [2,3,5], target = 8
+    Output: [[2,2,2,2],[2,3,3],[3,5]]
+
+Sub-Pattern: Target search with element reuse
+Key Insight: Allow reuse by NOT incrementing start_index when recursing.
+Prune branches where remaining target < 0 or current element > remaining.
+
+Constraints:
+- 1 <= candidates.length <= 30
+- 2 <= candidates[i] <= 40
+- All elements of candidates are distinct
+- 1 <= target <= 40
+"""
+```
+
+### Example 4: With ASCII Tree and Note
+
+```python
+# solutions/0104_maximum_depth_of_binary_tree.py
+"""
+Problem: Maximum Depth of Binary Tree
+Link: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+Given the root of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the longest path
+from the root node down to the farthest leaf node.
+
+Example 1:
+        3
+       / \
+      9  20
+        /  \
+       15   7
+    Input: root = [3,9,20,null,null,15,7]
+    Output: 3
+
+Example 2:
+    Input: root = [1,null,2]
+    Output: 2
+
+Constraints:
+- The number of nodes in the tree is in the range [0, 10^4].
+- -100 <= Node.val <= 100
+
+Topics: Tree, Depth-First Search, Breadth-First Search, Binary Tree
+
+Note: The tree is represented as level-order traversal where null indicates missing nodes.
+
+Follow-up: Can you solve it both recursively and iteratively?
+"""
+```
+
+**Optional Extension Fields** (use sparingly, only when helpful):
+- `Sub-Pattern`: Sub-pattern classification
+- `Key Insight`: Key algorithmic insight
+- `API Kernel`: API kernel used (e.g., `TwoPointersTraversal`)
+- `Pattern`: Pattern name (e.g., `same_direction_writer`)
+- `Family`: Problem family (e.g., `in_place_array_modification`)
+
+---
+
+## Anti-Patterns (DO NOT USE)
+
+### ❌ Decorative Separators
+
+```python
+"""
+================================================================================
+LeetCode 26: Remove Duplicates from Sorted Array
+================================================================================
+...
+--------------------------------------------------------------------------------
+TWO POINTERS PATTERN: SAME-DIRECTION (READER/WRITER)
+--------------------------------------------------------------------------------
+...
+================================================================================
+"""
+```
+
+**Why**: Adds visual clutter without value. Keep it simple.
+
+### ❌ Excessive Detail in Docstring
+
+```python
+"""
+Problem: ...
+Link: ...
+
+Detailed algorithm explanation...
+Pointer Roles:
+- READ pointer (fast): ...
+- WRITE pointer (slow): ...
+INVARIANT: ...
+Algorithm:
+1. ...
+2. ...
+...
+"""
+```
+
+**Why**: Detailed explanations belong in solution block comments, not the file-level docstring.
+
+### ❌ Missing Required Fields
+
+```python
+"""
+Given an array of integers...
+"""
+```
+
+**Why**: Missing `Problem` and `Link` fields make it hard to identify the problem.
+
+---
+
+## Checklist
+
+When reviewing or creating a solution file, verify:
+
+- [ ] File starts with docstring (triple quotes)
+- [ ] `Problem:` field is present and matches LeetCode title
+- [ ] `Link:` field is present and points to correct LeetCode URL
+- [ ] Brief problem description is included
+- [ ] `Example:` section includes ALL examples (Input/Output), with `<img>` tags and ASCII art preserved
+- [ ] `Constraints:` section includes ALL constraints with bullet points (use `^` for superscripts)
+- [ ] `Topics:` included with comma-separated topic tags (with blank line before it)
+- [ ] `Hints:` included if present in LeetCode (numbered format: `Hint 1:`, `Hint 2:`, blank line between each)
+- [ ] `Note:` included if present in LeetCode (with blank line before it)
+- [ ] `Follow-up:` included if present in LeetCode (with blank line before it, may have multiple)
+- [ ] No decorative separators (`===`, `---`)
+- [ ] Format is concise and readable
+- [ ] Optional extension fields (if used) are placed before Constraints
+
+---
+
+## Related Documentation
+
+- [Solution Contract § File-Level Docstring](solution-contract.md#file-level-docstring) - **Simplified format for manual contribution**
+- [Solution Contract](solution-contract.md) - Complete solution file specification
+- [Generator Contract](generator-contract.md) - Test generator requirements
