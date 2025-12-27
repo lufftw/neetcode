@@ -1,47 +1,37 @@
 # solutions/0567_permutation_in_string.py
 """
-================================================================================
-LeetCode 567: Permutation in String
-================================================================================
+Problem: Permutation in String
+Link: https://leetcode.com/problems/permutation-in-string/
 
-Problem: Given two strings s1 and s2, return true if s2 contains a permutation
-         of s1. In other words, return true if one of s1's permutations is a
-         substring of s2.
+Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
+In other words, return true if one of s1's permutations is the substring of s2.
 
-API Kernel: SubstringSlidingWindow
-Pattern: sliding_window_freq_cover (fixed-size variant)
-Family: substring_window
+Example 1:
+    Input: s1 = "ab", s2 = "eidbaooo"
+    Output: true
+    Explanation: s2 contains one permutation of s1 ("ba").
 
---------------------------------------------------------------------------------
-RELATIONSHIP TO BASE KERNEL AND OTHER VARIANTS
---------------------------------------------------------------------------------
+Example 2:
+    Input: s1 = "ab", s2 = "eidboaoo"
+    Output: false
 
-Base (LeetCode 3):
-    - Variable window size
-    - Maximize window
+Constraints:
+- 1 <= s1.length, s2.length <= 10^4
+- s1 and s2 consist of lowercase English letters.
 
-LeetCode 76 (Minimum Window):
-    - Variable window size
-    - Minimize window that covers requirements
+Topics: Hash Table, Two Pointers, String, Sliding Window
 
-This Variant (LeetCode 567):
-    - FIXED window size = len(s1)
-    - Check for EXACT frequency match (permutation = same chars, same counts)
-    - Return boolean (existence check)
+Hint 1: Obviously, brute force will result in TLE. Think of something else.
 
-Key Insight:
-    A permutation of s1 has:
-    1. Exactly the same length as s1
-    2. Exactly the same character frequencies as s1
+Hint 2: How will you check whether one string is a permutation of another string?
 
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
+Hint 3: One way is to sort the string and then compare. But, Is there a better way?
 
-Time:  O(|s1| + |s2|) - Build pattern frequency + single pass over s2
-Space: O(1) - At most 26 lowercase letters in frequency maps
+Hint 4: If one string is a permutation of another string then they must one common metric. What is that?
 
-================================================================================
+Hint 5: Both strings must have same character frequencies, if  one is permutation of another. Which data structure should be used to store frequencies?
+
+Hint 6: What about hash table?  An array of size 26?
 """
 from typing import Dict
 from collections import Counter

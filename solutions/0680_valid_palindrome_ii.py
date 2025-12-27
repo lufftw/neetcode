@@ -1,43 +1,28 @@
 # solutions/0680_valid_palindrome_ii.py
 """
-================================================================================
-LeetCode 680: Valid Palindrome II
-================================================================================
+Problem: Valid Palindrome II
+Link: https://leetcode.com/problems/valid-palindrome-ii/
 
-Problem: Given a string s, return true if s can be a palindrome after deleting
-         at most one character from it.
+Given a string s, return true if the s can be palindrome after deleting at most one character from it.
 
-API Kernel: TwoPointersTraversal
-Pattern: opposite_pointers_with_skip
-Family: string_validation
+Example 1:
+    Input: s = "aba"
+    Output: true
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: OPPOSITE POINTERS WITH ONE SKIP
---------------------------------------------------------------------------------
+Example 2:
+    Input: s = "abca"
+    Output: true
+    Explanation: You could delete the character 'c'.
 
-This problem extends the basic palindrome check by allowing one character removal.
+Example 3:
+    Input: s = "abc"
+    Output: false
 
-DELTA from Valid Palindrome (LeetCode 125):
-- When a mismatch is found, we have TWO choices: skip left or skip right
-- If EITHER choice results in a valid palindrome, answer is True
-- We get ONE "skip allowance" to use
+Constraints:
+- 1 <= s.length <= 10^5
+- s consists of lowercase English letters.
 
-Algorithm:
-1. Use opposite pointers moving toward center
-2. On mismatch: check if s[left+1:right+1] OR s[left:right] is a palindrome
-3. If either is valid, return True; otherwise return False
-
-INVARIANT: We have used at most one skip, and s[0:left] matches s[right+1:n]
-           with the appropriate reversal.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Main pass O(n) + at most one helper check O(n)
-Space: O(1) - Only pointer indices used
-
-================================================================================
+Topics: Two Pointers, String, Greedy
 """
 from _runner import get_solver
 

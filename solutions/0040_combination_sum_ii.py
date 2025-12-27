@@ -3,22 +3,33 @@
 Problem: Combination Sum II
 Link: https://leetcode.com/problems/combination-sum-ii/
 
-Given an array of candidates (may contain duplicates) and a target,
-return all unique combinations where candidates sum to target.
-Each candidate may only be used once.
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+Each number in candidates may only be used once in the combination.
 
-Sub-Pattern: Target search without reuse, with duplicate handling
-Key Insight: Combine no-reuse (recurse with i+1) with same-level 
-deduplication (skip if i > start and candidates[i] == candidates[i-1]).
+Example 1:
+    Input: candidates = [10,1,2,7,6,1,5], target = 8
+    Output: [
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
 
-Delta from Combination Sum (LeetCode 39):
-- No reuse: recurse with i+1 instead of i
-- Handle duplicates: sort + same-level skip
+Example 2:
+    Input: candidates = [2,5,2,1,2], target = 5
+    Output: [
+[1,2,2],
+[5]
+]
 
 Constraints:
 - 1 <= candidates.length <= 100
 - 1 <= candidates[i] <= 50
 - 1 <= target <= 30
+
+Topics: Array, Backtracking
+
+Note: The solution set must not contain duplicate combinations.
 """
 from typing import List
 from _runner import get_solver

@@ -1,44 +1,25 @@
 # solutions/0905_sort_array_by_parity.py
 """
-================================================================================
-LeetCode 905: Sort Array By Parity
-================================================================================
+Problem: Sort Array By Parity
+Link: https://leetcode.com/problems/sort-array-by-parity/
 
-Problem: Given an integer array nums, move all the even integers at the beginning
-         of the array followed by all the odd integers. Return any array that
-         satisfies this condition.
+Given an integer array nums, move all the even integers at the beginning of the array followed by all the odd integers.
+Return any array that satisfies this condition.
 
-API Kernel: TwoPointersTraversal
-Pattern: two_way_partition
-Family: partitioning
+Example 1:
+    Input: nums = [3,1,2,4]
+    Output: [2,4,3,1]
+    Explanation: The outputs [4,2,3,1], [2,4,1,3], and [4,2,1,3] would also be accepted.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: TWO-WAY PARTITION
---------------------------------------------------------------------------------
+Example 2:
+    Input: nums = [0]
+    Output: [0]
 
-This is a simplified partition problem with only two categories (even/odd).
+Constraints:
+- 1 <= nums.length <= 5000
+- 0 <= nums[i] <= 5000
 
-DELTA from Dutch National Flag (LeetCode 75):
-- Only 2 categories instead of 3
-- Only need 2 pointers instead of 3
-- Can use either same-direction or opposite pointers approach
-
-Two Approaches:
-1. OPPOSITE POINTERS: Start from both ends, swap when left is odd and right is even
-2. SAME-DIRECTION (Writer): Move evens to front using reader/writer pattern
-
-INVARIANT (Opposite Pointers):
-- nums[0:left] contains only even numbers
-- nums[right+1:n] contains only odd numbers
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each element examined once
-Space: O(1) - In-place swaps
-
-================================================================================
+Topics: Array, Two Pointers, Sorting
 """
 from typing import List
 from _runner import get_solver

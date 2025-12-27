@@ -1,51 +1,25 @@
 # solutions/0215_kth_largest_element_in_an_array.py
 """
-================================================================================
-LeetCode 215: Kth Largest Element in an Array
-================================================================================
+Problem: Kth Largest Element in an Array
+Link: https://leetcode.com/problems/kth-largest-element-in-an-array/
 
-Problem: Given an integer array nums and an integer k, return the kth largest
-         element in the array. Note that it is the kth largest element in the
-         sorted order, not the kth distinct element.
+Given an integer array nums and an integer k, return the kth largest element in the array.
+Note that it is the kth largest element in the sorted order, not the kth distinct element.
+Can you solve it without sorting?
 
-API Kernel: TwoPointersTraversal
-Pattern: quickselect_partition
-Family: selection_algorithms
+Example 1:
+    Input: nums = [3,2,1,5,6,4], k = 2
+    Output: 5
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: QUICKSELECT (PARTITION-BASED SELECTION)
---------------------------------------------------------------------------------
+Example 2:
+    Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+    Output: 4
 
-This problem demonstrates the Quickselect algorithm, which uses the partition
-scheme from Quicksort to find the kth element in expected O(n) time.
+Constraints:
+- 1 <= k <= nums.length <= 10^5
+- -10^4 <= nums[i] <= 10^4
 
-Core Idea:
-    The partition operation places the pivot in its final sorted position.
-    After partitioning:
-    - If pivot position == k-1: pivot is the kth largest
-    - If pivot position < k-1: search right side
-    - If pivot position > k-1: search left side
-
-Partition Invariant:
-    After partition around pivot:
-    - Elements in [low, pivot_idx) are ≥ pivot
-    - Elements in (pivot_idx, high] are < pivot
-    (For kth largest, we use descending order logic)
-
-Why This Works:
-    Each partition eliminates roughly half the candidates on average,
-    leading to expected O(n) time: n + n/2 + n/4 + ... = O(2n) = O(n).
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) average, O(n²) worst case
-Space: O(1) - In-place partitioning
-
-To guarantee O(n) worst case: use median-of-medians for pivot selection.
-
-================================================================================
+Topics: Array, Divide And Conquer, Sorting, Heap Priority Queue, Quickselect
 """
 from typing import List
 import random

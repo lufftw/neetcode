@@ -1,49 +1,28 @@
 # solutions/0977_squares_of_a_sorted_array.py
 """
-================================================================================
-LeetCode 977: Squares of a Sorted Array
-================================================================================
+Problem: Squares of a Sorted Array
+Link: https://leetcode.com/problems/squares-of-a-sorted-array/
 
-Problem: Given an integer array nums sorted in non-decreasing order, return an
-         array of the squares of each number sorted in non-decreasing order.
+Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
 
-API Kernel: TwoPointersTraversal
-Pattern: merge_from_ends
-Family: merge_pattern
+Example 1:
+    Input: nums = [-4,-1,0,3,10]
+    Output: [0,1,9,16,100]
+    Explanation: After squaring, the array becomes [16,1,0,9,100].
+                 After sorting, it becomes [0,1,9,16,100].
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: MERGE FROM ENDS
---------------------------------------------------------------------------------
+Example 2:
+    Input: nums = [-7,-3,2,3,11]
+    Output: [4,9,9,49,121]
 
-This problem is a clever application of the merge pattern on a single array.
+Constraints:
+- 1 <= nums.length <= 10^4
+- -10^4 <= nums[i] <= 10^4
+- nums is sorted in non-decreasing order.
 
-Key Insight:
-    The input is sorted, but squaring can change the order because negative
-    numbers become positive. However, the LARGEST squares are always at the ENDS:
-    - Large negative numbers → large squares
-    - Large positive numbers → large squares
-    
-    The smallest squares are somewhere in the middle (around zero).
+Topics: Array, Two Pointers, Sorting
 
-Algorithm:
-    Use opposite pointers from both ends. Compare absolute values (or squares),
-    write the larger square to the result array from the END, and move the
-    corresponding pointer inward.
-
-INVARIANT: result[write+1:] contains the largest squares in sorted order.
-
-This is essentially merging two sorted sequences:
-- nums[0:k] reversed (negative numbers, largest first)
-- nums[k:n] (positive numbers, largest last)
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Single pass through the array
-Space: O(n) - Output array (or O(1) if output doesn't count)
-
-================================================================================
+Follow-up: Squaring each element and sorting the new array is very trivial, could you find an O(n) solution using a different approach?
 """
 from typing import List
 from _runner import get_solver

@@ -10,8 +10,22 @@ Repeat the process until the number equals 1 (where it will stay), or it loops e
 Those numbers for which this process ends in 1 are happy.
 Return true if n is a happy number, and false if not.
 
+Example 1:
+    Input: n = 19
+    Output: true
+    Explanation: 12 + 92 = 82
+                 82 + 22 = 68
+                 62 + 82 = 100
+                 12 + 02 + 02 = 1
+
+Example 2:
+    Input: n = 2
+    Output: false
+
 Constraints:
 - 1 <= n <= 2^31 - 1
+
+Topics: Hash Table, Math, Two Pointers
 """
 from _runner import get_solver
 

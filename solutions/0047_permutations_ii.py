@@ -3,21 +3,23 @@
 Problem: Permutations II
 Link: https://leetcode.com/problems/permutations-ii/
 
-Given a collection of numbers that might contain duplicates,
-return all possible unique permutations.
+Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
 
-Sub-Pattern: Permutation with duplicates (same-level deduplication)
-Key Insight: Sort the array, then skip duplicate values at the same
-tree level. The condition "!used[i-1]" ensures we only use the leftmost
-occurrence of each duplicate at each level.
+Example 1:
+    Input: nums = [1,1,2]
+    Output: [[1,1,2],
+ [1,2,1],
+ [2,1,1]]
 
-Delta from Base (LeetCode 46):
-- Sort the input array to bring duplicates together
-- Add deduplication: skip nums[i] if it equals nums[i-1] and !used[i-1]
+Example 2:
+    Input: nums = [1,2,3]
+    Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 
 Constraints:
 - 1 <= nums.length <= 8
 - -10 <= nums[i] <= 10
+
+Topics: Array, Backtracking
 """
 from typing import List
 from _runner import get_solver

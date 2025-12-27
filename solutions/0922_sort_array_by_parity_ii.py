@@ -1,48 +1,30 @@
 # solutions/0922_sort_array_by_parity_ii.py
 """
-================================================================================
-LeetCode 922: Sort Array By Parity II
-================================================================================
+Problem: Sort Array By Parity II
+Link: https://leetcode.com/problems/sort-array-by-parity-ii/
 
-Problem: Given an array of integers nums, half of the integers in nums are odd,
-         and the other half are even. Sort the array so that whenever
-         nums[i] is odd, i is odd, and whenever nums[i] is even, i is even.
-         Return any answer array that satisfies this condition.
+Given an array of integers nums, half of the integers in nums are odd, and the other half are even.
+Sort the array so that whenever nums[i] is odd, i is odd, and whenever nums[i] is even, i is even.
+Return any answer array that satisfies this condition.
 
-API Kernel: TwoPointersTraversal
-Pattern: interleaved_partition
-Family: partitioning
+Example 1:
+    Input: nums = [4,2,5,7]
+    Output: [4,5,2,7]
+    Explanation: [4,7,2,5], [2,5,4,7], [2,7,4,5] would also have been accepted.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: INTERLEAVED PARTITION
---------------------------------------------------------------------------------
+Example 2:
+    Input: nums = [2,3]
+    Output: [2,3]
 
-This problem requires a specific interleaving pattern where:
-- Even indices (0, 2, 4, ...) must contain even values
-- Odd indices (1, 3, 5, ...) must contain odd values
+Constraints:
+- 2 <= nums.length <= 2 * 10^4
+- nums.length is even.
+- Half of the integers in nums are even.
+- 0 <= nums[i] <= 1000
 
-DELTA from Sort By Parity (LeetCode 905):
-- Position-dependent constraint instead of simple grouping
-- Need two separate pointers: one for even indices, one for odd indices
+Topics: Array, Two Pointers, Sorting
 
-Algorithm:
-1. Use pointer i for even positions (0, 2, 4, ...)
-2. Use pointer j for odd positions (1, 3, 5, ...)
-3. When i finds an odd number at even position, and j finds an even number
-   at odd position, swap them
-
-INVARIANT:
-- All even positions < i contain even numbers
-- All odd positions < j contain odd numbers
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Each position examined once
-Space: O(1) - In-place swaps
-
-================================================================================
+Follow-up: Could you solve it in-place?
 """
 from typing import List
 from _runner import get_solver

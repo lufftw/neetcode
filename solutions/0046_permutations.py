@@ -3,19 +3,26 @@
 Problem: Permutations
 Link: https://leetcode.com/problems/permutations/
 
-Given an array nums of distinct integers, return all possible permutations.
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
 
-Sub-Pattern: Permutation Enumeration with used tracking
-Key Insight: At each position in the permutation, try every element that
-hasn't been used yet. Track usage with a boolean array.
+Example 1:
+    Input: nums = [1,2,3]
+    Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 
-This is the BASE TEMPLATE for the BacktrackingExploration API Kernel's
-permutation sub-pattern.
+Example 2:
+    Input: nums = [0,1]
+    Output: [[0,1],[1,0]]
+
+Example 3:
+    Input: nums = [1]
+    Output: [[1]]
 
 Constraints:
 - 1 <= nums.length <= 6
 - -10 <= nums[i] <= 10
-- All the integers of nums are unique
+- All the integers of nums are unique.
+
+Topics: Array, Backtracking
 """
 from typing import List
 from _runner import get_solver

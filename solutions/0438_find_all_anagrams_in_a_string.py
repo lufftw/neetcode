@@ -1,41 +1,29 @@
 # solutions/0438_find_all_anagrams_in_a_string.py
 """
-================================================================================
-LeetCode 438: Find All Anagrams in a String
-================================================================================
+Problem: Find All Anagrams in a String
+Link: https://leetcode.com/problems/find-all-anagrams-in-a-string/
 
-Problem: Given two strings s and p, return an array of all the start indices
-         of p's anagrams in s. An anagram is a permutation of a string.
+Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
 
-API Kernel: SubstringSlidingWindow
-Pattern: sliding_window_freq_cover (fixed-size, collect all)
-Family: substring_window
+Example 1:
+    Input: s = "cbaebabacd", p = "abc"
+    Output: [0,6]
+    Explanation: The substring with start index = 0 is "cba", which is an anagram of "abc".
+                 The substring with start index = 6 is "bac", which is an anagram of "abc".
 
---------------------------------------------------------------------------------
-RELATIONSHIP TO BASE KERNEL AND OTHER VARIANTS
---------------------------------------------------------------------------------
+Example 2:
+    Input: s = "abab", p = "ab"
+    Output: [0,1,2]
+    Explanation: The substring with start index = 0 is "ab", which is an anagram of "ab".
+                 The substring with start index = 1 is "ba", which is an anagram of "ab".
+                 The substring with start index = 2 is "ab", which is an anagram of "ab".
 
-LeetCode 567 (Permutation in String):
-    - Return boolean (exists or not)
-    - Stop on first match
+Constraints:
+- 1 <= s.length, p.length <= 3 * 10^4
+- s and p consist of lowercase English letters.
 
-This Variant (LeetCode 438):
-    - Return list of ALL starting indices
-    - Continue searching after each match
-
-Delta from LeetCode 567:
-    - Instead of `return True` on match, append index to result list
-    - Continue processing after finding a match
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(|s| + |p|) - Build pattern frequency + single pass over s
-Space: O(1) for frequency maps (bounded by alphabet size)
-       O(k) for output where k = number of anagrams found
-
-================================================================================
+Topics: Hash Table, String, Sliding Window
 """
 from typing import List, Dict
 from collections import Counter

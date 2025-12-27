@@ -1,44 +1,30 @@
 # solutions/0283_move_zeroes.py
 """
-================================================================================
-LeetCode 283: Move Zeroes
-================================================================================
+Problem: Move Zeroes
+Link: https://leetcode.com/problems/move-zeroes/
 
-Problem: Given an integer array nums, move all 0's to the end of it while
-         maintaining the relative order of the non-zero elements.
-         Note: You must do this in-place without making a copy of the array.
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+Note that you must do this in-place without making a copy of the array.
 
-API Kernel: TwoPointersTraversal
-Pattern: same_direction_writer
-Family: in_place_array_modification
+Example 1:
+    Input: nums = [0,1,0,3,12]
+    Output: [1,3,12,0,0]
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: SAME-DIRECTION (READER/WRITER)
---------------------------------------------------------------------------------
+Example 2:
+    Input: nums = [0]
+    Output: [0]
 
-This problem is a two-phase application of the same-direction pattern:
-1. Phase 1: Move all non-zero elements to the front (standard writer pattern)
-2. Phase 2: Fill remaining positions with zeros
+Constraints:
+- 1 <= nums.length <= 10^4
+- -2^31 <= nums[i] <= 2^31 - 1
 
-DELTA from Remove Element (LeetCode 27):
-- Same core logic: keep non-zero elements
-- Additional step: fill remaining positions with zeros (not just return count)
+Topics: Array, Two Pointers
 
-INVARIANT: nums[0:write] contains all non-zero elements from nums[0:read]
-           in their original relative order.
+Hint 1: <b>In-place</b> means we should not be allocating any space for extra array. But we are allowed to modify the existing array. However, as a first step, try coming up with a solution that makes use of additional space. For this problem as well, first apply the idea discussed using an additional array and the in-place solution will pop up eventually.
 
-Alternative Approach (Swap-based):
-    Instead of overwriting and filling, we can SWAP non-zero elements forward.
-    This preserves zeros in their new positions automatically.
+Hint 2: A <b>two-pointer</b> approach could be helpful here. The idea would be to have one pointer for iterating the array and another pointer that just works on the non-zero elements of the array.
 
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Single pass (or two passes for fill approach)
-Space: O(1) - In-place modification
-
-================================================================================
+Follow-up: Could you minimize the total number of operations done?
 """
 from typing import List
 from _runner import get_solver

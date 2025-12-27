@@ -1,44 +1,28 @@
 # solutions/0876_middle_of_the_linked_list.py
 """
-================================================================================
-LeetCode 876: Middle of the Linked List
-================================================================================
+Problem: Middle of the Linked List
+Link: https://leetcode.com/problems/middle-of-the-linked-list/
 
-Problem: Given the head of a singly linked list, return the middle node.
-         If there are two middle nodes, return the second middle node.
+Given the head of a singly linked list, return the middle node of the linked list.
+If there are two middle nodes, return the second middle node.
 
-API Kernel: TwoPointersTraversal
-Pattern: fast_slow_midpoint
-Family: linked_list_traversal
+Example 1:
+    <img alt="" src="https://assets.leetcode.com/uploads/2021/07/23/lc-midlist1.jpg" style="width: 544px; height: 65px;" />
+    Input: head = [1,2,3,4,5]
+    Output: [3,4,5]
+    Explanation: The middle node of the list is node 3.
 
---------------------------------------------------------------------------------
-TWO POINTERS PATTERN: FAST–SLOW (MIDPOINT FINDING)
---------------------------------------------------------------------------------
+Example 2:
+    <img alt="" src="https://assets.leetcode.com/uploads/2021/07/23/lc-midlist2.jpg" style="width: 664px; height: 65px;" />
+    Input: head = [1,2,3,4,5,6]
+    Output: [4,5,6]
+    Explanation: Since the list has two middle nodes with values 3 and 4, we return the second one.
 
-This is a classic application of fast-slow pointers for finding the midpoint.
+Constraints:
+- The number of nodes in the list is in the range [1, 100].
+- 1 <= Node.val <= 100
 
-Key Insight:
-    When fast reaches the end, slow is at the middle.
-    - Fast moves 2× speed of slow
-    - When fast travels n nodes, slow travels n/2 nodes
-    - So when fast reaches end, slow is at midpoint
-
-For Even-Length Lists:
-    The problem asks for the SECOND middle node.
-    With our termination condition (while fast and fast.next), we get:
-    - List [1,2,3,4]: slow stops at node 3 (second middle)
-    - List [1,2,3,4,5]: slow stops at node 3 (exact middle)
-
-INVARIANT: slow is always at the midpoint of the traversed portion.
-
---------------------------------------------------------------------------------
-COMPLEXITY ANALYSIS
---------------------------------------------------------------------------------
-
-Time:  O(n) - Single pass with fast moving 2× speed
-Space: O(1) - Only two pointer references
-
-================================================================================
+Topics: Linked List, Two Pointers
 """
 from typing import Optional
 from _runner import get_solver
