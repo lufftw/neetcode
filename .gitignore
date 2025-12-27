@@ -38,7 +38,7 @@ Thumbs.db
 
 # Debug
 *.log
-tools/outputs/debug/run_*_regen_*
+tools/mindmaps/outputs/debug/run_*_regen_*
 
 # Generated failed test cases (from --save-failed)
 *_failed_*.in
@@ -68,25 +68,25 @@ docs/mindmaps/*.md
 !docs/mindmaps/neetcode-ontology-agent-evolved-*.md
 
 # =============================================================================
-# AI Markmap Agent (tools/ai-markmap-agent/)
+# AI Markmap Agent (tools/mindmaps/ai-markmap-agent/)
 # =============================================================================
 
 # AI Markmap Agent - Output files
-tools/ai-markmap-agent/outputs/intermediate/*.md
-tools/ai-markmap-agent/outputs/intermediate/*.html
-tools/ai-markmap-agent/outputs/final/*.md
-tools/ai-markmap-agent/outputs/final/*.html
-tools/ai-markmap-agent/outputs/debug/
+tools/mindmaps/ai-markmap-agent/outputs/intermediate/*.md
+tools/mindmaps/ai-markmap-agent/outputs/intermediate/*.html
+tools/mindmaps/ai-markmap-agent/outputs/final/*.md
+tools/mindmaps/ai-markmap-agent/outputs/final/*.html
+tools/mindmaps/ai-markmap-agent/outputs/debug/
 
 # AI Markmap Agent - Data & persistence
-tools/ai-markmap-agent/data/chromadb/
-tools/ai-markmap-agent/data/*.json
-tools/ai-markmap-agent/data/*.yaml
+tools/mindmaps/ai-markmap-agent/data/chromadb/
+tools/mindmaps/ai-markmap-agent/data/*.json
+tools/mindmaps/ai-markmap-agent/data/*.yaml
 
 # AI Markmap Agent - Logs
-tools/ai-markmap-agent/logs/*.log
+tools/mindmaps/ai-markmap-agent/logs/*.log
 
 # AI Markmap Agent - Environment (if not using root .env)
-tools/ai-markmap-agent/.env
-tools/ai-markmap-agent/.env.local
+tools/mindmaps/ai-markmap-agent/.env
+tools/mindmaps/ai-markmap-agent/.env.local
 
