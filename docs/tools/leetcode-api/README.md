@@ -40,14 +40,20 @@ print(q.SimilarQuestions)  # [15, 18, 167, ...]
 ### Bulk Import from LeetScrape Data
 
 ```bash
-# Import all questions from data/all.json
-python tools/leetcode-api/import_all_json.py
+# Import all questions (auto-detect source: json or csv)
+python tools/leetcode-api/import_all_question.py
+
+# Explicitly use all.json
+python tools/leetcode-api/import_all_question.py --source json
+
+# Use CSV files (questions.csv + questionBody.pickle + questionTopics.csv)
+python tools/leetcode-api/import_all_question.py --source csv
 
 # Dry run (preview without saving)
-python tools/leetcode-api/import_all_json.py --dry-run
+python tools/leetcode-api/import_all_question.py --dry-run
 
 # Include paid-only questions
-python tools/leetcode-api/import_all_json.py --include-paid
+python tools/leetcode-api/import_all_question.py --include-paid
 ```
 
 ---
@@ -56,13 +62,20 @@ python tools/leetcode-api/import_all_json.py --include-paid
 
 ```
 tools/leetcode-api/
-├── __init__.py            # Package exports
-├── question_api.py        # Unified public API
-├── question_serializer.py # LeetScrape ↔ SQLite conversion
-├── question_store.py      # SQLite storage layer
-├── import_all_json.py     # Bulk import script
+├── __init__.py              # Package exports
+├── question_api.py          # Unified public API
+├── question_serializer.py   # LeetScrape ↔ SQLite conversion
+├── question_store.py        # SQLite storage layer
+├── import_all_question.py   # Bulk import script
+├── db/
+│   └── leetcode.db          # SQLite database
 └── data/
-    └── all.json           # LeetScrape data dump
+    ├── all.json             # Complete question data (primary)
+    ├── questions.csv        # Basic metadata
+    ├── questionBody.pickle  # Problem statements
+    ├── questionTopics.csv   # QID to topic mapping
+    ├── topicTags.csv        # Topic tag details
+    └── companies.csv        # Company information
 ```
 
 ### Data Flow
@@ -152,7 +165,7 @@ The `Question` dataclass matches [LeetScrape JSON format](https://raw.githubuser
 
 ## SQLite Schema
 
-Database location: `tools/.cache/leetcode_questions.db`
+Database location: `tools/leetcode-api/db/leetcode.db`
 
 ```sql
 CREATE TABLE questions (
@@ -180,24 +193,30 @@ CREATE TABLE questions (
 
 ## CLI Tools
 
-### `import_all_json.py`
+### `import_all_question.py`
 
-Bulk import questions from LeetScrape JSON dump.
+Bulk import questions from LeetScrape data files.
 
 ```bash
-# Basic usage
-python tools/leetcode-api/import_all_json.py
+# Basic usage (auto-detect source)
+python tools/leetcode-api/import_all_question.py
 
 # Options
-python tools/leetcode-api/import_all_json.py --help
+python tools/leetcode-api/import_all_question.py --help
 ```
 
 | Option | Description |
 |--------|-------------|
-| `--json-path PATH` | Path to all.json file |
-| `--dry-run` | Parse JSON without saving |
+| `--source {json,csv,auto}` | Data source: json (all.json), csv (combine CSVs), auto (default) |
+| `--data-dir PATH` | Path to data directory |
+| `--dry-run` | Parse data without saving |
 | `--include-paid` | Include paid-only questions |
 | `--include-empty` | Include questions with empty Body |
+
+**Data Sources:**
+- `json`: Uses `all.json` which contains complete question data
+- `csv`: Combines `questions.csv`, `questionBody.pickle`, and `questionTopics.csv`
+- `auto`: Tries json first, falls back to csv
 
 **Example output:**
 
@@ -240,6 +259,64 @@ This enables:
 - **Caching**: Avoid repeated LeetCode API calls
 - **Offline support**: Work with cached data without network
 - **Faster processing**: Batch operations use local cache
+
+---
+
+## Important: LeetCode Problem ID Types
+
+LeetCode uses **two different ID systems** which can cause confusion when looking up problems:
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `question_id` | Internal database ID | 958 |
+| `frontend_question_id` | Problem number displayed on website | 922 |
+
+### Why This Matters
+
+Solution filenames in this project use the **frontend_question_id** (the number shown on LeetCode's website):
+
+```
+0922_sort_array_by_parity_ii.py  → frontend_question_id = 922
+```
+
+However, the same problem has `question_id = 958` internally.
+
+### Cache Lookup
+
+The `fix_docstring.py` tool uses `tools/.cache/leetcode_problems.json` which contains both IDs:
+
+```json
+{
+  "0958": {
+    "question_id": 958,
+    "frontend_question_id": 922,
+    "title": "Sort Array By Parity II",
+    "slug": "sort-array-by-parity-ii"
+  }
+}
+```
+
+When looking up by problem number (from filename), always use `frontend_question_id`, not `question_id`:
+
+```python
+# ✅ Correct: Use frontend_question_id
+for key, value in cache.items():
+    if value.get('frontend_question_id') == problem_id:
+        return value['slug']
+
+# ❌ Wrong: Using question_id would return wrong problem!
+for key, value in cache.items():
+    if value.get('question_id') == problem_id:
+        return value['slug']  # May return wrong slug!
+```
+
+### Quick Reference
+
+| Filename | frontend_question_id | question_id | Correct Slug |
+|----------|---------------------|-------------|--------------|
+| `0001_two_sum.py` | 1 | 1 | `two-sum` |
+| `0922_sort_array_by_parity_ii.py` | 922 | 958 | `sort-array-by-parity-ii` |
+| `0886_possible_bipartition.py` | 886 | 922 | `possible-bipartition` |
 
 ---
 

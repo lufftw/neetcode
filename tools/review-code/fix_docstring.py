@@ -181,7 +181,12 @@ class DocstringFixer:
         time.sleep(delay)
     
     def _get_problem_info(self, problem_id: str) -> Optional[Dict[str, str]]:
-        """Get problem info from cache by ID (e.g., '0077' or '77')."""
+        """Get problem info from cache by ID (e.g., '0077' or '77').
+        
+        Note: Uses 'frontend_question_id' which is the problem number shown on
+        LeetCode website (e.g., 922 for "Sort Array By Parity II"). This is
+        different from 'question_id' which is the internal database ID.
+        """
         if not self.cache:
             return None
         
@@ -189,7 +194,9 @@ class DocstringFixer:
         problem_id_int = int(problem_id.lstrip('0') or '0')
         
         for key, value in self.cache.items():
-            if value.get('question_id') == problem_id_int:
+            # Use frontend_question_id (the number displayed on LeetCode website)
+            # NOT question_id (internal database ID)
+            if value.get('frontend_question_id') == problem_id_int:
                 slug = value.get('slug', '')
                 url = f"https://leetcode.com/problems/{slug}/"
                 return {
