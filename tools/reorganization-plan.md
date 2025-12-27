@@ -249,35 +249,35 @@ tools/
 - [x] 創建規劃文檔（本文件）
 - [ ] 確認 `ai_mindmap/` 與 `ai-markmap-agent/` 的關係
 - [ ] 檢查所有腳本的導入路徑依賴
-- [ ] 備份當前結構
+- [x] 備份當前結構（見附錄）
 
-### 階段 2：創建新目錄結構
-- [ ] 在 `mindmaps/` 下創建 `core/` 目錄
-- [ ] 在 `review-code/` 下創建 `validation/` 目錄
-- [ ] 創建 `maintenance/` 目錄
-- [ ] 創建 `_staging/` 目錄
+### 階段 2：創建新目錄結構 ✅ 完成
+- [x] 在 `mindmaps/` 下創建 `core/` 目錄
+- [x] 在 `review-code/` 下創建 `validation/` 目錄
+- [x] 創建 `maintenance/` 目錄
+- [x] 創建 `_staging/` 目錄
 
-### 階段 3：移動文件（按順序）
-1. [ ] 移動 `mindmaps/` 內容到 `mindmaps/core/`
-2. [ ] 移動 `ai-markmap-agent/` 到 `mindmaps/`
-3. [ ] 移動 `ai_mindmap/` 到 `mindmaps/`
-4. [ ] 移動 `hooks/`, `prompts/`, `shared/` 到 `mindmaps/`
-5. [ ] 移動生成腳本到 `mindmaps/`
-6. [ ] 移動驗證工具到 `review-code/validation/`
-7. [ ] 重命名 `patterndocs/` 為 `pattern-docs/` 並移入入口腳本
-8. [ ] 移動 `doc-naming/` 到 `maintenance/`
-9. [ ] 移動其他到 `_staging/`
+### 階段 3：移動文件（按順序）✅ 完成
+1. [x] 移動 `mindmaps/` 內容到 `mindmaps/core/`
+2. [x] 移動 `ai-markmap-agent/` 到 `mindmaps/`
+3. [x] 移動 `ai_mindmap/` 到 `mindmaps/`
+4. [x] 移動 `hooks/`, `prompts/`, `shared/` 到 `mindmaps/`
+5. [x] 移動生成腳本到 `mindmaps/`
+6. [x] 移動驗證工具到 `review-code/validation/`
+7. [x] 重命名 `patterndocs/` 為 `pattern-docs/` 並移入入口腳本
+8. [x] 移動 `doc-naming/` 到 `maintenance/`
+9. [x] 移動其他到 `_staging/`
 
-### 階段 4：更新引用
+### 階段 4：更新引用 ⏳ 待完成
 - [ ] 更新所有 Python 導入路徑
-- [ ] 更新 README.md 中的路徑
+- [x] 更新 README.md 中的路徑
 - [ ] 更新配置文件中的路徑
 - [ ] 更新文檔引用
 
-### 階段 5：測試和驗證
+### 階段 5：測試和驗證 ⏳ 待完成
 - [ ] 運行所有測試
 - [ ] 驗證所有工具仍可正常運行
-- [ ] 清理空目錄
+- [x] 清理空目錄
 
 ---
 
@@ -594,12 +594,13 @@ from pattern_docs import composer  # 如果內部用 pattern_docs
 
 ### 需要更新的配置文件
 
-| 文件 | 需要更新的內容 |
-|------|----------------|
-| `tools/README.md` | 目錄結構說明 |
-| `tools/mindmaps/generate_mindmaps.toml` | 相對路徑 |
-| `tools/mindmaps/generate_mindmaps_ai.toml` | 相對路徑 |
-| `tools/pattern-docs/generate_pattern_docs.toml` | 相對路徑 |
-| `tools/mindmaps/hooks/generate_ai_mindmaps_hook.py` | 導入路徑 |
-| `docs/tools/README.md` | 工具文檔路徑引用 |
-| `.github/workflows/*.yml` | CI/CD 腳本路徑（如有）|
+| 文件 | 需要更新的內容 | 狀態 |
+|------|----------------|------|
+| `tools/README.md` | 目錄結構說明 | ✅ 已更新 |
+| `.gitignore` | tools 路徑引用 | ✅ 已更新 |
+| `tools/mindmaps/generate_mindmaps.toml` | 相對路徑 | ⏳ 待更新 |
+| `tools/mindmaps/generate_mindmaps_ai.toml` | 相對路徑 | ⏳ 待更新 |
+| `tools/pattern-docs/generate_pattern_docs.toml` | 相對路徑 | ⏳ 待更新 |
+| `tools/mindmaps/hooks/generate_ai_mindmaps_hook.py` | 導入路徑 | ⏳ 待更新 |
+| `docs/tools/README.md` | 工具文檔路徑引用 | ⏳ 待更新 |
+| `.github/workflows/*.yml` | CI/CD 腳本路徑（如有）| ⏳ 待更新 |
