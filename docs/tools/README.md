@@ -345,7 +345,7 @@ python tools/patterndocs/generate_pattern_docs.py --pattern sliding_window
 meta/patterns/sliding_window/
 ├── _config.toml        # File ordering (optional)
 ├── _header.md          # Introduction and core concepts
-├──@03-base.md        # Base template problem
+├── 0003-base.md        # Base template problem
 ├── 0076_variant.md     # Variant problem
 ├── _comparison.md      # Pattern comparison table
 ├── _decision.md        # Decision guide
