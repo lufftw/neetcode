@@ -39,7 +39,7 @@ def test_cache_loading():
         else:
             print("❌ 找不到問題 11")
     else:
-        print("❌ 無法載入快取（請先執行: python tools/sync_leetcode_data.py）")
+        print("❌ 無法載入快取（請先執行: python tools/leetcode-api/crawler/sync_leetcode_data.py）")
         return False
     
     return True
@@ -116,7 +116,7 @@ def main():
     
     # 測試 1: 快取載入
     if not test_cache_loading():
-        print("\n⚠️  請先執行: python tools/sync_leetcode_data.py")
+        print("\n⚠️  請先執行: python tools/leetcode-api/crawler/sync_leetcode_data.py")
         return
     
     # 測試 2: URL 生成

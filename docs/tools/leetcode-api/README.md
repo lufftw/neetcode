@@ -285,7 +285,7 @@ However, the same problem has `question_id = 958` internally.
 
 ### Cache Lookup
 
-The `fix_docstring.py` tool uses `tools/.cache/leetcode_problems.json` which contains both IDs:
+The `fix_docstring.py` tool uses `tools/leetcode-api/crawler/.cache/leetcode_problems.json` which contains both IDs:
 
 ```json
 {

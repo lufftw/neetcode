@@ -91,7 +91,6 @@ tools/
 │   └── doc-naming/                # Document naming tools
 │
 └── _staging/                      # 📦 Staging area (to be organized)
-    ├── sync_leetcode_data.py
     ├── prepare_llm_input.py
     └── ...
 ```
@@ -218,7 +217,7 @@ python tools/review-code/fix_docstring.py --range 1 1000 --delay-min 30.0 --dela
 
 **What It Does:**
 
-1. Reads problem info from local cache (`tools/_staging/.cache/leetcode_problems.json`)
+1. Reads problem info from local cache (`tools/leetcode-api/crawler/.cache/leetcode_problems.json`)
 2. Fetches description and constraints from LeetCode via `leetscrape`
 3. Generates docstring following [review-code README](../../tools/review-code/README.md) format
 4. Updates the solution file

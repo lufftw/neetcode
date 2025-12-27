@@ -993,7 +993,7 @@ Post-processing automatically converts LeetCode problem references to standardiz
 ### Data Sources
 
 1. **Local TOML files** (`meta/problems/`) - Primary source (with solution files)
-2. **LeetCode API cache** (`tools/_staging/.cache/leetcode_problems.json`) - Auto-supplement
+2. **LeetCode API cache** (`tools/leetcode-api/crawler/.cache/leetcode_problems.json`) - Auto-supplement
 
 **Priority:** Local TOML with solution > API cache
 
@@ -1034,10 +1034,10 @@ The system automatically syncs with LeetCode API:
 
 ```bash
 # Sync LeetCode problem data (7-day cache)
-python tools/_staging/sync_leetcode_data.py
+python tools/leetcode-api/crawler/sync_leetcode_data.py
 
 # Check cache status
-python tools/_staging/sync_leetcode_data.py --check
+python tools/leetcode-api/crawler/sync_leetcode_data.py --check
 ```
 
 **Integration:**
