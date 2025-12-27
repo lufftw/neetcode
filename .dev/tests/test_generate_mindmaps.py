@@ -23,15 +23,16 @@ from unittest.mock import patch, MagicMock
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "tools"))
+sys.path.insert(0, str(PROJECT_ROOT / "tools" / "mindmaps"))
 
-# Import from the refactored modules
-from mindmaps.toml_parser import parse_toml_simple, parse_toml_value
-from mindmaps.loader import OntologyData, load_ontology, load_problems
-from mindmaps.data import ProblemData
-from mindmaps.helpers import markmap_frontmatter, format_problem_entry
-from mindmaps.config import MindmapsConfig, load_config, get_config, DIFFICULTY_ICONS
-from mindmaps.html import markdown_to_html_content, generate_html_mindmap
-from mindmaps.generators import (
+# Import from the refactored modules (now under tools/mindmaps/core/)
+from core.toml_parser import parse_toml_simple, parse_toml_value
+from core.loader import OntologyData, load_ontology, load_problems
+from core.data import ProblemData
+from core.helpers import markmap_frontmatter, format_problem_entry
+from core.config import MindmapsConfig, load_config, get_config, DIFFICULTY_ICONS
+from core.html import markdown_to_html_content, generate_html_mindmap
+from core.generators import (
     generate_pattern_hierarchy,
     generate_family_derivation,
     generate_algorithm_usage,

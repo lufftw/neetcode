@@ -11,7 +11,7 @@ on:
       - 'docs/**'
       - 'ontology/**'
       - 'meta/**'
-      - 'tools/generate_mindmaps.py'
+      - 'tools/mindmaps/generate_mindmaps.py'
       - 'mkdocs.yml'
   workflow_dispatch:  # Allow manual trigger
 
@@ -46,8 +46,8 @@ jobs:
       
       - name: Generate Mind Maps (Markdown + HTML)
         run: |
-          python tools/generate_mindmaps.py
-          python tools/generate_mindmaps.py --html
+          python tools/mindmaps/generate_mindmaps.py
+          python tools/mindmaps/generate_mindmaps.py --html
       
       - name: Build MkDocs site
         run: |

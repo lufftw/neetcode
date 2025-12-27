@@ -22,7 +22,7 @@ def load_leetcode_cache() -> dict[str, dict[str, Any]] | None:
     Returns:
         Dict with frontend_question_id (zero-padded) as keys, or None if cache doesn't exist
     """
-    cache_file = PROJECT_ROOT / "tools" / ".cache" / "leetcode_problems.json"
+    cache_file = PROJECT_ROOT / "tools" / "leetcode-api" / "crawler" / ".cache" / "leetcode_problems.json"
     if not cache_file.exists():
         return None
     

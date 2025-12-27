@@ -50,7 +50,7 @@ fi
 
 echo ""
 echo "[2/2] Running format unit tests..."
-"$PYTHON_EXE" -m pytest tools/tests/test_solution_format.py -v --tb=short
+"$PYTHON_EXE" -m pytest tools/review-code/validation/tests/test_solution_format.py -v --tb=short
 
 if [ $? -eq 0 ]; then
     echo ""

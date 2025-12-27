@@ -145,11 +145,11 @@ The script automatically executes these steps:
    - Installs dependencies if missing
 
 2. **Generate Mind Maps (Markdown)**
-   - Runs `python tools/generate_mindmaps.py`
+   - Runs `python tools/mindmaps/generate_mindmaps.py`
    - Generates markdown mind map files
 
 3. **Generate Mind Maps (HTML)**
-   - Runs `python tools/generate_mindmaps.py --html`
+   - Runs `python tools/mindmaps/generate_mindmaps.py --html`
    - Generates interactive HTML mind map files
 
 4. **Build MkDocs Site**
@@ -243,7 +243,7 @@ pip install -r requirements.txt
 **Solution:**
 - Check error messages for specific issues
 - Verify all TOML files in `ontology/` and `meta/problems/` are valid
-- Try running `python tools/generate_mindmaps.py` manually to see detailed errors
+- Try running `python tools/mindmaps/generate_mindmaps.py` manually to see detailed errors
 
 ### Error: Failed to build MkDocs site
 

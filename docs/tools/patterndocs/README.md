@@ -13,14 +13,16 @@ The pattern documentation module:
 ## Module Structure
 
 ```
-patterndocs/
-├── __init__.py           # Module exports
-├── toml_parser.py        # TOML parsing utilities
-├── data.py               # Data classes (APIKernel, Pattern, PatternDocConfig)
-├── loader.py             # Ontology loading and kernel ID mapping
-├── files.py              # Source file collection and categorization
-├── sections.py           # Section numbering and TOC generation
-└── composer.py           # Document composition logic
+tools/patterndocs/
+├── __init__.py               # Module exports
+├── toml_parser.py            # TOML parsing utilities
+├── data.py                   # Data classes (APIKernel, Pattern, PatternDocConfig)
+├── loader.py                 # Ontology loading and kernel ID mapping
+├── files.py                  # Source file collection and categorization
+├── sections.py               # Section numbering and TOC generation
+├── composer.py               # Document composition logic
+├── generate_pattern_docs.py  # Entry script
+└── generate_pattern_docs.toml # Configuration
 ```
 
 ## Core Components
@@ -61,7 +63,7 @@ Simple TOML parser for ontology files:
 - `get_paths()` - Get path configuration from config or defaults
 
 **Configuration File:**
-Global configuration is stored in `tools/generate_pattern_docs.toml`:
+Global configuration is stored in `tools/patterndocs/generate_pattern_docs.toml`:
 - `[kernel_mapping]` - Maps directory names to API Kernel IDs (only needed for non-auto-inferrable mappings)
 - `[default_file_order]` - Default header/footer file ordering
 - `[paths]` - Directory paths (optional, defaults to standard locations)
@@ -69,7 +71,7 @@ Global configuration is stored in `tools/generate_pattern_docs.toml`:
 **Auto-inference:**
 The `config.py` module automatically infers kernel mappings from `ontology/patterns.toml` by matching pattern IDs with directory names. Only mappings that cannot be automatically determined need to be specified in `generate_pattern_docs.toml`.
 
-**Note:** The Python module `config.py` loads configuration from `generate_pattern_docs.toml` and supplements it with auto-inferred mappings.
+**Note:** The Python module `config.py` loads configuration from `tools/patterndocs/generate_pattern_docs.toml` and supplements it with auto-inferred mappings.
 
 ### Data Loading (`loader.py`)
 
@@ -80,12 +82,12 @@ The `config.py` module automatically infers kernel mappings from `ontology/patte
 - `get_kernel_id_from_dir_name(dir_name)` - Map directory name to kernel ID
 
 **Kernel ID Mapping:**
-The module maps directory names to API Kernel IDs (configurable in `generate_pattern_docs.toml`):
+The module maps directory names to API Kernel IDs (configurable in `tools/patterndocs/generate_pattern_docs.toml`):
 - `sliding_window` → `SubstringSlidingWindow`
 - `bfs_grid` → `GridBFSMultiSource`
 - `backtracking_exploration` → `BacktrackingExploration`
 - `two_pointers` → `TwoPointersTraversal`
-- ... (see `tools/generate_pattern_docs.toml` for full list)
+- ... (see `tools/patterndocs/generate_pattern_docs.toml` for full list)
 
 **Paths:**
 - `PROJECT_ROOT` - Project root directory (auto-detected)
@@ -374,14 +376,14 @@ Test coverage includes:
    ```
 6. Run generator:
    ```bash
-   python tools/generate_pattern_docs.py --pattern <pattern_name>
+   python tools/patterndocs/generate_pattern_docs.py --pattern <pattern_name>
    ```
 
 ### Adding Kernel ID Mapping
 
 If a new pattern directory name doesn't match the kernel ID:
 
-1. Add mapping to `tools/patterndocs/config.toml`:
+1. Add mapping to `tools/patterndocs/generate_pattern_docs.toml`:
    ```toml
    [kernel_mapping]
    new_pattern = "NewKernelID"
@@ -426,7 +428,7 @@ meta/patterns/binary_search/
 ## See Also
 
 - [Main Tools README](../README.md)
-- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/generate_pattern_docs.py)
+- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/patterndocs/generate_pattern_docs.py)
 - [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_pattern_docs.py)
 - [Pattern Documentation Output](../../patterns/README.md)
 

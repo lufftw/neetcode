@@ -27,19 +27,19 @@ Developer tools for checking, validating, and generating project content.
 
 ```bash
 # Check all solution files
-python tools/check_solutions.py
+python tools/review-code/validation/check_solutions.py
 
 # Generate mind maps (rule-based)
-python tools/generate_mindmaps.py --html
+python tools/mindmaps/generate_mindmaps.py --html
 
 # Generate mind maps (AI)
-python tools/generate_mindmaps_ai.py --goal interview
+python tools/mindmaps/generate_mindmaps_ai.py --goal interview
 
 # Generate pattern documentation
-python tools/generate_pattern_docs.py
+python tools/patterndocs/generate_pattern_docs.py
 
 # Generate SEO meta descriptions
-python tools/html_meta_description_generator.py
+python tools/mindmaps/html_meta_description_generator.py
 ```
 
 ---
@@ -48,53 +48,51 @@ python tools/html_meta_description_generator.py
 
 ```
 tools/
-├── README.md                      # This file
-├── check_solutions.py             # Solution file checker
-├── check_test_files.py            # Test file format checker/fixer
-├── run_format_tests.py            # Format test runner
-├── run_format_tests.bat/.sh       # Format test scripts
+├── README.md                      # Tools overview
+├── reorganization-plan.md         # Reorganization plan and migration details
 │
-├── generate_mindmaps.py           # Rule-based mind map generator
-├── generate_mindmaps.toml         # Rule-based configuration
-├── generate_mindmaps_ai.py        # AI mind map generator
-├── generate_mindmaps_ai.toml         # AI configuration
+├── mindmaps/                      # 🗺️ Mind map generation (consolidated)
+│   ├── core/                      # Core module
+│   │   ├── generators/            # Mind map type generators
+│   │   └── ...
+│   ├── ai-markmap-agent/          # AI markmap agent
+│   ├── ai_mindmap/                # AI mindmap module
+│   ├── hooks/                     # Git hooks for mindmaps
+│   ├── prompts/                   # AI prompts
+│   ├── shared/                    # Shared utilities
+│   ├── tests/                     # Mindmap tests
+│   ├── generate_mindmaps.py       # Rule-based generator
+│   ├── generate_mindmaps_ai.py    # AI generator
+│   ├── sync_mindmap_html.py       # HTML sync tool
+│   └── html_meta_description_generator.py  # SEO meta generator
 │
-├── generate_pattern_docs.py       # Pattern documentation generator
-├── generate_pattern_docs.toml     # Pattern docs configuration
+├── patterndocs/                   # 📚 Pattern documentation generation
+│   ├── generate_pattern_docs.py   # Pattern docs generator
+│   └── ...
 │
-├── html_meta_description_generator.py  # SEO meta description generator
-├── html_meta_description_generator.toml  # Meta description config
+├── review-code/                   # 🔍 Code review tools
+│   ├── fix_docstring.py           # Auto-fix docstrings
+│   └── validation/                # Validation tools
+│       ├── check_solutions.py     # Solution checker
+│       ├── check_test_files.py    # Test file checker
+│       ├── run_format_tests.py    # Format test runner
+│       └── tests/                 # Validation tests
 │
-├── text_to_mindmap.py             # Text to mind map converter
-├── prepare_llm_input.py           # LLM input preparation
-│
-├── hooks/                         # Pre-commit hooks
-│   └── generate_ai_mindmaps_hook.py  # AI mind map generation hook
-│
-├── docstring/                     # Docstring domain module
+├── docstring/                     # 📝 Docstring utilities
 │   ├── formatter.py               # Docstring formatting logic
-│   └── README.md                  # Module documentation
+│   └── README.md
 │
-├── review-code/                   # Code review tools
-│   └── fix_docstring.py           # Auto-fix file-level docstrings
-│
-├── leetcode-api/                  # LeetCode data cache module
-│   ├── README.md                  # 📖 Detailed technical docs
+├── leetcode-api/                  # 🔗 LeetCode data cache
 │   ├── question_api.py            # Unified public API
 │   ├── question_store.py          # SQLite storage layer
-│   ├── question_serializer.py     # Data serialization
-│   ├── import_all_json.py         # Bulk import script
 │   └── data/                      # LeetScrape data files
 │
-├── mindmaps/                      # Mind map generation module
-│   └── README.md                  # 📖 Detailed technical docs
-├── patterndocs/                   # Pattern docs generation module
-│   └── README.md                  # 📖 Detailed technical docs
-├── prompts/                       # AI prompt management
-│   └── README.md                  # 📖 Usage guide
-├── shared/                        # Shared utilities
-└── tests/                         # Format tests
-    └── test_solution_format.py
+├── maintenance/                   # 🔧 Maintenance tools
+│   └── doc-naming/                # Document naming tools
+│
+└── _staging/                      # 📦 Staging area (to be organized)
+    ├── prepare_llm_input.py
+    └── ...
 ```
 
 ---
@@ -106,10 +104,10 @@ tools/
 Checks all solution files for Pure Polymorphic Architecture compliance.
 
 ```bash
-python tools/check_solutions.py              # Standard check
-python tools/check_solutions.py --verbose    # Show fix suggestions
-python tools/check_solutions.py --list-warnings  # List only files with warnings
-python tools/check_solutions.py --show-warnings  # Show warnings with suggestions
+python tools/review-code/validation/check_solutions.py              # Standard check
+python tools/review-code/validation/check_solutions.py --verbose    # Show fix suggestions
+python tools/review-code/validation/check_solutions.py --list-warnings  # List only files with warnings
+python tools/review-code/validation/check_solutions.py --show-warnings  # Show warnings with suggestions
 ```
 
 **Checks Performed:**
@@ -143,9 +141,9 @@ Total files: 34
 Runs unit tests for format checking.
 
 ```bash
-python tools/run_format_tests.py           # Standard run
-python tools/run_format_tests.py --verbose # Verbose output
-python tools/run_format_tests.py --quiet   # Quiet mode
+python tools/review-code/validation/run_format_tests.py           # Standard run
+python tools/review-code/validation/run_format_tests.py --verbose # Verbose output
+python tools/review-code/validation/run_format_tests.py --quiet   # Quiet mode
 ```
 
 ### `run_format_tests.bat` / `run_format_tests.sh`
@@ -153,8 +151,8 @@ python tools/run_format_tests.py --quiet   # Quiet mode
 Runs complete format check (checker + unit tests).
 
 ```bash
-tools\run_format_tests.bat     # Windows
-tools/run_format_tests.sh      # Linux/Mac
+tools\review-code\validation\run_format_tests.bat     # Windows
+tools/review-code/validation/run_format_tests.sh      # Linux/Mac
 ```
 
 ### `check_test_files.py`
@@ -164,9 +162,9 @@ Check and fix double newline ending errors in test files under `tests/` director
 Checks all `.in` and `.out` files to find files ending with two newlines (`\n\n`).
 
 ```bash
-python tools/check_test_files.py              # List problematic files
-python tools/check_test_files.py --fix        # List and auto-fix
-python tools/check_test_files.py --verbose    # Show detailed info
+python tools/review-code/validation/check_test_files.py              # List problematic files
+python tools/review-code/validation/check_test_files.py --fix        # List and auto-fix
+python tools/review-code/validation/check_test_files.py --verbose    # Show detailed info
 ```
 
 **Features:**
@@ -219,7 +217,7 @@ python tools/review-code/fix_docstring.py --range 1 1000 --delay-min 30.0 --dela
 
 **What It Does:**
 
-1. Reads problem info from local cache (`tools/.cache/leetcode_problems.json`)
+1. Reads problem info from local cache (`tools/leetcode-api/crawler/.cache/leetcode_problems.json`)
 2. Fetches description and constraints from LeetCode via `leetscrape`
 3. Generates docstring following [review-code README](../../tools/review-code/README.md) format
 4. Updates the solution file
@@ -250,11 +248,11 @@ Summary: Fixed 1 files
 Rule-based mind map generator that creates 9 types of mind maps from ontology data.
 
 ```bash
-python tools/generate_mindmaps.py          # Generate Markdown
-python tools/generate_mindmaps.py --html   # Generate HTML (interactive)
+python tools/mindmaps/generate_mindmaps.py          # Generate Markdown
+python tools/mindmaps/generate_mindmaps.py --html   # Generate HTML (interactive)
 ```
 
-**Configuration:** `tools/generate_mindmaps.toml`
+**Configuration:** `tools/mindmaps/generate_mindmaps.toml`
 
 **Generation Types:**
 
@@ -278,19 +276,19 @@ AI-powered mind map generator using LLM for creative generation.
 
 ```bash
 # Interactive mode
-python tools/generate_mindmaps_ai.py
+python tools/mindmaps/generate_mindmaps_ai.py
 
 # Specific goals
-python tools/generate_mindmaps_ai.py --goal interview        # Interview prep
-python tools/generate_mindmaps_ai.py --goal systematic       # Systematic learning
-python tools/generate_mindmaps_ai.py --goal pattern_mastery  # Pattern mastery
+python tools/mindmaps/generate_mindmaps_ai.py --goal interview        # Interview prep
+python tools/mindmaps/generate_mindmaps_ai.py --goal systematic       # Systematic learning
+python tools/mindmaps/generate_mindmaps_ai.py --goal pattern_mastery  # Pattern mastery
 
 # Specific topics
-python tools/generate_mindmaps_ai.py --topic sliding_window
-python tools/generate_mindmaps_ai.py --topic dynamic_programming
+python tools/mindmaps/generate_mindmaps_ai.py --topic sliding_window
+python tools/mindmaps/generate_mindmaps_ai.py --topic dynamic_programming
 
 # Generate HTML only (from existing Markdown files)
-python tools/generate_mindmaps_ai.py --html-only            # Skip Markdown generation, only update HTML
+python tools/mindmaps/generate_mindmaps_ai.py --html-only            # Skip Markdown generation, only update HTML
 ```
 
 **HTML-Only Mode (`--html-only`):**
@@ -304,11 +302,11 @@ The `--html-only` flag allows you to generate HTML files from existing Markdown 
 The command reads existing Markdown files from the configured output directory and generates corresponding HTML files with proper meta descriptions. It automatically:
 
 - Detects language-specific Markdown files (e.g., `neetcode_ontology_ai_en.md`, `neetcode_ontology_ai_zh-TW.md`)
-- Loads corresponding meta description files (auto-detects from `tools/mindmaps/meta/`)
+- Loads corresponding meta description files (auto-detects from `tools/mindmaps/core/meta/`)
 - Generates HTML with proper `<meta name="description">` tags
 - Preserves all Markdown content in the HTML output
 
-**Configuration:** `tools/generate_mindmaps_ai.toml`
+**Configuration:** `tools/mindmaps/generate_mindmaps_ai.toml`
 
 | Section | What You Can Configure |
 |---------|------------------------|
@@ -319,9 +317,9 @@ The command reads existing Markdown files from the configured output directory a
 | `[links]` | GitHub repo URL, branch |
 | `[advanced]` | Output language(s) (multi-language support) |
 
-**No API Key?** After running, copy `tools/prompts/generated/mindmap-prompt.md` to ChatGPT/Claude.
+**No API Key?** After running, copy `tools/mindmaps/prompts/generated/mindmap-prompt.md` to ChatGPT/Claude.
 
-> 📖 **Detailed usage guide:** [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md)
+> 📖 **Detailed usage guide:** [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/prompts/README.md)
 
 ---
 
@@ -333,13 +331,13 @@ Composes pattern documentation from source files in `meta/patterns/`.
 
 ```bash
 # Generate all pattern docs
-python tools/generate_pattern_docs.py
+python tools/patterndocs/generate_pattern_docs.py
 
 # Generate specific pattern
-python tools/generate_pattern_docs.py --pattern sliding_window
+python tools/patterndocs/generate_pattern_docs.py --pattern sliding_window
 ```
 
-**Configuration:** `tools/generate_pattern_docs.toml`
+**Configuration:** `tools/patterndocs/generate_pattern_docs.toml`
 
 **Source Structure:**
 
@@ -347,7 +345,7 @@ python tools/generate_pattern_docs.py --pattern sliding_window
 meta/patterns/sliding_window/
 ├── _config.toml        # File ordering (optional)
 ├── _header.md          # Introduction and core concepts
-├──@03-base.md        # Base template problem
+├── 0003-base.md        # Base template problem
 ├── 0076_variant.md     # Variant problem
 ├── _comparison.md      # Pattern comparison table
 ├── _decision.md        # Decision guide
@@ -362,22 +360,22 @@ Generates SEO-friendly HTML meta descriptions from Markdown files using OpenAI G
 
 ```bash
 # Generate descriptions for all configured files
-python tools/html_meta_description_generator.py
+python tools/mindmaps/html_meta_description_generator.py
 
 # Generate description for a specific file
-python tools/html_meta_description_generator.py --file docs/mindmaps/pattern-hierarchy.md
+python tools/mindmaps/html_meta_description_generator.py --file docs/mindmaps/pattern-hierarchy.md
 
 # List configured files
-python tools/html_meta_description_generator.py --list
+python tools/mindmaps/html_meta_description_generator.py --list
 
 # Specify output directory
-python tools/html_meta_description_generator.py --output custom/output/dir
+python tools/mindmaps/html_meta_description_generator.py --output custom/output/dir
 
 # Force overwrite existing files
-python tools/html_meta_description_generator.py --force
+python tools/mindmaps/html_meta_description_generator.py --force
 ```
 
-**Configuration:** `tools/html_meta_description_generator.toml`
+**Configuration:** `tools/mindmaps/html_meta_description_generator.toml`
 
 **Features:**
 - Automatic markdown cleaning (removes code blocks, images, links, etc.)
@@ -397,7 +395,7 @@ python tools/html_meta_description_generator.py --force
 | `keepInlineCodeContent` | Keep inline code text (remove backticks) | true |
 | `keepImageAlt` | Keep image alt text | true |
 | `languageMode` | Language mode: "auto", "en", "zh-TW" | "auto" |
-| `outputDir` | Output directory for generated files | "tools/mindmaps/meta" |
+| `outputDir` | Output directory for generated files | "tools/mindmaps/core/meta" |
 
 **Prompt Templates:**
 
@@ -426,7 +424,7 @@ The OpenAI API key is prompted interactively when running the program (input is 
 Converts plain text to Markmap mind map format.
 
 ```bash
-python tools/text_to_mindmap.py input.txt -o output.md
+python tools/mindmaps/text_to_mindmap.py input.txt -o output.md
 ```
 
 ### `prepare_llm_input.py`
@@ -434,7 +432,7 @@ python tools/text_to_mindmap.py input.txt -o output.md
 Prepares LLM input data by integrating ontology and problem information.
 
 ```bash
-python tools/prepare_llm_input.py --output llm_input.json
+python tools/_staging/prepare_llm_input.py --output llm_input.json
 ```
 
 **Use Cases:**
@@ -450,10 +448,10 @@ python tools/prepare_llm_input.py --output llm_input.json
 
 ```bash
 # Run format tests
-pytest tools/tests/test_solution_format.py -v
+pytest tools/review-code/validation/tests/test_solution_format.py -v
 
 # Or use standalone script
-python tools/run_format_tests.py
+python tools/review-code/validation/run_format_tests.py
 ```
 
 ### Generator Tests
@@ -472,15 +470,18 @@ pytest .dev/tests/test_generate_pattern_docs.py -v
 
 ```
 neetcode/
-├── tools/tests/                  # Format compliance tests
+├── tools/review-code/validation/tests/  # Format compliance tests
 │   └── test_solution_format.py
 │
-├── .dev/tests/                   # Component tests (runner modules)
+├── tools/mindmaps/tests/                # Mind map tests
+│   └── test_post_processing.py
+│
+├── .dev/tests/                          # Component tests (runner modules)
 │   ├── test_generate_mindmaps.py
 │   ├── test_generate_pattern_docs.py
 │   └── ...
 │
-└── .dev/tests_solutions/         # Solution correctness tests
+└── .dev/tests_solutions/                # Solution correctness tests
     └── test_all_solutions.py
 ```
 
@@ -514,9 +515,9 @@ pre-commit install
 When you commit changes to:
 - `ontology/` directory
 - `meta/problems/` directory  
-- `tools/generate_mindmaps.py`
+- `tools/mindmaps/generate_mindmaps.py`
 
-The hook automatically runs `tools/generate_mindmaps_ai.py` to generate AI-powered mind maps.
+The hook automatically runs `tools/mindmaps/generate_mindmaps_ai.py` to generate AI-powered mind maps.
 
 #### Usage
 
@@ -561,7 +562,7 @@ pre-commit run generate-ai-mindmaps --all-files
 #### Configuration
 
 - **Config file**: `.pre-commit-config.yaml`
-- **Hook script**: `tools/hooks/generate_ai_mindmaps_hook.py`
+- **Hook script**: `tools/mindmaps/hooks/generate_ai_mindmaps_hook.py`
 - **API Key**: Interactive input (not stored in any file)
 - **Branch support**: Works on all branches
 
@@ -569,7 +570,7 @@ pre-commit run generate-ai-mindmaps --all-files
 
 | Feature | Description |
 |---------|-------------|
-| **Auto-detection** | Detects changes in `ontology/`, `meta/problems/`, `tools/generate_mindmaps.py` |
+| **Auto-detection** | Detects changes in `ontology/`, `meta/problems/`, `tools/mindmaps/generate_mindmaps.py` |
 | **API Key** | Interactive input, never stored |
 | **Skip options** | Multiple ways to skip when needed |
 | **Branch support** | Works on all branches |
@@ -586,7 +587,8 @@ pre-commit run generate-ai-mindmaps --all-files
 | [architecture-migration.md](../architecture-migration.md) | Architecture migration guide |
 | [mindmaps/README.md](mindmaps/README.md) | Mind map module technical docs |
 | [patterndocs/README.md](patterndocs/README.md) | Pattern docs module technical docs |
-| [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md) | AI prompts usage guide |
+| [mindmaps/ai-markmap-agent/README.md](mindmaps/ai-markmap-agent/README.md) | AI Markmap Agent docs |
+| [prompts/README.md](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/prompts/README.md) | AI prompts usage guide |
 
 ---
 
@@ -618,7 +620,7 @@ class Solution:
 <details>
 <summary><strong>How to add a new mind map type?</strong></summary>
 
-1. Create new file in `tools/mindmaps/generators/`
+1. Create new file in `tools/mindmaps/core/generators/`
 2. Implement generator function
 3. Register in `generators/__init__.py`
 4. Add tests to `.dev/tests/test_generate_mindmaps.py`
@@ -634,7 +636,7 @@ See [mindmaps/README.md](mindmaps/README.md#adding-a-new-generator)
 2. Add `_header.md` (required)
 3. Add problem files (e.g., `0003_base.md`)
 4. Optionally add `_config.toml` to control order
-5. Run `python tools/generate_pattern_docs.py --pattern <name>`
+5. Run `python tools/patterndocs/generate_pattern_docs.py --pattern <name>`
 
 See [patterndocs/README.md](patterndocs/README.md#adding-a-new-pattern)
 

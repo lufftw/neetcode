@@ -38,7 +38,7 @@
 
 ```bash
 # 1. 確保快取存在
-python tools/sync_leetcode_data.py
+python tools/leetcode-api/crawler/sync_leetcode_data.py
 
 # 2. 測試整合
 python tools/test_leetcode_api_integration.py
@@ -84,13 +84,13 @@ python main.py
 
 ```bash
 # 更新快取（如果過期）
-python tools/sync_leetcode_data.py
+python tools/leetcode-api/crawler/sync_leetcode_data.py
 
 # 強制更新
-python tools/sync_leetcode_data.py --force
+python tools/leetcode-api/crawler/sync_leetcode_data.py --force
 
 # 檢查快取狀態
-python tools/sync_leetcode_data.py --check
+python tools/leetcode-api/crawler/sync_leetcode_data.py --check
 ```
 
 ## ✅ 結論

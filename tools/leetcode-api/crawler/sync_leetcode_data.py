@@ -9,9 +9,9 @@ LeetCode API 資料同步工具
 4. 支援手動觸發更新
 
 使用方式：
-    python tools/sync_leetcode_data.py              # 更新快取
-    python tools/sync_leetcode_data.py --check      # 檢查快取是否過期
-    python tools/sync_leetcode_data.py --force      # 強制更新（忽略快取）
+    python tools/leetcode-api/crawler/sync_leetcode_data.py              # 更新快取
+    python tools/leetcode-api/crawler/sync_leetcode_data.py --check      # 檢查快取是否過期
+    python tools/leetcode-api/crawler/sync_leetcode_data.py --force      # 強制更新（忽略快取）
 """
 
 from __future__ import annotations
@@ -30,9 +30,9 @@ if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Paths
-TOOLS_DIR = Path(__file__).parent
-PROJECT_ROOT = TOOLS_DIR.parent
-CACHE_DIR = TOOLS_DIR / ".cache"
+CRAWLER_DIR = Path(__file__).parent
+PROJECT_ROOT = CRAWLER_DIR.parent.parent.parent
+CACHE_DIR = CRAWLER_DIR / ".cache"
 CACHE_FILE = CACHE_DIR / "leetcode_problems.json"
 CACHE_META_FILE = CACHE_DIR / "leetcode_cache_meta.json"
 
@@ -219,7 +219,7 @@ def check_cache_status() -> None:
     
     if not problems or not metadata:
         print("❌ 無快取資料")
-        print("   執行 'python tools/sync_leetcode_data.py' 來建立快取")
+        print("   執行 'python tools/leetcode-api/crawler/sync_leetcode_data.py' 來建立快取")
         return
     
     age = get_cache_age(metadata)
@@ -232,7 +232,7 @@ def check_cache_status() -> None:
     
     if not is_valid:
         expiry_days = CACHE_EXPIRY_DAYS
-        print(f"   建議: 執行 'python tools/sync_leetcode_data.py' 更新快取（有效期 {expiry_days} 天）")
+        print(f"   建議: 執行 'python tools/leetcode-api/crawler/sync_leetcode_data.py' 更新快取（有效期 {expiry_days} 天）")
 
 
 def main():
@@ -241,9 +241,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 範例:
-  python tools/sync_leetcode_data.py          # 更新快取（如果過期）
-  python tools/sync_leetcode_data.py --check  # 只檢查快取狀態
-  python tools/sync_leetcode_data.py --force  # 強制更新（忽略快取）
+  python tools/leetcode-api/crawler/sync_leetcode_data.py          # 更新快取（如果過期）
+  python tools/leetcode-api/crawler/sync_leetcode_data.py --check  # 只檢查快取狀態
+  python tools/leetcode-api/crawler/sync_leetcode_data.py --force  # 強制更新（忽略快取）
         """
     )
     parser.add_argument(
@@ -268,4 +268,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 

@@ -13,25 +13,35 @@ The mind maps module provides:
 ## Module Structure
 
 ```
-mindmaps/
-├── __init__.py           # Module exports
-├── config.py             # Configuration, constants, paths
-├── toml_parser.py        # TOML parsing utilities
-├── data.py               # ProblemData class
-├── loader.py             # OntologyData and data loading
-├── helpers.py            # Helper functions (frontmatter, formatting)
-├── html.py               # HTML generation logic
-├── templates.py          # HTML/CSS templates
-└── generators/           # Mind map generator functions
-    ├── __init__.py
-    ├── pattern.py        # Pattern hierarchy generator
-    ├── family.py         # Family derivation generator
-    ├── algorithm.py      # Algorithm/data structure usage
-    ├── company.py        # Company coverage
-    ├── roadmap.py        # Learning roadmaps
-    ├── relations.py      # Problem relations network
-    ├── variants.py        # Solution variants
-    └── difficulty.py     # Difficulty × Topics matrix
+tools/mindmaps/
+├── core/                     # Core module (mind map generation logic)
+│   ├── __init__.py           # Module exports
+│   ├── config.py             # Configuration, constants, paths
+│   ├── toml_parser.py        # TOML parsing utilities
+│   ├── data.py               # ProblemData class
+│   ├── loader.py             # OntologyData and data loading
+│   ├── helpers.py            # Helper functions (frontmatter, formatting)
+│   ├── html.py               # HTML generation logic
+│   ├── templates.py          # HTML/CSS templates
+│   └── generators/           # Mind map generator functions
+│       ├── __init__.py
+│       ├── pattern.py        # Pattern hierarchy generator
+│       ├── family.py         # Family derivation generator
+│       ├── algorithm.py      # Algorithm/data structure usage
+│       ├── company.py        # Company coverage
+│       ├── roadmap.py        # Learning roadmaps
+│       ├── relations.py      # Problem relations network
+│       ├── variants.py       # Solution variants
+│       └── difficulty.py     # Difficulty × Topics matrix
+├── ai-markmap-agent/         # AI-powered mindmap agent
+├── ai_mindmap/               # AI mindmap module
+├── hooks/                    # Git hooks
+├── prompts/                  # AI prompts
+├── shared/                   # Shared utilities
+├── tests/                    # Tests
+├── generate_mindmaps.py      # Rule-based generator (entry)
+├── generate_mindmaps_ai.py   # AI generator (entry)
+└── html_meta_description_generator.py  # SEO meta generator
 ```
 
 ## Core Components
@@ -140,7 +150,7 @@ Each generator function takes `(ontology: OntologyData, problems: dict[str, Prob
 ### Basic Usage
 
 ```python
-from mindmaps import (
+from mindmaps.core import (
     load_ontology,
     load_problems,
     GENERATORS,
@@ -158,7 +168,7 @@ print(content)
 ### Generate HTML
 
 ```python
-from mindmaps import generate_html_mindmap
+from mindmaps.core import generate_html_mindmap
 
 markdown = "# Test Map\n\n## Section"
 html = generate_html_mindmap("Test Title", markdown, use_autoloader=False)
@@ -167,7 +177,7 @@ html = generate_html_mindmap("Test Title", markdown, use_autoloader=False)
 ### Custom Configuration
 
 ```python
-from mindmaps import get_config, MindmapsConfig
+from mindmaps.core import get_config, MindmapsConfig
 import os
 
 # Override via environment variables
@@ -194,7 +204,7 @@ print(config.github_repo_url)
 
 ## Configuration File
 
-Create `tools/generate_mindmaps.toml`:
+Create `tools/mindmaps/generate_mindmaps.toml`:
 
 ```toml
 [github]
@@ -258,7 +268,7 @@ Test coverage includes:
 
 ### Adding a New Generator
 
-1. Create a new file in `generators/` (e.g., `custom.py`)
+1. Create a new file in `core/generators/` (e.g., `custom.py`)
 2. Implement generator function:
    ```python
    def generate_custom(ontology: OntologyData, problems: dict[str, ProblemData]) -> str:
@@ -266,12 +276,12 @@ Test coverage includes:
        # ... generation logic ...
        return "\n".join(lines)
    ```
-3. Add to `generators/__init__.py`:
+3. Add to `core/generators/__init__.py`:
    ```python
    from .custom import generate_custom
    GENERATORS["custom"] = generate_custom
    ```
-4. Add to `MINDMAP_TYPES` in `config.py`
+4. Add to `MINDMAP_TYPES` in `core/config.py`
 5. Add tests in `.dev/tests/test_generate_mindmaps.py`
 
 ### Module Size Guidelines
@@ -283,6 +293,6 @@ Test coverage includes:
 ## See Also
 
 - [Main Tools README](../README.md)
-- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/generate_mindmaps.py)
+- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/generate_mindmaps.py)
 - [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_mindmaps.py)
 

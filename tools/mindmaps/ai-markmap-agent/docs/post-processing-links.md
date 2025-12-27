@@ -32,7 +32,7 @@ The post-processing module converts LeetCode problem references in AI-generated 
 
 **Features:**
 - Includes problem number and title for clarity
-- Title sourced from `tools/.cache/leetcode_problems.json` for consistency
+- Title sourced from `tools/leetcode-api/crawler/.cache/leetcode_problems.json` for consistency
 - Automatically adds GitHub solution links (if available)
 
 ## Input Formats Handled
@@ -111,7 +111,7 @@ Load problem metadata from `meta/problems/` directory:
 
 ### LeetCode API Cache
 
-Load from `tools/.cache/leetcode_problems.json`:
+Load from `tools/leetcode-api/crawler/.cache/leetcode_problems.json`:
 - LeetCode URLs
 - Slugs
 - Problem titles

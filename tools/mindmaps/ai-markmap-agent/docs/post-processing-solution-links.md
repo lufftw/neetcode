@@ -107,7 +107,7 @@ def _build_complete_link(self, problem_id: str) -> str:
 ## Data Flow
 
 ```
-meta/problems/*.toml + tools/.cache/leetcode_problems.json
+meta/problems/*.toml + tools/leetcode-api/crawler/.cache/leetcode_problems.json
     ↓
 merge_leetcode_api_data()
     ↓

@@ -310,7 +310,7 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 - 🧬 **Deep Pattern Synthesis** — AI identifies non-obvious connections between patterns
 - 🎯 **Smart Linking** — Problems link to GitHub solutions (when available) or LeetCode
 - 🌐 **Multi-language** — Generate in English and 繁體中文
-- ♻️ **Regeneratable** — Run `python tools/generate_mindmaps_ai.py` to create fresh insights
+- ♻️ **Regeneratable** — Run `python tools/mindmaps/generate_mindmaps_ai.py` to create fresh insights
 
 ---
 
@@ -340,8 +340,8 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 | Mode | Description | Quick Start |
 |:-----|:------------|:------------|
-| **🤖 Evolved Agent** | Multi-expert refinement with consensus voting | `cd tools/ai-markmap-agent && python main.py` |
-| **🤖 Basic AI** | Single-pass synthesis from knowledge graph | `python tools/generate_mindmaps_ai.py` |
+| **🤖 Evolved Agent** | Multi-expert refinement with consensus voting | `cd tools/mindmaps/ai-markmap-agent && python main.py` |
+| **🤖 Basic AI** | Single-pass synthesis from knowledge graph | `python tools/mindmaps/generate_mindmaps_ai.py` |
 
 ### Key Features
 
@@ -358,7 +358,7 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 | **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
 | **HTML** | `docs/pages/mindmaps/*.html` |
 
-> 📖 **Evolved Agent**: See [`tools/ai-markmap-agent/README.md`](docs/tools/ai-markmap-agent/README.md) for architecture, expert roles, and configuration.
+> 📖 **Evolved Agent**: See [`tools/mindmaps/ai-markmap-agent/README.md`](docs/tools/mindmaps/ai-markmap-agent/README.md) for architecture, expert roles, and configuration.
 >
 > 📖 **Basic AI**: See [`tools/README.md`](docs/tools/README.md) for configuration options.
 
@@ -776,32 +776,34 @@ neetcode/
 │   └── stylesheets/           # Custom CSS
 │
 ├── tools/                     # 🛠️ Utility scripts
-│   ├── generate_mindmaps_ai.py    # 🤖 AI mind map generator
-│   ├── generate_mindmaps_ai.toml     # AI generation configuration
-│   ├── generate_mindmaps.py       # Rule-based mind map generator
-│   ├── generate_mindmaps.toml     # Rule-based configuration
-│   ├── generate_pattern_docs.py   # Generate pattern docs
-│   ├── generate_pattern_docs.toml # Pattern docs configuration
-│   ├── html_meta_description_generator.py  # Generate SEO meta descriptions
-│   ├── html_meta_description_generator.toml  # Meta description config
-│   ├── check_solutions.py         # Solution validation tool
-│   ├── prepare_llm_input.py       # Prepare LLM input data
-│   ├── text_to_mindmap.py         # Convert text to mindmap
-│   ├── ai-markmap-agent/          # 🤖 AI Markmap Agent (multi-agent pipeline)
-│   │   ├── main.py                # Entry point
-│   │   ├── src/                   # Source code (agents, config, etc.)
-│   │   ├── prompts/               # Expert prompts
-│   │   ├── config/                # Configuration files
-│   │   └── outputs/               # Generated outputs
-│   ├── mindmaps/                  # Mind map generator modules
-│   ├── patterndocs/               # Pattern docs generator modules
-│   ├── shared/                    # Shared utilities
-│   ├── hooks/                     # Pre-commit hooks
-│   ├── prompts/                   # AI prompt management
-│   │   ├── README.md              # Prompt documentation
-│   │   └── generated/             # Auto-generated prompts
-│   ├── tests/                     # Format validation tests
-│   └── outputs/                   # Tool output files (gitignored)
+│   ├── mindmaps/              # 🗺️ Mind map tools (all integrated)
+│   │   ├── core/              # Core modules
+│   │   ├── ai-markmap-agent/  # 🤖 AI Markmap Agent (multi-agent pipeline)
+│   │   ├── ai_mindmap/        # AI mind map modules
+│   │   ├── hooks/             # Git hooks
+│   │   ├── prompts/           # AI prompts
+│   │   ├── shared/            # Shared utilities
+│   │   ├── tests/             # Tests
+│   │   ├── generate_mindmaps.py       # Rule-based generator (entry)
+│   │   ├── generate_mindmaps_ai.py    # AI generator (entry)
+│   │   ├── generate_mindmaps.toml     # Rule-based configuration
+│   │   ├── generate_mindmaps_ai.toml  # AI configuration
+│   │   ├── sync_mindmap_html.py       # Sync HTML
+│   │   ├── text_to_mindmap.py         # Text to mindmap
+│   │   └── html_meta_description_generator.py  # SEO meta descriptions
+│   ├── patterndocs/           # 📚 Pattern documentation generator
+│   │   └── generate_pattern_docs.py   # Entry script
+│   ├── review-code/           # 🔍 Code review & validation
+│   │   └── validation/        # Validation tools
+│   │       ├── check_solutions.py
+│   │       ├── check_test_files.py
+│   │       └── run_format_tests.py
+│   ├── docstring/             # 📝 Docstring tools
+│   ├── leetcode-api/          # 🔗 LeetCode API
+│   │   └── crawler/           # Crawler tools
+│   ├── maintenance/           # 🔧 Maintenance tools
+│   │   └── doc-naming/        # Documentation naming tools
+│   └── _staging/              # 📦 Staging area (to be organized)
 │
 ├── ontology/                  # 🧬 Algorithm ontology (TOML)
 │   ├── api_kernels.toml       # API kernel definitions
@@ -956,29 +958,29 @@ python -m pytest .dev/tests --cov=runner --cov-report=html
 
 ```bash
 # Interactive mode
-python tools/generate_mindmaps_ai.py
+python tools/mindmaps/generate_mindmaps_ai.py
 
 # With specific goal
-python tools/generate_mindmaps_ai.py --goal interview
+python tools/mindmaps/generate_mindmaps_ai.py --goal interview
 
 # Generate multiple languages
-# Edit tools/generate_mindmaps_ai.toml: language = ["en", "zh-TW"]
-python tools/generate_mindmaps_ai.py
+# Edit tools/mindmaps/generate_mindmaps_ai.toml: language = ["en", "zh-TW"]
+python tools/mindmaps/generate_mindmaps_ai.py
 ```
 
-Configuration: `tools/generate_mindmaps_ai.toml`
+Configuration: `tools/mindmaps/generate_mindmaps_ai.toml`
 
 **Rule-Based:**
 
 ```bash
 # Generate Markdown mind maps
-python tools/generate_mindmaps.py
+python tools/mindmaps/generate_mindmaps.py
 
 # Generate HTML (interactive) mind maps
-python tools/generate_mindmaps.py --html
+python tools/mindmaps/generate_mindmaps.py --html
 ```
 
-Configuration: `tools/generate_mindmaps.toml`
+Configuration: `tools/mindmaps/generate_mindmaps.toml`
 
 ### Build Documentation Locally
 

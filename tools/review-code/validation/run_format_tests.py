@@ -11,11 +11,11 @@ import sys
 import unittest
 from pathlib import Path
 
-# Add tools directory to path
-TOOLS_DIR = Path(__file__).parent
-sys.path.insert(0, str(TOOLS_DIR))
+# Add tests directory to path (can't use hyphenated module names)
+TESTS_DIR = Path(__file__).parent / "tests"
+sys.path.insert(0, str(TESTS_DIR))
 
-from tests.test_solution_format import TestSolutionFormat
+from test_solution_format import TestSolutionFormat
 
 
 def main():

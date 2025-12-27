@@ -54,7 +54,7 @@ from docstring.formatter import get_full_docstring_data
 # Project root directory
 ROOT = Path(__file__).parent.parent.parent
 SOLUTIONS_DIR = ROOT / "solutions"
-CACHE_FILE = ROOT / "tools" / ".cache" / "leetcode_problems.json"
+CACHE_FILE = ROOT / "tools" / "leetcode-api" / "crawler" / ".cache" / "leetcode_problems.json"
 
 
 class DocstringBuilder:
@@ -165,6 +165,11 @@ class DocstringFixer:
         self.delay_max = delay_max
         self.force_refresh = force_refresh
         self.cache = self._load_cache()
+        if not self.cache:
+            print(f"⚠️  Warning: Cannot load cache file: {CACHE_FILE}")
+            print(f"   Please run the following command to create the cache:")
+            print(f"   python tools/leetcode-api/crawler/sync_leetcode_data.py")
+            print()
         self.fixed_count = 0
         self.skipped_count = 0
         self.cached_count = 0
@@ -262,9 +267,12 @@ class DocstringFixer:
         problem_id = match.group(1)
         
         # Get problem info from cache (for slug lookup)
+        if not self.cache:
+            return False, f"Cache file not found. Please run: python tools/leetcode-api/crawler/sync_leetcode_data.py"
+        
         info = self._get_problem_info(problem_id)
         if not info:
-            return False, "Problem not found in cache"
+            return False, f"Problem {problem_id} not found in cache. Please run: python tools/leetcode-api/crawler/sync_leetcode_data.py"
         
         slug = info['slug']
         

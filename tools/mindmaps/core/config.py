@@ -9,7 +9,7 @@ from pathlib import Path
 from .toml_parser import parse_toml_simple
 
 # Paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 ONTOLOGY_DIR = PROJECT_ROOT / "ontology"
 META_PROBLEMS_DIR = PROJECT_ROOT / "meta" / "problems"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "docs" / "mindmaps"

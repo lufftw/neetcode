@@ -49,7 +49,7 @@ This project's tests are divided into **three main categories**:
 
 | Category | Directory | Purpose | Count |
 |----------|-----------|---------|-------|
-| **Format Compliance Tests** | `tools/tests/` | Solution format standards | ~10 |
+| **Format Compliance Tests** | `tools/review-code/validation/tests/` | Solution format standards | ~10 |
 | **Component Tests** | `.dev/tests/` | Runner module functionality | ~273 |
 | **Solution Correctness Tests** | `.dev/tests_solutions/` | Solution execution results | ~99 |
 
@@ -95,9 +95,9 @@ This will execute in order:
 ```bash
 # === Format Compliance Tests ===
 # Windows
-tools\run_format_tests.bat
+tools\review-code\validation\run_format_tests.bat
 # Linux/Mac
-tools/run_format_tests.sh
+tools/review-code/validation/run_format_tests.sh
 
 # === Component Tests ===
 # Windows
@@ -154,7 +154,7 @@ tools/run_format_tests.sh
 
 1. Ensure compliance with format standards
    ```bash
-   python tools/check_solutions.py --verbose
+   python tools/review-code/validation/check_solutions.py --verbose
    ```
 2. Add test cases to `tests/` directory
 3. Run tests to verify
@@ -193,9 +193,9 @@ tools/run_format_tests.sh
 .dev/run_all_tests.sh                     # Linux/Mac
 
 # === Format Tests ===
-python tools/check_solutions.py           # Quick check
-python tools/check_solutions.py --verbose # Show suggestions
-python -m pytest tools/tests -v           # Unit tests
+python tools/review-code/validation/check_solutions.py           # Quick check
+python tools/review-code/validation/check_solutions.py --verbose # Show suggestions
+python -m pytest tools/review-code/validation/tests -v           # Unit tests
 
 # === Component Tests ===
 python -m pytest .dev/tests -v            # All

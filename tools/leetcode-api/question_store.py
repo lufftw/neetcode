@@ -32,7 +32,7 @@ class QuestionStore:
         Initialize the question store.
         
         Args:
-            db_path: Path to SQLite database. Defaults to tools/.cache/leetcode_questions.db
+            db_path: Path to SQLite database. Defaults to tools/leetcode-api/db/leetcode.db
         """
         self.db_path = db_path or DEFAULT_DB_PATH
         self.db_path.parent.mkdir(parents=True, exist_ok=True)

@@ -315,7 +315,7 @@ scripts\run_tests.bat 0001_two_sum
 - 🧬 **深度模式合成** — AI 識別模式之間的非顯性連結
 - 🎯 **智能連結** — 問題連結到 GitHub 解答（如有）或 LeetCode
 - 🌐 **多語言** — 支援英文和繁體中文
-- ♻️ **可重新生成** — 執行 `python tools/generate_mindmaps_ai.py` 產生新洞見
+- ♻️ **可重新生成** — 執行 `python tools/mindmaps/generate_mindmaps_ai.py` 產生新洞見
 
 ---
 
@@ -345,8 +345,8 @@ scripts\run_tests.bat 0001_two_sum
 
 | 模式 | 說明 | 快速開始 |
 |:-----|:-----|:---------|
-| **🤖 Evolved Agent** | 多專家精煉與共識投票 | `cd tools/ai-markmap-agent && python main.py` |
-| **🤖 Basic AI** | 從知識圖譜單次合成 | `python tools/generate_mindmaps_ai.py` |
+| **🤖 Evolved Agent** | 多專家精煉與共識投票 | `cd tools/mindmaps/ai-markmap-agent && python main.py` |
+| **🤖 Basic AI** | 從知識圖譜單次合成 | `python tools/mindmaps/generate_mindmaps_ai.py` |
 
 ### 主要特色
 
@@ -363,7 +363,7 @@ scripts\run_tests.bat 0001_two_sum
 | **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
 | **HTML** | `docs/pages/mindmaps/*.html` |
 
-> 📖 **Evolved Agent**：詳見 [`tools/ai-markmap-agent/README.md`](docs/tools/ai-markmap-agent/README.md) 了解架構、專家角色與配置。
+> 📖 **Evolved Agent**：詳見 [`tools/mindmaps/ai-markmap-agent/README.md`](docs/tools/mindmaps/ai-markmap-agent/README.md) 了解架構、專家角色與配置。
 >
 > 📖 **Basic AI**：詳見 [`tools/README.md`](docs/tools/README.md) 了解配置選項。
 
@@ -781,30 +781,34 @@ neetcode/
 │   └── stylesheets/           # 自訂 CSS
 │
 ├── tools/                     # 🛠️ 工具腳本
-│   ├── generate_mindmaps_ai.py    # 🤖 AI 心智圖生成器
-│   ├── generate_mindmaps_ai.toml     # AI 生成配置
-│   ├── generate_mindmaps.py       # 規則式心智圖生成器
-│   ├── generate_mindmaps.toml     # 規則式配置
-│   ├── generate_pattern_docs.py   # 生成模式文件
-│   ├── generate_pattern_docs.toml # 模式文件配置
-│   ├── check_solutions.py         # 解答驗證工具
-│   ├── prepare_llm_input.py       # 準備 LLM 輸入資料
-│   ├── text_to_mindmap.py         # 文字轉心智圖
-│   ├── ai-markmap-agent/          # 🤖 AI Markmap Agent（多代理流程）
-│   │   ├── main.py                # 入口點
-│   │   ├── src/                   # 原始碼（代理、配置等）
-│   │   ├── prompts/               # 專家提示詞
-│   │   ├── config/                # 配置檔案
-│   │   └── outputs/               # 生成輸出
-│   ├── mindmaps/                  # 心智圖生成器模組
-│   ├── patterndocs/               # 模式文件生成器模組
-│   ├── shared/                    # 共用工具
-│   ├── hooks/                     # Pre-commit 掛鉤
-│   ├── prompts/                   # AI 提示詞管理
-│   │   ├── README.md              # 提示詞文件
-│   │   └── generated/             # 自動生成的提示詞
-│   ├── tests/                     # 格式驗證測試
-│   └── outputs/                   # 工具輸出檔案（gitignored）
+│   ├── mindmaps/              # 🗺️ 思維導圖工具（全部整合）
+│   │   ├── core/              # 核心模組
+│   │   ├── ai-markmap-agent/  # 🤖 AI Markmap Agent（多代理流程）
+│   │   ├── ai_mindmap/        # AI 思維導圖模組
+│   │   ├── hooks/             # Git hooks
+│   │   ├── prompts/           # AI 提示詞
+│   │   ├── shared/            # 共用工具
+│   │   ├── tests/             # 測試
+│   │   ├── generate_mindmaps.py       # 規則式生成器（入口）
+│   │   ├── generate_mindmaps_ai.py    # AI 生成器（入口）
+│   │   ├── generate_mindmaps.toml     # 規則式配置
+│   │   ├── generate_mindmaps_ai.toml  # AI 配置
+│   │   ├── sync_mindmap_html.py       # 同步 HTML
+│   │   ├── text_to_mindmap.py         # 文字轉心智圖
+│   │   └── html_meta_description_generator.py  # SEO 元描述生成
+│   ├── patterndocs/           # 📚 模式文檔生成器
+│   │   └── generate_pattern_docs.py   # 入口腳本
+│   ├── review-code/           # 🔍 代碼審查與驗證
+│   │   └── validation/        # 驗證工具
+│   │       ├── check_solutions.py
+│   │       ├── check_test_files.py
+│   │       └── run_format_tests.py
+│   ├── docstring/             # 📝 文檔字符串工具
+│   ├── leetcode-api/          # 🔗 LeetCode API
+│   │   └── crawler/           # 爬蟲工具
+│   ├── maintenance/           # 🔧 維護工具
+│   │   └── doc-naming/        # 文檔命名工具
+│   └── _staging/              # 📦 暫存區（待整理）
 │
 ├── ontology/                  # 🧬 演算法本體論（TOML）
 │   ├── api_kernels.toml       # API 核心定義
@@ -971,29 +975,29 @@ python -m pytest .dev/tests --cov=runner --cov-report=html
 
 ```bash
 # 互動模式
-python tools/generate_mindmaps_ai.py
+python tools/mindmaps/generate_mindmaps_ai.py
 
 # 指定目標
-python tools/generate_mindmaps_ai.py --goal interview
+python tools/mindmaps/generate_mindmaps_ai.py --goal interview
 
 # 生成多語言
-# 編輯 tools/generate_mindmaps_ai.toml: language = ["en", "zh-TW"]
-python tools/generate_mindmaps_ai.py
+# 編輯 tools/mindmaps/generate_mindmaps_ai.toml: language = ["en", "zh-TW"]
+python tools/mindmaps/generate_mindmaps_ai.py
 ```
 
-配置檔：`tools/generate_mindmaps_ai.toml`
+配置檔：`tools/mindmaps/generate_mindmaps_ai.toml`
 
 **規則式：**
 
 ```bash
 # 生成 Markdown 心智圖
-python tools/generate_mindmaps.py
+python tools/mindmaps/generate_mindmaps.py
 
 # 生成 HTML（互動式）心智圖
-python tools/generate_mindmaps.py --html
+python tools/mindmaps/generate_mindmaps.py --html
 ```
 
-配置檔：`tools/generate_mindmaps.toml`
+配置檔：`tools/mindmaps/generate_mindmaps.toml`
 
 ### 本地建置文件
 

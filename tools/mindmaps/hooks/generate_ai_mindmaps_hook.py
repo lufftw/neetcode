@@ -50,7 +50,7 @@ def check_changed_files() -> bool:
     relevant_patterns = [
         'ontology/',
         'meta/problems/',
-        'tools/generate_mindmaps.py'
+        'tools/mindmaps/generate_mindmaps.py'
     ]
     
     for file in changed_files:
@@ -104,7 +104,7 @@ def main() -> int:
     print("📝 Detected changes in:")
     print("   - ontology/")
     print("   - meta/problems/")
-    print("   - tools/generate_mindmaps.py")
+    print("   - tools/mindmaps/generate_mindmaps.py")
     print("")
     print("🤖 Running AI mind map generation...")
     print("")
@@ -117,7 +117,7 @@ def main() -> int:
         print("")
     
     # Run the AI mind map generator
-    script_path = TOOLS_DIR / 'generate_mindmaps_ai.py'
+    script_path = TOOLS_DIR / 'mindmaps' / 'generate_mindmaps_ai.py'
     
     if not script_path.exists():
         print(f"❌ Error: Script not found: {script_path}")
