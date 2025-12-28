@@ -31,6 +31,8 @@ wheels/
 *.swo
 *~
 .cursorrules
+.claude
+AGENTS.md
 
 # OS
 .DS_Store
