@@ -1,8 +1,11 @@
 # LeetCode API
 
+> **Status**: Canonical Reference  
+> **Scope**: LeetCode API cache module in tools/leetcode-api/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}  
 > **Purpose**: SQLite-backed cache and unified API for LeetCode question data  
-> **Location**: `tools/leetcode-api/`  
-> **Last Updated**: {{ git_revision_date_localized }}
+> **Location**: `tools/leetcode-api/`
 
 This module provides a local cache and unified API for accessing LeetCode question data, reducing network requests and improving performance for tools that need problem metadata.
 
@@ -260,7 +263,7 @@ This enables:
 - **Offline support**: Work with cached data without network
 - **Faster processing**: Batch operations use local cache
 
-See [Docstring Domain Refactor](../docstring/refactor.md) for the design rationale.
+See [Docstring Formatter](../docstring/README.md) for the design and API details.
 
 ---
 
@@ -333,6 +336,7 @@ Question data schema follows [LeetScrape](https://github.com/nikhil-ravi/LeetScr
 
 ## Related Documentation
 
-- [Review Code Tool](../README.md) - File-Level Docstring generator
-- [review-code README](../../../tools/review-code/README.md) - Docstring format specification
+- [Review Code Tool](../review-code/README.md) - File-Level Docstring generator
+- [Docstring Formatter](../docstring/README.md) - Docstring formatting module
+- [Main Tools README](../README.md) - Tools overview
 

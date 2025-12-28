@@ -1,5 +1,10 @@
 # Pattern Documentation Generation Module
 
+> **Status**: Canonical Reference  
+> **Scope**: Pattern documentation generation tools in tools/patterndocs/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This module generates comprehensive pattern documentation by composing ontology definitions and per-problem markdown snippets.
 
 ## Overview
@@ -427,9 +432,9 @@ meta/patterns/binary_search/
 
 ## See Also
 
-- [Main Tools README](../README.md)
-- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/patterndocs/generate_pattern_docs.py)
-- [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_pattern_docs.py)
-- [Pattern Documentation Output](../../patterns/README.md)
+- [Main Tools README](../README.md) - Overview of all tools
+- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/patterndocs/generate_pattern_docs.py) - Command-line interface
+- [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_pattern_docs.py) - Test coverage
+- [Pattern Documentation Output](../../patterns/README.md) - Generated pattern docs
 
 

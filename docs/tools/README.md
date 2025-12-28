@@ -1,5 +1,10 @@
 # 🔧 NeetCode Tools
 
+> **Status**: Informational  
+> **Scope**: All developer tools in tools/ directory  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 Developer tools for checking, validating, and generating project content.
 
 ---

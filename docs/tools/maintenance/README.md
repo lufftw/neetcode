@@ -1,8 +1,11 @@
 # Maintenance Tools
 
+> **Status**: Informational  
+> **Scope**: Maintenance scripts in tools/maintenance/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}  
 > **Purpose**: Scripts for maintaining and standardizing documentation file naming conventions  
-> **Location**: `tools/maintenance/`  
-> **Last Updated**: {{ git_revision_date_localized }}
+> **Location**: `tools/maintenance/`
 
 This module contains maintenance scripts for standardizing documentation file naming conventions and fixing references across the project.
 

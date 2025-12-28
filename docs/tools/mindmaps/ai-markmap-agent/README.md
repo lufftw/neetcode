@@ -1,6 +1,12 @@
 # AI Markmap Agent
 
-> A multi-expert refinement system for Markmap improvement using LangGraph.
+> **Status**: Canonical Reference  
+> **Scope**: AI Markmap Agent system in tools/mindmaps/ai-markmap-agent/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}  
+> **Note**: All filenames in this documentation follow the [kebab-case naming convention](../../../contributors/documentation-naming.md).
+
+A multi-expert refinement system for Markmap improvement using LangGraph.
 
 [![LangGraph](https://img.shields.io/badge/LangGraph-v1.0.4-blue)](https://github.com/langchain-ai/langgraph)
 [![Python](https://img.shields.io/badge/Python-3.10+-green)](https://python.org)
@@ -70,7 +76,7 @@ This system refines existing high-quality Markmaps through multi-expert review a
 │                                                                             │
 │  ┌─────────────────────────────────┐                                        │
 │  │ Baseline Markmap                │                                        │
-│  │ (e.g., neetcode_ontology_ai.md) │                                        │
+│  │ (e.g., neetcode-ontology-ai.md) │                                        │
 │  └───────────┬─────────────────────┘                                        │
 │              │                                                              │
 │  ════════════════════════════════════════════════════════════════════════  │
@@ -232,26 +238,26 @@ python main.py --dry-run
 Translate an existing Markmap without running the full pipeline:
 
 ```bash
-# Translate latest English output to zh-TW
+# Translate latest English output to zh-TW (Traditional Chinese - Taiwan)
 python translate_only.py
 
 # Translate specific file
 python translate_only.py --input path/to/file_en.md
 
 # Custom source/target languages
-python translate_only.py --source en --target zh-TW
+python translate_only.py --source en --target zh-TW  # Language code uses zh-TW, but filenames use zh-tw
 
 # Also generate HTML
 python translate_only.py --html
 ```
 
-#### How to Output `neetcode_ontology_agent_evolved_zh-TW.md`
+#### How to Output `neetcode-ontology-agent-evolved-zh-tw.md`
 
 The `translate_only.py` script automatically generates the translated file with the correct naming convention. Here's how to use it:
 
 **Method 1: Translate Latest English Output (Recommended)**
 
-If you have already generated the English version (`neetcode_ontology_agent_evolved_en.md`), the script will automatically find it and translate it:
+If you have already generated the English version (`neetcode-ontology-agent-evolved-en.md`), the script will automatically find it and translate it:
 
 ```bash
 cd tools/mindmaps/ai-markmap-agent
@@ -392,13 +398,13 @@ The translation uses settings from `config/config.yaml`:
 
 - **Model**: `gpt-5.2` (configured in `output.naming.languages.zh-tw.translator_model`)
 - **Source Language**: `en` (default)
-- **Target Language**: `zh-TW` (default)
+- **Target Language**: `zh-TW` (default, language code format; filenames use `zh-tw`)
 - **Max Tokens**: `translator_max_tokens` (configured in `output.naming.languages.zh-tw.translator_max_tokens`)
   - **gpt-5.2**: Recommended `128000` (max output capacity: 128,000 tokens, context window: 400,000 tokens)
   - **gpt-4o**: Recommended `16384` (max output typically 16,384 tokens)
   - **gpt-4**: Recommended `8192` (max output typically 8,192 tokens)
   - **Default**: `8192` if not specified
-- **Prompt**: Uses `prompts/translator/zh_tw_translator_behavior.md` with comprehensive Taiwan DSA terminology rules
+- **Prompt**: Uses `prompts/translator/zh-tw-translator-behavior.md` with comprehensive Taiwan DSA terminology rules
 
 **Important**: Set `translator_max_tokens` appropriately for your model. If the value is too small, the API may return empty responses for large translations.
 
@@ -424,7 +430,7 @@ All translation errors include detailed request information for debugging:
 - The script reads from `config/config.yaml` for output directory settings
 - Translation prompt enforces Taiwan-specific terminology (not Mainland China terms)
 - API keys are requested at runtime and cleared after execution
-- The output filename automatically replaces the language suffix (e.g., `_en` → `_zh-TW`)
+- The output filename automatically replaces the language suffix (e.g., `_en` → `_zh-tw` in kebab-case)
 - **Always check debug output files** when errors occur - they contain the full API request/response
 
 ### Standalone HTML Converter
@@ -493,8 +499,8 @@ You can define preset conversion tasks in `convert_to_html.toml`:
 python convert_to_html.py --list-presets
 
 # Use a single preset
-python convert_to_html.py --preset neetcode_ontology_agent_evolved_en
-python convert_to_html.py --preset neetcode_ontology_agent_evolved_zh-TW
+python convert_to_html.py --preset neetcode-ontology-agent-evolved-en
+python convert_to_html.py --preset neetcode-ontology-agent-evolved-zh-tw
 
 # Process all presets at once (recommended for batch conversion)
 python convert_to_html.py --all
@@ -529,7 +535,7 @@ python tools/mindmaps/ai-markmap-agent/convert_to_html.py \
 # From project root - relative paths resolved relative to script directory
 python tools\mindmaps\ai-markmap-agent\convert_to_html.py `
     docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
-    -o docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
+    -o docs\pages\mindmaps\neetcode-ontology-agent-evolved-en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 ```
 
@@ -563,13 +569,13 @@ cd tools\mindmaps\ai-markmap-agent
 # Convert English version
 python convert_to_html.py `
     ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
-    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
+    -o ..\..\docs\pages\mindmaps\neetcode-ontology-agent-evolved-en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 # Convert Traditional Chinese version
 python convert_to_html.py `
     ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
-    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
+    -o ..\..\docs\pages\mindmaps\neetcode-ontology-agent-evolved-zh-tw.html `
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
 
@@ -594,12 +600,12 @@ python tools/mindmaps/ai-markmap-agent/convert_to_html.py \
 # From project root - relative paths resolved relative to script directory
 python tools\mindmaps\ai-markmap-agent\convert_to_html.py `
     docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
-    -o docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
+    -o docs\pages\mindmaps\neetcode-ontology-agent-evolved-en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 python tools\mindmaps\ai-markmap-agent\convert_to_html.py `
     docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
-    -o docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
+    -o docs\pages\mindmaps\neetcode-ontology-agent-evolved-zh-tw.html `
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
 
@@ -619,13 +625,13 @@ It can be used to convert any Markmap Markdown file to interactive HTML.
 # Convert English version
 python convert_to_html.py `
     ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md `
-    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html `
+    -o ..\..\docs\pages\mindmaps\neetcode-ontology-agent-evolved-en.html `
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 # Convert Traditional Chinese version
 python convert_to_html.py `
     ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md `
-    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html `
+    -o ..\..\docs\pages\mindmaps\neetcode-ontology-agent-evolved-zh-tw.html `
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 ```
 
@@ -665,13 +671,13 @@ if not exist "..\..\docs\pages\mindmaps" mkdir "..\..\docs\pages\mindmaps"
 REM Convert English
 python convert_to_html.py ^
     ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-en.md ^
-    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_en.html ^
+    -o ..\..\docs\pages\mindmaps\neetcode-ontology-agent-evolved-en.html ^
     -t "NeetCode Agent Evolved Mindmap (EN)"
 
 REM Convert Traditional Chinese
 python convert_to_html.py ^
     ..\..\docs\mindmaps\neetcode-ontology-agent-evolved-zh-tw.md ^
-    -o ..\..\docs\pages\mindmaps\neetcode_ontology_agent_evolved_zh-TW.html ^
+    -o ..\..\docs\pages\mindmaps\neetcode-ontology-agent-evolved-zh-tw.html ^
     -t "NeetCode Agent Evolved Mindmap (繁體中文)"
 
 echo ✅ All conversions complete!
@@ -848,11 +854,11 @@ Final Markmaps are saved to:
 - **Markdown**: `docs/mindmaps/`
 - **HTML**: `docs/pages/mindmaps/`
 
-Filename format: `neetcode_ontology_agent_evolved_{lang}.{ext}`
+Filename format: `neetcode-ontology-agent-evolved-{lang}.{ext}` (kebab-case)
 
 Examples:
-- `neetcode_ontology_agent_evolved_en.md`
-- `neetcode_ontology_agent_evolved_zh-TW.html`
+- `neetcode-ontology-agent-evolved-en.md`
+- `neetcode-ontology-agent-evolved-zh-tw.html`
 
 ### Version History
 
@@ -868,6 +874,8 @@ outputs/versions/
 └── v3/
     └── ...
 ```
+
+**Note:** All filenames follow kebab-case naming convention as specified in [Documentation Naming Convention](../../../contributors/documentation-naming.md).
 
 Version numbers auto-increment: `v1`, `v2`, `v3`, ...
 
@@ -1000,11 +1008,11 @@ Post-processing automatically converts LeetCode problem references to standardiz
 ### Workflow Integration
 
 1. **Writer Phase**: Generates raw markdown (no post-processing)
-   - Saved to debug output: `llm_output_writer_write.md`
+   - Saved to debug output: `llm-output-writer-write.md` (kebab-case)
    - Used as input for translation
 
 2. **Translation Phase**: Translates raw markdown (no post-processing)
-   - Debug output: `translation_before_*.md` and `translation_after_*.md`
+   - Debug output: `translation-before-*.md` and `translation-after-*.md` (kebab-case)
    - Outputs translated raw markdown
 
 3. **Post-Processing Phase**: Processes both English and translated outputs
@@ -1016,7 +1024,7 @@ Post-processing automatically converts LeetCode problem references to standardiz
 
 After each post-processing run, a comparison file is automatically generated:
 
-**Location:** `outputs/final/post_processing_comparison_{timestamp}.md`
+**Location:** `outputs/final/post-processing-comparison-{timestamp}.md` (kebab-case)
 
 **Contents:**
 - Before/After comparison for each language (English, Chinese, etc.)

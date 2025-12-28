@@ -1,5 +1,10 @@
 # Review Code Tools
 
+> **Status**: Canonical Reference  
+> **Scope**: Code review and validation tools in tools/review-code/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 Code review and validation tools for the NeetCode Practice Framework.
 
 ## Overview
@@ -114,7 +119,7 @@ python tools/review-code/validation/check_solutions.py
 
 ## See Also
 
-- [Main Tools README](../README.md)
-- [Solution Contract](../../solution-contract.md)
-- [Testing Documentation](../../contributors/testing.md)
+- [Main Tools README](../README.md) - Overview of all tools
+- [Solution Contract](../../solution-contract.md) - Solution file specification
+- [Testing Documentation](../../contributors/testing.md) - Testing guide (if exists)
 

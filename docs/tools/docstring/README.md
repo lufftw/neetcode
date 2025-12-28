@@ -1,8 +1,11 @@
 # Docstring Formatter
 
+> **Status**: Canonical Reference  
+> **Scope**: Docstring formatter module in tools/docstring/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}  
 > **Purpose**: Transform LeetCode Question objects into structured docstring specifications  
-> **Location**: `tools/docstring/formatter.py`  
-> **Last Updated**: {{ git_revision_date_localized }}
+> **Location**: `tools/docstring/formatter.py`
 
 This module extracts and normalizes docstring-relevant content from LeetCode problems, including descriptions, examples, constraints, topics, hints, and follow-up questions. It provides a unified API for generating file-level docstrings according to the project specification.
 
@@ -468,8 +471,8 @@ q = get_question_data("non-existent-slug")
 ## Related Documentation
 
 - [LeetCode API](../leetcode-api/README.md) - SQLite cache and Question API
-- [Review Code Tool](../../README.md) - File-level docstring generator
-- [review-code README](../../../tools/review-code/README.md) - Docstring format specification
+- [Review Code Tool](../review-code/README.md) - File-level docstring generator
+- [Main Tools README](../README.md) - Tools overview
 
 ---
 

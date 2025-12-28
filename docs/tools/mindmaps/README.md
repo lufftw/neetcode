@@ -1,5 +1,10 @@
 # Mind Maps Generation Module
 
+> **Status**: Canonical Reference  
+> **Scope**: Mind map generation tools in tools/mindmaps/  
+> **Last Updated**: {{ git_revision_date_localized }}  
+> **Created**: {{ git_creation_date_localized }}
+
 This module generates interactive mind maps from NeetCode ontology and problem metadata.
 
 ## Overview
@@ -292,7 +297,8 @@ Test coverage includes:
 
 ## See Also
 
-- [Main Tools README](../README.md)
-- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/generate_mindmaps.py)
-- [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_mindmaps.py)
+- [Main Tools README](../README.md) - Overview of all tools
+- [AI Markmap Agent](ai-markmap-agent/README.md) - AI-powered mind map generation
+- [CLI Usage](https://github.com/lufftw/neetcode/blob/main/tools/mindmaps/generate_mindmaps.py) - Command-line interface
+- [Test Suite](https://github.com/lufftw/neetcode/blob/main/.dev/tests/test_generate_mindmaps.py) - Test coverage
 
