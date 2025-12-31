@@ -69,7 +69,7 @@ When `codegen practice` runs:
 
 | Document | Content |
 |----------|---------|
-| [Package README](../../packages/practice_workspace/README.md) | Quick reference, API |
+| [Package README](../../../packages/practice_workspace/README.md) | Quick reference, API |
 | [CodeGen Spec](../codegen/README.md) | How codegen uses workspace |
 
 ---

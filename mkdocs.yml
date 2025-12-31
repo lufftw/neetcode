@@ -171,9 +171,9 @@ nav:
     - Architecture Migration: architecture/architecture-migration.md
   - 📦 Packages:
     - Runner: runner/README.md
-    - CodeGen: codegen/README.md
-    - LeetCode DataSource: leetcode_datasource/README.md
-    - Practice Workspace: practice_workspace/README.md
+    - CodeGen: packages/codegen/README.md
+    - LeetCode DataSource: packages/leetcode_datasource/README.md
+    - Practice Workspace: packages/practice_workspace/README.md
   - 🛠️ Tools:
     - Overview: tools/README.md
     - Mind Maps:

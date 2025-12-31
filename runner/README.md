@@ -255,7 +255,7 @@ python runner/test_runner.py 0023 --all --benchmark
 
 ## Requirements
 
-- Solution files in `solutions/` (see [Solution Contract](../docs/solution-contract.md))
+- Solution files in `solutions/` (see [Solution Contract](../docs/contracts/solution-contract.md))
 - Test files in `tests/` (optional, can use generators)
 - Generator files in `generators/` (optional, for random testing)
 
@@ -328,8 +328,8 @@ All cases allow the test runner to continue functioning normally.
 ## Related Documentation
 
 - **[Complete Documentation](../docs/runner/README.md)**: Full specification and examples
-- **[Solution Contract](../docs/solution-contract.md)**: Solution file requirements
-- **[Generator Contract](../docs/generator-contract.md)**: Generator file requirements
+- **[Solution Contract](../docs/contracts/solution-contract.md)**: Solution file requirements
+- **[Generator Contract](../docs/contracts/generator-contract.md)**: Generator file requirements
 
 ---
 

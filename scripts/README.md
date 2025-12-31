@@ -106,9 +106,9 @@ Then visit http://127.0.0.1:8000 in your browser.
 
 ## 📚 Related Documentation
 
-- [Local Documentation Build Options](../docs/local-docs-build.md) - Overview of all local build methods
-- [Manual Build Guide](../docs/build-docs-manual.md) - Complete guide for manual script method
-- [Act Guide](../docs/act-local-github-actions.md) - Using act to simulate CI/CD
+- [Local Documentation Build Options](../docs/guides/local-docs-build.md) - Overview of all local build methods
+- [Manual Build Guide](../docs/guides/build-docs-manual.md) - Complete guide for manual script method
+- [Act Guide](../docs/guides/act-local-github-actions.md) - Using act to simulate CI/CD
 
 ---
 

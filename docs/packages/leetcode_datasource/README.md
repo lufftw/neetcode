@@ -932,7 +932,7 @@ packages/
 | Document | Description |
 |----------|-------------|
 | [tools/reorganization-plan.md](../tools/reorganization-plan.md) | Tools 目錄整理規劃 |
-| [docs/architecture-migration.md](./architecture-migration.md) | Solution 架構遷移文件 |
+| [docs/architecture/architecture-migration.md](../architecture/architecture-migration.md) | Solution 架構遷移文件 |
 | [docs/tools/leetcode-api/README.md](./tools/leetcode-api/README.md) | 現有 leetcode-api 文件 |
 | [LeetScrape Docs](https://nikhil-ravi.github.io/LeetScrape/question/) | LeetScrape 官方文件 |
 

@@ -27,7 +27,7 @@ This document defines the organization of the `docs/` directory, including folde
 | Category | Location | Purpose |
 |----------|----------|---------|
 | **MkDocs Infrastructure** | `docs/.mkdocs/` | Theme, styles, assets, config |
-| **Package Documentation** | `docs/<pkg>/` | System-level specs for core modules |
+| **Package Documentation** | `docs/packages/<pkg>/` | System-level specs for core modules |
 | **Contracts & Standards** | `docs/contracts/` | Cross-cutting specifications |
 | **How-to Guides** | `docs/guides/` | Step-by-step tutorials |
 | **Contributor Docs** | `docs/contributors/` | Development guidelines |
@@ -40,7 +40,7 @@ This document defines the organization of the `docs/` directory, including folde
 |------|------------|---------|
 | Folders | `snake_case` or `kebab-case` | `leetcode_datasource/`, `two_pointers/` |
 | Files | `kebab-case.md` | `solution-contract.md` |
-| Package folders | Match package name exactly | `docs/codegen/` matches `packages/codegen/` |
+| Package folders | Match package name exactly | `docs/packages/codegen/` matches `packages/codegen/` |
 
 ### 1.3 Root-level Files
 
@@ -117,14 +117,13 @@ docs/
 │       ├── cli-output-memory.md
 │       └── input-scale-metrics.md
 │
-├── codegen/                              # ═══ CodeGen Package ═══ (NEW)
-│   └── README.md                         # CodeGen specification
-│
-├── leetcode_datasource/                  # ═══ DataSource Package ═══ (NEW)
-│   └── README.md                         # DataSource specification
-│
-├── practice_workspace/                   # ═══ Workspace Package ═══ (NEW)
-│   └── README.md                         # Workspace specification
+├── packages/                             # ═══ Package Documentation ═══
+│   ├── codegen/                          # CodeGen specification
+│   │   └── README.md
+│   ├── leetcode_datasource/              # DataSource specification
+│   │   └── README.md
+│   └── practice_workspace/               # Workspace specification
+│       └── README.md
 │
 ├── patterns/                             # ═══ Algorithm Patterns ═══
 │   ├── README.md                         # Patterns overview
@@ -210,16 +209,24 @@ High-level architecture documentation that spans multiple modules.
 | `packages-overview.md` | Summary of packages architecture |
 | `architecture-migration.md` | Migration plans and history |
 
-### 3.6 Package Folders (`runner/`, `codegen/`, etc.)
+### 3.6 Package Folders (`docs/packages/<pkg>/`, `docs/runner/`)
 
 System-level documentation for core modules. See [Package Documentation Strategy](./package-documentation-strategy.md).
 
 | Folder | Corresponds to |
 |--------|----------------|
 | `docs/runner/` | `runner/` |
-| `docs/codegen/` | `packages/codegen/` |
-| `docs/leetcode_datasource/` | `packages/leetcode_datasource/` |
-| `docs/practice_workspace/` | `packages/practice_workspace/` |
+| `docs/packages/codegen/` | `packages/codegen/` |
+| `docs/packages/leetcode_datasource/` | `packages/leetcode_datasource/` |
+| `docs/packages/practice_workspace/` | `packages/practice_workspace/` |
+
+> ⚠️ **Important**: Package docs must be under `docs/packages/<pkg>/`, not `docs/<pkg>/`.
+> Scattered files like `docs/codegen.md` are NOT allowed.
+
+> ℹ️ **Why `docs/runner/` stays at `docs/runner/` (NOT `docs/packages/runner/`)?**
+> - `runner/` is at repo root, not under `packages/`
+> - Docs structure mirrors code structure: `runner/` → `docs/runner/`
+> - Only modules under `packages/` go to `docs/packages/`
 
 ---
 
@@ -249,7 +256,7 @@ Is it architecture-level (spans multiple modules)?
 └── NO ↓
 
 Is it about a specific package/module?
-├── YES → docs/<pkg>/
+├── YES → docs/packages/<pkg>/
 └── NO ↓
 
 Is it educational content (patterns, mindmaps)?
@@ -265,7 +272,7 @@ Is it about a tool?
 
 | ❌ Wrong | ✅ Correct | Reason |
 |----------|-----------|--------|
-| `docs/codegen-spec.md` | `docs/codegen/README.md` | Package docs go in package folder |
+| `docs/codegen-spec.md` | `docs/packages/codegen/README.md` | Package docs go in package folder |
 | `docs/solution-contract.md` | `docs/contracts/solution-contract.md` | Contracts go in contracts/ |
 | `docs/act-local-github-actions.md` | `docs/guides/act-local-github-actions.md` | How-to guides go in guides/ |
 | `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` | Infrastructure goes in .mkdocs/ |
@@ -324,9 +331,9 @@ mkdir -p docs/.mkdocs/pages
 mkdir -p docs/contracts
 mkdir -p docs/guides
 mkdir -p docs/architecture
-mkdir -p docs/codegen
-mkdir -p docs/leetcode_datasource
-mkdir -p docs/practice_workspace
+mkdir -p docs/packages/codegen
+mkdir -p docs/packages/leetcode_datasource
+mkdir -p docs/packages/practice_workspace
 mkdir -p docs/reference
 ```
 
@@ -363,7 +370,7 @@ mkdir -p docs/reference
 | From | To |
 |------|-----|
 | `docs/architecture-migration.md` | `docs/architecture/architecture-migration.md` |
-| `docs/packages-architecture-spec.md` | Split: overview → `docs/architecture/packages-overview.md`, details → `docs/leetcode_datasource/README.md` |
+| `docs/packages-architecture-spec.md` | Split: overview → `docs/architecture/packages-overview.md`, details → `docs/packages/leetcode_datasource/README.md` |
 
 ### 6.6 Phase 6: Move Reference Docs
 
@@ -377,9 +384,9 @@ Create placeholder README.md files:
 
 | File | Source |
 |------|--------|
-| `docs/codegen/README.md` | New (merge content from `docs/codegen-spec.md`) |
-| `docs/leetcode_datasource/README.md` | New (extract from `packages-architecture-spec.md`) |
-| `docs/practice_workspace/README.md` | New |
+| `docs/packages/codegen/README.md` | New (merge content from `docs/codegen-spec.md`) |
+| `docs/packages/leetcode_datasource/README.md` | New (extract from `packages-architecture-spec.md`) |
+| `docs/packages/practice_workspace/README.md` | New |
 | `docs/architecture/README.md` | New |
 
 ### 6.8 Phase 8: Update mkdocs.yml
@@ -394,7 +401,7 @@ Update all path references in `mkdocs.yml`:
 
 After verifying everything works:
 
-1. Delete `docs/codegen-spec.md` (merged into `docs/codegen/README.md`)
+1. Delete `docs/codegen-spec.md` (merged into `docs/packages/codegen/README.md`)
 2. Delete moved files from original locations
 3. Verify no broken links
 
@@ -419,9 +426,9 @@ After verifying everything works:
 - [x] Create `docs/contracts/`
 - [x] Create `docs/guides/`
 - [x] Create `docs/architecture/`
-- [x] Create `docs/codegen/`
-- [x] Create `docs/leetcode_datasource/`
-- [x] Create `docs/practice_workspace/`
+- [x] Create `docs/packages/codegen/`
+- [x] Create `docs/packages/leetcode_datasource/`
+- [x] Create `docs/packages/practice_workspace/`
 - [x] Create `docs/reference/`
 
 ### Phase 2: Move MkDocs Infrastructure
@@ -451,7 +458,7 @@ After verifying everything works:
 - [x] Move `docs/architecture-migration.md` → `docs/architecture/`
 - [x] Handle `docs/packages-architecture-spec.md`:
   - [x] Create `docs/architecture/packages-overview.md` (summary)
-  - [x] Move to `docs/leetcode_datasource/README.md` (detailed spec)
+  - [x] Move to `docs/packages/leetcode_datasource/README.md` (detailed spec)
 
 ### Phase 6: Move Reference Docs
 
@@ -459,9 +466,9 @@ After verifying everything works:
 
 ### Phase 7: Create Package Docs
 
-- [x] Create `docs/codegen/README.md` (from `codegen-spec.md`)
-- [x] Create `docs/leetcode_datasource/README.md` (from `packages-architecture-spec.md`)
-- [x] Create `docs/practice_workspace/README.md` (placeholder)
+- [x] Create `docs/packages/codegen/README.md` (from `codegen-spec.md`)
+- [x] Create `docs/packages/leetcode_datasource/README.md` (from `packages-architecture-spec.md`)
+- [x] Create `docs/packages/practice_workspace/README.md` (placeholder)
 - [x] Create `docs/architecture/README.md`
 
 ### Phase 8: Update mkdocs.yml

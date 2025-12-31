@@ -96,8 +96,8 @@ Acronyms should be **lowercased** in filenames to maintain consistency.
 
 | Before | After |
 |------|------|
-| `docs/ARCHITECTURE_MIGRATION.md` | `docs/architecture-migration.md` |
-| `docs/GITHUB_PAGES_SETUP.md` | `docs/github-pages-setup.md` |
+| `docs/ARCHITECTURE_MIGRATION.md` | `docs/architecture/architecture-migration.md` |
+| `docs/GITHUB_PAGES_SETUP.md` | `docs/guides/github-pages-setup.md` |
 | `docs/runner/benchmarking/Memory_Metrics.md` | `docs/runner/benchmarking/memory-metrics.md` |
 | `docs/runner/profiling/Cli_Output_Memory.md` | `docs/runner/profiling/cli-output-memory.md` |
 | `meta/patterns/.../_header.md` | **UNCHANGED** (excluded: leading `_`) |
@@ -236,7 +236,7 @@ Perform manual verification:
    git diff mkdocs.yml
    
    # Check a few renamed files exist
-   ls docs/act-local-github-actions.md
+   ls docs/guides/act-local-github-actions.md
    ls docs/contributors/vscode-setup.md
    ```
 
@@ -340,16 +340,16 @@ $ git ls-files '*.md' | grep -v '^README' | grep -v 'README\.md$' | grep -v 'REA
 ```
 
 ```
-docs/act-local-github-actions.md
-docs/architecture-migration.md
-docs/build-docs-manual.md
-docs/documentation-header-spec.md
-docs/generator-contract.md
-docs/github-pages-setup.md
-docs/local-docs-build.md
-docs/mkdocs-content-guide.md
-docs/ontology-design.md
-docs/solution-contract.md
+docs/guides/act-local-github-actions.md
+docs/architecture/architecture-migration.md
+docs/guides/build-docs-manual.md
+docs/contracts/documentation-header-spec.md
+docs/contracts/generator-contract.md
+docs/guides/github-pages-setup.md
+docs/guides/local-docs-build.md
+docs/guides/mkdocs-content-guide.md
+docs/reference/ontology-design.md
+docs/contracts/solution-contract.md
 docs/contributors/documentation-architecture.md
 docs/contributors/testing.md
 docs/contributors/virtual-env-setup.md
@@ -357,10 +357,10 @@ docs/contributors/vscode-setup.md
 docs/index.md
 docs/index_zh-TW.md
 docs/mindmaps/index.md
-docs/mindmaps/neetcode_ontology_agent_evolved_en.md
-docs/mindmaps/neetcode_ontology_agent_evolved_zh-TW.md
-docs/mindmaps/neetcode_ontology_ai_en.md
-docs/mindmaps/neetcode_ontology_ai_zh-TW.md
+docs/mindmaps/neetcode-ontology-agent-evolved-en.md
+docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
+docs/mindmaps/neetcode-ontology-ai-en.md
+docs/mindmaps/neetcode-ontology-ai-zh-tw.md
 docs/patterns/backtracking_exploration/intuition.md
 docs/patterns/backtracking_exploration/templates.md
 docs/patterns/sliding_window/intuition.md

@@ -1035,9 +1035,9 @@ $ codegen practice 3 --all-solutions
 
 | Document | Description |
 |----------|-------------|
-| [solution-contract.md](./solution-contract.md) | Solution 檔案規格 |
-| [packages-architecture-spec.md](./packages-architecture-spec.md) | Packages 架構規格 |
-| [leetcode_datasource](./packages/leetcode-datasource/) | 資料層文件 |
+| [solution-contract.md](../../contracts/solution-contract.md) | Solution 檔案規格 |
+| [packages-architecture-spec.md](../../architecture/packages-overview.md) | Packages 架構規格 |
+| [leetcode_datasource](../leetcode_datasource/README.md) | 資料層文件 |
 
 ### C. Changelog
 

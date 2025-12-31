@@ -52,7 +52,7 @@ This document defines the documentation strategy for core modules in this projec
 | Layer | Can mention tools? | Can mention packages? |
 |-------|-------------------|----------------------|
 | `packages/<pkg>/README.md` | ❌ **NO** | ✅ Yes (dependencies only) |
-| `docs/<pkg>/README.md` | ❌ **NO** | ✅ Yes (system interactions) |
+| `docs/packages/<pkg>/README.md` | ❌ **NO** | ✅ Yes (system interactions) |
 | `tools/<tool>/README.md` | ✅ Yes | ✅ Yes (what it uses) |
 | `docs/tools/<tool>/README.md` | ✅ Yes | ✅ Yes |
 
@@ -65,7 +65,10 @@ The goal is **not** to write more documentation, but to establish a **maintainab
 | Layer | Location | Role | Audience |
 |-------|----------|------|----------|
 | **Package README** | `packages/<pkg>/README.md` | Local quick reference | Engineers reading code directly |
-| **Docs README** | `docs/<pkg>/README.md` | System-level specification | People understanding the overall system |
+| **Docs README** | `docs/packages/<pkg>/README.md` | System-level specification | People understanding the overall system |
+
+> ⚠️ **Important**: Docs must be under `docs/packages/<pkg>/`, not `docs/<pkg>/`.
+> Scattered files like `docs/codegen.md` are NOT allowed.
 
 ### Key Distinction
 
@@ -148,7 +151,7 @@ One or two sentences describing what this package provides.
 
 ## Related Documentation
 
-- **[Complete Specification](../../docs/<pkg>/README.md)** - System-level documentation
+- **[Complete Specification](../../docs/packages/<pkg>/README.md)** - System-level documentation
 
 ---
 
@@ -157,7 +160,7 @@ One or two sentences describing what this package provides.
 ⚠️ **When modifying this package:**
 
 1. Update this README (quick reference)
-2. Update `docs/<pkg>/README.md` (complete specification)
+2. Update `docs/packages/<pkg>/README.md` (complete specification)
 ```
 
 ### 3.4 Explicitly Forbidden Content
@@ -176,7 +179,12 @@ The following MUST NOT appear in Package README:
 
 ## 4. Docs README Specification
 
-**Location**: `docs/<pkg>/README.md` (or `docs/runner/README.md`)
+**Location**: `docs/packages/<pkg>/README.md` (or `docs/runner/README.md`)
+
+> ℹ️ **Why `docs/runner/` NOT `docs/packages/runner/`?**
+> - `runner/` is at repo root, not under `packages/`
+> - Docs structure mirrors code structure
+> - Only `packages/<pkg>/` → `docs/packages/<pkg>/`
 
 ### 4.1 Role
 
@@ -328,14 +336,26 @@ The `runner/` module is the **reference implementation** for this documentation 
 ```markdown
 <!-- BAD: Same content in both files -->
 packages/codegen/README.md: "## How It Works: Step 1, Step 2..."
-docs/codegen/README.md: "## How It Works: Step 1, Step 2..."
+docs/packages/codegen/README.md: "## How It Works: Step 1, Step 2..."
 
 <!-- GOOD: Different perspectives -->
 packages/codegen/README.md: "## Public API" (what to call)
-docs/codegen/README.md: "## Typical Workflows" (system-level flow)
+docs/packages/codegen/README.md: "## Typical Workflows" (system-level flow)
 ```
 
-### ❌ Anti-pattern 3: Writing CLI docs in package README
+### ❌ Anti-pattern 3: Scattered package docs at docs root
+
+```markdown
+<!-- BAD: Package docs at docs/ root -->
+docs/codegen.md
+docs/leetcode_datasource.md
+
+<!-- GOOD: Package docs under docs/packages/ -->
+docs/packages/codegen/README.md
+docs/packages/leetcode_datasource/README.md
+```
+
+### ❌ Anti-pattern 4: Writing CLI docs in package README
 
 ```markdown
 <!-- BAD -->

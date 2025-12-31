@@ -59,9 +59,9 @@ For detailed specifications of each package, see:
 
 | Package | Specification |
 |---------|---------------|
-| codegen | [docs/codegen/README.md](../codegen/README.md) |
-| leetcode_datasource | [docs/leetcode_datasource/README.md](../leetcode_datasource/README.md) |
-| practice_workspace | [docs/practice_workspace/README.md](../practice_workspace/README.md) |
+| codegen | [docs/packages/codegen/README.md](../packages/codegen/README.md) |
+| leetcode_datasource | [docs/packages/leetcode_datasource/README.md](../packages/leetcode_datasource/README.md) |
+| practice_workspace | [docs/packages/practice_workspace/README.md](../packages/practice_workspace/README.md) |
 
 ---
 

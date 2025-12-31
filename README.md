@@ -482,7 +482,7 @@ if __name__ == "__main__":
     solve()
 ```
 
-> 📖 See [`docs/solution-contract.md`](docs/solution-contract.md) for the complete specification.
+> 📖 See [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) for the complete specification.
 
 ### 📋 Test File Format
 
@@ -585,7 +585,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 See [`docs/solution-contract.md`](docs/solution-contract.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
+> 📖 See [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
 
 ### 🔀 Flexible Output Validation
 
@@ -628,7 +628,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # Options: "exact" | "sorted" | "set"
 ```
 
-> 📖 See [`docs/solution-contract.md`](docs/solution-contract.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
+> 📖 See [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md#validation-judge_func--compare_mode) for complete JUDGE_FUNC signature and validation rules.
 
 ### 🎲 Random Test Generation
 
@@ -673,7 +673,7 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
-> 📖 See [`docs/generator-contract.md`](docs/generator-contract.md) for complete generator specification and best practices.
+> 📖 See [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) for complete generator specification and best practices.
 
 ### 📈 Time Complexity Estimation
 
@@ -893,8 +893,8 @@ Documentation is organized by **target audience**:
 
 | Document | Description |
 |:---------|:------------|
-| [`docs/solution-contract.md`](docs/solution-contract.md) | Solution file specification |
-| [`docs/generator-contract.md`](docs/generator-contract.md) | Generator file specification |
+| [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) | Solution file specification |
+| [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) | Generator file specification |
 | [`docs/tools/README.md`](docs/tools/README.md) | Complete tools reference |
 | [`docs/contributors/README.md`](docs/contributors/README.md) | Maintainer guide |
 | [`docs/contributors/documentation-architecture.md`](docs/contributors/documentation-architecture.md) | Documentation structure |
@@ -1002,13 +1002,13 @@ scripts\build_docs.bat --serve  # Windows
 ./scripts/build_docs.sh --serve  # Linux/macOS
 ```
 
-📖 **See [Building Documentation Locally (Manual Method)](docs/build-docs-manual.md)** for complete guide.
+📖 **See [Building Documentation Locally (Manual Method)](docs/guides/build-docs-manual.md)** for complete guide.
 
 **Advanced Option (Optional):**
 
 If you want to test the exact GitHub Actions workflow locally, you can use `act`:
 
-📖 **See [Running GitHub Actions Locally with Act](docs/act-local-github-actions.md)** — *Note: Requires Docker and act tool. Only needed if you want to test CI/CD workflows.*
+📖 **See [Running GitHub Actions Locally with Act](docs/guides/act-local-github-actions.md)** — *Note: Requires Docker and act tool. Only needed if you want to test CI/CD workflows.*
 
 ### Documentation
 
@@ -1016,16 +1016,16 @@ If you want to test the exact GitHub Actions workflow locally, you can use `act`
 - [`docs/contributors/README.md`](docs/contributors/README.md) — Maintainer guide
 - [`docs/contributors/testing.md`](docs/contributors/testing.md) — Testing documentation
 - [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code tasks, debug configurations, workflow examples
-- [`docs/solution-contract.md`](docs/solution-contract.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
-- [`docs/generator-contract.md`](docs/generator-contract.md) — Generator file specification (generate(), edge cases, complexity)
-- [`docs/architecture-migration.md`](docs/architecture-migration.md) — Polymorphic architecture migration guide
+- [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
+- [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) — Generator file specification (generate(), edge cases, complexity)
+- [`docs/architecture/architecture-migration.md`](docs/architecture/architecture-migration.md) — Polymorphic architecture migration guide
 
 **Local Documentation Build (Optional):**
-- [`docs/build-docs-manual.md`](docs/build-docs-manual.md) — ⭐ **Recommended:** Simple manual build method
-- [`docs/act-local-github-actions.md`](docs/act-local-github-actions.md) — Advanced: Test CI/CD workflows locally with act (requires Docker)
+- [`docs/guides/build-docs-manual.md`](docs/guides/build-docs-manual.md) — ⭐ **Recommended:** Simple manual build method
+- [`docs/guides/act-local-github-actions.md`](docs/guides/act-local-github-actions.md) — Advanced: Test CI/CD workflows locally with act (requires Docker)
 
 **Deployment:**
-- [`docs/github-pages-setup.md`](docs/github-pages-setup.md) — Deployment guide
+- [`docs/guides/github-pages-setup.md`](docs/guides/github-pages-setup.md) — Deployment guide
 
 ---
 

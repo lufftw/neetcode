@@ -129,7 +129,7 @@ neetcode/
 
 **Where to find:**
 - `docs/tools/README.md` → Complete tools reference (website)
-- `docs/solution-contract.md` → Solution format
+- `docs/contracts/solution-contract.md` → Solution format
 - `docs/contributors/testing.md` → Complete testing documentation (website)
 
 ### 🛠️ Maintainers (Core Team)
@@ -261,10 +261,10 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 
 **Examples**:
 - ✅ `docs/contributors/README.md` linking to `docs/contributors/testing.md` → Use `[testing.md](testing.md)`
-- ✅ `docs/solution-contract.md` linking to `runner/README.md` → Use `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)`
+- ✅ `docs/contracts/solution-contract.md` linking to `runner/README.md` → Use `[Runner](https://github.com/lufftw/neetcode/blob/main/runner/README.md)`
 - ✅ `docs/tools/README.md` linking to `tools/prompts/README.md` → Use `[Prompts](https://github.com/lufftw/neetcode/blob/main/tools/prompts/README.md)`
 
-> 📖 See [MkDocs Content Guide](../mkdocs-content-guide.md#linking-strategy-guide) for detailed linking strategy documentation.
+> 📖 See [MkDocs Content Guide](../guides/mkdocs-content-guide.md#linking-strategy-guide) for detailed linking strategy documentation.
 
 ---
 
