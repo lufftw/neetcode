@@ -1,0 +1,29 @@
+# CodeGen Configuration
+# This file customizes code generation behavior.
+# See docs/codegen-spec.md for full documentation.
+
+[header]
+# solution_header detail level
+# Options: "minimal" | "standard" | "full"
+level = "full"
+
+[helpers]
+# Helper class emission strategy
+# Options: "inline" | "import" | "none"
+mode = "inline"
+
+[skeleton]
+# solve() function generation strategy
+# Options: "placeholder" | "infer"
+solve_mode = "placeholder"
+
+[practice]
+# Multi-solution handling for practice files
+# Options: "single" | "all"
+multi_solution_mode = "single"
+
+# [paths]
+# # Custom directories (relative to project root)
+# solutions = "solutions"
+# practices = "practices"
+
