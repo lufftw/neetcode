@@ -92,3 +92,15 @@ tools/mindmaps/ai-markmap-agent/logs/*.log
 tools/mindmaps/ai-markmap-agent/.env
 tools/mindmaps/ai-markmap-agent/.env.local
 
+# =============================================================================
+# .neetcode Runtime Data
+# =============================================================================
+
+# Cache is always ignored (ephemeral, can be rebuilt)
+.neetcode/leetcode_datasource/cache/
+
+# Store and meta are optionally committed for sharing
+# Uncomment to ignore:
+# .neetcode/leetcode_datasource/store/
+# .neetcode/leetcode_datasource/meta/
+

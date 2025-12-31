@@ -2,10 +2,6 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-include = ["generators*", "mkdocs_plugins*", "runner*"]
-exclude = ["leetcode*", "site*", "docs*", "tests*", "tools*", "scripts*"]
-
 [project]
 name = "neetcode"
 version = "0.1.0"
@@ -15,3 +11,29 @@ dependencies = ["pyyaml"]
 
 [project.entry-points."mkdocs.plugins"]
 mindmaps-lastmod = "mkdocs_plugins.mindmaps_lastmod:MindmapsLastmodPlugin"
+
+[tool.setuptools]
+# Explicitly list all packages
+packages = [
+    "generators",
+    "mkdocs_plugins",
+    "runner",
+    "runner.utils",
+    "runner.display", 
+    "runner.analysis",
+    "runner.core",
+    "leetcode_datasource",
+    "leetcode_datasource.models",
+    "leetcode_datasource.storage",
+    "leetcode_datasource.serialization",
+    "leetcode_datasource.fetchers",
+]
+
+# Map leetcode_datasource to packages/leetcode_datasource
+[tool.setuptools.package-dir]
+"" = "."
+leetcode_datasource = "packages/leetcode_datasource"
+"leetcode_datasource.models" = "packages/leetcode_datasource/models"
+"leetcode_datasource.storage" = "packages/leetcode_datasource/storage"
+"leetcode_datasource.serialization" = "packages/leetcode_datasource/serialization"
+"leetcode_datasource.fetchers" = "packages/leetcode_datasource/fetchers"
