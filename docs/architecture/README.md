@@ -36,9 +36,9 @@ The project follows a clean dependency hierarchy:
 | Module | Location | Role | Documentation |
 |--------|----------|------|---------------|
 | **runner** | `runner/` | Test execution engine | [Runner Spec](../runner/README.md) |
-| **codegen** | `packages/codegen/` | Solution skeleton generator | [CodeGen Spec](../codegen/README.md) |
-| **leetcode_datasource** | `packages/leetcode_datasource/` | LeetCode data layer | [DataSource Spec](../leetcode_datasource/README.md) |
-| **practice_workspace** | `packages/practice_workspace/` | Practice file management | [Workspace Spec](../practice_workspace/README.md) |
+| **codegen** | `packages/codegen/` | Solution skeleton generator | [CodeGen Spec](../packages/codegen/README.md) |
+| **leetcode_datasource** | `packages/leetcode_datasource/` | LeetCode data layer | [DataSource Spec](../packages/leetcode_datasource/README.md) |
+| **practice_workspace** | `packages/practice_workspace/` | Practice file management | [Workspace Spec](../packages/practice_workspace/README.md) |
 
 ## Design Principles
 

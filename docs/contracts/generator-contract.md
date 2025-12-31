@@ -597,4 +597,4 @@ python runner/test_runner.py {problem} --estimate
 |----------|---------|
 | [Solution Contract](solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
-| [Architecture Migration](architecture-migration.md) | Polymorphic pattern migration guide |
+| [Architecture Migration](../architecture/architecture-migration.md) | Polymorphic pattern migration guide |

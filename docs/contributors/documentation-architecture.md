@@ -280,6 +280,6 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 
 - [Maintainer Guide](README.md)
 - [Testing Documentation](testing.md)
-- [MkDocs Content Guide](../mkdocs-content-guide.md)
+- [MkDocs Content Guide](../guides/mkdocs-content-guide.md)
 - [Tools Reference](../tools/README.md)
 
