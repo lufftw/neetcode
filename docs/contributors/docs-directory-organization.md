@@ -31,6 +31,7 @@ This document defines the organization of the `docs/` directory, including folde
 | **Contracts & Standards** | `docs/contracts/` | Cross-cutting specifications |
 | **How-to Guides** | `docs/guides/` | Step-by-step tutorials |
 | **Contributor Docs** | `docs/contributors/` | Development guidelines |
+| **Development in Progress** | `docs/in-progress/` | Feature specifications and design docs for ongoing development |
 | **Content** | `docs/patterns/`, `docs/mindmaps/` | User-facing educational content |
 | **Tools Documentation** | `docs/tools/` | Tool-specific documentation |
 
@@ -107,6 +108,13 @@ docs/
 │   ├── README.md                         # Architecture overview
 │   ├── packages-overview.md              # Packages architecture summary
 │   └── architecture-migration.md         # Migration documentation
+│
+├── in-progress/                          # ═══ Development in Progress ═══
+│   ├── README.md                         # Directory purpose and workflow
+│   └── <feature-name>/                   # Feature-specific docs (temporary, removed after completion)
+│       ├── specification.md              # Feature requirements
+│       ├── design.md                     # Design documentation (optional)
+│       └── checklist.md                  # Acceptance checklist
 │
 ├── runner/                               # ═══ Runner Module ═══
 │   ├── README.md                         # Runner specification
@@ -209,7 +217,32 @@ High-level architecture documentation that spans multiple modules.
 | `packages-overview.md` | Summary of packages architecture |
 | `architecture-migration.md` | Migration plans and history |
 
-### 3.6 Package Folders (`docs/packages/<pkg>/`, `docs/runner/`)
+### 3.6 `in-progress/` — Development in Progress
+
+Feature specifications and design documents for ongoing development work.
+
+| Purpose | Details |
+|---------|---------|
+| **Temporary storage** | Documents are removed after feature completion and acceptance |
+| **Version control** | All documents are tracked in Git for development history |
+| **Structure** | Each feature gets its own subdirectory with specification, design, and checklist |
+
+**Lifecycle:**
+1. Create feature directory: `docs/in-progress/<feature-name>/`
+2. Add specification, design, and checklist documents
+3. Update documents as development progresses
+4. Complete acceptance checklist
+5. Remove feature directory after acceptance (history preserved in Git)
+
+**Example structure:**
+```
+docs/in-progress/new-problem-tests-autogen/
+├── specification.md    # Requirements and feature spec
+├── design.md           # Technical design (optional)
+└── checklist.md        # Acceptance criteria and verification steps
+```
+
+### 3.7 Package Folders (`docs/packages/<pkg>/`, `docs/runner/`)
 
 System-level documentation for core modules. See [Package Documentation Strategy](./package-documentation-strategy.md).
 
@@ -259,6 +292,10 @@ Is it about a specific package/module?
 ├── YES → docs/packages/<pkg>/
 └── NO ↓
 
+Is it a feature specification/design doc for ongoing development?
+├── YES → docs/in-progress/<feature-name>/
+└── NO ↓
+
 Is it educational content (patterns, mindmaps)?
 ├── YES → docs/patterns/ or docs/mindmaps/
 └── NO ↓
@@ -276,6 +313,7 @@ Is it about a tool?
 | `docs/solution-contract.md` | `docs/contracts/solution-contract.md` | Contracts go in contracts/ |
 | `docs/act-local-github-actions.md` | `docs/guides/act-local-github-actions.md` | How-to guides go in guides/ |
 | `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` | Infrastructure goes in .mkdocs/ |
+| `docs/new-feature-spec.md` | `docs/in-progress/new-feature/specification.md` | Development specs go in in-progress/ |
 
 ---
 
