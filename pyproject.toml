@@ -7,7 +7,11 @@ name = "neetcode"
 version = "0.1.0"
 description = "NeetCode Practice Framework"
 requires-python = ">=3.8"
-dependencies = ["pyyaml"]
+dependencies = ["pyyaml", "tomli;python_version<'3.11'"]
+
+[project.scripts]
+codegen = "packages.codegen.cli:main"
+practice = "packages.practice_workspace.cli:main"
 
 [project.entry-points."mkdocs.plugins"]
 mindmaps-lastmod = "mkdocs_plugins.mindmaps_lastmod:MindmapsLastmodPlugin"
@@ -22,18 +26,20 @@ packages = [
     "runner.display", 
     "runner.analysis",
     "runner.core",
-    "leetcode_datasource",
-    "leetcode_datasource.models",
-    "leetcode_datasource.storage",
-    "leetcode_datasource.serialization",
-    "leetcode_datasource.fetchers",
+    "packages",
+    "packages.leetcode_datasource",
+    "packages.leetcode_datasource.models",
+    "packages.leetcode_datasource.storage",
+    "packages.leetcode_datasource.serialization",
+    "packages.leetcode_datasource.fetchers",
+    "packages.codegen",
+    "packages.codegen.core",
+    "packages.codegen.core.helpers",
+    "packages.codegen.reference",
+    "packages.codegen.practice",
+    "packages.practice_workspace",
 ]
 
-# Map leetcode_datasource to packages/leetcode_datasource
+# Map packages to correct locations
 [tool.setuptools.package-dir]
 "" = "."
-leetcode_datasource = "packages/leetcode_datasource"
-"leetcode_datasource.models" = "packages/leetcode_datasource/models"
-"leetcode_datasource.storage" = "packages/leetcode_datasource/storage"
-"leetcode_datasource.serialization" = "packages/leetcode_datasource/serialization"
-"leetcode_datasource.fetchers" = "packages/leetcode_datasource/fetchers"
