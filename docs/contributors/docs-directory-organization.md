@@ -242,6 +242,8 @@ docs/in-progress/new-problem-tests-autogen/
 └── checklist.md        # Acceptance criteria and verification steps
 ```
 
+**Note:** Not all features require all three files. For example, `new-problem-tests-autogen` currently only contains `specification.md` with acceptance criteria embedded within it.
+
 ### 3.7 Package Folders (`docs/packages/<pkg>/`, `docs/runner/`)
 
 System-level documentation for core modules. See [Package Documentation Strategy](./package-documentation-strategy.md).
