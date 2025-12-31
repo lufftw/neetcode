@@ -4,46 +4,65 @@
 from __future__ import annotations
 
 import re
-import json
-from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from .config import PROJECT_ROOT
 from .data import ProblemData
 
+# Use leetcode_datasource package for problem index lookup
+from leetcode_datasource import LeetCodeDataSource, ProblemInfo
+
+# Singleton datasource instance
+_datasource: Optional[LeetCodeDataSource] = None
+
+
+def get_datasource() -> LeetCodeDataSource:
+    """Get or initialize the LeetCodeDataSource singleton."""
+    global _datasource
+    if _datasource is None:
+        _datasource = LeetCodeDataSource()
+    return _datasource
+
 
 def load_leetcode_cache() -> dict[str, dict[str, Any]] | None:
     """
-    Load LeetCode API cache data and build lookup by frontend_question_id.
+    Load LeetCode problem data from leetcode_datasource package.
     
-    The cache file uses internal question_id as keys, but we need to lookup
-    by frontend_question_id (the number users see, like "LeetCode 1").
+    Uses problem_index table for fast lookup by frontend_question_id.
     
     Returns:
-        Dict with frontend_question_id (zero-padded) as keys, or None if cache doesn't exist
+        Dict with frontend_question_id (zero-padded) as keys, or None if not available
     """
-    cache_file = PROJECT_ROOT / "tools" / "leetcode-api" / "crawler" / ".cache" / "leetcode_problems.json"
-    if not cache_file.exists():
-        return None
+    ds = get_datasource()
     
-    try:
-        with open(cache_file, 'r', encoding='utf-8') as f:
-            raw_cache = json.load(f)
-        
-        # Build lookup by frontend_question_id (the number users see)
-        lookup = {}
-        for _, problem in raw_cache.items():
-            frontend_id = problem.get("frontend_question_id")
-            if frontend_id:
-                # Store with zero-padded key for consistent lookup
-                key = str(frontend_id).zfill(4)
-                lookup[key] = problem
-                # Also store without padding
-                lookup[str(frontend_id)] = problem
-        
-        return lookup
-    except (json.JSONDecodeError, IOError):
-        return None
+    # Check if problem_index is populated
+    stats = ds.stats()
+    if stats.get('problem_index_count', 0) == 0:
+        # Try to sync
+        try:
+            ds.sync_problem_list()
+        except Exception:
+            return None
+    
+    # Build lookup dict from problem_index via store
+    # Note: We can't iterate all problems directly, so we return a proxy-like dict
+    # For now, return a dict that will be used by merge_leetcode_api_data
+    # The actual lookups happen in merge_leetcode_api_data via get_problem_info
+    return {"_datasource": ds}  # Marker to use datasource
+
+
+def _get_problem_info_from_datasource(ds: LeetCodeDataSource, frontend_id: int) -> dict[str, Any] | None:
+    """Get problem info from datasource as a dict."""
+    info = ds.get_problem_info(frontend_id)
+    if info:
+        return {
+            "frontend_question_id": info.frontend_question_id,
+            "title": info.title,
+            "slug": info.title_slug,
+            "url": info.url,
+            "difficulty": info.difficulty,
+        }
+    return None
 
 
 def merge_leetcode_api_data(
@@ -62,6 +81,9 @@ def merge_leetcode_api_data(
     """
     if api_problems is None:
         api_problems = load_leetcode_cache()
+    
+    # Check if using new datasource mode
+    ds = api_problems.get("_datasource") if api_problems else None
     
     # Convert ProblemData to dict format
     result = {}
@@ -82,31 +104,38 @@ def merge_leetcode_api_data(
     # Merge with API cache data
     if api_problems:
         for problem_id, problem_data in result.items():
-            # Normalize ID for lookup - try multiple formats
-            normalized_ids = []
+            # Extract frontend_id for lookup
+            frontend_id = None
+            
             if isinstance(problem_id, str):
                 # If key is "0079_word_search", extract "0079"
                 match = re.match(r'^(\d+)_', problem_id)
                 if match:
-                    normalized_ids.append(match.group(1).zfill(4))
+                    frontend_id = int(match.group(1))
                 elif problem_id.isdigit():
-                    normalized_ids.append(problem_id.zfill(4))
-                else:
-                    normalized_ids.append(problem_id)
-            else:
-                normalized_ids.append(str(problem_id).zfill(4))
+                    frontend_id = int(problem_id)
+            elif isinstance(problem_id, int):
+                frontend_id = problem_id
             
             # Also try using leetcode_id from problem_data
-            leetcode_id = problem_data.get("leetcode_id")
-            if leetcode_id:
-                normalized_ids.append(str(leetcode_id).zfill(4))
+            if frontend_id is None:
+                leetcode_id = problem_data.get("leetcode_id")
+                if leetcode_id:
+                    frontend_id = int(leetcode_id) if isinstance(leetcode_id, str) else leetcode_id
             
-            # Try to find API data
+            if frontend_id is None:
+                continue
+            
+            # Get API data - use datasource if available, otherwise dict lookup
             api_data = None
-            for nid in normalized_ids:
-                api_data = api_problems.get(nid)
-                if api_data:
-                    break
+            if ds:
+                api_data = _get_problem_info_from_datasource(ds, frontend_id)
+            else:
+                # Legacy dict lookup
+                for key in [str(frontend_id).zfill(4), str(frontend_id)]:
+                    api_data = api_problems.get(key)
+                    if api_data:
+                        break
             
             if api_data:
                 # Use API cache data as source of truth for consistency

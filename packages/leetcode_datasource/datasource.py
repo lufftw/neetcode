@@ -4,14 +4,19 @@ LeetCodeDataSource - Main entry point for the leetcode_datasource package.
 Provides unified access to LeetCode question data through:
     - Cache (ephemeral, fast lookups)
     - Store (persistent SQLite storage)
+    - Problem Index (fast ID lookups)
     - Fetcher (network layer, pluggable)
 """
 
+import json
 import logging
-from typing import Optional
+import urllib.request
+from datetime import datetime, timedelta
+from typing import Optional, List, Dict, Any
 
 from .config import DataSourceConfig
 from .models.question import Question
+from .models.problem_info import ProblemInfo
 from .storage.cache import Cache
 from .storage.store import Store
 from .fetchers.leetscrape_fetcher import LeetscrapeFecher
@@ -19,6 +24,14 @@ from .serialization.question_serializer import QuestionSerializer
 from .exceptions import QuestionNotFoundError, NetworkError
 
 logger = logging.getLogger(__name__)
+
+# LeetCode API endpoint for problem list
+LEETCODE_PROBLEMS_API = "https://leetcode.com/api/problems/all/"
+
+# Cache settings
+PROBLEM_LIST_CACHE_FILE = "problem_list.json"
+PROBLEM_LIST_CACHE_META_FILE = "problem_list_meta.json"
+PROBLEM_LIST_CACHE_EXPIRY_DAYS = 7
 
 
 class LeetCodeDataSource:
@@ -249,6 +262,7 @@ class LeetCodeDataSource:
         """
         result = {
             "total_questions": self._store.count(),
+            "problem_index_count": self._store.problem_index_count(),
             **self._stats,
         }
         
@@ -262,4 +276,166 @@ class LeetCodeDataSource:
         }
         
         return result
+    
+    # ========== Problem Index API ==========
+    
+    def sync_problem_list(self, *, refresh: bool = False) -> int:
+        """
+        Sync problem index from LeetCode API.
+        
+        Args:
+            refresh: If True, force fetch from API even if cache is fresh
+            
+        Returns:
+            Number of problems synced
+        """
+        cache_file = self.config.cache_dir / PROBLEM_LIST_CACHE_FILE
+        meta_file = self.config.cache_dir / PROBLEM_LIST_CACHE_META_FILE
+        
+        # Check if we can use cached data
+        if not refresh and cache_file.exists() and meta_file.exists():
+            try:
+                with open(meta_file, 'r', encoding='utf-8') as f:
+                    meta = json.load(f)
+                
+                cached_at_str = meta.get('cached_at')
+                if cached_at_str:
+                    cached_at = datetime.fromisoformat(cached_at_str)
+                    expiry = cached_at + timedelta(days=PROBLEM_LIST_CACHE_EXPIRY_DAYS)
+                    
+                    if datetime.now() < expiry:
+                        # Cache is fresh, use it to sync to DB
+                        with open(cache_file, 'r', encoding='utf-8') as f:
+                            problems = json.load(f)
+                        
+                        if problems:
+                            logger.info(f"Using cached problem list ({len(problems)} problems)")
+                            return self._store.sync_problem_index(list(problems.values()))
+            except (json.JSONDecodeError, IOError, KeyError) as e:
+                logger.warning(f"Failed to read cache: {e}")
+        
+        # Fetch from API
+        problems = self._fetch_problem_list()
+        
+        if not problems:
+            logger.warning("No problems fetched from API")
+            return 0
+        
+        # Save to cache (as fallback for next time)
+        self._save_problem_list_cache(problems, cache_file, meta_file)
+        
+        # Sync to database
+        return self._store.sync_problem_index(list(problems.values()))
+    
+    def _fetch_problem_list(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Fetch problem list from LeetCode API.
+        
+        Returns:
+            Dict of problems keyed by question_id
+        """
+        logger.info("Fetching problem list from LeetCode API...")
+        
+        try:
+            with urllib.request.urlopen(LEETCODE_PROBLEMS_API, timeout=30) as response:
+                data = json.loads(response.read().decode())
+        except urllib.error.URLError as e:
+            logger.error(f"Failed to fetch from LeetCode API: {e}")
+            raise NetworkError(f"Failed to fetch problem list: {e}")
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse API response: {e}")
+            raise NetworkError(f"Failed to parse problem list: {e}")
+        
+        # Extract and transform problem data
+        problems = {}
+        difficulty_map = {1: "Easy", 2: "Medium", 3: "Hard"}
+        
+        for pair in data.get('stat_status_pairs', []):
+            stat = pair.get('stat', {})
+            qid = stat.get('question_id')
+            
+            if not qid:
+                continue
+            
+            slug = stat.get('question__title_slug', '')
+            title = stat.get('question__title', '')
+            difficulty_level = pair.get('difficulty', {}).get('level', 0)
+            
+            problem = {
+                'question_id': qid,
+                'frontend_question_id': stat.get('frontend_question_id', qid),
+                'title': title,
+                'slug': slug,
+                'url': f"https://leetcode.com/problems/{slug}/description/" if slug else "",
+                'difficulty': difficulty_map.get(difficulty_level, "Unknown"),
+                'difficulty_level': difficulty_level,
+                'paid_only': pair.get('paid_only', False),
+                'total_acs': stat.get('total_acs', 0),
+                'total_submitted': stat.get('total_submitted', 0),
+                'is_new_question': stat.get('is_new_question', False),
+            }
+            
+            problems[str(qid)] = problem
+        
+        logger.info(f"Fetched {len(problems)} problems from API")
+        return problems
+    
+    def _save_problem_list_cache(
+        self, 
+        problems: Dict[str, Dict[str, Any]], 
+        cache_file, 
+        meta_file
+    ) -> None:
+        """Save problem list to cache files."""
+        try:
+            with open(cache_file, 'w', encoding='utf-8') as f:
+                json.dump(problems, f, indent=2, ensure_ascii=False)
+            
+            meta = {
+                'cached_at': datetime.now().isoformat(),
+                'total_problems': len(problems),
+                'cache_version': '1.0',
+            }
+            with open(meta_file, 'w', encoding='utf-8') as f:
+                json.dump(meta, f, indent=2, ensure_ascii=False)
+            
+            logger.debug(f"Saved problem list cache: {len(problems)} problems")
+        except IOError as e:
+            logger.warning(f"Failed to save cache: {e}")
+    
+    def get_slug(self, frontend_id: int) -> Optional[str]:
+        """
+        Get slug by frontend_question_id.
+        
+        Args:
+            frontend_id: Problem number on LeetCode website
+            
+        Returns:
+            title_slug if found, None otherwise
+        """
+        return self._store.get_slug_by_frontend_id(frontend_id)
+    
+    def get_frontend_id(self, slug: str) -> Optional[int]:
+        """
+        Get frontend_question_id by slug.
+        
+        Args:
+            slug: Question slug (e.g., "two-sum")
+            
+        Returns:
+            frontend_question_id if found, None otherwise
+        """
+        return self._store.get_frontend_id_by_slug(slug)
+    
+    def get_problem_info(self, frontend_id: int) -> Optional[ProblemInfo]:
+        """
+        Get minimal problem metadata by frontend_question_id.
+        
+        Args:
+            frontend_id: Problem number on LeetCode website
+            
+        Returns:
+            ProblemInfo if found, None otherwise
+        """
+        return self._store.get_problem_info_by_frontend_id(frontend_id)
 

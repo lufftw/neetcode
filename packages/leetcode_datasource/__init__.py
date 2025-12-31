@@ -20,6 +20,7 @@ Usage:
 from .datasource import LeetCodeDataSource
 from .config import DataSourceConfig
 from .models.question import Question
+from .models.problem_info import ProblemInfo
 from .exceptions import (
     LeetCodeDataSourceError,
     QuestionNotFoundError,
@@ -32,8 +33,9 @@ __all__ = [
     # Main class
     "LeetCodeDataSource",
     "DataSourceConfig",
-    # Data model
+    # Data models
     "Question",
+    "ProblemInfo",
     # Exceptions
     "LeetCodeDataSourceError",
     "QuestionNotFoundError",
