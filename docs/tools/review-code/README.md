@@ -120,6 +120,6 @@ python tools/review-code/validation/check_solutions.py
 ## See Also
 
 - [Main Tools README](../README.md) - Overview of all tools
-- [Solution Contract](../../solution-contract.md) - Solution file specification
+- [Solution Contract](../../contracts/solution-contract.md) - Solution file specification
 - [Testing Documentation](../../contributors/testing.md) - Testing guide (if exists)
 

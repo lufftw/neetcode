@@ -71,7 +71,7 @@ Practice Workspace is the **state management layer** for practice files. Unlike 
 
 ## Interfaces
 
-High-level summary of public APIs. For complete API reference, see [Package README](../../../packages/practice_workspace/README.md).
+High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/packages/practice_workspace/README.md).
 
 | Interface | Purpose |
 |-----------|---------|
@@ -278,7 +278,7 @@ YYYYMMDD_HHMMSS
 
 | Document | Content |
 |----------|---------|
-| [Package README](../../../packages/practice_workspace/README.md) | Quick reference, API details |
+| [Package README](https://github.com/lufftw/neetcode/blob/main/packages/practice_workspace/README.md) | Quick reference, API details |
 | [CodeGen Spec](../codegen/README.md) | How codegen integrates with workspace |
 | [Solution Contract](../../contracts/solution-contract.md) | File format requirements |
 

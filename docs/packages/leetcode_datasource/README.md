@@ -76,7 +76,7 @@ LeetCode DataSource is the **data foundation** for the NeetCode practice framewo
 
 ## Interfaces
 
-High-level summary of public APIs. For complete API reference, see [Package README](../../../packages/leetcode_datasource/README.md).
+High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/packages/leetcode_datasource/README.md).
 
 | Interface | Purpose |
 |-----------|---------|
@@ -341,7 +341,7 @@ LeetCodeDataSourceError (base)
 
 | Document | Content |
 |----------|---------|
-| [Package README](../../../packages/leetcode_datasource/README.md) | Quick reference, API details |
+| [Package README](https://github.com/lufftw/neetcode/blob/main/packages/leetcode_datasource/README.md) | Quick reference, API details |
 | [CodeGen Spec](../codegen/README.md) | Consumer of this data |
 | [Architecture Overview](../../architecture/packages-overview.md) | System architecture |
 

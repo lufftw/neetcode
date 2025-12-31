@@ -48,7 +48,7 @@ python runner/test_runner.py <problem> [OPTIONS]
 | `--seed N` | Reproducible generation |
 | `--save-failed` | Save failed cases to `tests/` |
 
-> 📖 Requires generator file. See [Generator Contract](../generator-contract.md).
+> 📖 Requires generator file. See [Generator Contract](../contracts/generator-contract.md).
 
 ### Analysis
 
@@ -254,7 +254,7 @@ python runner/test_runner.py 0004 --estimate
 | `[set]` | `COMPARE_MODE="set"` |
 | `[skip]` | No `.out`, no `JUDGE_FUNC` |
 
-> 📖 See [Solution Contract § Validation](../solution-contract.md#validation-judge_func--compare_mode) for `JUDGE_FUNC` and `COMPARE_MODE` details.
+> 📖 See [Solution Contract § Validation](../contracts/solution-contract.md#validation-judge_func--compare_mode) for `JUDGE_FUNC` and `COMPARE_MODE` details.
 
 ---
 
@@ -460,8 +460,8 @@ pip install big-O psutil sparklines tabulate
 
 | Document | Content |
 |----------|---------|
-| [Solution Contract](../solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
-| [Generator Contract](../generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
+| [Solution Contract](../contracts/solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
+| [Generator Contract](../contracts/generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Runner README](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | Quick reference (in-module) |
 | [VSCode Setup Guide](../contributors/vscode-setup.md) | Tasks, debug configurations, workflow examples |
 

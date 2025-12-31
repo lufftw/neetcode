@@ -224,7 +224,7 @@ python tools/review-code/fix_docstring.py --range 1 1000 --delay-min 30.0 --dela
 
 1. Reads problem info from local cache (`tools/leetcode-api/crawler/.cache/leetcode_problems.json`)
 2. Fetches description and constraints from LeetCode via `leetscrape`
-3. Generates docstring following [review-code README](../../tools/review-code/README.md) format
+3. Generates docstring following [review-code README](review-code/README.md) format
 4. Updates the solution file
 
 **Example Output:**
@@ -587,9 +587,9 @@ pre-commit run generate-ai-mindmaps --all-files
 
 | Document | Description |
 |----------|-------------|
-| [solution-contract.md](../solution-contract.md) | Solution file specification |
-| [generator-contract.md](../generator-contract.md) | Generator file specification |
-| [architecture-migration.md](../architecture-migration.md) | Architecture migration guide |
+| [solution-contract.md](../contracts/solution-contract.md) | Solution file specification |
+| [generator-contract.md](../contracts/generator-contract.md) | Generator file specification |
+| [architecture-migration.md](../architecture/architecture-migration.md) | Architecture migration guide |
 | [mindmaps/README.md](mindmaps/README.md) | Mind map module technical docs |
 | [patterndocs/README.md](patterndocs/README.md) | Pattern docs module technical docs |
 | [mindmaps/ai-markmap-agent/README.md](mindmaps/ai-markmap-agent/README.md) | AI Markmap Agent docs |

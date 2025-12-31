@@ -74,7 +74,7 @@ The module is designed as a **stateless** generator - it produces output based o
 
 ## Interfaces
 
-High-level summary of public APIs. For complete API reference, see [Package README](../../../packages/codegen/README.md).
+High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md).
 
 | Interface | Purpose |
 |-----------|---------|
@@ -245,7 +245,7 @@ CLI flag > .neetcode/codegen.toml > package defaults
 
 | Document | Content |
 |----------|---------|
-| [Package README](../../../packages/codegen/README.md) | Quick reference, API details |
+| [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md) | Quick reference, API details |
 | [Solution Contract](../../contracts/solution-contract.md) | Output file requirements |
 | [LeetCode DataSource](../leetcode_datasource/README.md) | Problem data source |
 | [Practice Workspace](../practice_workspace/README.md) | History management |
