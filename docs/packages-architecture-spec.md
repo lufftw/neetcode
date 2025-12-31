@@ -206,6 +206,10 @@ ds = LeetCodeDataSource()  # or LeetCodeDataSource(config=DataSourceConfig(...))
 | `invalidate` | `(slug: str) -> bool` | Remove specific question from cache |
 | `clear_cache` | `() -> None` | Clear all cached data |
 | `stats` | `() -> dict` | Get statistics (count, cache hits, etc.) |
+| `sync_problem_list` | `(*, refresh: bool = False) -> int` | Sync problem index from LeetCode API |
+| `get_slug` | `(frontend_id: int) -> str \| None` | Quick lookup: frontend_id → slug |
+| `get_frontend_id` | `(slug: str) -> int \| None` | Quick lookup: slug → frontend_id |
+| `get_problem_info` | `(frontend_id: int) -> ProblemInfo \| None` | Get minimal problem metadata |
 
 **Parameters:**
 - `refresh=False`: Use cached data if available
@@ -328,8 +332,175 @@ SCHEMA_CHANGELOG = {
 | **Cache Hit** | Memory-first, then SQLite, then network |
 | **Lazy Loading** | `Question.Body` (large field) loaded on access |
 | **Batch Operations** | `store.put()` uses transactions for bulk inserts |
-| **ID Lookup** | SQLite index on `qid` provides fast frontend_id → slug lookup |
+| **ID Lookup** | SQLite index on `problem_index` provides fast frontend_id ↔ slug lookup |
 | **Rate Limiting** | Fetcher respects LeetCode rate limits (configurable delay) |
+
+### 3.7 Problem Index (ID Mapping & Problem List)
+
+#### Design Principle
+
+> **No standalone mapping files are considered canonical.**  
+> **All identifier resolution must go through the Store-backed `problem_index`.**
+
+| Decision | Rationale |
+|----------|-----------|
+| ❌ No standalone JSON mapping files | Avoid bypassing, hard to maintain consistency |
+| ✅ Unified in SQLite DB | Single source of truth, indexable, transactional |
+| ✅ Consistent API | All ID resolution goes through Store API |
+
+#### `problem_index` Table Schema
+
+```sql
+CREATE TABLE IF NOT EXISTS problem_index (
+    frontend_question_id INTEGER PRIMARY KEY,
+    title_slug TEXT UNIQUE NOT NULL,
+    question_id INTEGER,                    -- LeetCode internal ID
+    title TEXT NOT NULL,
+    difficulty TEXT,                        -- "Easy", "Medium", "Hard"
+    difficulty_level INTEGER,               -- 1, 2, 3
+    paid_only INTEGER DEFAULT 0,            -- 0 or 1
+    url TEXT,
+    total_acs INTEGER DEFAULT 0,            -- Total accepted submissions
+    total_submitted INTEGER DEFAULT 0,      -- Total submissions
+    is_new_question INTEGER DEFAULT 0,      -- 0 or 1
+    updated_at TEXT                         -- ISO 8601 timestamp
+);
+
+-- Indexes for fast lookup
+CREATE UNIQUE INDEX IF NOT EXISTS idx_problem_index_slug 
+    ON problem_index(title_slug);
+CREATE INDEX IF NOT EXISTS idx_problem_index_question_id 
+    ON problem_index(question_id) WHERE question_id IS NOT NULL;
+```
+
+#### Relationship with `questions` Table
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                        leetcode.sqlite3                               │
+├───────────────────────────────────────────────────────────────────────┤
+│                                                                       │
+│  ┌─────────────────────────┐        ┌───────────────────────────────┐ │
+│  │     problem_index       │        │          questions            │ │
+│  │   (minimal metadata)    │        │    (full question details)    │ │
+│  ├─────────────────────────┤        ├───────────────────────────────┤ │
+│  │ frontend_question_id PK │───┐    │ id (PK, auto)                 │ │
+│  │ title_slug (UNIQUE)     │   │    │ qid (= frontend_question_id)  │ │
+│  │ question_id             │   └───►│ titleSlug                     │ │
+│  │ title                   │        │ title                         │ │
+│  │ difficulty              │        │ Body, Code, Hints...          │ │
+│  │ paid_only               │        │ (complete data)               │ │
+│  │ url                     │        │                               │ │
+│  │ ...                     │        │                               │ │
+│  └─────────────────────────┘        └───────────────────────────────┘ │
+│                                                                       │
+│  problem_index: ~3778 rows (ALL problems, minimal metadata)           │
+│  questions: ~2224 rows (fetched problems, full details)               │
+│                                                                       │
+│  ⚠️ No FK constraint - loosely coupled for flexibility                │
+└───────────────────────────────────────────────────────────────────────┘
+```
+
+#### Data Source & Sync
+
+| Table | Data Source | Update Frequency |
+|-------|-------------|------------------|
+| `problem_index` | `https://leetcode.com/api/problems/all/` | On-demand (`sync_problem_list()`) |
+| `questions` | LeetScrape (individual fetch) | On-demand (`get_by_slug()`) |
+
+#### Sync API
+
+```python
+# Sync problem index from LeetCode API
+ds = LeetCodeDataSource()
+
+# Default: use cache if fresh, skip network
+count = ds.sync_problem_list()
+print(f"Synced {count} problems")
+
+# Force refresh from network
+count = ds.sync_problem_list(refresh=True)
+```
+
+| Parameter | Behavior |
+|-----------|----------|
+| `refresh=False` (default) | Use cache if exists and fresh; incremental update |
+| `refresh=True` | Force fetch from API; full update (UPSERT all) |
+
+#### Problem Info API
+
+```python
+# Quick lookups (from problem_index)
+slug = ds.get_slug(frontend_id=1)           # -> "two-sum"
+fid = ds.get_frontend_id(slug="two-sum")    # -> 1
+
+# Get minimal problem info
+info = ds.get_problem_info(frontend_id=1)
+# -> ProblemInfo(frontend_question_id=1, title_slug="two-sum", 
+#                title="Two Sum", difficulty="Easy", ...)
+```
+
+#### `ProblemInfo` Dataclass
+
+```python
+@dataclass
+class ProblemInfo:
+    """Minimal problem metadata from problem_index table."""
+    frontend_question_id: int
+    title_slug: str
+    question_id: int | None
+    title: str
+    difficulty: str
+    difficulty_level: int
+    paid_only: bool
+    url: str
+    total_acs: int
+    total_submitted: int
+    is_new_question: bool
+    updated_at: str | None
+```
+
+#### Cache Fallback (Internal Only)
+
+```
+.neetcode/leetcode_datasource/cache/problem_list.json
+```
+
+> ⚠️ **This file is internal-only and NOT part of the public API.**
+> - Used as fallback when network is unavailable
+> - Updated automatically by `sync_problem_list()`
+> - **Never read directly by tools** - always go through Store API
+
+### 3.8 CLI Interface (Nice-to-Have)
+
+> **Status:** Optional / Future Enhancement
+
+Minimal CLI for common operations without writing Python code:
+
+```bash
+# Sync problem index from LeetCode API
+python -m leetcode_datasource sync
+python -m leetcode_datasource sync --refresh    # Force refresh
+
+# Show data paths
+python -m leetcode_datasource paths
+# Output:
+#   data_dir: /path/to/.neetcode/leetcode_datasource
+#   cache_dir: /path/to/.neetcode/leetcode_datasource/cache
+#   store_dir: /path/to/.neetcode/leetcode_datasource/store
+
+# Show statistics
+python -m leetcode_datasource stats
+# Output:
+#   problem_index: 3778 problems
+#   questions: 2224 full records
+#   cache_hits: 142
+```
+
+**Implementation Notes:**
+- CLI is a thin wrapper around `LeetCodeDataSource` class
+- No additional dependencies (uses `argparse`)
+- Not blocking for initial release
 
 ---
 
@@ -436,21 +607,28 @@ def migrate_question(data: dict, from_version: str) -> dict:
 .neetcode/
 ├── leetcode_datasource/
 │   ├── cache/                          # Ephemeral, rebuildable
-│   │   ├── leetcode_problems.json      # Cached problem list
+│   │   ├── problem_list.json           # ⚠️ Internal-only (sync fallback)
 │   │   └── leetcode_cache_meta.json    # Cache metadata
 │   │
-│   └── store/                          # Persistent storage
-│       └── leetcode.sqlite3            # SQLite database (indexed on qid)
+│   └── store/                          # Persistent storage (CANONICAL)
+│       └── leetcode.sqlite3            # SQLite database
+│           ├── questions               # Full question data (~2224 rows)
+│           └── problem_index           # ID mappings (~3778 rows)
 │
 └── README.md                           # Explain this directory
 ```
 
 ### 5.3 File Descriptions
 
-| File | Purpose | Rebuild Strategy |
-|------|---------|------------------|
-| `cache/*.json` | Speed up repeated lookups | Re-fetch from LeetCode |
-| `store/leetcode.sqlite3` | Offline access, persistence | Re-import from LeetScrape data |
+| File | Purpose | Canonical? | Rebuild Strategy |
+|------|---------|------------|------------------|
+| `store/leetcode.sqlite3` | **Primary data store** | ✅ **Yes** | `sync_problem_list()` + re-fetch |
+| `store/.../questions` | Full question details (Body, Code, Hints) | ✅ | `get_by_slug()` |
+| `store/.../problem_index` | ID mappings + minimal metadata | ✅ | `sync_problem_list()` |
+| `cache/problem_list.json` | Sync fallback (internal-only) | ❌ **No** | Auto-updated on sync |
+| `cache/leetcode_cache_meta.json` | Cache timestamps | ❌ | Auto-generated |
+
+> ⚠️ **Important:** `cache/problem_list.json` is **internal-only** and should never be read directly by tools. All ID resolution must go through the Store API.
 
 ### 5.4 .gitignore Strategy
 
@@ -746,6 +924,8 @@ packages/
 | **Store** | 持久化儲存層（SQLite） |
 | **Cache** | 快取層（ephemeral，可丟棄重建） |
 | **Fetcher** | 網路抓取層（可插拔，預設 LeetScrape） |
+| **ProblemInfo** | 問題索引資料（minimal metadata from `problem_index` table） |
+| **problem_index** | SQLite 表，存放所有問題的 ID 映射與基本 metadata |
 
 ### B. References
 
@@ -767,4 +947,8 @@ packages/
 | Date | Change |
 |------|--------|
 | 2025-12-31 | Initial draft |
+| 2025-12-31 | Added Section 3.7 Problem Index (ID mapping via SQLite `problem_index` table) |
+| 2025-12-31 | Added `sync_problem_list`, `get_slug`, `get_frontend_id`, `get_problem_info` APIs |
+| 2025-12-31 | Added Section 3.8 CLI Interface (nice-to-have) |
+| 2025-12-31 | Updated Section 5 with canonical data source clarification |
 
