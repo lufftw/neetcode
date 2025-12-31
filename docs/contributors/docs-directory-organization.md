@@ -50,9 +50,12 @@ Only these files should remain at `docs/` root:
 |------|---------|--------|
 | `index.md` | MkDocs landing page | Required by MkDocs |
 | `index_zh-TW.md` | Chinese landing page | Localization |
+| `authors.yml` | Author definitions | Required by document-dates plugin |
 | `robots.txt` | SEO | Must be served at site root |
 | `BingSiteAuth.xml` | Bing verification | Must be served at site root |
 | `google*.html` | Google verification | Must be served at site root |
+
+Additionally, `pages/` must remain at `docs/pages/` (generated mindmap HTML output).
 
 All other `.md` files MUST be placed in appropriate subdirectories.
 
@@ -73,9 +76,10 @@ docs/
 │   │   ├── avatar/                       # Author avatars
 │   │   └── document_dates/               # Plugin config
 │   ├── overrides/                        # Theme overrides
-│   ├── stylesheets/                      # Custom CSS
-│   ├── pages/                            # Generated HTML (mindmaps)
-│   └── authors.yml                       # Author definitions
+│   └── stylesheets/                      # Custom CSS
+│
+├── authors.yml                           # Author definitions (plugin requires root)
+├── pages/                                # Generated HTML (mindmaps) - DO NOT MOVE
 │
 ├── contracts/                            # ═══ Cross-cutting Contracts ═══
 │   ├── solution-contract.md              # Solution file requirements
@@ -328,13 +332,13 @@ mkdir -p docs/reference
 
 ### 6.2 Phase 2: Move MkDocs Infrastructure
 
-| From | To |
-|------|-----|
-| `docs/assets/` | `docs/.mkdocs/assets/` |
-| `docs/overrides/` | `docs/.mkdocs/overrides/` |
-| `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` |
-| `docs/pages/` | `docs/.mkdocs/pages/` |
-| `docs/authors.yml` | `docs/.mkdocs/authors.yml` |
+| From | To | Note |
+|------|-----|------|
+| `docs/assets/` | `docs/.mkdocs/assets/` | |
+| `docs/overrides/` | `docs/.mkdocs/overrides/` | |
+| `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` | |
+| `docs/pages/` | **DO NOT MOVE** | Generated output, stays in place |
+| `docs/authors.yml` | **DO NOT MOVE** | Plugin requires root location |
 
 ### 6.3 Phase 3: Move Contracts
 
@@ -408,71 +412,71 @@ After verifying everything works:
 
 ### Phase 1: Create Structure
 
-- [ ] Create `docs/.mkdocs/assets/`
-- [ ] Create `docs/.mkdocs/overrides/`
-- [ ] Create `docs/.mkdocs/stylesheets/`
-- [ ] Create `docs/.mkdocs/pages/`
-- [ ] Create `docs/contracts/`
-- [ ] Create `docs/guides/`
-- [ ] Create `docs/architecture/`
-- [ ] Create `docs/codegen/`
-- [ ] Create `docs/leetcode_datasource/`
-- [ ] Create `docs/practice_workspace/`
-- [ ] Create `docs/reference/`
+- [x] Create `docs/.mkdocs/assets/`
+- [x] Create `docs/.mkdocs/overrides/`
+- [x] Create `docs/.mkdocs/stylesheets/`
+- [x] ~~Create `docs/.mkdocs/pages/`~~ (not needed, stays in docs/)
+- [x] Create `docs/contracts/`
+- [x] Create `docs/guides/`
+- [x] Create `docs/architecture/`
+- [x] Create `docs/codegen/`
+- [x] Create `docs/leetcode_datasource/`
+- [x] Create `docs/practice_workspace/`
+- [x] Create `docs/reference/`
 
 ### Phase 2: Move MkDocs Infrastructure
 
-- [ ] Move `docs/assets/` → `docs/.mkdocs/assets/`
-- [ ] Move `docs/overrides/` → `docs/.mkdocs/overrides/`
-- [ ] Move `docs/stylesheets/` → `docs/.mkdocs/stylesheets/`
-- [ ] Move `docs/pages/` → `docs/.mkdocs/pages/`
-- [ ] Move `docs/authors.yml` → `docs/.mkdocs/authors.yml`
+- [x] Move `docs/assets/` → `docs/.mkdocs/assets/`
+- [x] Move `docs/overrides/` → `docs/.mkdocs/overrides/`
+- [x] Move `docs/stylesheets/` → `docs/.mkdocs/stylesheets/`
+- [x] Keep `docs/pages/` in place (DO NOT MOVE - generated output)
+- [x] Keep `docs/authors.yml` in place (plugin requires root)
 
 ### Phase 3: Move Contracts
 
-- [ ] Move `docs/solution-contract.md` → `docs/contracts/`
-- [ ] Move `docs/generator-contract.md` → `docs/contracts/`
-- [ ] Move `docs/documentation-header-spec.md` → `docs/contracts/`
+- [x] Move `docs/solution-contract.md` → `docs/contracts/`
+- [x] Move `docs/generator-contract.md` → `docs/contracts/`
+- [x] Move `docs/documentation-header-spec.md` → `docs/contracts/`
 
 ### Phase 4: Move Guides
 
-- [ ] Move `docs/act-local-github-actions.md` → `docs/guides/`
-- [ ] Move `docs/build-docs-manual.md` → `docs/guides/`
-- [ ] Move `docs/github-pages-setup.md` → `docs/guides/`
-- [ ] Move `docs/local-docs-build.md` → `docs/guides/`
-- [ ] Move `docs/mkdocs-content-guide.md` → `docs/guides/`
+- [x] Move `docs/act-local-github-actions.md` → `docs/guides/`
+- [x] Move `docs/build-docs-manual.md` → `docs/guides/`
+- [x] Move `docs/github-pages-setup.md` → `docs/guides/`
+- [x] Move `docs/local-docs-build.md` → `docs/guides/`
+- [x] Move `docs/mkdocs-content-guide.md` → `docs/guides/`
 
 ### Phase 5: Move Architecture Docs
 
-- [ ] Move `docs/architecture-migration.md` → `docs/architecture/`
-- [ ] Split `docs/packages-architecture-spec.md`:
-  - [ ] Extract overview → `docs/architecture/packages-overview.md`
-  - [ ] Extract leetcode_datasource details → `docs/leetcode_datasource/README.md`
+- [x] Move `docs/architecture-migration.md` → `docs/architecture/`
+- [x] Handle `docs/packages-architecture-spec.md`:
+  - [x] Create `docs/architecture/packages-overview.md` (summary)
+  - [x] Move to `docs/leetcode_datasource/README.md` (detailed spec)
 
 ### Phase 6: Move Reference Docs
 
-- [ ] Move `docs/ontology-design.md` → `docs/reference/`
+- [x] Move `docs/ontology-design.md` → `docs/reference/`
 
 ### Phase 7: Create Package Docs
 
-- [ ] Create `docs/codegen/README.md` (merge `codegen-spec.md`)
-- [ ] Create `docs/leetcode_datasource/README.md`
-- [ ] Create `docs/practice_workspace/README.md`
-- [ ] Create `docs/architecture/README.md`
+- [x] Create `docs/codegen/README.md` (from `codegen-spec.md`)
+- [x] Create `docs/leetcode_datasource/README.md` (from `packages-architecture-spec.md`)
+- [x] Create `docs/practice_workspace/README.md` (placeholder)
+- [x] Create `docs/architecture/README.md`
 
 ### Phase 8: Update mkdocs.yml
 
-- [ ] Update `theme.custom_dir` path
-- [ ] Update `extra_css` path
-- [ ] Update all `nav` entries for moved files
-- [ ] Update plugin configs if needed
+- [x] Update `theme.custom_dir` path
+- [x] Update `extra_css` path
+- [x] Update all `nav` entries for moved files
+- [x] Add new sections (Architecture, Packages)
 
 ### Phase 9: Verify & Delete
 
 - [ ] Build docs locally: `mkdocs serve`
 - [ ] Verify all links work
-- [ ] Delete `docs/codegen-spec.md`
-- [ ] Delete empty old directories
+- [x] Delete `docs/codegen-spec.md` (moved to codegen/README.md)
+- [x] Delete old infrastructure directories (assets, overrides, stylesheets)
 
 ### Phase 10: Cleanup
 

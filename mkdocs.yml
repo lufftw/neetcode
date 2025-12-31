@@ -13,7 +13,7 @@ exclude_docs: |
 theme:
   name: material
   language: en
-  custom_dir: docs/overrides
+  custom_dir: docs/.mkdocs/overrides
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
@@ -155,11 +155,25 @@ nav:
   - 🔧 Guides:
     - Testing & Validation Engine: runner/README.md
     - VSCode Setup: contributors/vscode-setup.md
+    - GitHub Pages Setup: guides/github-pages-setup.md
+    - Build Docs Locally: guides/build-docs-manual.md
+    - Local Docs Build Options: guides/local-docs-build.md
+    - Run GitHub Actions Locally: guides/act-local-github-actions.md
+    - MkDocs Content Guide: guides/mkdocs-content-guide.md
   - 📚 Reference:
-    - Solution Contract: solution-contract.md
-    - Generator Contract: generator-contract.md
-    - Architecture Migration: architecture-migration.md
-    - Ontology Design: ontology-design.md
+    - Solution Contract: contracts/solution-contract.md
+    - Generator Contract: contracts/generator-contract.md
+    - Documentation Header Spec: contracts/documentation-header-spec.md
+    - Ontology Design: reference/ontology-design.md
+  - 🏗️ Architecture:
+    - Overview: architecture/README.md
+    - Packages Overview: architecture/packages-overview.md
+    - Architecture Migration: architecture/architecture-migration.md
+  - 📦 Packages:
+    - Runner: runner/README.md
+    - CodeGen: codegen/README.md
+    - LeetCode DataSource: leetcode_datasource/README.md
+    - Practice Workspace: practice_workspace/README.md
   - 🛠️ Tools:
     - Overview: tools/README.md
     - Mind Maps:
@@ -171,13 +185,9 @@ nav:
     - Overview: contributors/README.md
     - Testing Documentation: contributors/testing.md
     - Documentation Architecture: contributors/documentation-architecture.md
-    - Documentation Header Spec: documentation-header-spec.md
+    - Package Documentation Strategy: contributors/package-documentation-strategy.md
+    - Docs Directory Organization: contributors/docs-directory-organization.md
     - Virtual Environment Setup: contributors/virtual-env-setup.md
-    - GitHub Pages Setup: github-pages-setup.md
-    - Build Documentation Locally (Manual): build-docs-manual.md
-    - Local Docs Build Options: local-docs-build.md
-    - Run GitHub Actions Locally (Act): act-local-github-actions.md
-    - MkDocs Content Guide: mkdocs-content-guide.md
 
 # Extra
 extra:
@@ -188,11 +198,10 @@ extra:
   generator: false
 
 extra_css:
-  - stylesheets/extra.css
+  - .mkdocs/stylesheets/extra.css
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/d3@7
   - https://cdn.jsdelivr.net/npm/markmap-view
   - https://cdn.jsdelivr.net/npm/markmap-lib
   - https://cdn.jsdelivr.net/npm/markmap-toolbar
-
