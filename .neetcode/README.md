@@ -8,8 +8,7 @@ This directory contains runtime data for the NeetCode project.
 .neetcode/
 ├── leetcode_datasource/
 │   ├── cache/          # Ephemeral cache (safe to delete)
-│   ├── store/          # Persistent SQLite storage
-│   └── meta/           # ID mappings and metadata
+│   └── store/          # Persistent SQLite storage
 └── README.md           # This file
 ```
 
@@ -19,12 +18,11 @@ This directory contains runtime data for the NeetCode project.
 |-----------|---------|-----------------|
 | `cache/` | Speed up repeated lookups | ✅ Yes - will be rebuilt |
 | `store/` | Offline access, persistence | ⚠️ Careful - contains imported data |
-| `meta/` | ID mappings | ⚠️ Careful - can be rebuilt from store |
 
 ## Git Status
 
 - `cache/` is gitignored (ephemeral data)
-- `store/` and `meta/` may be committed for sharing (optional)
+- `store/` may be committed for sharing (optional)
 
 ## Rebuilding Data
 
@@ -43,4 +41,3 @@ The data directory location can be overridden:
 2. **Code**: `DataSourceConfig(data_dir=Path("/custom/path"))`
 
 See `docs/packages-architecture-spec.md` for full documentation.
-

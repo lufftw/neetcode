@@ -27,11 +27,12 @@ class Store:
         - Schema versioning support
     """
     
+    # Schema compatible with existing tools/leetcode-api database
+    # Note: qid is used as frontend_question_id in existing data
     SCHEMA_SQL = """
     CREATE TABLE IF NOT EXISTS questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         qid INTEGER NOT NULL,
-        frontend_question_id INTEGER NOT NULL,
         title TEXT NOT NULL,
         title_slug TEXT NOT NULL UNIQUE,
         difficulty TEXT,
@@ -44,12 +45,12 @@ class Store:
         similar_questions TEXT,
         code TEXT,
         body TEXT,
-        schema_version TEXT DEFAULT '1.0',
+        is_paid_only INTEGER DEFAULT 0,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
     
-    CREATE INDEX IF NOT EXISTS idx_frontend_id ON questions(frontend_question_id);
+    CREATE INDEX IF NOT EXISTS idx_qid ON questions(qid);
     CREATE INDEX IF NOT EXISTS idx_title_slug ON questions(title_slug);
     """
     
@@ -75,23 +76,33 @@ class Store:
             conn.executescript(self.SCHEMA_SQL)
     
     def _row_to_question(self, row: tuple) -> Question:
-        """Convert database row to Question object."""
+        """Convert database row to Question object.
+        
+        Schema (compatible with existing tools/leetcode-api):
+            0: id, 1: qid, 2: title, 3: title_slug, 4: difficulty,
+            5: acceptance_rate, 6: paid_only, 7: topic_tags, 8: category_slug,
+            9: hints, 10: companies, 11: similar_questions, 12: code, 13: body,
+            14: is_paid_only, 15: created_at, 16: updated_at
+        
+        Note: qid is used as frontend_question_id in existing data.
+        """
+        qid = row[1]  # qid is the frontend_question_id
         return Question(
-            QID=row[1],
-            frontend_question_id=row[2],
-            title=row[3],
-            titleSlug=row[4],
-            difficulty=row[5] or "",
-            acceptanceRate=row[6] or 0.0,
-            isPaidOnly=bool(row[7]),
-            topicTags=row[8] or "",
-            categorySlug=row[9] or "",
-            Hints=json.loads(row[10]) if row[10] else [],
-            Companies=json.loads(row[11]) if row[11] else None,
-            SimilarQuestions=json.loads(row[12]) if row[12] else [],
-            Code=row[13] or "",
-            Body=row[14] or "",
-            _schema_version=row[15] or SCHEMA_VERSION,
+            QID=qid,  # Use qid for both QID and frontend_question_id
+            frontend_question_id=qid,
+            title=row[2],
+            titleSlug=row[3],
+            difficulty=row[4] or "",
+            acceptanceRate=row[5] or 0.0,
+            isPaidOnly=bool(row[6]) or bool(row[14]),  # Check both paid_only and is_paid_only
+            topicTags=row[7] or "",
+            categorySlug=row[8] or "",
+            Hints=json.loads(row[9]) if row[9] else [],
+            Companies=json.loads(row[10]) if row[10] else None,
+            SimilarQuestions=json.loads(row[11]) if row[11] else [],
+            Code=row[12] or "",
+            Body=row[13] or "",
+            _schema_version=SCHEMA_VERSION,
             _from_cache=True,
         )
     
@@ -128,8 +139,9 @@ class Store:
             Question if found, None otherwise
         """
         with sqlite3.connect(self.db_path) as conn:
+            # Note: qid column stores frontend_question_id in existing schema
             cursor = conn.execute(
-                "SELECT * FROM questions WHERE frontend_question_id = ?",
+                "SELECT * FROM questions WHERE qid = ?",
                 (frontend_id,)
             )
             row = cursor.fetchone()
@@ -149,16 +161,17 @@ class Store:
         now = datetime.now().isoformat()
         
         with sqlite3.connect(self.db_path) as conn:
+            # Schema compatible with existing tools/leetcode-api database
+            # Note: qid stores frontend_question_id
             conn.execute("""
                 INSERT INTO questions (
-                    qid, frontend_question_id, title, title_slug, difficulty,
+                    qid, title, title_slug, difficulty,
                     acceptance_rate, paid_only, topic_tags, category_slug,
                     hints, companies, similar_questions, code, body,
-                    schema_version, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    is_paid_only, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(title_slug) DO UPDATE SET
                     qid = excluded.qid,
-                    frontend_question_id = excluded.frontend_question_id,
                     title = excluded.title,
                     difficulty = excluded.difficulty,
                     acceptance_rate = excluded.acceptance_rate,
@@ -170,11 +183,10 @@ class Store:
                     similar_questions = excluded.similar_questions,
                     code = excluded.code,
                     body = excluded.body,
-                    schema_version = excluded.schema_version,
+                    is_paid_only = excluded.is_paid_only,
                     updated_at = excluded.updated_at
             """, (
-                question.QID,
-                question.frontend_question_id,
+                question.frontend_question_id,  # qid = frontend_question_id
                 question.title,
                 question.titleSlug.lower(),
                 question.difficulty,
@@ -187,7 +199,7 @@ class Store:
                 json.dumps(question.SimilarQuestions),
                 question.Code,
                 question.Body,
-                question._schema_version,
+                int(question.isPaidOnly),  # is_paid_only
                 now,
             ))
         

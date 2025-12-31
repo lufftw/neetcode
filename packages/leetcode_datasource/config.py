@@ -86,8 +86,4 @@ class DataSourceConfig:
         """Get the store directory."""
         return self.leetcode_datasource_dir / "store"
     
-    @property
-    def meta_dir(self) -> Path:
-        """Get the meta directory."""
-        return self.leetcode_datasource_dir / "meta"
 

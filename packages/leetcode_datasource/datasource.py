@@ -79,7 +79,6 @@ class LeetCodeDataSource:
         # Ensure directories exist
         self.config.cache_dir.mkdir(parents=True, exist_ok=True)
         self.config.store_dir.mkdir(parents=True, exist_ok=True)
-        self.config.meta_dir.mkdir(parents=True, exist_ok=True)
     
     @property
     def store(self) -> Store:

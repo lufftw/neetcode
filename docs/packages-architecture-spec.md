@@ -83,10 +83,8 @@ neetcode/
 │   │   ├── cache/                      # Ephemeral (can be deleted)
 │   │   │   ├── leetcode_problems.json
 │   │   │   └── leetcode_cache_meta.json
-│   │   ├── store/                      # Persistent
-│   │   │   └── leetcode.sqlite3
-│   │   └── meta/                       # ID mappings
-│   │       └── id_map.json
+│   │   └── store/                      # Persistent
+│   │       └── leetcode.sqlite3
 │   └── README.md                       # Explain this directory
 │
 ├── packages/                           # ✨ NEW: Reusable core modules
@@ -330,7 +328,7 @@ SCHEMA_CHANGELOG = {
 | **Cache Hit** | Memory-first, then SQLite, then network |
 | **Lazy Loading** | `Question.Body` (large field) loaded on access |
 | **Batch Operations** | `store.put()` uses transactions for bulk inserts |
-| **ID Mapping** | `meta/id_map.json` provides O(1) frontend_id → slug lookup |
+| **ID Lookup** | SQLite index on `qid` provides fast frontend_id → slug lookup |
 | **Rate Limiting** | Fetcher respects LeetCode rate limits (configurable delay) |
 
 ---
@@ -431,7 +429,6 @@ def migrate_question(data: dict, from_version: str) -> dict:
 |-----------|----------|-------------|------------|
 | Cache | `.neetcode/leetcode_datasource/cache/` | ✅ Yes | gitignored |
 | Store | `.neetcode/leetcode_datasource/store/` | ⚠️ Careful | optional gitignore |
-| Meta | `.neetcode/leetcode_datasource/meta/` | ⚠️ Careful | optional gitignore |
 
 ### 5.2 Directory Structure
 
@@ -442,11 +439,8 @@ def migrate_question(data: dict, from_version: str) -> dict:
 │   │   ├── leetcode_problems.json      # Cached problem list
 │   │   └── leetcode_cache_meta.json    # Cache metadata
 │   │
-│   ├── store/                          # Persistent storage
-│   │   └── leetcode.sqlite3            # SQLite database
-│   │
-│   └── meta/                           # Derived/computed data
-│       └── id_map.json                 # frontend_id → slug mapping
+│   └── store/                          # Persistent storage
+│       └── leetcode.sqlite3            # SQLite database (indexed on qid)
 │
 └── README.md                           # Explain this directory
 ```
@@ -457,7 +451,6 @@ def migrate_question(data: dict, from_version: str) -> dict:
 |------|---------|------------------|
 | `cache/*.json` | Speed up repeated lookups | Re-fetch from LeetCode |
 | `store/leetcode.sqlite3` | Offline access, persistence | Re-import from LeetScrape data |
-| `meta/id_map.json` | O(1) ID→slug lookup | Rebuild from store |
 
 ### 5.4 .gitignore Strategy
 
@@ -465,7 +458,6 @@ def migrate_question(data: dict, from_version: str) -> dict:
 # .neetcode runtime data
 .neetcode/leetcode_datasource/cache/    # Always ignored
 # .neetcode/leetcode_datasource/store/  # Optional: keep for sharing
-# .neetcode/leetcode_datasource/meta/   # Optional: keep for sharing
 ```
 
 **Decision Point:** Store 和 Meta 是否 commit 到 repo？
@@ -631,10 +623,8 @@ Phase 1: 建立骨架 ──► Phase 2: 實作核心 ──► Phase 3: 資料�
 
 | Task | Description |
 |------|-------------|
-| 3.1 | Create migration script |
-| 3.2 | Migrate `db/leetcode.db` → `.neetcode/leetcode_datasource/store/` |
-| 3.3 | Migrate cache files → `.neetcode/leetcode_datasource/cache/` |
-| 3.4 | Build `meta/id_map.json` from store |
+| 3.1 | Migrate `db/leetcode.db` → `.neetcode/leetcode_datasource/store/` |
+| 3.2 | Migrate cache files → `.neetcode/leetcode_datasource/cache/` |
 
 **Note:** `tools/leetcode-api/` 保持不變，只複製資料
 
@@ -776,5 +766,5 @@ packages/
 
 | Date | Change |
 |------|--------|
-| 2024-12-31 | Initial draft |
+| 2025-12-31 | Initial draft |
 
