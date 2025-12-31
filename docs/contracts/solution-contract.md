@@ -817,4 +817,4 @@ python runner/test_runner.py {problem} --benchmark  # With timing
 |----------|---------|
 | [Generator Contract](generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
-| [Architecture Migration](architecture-migration.md) | Polymorphic pattern migration guide |
+| [Architecture Migration](../architecture/architecture-migration.md) | Polymorphic pattern migration guide |

@@ -487,7 +487,7 @@ if __name__ == "__main__":
     solve()
 ```
 
-> 📖 完整規格請參見 [`docs/solution-contract.md`](docs/solution-contract.md)。
+> 📖 完整規格請參見 [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md)。
 
 ### 📋 測資檔案格式
 
@@ -590,7 +590,7 @@ greedy                  44.82ms   O(kN)           3/3
 
 使用模板建立：`scripts\new_problem.bat 0023_merge_k_lists --multi`
 
-> 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/solution-contract.md`](docs/solution-contract.md#solutions-metadata)。
+> 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md#solutions-metadata)。
 
 ### 🔀 彈性輸出驗證
 
@@ -633,7 +633,7 @@ JUDGE_FUNC = judge
 COMPARE_MODE = "sorted"  # 選項："exact" | "sorted" | "set"
 ```
 
-> 📖 完整 JUDGE_FUNC 簽章和驗證規則請參見 [`docs/solution-contract.md`](docs/solution-contract.md#validation-judge_func--compare_mode)。
+> 📖 完整 JUDGE_FUNC 簽章和驗證規則請參見 [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md#validation-judge_func--compare_mode)。
 
 ### 🎲 隨機測資生成
 
@@ -678,7 +678,7 @@ python runner/test_runner.py 0004_median --generate 10 --seed 42
 python runner/test_runner.py 0004_median --generate 10 --save-failed
 ```
 
-> 📖 完整生成器規格和最佳實踐請參見 [`docs/generator-contract.md`](docs/generator-contract.md)。
+> 📖 完整生成器規格和最佳實踐請參見 [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md)。
 
 ### 📈 時間複雜度估算
 
@@ -898,8 +898,8 @@ neetcode/
 
 | 文件 | 說明 |
 |:-----|:-----|
-| [`docs/solution-contract.md`](docs/solution-contract.md) | 解答檔案規格 |
-| [`docs/generator-contract.md`](docs/generator-contract.md) | 生成器檔案規格 |
+| [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) | 解答檔案規格 |
+| [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) | 生成器檔案規格 |
 | [`tools/README.md`](docs/tools/README.md) | 完整工具參考 |
 | [`.dev/README.md`](https://github.com/lufftw/neetcode/blob/main/.dev/README.md) | 維護者指南 |
 | [`docs/contributors/documentation-architecture.md`](docs/contributors/documentation-architecture.md) | 文件架構說明 |
@@ -1019,13 +1019,13 @@ scripts\build_docs.bat --serve  # Windows
 ./scripts/build_docs.sh --serve  # Linux/macOS
 ```
 
-📖 **詳見 [本地建置文件（手動方法）](docs/build-docs-manual.md)** 完整指南。
+📖 **詳見 [本地建置文件（手動方法）](docs/guides/build-docs-manual.md)** 完整指南。
 
 **進階選項（選擇性）：**
 
 如果你想在本地測試完全相同的 GitHub Actions 工作流程，可以使用 `act`：
 
-📖 **詳見 [使用 Act 在本地執行 GitHub Actions](docs/act-local-github-actions.md)** — *注意：需要 Docker 和 act 工具。只有在你想測試 CI/CD 工作流程時才需要。*
+📖 **詳見 [使用 Act 在本地執行 GitHub Actions](docs/guides/act-local-github-actions.md)** — *注意：需要 Docker 和 act 工具。只有在你想測試 CI/CD 工作流程時才需要。*
 
 ### 文件
 
@@ -1033,16 +1033,16 @@ scripts\build_docs.bat --serve  # Windows
 - [`docs/contributors/README.md`](docs/contributors/README.md) — 維護者指南
 - [`docs/contributors/testing.md`](docs/contributors/testing.md) — 測試文件
 - [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code Tasks、Debug 配置、工作流程範例
-- [`docs/solution-contract.md`](docs/solution-contract.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
-- [`docs/generator-contract.md`](docs/generator-contract.md) — 生成器檔案規格（generate(), edge cases, complexity）
-- [`docs/architecture-migration.md`](docs/architecture-migration.md) — 多型架構遷移指南
+- [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
+- [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) — 生成器檔案規格（generate(), edge cases, complexity）
+- [`docs/architecture/architecture-migration.md`](docs/architecture/architecture-migration.md) — 多型架構遷移指南
 
 **本地文件建置（選擇性）：**
-- [`docs/build-docs-manual.md`](docs/build-docs-manual.md) — ⭐ **推薦：** 簡單的手動建置方法
-- [`docs/act-local-github-actions.md`](docs/act-local-github-actions.md) — 進階：使用 act 在本地測試 CI/CD 工作流程（需要 Docker）
+- [`docs/guides/build-docs-manual.md`](docs/guides/build-docs-manual.md) — ⭐ **推薦：** 簡單的手動建置方法
+- [`docs/guides/act-local-github-actions.md`](docs/guides/act-local-github-actions.md) — 進階：使用 act 在本地測試 CI/CD 工作流程（需要 Docker）
 
 **部署：**
-- [`docs/github-pages-setup.md`](docs/github-pages-setup.md) — 部署指南
+- [`docs/guides/github-pages-setup.md`](docs/guides/github-pages-setup.md) — 部署指南
 
 ---
 

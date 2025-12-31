@@ -33,15 +33,15 @@ Based on the `nav` configuration in `mkdocs.yml`, the following content is inclu
 | `docs/patterns/*/templates.md` | Pattern template guides | `https://lufftw.github.io/neetcode/patterns/.../templates/` |
 | `docs/mindmaps/*.md` | All mind map Markdown files | `https://lufftw.github.io/neetcode/mindmaps/...` |
 | `docs/pages/mindmaps/*.html` | Interactive mind map HTML files | `https://lufftw.github.io/neetcode/pages/mindmaps/...` |
-| `docs/solution-contract.md` | Solution file specification | `https://lufftw.github.io/neetcode/SOLUTION_CONTRACT/` |
-| `docs/generator-contract.md` | Generator file specification | `https://lufftw.github.io/neetcode/GENERATOR_CONTRACT/` |
-| `docs/architecture-migration.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/ARCHITECTURE_MIGRATION/` |
-| `docs/github-pages-setup.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/GITHUB_PAGES_SETUP/` |
-| `docs/build-docs-manual.md` | Local documentation build (manual method) | `https://lufftw.github.io/neetcode/BUILD_DOCS_MANUAL/` |
-| `docs/local-docs-build.md` | Local docs build options | `https://lufftw.github.io/neetcode/LOCAL_DOCS_BUILD/` |
-| `docs/act-local-github-actions.md` | Run GitHub Actions locally with act | `https://lufftw.github.io/neetcode/ACT_LOCAL_GITHUB_ACTIONS/` |
-| `docs/ontology-design.md` | Ontology design documentation | `https://lufftw.github.io/neetcode/ONTOLOGY_DESIGN/` |
-| `docs/mkdocs-content-guide.md` | MkDocs content guide (this file) | `https://lufftw.github.io/neetcode/MKDOCS_CONTENT_GUIDE/` |
+| `docs/contracts/solution-contract.md` | Solution file specification | `https://lufftw.github.io/neetcode/contracts/solution-contract/` |
+| `docs/contracts/generator-contract.md` | Generator file specification | `https://lufftw.github.io/neetcode/contracts/generator-contract/` |
+| `docs/architecture/architecture-migration.md` | Architecture migration guide | `https://lufftw.github.io/neetcode/architecture/architecture-migration/` |
+| `docs/guides/github-pages-setup.md` | GitHub Pages deployment guide | `https://lufftw.github.io/neetcode/guides/github-pages-setup/` |
+| `docs/guides/build-docs-manual.md` | Local documentation build (manual method) | `https://lufftw.github.io/neetcode/guides/build-docs-manual/` |
+| `docs/guides/local-docs-build.md` | Local docs build options | `https://lufftw.github.io/neetcode/guides/local-docs-build/` |
+| `docs/guides/act-local-github-actions.md` | Run GitHub Actions locally with act | `https://lufftw.github.io/neetcode/guides/act-local-github-actions/` |
+| `docs/reference/ontology-design.md` | Ontology design documentation | `https://lufftw.github.io/neetcode/reference/ontology-design/` |
+| `docs/guides/mkdocs-content-guide.md` | MkDocs content guide (this file) | `https://lufftw.github.io/neetcode/guides/mkdocs-content-guide/` |
 
 ### 📝 Special Notes
 
@@ -177,12 +177,12 @@ This ensures links work correctly in both GitHub repository browsing and the MkD
 - [Two Pointers Templates](docs/patterns/two_pointers/templates.md) — Two pointers templates
 - [Backtracking Exploration Intuition](docs/patterns/backtracking_exploration/intuition.md) — Backtracking intuition guide
 - [Backtracking Exploration Templates](docs/patterns/backtracking_exploration/templates.md) — Backtracking templates
-- [GitHub Pages Setup](docs/github-pages-setup.md) — Deployment guide
-- [Build Documentation Locally](docs/build-docs-manual.md) — Manual build method (recommended)
-- [Local Docs Build Options](docs/local-docs-build.md) — Build options guide
-- [Run GitHub Actions Locally](docs/act-local-github-actions.md) — Act method (optional, advanced)
-- [Ontology Design](docs/ontology-design.md) — Ontology design documentation
-- [MkDocs Content Guide](docs/mkdocs-content-guide.md) — Content guide (this file)
+- [GitHub Pages Setup](docs/guides/github-pages-setup.md) — Deployment guide
+- [Build Documentation Locally](docs/guides/build-docs-manual.md) — Manual build method (recommended)
+- [Local Docs Build Options](docs/guides/local-docs-build.md) — Build options guide
+- [Run GitHub Actions Locally](docs/guides/act-local-github-actions.md) — Act method (optional, advanced)
+- [Ontology Design](docs/reference/ontology-design.md) — Ontology design documentation
+- [MkDocs Content Guide](docs/guides/mkdocs-content-guide.md) — Content guide (this file)
 ```
 
 #### 4. For Code Files (Not in Website)
@@ -405,11 +405,11 @@ A: By default, MkDocs generates a `sitemap.xml` where all pages have the same `l
 
 1. **Create the overrides directory:**
    ```bash
-   mkdir docs/overrides
+   mkdir docs/.mkdocs/overrides
    ```
 
 2. **Create the custom sitemap template:**
-   Create `docs/overrides/sitemap.xml` with the following content:
+   Create `docs/.mkdocs/overrides/sitemap.xml` with the following content:
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
