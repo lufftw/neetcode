@@ -393,3 +393,14 @@ generate_reference_skeleton(problem_id=1)
 | [Docs Directory Organization](./docs-directory-organization.md) | `docs/` folder structure and migration |
 | [Documentation Architecture](./documentation-architecture.md) | Overall documentation principles |
 
+---
+
+## Appendix: Migration Notes
+
+When migrating existing documentation to this dual-layer structure:
+
+1. **Identify API-heavy content** → Move to Package README (`packages/<pkg>/README.md`)
+2. **Identify system context** → Keep/move to Docs README (`docs/packages/<pkg>/README.md`)
+3. **Chinese content** → Gradually convert to English primarily; Chinese notes acceptable in specific sections
+4. **Avoid duplication** → Each layer serves a different audience and purpose
+

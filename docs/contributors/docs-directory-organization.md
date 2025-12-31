@@ -480,8 +480,8 @@ After verifying everything works:
 
 ### Phase 9: Verify & Delete
 
-- [ ] Build docs locally: `mkdocs serve`
-- [ ] Verify all links work
+- [x] Build docs locally: `mkdocs serve`
+- [x] Verify all links work
 - [x] Delete `docs/codegen-spec.md` (moved to codegen/README.md)
 - [x] Delete old infrastructure directories (assets, overrides, stylesheets)
 
