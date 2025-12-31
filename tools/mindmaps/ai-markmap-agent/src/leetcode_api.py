@@ -1,53 +1,63 @@
 """
 LeetCode API 快取資料載入模組
 
-提供函數來載入和整合 LeetCode API 快取資料到後處理流程。
+使用 leetcode_datasource package 提供函數來載入和整合 LeetCode 問題資料。
 """
 
 from __future__ import annotations
 
-import json
 import re
-from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-# 快取檔案路徑（相對於專案根目錄）
-PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
-CACHE_FILE = PROJECT_ROOT / "tools" / "leetcode-api" / "crawler" / ".cache" / "leetcode_problems.json"
+# Use leetcode_datasource package for problem index lookup
+from leetcode_datasource import LeetCodeDataSource
+
+# Singleton datasource instance
+_datasource: Optional[LeetCodeDataSource] = None
+
+
+def get_datasource() -> LeetCodeDataSource:
+    """Get or initialize the LeetCodeDataSource singleton."""
+    global _datasource
+    if _datasource is None:
+        _datasource = LeetCodeDataSource()
+    return _datasource
 
 
 def load_leetcode_cache() -> Dict[str, Dict[str, Any]] | None:
     """
-    載入 LeetCode API 快取資料，並建立以 frontend_question_id 為 key 的查找表。
-    
-    快取檔案使用內部 question_id 作為 key，但我們需要用 frontend_question_id
-    （用戶看到的題號，如 "LeetCode 1"）來查找。
+    載入 LeetCode 問題資料，使用 leetcode_datasource package。
     
     Returns:
-        問題資料字典，key 為 frontend_question_id（零填充格式如 "0011"），
-        如果快取不存在則返回 None
+        包含 datasource 的 dict，用於後續查找
     """
-    if not CACHE_FILE.exists():
-        return None
+    ds = get_datasource()
     
-    try:
-        with open(CACHE_FILE, 'r', encoding='utf-8') as f:
-            raw_cache = json.load(f)
-        
-        # 建立以 frontend_question_id 為 key 的查找表
-        lookup = {}
-        for _, problem in raw_cache.items():
-            frontend_id = problem.get("frontend_question_id")
-            if frontend_id:
-                # 存儲零填充格式以便一致查找
-                key = str(frontend_id).zfill(4)
-                lookup[key] = problem
-                # 也存儲無填充格式
-                lookup[str(frontend_id)] = problem
-        
-        return lookup
-    except (json.JSONDecodeError, IOError):
-        return None
+    # Check if problem_index is populated
+    stats = ds.stats()
+    if stats.get('problem_index_count', 0) == 0:
+        # Try to sync
+        try:
+            ds.sync_problem_list()
+        except Exception:
+            return None
+    
+    return {"_datasource": ds}
+
+
+def _get_problem_info_as_dict(ds: LeetCodeDataSource, frontend_id: int) -> Dict[str, Any] | None:
+    """Get problem info from datasource as a dict."""
+    info = ds.get_problem_info(frontend_id)
+    if info:
+        return {
+            "frontend_question_id": info.frontend_question_id,
+            "question_id": info.question_id,
+            "title": info.title,
+            "slug": info.title_slug,
+            "url": info.url,
+            "difficulty": info.difficulty,
+        }
+    return None
 
 
 def merge_leetcode_api_data(
@@ -74,17 +84,34 @@ def merge_leetcode_api_data(
     if not api_problems:
         return existing_problems
     
+    # Get datasource
+    ds = api_problems.get("_datasource")
+    if not ds:
+        return existing_problems
+    
     # 複製現有資料
     merged = existing_problems.copy()
     
     # 為每個問題補充 API 資料
     for problem_id, problem_data in merged.items():
-        # 標準化 ID 以查找 API 資料
-        normalized_id = problem_id
-        if isinstance(problem_id, str) and problem_id.isdigit():
-            normalized_id = problem_id.zfill(4)
+        # Extract frontend_id for lookup
+        frontend_id = None
         
-        api_data = api_problems.get(normalized_id)
+        if isinstance(problem_id, str):
+            if problem_id.isdigit():
+                frontend_id = int(problem_id)
+            else:
+                # Try to extract from key like "0001_two_sum"
+                match = re.match(r'^(\d+)', problem_id)
+                if match:
+                    frontend_id = int(match.group(1))
+        elif isinstance(problem_id, int):
+            frontend_id = problem_id
+        
+        if frontend_id is None:
+            continue
+        
+        api_data = _get_problem_info_as_dict(ds, frontend_id)
         if api_data:
             # 使用 API 快取資料作為一致性來源
             # Title 優先使用 API 快取（確保資料一致）
@@ -105,51 +132,13 @@ def merge_leetcode_api_data(
             # 添加 API 特有的欄位（如果不存在）
             if "question_id" not in problem_data:
                 problem_data["question_id"] = api_data.get("question_id")
-            
-            if "difficulty" not in problem_data:
-                problem_data["difficulty"] = api_data.get("difficulty", "")
-    
-    # 添加 API 中有但本地沒有的問題（作為參考）
-    # 注意：只添加真正本地沒有的問題，避免覆蓋本地 TOML 資料
-    for api_id, api_data in api_problems.items():
-        # 檢查是否已經存在（可能以不同的 key 格式存在，如 "0001_two_sum"）
-        # 標準化 api_id 以便比較
-        normalized_api_id = api_id
-        if isinstance(api_id, str) and api_id.isdigit():
-            normalized_api_id = api_id.zfill(4)
-        
-        # 檢查是否已經存在（檢查所有可能的 key 格式）
-        exists = False
-        for key in merged.keys():
-            # 檢查 key 是否匹配（可能是 "0001" 或 "0001_two_sum"）
-            if key == normalized_api_id or key == api_id:
-                exists = True
-                break
-            # 檢查 key 是否以 ID 開頭（如 "0001_two_sum"）
-            if isinstance(key, str):
-                match = re.match(r'^(\d+)_', key)
-                if match and match.group(1).zfill(4) == normalized_api_id:
-                    exists = True
-                    break
-        
-        if not exists:
-            # 只添加基本資訊，標記為 API 來源
-            merged[api_id] = {
-                "id": api_id,
-                "title": api_data.get("title", ""),
-                "slug": api_data.get("slug", ""),
-                "url": api_data.get("url", ""),
-                "difficulty": api_data.get("difficulty", ""),
-                "question_id": api_data.get("question_id"),
-                "_source": "api",  # 標記來源
-            }
     
     return merged
 
 
 def get_problem_url_from_api(problem_id: str | int) -> str | None:
     """
-    從 API 快取獲取問題的 LeetCode URL。
+    從 problem_index 獲取問題的 LeetCode URL。
     
     Args:
         problem_id: 問題 ID（可以是字串或整數）
@@ -157,28 +146,26 @@ def get_problem_url_from_api(problem_id: str | int) -> str | None:
     Returns:
         LeetCode URL，如果找不到則返回 None
     """
-    api_problems = load_leetcode_cache()
-    if not api_problems:
-        return None
+    ds = get_datasource()
     
     # 標準化 ID
     if isinstance(problem_id, int):
-        normalized_id = f"{problem_id:04d}"
+        frontend_id = problem_id
     elif isinstance(problem_id, str) and problem_id.isdigit():
-        normalized_id = problem_id.zfill(4)
+        frontend_id = int(problem_id)
     else:
-        normalized_id = problem_id
+        return None
     
-    problem = api_problems.get(normalized_id)
-    if problem:
-        return problem.get("url")
+    info = ds.get_problem_info(frontend_id)
+    if info:
+        return info.url
     
     return None
 
 
 def get_problem_slug_from_api(problem_id: str | int) -> str | None:
     """
-    從 API 快取獲取問題的 slug。
+    從 problem_index 獲取問題的 slug。
     
     Args:
         problem_id: 問題 ID（可以是字串或整數）
@@ -186,21 +173,15 @@ def get_problem_slug_from_api(problem_id: str | int) -> str | None:
     Returns:
         問題 slug，如果找不到則返回 None
     """
-    api_problems = load_leetcode_cache()
-    if not api_problems:
-        return None
+    ds = get_datasource()
     
     # 標準化 ID
     if isinstance(problem_id, int):
-        normalized_id = f"{problem_id:04d}"
+        frontend_id = problem_id
     elif isinstance(problem_id, str) and problem_id.isdigit():
-        normalized_id = problem_id.zfill(4)
+        frontend_id = int(problem_id)
     else:
-        normalized_id = problem_id
+        return None
     
-    problem = api_problems.get(normalized_id)
-    if problem:
-        return problem.get("slug")
-    
-    return None
-
+    slug = ds.get_slug(frontend_id)
+    return slug

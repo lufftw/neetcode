@@ -33,7 +33,6 @@ Examples:
 import re
 import sys
 import argparse
-import json
 import time
 import random
 from pathlib import Path
@@ -51,10 +50,23 @@ if str(_LEETCODE_API_PATH) not in sys.path:
 
 from docstring.formatter import get_full_docstring_data
 
+# Use leetcode_datasource package for problem index lookup
+from leetcode_datasource import LeetCodeDataSource
+
 # Project root directory
 ROOT = Path(__file__).parent.parent.parent
 SOLUTIONS_DIR = ROOT / "solutions"
-CACHE_FILE = ROOT / "tools" / "leetcode-api" / "crawler" / ".cache" / "leetcode_problems.json"
+
+# Initialize datasource for problem index lookups
+_datasource: Optional[LeetCodeDataSource] = None
+
+
+def get_datasource() -> LeetCodeDataSource:
+    """Get or initialize the LeetCodeDataSource singleton."""
+    global _datasource
+    if _datasource is None:
+        _datasource = LeetCodeDataSource()
+    return _datasource
 
 
 class DocstringBuilder:
@@ -164,26 +176,20 @@ class DocstringFixer:
         self.delay_min = delay_min
         self.delay_max = delay_max
         self.force_refresh = force_refresh
-        self.cache = self._load_cache()
-        if not self.cache:
-            print(f"⚠️  Warning: Cannot load cache file: {CACHE_FILE}")
-            print(f"   Please run the following command to create the cache:")
-            print(f"   python tools/leetcode-api/crawler/sync_leetcode_data.py")
+        self.ds = get_datasource()
+        
+        # Check if problem_index is populated
+        stats = self.ds.stats()
+        if stats.get('problem_index_count', 0) == 0:
+            print("Problem index is empty. Syncing from LeetCode API...")
+            count = self.ds.sync_problem_list()
+            print(f"Synced {count} problems to problem_index")
             print()
+        
         self.fixed_count = 0
         self.skipped_count = 0
         self.cached_count = 0
         self.errors: List[Tuple[str, str]] = []
-    
-    def _load_cache(self) -> Optional[Dict]:
-        """Load LeetCode problems cache (for slug lookup)."""
-        if CACHE_FILE.exists():
-            try:
-                with open(CACHE_FILE, 'r', encoding='utf-8') as f:
-                    return json.load(f)
-            except (json.JSONDecodeError, IOError):
-                pass
-        return None
     
     def _random_delay(self) -> None:
         """Sleep for a random duration to avoid rate limiting."""
@@ -191,29 +197,21 @@ class DocstringFixer:
         time.sleep(delay)
     
     def _get_problem_info(self, problem_id: str) -> Optional[Dict[str, str]]:
-        """Get problem info from cache by ID (e.g., '0077' or '77').
+        """Get problem info from problem_index by ID (e.g., '0077' or '77').
         
-        Note: Uses 'frontend_question_id' which is the problem number shown on
-        LeetCode website (e.g., 922 for "Sort Array By Parity II"). This is
-        different from 'question_id' which is the internal database ID.
+        Uses leetcode_datasource package for fast lookup via problem_index table.
         """
-        if not self.cache:
-            return None
-        
         # Normalize problem ID
         problem_id_int = int(problem_id.lstrip('0') or '0')
         
-        for key, value in self.cache.items():
-            # Use frontend_question_id (the number displayed on LeetCode website)
-            # NOT question_id (internal database ID)
-            if value.get('frontend_question_id') == problem_id_int:
-                slug = value.get('slug', '')
-                url = f"https://leetcode.com/problems/{slug}/"
-                return {
-                    'title': value.get('title', ''),
-                    'slug': slug,
-                    'url': url,
-                }
+        # Use leetcode_datasource package
+        info = self.ds.get_problem_info(problem_id_int)
+        if info:
+            return {
+                'title': info.title,
+                'slug': info.title_slug,
+                'url': info.url or f"https://leetcode.com/problems/{info.title_slug}/",
+            }
         return None
     
     def _is_paid_only_content(self, data: dict) -> bool:
@@ -266,20 +264,15 @@ class DocstringFixer:
         
         problem_id = match.group(1)
         
-        # Get problem info from cache (for slug lookup)
-        if not self.cache:
-            return False, f"Cache file not found. Please run: python tools/leetcode-api/crawler/sync_leetcode_data.py"
-        
+        # Get problem info from problem_index (for slug lookup)
         info = self._get_problem_info(problem_id)
         if not info:
-            return False, f"Problem {problem_id} not found in cache. Please run: python tools/leetcode-api/crawler/sync_leetcode_data.py"
+            return False, f"Problem {problem_id} not found in problem_index. Try: ds.sync_problem_list(refresh=True)"
         
         slug = info['slug']
         
-        # Check if data exists in local SQLite cache
-        from question_api import get_default_api
-        api = get_default_api()
-        is_cached = api.exists(slug)
+        # Check if data exists in local SQLite cache (using leetcode_datasource)
+        is_cached = self.ds.exists(slug)
         
         # Only apply delay for network requests, skip delay for local cache
         if is_cached and not self.force_refresh:
