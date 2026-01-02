@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) two pointers
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -22,22 +23,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility (optional)
     
     Yields:
-        str: Space-separated integers representing heights
+        str: Canonical JSON array of heights
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as data structures
     edge_cases = [
-        "1 8 6 2 5 4 8 3 7",      # Classic example
-        "1 1",                      # Minimum size
-        "1 2 1",                    # Small case
-        "1 2 3 4 5",                # Increasing
-        "5 4 3 2 1",                # Decreasing
+        [1, 8, 6, 2, 5, 4, 8, 3, 7],  # Classic example
+        [1, 1],                        # Minimum size
+        [1, 2, 1],                     # Small case
+        [1, 2, 3, 4, 5],               # Increasing
+        [5, 4, 3, 2, 1],               # Decreasing
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for heights in edge_cases:
+        yield json.dumps(heights, separators=(',', ':'))
         count -= 1
         if count <= 0:
             return
@@ -51,7 +52,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 def _generate_case(size: int) -> str:
     """Generate a single test case."""
     heights = [random.randint(0, 10000) for _ in range(size)]
-    return ' '.join(map(str, heights))
+    return json.dumps(heights, separators=(',', ':'))
 
 
 def generate_for_complexity(n: int) -> str:
@@ -62,8 +63,7 @@ def generate_for_complexity(n: int) -> str:
         n: Number of vertical lines (length of height array)
     
     Returns:
-        str: Test input with n heights
+        str: Canonical JSON array
     """
     n = max(2, n)
     return _generate_case(n)
-

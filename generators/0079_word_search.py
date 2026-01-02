@@ -9,6 +9,7 @@ LeetCode Constraints:
 - 1 <= word.length <= 15
 - board and word consists of only lowercase and uppercase English letters
 """
+import json
 import random
 import string
 from typing import Iterator, Optional
@@ -37,7 +38,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return

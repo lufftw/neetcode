@@ -6,6 +6,7 @@ LeetCode Constraints:
 - 1 <= nums.length <= 10
 - -10 <= nums[i] <= 10
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -27,13 +28,13 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     # Edge cases first
     edge_cases = [
         "1,2,2",       # Classic with duplicates
-        "0",           # Single element
+        [0],           # Single element
         "1,1,1",       # All same
         "1,2,2,3,3",   # Multiple duplicate groups
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -51,5 +52,5 @@ def _generate_case() -> str:
     # Generate integers with possible duplicates
     nums = [random.randint(-10, 10) for _ in range(n)]
     
-    return ','.join(map(str, nums))
+    return json.dumps(nums, separators=(",",":"))
 

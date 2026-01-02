@@ -19,22 +19,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility
     
     Yields:
-        str: Test input in the format: k\\nn
+        str: Canonical format - Line 1: k, Line 2: n
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as (k, n) tuples
     edge_cases = [
-        "3\n7",    # Classic example (1+2+4=7)
-        "3\n9",    # Multiple solutions
-        "4\n1",    # Impossible (min sum with 4 nums is 1+2+3+4=10)
-        "2\n18",   # 9+9 not allowed (unique), but 9+8=17
-        "9\n45",   # Maximum possible (1+2+...+9=45)
+        (3, 7),    # Classic example (1+2+4=7)
+        (3, 9),    # Multiple solutions
+        (4, 1),    # Impossible (min sum with 4 nums is 1+2+3+4=10)
+        (2, 18),   # 9+9 not allowed (unique), but 9+8=17
+        (9, 45),   # Maximum possible (1+2+...+9=45)
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for k, n in edge_cases:
+        yield f"{k}\n{n}"
         count -= 1
         if count <= 0:
             return
@@ -52,8 +52,5 @@ def _generate_case() -> str:
     # Max sum with k nums: (10-k)+...+9 = (9+10-k)*k/2
     min_sum = k * (k + 1) // 2
     max_sum = (19 - k) * k // 2
-    
     n = random.randint(min_sum, min(60, max_sum))
-    
     return f"{k}\n{n}"
-

@@ -10,6 +10,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) with hash map
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -40,7 +41,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -72,7 +73,7 @@ def _generate_case(size: int) -> str:
     target = nums[i] + nums[j]
     
     # Format as .in file content
-    nums_str = ','.join(map(str, nums))
+    nums_str = json.dumps(nums, separators=(",",":"))
     return f"{nums_str}\n{target}"
 
 

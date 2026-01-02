@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) Dutch National Flag
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -29,15 +30,15 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     
     # Edge cases first
     edge_cases = [
-        "2 0 2 1 1 0",              # Classic example
-        "2 0 1",                    # Small case
-        "0",                        # Single element
-        "1 1 1",                    # All same
-        "0 1 2",                    # Already sorted
+        [2, 0, 2, 1, 1, 0],              # Classic example
+        [2, 0, 1],                    # Small case
+        [0],                        # Single element
+        [1, 1, 1],                    # All same
+        [0, 1, 2],                    # Already sorted
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -51,7 +52,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 def _generate_case(size: int) -> str:
     """Generate a single test case."""
     nums = [random.choice([0, 1, 2]) for _ in range(size)]
-    return ' '.join(map(str, nums))
+    return json.dumps(nums, separators=(",",":"))
 
 
 def generate_for_complexity(n: int) -> str:

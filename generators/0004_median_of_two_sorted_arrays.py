@@ -12,6 +12,7 @@ LeetCode Constraints:
 
 Time Complexity: O(log(m+n))
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -29,9 +30,8 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility (optional)
     
     Yields:
-        str: Test input in the same format as .in files
+        str: Canonical JSON format - Line 1: nums1 array, Line 2: nums2 array
     """
-    # Constraints
     min_m, max_m = 0, 1000
     min_n, max_n = 0, 1000
     min_sum, max_sum = 1, 2000
@@ -40,18 +40,18 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as (nums1, nums2) tuples
     edge_cases = [
-        "[]\n[1]",                    # nums1 is empty
-        "[1]\n[]",                    # nums2 is empty
-        "[1,3]\n[2]",                 # Classic odd total length
-        "[1,2]\n[3,4]",               # Classic even total length, no overlap
-        "[-5,-3,-1]\n[2,4,6]",        # Negative and positive
-        "[1]\n[1]",                   # Same single element
+        ([], [1]),                      # nums1 is empty
+        ([1], []),                      # nums2 is empty
+        ([1, 3], [2]),                  # Classic odd total length
+        ([1, 2], [3, 4]),               # Classic even total length
+        ([-5, -3, -1], [2, 4, 6]),      # Negative and positive
+        ([1], [1]),                     # Same single element
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums1, nums2 in edge_cases:
+        yield f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
         count -= 1
         if count <= 0:
             return
@@ -75,8 +75,7 @@ def _generate_random_case(min_m, max_m, min_n, max_n,
     nums1 = sorted([random.randint(min_val, max_val) for _ in range(m)])
     nums2 = sorted([random.randint(min_val, max_val) for _ in range(n)])
     
-    # Format as .in file content (no spaces in list)
-    return f"{nums1}\n{nums2}".replace(' ', '')
+    return f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
 
 
 # ============================================
@@ -95,19 +94,14 @@ def generate_for_complexity(n: int) -> str:
         n: Total size (m + n)
     
     Returns:
-        str: Test input with total size = n
+        str: Canonical JSON input
     """
     min_val, max_val = -10**6, 10**6
-    
-    # Ensure n is at least 1
     n = max(1, n)
-    
-    # Randomly split n into m and (n - m)
     m = random.randint(0, n)
     remaining = n - m
     
     nums1 = sorted([random.randint(min_val, max_val) for _ in range(m)])
     nums2 = sorted([random.randint(min_val, max_val) for _ in range(remaining)])
     
-    return f"{nums1}\n{nums2}".replace(' ', '')
-
+    return f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"

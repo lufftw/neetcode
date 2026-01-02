@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) two pointers
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -22,21 +23,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility (optional)
     
     Yields:
-        str: Line 1: space-separated integers, Line 2: value to remove
+        str: Canonical JSON format - Line 1: nums array, Line 2: val
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as data structures (nums, val)
     edge_cases = [
-        "3 2 2 3\n3",               # Classic example
-        "0 1 2 2 3 0 4 2\n2",       # Longer example
-        "1\n1",                     # Single element to remove
-        "1 2 3\n4",                  # Value not in array
+        ([3, 2, 2, 3], 3),           # Classic example
+        ([0, 1, 2, 2, 3, 0, 4, 2], 2), # Longer example
+        ([1], 1),                     # Single element to remove
+        ([1, 2, 3], 4),               # Value not in array
+        ([], 0),                      # Empty array
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums, val in edge_cases:
+        yield f"{json.dumps(nums, separators=(',', ':'))}\n{val}"
         count -= 1
         if count <= 0:
             return
@@ -51,8 +53,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 def _generate_case(size: int, val: int) -> str:
     """Generate a single test case."""
     nums = [random.randint(0, 50) for _ in range(size)]
-    nums_str = ' '.join(map(str, nums))
-    return f"{nums_str}\n{val}"
+    return f"{json.dumps(nums, separators=(',', ':'))}\n{val}"
 
 
 def generate_for_complexity(n: int) -> str:
@@ -63,9 +64,8 @@ def generate_for_complexity(n: int) -> str:
         n: Length of nums array
     
     Returns:
-        str: Test input with n integers and a random val
+        str: Canonical JSON input
     """
     n = max(0, n)
     val = random.randint(0, 50)
     return _generate_case(n, val)
-

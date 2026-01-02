@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(max(m, n))
 """
+import json
 import random
 from typing import Iterator, Optional, List
 
@@ -41,7 +42,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -62,7 +63,7 @@ def _generate_random_case() -> str:
     l1 = _generate_number_digits(len1)
     l2 = _generate_number_digits(len2)
     
-    return f"{','.join(map(str, l1))}\n{','.join(map(str, l2))}"
+    return f"{json.dumps(l1, separators=(",",":"))}\n{json.dumps(l2, separators=(",",":"))}"
 
 
 def _generate_number_digits(length: int) -> List[int]:
@@ -104,5 +105,5 @@ def generate_for_complexity(n: int) -> str:
     l1 = _generate_number_digits(n)
     l2 = _generate_number_digits(n)
     
-    return f"{','.join(map(str, l1))}\n{','.join(map(str, l2))}"
+    return f"{json.dumps(l1, separators=(",",":"))}\n{json.dumps(l2, separators=(",",":"))}"
 

@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) merge from ends
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -29,14 +30,14 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     
     # Edge cases first
     edge_cases = [
-        "-4 -1 0 3 10",             # Classic example
-        "-7 -3 2 3 11",             # Another example
-        "-5 -3 -2 -1",              # All negative
-        "1 2 3 4",                   # All positive
+        [-4, -1, 0, 3, 10],             # Classic example
+        [-7, -3, 2, 3, 11],             # Another example
+        [-5, -3, -2, -1],              # All negative
+        [1, 2, 3, 4],                   # All positive
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -50,7 +51,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 def _generate_case(size: int) -> str:
     """Generate a single sorted test case (can include negatives)."""
     nums = sorted([random.randint(-1000, 1000) for _ in range(size)])
-    return ' '.join(map(str, nums))
+    return json.dumps(nums, separators=(",",":"))
 
 
 def generate_for_complexity(n: int) -> str:

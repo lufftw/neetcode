@@ -20,28 +20,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility (optional)
     
     Yields:
-        str: A single integer
+        str: Single integer
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
-    edge_cases = [
-        "19",                       # Happy number
-        "2",                        # Not happy
-        "1",                        # Happy (trivial)
-        "7",                        # Happy
-    ]
+    # Edge cases (single integers)
+    edge_cases = [19, 2, 1, 7]
     
-    for edge in edge_cases:
-        yield edge
+    for n in edge_cases:
+        yield str(n)
         count -= 1
         if count <= 0:
             return
     
     # Random cases
     for _ in range(count):
-        # Generate numbers in reasonable range
         n = random.randint(1, 10000)
         yield str(n)
 
@@ -54,8 +48,7 @@ def generate_for_complexity(n: int) -> str:
         n: The number to test
     
     Returns:
-        str: Test input with number n
+        str: Test input
     """
     n = max(1, n)
     return str(n)
-

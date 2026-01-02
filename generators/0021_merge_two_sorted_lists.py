@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(m + n) merge
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -37,7 +38,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -54,8 +55,8 @@ def _generate_case(size1: int, size2: int) -> str:
     list1 = sorted([random.randint(-100, 100) for _ in range(size1)])
     list2 = sorted([random.randint(-100, 100) for _ in range(size2)])
     
-    list1_str = ' '.join(map(str, list1)) if list1 else ''
-    list2_str = ' '.join(map(str, list2)) if list2 else ''
+    list1_str = json.dumps(list1, separators=(",",":")) if list1 else ''
+    list2_str = json.dumps(list2, separators=(",",":")) if list2 else ''
     
     return f"{list1_str}\n{list2_str}"
 
