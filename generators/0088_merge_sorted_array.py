@@ -12,6 +12,7 @@ LeetCode Constraints:
 
 Time Complexity: O(m + n) merge from end
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -38,7 +39,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -58,8 +59,8 @@ def _generate_case(m: int, n: int) -> str:
     # nums1 has m + n length, with trailing zeros
     nums1 = nums1_actual + [0] * n
     
-    nums1_str = ' '.join(map(str, nums1))
-    nums2_str = ' '.join(map(str, nums2)) if nums2 else ''
+    nums1_str = json.dumps(nums1, separators=(",",":"))
+    nums2_str = json.dumps(nums2, separators=(",",":")) if nums2 else ''
     
     return f"{nums1_str}\n{m}\n{nums2_str}\n{n}"
 

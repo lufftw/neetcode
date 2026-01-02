@@ -39,8 +39,9 @@ SOLUTIONS = {
 # ============================================================================
 def judge(actual, expected, input_data: str) -> bool:
     """Validate Subsets II results."""
+    import json
     from collections import Counter
-    nums = list(map(int, input_data.strip().split(',')))
+    nums = json.loads(input_data.strip())
     nums_count = Counter(nums)
     
     # Each subset should only contain elements from nums (respecting counts)
@@ -130,6 +131,7 @@ class Solution:
 
 
 def solve():
+    import json
     """
     Input format:
     Line 1: nums (comma-separated)
@@ -138,9 +140,10 @@ def solve():
     1,2,2
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    nums = list(map(int, lines[0].split(',')))
+    nums = json.loads(lines[0])
     
     solver = get_solver(SOLUTIONS)
     result = solver.subsetsWithDup(nums)

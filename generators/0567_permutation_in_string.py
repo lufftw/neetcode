@@ -8,6 +8,7 @@ LeetCode Constraints:
 
 Time Complexity: O(|s1| + |s2|) sliding window
 """
+import json
 import random
 import string
 from typing import Iterator, Optional
@@ -46,7 +47,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for s1, s2 in edge_cases:
-        yield f"{s1}\n{s2}"
+        yield f"{json.dumps(s1)}\n{json.dumps(s2)}"
         count -= 1
         if count <= 0:
             return
@@ -77,7 +78,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         else:
             s2 = ''.join(random.choices(pool, k=s2_len))
         
-        yield f"{s1}\n{s2}"
+        yield f"{json.dumps(s1)}\n{json.dumps(s2)}"
 
 
 # ============================================================================

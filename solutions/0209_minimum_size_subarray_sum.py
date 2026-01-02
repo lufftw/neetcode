@@ -53,9 +53,10 @@ def judge(actual, expected, input_data: str) -> bool:
     """
     Validate result using reference implementation.
     """
+    import json
     lines = input_data.strip().split('\n')
     target = int(lines[0])
-    nums = list(map(int, lines[1].split())) if len(lines) > 1 else []
+    nums = json.loads(lines[1]) if len(lines) > 1 else []
     
     correct = _find_min_subarray(target, nums)
     
@@ -143,6 +144,7 @@ class Solution:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: target (integer)
@@ -152,10 +154,11 @@ def solve():
         Single integer: minimum length of valid subarray, or 0
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
     target = int(lines[0])
-    nums = list(map(int, lines[1].split())) if len(lines) > 1 else []
+    nums = json.loads(lines[1]) if len(lines) > 1 else []
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

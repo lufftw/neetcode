@@ -70,8 +70,8 @@ def judge(actual, expected, input_data: str) -> bool:
     
     # Parse input
     lines = input_data.strip().split('\n')
-    l1_digits = list(map(int, lines[0].split(',')))
-    l2_digits = list(map(int, lines[1].split(',')))
+    l1_digits = json.loads(lines[0])
+    l2_digits = json.loads(lines[1])
     
     # Convert digits (reverse order) to numbers
     num1 = _digits_to_number(l1_digits)
@@ -163,6 +163,7 @@ def linkedlist_to_list(node: Optional[ListNode]) -> List[int]:
 
 
 def solve():
+    import json
     """
     Input format:
     Line 1: l1 values (comma-separated digits, reverse order)
@@ -173,12 +174,13 @@ def solve():
     5,6,4
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
 
     # Parse l1
-    l1_values = list(map(int, lines[0].split(',')))
+    l1_values = json.loads(lines[0])
     # Parse l2
-    l2_values = list(map(int, lines[1].split(',')))
+    l2_values = json.loads(lines[1])
 
     # Convert to LinkedList
     l1 = list_to_linkedlist(l1_values)

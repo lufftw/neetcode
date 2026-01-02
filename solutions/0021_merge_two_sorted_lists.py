@@ -82,14 +82,15 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correctly merged
     """
+    import json
     # Parse input - preserve empty lines by splitting before strip
     lines = input_data.split('\n')
     # Handle trailing newline by removing empty last element if present
     if lines and lines[-1] == '':
         lines = lines[:-1]
     
-    list1_vals = list(map(int, lines[0].split())) if lines[0].strip() else []
-    list2_vals = list(map(int, lines[1].split())) if len(lines) > 1 and lines[1].strip() else []
+    list1_vals = json.loads(lines[0]) if lines[0].strip() else []
+    list2_vals = json.loads(lines[1]) if len(lines) > 1 and lines[1].strip() else []
     
     # Compute correct answer
     correct = sorted(list1_vals + list2_vals)
@@ -213,6 +214,7 @@ def solve():
         Output: 1 1 2 3 4 4
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
     
@@ -224,8 +226,8 @@ def solve():
             nodes[i].next = nodes[i + 1]
         return nodes[0]
     
-    values1 = list(map(int, lines[0].split())) if lines[0].strip() else []
-    values2 = list(map(int, lines[1].split())) if len(lines) > 1 and lines[1].strip() else []
+    values1 = json.loads(lines[0]) if lines[0].strip() else []
+    values2 = json.loads(lines[1]) if len(lines) > 1 and lines[1].strip() else []
     
     list1 = build_list(values1)
     list2 = build_list(values2)

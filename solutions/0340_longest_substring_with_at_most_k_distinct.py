@@ -179,17 +179,18 @@ class SolutionTwoDistinct:
 
 def solve():
     """
-    Input format:
-        Line 1: s (the input string)
-        Line 2: k (maximum distinct characters)
+    Input format (canonical JSON):
+        Line 1: s (JSON string, e.g. "eceba")
+        Line 2: k (integer)
     
     Output format:
-        Single integer: length of longest valid substring
+        Integer: length of longest valid substring
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    s = lines[0]
+    s = json.loads(lines[0])
     k = int(lines[1]) if len(lines) > 1 else 0
     
     # Get solver and call method naturally (like LeetCode)

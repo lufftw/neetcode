@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) sliding window
 """
+import json
 import random
 from typing import Iterator, Optional, List
 
@@ -44,7 +45,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for target, nums in edge_cases:
-        nums_str = ' '.join(map(str, nums))
+        nums_str = json.dumps(nums, separators=(",",":"))
         yield f"{target}\n{nums_str}"
         count -= 1
         if count <= 0:
@@ -62,7 +63,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         else:
             target = total + random.randint(1, 100)
         
-        nums_str = ' '.join(map(str, nums))
+        nums_str = json.dumps(nums, separators=(",",":"))
         yield f"{target}\n{nums_str}"
 
 
@@ -90,6 +91,6 @@ def generate_for_complexity(n: int) -> str:
     total = sum(nums)
     target = max(1, total // 2)
     
-    nums_str = ' '.join(map(str, nums))
+    nums_str = json.dumps(nums, separators=(",",":"))
     return f"{target}\n{nums_str}"
 

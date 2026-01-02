@@ -140,14 +140,14 @@ class Solution:
 def solve():
     """
     Input format:
-    Line 1: n
-    Line 2: k
+    Line 1: n (integer)
+    Line 2: k (integer)
     
-    Example:
-    4
-    2
+    Output format:
+    JSON 2D array of combinations
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
     n = int(lines[0])
@@ -156,7 +156,7 @@ def solve():
     solver = get_solver(SOLUTIONS)
     result = solver.combine(n, k)
     
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

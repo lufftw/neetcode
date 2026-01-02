@@ -7,6 +7,7 @@ LeetCode Constraints:
 - -10 <= nums[i] <= 10
 - All the numbers of nums are unique
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -20,21 +21,21 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility
     
     Yields:
-        str: Test input in the format: nums (comma-separated)
+        str: Canonical JSON array
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as lists
     edge_cases = [
-        "1,2,3",     # Classic example
-        "0",         # Single element
-        "1,2",       # Two elements
-        "1,2,3,4",   # Four elements
+        [1, 2, 3],      # Classic example
+        [0],            # Single element
+        [1, 2],         # Two elements
+        [1, 2, 3, 4],   # Four elements
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums in edge_cases:
+        yield json.dumps(nums, separators=(',', ':'))
         count -= 1
         if count <= 0:
             return
@@ -46,11 +47,6 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 def _generate_case() -> str:
     """Generate a single random test case with unique integers."""
-    # Random length 1-10
     n = random.randint(1, 10)
-    
-    # Generate distinct integers in range [-10, 10]
     nums = random.sample(range(-10, 11), n)
-    
-    return ','.join(map(str, nums))
-
+    return json.dumps(nums, separators=(',', ':'))

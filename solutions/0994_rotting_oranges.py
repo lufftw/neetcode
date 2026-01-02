@@ -113,28 +113,17 @@ class Solution:
 
 def solve():
     """
-    Input format:
-    Line 1: m (rows)
-    Line 2: n (cols)
-    Next m lines: n numbers separated by commas
+    Input format (canonical JSON):
+    Line 1: 2D array grid (e.g. [[2,1,1],[1,1,0],[0,1,1]])
 
-    Example:
-    3
-    3
-    2,1,1
-    1,1,0
-    0,1,1
+    Output format:
+    Integer: minutes until all oranges rot, or -1
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
 
-    m = int(lines[0])
-    n = int(lines[1])
-
-    grid = []
-    for i in range(2, 2 + m):
-        row = list(map(int, lines[i].split(',')))
-        grid.append(row)
+    grid = json.loads(lines[0])
 
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

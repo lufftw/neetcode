@@ -460,6 +460,7 @@ pip install big-O psutil sparklines tabulate
 
 | Document | Content |
 |----------|---------|
+| [Test File Format](../contracts/test-file-format.md) | Canonical `.in`/`.out` format specification |
 | [Solution Contract](../contracts/solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
 | [Generator Contract](../contracts/generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Runner README](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | Quick reference (in-module) |

@@ -19,22 +19,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility
     
     Yields:
-        str: Test input in the format: n\\nk
+        str: Canonical format - Line 1: n, Line 2: k
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as (n, k) tuples
     edge_cases = [
-        "4\n2",   # Classic example
-        "1\n1",   # Minimal
-        "5\n5",   # k equals n
-        "5\n1",   # k equals 1
-        "10\n3",  # Larger case
+        (4, 2),   # Classic example
+        (1, 1),   # Minimal
+        (5, 5),   # k equals n
+        (5, 1),   # k equals 1
+        (10, 3),  # Larger case
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for n, k in edge_cases:
+        yield f"{n}\n{k}"
         count -= 1
         if count <= 0:
             return
@@ -46,8 +46,6 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 def _generate_case() -> str:
     """Generate a single random test case."""
-    # Keep n reasonable to avoid explosion (C(20,10) is large)
     n = random.randint(1, 12)
     k = random.randint(1, n)
     return f"{n}\n{k}"
-

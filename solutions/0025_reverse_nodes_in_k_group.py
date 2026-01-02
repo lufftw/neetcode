@@ -77,11 +77,12 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct
     """
+    import json
     import ast
     
     # Parse input
     lines = input_data.strip().split('\n')
-    values = list(map(int, lines[0].split(',')))
+    values = json.loads(lines[0])
     k = int(lines[1])
     
     # Compute expected result using simple simulation
@@ -255,6 +256,7 @@ def linkedlist_to_list(node: Optional[ListNode]) -> List[int]:
 
 
 def solve():
+    import json
     """
     Input format:
     Line 1: values of the linked list (comma-separated)
@@ -265,10 +267,11 @@ def solve():
     2
     """
     import sys
+    import json
 
     # Parse input
     lines = sys.stdin.read().strip().split('\n')
-    values = list(map(int, lines[0].split(',')))
+    values = json.loads(lines[0])
     head = list_to_linkedlist(values)
     k = int(lines[1])
 

@@ -143,32 +143,35 @@ class Solution:
 
 def solve():
     """
-    Input format:
-    Line 1: m,n (dimensions)
-    Lines 2 to m+1: grid rows (comma-separated)
-    Last line: word
+    Input format (canonical JSON):
+    Line 1: [m,n] dimensions as JSON array
+    Lines 2 to m+1: grid rows as JSON arrays
+    Last line: word as string
     
     Example:
-    3,4
-    A,B,C,E
-    S,F,C,S
-    A,D,E,E
+    [3,4]
+    ["A","B","C","E"]
+    ["S","F","C","S"]
+    ["A","D","E","E"]
     ABCCED
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    m, n = map(int, lines[0].split(','))
+    dims = json.loads(lines[0])
+    m, n = dims[0], dims[1]
     board = []
     for i in range(1, m + 1):
-        row = lines[i].split(',')
+        row = json.loads(lines[i])
         board.append(row)
     word = lines[m + 1]
     
     solver = get_solver(SOLUTIONS)
     result = solver.exist(board, word)
     
-    print(result)
+    # Output canonical boolean
+    print('true' if result else 'false')
 
 
 if __name__ == "__main__":

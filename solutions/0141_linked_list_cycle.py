@@ -90,8 +90,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct cycle detection
     """
+    import json
     lines = input_data.strip().split('\n')
-    values = list(map(int, lines[0].split())) if lines[0] else []
+    values = json.loads(lines[0]) if lines[0] else []
     pos = int(lines[1]) if len(lines) > 1 else -1
     
     # Build linked list
@@ -196,6 +197,7 @@ class SolutionHashSet:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (node values)
@@ -211,9 +213,10 @@ def solve():
         Output: true
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    values = list(map(int, lines[0].split())) if lines[0] else []
+    values = json.loads(lines[0]) if lines[0] else []
     pos = int(lines[1]) if len(lines) > 1 else -1
     
     # Build linked list

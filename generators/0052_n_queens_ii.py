@@ -18,16 +18,16 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility
     
     Yields:
-        str: Test input - a single integer n
+        str: Single integer n
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first (all valid n values)
-    edge_cases = ["1", "4", "8", "9"]
+    # Edge cases (all important n values)
+    edge_cases = [1, 4, 8, 9]
     
-    for edge in edge_cases:
-        yield edge
+    for n in edge_cases:
+        yield str(n)
         count -= 1
         if count <= 0:
             return
@@ -36,4 +36,3 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     for _ in range(count):
         n = random.randint(1, 9)
         yield str(n)
-

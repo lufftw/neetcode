@@ -39,7 +39,8 @@ def judge(actual: List[List[int]], expected, input_data: str) -> bool:
     2. No duplicate permutations
     3. Correct count (n! / (k1! * k2! * ...))
     """
-    nums = list(map(int, input_data.strip().split(',')))
+    import json
+    nums = json.loads(input_data.strip())
     n = len(nums)
     nums_count = Counter(nums)
     
@@ -159,6 +160,7 @@ class Solution:
 
 
 def solve():
+    import json
     """
     Input format:
     Line 1: nums (comma-separated)
@@ -167,9 +169,10 @@ def solve():
     1,1,2
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    nums = list(map(int, lines[0].split(',')))
+    nums = json.loads(lines[0])
     
     solver = get_solver(SOLUTIONS)
     result = solver.permuteUnique(nums)

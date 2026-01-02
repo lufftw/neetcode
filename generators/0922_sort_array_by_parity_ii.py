@@ -10,6 +10,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) two pointers
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -30,13 +31,13 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     
     # Edge cases first
     edge_cases = [
-        "4 2 5 7",                  # Classic example
-        "2 3",                      # Minimum size
-        "1 2 3 4",                  # Simple case
+        [4, 2, 5, 7],                  # Classic example
+        [2, 3],                      # Minimum size
+        [1, 2, 3, 4],                  # Simple case
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -53,7 +54,7 @@ def _generate_case(size: int) -> str:
     odds = [random.randint(0, 500) * 2 + 1 for _ in range(size // 2)]
     nums = evens + odds
     random.shuffle(nums)
-    return ' '.join(map(str, nums))
+    return json.dumps(nums, separators=(",",":"))
 
 
 def generate_for_complexity(n: int) -> str:

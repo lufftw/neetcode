@@ -6,6 +6,7 @@ LeetCode Constraints:
 - 1 <= s.length <= 20
 - s consists of digits only
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -26,15 +27,15 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     
     # Edge cases first
     edge_cases = [
-        "25525511135",  # Classic example
-        "0000",         # All zeros
-        "101023",       # Multiple solutions
-        "1111",         # Minimal valid
-        "111111111111", # All ones (12 digits)
+        [25525511135],  # Classic example
+        [0],         # All zeros
+        [101023],       # Multiple solutions
+        [1111],         # Minimal valid
+        [111111111111], # All ones (12 digits)
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return

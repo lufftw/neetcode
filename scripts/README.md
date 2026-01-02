@@ -12,12 +12,14 @@ This directory contains utility scripts for project maintenance and development.
 
 | Script | Purpose | Usage |
 |:-------|:--------|:------|
-| `new_problem.bat` / `new_problem.sh` | Create new problem from template | `scripts\new_problem.bat 0001_two_sum` (Windows)<br>`./scripts/new_problem.sh 0001_two_sum` (Linux/macOS) |
+| `new_problem.bat` / `new_problem.sh` | Create solution skeleton with optional tests | `scripts\new_problem.bat 1 --with-tests` (Windows)<br>`./scripts/new_problem.sh 1 --with-tests` (Linux/macOS) |
 | `run_tests.bat` / `run_tests.sh` | Run all tests for a problem | `scripts\run_tests.bat 0001_two_sum` (Windows)<br>`./scripts/run_tests.sh 0001_two_sum` (Linux/macOS) |
 | `run_case.bat` / `run_case.sh` | Run single test case | `scripts\run_case.bat 0001_two_sum 1` (Windows)<br>`./scripts/run_case.sh 0001_two_sum 1` (Linux/macOS) |
 
 **Features:**
-- ✅ Create problems from templates (single or multi-solution)
+- ✅ Generate solution skeletons from LeetCode metadata
+- ✅ Auto-extract example test cases from problem descriptions
+- ✅ Auto-generate `solve()` function based on method signature
 - ✅ Run all test cases or individual cases
 - ✅ Support for benchmarking and multiple solutions
 - ✅ Cross-platform (Windows/Linux/macOS)
@@ -43,15 +45,35 @@ This directory contains utility scripts for project maintenance and development.
 
 ### Create New Problem
 
+The `new_problem` script is a thin wrapper around `python -m packages.codegen new`, providing full access to the code generation engine.
+
 ```bash
-# Windows
-scripts\new_problem.bat 0001_two_sum
-scripts\new_problem.bat 0023_merge_k_lists --multi
+# Windows - Basic generation
+scripts\new_problem.bat 1                     # Two Sum
+scripts\new_problem.bat 15                    # 3Sum
+
+# Windows - With automatic test files
+scripts\new_problem.bat 1 --with-tests
+
+# Windows - With auto-generated solve()
+scripts\new_problem.bat 1 --solve-mode infer
+
+# Windows - Combined (recommended for new problems)
+scripts\new_problem.bat 1 --with-tests --solve-mode infer
+
+# Windows - Preview without writing
+scripts\new_problem.bat 1 --dry-run
 
 # Linux/macOS
-./scripts/new_problem.sh 0001_two_sum
-./scripts/new_problem.sh 0023_merge_k_lists --multi
+./scripts/new_problem.sh 1 --with-tests
 ```
+
+| Flag | Description |
+|------|-------------|
+| `--with-tests` | Generate `.in`/`.out` test files from LeetCode examples |
+| `--solve-mode infer` | Auto-generate `solve()` function based on method signature |
+| `--force` | Overwrite existing test files |
+| `--dry-run` | Preview without writing files |
 
 ### Run Tests
 

@@ -159,14 +159,14 @@ class Solution:
 def solve():
     """
     Input format:
-    Line 1: k
-    Line 2: n
+    Line 1: k (integer)
+    Line 2: n (integer)
     
-    Example:
-    3
-    7
+    Output format:
+    JSON 2D array of combinations
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
     k = int(lines[0])
@@ -175,7 +175,7 @@ def solve():
     solver = get_solver(SOLUTIONS)
     result = solver.combinationSum3(k, n)
     
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

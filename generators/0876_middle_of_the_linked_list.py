@@ -8,6 +8,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) fast-slow pointers
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -28,14 +29,14 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     
     # Edge cases first
     edge_cases = [
-        "1 2 3 4 5",                # Classic example (odd length)
-        "1 2 3 4 5 6",              # Even length
-        "1",                        # Single node
-        "1 2",                      # Two nodes
+        [1, 2, 3, 4, 5],                # Classic example (odd length)
+        [1, 2, 3, 4, 5, 6],              # Even length
+        [1],                        # Single node
+        [1, 2],                      # Two nodes
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -49,7 +50,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 def _generate_case(size: int) -> str:
     """Generate a single test case."""
     values = [random.randint(1, 100) for _ in range(size)]
-    return ' '.join(map(str, values))
+    return json.dumps(values, separators=(",",":"))
 
 
 def generate_for_complexity(n: int) -> str:

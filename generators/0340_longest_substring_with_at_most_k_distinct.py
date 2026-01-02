@@ -10,6 +10,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) sliding window
 """
+import json
 import random
 import string
 from typing import Iterator, Optional
@@ -48,7 +49,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for s, k in edge_cases:
-        yield f"{s}\n{k}"
+        yield f"{json.dumps(s)}\n{k}"
         count -= 1
         if count <= 0:
             return
@@ -66,7 +67,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         distinct_count = len(set(s))
         k = random.randint(0, distinct_count + 2)
         
-        yield f"{s}\n{k}"
+        yield f"{json.dumps(s)}\n{k}"
 
 
 # ============================================================================
@@ -95,5 +96,5 @@ def generate_for_complexity(n: int) -> str:
     # k should be less than pool size to exercise the algorithm
     k = random.randint(2, 5)
     
-    return f"{s}\n{k}"
+    return f"{json.dumps(s)}\n{k}"
 

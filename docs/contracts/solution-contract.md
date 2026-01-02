@@ -587,23 +587,68 @@ tests/{problem_id}_{slug}_{case_number}.{in|out}
 #### Input File Format (`.in`)
 
 - Plain text, parsed by `solve()` function
-- Format is problem-specific
 - Line endings: LF or CRLF (both accepted)
+- **Recommended**: Use canonical JSON literal format (one parameter per line)
 
-**Example (`0001_two_sum_1.in`):**
+**Canonical Format (Recommended):**
+
+| Type | Format | Example |
+|------|--------|---------|
+| Integer | Plain number | `42` |
+| Float | Plain number | `3.14` |
+| Boolean | Lowercase JSON | `true`, `false` |
+| String | JSON quoted | `"hello"` |
+| Array | JSON literal | `[1,2,3]` |
+| 2D Array | JSON literal | `[[1,2],[3,4]]` |
+
+**Example (`0001_two_sum_1.in` - Canonical Format):**
 ```
-2,7,11,15
+[2,7,11,15]
 9
 ```
+
+> 💡 **Migration**: Use `python -m packages.codegen migrate` to convert existing tests to canonical format.
 
 #### Output File Format (`.out`)
 
 - Plain text matching `print()` output from `solve()`
 - MUST match exactly (after normalization) unless `COMPARE_MODE` or `JUDGE_FUNC` specified
+- **Recommended**: Use canonical JSON literal format
 
-**Example (`0001_two_sum_1.out`):**
+**Output Categories:**
+
+| Category | Description | Lines | Example Problem |
+|----------|-------------|-------|-----------------|
+| A | Simple return value | 1 | Two Sum |
+| B | Return + modified state | 2+ | Remove Element |
+| C | Custom judge required | 1+ | 3Sum |
+
+**Category A Example (`0001_two_sum_1.out`):**
 ```
-[0, 1]
+[0,1]
+```
+
+**Category B Example (`0027_remove_element_1.out`):**
+```
+2
+[2,2]
+```
+*(Line 1: return value `k`, Line 2: `nums[:k]` for verification)*
+
+> ⚠️ **Boolean Output**: Use lowercase `true`/`false` (JSON style), not `True`/`False` (Python style).
+
+> 📖 See [Test File Format](test-file-format.md) for complete output format specification.
+
+#### Auto-Generating Test Files
+
+Test files can be automatically generated from LeetCode examples:
+
+```bash
+# Generate solution skeleton with test files
+python -m packages.codegen new 1 --with-tests
+
+# Generate tests for existing solution
+python -m packages.codegen.core.test_generator  # See module for API
 ```
 
 #### Optional `.out` Files
@@ -815,6 +860,7 @@ python runner/test_runner.py {problem} --benchmark  # With timing
 
 | Document | Content |
 |----------|---------|
+| [Test File Format](test-file-format.md) | Canonical `.in`/`.out` format specification |
 | [Generator Contract](generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
 | [Architecture Migration](../architecture/architecture-migration.md) | Polymorphic pattern migration guide |

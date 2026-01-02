@@ -12,6 +12,7 @@ LeetCode Constraints:
 
 Time Complexity: O(N log k) with heap
 """
+import json
 import random
 from typing import Iterator, Optional, List
 
@@ -36,7 +37,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     
     # Edge cases first
     edge_cases = [
-        "0",                          # Empty input (k=0)
+        [0],                          # Empty input (k=0)
         "1\nempty",                   # Single empty list
         "1\n1",                       # Single list with one element
         "2\n1,2,3\n4,5,6",           # Two non-overlapping lists
@@ -44,7 +45,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     ]
     
     for edge in edge_cases:
-        yield edge
+        yield json.dumps(edge, separators=(",",":"))
         count -= 1
         if count <= 0:
             return
@@ -82,7 +83,7 @@ def _generate_random_case() -> str:
         else:
             # Generate sorted list
             values = sorted([random.randint(-1000, 1000) for _ in range(list_len)])
-            lines.append(','.join(map(str, values)))
+            lines.append(json.dumps(values, separators=(",",":")))
     
     return '\n'.join(lines)
 
@@ -123,7 +124,7 @@ def generate_for_complexity(n: int) -> str:
             lines.append("empty")
         else:
             values = sorted([random.randint(-1000, 1000) for _ in range(list_len)])
-            lines.append(','.join(map(str, values)))
+            lines.append(json.dumps(values, separators=(",",":")))
     
     return '\n'.join(lines)
 

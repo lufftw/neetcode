@@ -42,7 +42,8 @@ SOLUTIONS = {
 # ============================================================================
 def judge(actual, expected, input_data: str) -> bool:
     """Validate Restore IP Addresses results."""
-    s = input_data.strip()
+    import json
+    s = json.loads(input_data.strip())
     
     def is_valid_ip(ip: str) -> bool:
         """Check if ip is valid and uses all characters from s."""
@@ -187,20 +188,21 @@ class Solution:
 def solve():
     """
     Input format:
-    Line 1: s (digit string)
+    Line 1: s (JSON string, e.g. "25525511135")
     
-    Example:
-    25525511135
+    Output format:
+    JSON array of IP addresses
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    s = lines[0]
+    s = json.loads(lines[0])
     
     solver = get_solver(SOLUTIONS)
     result = solver.restoreIpAddresses(s)
     
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

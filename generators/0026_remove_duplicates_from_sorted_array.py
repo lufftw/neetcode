@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n) two pointers
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -22,22 +23,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility (optional)
     
     Yields:
-        str: Space-separated sorted integers
+        str: Canonical JSON format (single line array)
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases first (as data structures, not strings)
     edge_cases = [
-        "1 1 2",                    # Classic example
-        "0 0 1 1 1 2 2 3 3 4",     # Longer example
-        "1",                        # Single element
-        "1 2 3",                    # No duplicates
-        "1 1 1",                    # All same
+        [1, 1, 2],                      # Classic example
+        [0, 0, 1, 1, 1, 2, 2, 3, 3, 4], # Longer example
+        [1],                             # Single element
+        [1, 2, 3],                       # No duplicates
+        [1, 1, 1],                       # All same
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums in edge_cases:
+        yield json.dumps(nums, separators=(',', ':'))
         count -= 1
         if count <= 0:
             return
@@ -50,18 +51,16 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 def _generate_case(size: int) -> str:
     """Generate a single sorted test case with possible duplicates."""
-    # Generate sorted array with duplicates
     nums = []
     current = random.randint(-100, 100)
     
     for _ in range(size):
         nums.append(current)
-        # Randomly decide to increment or keep same
-        if random.random() < 0.7:  # 70% chance to keep same (create duplicates)
-            if random.random() < 0.3:  # 30% chance to increment
+        if random.random() < 0.7:
+            if random.random() < 0.3:
                 current += random.randint(0, 5)
     
-    return ' '.join(map(str, nums))
+    return json.dumps(nums, separators=(',', ':'))
 
 
 def generate_for_complexity(n: int) -> str:
@@ -72,8 +71,7 @@ def generate_for_complexity(n: int) -> str:
         n: Length of nums array
     
     Returns:
-        str: Test input with n sorted integers
+        str: Canonical JSON array
     """
     n = max(1, n)
     return _generate_case(n)
-

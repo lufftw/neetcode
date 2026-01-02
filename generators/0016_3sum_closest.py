@@ -9,6 +9,7 @@ LeetCode Constraints:
 
 Time Complexity: O(n²) sort + two pointers
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -22,20 +23,20 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility (optional)
     
     Yields:
-        str: Line 1: space-separated integers, Line 2: target
+        str: Canonical JSON format - Line 1: nums array, Line 2: target
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as (nums, target) tuples
     edge_cases = [
-        "-1 2 1 -4\n1",             # Classic example
-        "0 0 0\n1",                  # All zeros
-        "1 1 1 0\n-100",            # Large target
+        ([-1, 2, 1, -4], 1),        # Classic example
+        ([0, 0, 0], 1),              # All zeros
+        ([1, 1, 1, 0], -100),        # Large target
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums, target in edge_cases:
+        yield f"{json.dumps(nums, separators=(',', ':'))}\n{target}"
         count -= 1
         if count <= 0:
             return
@@ -50,8 +51,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 def _generate_case(size: int, target: int) -> str:
     """Generate a single test case."""
     nums = [random.randint(-1000, 1000) for _ in range(size)]
-    nums_str = ' '.join(map(str, nums))
-    return f"{nums_str}\n{target}"
+    return f"{json.dumps(nums, separators=(',', ':'))}\n{target}"
 
 
 def generate_for_complexity(n: int) -> str:
@@ -62,9 +62,8 @@ def generate_for_complexity(n: int) -> str:
         n: Length of nums array
     
     Returns:
-        str: Test input with n integers and a random target
+        str: Canonical JSON input
     """
     n = max(3, n)
     target = random.randint(-10000, 10000)
     return _generate_case(n, target)
-

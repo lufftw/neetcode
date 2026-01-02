@@ -8,6 +8,9 @@ tests/*.out text eol=lf
 # Python files
 *.py text eol=lf
 
+# JSON files
+*.json text eol=lf
+
 # Batch files need CRLF on Windows
 *.bat text eol=crlf
 

@@ -1,10 +1,10 @@
 # CodeGen
 
 > **Status**: Canonical Reference  
-> **Scope**: `packages/codegen/` - Solution skeleton generation  
+> **Scope**: `packages/codegen/` - Solution skeleton generation with test extraction  
 > **Related**: [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md)
 
-CodeGen generates solution and practice skeleton files for LeetCode problems, providing the infrastructure needed for a LeetCode-like practice experience.
+CodeGen generates solution and practice skeleton files for LeetCode problems, providing the infrastructure needed for a LeetCode-like practice experience. It also extracts example test cases from problem descriptions and validates test file consistency.
 
 ---
 
@@ -13,12 +13,16 @@ CodeGen generates solution and practice skeleton files for LeetCode problems, pr
 1. [Overview](#overview)
 2. [Scope](#scope)
 3. [Interfaces](#interfaces)
-4. [How It Fits in the System](#how-it-fits-in-the-system)
-5. [Typical Workflows](#typical-workflows)
-6. [Key Design Decisions](#key-design-decisions)
-7. [Configuration](#configuration)
-8. [Failure Modes and Constraints](#failure-modes-and-constraints)
-9. [Related Documentation](#related-documentation)
+4. [CLI Reference](#cli-reference)
+5. [How It Fits in the System](#how-it-fits-in-the-system)
+6. [Typical Workflows](#typical-workflows)
+7. [Test Generation](#test-generation)
+8. [IO Schema Inference](#io-schema-inference)
+9. [Format Migration](#format-migration)
+10. [Key Design Decisions](#key-design-decisions)
+11. [Configuration](#configuration)
+12. [Failure Modes and Constraints](#failure-modes-and-constraints)
+13. [Related Documentation](#related-documentation)
 
 ---
 
@@ -28,6 +32,7 @@ CodeGen serves as the **code generation engine** for the NeetCode practice frame
 
 - Generate reference skeleton files to `solutions/`
 - Generate practice skeleton files to `practices/`
+- Extract example test cases from LeetCode problem descriptions
 - Provide a consistent structure that integrates with `runner/` for testing
 
 The module is designed as a **stateless** generator - it produces output based on input without maintaining internal state.
@@ -38,6 +43,8 @@ The module is designed as a **stateless** generator - it produces output based o
 |------|-------------|
 | **Reference Generation** | Generate solution skeletons conforming to [Solution Contract](../../contracts/solution-contract.md) |
 | **Practice Generation** | Generate practice skeletons that reuse reference infrastructure |
+| **Test Extraction** | Extract example input/output from LeetCode HTML |
+| **solve() Inference** | Auto-generate `solve()` based on method signature |
 | **Focus on Solution** | Users only write `class Solution`; infrastructure is provided |
 | **Reusable Components** | `solution_header`, Helper Catalog available for other modules |
 
@@ -61,7 +68,12 @@ The module is designed as a **stateless** generator - it produces output based o
 - ✅ Detecting and emitting helper classes (ListNode, TreeNode, etc.)
 - ✅ Assembling complete module files
 - ✅ Generating SOLUTIONS dict structure
-- ✅ Creating solve() interface placeholders
+- ✅ Creating solve() interface (placeholder or inferred)
+- ✅ **Extracting examples from HTML** (`example_parser`)
+- ✅ **Inferring IO schema from signatures** (`io_schema`)
+- ✅ **Generating test files** (`test_generator`)
+- ✅ **Checking test consistency** (`checker`)
+- ✅ **Migrating test formats** (`migrator`)
 
 ### What this module explicitly avoids
 
@@ -76,6 +88,8 @@ The module is designed as a **stateless** generator - it produces output based o
 
 High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md).
 
+### Core Generation
+
 | Interface | Purpose |
 |-----------|---------|
 | `generate_reference_skeleton()` | Generate skeleton to `solutions/` |
@@ -85,25 +99,124 @@ High-level summary of public APIs. For complete API reference, see [Package READ
 | `assemble_module()` | Assemble complete file from parts |
 | `detect_required_helpers()` | Detect needed helper classes |
 
+### Test Generation
+
+| Interface | Purpose |
+|-----------|---------|
+| `generate_tests_from_datasource()` | Generate `.in`/`.out` files from examples |
+| `parse_examples()` | Extract examples from HTML |
+| `infer_io_schema()` | Infer IO format from signature |
+| `generate_solve_function()` | Auto-generate solve() code |
+
+### Validation & Migration
+
+| Interface | Purpose |
+|-----------|---------|
+| `TestChecker` | Check test consistency |
+| `migrate_problem()` | Migrate single problem's tests |
+| `migrate_all()` | Migrate all tests |
+
+---
+
+## CLI Reference
+
+### Generate Reference Skeleton
+
+```bash
+# Basic generation
+python -m packages.codegen new <problem_id>
+
+# With test files from examples
+python -m packages.codegen new <problem_id> --with-tests
+
+# With auto-generated solve()
+python -m packages.codegen new <problem_id> --solve-mode infer
+
+# Combined
+python -m packages.codegen new <problem_id> --with-tests --solve-mode infer --force
+
+# Preview without writing
+python -m packages.codegen new <problem_id> --dry-run
+```
+
+| Flag | Description |
+|------|-------------|
+| `--with-tests` | Generate `.in`/`.out` files from LeetCode examples |
+| `--solve-mode` | `placeholder` (default) or `infer` (auto-generate) |
+| `--force` | Overwrite existing test files |
+| `--dry-run` | Preview without writing files |
+| `--header-level` | `minimal`, `standard`, or `full` |
+
+### Generate Practice Skeleton
+
+```bash
+python -m packages.codegen practice <problem_id>
+python -m packages.codegen practice <problem_id> --all-solutions
+```
+
+### Check Test Consistency
+
+```bash
+# Check single problem
+python -m packages.codegen check <problem_id>
+python -m packages.codegen check <problem_id> -v
+
+# Check all problems
+python -m packages.codegen check --all
+python -m packages.codegen check --all --limit 10
+
+# JSON output
+python -m packages.codegen check --all --report json
+```
+
+| Status | Meaning |
+|--------|---------|
+| `match` | Test files match examples |
+| `mismatch` | Test files differ from parsed examples |
+| `missing_tests` | No test files exist |
+| `parse_error` | Could not parse examples from HTML |
+
+### Migrate Test Format
+
+```bash
+# Preview migration
+python -m packages.codegen migrate <problem_id> --dry-run -v
+
+# Migrate single problem
+python -m packages.codegen migrate <problem_id>
+
+# Migrate all problems
+python -m packages.codegen migrate --all --dry-run
+
+# Migrate without backup
+python -m packages.codegen migrate --all --no-backup
+```
+
 ---
 
 ## How It Fits in the System
 
 ```
 ┌────────────────────────┐
-│  leetcode_datasource   │  ← Problem metadata
+│  leetcode_datasource   │  ← Problem metadata + HTML
 └───────────┬────────────┘
             │
             ▼
 ┌────────────────────────┐     ┌───────────────────────┐
 │       codegen          │ ──► │   practice_workspace  │
-└───────────┬────────────┘     └───────────────────────┘
-            │                          │
-            │ generates                │ manages history
-            ▼                          ▼
-       solutions/                 practices/_history/
+│                        │     └───────────────────────┘
+│  ┌──────────────────┐  │              │
+│  │ test_generator   │  │              │ manages history
+│  │ solve_generator  │  │              ▼
+│  │ checker          │  │         practices/_history/
+│  │ migrator         │  │
+│  └──────────────────┘  │
+└───────────┬────────────┘
+            │ generates
+            ▼
+       solutions/
        practices/
-            │
+       tests/
             │
             ▼
 ┌────────────────────────┐
@@ -115,66 +228,148 @@ High-level summary of public APIs. For complete API reference, see [Package READ
 
 | Module | Relationship |
 |--------|--------------|
-| `leetcode_datasource` | **Uses** - Fetches problem metadata |
+| `leetcode_datasource` | **Uses** - Fetches problem metadata and HTML |
 | `practice_workspace` | **Uses** - Calls `save_to_history()` when practice exists |
-| `runner` | **Used by** - Runs generated files |
+| `runner` | **Used by** - Runs generated files and tests |
 | `tools/` | **Used by** - CLI wrappers invoke codegen |
-
-### Dependency Direction
-
-```
-┌──────────────────────────────────────────────────────────┐
-│                                                          │
-│   ✅ codegen → leetcode_datasource                       │
-│   ✅ codegen → practice_workspace (for history only)     │
-│   ❌ codegen → runner (FORBIDDEN)                        │
-│   ❌ codegen → tools  (FORBIDDEN)                        │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
-```
 
 ---
 
 ## Typical Workflows
 
-### Workflow: Generate Reference Skeleton
+### Workflow: Generate Reference with Tests
 
-When `codegen new <problem_id>` is invoked:
+When `codegen new <problem_id> --with-tests` is invoked:
 
-1. **Check existence** - If `solutions/<id>_<slug>.py` exists, stop (suggest using `codegen practice`)
-2. **Fetch metadata** - Get problem info from `leetcode_datasource`
+1. **Check existence** - If `solutions/<id>_<slug>.py` exists, stop
+2. **Fetch metadata** - Get problem info and HTML from `leetcode_datasource`
 3. **Parse stub** - Extract method signature, parameters, return type
 4. **Detect helpers** - Determine if ListNode, TreeNode, etc. are needed
-5. **Assemble module** - Combine header, imports, helpers, SOLUTIONS, Solution class, solve()
-6. **Write file** - Output to `solutions/<id>_<slug>.py`
+5. **Infer IO schema** - Map parameter types to input formats
+6. **Generate solve()** - Based on `--solve-mode` (placeholder or infer)
+7. **Assemble module** - Combine header, imports, helpers, SOLUTIONS, Solution, solve()
+8. **Write solution** - Output to `solutions/<id>_<slug>.py`
+9. **Parse examples** - Extract examples from HTML
+10. **Generate tests** - Create `.in`/`.out` files for each example
 
-### Workflow: Generate Practice Skeleton
+### Workflow: Check and Migrate
 
-When `codegen practice <problem_id>` is invoked:
+```bash
+# 1. Check current state
+python -m packages.codegen check --all
 
-1. **Check practice existence** - If `practices/<id>_<slug>.py` exists, save to `_history/`
-2. **Check reference existence** - If `solutions/<id>_<slug>.py` exists, use **Reuse Strategy**
-3. **Generate skeleton**:
-   - **With reference**: Copy infrastructure, clear Solution class body
-   - **Without reference**: Use same flow as reference generation
-4. **Write file** - Output to `practices/<id>_<slug>.py`
+# 2. Preview migration
+python -m packages.codegen migrate --all --dry-run
 
-### Reuse Strategy
+# 3. Migrate with backup
+python -m packages.codegen migrate --all
 
-When a reference solution exists, the practice skeleton reuses infrastructure:
+# 4. Verify
+python -m packages.codegen check --all
+```
 
-| Component | Treatment |
-|-----------|-----------|
-| `solution_header` | ✅ Fully preserved |
-| imports | ✅ Fully preserved |
-| Helper classes | ✅ Fully preserved |
-| JUDGE_FUNC | ✅ Fully preserved |
-| SOLUTIONS dict | ⚠️ Structure kept, complexity/description cleared |
-| Solution class(es) | ⚠️ Signature kept, body cleared |
-| Helper functions | ✅ Fully preserved |
-| solve() | ✅ Fully preserved |
+---
 
-> **Design Rationale**: Users focus only on implementing `class Solution`; all infrastructure is ready.
+## Test Generation
+
+### Canonical Test Format
+
+All generated test files use the **JSON literal** format:
+
+**Input File (`.in`):**
+```
+[2,7,11,15]
+9
+```
+
+**Output File (`.out`):**
+```
+[0,1]
+```
+
+### Format Rules
+
+| Type | Format | Example |
+|------|--------|---------|
+| Integer | Plain number | `42` |
+| Float | Plain number | `3.14` |
+| Boolean | Lowercase | `true`, `false` |
+| String | Quoted | `"hello"` |
+| Array | JSON literal | `[1,2,3]` |
+| 2D Array | JSON literal | `[[1,2],[3,4]]` |
+
+### Type Support Tiers
+
+| Tier | Types | solve() Generation |
+|------|-------|-------------------|
+| **Tier 0** | `int`, `str`, `List[int]`, `List[str]` | ✅ Fully auto-generated |
+| **Tier 1** | `List[List[int]]`, `float` | ✅ Fully auto-generated |
+| **Tier 2** | `ListNode`, `TreeNode` | ⚠️ Placeholder with TODOs |
+
+---
+
+## IO Schema Inference
+
+### Data Flow
+
+```
+Question.Code (stub) 
+  → parse_code_stub() → StubInfo 
+  → infer_io_schema() → IOSchema
+  → generate_solve_function() → solve() code
+```
+
+### IOSchema Structure
+
+```python
+@dataclass
+class IOSchema:
+    method_name: str
+    params: List[ParamSchema]  # [(name, type, format, separators)]
+    return_type: str
+    return_format: ParamFormat  # SCALAR, ARRAY_1D, ARRAY_2D, etc.
+    needs_helpers: Set[str]     # {"ListNode", "TreeNode"}
+```
+
+### ParamFormat Types
+
+| Format | Type Hints | Description |
+|--------|------------|-------------|
+| `SCALAR` | `int`, `float`, `bool` | Single value |
+| `STRING` | `str` | String value |
+| `ARRAY_1D` | `List[int]`, `List[str]` | 1D array |
+| `ARRAY_2D` | `List[List[int]]` | 2D matrix |
+| `LINKED_LIST` | `Optional[ListNode]` | Linked list |
+| `TREE` | `Optional[TreeNode]` | Binary tree |
+
+---
+
+## Format Migration
+
+### Purpose
+
+The migrator converts existing test files from legacy formats (space-separated, comma-separated) to the canonical JSON literal format.
+
+### Detected Formats
+
+| Format | Example | Converted To |
+|--------|---------|--------------|
+| `space_sep` | `1 2 3 4` | `[1,2,3,4]` |
+| `comma_sep` | `1,2,3,4` | `[1,2,3,4]` |
+| `canonical` | `[1,2,3,4]` | (no change) |
+
+### Migration Report
+
+```
+============================================================
+MIGRATION REPORT
+============================================================
+Problems processed: 45
+Total files: 218
+  Migrated: 93
+  Skipped (already canonical): 125
+  Errors: 0
+```
 
 ---
 
@@ -188,6 +383,8 @@ When a reference solution exists, the practice skeleton reuses infrastructure:
 | **Inline helpers by default** | Helper classes embedded in file for portability |
 | **No template engine** | Pure Python string composition; no Jinja2 dependency |
 | **Reuse over regenerate** | Practice skeletons reuse reference infrastructure when available |
+| **JSON literal format** | Unambiguous, parseable, compatible with LeetCode examples |
+| **Tiered type support** | Start with simple types, add complex types incrementally |
 
 ### Design Philosophy
 
@@ -198,6 +395,7 @@ When a reference solution exists, the practice skeleton reuses infrastructure:
 │  runner = execution       → Runs tests, no generation   │
 │                                                         │
 │  stub_parser: parse only  → Separation of concerns      │
+│  io_schema: infer format  → Type-driven generation      │
 │  helpers: centralized     → Single source of truth      │
 │  assemble.py: unified     → Avoid duplication           │
 └─────────────────────────────────────────────────────────┘
@@ -238,6 +436,17 @@ CLI flag > .neetcode/codegen.toml > package defaults
 | Reference already exists | Returns early with message (for `codegen new`) |
 | Invalid code stub | Raises `ParseError` with details |
 | Missing TOML config | Uses defaults |
+| Example parse failure | Skips example, logs warning, continues |
+| Test file exists | Skips (unless `--force` specified) |
+| Unsupported type | Generates placeholder solve() with TODOs |
+
+### Exit Codes
+
+| Code | Condition |
+|------|-----------|
+| `0` | Success |
+| `1` | Metadata fetch failed or validation error |
+| `2` | `--strict-tests` enabled + 0 tests generated (reserved) |
 
 ---
 
@@ -249,6 +458,7 @@ CLI flag > .neetcode/codegen.toml > package defaults
 | [Solution Contract](../../contracts/solution-contract.md) | Output file requirements |
 | [LeetCode DataSource](../leetcode_datasource/README.md) | Problem data source |
 | [Practice Workspace](../practice_workspace/README.md) | History management |
+| [Test Generation Spec](../../in-progress/new-problem-tests-autogen/specification.md) | Feature specification |
 
 ---
 
@@ -263,6 +473,7 @@ Link: https://leetcode.com/problems/two-sum/
 ...
 """
 from typing import List, Optional
+from _runner import get_solver
 
 # Helper classes (if detected)
 class ListNode:
@@ -284,10 +495,65 @@ class Solution:
         # TODO: Implement your solution
         pass
 
-# solve() interface
+# solve() interface (auto-generated with --solve-mode infer)
 def solve():
-    ...
+    """
+    Input format (JSON literal, one per line):
+        nums: List[int]
+        target: int
+
+    Output: List[int]
+    """
+    import sys
+    import json
+
+    data = sys.stdin.read().strip().split('\n')
+
+    nums = json.loads(data[0].strip())
+    target = int(data[1].strip())
+
+    solver = get_solver(SOLUTIONS)
+    result = solver.twoSum(nums, target)
+
+    print(json.dumps(result, separators=(',', ':')))
+
 
 if __name__ == "__main__":
     solve()
+```
+
+---
+
+## Appendix: Module Structure
+
+```
+codegen/
+├── __init__.py              # Public API re-exports
+├── __main__.py              # python -m packages.codegen
+├── cli.py                   # CLI: new / practice / check / migrate
+├── checker.py               # Test consistency checker
+├── analyzer.py              # Mismatch analysis and reporting
+├── migrator.py              # Format migration tool
+├── core/
+│   ├── __init__.py
+│   ├── solution_header.py   # Header rendering
+│   ├── stub_parser.py       # LeetCode stub parsing
+│   ├── assemble.py          # Module assembly
+│   ├── config.py            # Configuration management
+│   ├── io_schema.py         # IO format inference
+│   ├── example_parser.py    # HTML example extraction
+│   ├── solve_generator.py   # solve() auto-generation
+│   ├── test_generator.py    # Test file generation
+│   └── helpers/
+│       ├── __init__.py
+│       ├── catalog.py       # Canonical helper definitions
+│       ├── detect.py        # Helper detection logic
+│       └── emit.py          # Helper code emission
+├── reference/
+│   ├── __init__.py
+│   └── generator.py         # Reference skeleton generation
+└── practice/
+    ├── __init__.py
+    ├── generator.py         # Practice skeleton generation
+    └── reuse.py             # Reuse from reference
 ```

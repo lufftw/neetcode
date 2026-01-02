@@ -60,9 +60,10 @@ def judge(actual, expected, input_data: str) -> bool:
     """
     Validate result using reference implementation.
     """
+    import json
     lines = input_data.strip().split('\n')
-    s1 = lines[0]
-    s2 = lines[1] if len(lines) > 1 else ""
+    s1 = json.loads(lines[0])
+    s2 = json.loads(lines[1]) if len(lines) > 1 else ""
     
     correct = _check_inclusion(s1, s2)
     
@@ -183,18 +184,19 @@ class Solution:
 
 def solve():
     """
-    Input format:
-        Line 1: s1 (pattern string)
-        Line 2: s2 (source string)
+    Input format (canonical JSON):
+        Line 1: s1 (JSON string, e.g. "ab")
+        Line 2: s2 (JSON string, e.g. "eidbaooo")
     
     Output format:
-        "true" or "false"
+        JSON boolean: true or false
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    s1 = lines[0]
-    s2 = lines[1] if len(lines) > 1 else ""
+    s1 = json.loads(lines[0])
+    s2 = json.loads(lines[1]) if len(lines) > 1 else ""
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

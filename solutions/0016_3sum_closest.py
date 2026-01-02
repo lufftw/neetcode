@@ -69,8 +69,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct closest sum
     """
+    import json
     lines = input_data.strip().split('\n')
-    nums = list(map(int, lines[0].split())) if lines[0] else []
+    nums = json.loads(lines[0]) if lines[0] else []
     target = int(lines[1]) if len(lines) > 1 else 0
     
     # Compute correct answer
@@ -240,6 +241,7 @@ class SolutionTwoPointersOptimized:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (nums)
@@ -255,9 +257,10 @@ def solve():
         Output: 2
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    nums = list(map(int, lines[0].split()))
+    nums = json.loads(lines[0])
     target = int(lines[1])
     
     # Get solver and call method naturally (like LeetCode)

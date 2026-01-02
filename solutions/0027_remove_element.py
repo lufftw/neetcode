@@ -81,25 +81,25 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct removal
     """
+    import json
     lines = input_data.strip().split('\n')
-    nums = list(map(int, lines[0].split())) if lines[0] else []
+    nums = json.loads(lines[0]) if lines[0] else []
     val = int(lines[1]) if len(lines) > 1 else 0
     
-    # Parse actual output - handle various formats
-    if isinstance(actual, int):
-        # ast.literal_eval parsed single number (k=0 case, no second line)
-        k = actual
-        result_nums = []
+    # Parse actual output - multi-line format:
+    # Line 1: k (return value)
+    # Line 2: nums[:k] (modified array)
+    if isinstance(actual, tuple) and len(actual) == 2:
+        k, result_nums = actual
+        if isinstance(result_nums, str):
+            result_nums = json.loads(result_nums) if result_nums.strip() else []
     elif isinstance(actual, str):
         lines_out = actual.strip().split('\n')
         k = int(lines_out[0])
-        if len(lines_out) >= 2 and lines_out[1]:
-            result_nums = list(map(int, lines_out[1].split()))
-        else:
-            # k=0 case: no elements remaining
-            result_nums = []
-    elif isinstance(actual, tuple) and len(actual) == 2:
-        k, result_nums = actual
+        result_nums = json.loads(lines_out[1]) if len(lines_out) > 1 and lines_out[1].strip() else []
+    elif isinstance(actual, int):
+        k = actual
+        result_nums = []
     else:
         return False
     
@@ -198,6 +198,7 @@ class SolutionTwoEnds:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (array)
@@ -216,18 +217,19 @@ def solve():
         2 2
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    nums = list(map(int, lines[0].split())) if lines[0] else []
+    nums = json.loads(lines[0]) if lines[0] else []
     val = int(lines[1])
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)
     k = solver.removeElement(nums, val)
     
+    # Multi-output validation: return value + modified array
     print(k)
-    if k > 0:
-        print(' '.join(map(str, nums[:k])))
+    print(json.dumps(nums[:k], separators=(',', ':')))
 
 
 if __name__ == "__main__":

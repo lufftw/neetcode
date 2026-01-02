@@ -6,6 +6,7 @@ LeetCode Constraints:
 - 1 <= nums.length <= 8
 - -10 <= nums[i] <= 10
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -19,22 +20,22 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         seed: Random seed for reproducibility
     
     Yields:
-        str: Test input in the format: nums (comma-separated)
+        str: Canonical JSON array
     """
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases as lists
     edge_cases = [
-        "1,1,2",           # Classic with duplicates
-        "1,2,3",           # No duplicates
-        "1,1,1",           # All same
-        "1,1,2,2",         # Pairs of duplicates
-        "0,0,0,0",         # All zeros
+        [1, 1, 2],        # Classic with duplicates
+        [1, 2, 3],        # No duplicates
+        [1, 1, 1],        # All same
+        [1, 1, 2, 2],     # Pairs of duplicates
+        [0, 0, 0, 0],     # All zeros
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums in edge_cases:
+        yield json.dumps(nums, separators=(',', ':'))
         count -= 1
         if count <= 0:
             return
@@ -46,11 +47,6 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 def _generate_case() -> str:
     """Generate a single random test case with possible duplicates."""
-    # Random length 1-8
     n = random.randint(1, 8)
-    
-    # Generate integers with possible duplicates
     nums = [random.randint(-10, 10) for _ in range(n)]
-    
-    return ','.join(map(str, nums))
-
+    return json.dumps(nums, separators=(',', ':'))
