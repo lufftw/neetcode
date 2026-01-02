@@ -1,8 +1,25 @@
 # Spec: Integrate `new problem` scaffolding with auto-generated example tests
 
-> **Status**: In Progress  
+> **Status**: ✅ Implementation Complete  
 > **Branch**: `feat/new-problem-tests-autogen`  
-> **Created**: 2025-12-31
+> **Created**: 2025-12-31  
+> **Completed**: 2026-01-02
+
+## Implementation Summary
+
+This feature has been fully implemented with the following capabilities:
+
+| Feature | Command | Status |
+|---------|---------|--------|
+| Test file generation | `codegen new <id> --with-tests` | ✅ Complete |
+| solve() auto-generation (Tier 0) | `codegen new <id> --solve-mode infer` | ✅ Complete |
+| Consistency checker | `codegen check <id>` | ✅ Complete |
+| Format migration | `codegen migrate --all` | ✅ Complete |
+| Windows wrapper | `scripts/new_problem.bat` | ✅ Complete |
+
+For complete documentation, see:
+- [CodeGen Package Docs](../../packages/codegen/README.md)
+- [Package README](../../../packages/codegen/README.md)
 
 ---
 
