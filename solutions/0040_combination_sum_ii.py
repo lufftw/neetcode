@@ -47,8 +47,9 @@ def judge(actual: List[List[int]], expected, input_data: str) -> bool:
     2. Each element used at most as many times as it appears in candidates
     3. No duplicate combinations
     """
+    import json
     lines = input_data.strip().split('\n')
-    candidates = list(map(int, lines[0].split(',')))
+    candidates = json.loads(lines[0])
     target = int(lines[1])
     
     from collections import Counter
@@ -164,6 +165,7 @@ class Solution:
 
 
 def solve():
+    import json
     """
     Input format:
     Line 1: candidates (comma-separated)
@@ -174,9 +176,10 @@ def solve():
     8
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    candidates = list(map(int, lines[0].split(',')))
+    candidates = json.loads(lines[0])
     target = int(lines[1])
     
     solver = get_solver(SOLUTIONS)

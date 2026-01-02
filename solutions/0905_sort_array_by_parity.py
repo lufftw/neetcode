@@ -67,8 +67,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if evens come before odds
     """
+    import json
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Parse actual output - handle int (from ast.literal_eval), str, or list
     if isinstance(actual, int):
@@ -187,6 +188,7 @@ class SolutionWriter:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers
@@ -199,9 +201,10 @@ def solve():
         Output: 2 4 3 1  (or any valid arrangement)
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

@@ -47,8 +47,9 @@ def judge(actual: List[List[int]], expected, input_data: str) -> bool:
     3. No duplicate combinations
     4. Correct number of combinations
     """
+    import json
     lines = input_data.strip().split('\n')
-    candidates = list(map(int, lines[0].split(',')))
+    candidates = json.loads(lines[0])
     target = int(lines[1])
     candidates_set = set(candidates)
     
@@ -160,6 +161,7 @@ class Solution:
 
 
 def solve():
+    import json
     """
     Input format:
     Line 1: candidates (comma-separated)
@@ -170,9 +172,10 @@ def solve():
     7
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    candidates = list(map(int, lines[0].split(',')))
+    candidates = json.loads(lines[0])
     target = int(lines[1])
     
     solver = get_solver(SOLUTIONS)

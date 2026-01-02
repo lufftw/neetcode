@@ -80,8 +80,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct middle node values
     """
+    import json
     line = input_data.strip()
-    values = list(map(int, line.split())) if line else []
+    values = json.loads(line) if line else []
     
     if not values:
         correct = []
@@ -180,6 +181,7 @@ class SolutionTwoPass:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (node values)
@@ -192,9 +194,10 @@ def solve():
         Output: 3 4 5
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    values = list(map(int, line.split())) if line else []
+    values = json.loads(line) if line else []
     
     if not values:
         return

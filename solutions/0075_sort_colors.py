@@ -75,8 +75,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correctly sorted
     """
+    import json
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Parse actual output - handle int (from ast.literal_eval), str, or list
     if isinstance(actual, int):
@@ -183,6 +184,7 @@ class SolutionCounting:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (0, 1, or 2)
@@ -195,9 +197,10 @@ def solve():
         Output: 0 0 1 1 2 2
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

@@ -70,8 +70,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correctly sorted squares
     """
+    import json
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Compute correct answer
     correct = sorted(x * x for x in nums)
@@ -164,6 +165,7 @@ class SolutionSort:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (sorted array)
@@ -176,9 +178,10 @@ def solve():
         Output: 0 1 9 16 100
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

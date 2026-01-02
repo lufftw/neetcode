@@ -84,8 +84,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if zeros are at end and relative order preserved
     """
+    import json
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Parse actual output - handle int (from ast.literal_eval), str, or list
     if isinstance(actual, int):
@@ -238,6 +239,7 @@ class SolutionSnowball:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers
@@ -250,12 +252,13 @@ def solve():
         Output: 1 3 12 0 0
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
     if not line:
         return
     
-    nums = list(map(int, line.split()))
+    nums = json.loads(line)
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

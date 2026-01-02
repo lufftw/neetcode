@@ -74,19 +74,20 @@ class Solution:
 
 def solve():
     """
-    Input format:
-    Line 1: nums (comma-separated)
-    Line 2: target
+    Input format (canonical JSON):
+    Line 1: nums as JSON array
+    Line 2: target as integer
     
     Example:
-    2,7,11,15
+    [2,7,11,15]
     9
     """
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    # Parse nums array
-    nums = list(map(int, lines[0].split(',')))
+    # Parse nums array (JSON format)
+    nums = json.loads(lines[0])
     # Parse target
     target = int(lines[1])
     
@@ -94,8 +95,8 @@ def solve():
     solver = get_solver(SOLUTIONS)
     result = solver.twoSum(nums, target)
     
-    # Output format: [0, 1]
-    print(result)
+    # Output format: canonical JSON
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

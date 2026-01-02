@@ -66,8 +66,9 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if parity matches indices
     """
+    import json
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Parse actual output
     if isinstance(actual, str):
@@ -146,6 +147,7 @@ class SolutionTwoPointers:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers
@@ -158,9 +160,10 @@ def solve():
         Output: 4 5 2 7  (or any valid arrangement)
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)

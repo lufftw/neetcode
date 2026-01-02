@@ -86,15 +86,16 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correctly merged
     """
+    import json
     # Parse input - preserve empty lines by splitting before strip
     lines = input_data.split('\n')
     # Handle trailing newline by removing empty last element if present
     while lines and lines[-1] == '':
         lines.pop()
     
-    nums1 = list(map(int, lines[0].split())) if lines[0].strip() else []
+    nums1 = json.loads(lines[0]) if lines[0].strip() else []
     m = int(lines[1]) if len(lines) > 1 and lines[1].strip() else 0
-    nums2 = list(map(int, lines[2].split())) if len(lines) > 2 and lines[2].strip() else []
+    nums2 = json.loads(lines[2]) if len(lines) > 2 and lines[2].strip() else []
     n = int(lines[3]) if len(lines) > 3 and lines[3].strip() else 0
     
     # Extract actual elements from nums1 (first m elements)
@@ -232,11 +233,12 @@ def solve():
         Output: 1 2 2 3 5 6
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    nums1 = list(map(int, lines[0].split()))
+    nums1 = json.loads(lines[0])
     m = int(lines[1])
-    nums2 = list(map(int, lines[2].split())) if lines[2].strip() else []
+    nums2 = json.loads(lines[2]) if lines[2].strip() else []
     n = int(lines[3])
     
     # Get solver and call method naturally (like LeetCode)

@@ -87,6 +87,7 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct
     """
+    import json
     import ast
     
     # Parse input to get all values

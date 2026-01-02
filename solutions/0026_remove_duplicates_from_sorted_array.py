@@ -76,20 +76,21 @@ def judge(actual, expected, input_data: str) -> bool:
     Args:
         actual: Program output (may be string with newlines or tuple)
         expected: Expected output (None if from generator)
-        input_data: Raw input string (space-separated sorted integers)
+        input_data: Raw input string (canonical JSON format)
     
     Returns:
         bool: True if correct deduplication
     """
+    import json
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    nums = json.loads(line) if line else []
     
     # Parse actual output
     if isinstance(actual, str):
         lines = actual.strip().split('\n')
         if len(lines) >= 2:
             k = int(lines[0])
-            result_nums = list(map(int, lines[1].split())) if lines[1] else []
+            result_nums = json.loads(lines[1]) if lines[1] else []
         else:
             return False
     elif isinstance(actual, tuple) and len(actual) == 2:
@@ -198,6 +199,7 @@ class SolutionEnumerate:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers (sorted array)
@@ -213,13 +215,14 @@ def solve():
         1 2
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
     if not line:
         print(0)
         return
     
-    nums = list(map(int, line.split()))
+    nums = json.loads(line)
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)
@@ -227,7 +230,7 @@ def solve():
     
     print(k)
     if k > 0:
-        print(' '.join(map(str, nums[:k])))
+        print(json.dumps(nums[:k], separators=(',', ':')))
 
 
 if __name__ == "__main__":

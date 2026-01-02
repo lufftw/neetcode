@@ -78,23 +78,42 @@ def judge(actual, expected, input_data: str) -> bool:
     Args:
         actual: Program output (may be string with newlines or list)
         expected: Expected output (None if from generator)
-        input_data: Raw input string (space-separated integers)
+        input_data: Raw input string (canonical JSON format)
     
     Returns:
         bool: True if all triplets are valid and complete
     """
+    import json
+    
     line = input_data.strip()
-    nums = list(map(int, line.split())) if line else []
+    # Parse input: support both canonical JSON and legacy space-separated
+    if line.startswith('['):
+        nums = json.loads(line)
+    else:
+        nums = json.loads(line) if line else []
     
     # Parse actual output
     if isinstance(actual, str):
-        lines = actual.strip().split('\n')
-        actual_triplets = []
-        for line in lines:
-            if line.strip():
-                triplet = list(map(int, line.strip().split()))
-                if len(triplet) == 3:
-                    actual_triplets.append(tuple(sorted(triplet)))
+        actual = actual.strip()
+        # Try JSON parse first
+        if actual.startswith('['):
+            try:
+                parsed = json.loads(actual)
+                if isinstance(parsed, list) and all(isinstance(t, list) for t in parsed):
+                    actual_triplets = [tuple(sorted(t)) for t in parsed if len(t) == 3]
+                else:
+                    actual_triplets = []
+            except json.JSONDecodeError:
+                actual_triplets = []
+        else:
+            # Legacy format: space-separated lines
+            lines = actual.split('\n')
+            actual_triplets = []
+            for l in lines:
+                if l.strip():
+                    triplet = list(map(int, l.strip().split()))
+                    if len(triplet) == 3:
+                        actual_triplets.append(tuple(sorted(triplet)))
     elif isinstance(actual, list):
         actual_triplets = [tuple(sorted(t)) for t in actual if len(t) == 3]
     else:
@@ -262,29 +281,27 @@ class SolutionHashSet:
 
 def solve():
     """
-    Input format:
-        Line 1: Space-separated integers
+    Input format (canonical JSON):
+        Line 1: nums as JSON array
     
     Output format:
-        Each line: a triplet as space-separated integers
+        JSON array of triplets
     
     Example:
-        Input:  -1 0 1 2 -1 -4
-        Output: 
-        -1 -1 2
-        -1 0 1
+        Input:  [-1,0,1,2,-1,-4]
+        Output: [[-1,-1,2],[-1,0,1]]
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    nums = list(map(int, line.split()))
+    nums = json.loads(line)
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)
     result = solver.threeSum(nums)
     
-    for triplet in result:
-        print(' '.join(map(str, triplet)))
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

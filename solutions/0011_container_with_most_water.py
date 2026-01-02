@@ -72,13 +72,14 @@ def judge(actual, expected, input_data: str) -> bool:
     Args:
         actual: Program output (integer as string or int)
         expected: Expected output (None if from generator)
-        input_data: Raw input string (space-separated heights)
+        input_data: Raw input string (canonical JSON format)
     
     Returns:
         bool: True if correct maximum area
     """
+    import json
     line = input_data.strip()
-    height = list(map(int, line.split())) if line else []
+    height = json.loads(line) if line else []
     
     # Compute correct answer using brute force
     correct = _brute_force_max_area(height)
@@ -203,6 +204,7 @@ class SolutionTwoPointersOptimized:
 # ============================================================================
 
 def solve():
+    import json
     """
     Input format:
         Line 1: Space-separated integers representing heights
@@ -215,9 +217,10 @@ def solve():
         Output: 49
     """
     import sys
+    import json
     
     line = sys.stdin.read().strip()
-    height = list(map(int, line.split()))
+    height = json.loads(line)
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)
