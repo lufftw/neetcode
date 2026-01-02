@@ -615,12 +615,29 @@ tests/{problem_id}_{slug}_{case_number}.{in|out}
 - MUST match exactly (after normalization) unless `COMPARE_MODE` or `JUDGE_FUNC` specified
 - **Recommended**: Use canonical JSON literal format
 
-**Example (`0001_two_sum_1.out` - Canonical Format):**
+**Output Categories:**
+
+| Category | Description | Lines | Example Problem |
+|----------|-------------|-------|-----------------|
+| A | Simple return value | 1 | Two Sum |
+| B | Return + modified state | 2+ | Remove Element |
+| C | Custom judge required | 1+ | 3Sum |
+
+**Category A Example (`0001_two_sum_1.out`):**
 ```
 [0,1]
 ```
 
+**Category B Example (`0027_remove_element_1.out`):**
+```
+2
+[2,2]
+```
+*(Line 1: return value `k`, Line 2: `nums[:k]` for verification)*
+
 > ⚠️ **Boolean Output**: Use lowercase `true`/`false` (JSON style), not `True`/`False` (Python style).
+
+> 📖 See [Test File Format](test-file-format.md) for complete output format specification.
 
 #### Auto-Generating Test Files
 
@@ -843,6 +860,7 @@ python runner/test_runner.py {problem} --benchmark  # With timing
 
 | Document | Content |
 |----------|---------|
+| [Test File Format](test-file-format.md) | Canonical `.in`/`.out` format specification |
 | [Generator Contract](generator-contract.md) | `generate()`, `generate_for_complexity()`, edge cases |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
 | [Architecture Migration](../architecture/architecture-migration.md) | Polymorphic pattern migration guide |

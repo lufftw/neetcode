@@ -297,6 +297,7 @@ python runner/test_runner.py --all
 
 | Document | Purpose |
 |----------|---------|
+| [specification.md](../in-progress/new-problem-tests-autogen/specification.md) | Feature specification |
 | [migration-plan.md](../in-progress/new-problem-tests-autogen/migration-plan.md) | Migration execution guide |
 | [solution-contract.md](./solution-contract.md) | solve() function requirements |
 | [generator-contract.md](./generator-contract.md) | Generator output requirements |

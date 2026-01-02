@@ -95,6 +95,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 ```python
 # generators/0001_two_sum.py
+import json
 import random
 from typing import Iterator, Optional
 
@@ -103,15 +104,15 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases first
+    # Edge cases first (using canonical JSON format)
     edge_cases = [
-        "2,7,11,15\n9",   # Classic example
-        "3,2,4\n6",       # Answer not first element
-        "3,3\n6",         # Duplicate values
+        ([2, 7, 11, 15], 9),   # Classic example
+        ([3, 2, 4], 6),        # Answer not first element
+        ([3, 3], 6),           # Duplicate values
     ]
     
-    for edge in edge_cases:
-        yield edge
+    for nums, target in edge_cases:
+        yield f"{json.dumps(nums, separators=(',', ':'))}\n{target}"
         count -= 1
         if count <= 0:
             return
@@ -125,7 +126,7 @@ def _generate_case() -> str:
     nums = [random.randint(-10**6, 10**6) for _ in range(size)]
     i, j = random.sample(range(size), 2)
     target = nums[i] + nums[j]
-    return f"{','.join(map(str, nums))}\n{target}"
+    return f"{json.dumps(nums, separators=(',', ':'))}\n{target}"
 ```
 
 ---
@@ -221,14 +222,20 @@ Edge cases should cover:
 **Example (Median of Two Sorted Arrays):**
 
 ```python
+import json
+
+# Store as data structures, not strings
 edge_cases = [
-    "[]\n[1]",                    # nums1 is empty
-    "[1]\n[]",                    # nums2 is empty
-    "[1,3]\n[2]",                 # Classic odd total length
-    "[1,2]\n[3,4]",               # Classic even total length
-    "[-5,-3,-1]\n[2,4,6]",        # Negative and positive
-    "[1]\n[1]",                   # Same single element
+    ([], [1]),                    # nums1 is empty
+    ([1], []),                    # nums2 is empty
+    ([1, 3], [2]),                # Classic odd total length
+    ([1, 2], [3, 4]),             # Classic even total length
+    ([-5, -3, -1], [2, 4, 6]),    # Negative and positive
+    ([1], [1]),                   # Same single element
 ]
+
+for nums1, nums2 in edge_cases:
+    yield f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
 ```
 
 ### Guaranteed Valid Input
@@ -329,57 +336,76 @@ Define what "n" means for your problem:
 
 ## Input Format Specifications
 
-### Format Rules
+### Format Rules (Canonical JSON)
 
 | Rule | Requirement |
 |------|-------------|
-| Match `.in` format | Output must be parseable by `solve()` |
-| No trailing spaces | Strip whitespace from each line |
-| Consistent separators | Use `,` or `\n` consistently |
-| No Python repr spaces | `[1,2,3]` not `[1, 2, 3]` |
+| **1 line = 1 parameter** | Follow function signature order |
+| **JSON literal** | Each line is a valid JSON value |
+| No spaces after `,` | `[1,2,3]` not `[1, 2, 3]` |
+| Double quotes only | `"abc"` not `'abc'` |
+| Lowercase booleans | `true`/`false` not `True`/`False` |
+
+> 📖 See [Test File Format](../contracts/test-file-format.md) for complete format specification.
 
 ### Common Formats
 
 **Single array:**
 ```python
-# Format: comma-separated values
-"2,7,11,15"
+# One parameter: nums
+"[2,7,11,15]"
 ```
 
 **Array + target:**
 ```python
-# Format: array on line 1, target on line 2
-"2,7,11,15\n9"
+# Two parameters: nums (line 1), target (line 2)
+"[2,7,11,15]\n9"
 ```
 
 **Two arrays:**
 ```python
-# Format: Python list repr without spaces
+# Two parameters: nums1 (line 1), nums2 (line 2)
 "[1,3]\n[2]"
-# Or: two comma-separated lines
-"1,3\n2"
 ```
 
 **Matrix (grid):**
 ```python
-# Format: Python 2D list repr
+# One parameter: 2D array as single line
 "[[1,2,3],[4,5,6],[7,8,9]]"
 ```
 
-**Single value:**
+**String parameter:**
 ```python
-# Format: just the value
+# String must be JSON double-quoted
+"\"hello\""
+```
+
+**Single integer:**
+```python
+# Plain number
 "4"
 ```
 
-### Removing Spaces from Lists
+### Using json.dumps for Serialization
 
 ```python
-# Wrong: has spaces
-f"{nums1}\n{nums2}"  # -> "[1, 2, 3]\n[4, 5, 6]"
+import json
 
-# Correct: no spaces
-f"{nums1}\n{nums2}".replace(' ', '')  # -> "[1,2,3]\n[4,5,6]"
+def _generate_case() -> str:
+    nums = [3, 2, 2, 3]
+    val = 3
+    # Use separators to avoid spaces
+    return f"{json.dumps(nums, separators=(',', ':'))}\n{val}"
+    # Output: "[3,2,2,3]\n3"
+```
+
+**⚠️ Avoid manual string formatting:**
+```python
+# Wrong: has spaces
+f"{nums}"  # -> "[1, 2, 3]"
+
+# Correct: use json.dumps
+json.dumps(nums, separators=(',', ':'))  # -> "[1,2,3]"
 ```
 
 ---
@@ -546,6 +572,7 @@ Test Case Generator for Problem {ID} - {Title}
 LeetCode Constraints:
 - {constraints}
 """
+import json
 import random
 from typing import Iterator, Optional
 
@@ -554,10 +581,12 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     if seed is not None:
         random.seed(seed)
     
-    # Edge cases
-    edge_cases = ["..."]
-    for edge in edge_cases:
-        yield edge
+    # Edge cases (store as data structures)
+    edge_cases = [
+        ([1, 2, 3], 4),  # example: (nums, target)
+    ]
+    for nums, target in edge_cases:
+        yield f"{json.dumps(nums, separators=(',', ':'))}\n{target}"
         count -= 1
         if count <= 0:
             return
@@ -568,8 +597,10 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
 
 
 def _generate_case() -> str:
-    # Generate valid input
-    pass
+    # Generate valid input using json.dumps
+    nums = [random.randint(1, 100) for _ in range(10)]
+    target = random.randint(1, 200)
+    return f"{json.dumps(nums, separators=(',', ':'))}\n{target}"
 
 
 def generate_for_complexity(n: int) -> str:
@@ -595,6 +626,7 @@ python runner/test_runner.py {problem} --estimate
 
 | Document | Content |
 |----------|---------|
+| [Test File Format](test-file-format.md) | Canonical `.in`/`.out` format specification |
 | [Solution Contract](solution-contract.md) | `SOLUTIONS`, `JUDGE_FUNC`, `COMPARE_MODE`, file structure |
 | [Test Runner Specification](https://github.com/lufftw/neetcode/blob/main/runner/README.md) | CLI options, output format, troubleshooting |
 | [Architecture Migration](../architecture/architecture-migration.md) | Polymorphic pattern migration guide |
