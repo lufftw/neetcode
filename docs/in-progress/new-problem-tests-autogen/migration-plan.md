@@ -4,7 +4,7 @@
 > **Branch**: `feat/new-problem-tests-autogen`  
 > **Created**: 2026-01-02  
 > **Last Updated**: 2026-01-02  
-> **Related**: [specification.md](./specification.md) · [specification.delta.md](./specification.delta.md)
+> **Related**: [specification.md](./specification.md) · [test-file-format.md](../../contracts/test-file-format.md)
 
 ## Migration Complete Summary
 

@@ -3,7 +3,8 @@
 > **Status**: ✅ Implementation Complete  
 > **Branch**: `feat/new-problem-tests-autogen`  
 > **Created**: 2025-12-31  
-> **Completed**: 2026-01-02
+> **Completed**: 2026-01-02  
+> **Related**: [migration-plan.md](./migration-plan.md) · [test-file-format.md](../../contracts/test-file-format.md)
 
 ## Implementation Summary
 
@@ -94,7 +95,15 @@ python -m codegen new <id> [--with-tests] [--tests-only] [--force] [--strict-tes
 |------|-----------|
 | `0` | Solution OK; tests success/partial/none (warning shown) |
 | `1` | Metadata fetch failed (hard fail) |
-| `2` | `--strict-tests` enabled + 0 tests generated |
+| `2` | Strict-mode semantic failure |
+
+**Exit code 2 details:**
+
+Exit code 2 indicates the command completed execution, but a required condition was not met:
+- `--strict-tests` enabled and 0 tests generated
+- Type unsupported for solve() generation (when using `--solve-mode infer`)
+
+The specific reason is always reported in stderr.
 
 ---
 
@@ -442,14 +451,23 @@ class IOSchema:
 
 ### Supported Types
 
+#### Tier Classification
+
+| Tier | Types | Status |
+|------|-------|--------|
+| **Tier-0** (Blocking) | `int`, `bool`, `str`, `List[int]`, `List[str]`, `List[List[int]]`, `List[List[str]]` | ✅ Complete |
+| **Tier-1** (Future) | `ListNode`, `TreeNode` | 📋 Planned |
+
+#### Type Format Mapping
+
 | Type | Format | Separator Priority |
 |------|--------|-------------------|
 | `int`, `float`, `bool` | SCALAR | - |
 | `str` | STRING | - |
-| `List[int]`, `List[str]` | ARRAY_1D | `,` then ` ` |
-| `List[List[int]]` | ARRAY_2D | `,` then ` ` |
-| `Optional[ListNode]` | LINKED_LIST | `,` then ` ` |
-| `Optional[TreeNode]` | TREE | `,` then ` ` |
+| `List[int]`, `List[str]` | ARRAY_1D | `,` |
+| `List[List[int]]`, `List[List[str]]` | ARRAY_2D | `,` |
+| `Optional[ListNode]` | LINKED_LIST | `,` (Tier-1) |
+| `Optional[TreeNode]` | TREE | `,` (Tier-1) |
 
 ---
 
@@ -467,19 +485,58 @@ class IOSchema:
 ### Canonical 格式規範
 
 **Input (.in)：**
-- 每行一個參數，使用 JSON/Python literal
-- 陣列：`[1,2,3]` (JSON literal)
-- 字串：`"abc"` 或直接 `abc`（視題目而定）
+- 每行一個參數，使用 JSON literal
+- 陣列：`[1,2,3]` (JSON literal, no spaces)
+- 字串：一律使用 JSON double-quoted `"abc"` (不支援 unquoted)
 - 數字：`42`
+- Boolean：`true` / `false` (JSON 風格，小寫)
 - 2D 陣列：`[[1,2],[3,4]]` (單行 literal)
 
 **Output (.out)：**
-- 單行 JSON literal
-- 陣列：`[0,1]`
-- Boolean：`true` / `false` (JSON 風格，小寫)
-- 字串：`"result"` 或視題目需求
 
-**範例：**
+Output format depends on problem category:
+
+| Category | Description | Output Lines |
+|----------|-------------|--------------|
+| **A** (Simple) | Single return value | 1 line |
+| **B** (Multi-output) | Return + modified state | 2+ lines |
+| **C** (Custom Judge) | Same as A or B | Uses `JUDGE_FUNC` |
+
+**Category A Example (Two Sum):**
+```
+# .out
+[0,1]
+```
+
+**Category B Example (Remove Element):**
+```python
+def removeElement(self, nums: List[int], val: int) -> int:
+```
+LeetCode shows: `Output: 2, nums = [2,2,_,_]`
+
+```
+# .out
+2         ← return value (k)
+[2,2]     ← nums[:k] for verification
+```
+
+**Category B Problems:**
+
+| Problem | Output Lines |
+|---------|--------------|
+| 0026_remove_duplicates | k, nums[:k] |
+| 0027_remove_element | k, nums[:k] |
+| 0080_remove_duplicates_ii | k, nums[:k] |
+
+**Category A (in-place, no return):**
+
+| Problem | Output |
+|---------|--------|
+| 0075_sort_colors | nums |
+| 0088_merge_sorted_array | nums |
+| 0283_move_zeroes | nums |
+
+**標準範例：**
 ```
 # .in
 [2,7,11,15]
@@ -545,52 +602,47 @@ python -m packages.codegen.analyzer
 
 ### Pending 📋 (Future)
 
-- [ ] Tier 1: LinkedList/TreeNode solve() generation
-- [ ] Full migration of existing tests to canonical format
-- [ ] `--tests-only` flag (generate tests without solution)
-- [ ] `--strict-tests` flag (exit code 2 if 0 tests generated)
+- [ ] Tier-1: LinkedList/TreeNode solve() generation
+- [ ] TreeNode support
+
+### Recently Completed (2026-01-02)
+
+- [x] Full migration of existing tests to canonical format
+- [x] `--tests-only` flag (generate tests without solution)
+- [x] `--strict-tests` flag (exit code 2 if 0 tests generated)
+- [x] Multi-output validation format (Category A/B/C)
 
 ---
 
-## Future Discussion Topics (待討論)
+## Future Work (Tier-1)
 
-### 1. 格式遷移工具設計
+### LinkedList/TreeNode Support
 
-**需要決定：**
-- 是否備份原始檔案？
-- 一次遷移全部還是互動式逐題確認？
-- 遷移後是否自動運行測試驗證？
-
-### 2. solve() 自動生成範圍
-
-**Tier 分級：**
-- Tier 0：`int`, `str`, `List[int]`, `List[str]`
-- Tier 1：`List[List[int]]` (2D array)
-- Tier 2：`LinkedList`, `TreeNode`
-
-**需要決定：**
-- v0 要支援到哪個 Tier？
-- 是否重用現有 solutions 的 helper functions？
-
-### 3. LinkedList/Tree 的 IO 格式
+**Status:** 📋 Planned (see [migration-plan.md](./migration-plan.md#tier-1-future-work-linkedlist-support))
 
 **問題：**
 - LinkedList: `[2,4,3]` 轉成 nodes，cycle 如何表示？
 - TreeNode: level-order `[1,null,2,3]`
 
-**需要決定：**
-- Canonical 格式中 LinkedList 怎麼表示？
-- 是否支援 cycle 測試（如 0141, 0142）？
+**Blocked Problems (7):**
+- 0002, 0021, 0023, 0025, 0141, 0142, 0876
 
-### 4. Output 格式特殊案例
+**Implementation Plan:**
+1. Define canonical serialization format
+2. Implement codec in runner/utils/
+3. Update solve() templates
+4. Update generators
 
-**已發現的特殊案例：**
-- `2.00000` vs `2`（浮點精度）
-- `2, nums = [1,2,_]`（多值輸出）
-- 順序無關的陣列比較
+### Resolved Topics
 
-**需要決定：**
-- 這些特殊案例如何在 canonical 中處理？
+The following topics have been resolved during migration:
+
+| Topic | Resolution |
+|-------|------------|
+| 格式遷移工具 | ✅ `codegen migrate --all` implemented |
+| solve() 自動生成範圍 | ✅ Tier-0 complete (97.8% coverage) |
+| Output 特殊案例 | ✅ Category A/B/C defined |
+| 多值輸出 | ✅ Multi-line output format |
 
 ---
 
@@ -598,10 +650,13 @@ python -m packages.codegen.analyzer
 
 | Document | Purpose |
 |----------|---------|
+| [migration-plan.md](./migration-plan.md) | Migration execution guide |
+| [test-file-format.md](../../contracts/test-file-format.md) | Canonical format specification |
 | [CodeGen Package README](../../packages/codegen/README.md) | Package specification |
 | [Solution Contract](../../contracts/solution-contract.md) | Solution file format |
 | [compare_html_parsers.py](../../../tools/review-code/compare_html_parsers.py) | Parser comparison tool |
 | [mismatch-report.json](./mismatch-report.json) | Full analysis report |
+| [coverage-report.json](../../../coverage-report.json) | Gate 2 coverage report |
 
 ---
 
@@ -620,4 +675,8 @@ python -m packages.codegen.analyzer
 | 2026-01-02 | **Implemented: test_generator.py** - Test file generation |
 | 2026-01-02 | **Integrated: --with-tests** flag in `codegen new` |
 | 2026-01-02 | **Updated: scripts/new_problem.bat** to pass-through wrapper |
+| 2026-01-02 | **Migration Complete** - All Gates passed |
+| 2026-01-02 | **Merged: specification.delta.md** - Tier classification, string format, exit codes, multi-output format |
+| 2026-01-02 | **Updated: Tier-0** now includes 2D arrays |
+| 2026-01-02 | **Added: Category A/B/C** output format specification |
 
