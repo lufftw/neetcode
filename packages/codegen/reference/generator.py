@@ -26,6 +26,8 @@ from ..core.assemble import (
     assemble_solution_class,
     assemble_solve_function,
 )
+from ..core.io_schema import infer_io_schema
+from ..core.solve_generator import generate_solve_function
 
 
 class ReferenceGenerationResult:
@@ -194,14 +196,25 @@ def _generate_solve_function(
     stub_info,
     config: CodeGenConfig,
 ) -> str:
-    """Generate the solve() function based on config."""
+    """
+    Generate the solve() function based on config.
     
-    # For now, always use placeholder mode
-    # Future: implement "infer" mode
-    
+    Modes:
+        - "placeholder": Old-style placeholder with TODOs
+        - "infer": Use solve_generator to auto-generate based on IO schema
+    """
     method_name = stub_info.method_name
     
-    # Build placeholder based on parameters
+    # Check config for solve_mode
+    solve_mode = getattr(config, 'solve_mode', 'placeholder')
+    
+    if solve_mode == "infer":
+        # Use new solve_generator with IO schema inference
+        io_schema = infer_io_schema(stub_info)
+        result = generate_solve_function(stub_info, io_schema)
+        return result.code
+    
+    # Default: placeholder mode (backwards compatible)
     param_names = [name for name, _ in stub_info.params]
     
     if param_names:

@@ -315,7 +315,11 @@ Summary: 1 solution, 0 test cases created
 | CLI entry point | `packages/codegen/cli.py` |
 | IO Schema inference | `packages/codegen/core/io_schema.py` |
 | Example parser | `packages/codegen/core/example_parser.py` |
+| Stub parser | `packages/codegen/core/stub_parser.py` |
+| solve() generator | `packages/codegen/core/solve_generator.py` |
+| Test generator | `packages/codegen/core/test_generator.py` |
 | Consistency checker | `packages/codegen/checker.py` |
+| Format migrator | `packages/codegen/migrator.py` |
 | Windows wrapper | `scripts/new_problem.bat` |
 
 ---
@@ -508,16 +512,26 @@ python -m packages.codegen.analyzer
 - [x] CLI: `python -m packages.codegen check`
 - [x] `analyzer.py` - 全量 mismatch 分類報告
 - [x] 修正 `stub_parser.py` LinkedList 解析問題
+- [x] **Step 3: 建立格式遷移工具** `migrator.py`
+- [x] **Step 4: solve() 自動生成** (`--solve-mode infer` for Tier 0)
+- [x] **整合 `--with-tests` 到 `codegen new`**
+- [x] **更新 `scripts/new_problem.bat`** (pass-through wrapper)
 
-### In Progress 🔄
+### New Features Added
 
-- [ ] Step 3: 建立格式遷移工具
+| Feature | CLI | Description |
+|---------|-----|-------------|
+| Test generation | `codegen new <id> --with-tests` | Generate .in/.out from LeetCode examples |
+| solve() inference | `codegen new <id> --solve-mode infer` | Auto-generate solve() for Tier 0 types |
+| Format migration | `codegen migrate --all --dry-run` | Migrate tests to canonical JSON literal |
+| Force overwrite | `codegen new <id> --with-tests --force` | Overwrite existing test files |
 
-### Pending 📋
+### Pending 📋 (Future)
 
-- [ ] Step 4: solve() 自動生成（Tier 0：簡單類型）
-- [ ] 整合 `--with-tests` 到 `codegen new`
-- [ ] 更新 `scripts/new_problem.bat`
+- [ ] Tier 1: LinkedList/TreeNode solve() generation
+- [ ] Full migration of existing tests to canonical format
+- [ ] `--tests-only` flag (generate tests without solution)
+- [ ] `--strict-tests` flag (exit code 2 if 0 tests generated)
 
 ---
 
@@ -584,4 +598,9 @@ python -m packages.codegen.analyzer
 | 2025-12-31 | Completed full 45-problem analysis |
 | 2025-12-31 | Fixed stub_parser.py LinkedList parsing |
 | 2025-12-31 | Added Future Discussion Topics |
+| 2026-01-02 | **Implemented: migrator.py** - Format migration tool |
+| 2026-01-02 | **Implemented: solve_generator.py** - Tier 0 solve() auto-gen |
+| 2026-01-02 | **Implemented: test_generator.py** - Test file generation |
+| 2026-01-02 | **Integrated: --with-tests** flag in `codegen new` |
+| 2026-01-02 | **Updated: scripts/new_problem.bat** to pass-through wrapper |
 
