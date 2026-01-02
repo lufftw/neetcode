@@ -1,10 +1,64 @@
 # Migration Plan: Canonical Format Upgrade
 
-> **Status**: 📝 Draft  
+> **Status**: ✅ Gate 1 Passed  
 > **Branch**: `feat/new-problem-tests-autogen`  
 > **Created**: 2026-01-02  
 > **Last Updated**: 2026-01-02  
 > **Related**: [specification.md](./specification.md) · [specification.delta.md](./specification.delta.md)
+
+## Gate 1 Completion Summary
+
+**Date**: 2026-01-02
+
+| Metric | Result |
+|--------|--------|
+| Problems Passing | 40/45 |
+| LinkedList (OUT_OF_SCOPE) | 5 |
+| Gate 0 | ✅ All test files parse |
+| Gate 1 | ✅ All in-scope solve() pass |
+
+### OUT_OF_SCOPE Problems (Tier-1 Future Work)
+
+These LinkedList problems require special serialization support and are deferred:
+
+| Problem | Reason |
+|---------|--------|
+| 0002_add_two_numbers | ListNode I/O |
+| 0021_merge_two_sorted_lists | ListNode I/O |
+| 0023_merge_k_sorted_lists | ListNode I/O |
+| 0141_linked_list_cycle | ListNode I/O |
+| 0142_linked_list_cycle_ii | ListNode I/O |
+
+### Post-Gate 1 Format Review (需檢查)
+
+以下問題需要確認 `.in/.out` 格式符合新規則：
+
+#### Input Format: 1 line = 1 parameter (signature order)
+```
+def removeElement(self, nums: List[int], val: int) -> int:
+
+# .in
+[3,2,2,3]  ← nums (param 1)
+3          ← val (param 2)
+```
+
+#### Output Format: Multi-output validation problems
+```
+# .out (for in-place with return value)
+2          ← return value (k)
+[2,2]      ← nums[:k] for verification
+```
+
+| Problem | Category | Status |
+|---------|----------|--------|
+| 0026_remove_duplicates | Multi-output | ⚠️ 待檢查 |
+| 0027_remove_element | Multi-output | ✅ 已更新 |
+| 0080_remove_duplicates_ii | Multi-output | ⚠️ 待檢查 |
+| 0075_sort_colors | Single-output (no return) | ✅ OK |
+| 0088_merge_sorted_array | Single-output (no return) | ✅ OK |
+| 0283_move_zeroes | Single-output (no return) | ✅ OK |
+
+---
 
 ## Overview
 
@@ -141,9 +195,11 @@ Canonical `.in`:
 
 ### Output Format (`.out`)
 
-Output is a **single line** JSON literal matching the method return type.
+Output format depends on the problem category.
 
-#### Examples
+#### Category A: Simple Return Value
+
+Single line JSON literal matching the method return type.
 
 | Return Type | Canonical `.out` |
 |-------------|------------------|
@@ -152,6 +208,36 @@ Output is a **single line** JSON literal matching the method return type.
 | `str` | `"abc"` |
 | `List[int]` | `[0,1]` |
 | `List[List[str]]` | `[[".Q..","...Q"],["..Q.","Q..."]]` |
+
+#### Category B: Multi-output Validation
+
+For problems with **in-place modification + return value**, each validation value occupies one line:
+
+- **Line 1**: Return value
+- **Line 2+**: Modified state for verification
+
+**Example: 0027 Remove Element**
+
+```python
+def removeElement(self, nums: List[int], val: int) -> int:
+```
+
+LeetCode Output: `Output: 2, nums = [2,2,_,_]`
+
+Canonical `.out`:
+```
+2          # return value (k)
+[2,2]      # nums[:k] for verification
+```
+
+**Rationale:**
+- Mirrors LeetCode's dual validation (return value + modified array)
+- Human-readable without running code
+- Consistent with "1 line = 1 value" philosophy
+
+#### Category C: Custom Judge Required
+
+Same format as A or B, but runner uses `JUDGE_FUNC` for semantic comparison (e.g., order-independent results).
 
 ---
 
@@ -1171,11 +1257,30 @@ Output: 2, nums = [1,2,_,_]
 ```
 
 **Options:**
-- A. Multiple lines in `.out`
-- B. JSON array `[2, [1,2]]`
-- C. Per-problem custom format
+- A. Multiple lines in `.out` ✅
+- B. JSON array `[2, [1,2]]` ❌
+- C. Per-problem custom format ❌
 
-**Current decision:** Use JSON array when applicable, defer edge cases
+**Decision (2026-01-02):** Option A — Multiple lines in `.out`
+
+Each line represents one validation value:
+- Line 1: Return value
+- Line 2+: Modified state
+
+**Rationale:**
+- Human-readable without running code
+- Consistent with "1 line = 1 value" philosophy
+- Avoids inventing per-problem JSON structures (Option B creates technical debt)
+- Self-contained specification (Option C lacks standardization)
+
+**Example (0027 Remove Element):**
+```
+# .out
+2          ← k (return value)
+[2,2]      ← nums[:k] (verification)
+```
+
+See also: §Output Format → Category B
 
 #### 3. Order-Independent Comparison
 

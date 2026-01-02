@@ -269,7 +269,9 @@ def solve():
     
     line = sys.stdin.read().strip()
     if not line:
+        # Multi-output: k and nums[:k]
         print(0)
+        print("[]")
         return
     
     nums = json.loads(line)
@@ -278,9 +280,9 @@ def solve():
     solver = get_solver(SOLUTIONS)
     k = solver.removeDuplicates(nums)
     
+    # Multi-output validation: return value + modified array
     print(k)
-    if k > 0:
-        print(' '.join(map(str, nums[:k])))
+    print(json.dumps(nums[:k], separators=(',', ':')))
 
 
 if __name__ == "__main__":

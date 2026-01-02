@@ -52,9 +52,10 @@ def judge(actual, expected, input_data: str) -> bool:
     """
     Validate result using reference implementation.
     """
+    import json
     lines = input_data.strip().split('\n')
-    s = lines[0]
-    p = lines[1] if len(lines) > 1 else ""
+    s = json.loads(lines[0])
+    p = json.loads(lines[1]) if len(lines) > 1 else ""
     
     correct = _find_anagrams(s, p)
     
@@ -191,24 +192,25 @@ class Solution:
 
 def solve():
     """
-    Input format:
-        Line 1: s (source string)
-        Line 2: p (pattern string)
+    Input format (canonical JSON):
+        Line 1: s (JSON string, e.g. "cbaebabacd")
+        Line 2: p (JSON string, e.g. "abc")
     
     Output format:
-        List of starting indices
+        JSON array of starting indices
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    s = lines[0]
-    p = lines[1] if len(lines) > 1 else ""
+    s = json.loads(lines[0])
+    p = json.loads(lines[1]) if len(lines) > 1 else ""
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)
     result = solver.findAnagrams(s, p)
     
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

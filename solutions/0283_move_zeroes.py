@@ -264,7 +264,7 @@ def solve():
     solver = get_solver(SOLUTIONS)
     solver.moveZeroes(nums)
     
-    print(' '.join(map(str, nums)))
+    print(json.dumps(nums, separators=(',', ':')))
 
 
 if __name__ == "__main__":

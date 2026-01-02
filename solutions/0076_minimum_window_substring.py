@@ -72,9 +72,10 @@ def judge(actual, expected, input_data: str) -> bool:
     2. Contain all characters of t with required frequencies
     3. Have minimal length among all valid windows
     """
+    import json
     lines = input_data.strip().split('\n')
-    s = lines[0]
-    t = lines[1] if len(lines) > 1 else ""
+    s = json.loads(lines[0])
+    t = json.loads(lines[1]) if len(lines) > 1 else ""
     
     actual_str = str(actual).strip()
     
@@ -222,24 +223,25 @@ class Solution:
 
 def solve():
     """
-    Input format:
-        Line 1: s (source string)
-        Line 2: t (target string)
+    Input format (canonical JSON):
+        Line 1: s (JSON string, e.g. "ADOBECODEBANC")
+        Line 2: t (JSON string, e.g. "ABC")
     
     Output format:
-        The minimum window substring, or empty string if none exists
+        JSON string: minimum window substring, or "" if none exists
     """
     import sys
+    import json
     
     lines = sys.stdin.read().strip().split('\n')
-    s = lines[0]
-    t = lines[1] if len(lines) > 1 else ""
+    s = json.loads(lines[0])
+    t = json.loads(lines[1]) if len(lines) > 1 else ""
     
     # Get solver and call method naturally (like LeetCode)
     solver = get_solver(SOLUTIONS)
     result = solver.minWindow(s, t)
     
-    print(result)
+    print(json.dumps(result))
 
 
 if __name__ == "__main__":

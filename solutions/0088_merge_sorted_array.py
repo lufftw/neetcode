@@ -245,7 +245,7 @@ def solve():
     solver = get_solver(SOLUTIONS)
     solver.merge(nums1, m, nums2, n)
     
-    print(' '.join(map(str, nums1)))
+    print(json.dumps(nums1, separators=(',', ':')))
 
 
 if __name__ == "__main__":

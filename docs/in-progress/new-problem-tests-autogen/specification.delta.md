@@ -154,6 +154,69 @@ No changes needed to specification.md.
 
 ---
 
+## Delta 6: Multi-output Validation Format
+
+### Current (specification.md / migration-plan.md)
+
+```
+Output is a **single line** JSON literal matching the method return type.
+```
+
+### Updated
+
+```
+Output format depends on problem category:
+
+Category A (Simple): Single line return value
+Category B (Multi-output): Multiple lines for return + modified state
+Category C (Custom Judge): Same as A or B, with JUDGE_FUNC for semantic comparison
+```
+
+**Category B Format:**
+```
+# .out for in-place modification problems
+<return_value>       ← Line 1: what the function returns
+<modified_state>     ← Line 2+: state to verify (e.g., nums[:k])
+```
+
+### Example: 0027 Remove Element
+
+```python
+def removeElement(self, nums: List[int], val: int) -> int:
+```
+
+LeetCode shows: `Output: 2, nums = [2,2,_,_]`
+
+Canonical `.out`:
+```
+2
+[2,2]
+```
+
+### Rationale
+
+- LeetCode validates both return value AND modified array for in-place problems
+- Human reviewers need to see all verification values without running code
+- "1 line = 1 validation value" mirrors "1 line = 1 parameter" for input
+- Avoids inventing per-problem JSON structures like `[2, [2,2]]`
+
+### Affected Problems
+
+| Problem | Category | Output Lines |
+|---------|----------|--------------|
+| 0026_remove_duplicates | B | k, nums[:k] |
+| 0027_remove_element | B | k, nums[:k] |
+| 0080_remove_duplicates_ii | B | k, nums[:k] |
+| 0075_sort_colors | A | nums (single line) |
+| 0088_merge_sorted_array | A | nums (single line) |
+
+### Affected Sections
+
+- `## Canonical Format Decision` → Output format specification
+- `migration-plan.md` → §Output Format (`.out`)
+
+---
+
 ## Summary Table
 
 | Item | specification.md Change Required |
@@ -163,6 +226,7 @@ No changes needed to specification.md.
 | Exit code 2 | ✅ Expand definition |
 | CLI flags | ✅ Document --tests-only, --strict-tests |
 | CLI command path | ❌ Already correct |
+| Multi-output format | ✅ Add Category A/B/C definition |
 
 ---
 
@@ -172,11 +236,13 @@ When merging back to specification.md:
 
 - [ ] Update `## IO Schema` → move 2D array to Tier-0
 - [ ] Update `## Canonical Format Decision` → string always quoted
+- [ ] Update `## Canonical Format Decision` → add output Category A/B/C
 - [ ] Update `## Python CLI` → exit code 2 expanded meaning
 - [ ] Update `## Python CLI` → add flag documentation
 - [ ] Update `## Implementation Progress` → mark flags as complete
 - [ ] Remove `## Future Discussion Topics` → Tier-2 references
 - [ ] Add cross-reference to `migration-plan.md`
+- [ ] Create `docs/contracts/test-file-format.md` → standalone format spec
 
 ---
 

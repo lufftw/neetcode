@@ -206,7 +206,7 @@ def solve():
     solver = get_solver(SOLUTIONS)
     solver.sortColors(nums)
     
-    print(' '.join(map(str, nums)))
+    print(json.dumps(nums, separators=(',', ':')))
 
 
 if __name__ == "__main__":
