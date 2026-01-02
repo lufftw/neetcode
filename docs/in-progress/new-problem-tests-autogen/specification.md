@@ -313,9 +313,253 @@ Summary: 1 solution, 0 test cases created
 | Component | Location |
 |-----------|----------|
 | CLI entry point | `packages/codegen/cli.py` |
-| Test generation logic | `packages/codegen/core/testgen.py` (new) |
-| Example parser | Adapt from `tools/docstring/formatter.py::_extract_examples()` |
+| IO Schema inference | `packages/codegen/core/io_schema.py` |
+| Example parser | `packages/codegen/core/example_parser.py` |
+| Consistency checker | `packages/codegen/checker.py` |
 | Windows wrapper | `scripts/new_problem.bat` |
+
+---
+
+## Test Consistency Checker (Implemented)
+
+### Purpose
+
+Check whether LeetCode examples can be parsed and whether existing test files match.
+
+### CLI Usage
+
+```bash
+# Check single problem
+python -m packages.codegen check 1
+python -m packages.codegen check 1 -v          # Verbose
+
+# Check all problems
+python -m packages.codegen check --all
+python -m packages.codegen check --all --limit 10
+
+# Generatability only (skip consistency check)
+python -m packages.codegen check 1 --generatable
+
+# Output formats
+python -m packages.codegen check --all --report json
+```
+
+### Check Results
+
+| Status | Meaning |
+|--------|---------|
+| `match` | Test files match examples (may have whitespace differences) |
+| `mismatch` | Test files differ from parsed examples |
+| `missing_tests` | No test files exist for parsed examples |
+| `parse_error` | Could not parse examples from HTML |
+| `fetch_error` | Could not fetch question data |
+
+### Full Analysis Report (2025-12-31)
+
+**45 題完整分析結果：**
+
+| 指標 | 數量 | 百分比 |
+|------|------|--------|
+| Total problems | 45 | 100% |
+| With existing tests | 40 | 89% |
+| Can parse examples | 44 | 98% |
+| Has LinkedList | 7 | 15.6% |
+| Has Tree | 0 | 0% |
+
+**Mismatch Type 分布：**
+
+| 類型 | 數量 | 百分比 | 說明 |
+|------|------|--------|------|
+| `separator_diff` | 19 | 42.2% | 逗號 vs 空格 |
+| `normalization_only` | 12 | 26.7% | 僅空白差異 |
+| `output_format` | 12 | 26.7% | `[0,1]` vs `0 1` |
+| `serialization_diff` | 11 | 24.4% | `[0,1]` vs `[0, 1]` |
+| `type_unsupported` | 7 | 15.6% | LinkedList 題目 |
+| `value_diff` | 6 | 13.3% | 真的值不同 |
+| `quote_style` | 3 | 6.7% | `"` vs `'` |
+| `boolean_case` | 1 | 2.2% | `true` vs `True` |
+
+**建議修復分布：**
+
+| 修復類型 | 數量 | 說明 |
+|----------|------|------|
+| `format_migration` | 15 | 需遷移到 JSON literal canonical |
+| `auto_normalize` | 11 | 可自動正規化（空白、引號） |
+| `none` | 8 | 無需修復 |
+| `parser_fix` | 7 | LinkedList 等特殊類型 |
+| `manual_review` | 3 | 需人工確認 |
+
+**詳細報告位置：** `docs/in-progress/new-problem-tests-autogen/mismatch-report.json`
+
+---
+
+## IO Schema (Implemented)
+
+### Purpose
+
+Infer input/output format rules from LeetCode method signatures.
+
+### Data Flow
+
+```
+Question.Code (stub) 
+  → parse_code_stub() → StubInfo 
+  → infer_io_schema() → IOSchema
+```
+
+### IOSchema Structure
+
+```python
+@dataclass
+class IOSchema:
+    method_name: str
+    params: List[ParamSchema]  # [(name, type, format, separators)]
+    return_type: str
+    return_format: ParamFormat  # SCALAR, ARRAY_1D, ARRAY_2D, etc.
+    needs_helpers: Set[str]     # {"ListNode", "TreeNode"}
+```
+
+### Supported Types
+
+| Type | Format | Separator Priority |
+|------|--------|-------------------|
+| `int`, `float`, `bool` | SCALAR | - |
+| `str` | STRING | - |
+| `List[int]`, `List[str]` | ARRAY_1D | `,` then ` ` |
+| `List[List[int]]` | ARRAY_2D | `,` then ` ` |
+| `Optional[ListNode]` | LINKED_LIST | `,` then ` ` |
+| `Optional[TreeNode]` | TREE | `,` then ` ` |
+
+---
+
+## Canonical Format Decision (2025-12-31)
+
+### 已確認決策
+
+| 決策項目 | 選擇 | 說明 |
+|----------|------|------|
+| **Literal 格式** | JSON literal | `true/false`, `null`, strings 用 `"` |
+| **2D array 格式** | Canonical literal | `[[1,2],[3,4]]` (不用 rows/cols 前綴) |
+| **現有測試遷移** | 逐步遷移 | 建立轉換工具，逐題遷移 |
+| **solve() 權威** | 維持現狀 | 每題 solve() 自己定義 IO 格式 |
+
+### Canonical 格式規範
+
+**Input (.in)：**
+- 每行一個參數，使用 JSON/Python literal
+- 陣列：`[1,2,3]` (JSON literal)
+- 字串：`"abc"` 或直接 `abc`（視題目而定）
+- 數字：`42`
+- 2D 陣列：`[[1,2],[3,4]]` (單行 literal)
+
+**Output (.out)：**
+- 單行 JSON literal
+- 陣列：`[0,1]`
+- Boolean：`true` / `false` (JSON 風格，小寫)
+- 字串：`"result"` 或視題目需求
+
+**範例：**
+```
+# .in
+[2,7,11,15]
+9
+
+# .out
+[0,1]
+```
+
+### 分隔符優先順序
+
+當自動判斷分隔符時：
+1. 優先使用逗號 `,`
+2. 若值內含逗號 → 使用空格 ` `
+3. 若值內含空格和逗號 → 使用 JSON literal 格式
+
+---
+
+## Mismatch Analyzer (Implemented)
+
+### Purpose
+
+分析所有題目的 mismatch 原因，分類並建議修復方式。
+
+### CLI Usage
+
+```bash
+python -m packages.codegen.analyzer
+```
+
+### Code Location
+
+| Component | Location |
+|-----------|----------|
+| Analyzer | `packages/codegen/analyzer.py` |
+| Report output | `docs/in-progress/new-problem-tests-autogen/mismatch-report.json` |
+
+---
+
+## Implementation Progress
+
+### Completed ✅
+
+- [x] `io_schema.py` - 從 LeetCode signature 推導 IO 規則
+- [x] `example_parser.py` - 從 Question.Body 解析 Example
+- [x] `checker.py` - 可生成性 + 一致性檢查
+- [x] CLI: `python -m packages.codegen check`
+- [x] `analyzer.py` - 全量 mismatch 分類報告
+- [x] 修正 `stub_parser.py` LinkedList 解析問題
+
+### In Progress 🔄
+
+- [ ] Step 3: 建立格式遷移工具
+
+### Pending 📋
+
+- [ ] Step 4: solve() 自動生成（Tier 0：簡單類型）
+- [ ] 整合 `--with-tests` 到 `codegen new`
+- [ ] 更新 `scripts/new_problem.bat`
+
+---
+
+## Future Discussion Topics (待討論)
+
+### 1. 格式遷移工具設計
+
+**需要決定：**
+- 是否備份原始檔案？
+- 一次遷移全部還是互動式逐題確認？
+- 遷移後是否自動運行測試驗證？
+
+### 2. solve() 自動生成範圍
+
+**Tier 分級：**
+- Tier 0：`int`, `str`, `List[int]`, `List[str]`
+- Tier 1：`List[List[int]]` (2D array)
+- Tier 2：`LinkedList`, `TreeNode`
+
+**需要決定：**
+- v0 要支援到哪個 Tier？
+- 是否重用現有 solutions 的 helper functions？
+
+### 3. LinkedList/Tree 的 IO 格式
+
+**問題：**
+- LinkedList: `[2,4,3]` 轉成 nodes，cycle 如何表示？
+- TreeNode: level-order `[1,null,2,3]`
+
+**需要決定：**
+- Canonical 格式中 LinkedList 怎麼表示？
+- 是否支援 cycle 測試（如 0141, 0142）？
+
+### 4. Output 格式特殊案例
+
+**已發現的特殊案例：**
+- `2.00000` vs `2`（浮點精度）
+- `2, nums = [1,2,_]`（多值輸出）
+- 順序無關的陣列比較
+
+**需要決定：**
+- 這些特殊案例如何在 canonical 中處理？
 
 ---
 
@@ -326,6 +570,7 @@ Summary: 1 solution, 0 test cases created
 | [CodeGen Package README](../../packages/codegen/README.md) | Package specification |
 | [Solution Contract](../../contracts/solution-contract.md) | Solution file format |
 | [compare_html_parsers.py](../../../tools/review-code/compare_html_parsers.py) | Parser comparison tool |
+| [mismatch-report.json](./mismatch-report.json) | Full analysis report |
 
 ---
 
@@ -333,5 +578,10 @@ Summary: 1 solution, 0 test cases created
 
 | Date | Change |
 |------|--------|
-| 2024-12-31 | Initial specification created |
+| 2025-12-31 | Initial specification created |
+| 2025-12-31 | Added IO Schema and Consistency Checker implementation |
+| 2025-12-31 | Added Canonical Format Decision |
+| 2025-12-31 | Completed full 45-problem analysis |
+| 2025-12-31 | Fixed stub_parser.py LinkedList parsing |
+| 2025-12-31 | Added Future Discussion Topics |
 

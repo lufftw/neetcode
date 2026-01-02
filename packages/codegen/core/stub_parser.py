@@ -72,6 +72,28 @@ def parse_code_stub(code_stub: str) -> StubInfo:
     except SyntaxError:
         pass
     
+    # LeetCode stubs often have empty function bodies (no pass/...)
+    # Try adding 'pass' to make it valid Python
+    try:
+        # Add 'pass' after the last colon that ends a def line
+        lines = code_stub.split('\n')
+        fixed_lines = []
+        for i, line in enumerate(lines):
+            fixed_lines.append(line)
+            # Check if this line ends with ':' and looks like a def
+            stripped = line.rstrip()
+            if stripped.endswith(':') and 'def ' in line:
+                # Check if next line is not indented code
+                if i + 1 >= len(lines) or not lines[i + 1].strip():
+                    # Add pass with proper indentation
+                    indent = len(line) - len(line.lstrip()) + 4
+                    fixed_lines.append(' ' * indent + 'pass')
+        
+        fixed_code = '\n'.join(fixed_lines)
+        return _parse_with_ast(fixed_code)
+    except SyntaxError:
+        pass
+    
     # Fallback to regex parsing
     return _parse_with_regex(code_stub)
 
@@ -102,6 +124,13 @@ def _parse_with_ast(code_stub: str) -> StubInfo:
             else:
                 # Additional class (e.g., ListNode)
                 additional_classes.append(node.name)
+    
+    # Also check for commented-out class definitions (LeetCode style)
+    # e.g., "# class ListNode:"
+    for match in re.finditer(r'#\s*class\s+(\w+)\s*:', code_stub):
+        name = match.group(1)
+        if name != "Solution" and name not in additional_classes:
+            additional_classes.append(name)
     
     return StubInfo(
         class_name=class_name,
@@ -162,14 +191,27 @@ def _reconstruct_signature(
 def _parse_with_regex(code_stub: str) -> StubInfo:
     """Fallback regex-based parsing for malformed stubs."""
     
-    # Find class name
-    class_match = re.search(r'class\s+(\w+)\s*:', code_stub)
-    class_name = class_match.group(1) if class_match else "Solution"
+    # Remove comment lines first to avoid parsing commented-out code
+    lines = code_stub.split('\n')
+    non_comment_lines = [line for line in lines if not line.strip().startswith('#')]
+    clean_code = '\n'.join(non_comment_lines)
     
-    # Find method signature
+    # Find class name (prefer Solution)
+    class_match = re.search(r'class\s+Solution\s*:', clean_code)
+    if not class_match:
+        class_match = re.search(r'class\s+(\w+)\s*:', clean_code)
+    class_name = "Solution" if class_match and 'Solution' in class_match.group(0) else (
+        class_match.group(1) if class_match else "Solution"
+    )
+    
+    # Find method signature inside Solution class
+    # First, try to find the Solution class block
+    solution_match = re.search(r'class\s+Solution\s*:(.+?)(?=\nclass\s|\Z)', clean_code, re.DOTALL)
+    search_area = solution_match.group(1) if solution_match else clean_code
+    
     # Pattern: def method_name(self, params...) -> return_type:
     method_pattern = r'def\s+(\w+)\s*\(\s*self\s*(?:,\s*(.+?))?\s*\)\s*(?:->\s*(.+?))?\s*:'
-    method_match = re.search(method_pattern, code_stub, re.DOTALL)
+    method_match = re.search(method_pattern, search_area, re.DOTALL)
     
     if not method_match:
         return StubInfo(
@@ -191,11 +233,17 @@ def _parse_with_regex(code_stub: str) -> StubInfo:
     # Reconstruct signature
     raw_signature = method_match.group(0)
     
-    # Find additional classes
+    # Find additional classes (from original code, including comments for class names)
     additional_classes = []
-    for match in re.finditer(r'class\s+(\w+)\s*:', code_stub):
+    # Look for class definitions in comments (LeetCode style: # class ListNode:)
+    for match in re.finditer(r'#\s*class\s+(\w+)\s*:', code_stub):
         name = match.group(1)
         if name != "Solution":
+            additional_classes.append(name)
+    # Also look for actual class definitions
+    for match in re.finditer(r'(?<!#\s*)class\s+(\w+)\s*:', code_stub):
+        name = match.group(1)
+        if name != "Solution" and name not in additional_classes:
             additional_classes.append(name)
     
     return StubInfo(

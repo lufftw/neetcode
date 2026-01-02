@@ -4,6 +4,7 @@ CodeGen CLI - Command line interface for code generation.
 Commands:
     codegen new <problem_id>       Generate reference skeleton
     codegen practice <problem_id>  Generate practice skeleton
+    codegen check [problem_id]     Check test consistency
 """
 
 import argparse
@@ -14,6 +15,7 @@ from typing import Optional, List
 from .core.config import load_config, HeaderLevel
 from .reference.generator import generate_reference_skeleton
 from .practice.generator import generate_practice_skeleton
+from .checker import TestChecker, generate_report, CheckStatus
 
 
 # Ensure stdout uses UTF-8 encoding on Windows
@@ -77,6 +79,47 @@ def create_parser() -> argparse.ArgumentParser:
         help="Only print content, don't write file",
     )
     
+    # codegen check
+    check_parser = subparsers.add_parser(
+        "check",
+        help="Check test file consistency with LeetCode examples",
+    )
+    check_parser.add_argument(
+        "problem_id",
+        nargs="?",
+        default=None,
+        help="Problem ID to check (e.g., 1, 0001, 0001_two_sum). If omitted, use --all",
+    )
+    check_parser.add_argument(
+        "--all",
+        action="store_true",
+        dest="check_all",
+        help="Check all problems in solutions/",
+    )
+    check_parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of problems to check (with --all)",
+    )
+    check_parser.add_argument(
+        "--generatable",
+        action="store_true",
+        help="Only check if examples can be parsed (skip consistency check)",
+    )
+    check_parser.add_argument(
+        "--report",
+        choices=["text", "markdown", "json"],
+        default="text",
+        help="Output format for report (default: text)",
+    )
+    check_parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Show detailed information for each example",
+    )
+    
     return parser
 
 
@@ -133,6 +176,84 @@ def cmd_practice(args: argparse.Namespace) -> int:
     return 0 if result.success else 1
 
 
+def cmd_check(args: argparse.Namespace) -> int:
+    """Handle 'codegen check' command."""
+    checker = TestChecker()
+    
+    if args.check_all:
+        # Check all problems
+        results = checker.check_all(limit=args.limit)
+        
+        if args.report == "json":
+            print(generate_report(results, format="json"))
+        else:
+            # Print summary first
+            total = len(results)
+            ok = sum(1 for r in results if r.status in (CheckStatus.OK, CheckStatus.MATCH))
+            mismatch = sum(1 for r in results if r.status == CheckStatus.MISMATCH)
+            missing = sum(1 for r in results if r.status == CheckStatus.MISSING_TESTS)
+            errors = sum(1 for r in results if r.status in (CheckStatus.PARSE_ERROR, CheckStatus.FETCH_ERROR))
+            
+            print(f"Test Consistency Check")
+            print(f"=" * 50)
+            print(f"Total: {total} problems")
+            print(f"  Match:   {ok}")
+            print(f"  Mismatch: {mismatch}")
+            print(f"  Missing:  {missing}")
+            print(f"  Errors:   {errors}")
+            print()
+            
+            # Print details
+            for r in results:
+                if args.verbose or r.status not in (CheckStatus.OK, CheckStatus.MATCH):
+                    print(r.summary())
+                    if args.verbose:
+                        for ex in r.examples:
+                            status_str = ex.status.value
+                            print(f"    Example {ex.example_num}: {status_str}")
+                            if ex.diff_details:
+                                for line in ex.diff_details.split("\n")[:4]:
+                                    print(f"      {line}")
+        
+        # Return 0 if all OK, 1 if any issues
+        has_issues = any(r.status not in (CheckStatus.OK, CheckStatus.MATCH) for r in results)
+        return 1 if has_issues else 0
+    
+    elif args.problem_id:
+        # Check single problem
+        if args.generatable:
+            result = checker.check_generatable(args.problem_id)
+        else:
+            result = checker.check_problem(args.problem_id)
+        
+        if args.report == "json":
+            print(generate_report([result], format="json"))
+        else:
+            print(result.summary())
+            print(f"  Generatable: {result.generatable}")
+            print(f"  Consistent:  {result.consistent}")
+            
+            if args.verbose or result.status not in (CheckStatus.OK, CheckStatus.MATCH):
+                for ex in result.examples:
+                    print(f"  Example {ex.example_num}: {ex.status.value}")
+                    if args.verbose:
+                        print(f"    Expected IN:  {ex.expected_in[:60]}{'...' if len(ex.expected_in) > 60 else ''}")
+                        print(f"    Actual IN:    {ex.actual_in[:60]}{'...' if len(ex.actual_in) > 60 else ''}")
+                        print(f"    Expected OUT: {ex.expected_out[:60]}{'...' if len(ex.expected_out) > 60 else ''}")
+                        print(f"    Actual OUT:   {ex.actual_out[:60]}{'...' if len(ex.actual_out) > 60 else ''}")
+            
+            if result.warnings:
+                print("  Warnings:")
+                for w in result.warnings:
+                    print(f"    - {w}")
+        
+        return 0 if result.status in (CheckStatus.OK, CheckStatus.MATCH) else 1
+    
+    else:
+        print("Error: Please specify a problem_id or use --all")
+        return 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     """Main entry point for the CLI."""
     parser = create_parser()
@@ -146,6 +267,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return cmd_new(args)
     elif args.command == "practice":
         return cmd_practice(args)
+    elif args.command == "check":
+        return cmd_check(args)
     else:
         parser.print_help()
         return 1

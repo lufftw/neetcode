@@ -1,0 +1,2440 @@
+[
+  {
+    "problem_id": "0001_two_sum",
+    "slug": "two-sum",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "nums: List[int]",
+      "target: int"
+    ],
+    "return_type": "List[int]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [2,7,11,15], target = 9",
+        "raw_output": "[0,1]",
+        "parsed_inputs": {
+          "nums": "[2,7,11,15]",
+          "target": "9"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "2,7,11,15\n9",
+        "actual_out": "[0, 1]"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [3,2,4], target = 6",
+        "raw_output": "[1,2]",
+        "parsed_inputs": {
+          "nums": "[3,2,4]",
+          "target": "6"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "3,2,4\n6",
+        "actual_out": "[1, 2]"
+      },
+      {
+        "num": 3,
+        "raw_input": "nums = [3,3], target = 6",
+        "raw_output": "[0,1]",
+        "parsed_inputs": {
+          "nums": "[3,3]",
+          "target": "6"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "3,3\n6",
+        "actual_out": "[0, 1]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0002_add_two_numbers",
+    "slug": "add-two-numbers",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "val=0: ",
+      "next=None: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "l1 = [2,4,3], l2 = [5,6,4]",
+        "raw_output": "[7,0,8]",
+        "parsed_inputs": {
+          "l1": "[2,4,3]",
+          "l2": "[5,6,4]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "2,4,3\n5,6,4",
+        "actual_out": "[7, 0, 8]"
+      },
+      {
+        "num": 2,
+        "raw_input": "l1 = [0], l2 = [0]",
+        "raw_output": "[0]",
+        "parsed_inputs": {
+          "l1": "[0]",
+          "l2": "[0]"
+        },
+        "mismatch_types": [],
+        "actual_in": "0\n0",
+        "actual_out": "[0]"
+      },
+      {
+        "num": 3,
+        "raw_input": "l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]",
+        "raw_output": "[8,9,9,9,0,0,0,1]",
+        "parsed_inputs": {
+          "l1": "[9,9,9,9,9,9,9]",
+          "l2": "[9,9,9,9]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "9,9,9,9,9,9,9\n9,9,9,9",
+        "actual_out": "[8, 9, 9, 9, 0, 0, 0, 1]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0003_longest_substring_without_repeating_characters",
+    "slug": "longest-substring-without-repeating-characters",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "s: str"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"abcabcbb\"",
+        "raw_output": "3",
+        "parsed_inputs": {
+          "s": "\"abcabcbb\""
+        },
+        "mismatch_types": [],
+        "actual_in": "abcabcbb",
+        "actual_out": "3"
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"bbbbb\"",
+        "raw_output": "1",
+        "parsed_inputs": {
+          "s": "\"bbbbb\""
+        },
+        "mismatch_types": [],
+        "actual_in": "bbbbb",
+        "actual_out": "1"
+      },
+      {
+        "num": 3,
+        "raw_input": "s = \"pwwkew\"",
+        "raw_output": "3",
+        "parsed_inputs": {
+          "s": "\"pwwkew\""
+        },
+        "mismatch_types": [],
+        "actual_in": "pwwkew",
+        "actual_out": "3"
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0004_median_of_two_sorted_arrays",
+    "slug": "median-of-two-sorted-arrays",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums1: List[int]",
+      "nums2: List[int]"
+    ],
+    "return_type": "float",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "value_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums1 = [1,3], nums2 = [2]",
+        "raw_output": "2.00000",
+        "parsed_inputs": {
+          "nums1": "[1,3]",
+          "nums2": "[2]"
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "1,3\n2",
+        "actual_out": "2"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums1 = [1,2], nums2 = [3,4]",
+        "raw_output": "2.50000",
+        "parsed_inputs": {
+          "nums1": "[1,2]",
+          "nums2": "[3,4]"
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "1,2\n3,4",
+        "actual_out": "2.5"
+      }
+    ],
+    "suggested_fix": "manual_review",
+    "error": ""
+  },
+  {
+    "problem_id": "0011_container_with_most_water",
+    "slug": "container-with-most-water",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "height: List[int]"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "height = [1,8,6,2,5,4,8,3,7]",
+        "raw_output": "49",
+        "parsed_inputs": {
+          "height": "[1,8,6,2,5,4,8,3,7]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "1 8 6 2 5 4 8 3 7",
+        "actual_out": "49"
+      },
+      {
+        "num": 2,
+        "raw_input": "height = [1,1]",
+        "raw_output": "1",
+        "parsed_inputs": {
+          "height": "[1,1]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "1 1",
+        "actual_out": "1"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0015_3sum",
+    "slug": "3sum",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [-1,0,1,2,-1,-4]",
+        "raw_output": "[[-1,-1,2],[-1,0,1]]",
+        "parsed_inputs": {
+          "nums": "[-1,0,1,2,-1,-4]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "-1 0 1 2 -1 -4",
+        "actual_out": "-1 -1 2\n-1 0 1"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0,1,1]",
+        "raw_output": "[]",
+        "parsed_inputs": {
+          "nums": "[0,1,1]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "0 1 1",
+        "actual_out": ""
+      },
+      {
+        "num": 3,
+        "raw_input": "nums = [0,0,0]",
+        "raw_output": "[[0,0,0]]",
+        "parsed_inputs": {
+          "nums": "[0,0,0]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "0 0 0",
+        "actual_out": "0 0 0"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0016_3sum_closest",
+    "slug": "3sum-closest",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]",
+      "target: int"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [-1,2,1,-4], target = 1",
+        "raw_output": "2",
+        "parsed_inputs": {
+          "nums": "[-1,2,1,-4]",
+          "target": "1"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "-1 2 1 -4\n1",
+        "actual_out": "2"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0,0,0], target = 1",
+        "raw_output": "0",
+        "parsed_inputs": {
+          "nums": "[0,0,0]",
+          "target": "1"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "0 0 0\n1",
+        "actual_out": "0"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0021_merge_two_sorted_lists",
+    "slug": "merge-two-sorted-lists",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "val=0: ",
+      "next=None: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format",
+      "value_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "list1 = [1,2,4], list2 = [1,3,4]",
+        "raw_output": "[1,1,2,3,4,4]",
+        "parsed_inputs": {
+          "list1": "[1,2,4]",
+          "list2": "[1,3,4]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "1 2 4\n1 3 4",
+        "actual_out": "1 1 2 3 4 4"
+      },
+      {
+        "num": 2,
+        "raw_input": "list1 = [], list2 = []",
+        "raw_output": "[]",
+        "parsed_inputs": {
+          "list1": "[]",
+          "list2": "[]"
+        },
+        "mismatch_types": [
+          "value_diff",
+          "output_format"
+        ],
+        "actual_in": "1",
+        "actual_out": "1"
+      },
+      {
+        "num": 3,
+        "raw_input": "list1 = [], list2 = [0]",
+        "raw_output": "[0]",
+        "parsed_inputs": {
+          "list1": "[]",
+          "list2": "[0]"
+        },
+        "mismatch_types": [
+          "value_diff",
+          "output_format"
+        ],
+        "actual_in": "1 2 3\n4 5 6",
+        "actual_out": "1 2 3 4 5 6"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0023_merge_k_sorted_lists",
+    "slug": "merge-k-sorted-lists",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "val=0: ",
+      "next=None: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format",
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "lists = [[1,4,5],[1,3,4],[2,6]]",
+        "raw_output": "[1,1,2,3,4,4,5,6]",
+        "parsed_inputs": {
+          "lists": "[[1,4,5],[1,3,4],[2,6]]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format",
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "3\n1,4,5\n1,3,4\n2,6",
+        "actual_out": "[1, 1, 2, 3, 4, 4, 5, 6]"
+      },
+      {
+        "num": 2,
+        "raw_input": "lists = []",
+        "raw_output": "[]",
+        "parsed_inputs": {
+          "lists": "[]"
+        },
+        "mismatch_types": [],
+        "actual_in": "0",
+        "actual_out": "[]"
+      },
+      {
+        "num": 3,
+        "raw_input": "lists = [[]]",
+        "raw_output": "[]",
+        "parsed_inputs": {
+          "lists": "[[]]"
+        },
+        "mismatch_types": [
+          "output_format"
+        ],
+        "actual_in": "1\nempty",
+        "actual_out": "[]"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0025_reverse_nodes_in_k_group",
+    "slug": "reverse-nodes-in-k-group",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "val=0: ",
+      "next=None: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "head = [1,2,3,4,5], k = 2",
+        "raw_output": "[2,1,4,3,5]",
+        "parsed_inputs": {
+          "head": "[1,2,3,4,5]",
+          "k": "2"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "1,2,3,4,5\n2",
+        "actual_out": "[2, 1, 4, 3, 5]"
+      },
+      {
+        "num": 2,
+        "raw_input": "head = [1,2,3,4,5], k = 3",
+        "raw_output": "[3,2,1,4,5]",
+        "parsed_inputs": {
+          "head": "[1,2,3,4,5]",
+          "k": "3"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "1,2,3,4,5\n3",
+        "actual_out": "[3, 2, 1, 4, 5]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0026_remove_duplicates_from_sorted_array",
+    "slug": "remove-duplicates-from-sorted-array",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [1,1,2]",
+        "raw_output": "2, nums = [1,2,_]",
+        "parsed_inputs": {
+          "nums": "[1,1,2]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "1 1 2",
+        "actual_out": "2\n1 2"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0,0,1,1,1,2,2,3,3,4]",
+        "raw_output": "5, nums = [0,1,2,3,4,_,_,_,_,_]",
+        "parsed_inputs": {
+          "nums": "[0,0,1,1,1,2,2,3,3,4]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "0 0 1 1 1 2 2 3 3 4",
+        "actual_out": "5\n0 1 2 3 4"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0027_remove_element",
+    "slug": "remove-element",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]",
+      "val: int"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [3,2,2,3], val = 3",
+        "raw_output": "2, nums = [2,2,_,_]",
+        "parsed_inputs": {
+          "nums": "[3,2,2,3]",
+          "val": "3"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "3 2 2 3\n3",
+        "actual_out": "2\n2 2"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0,1,2,2,3,0,4,2], val = 2",
+        "raw_output": "5, nums = [0,1,4,0,3,_,_,_]",
+        "parsed_inputs": {
+          "nums": "[0,1,2,2,3,0,4,2]",
+          "val": "2"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "0 1 2 2 3 0 4 2\n2",
+        "actual_out": "5\n0 1 3 0 4"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0039_combination_sum",
+    "slug": "combination-sum",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "candidates: List[int]",
+      "target: int"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "candidates = [2,3,6,7], target = 7",
+        "raw_output": "[[2,2,3],[7]]",
+        "parsed_inputs": {
+          "candidates": "[2,3,6,7]",
+          "target": "7"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "2,3,6,7\n7",
+        "actual_out": "[[2, 2, 3], [7]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "candidates = [2,3,5], target = 8",
+        "raw_output": "[[2,2,2,2],[2,3,3],[3,5]]",
+        "parsed_inputs": {
+          "candidates": "[2,3,5]",
+          "target": "8"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "2,3,5\n8",
+        "actual_out": "[[2, 2, 2, 2], [2, 3, 3], [3, 5]]"
+      },
+      {
+        "num": 3,
+        "raw_input": "candidates = [2], target = 1",
+        "raw_output": "[]",
+        "parsed_inputs": {
+          "candidates": "[2]",
+          "target": "1"
+        },
+        "mismatch_types": []
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0040_combination_sum_ii",
+    "slug": "combination-sum-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "candidates: List[int]",
+      "target: int"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "candidates = [10,1,2,7,6,1,5], target = 8",
+        "raw_output": "[\n[1,1,6],\n[1,2,5],\n[1,7],\n[2,6]\n]",
+        "parsed_inputs": {
+          "candidates": "[10,1,2,7,6,1,5]",
+          "target": "8"
+        },
+        "mismatch_types": [
+          "normalization_only"
+        ],
+        "actual_in": "10,1,2,7,6,1,5\n8",
+        "actual_out": "[[1, 1, 6], [1, 2, 5], [1, 7], [2, 6]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "candidates = [2,5,2,1,2], target = 5",
+        "raw_output": "[\n[1,2,2],\n[5]\n]",
+        "parsed_inputs": {
+          "candidates": "[2,5,2,1,2]",
+          "target": "5"
+        },
+        "mismatch_types": [
+          "normalization_only"
+        ],
+        "actual_in": "2,5,2,1,2\n5",
+        "actual_out": "[[1, 2, 2], [5]]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0046_permutations",
+    "slug": "permutations",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [1,2,3]",
+        "raw_output": "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]",
+        "parsed_inputs": {
+          "nums": "[1,2,3]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "1,2,3",
+        "actual_out": "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0,1]",
+        "raw_output": "[[0,1],[1,0]]",
+        "parsed_inputs": {
+          "nums": "[0,1]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "0,1",
+        "actual_out": "[[0, 1], [1, 0]]"
+      },
+      {
+        "num": 3,
+        "raw_input": "nums = [1]",
+        "raw_output": "[[1]]",
+        "parsed_inputs": {
+          "nums": "[1]"
+        },
+        "mismatch_types": []
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0047_permutations_ii",
+    "slug": "permutations-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [1,1,2]",
+        "raw_output": "[[1,1,2],\n [1,2,1],\n [2,1,1]]",
+        "parsed_inputs": {
+          "nums": "[1,1,2]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "1,1,2",
+        "actual_out": "[[1, 1, 2], [1, 2, 1], [2, 1, 1]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [1,2,3]",
+        "raw_output": "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]",
+        "parsed_inputs": {
+          "nums": "[1,2,3]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "1,2,3",
+        "actual_out": "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0051_n_queens",
+    "slug": "n-queens",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "n: int"
+    ],
+    "return_type": "List[List[str]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "quote_style"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "n = 4",
+        "raw_output": "[[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]]",
+        "parsed_inputs": {
+          "n": "4"
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "4",
+        "actual_out": "[['.Q..', '...Q', 'Q...', '..Q.'], ['..Q.', 'Q...', '...Q', '.Q..']]"
+      },
+      {
+        "num": 2,
+        "raw_input": "n = 1",
+        "raw_output": "[[\"Q\"]]",
+        "parsed_inputs": {
+          "n": "1"
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "1",
+        "actual_out": "[['Q']]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0052_n_queens_ii",
+    "slug": "n-queens-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "n: int"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "n = 4",
+        "raw_output": "2",
+        "parsed_inputs": {
+          "n": "4"
+        },
+        "mismatch_types": [],
+        "actual_in": "4",
+        "actual_out": "2"
+      },
+      {
+        "num": 2,
+        "raw_input": "n = 1",
+        "raw_output": "1",
+        "parsed_inputs": {
+          "n": "1"
+        },
+        "mismatch_types": [],
+        "actual_in": "1",
+        "actual_out": "1"
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0075_sort_colors",
+    "slug": "sort-colors",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "None",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [2,0,2,1,1,0]",
+        "raw_output": "[0,0,1,1,2,2]",
+        "parsed_inputs": {
+          "nums": "[2,0,2,1,1,0]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "2 0 2 1 1 0",
+        "actual_out": "0 0 1 1 2 2"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [2,0,1]",
+        "raw_output": "[0,1,2]",
+        "parsed_inputs": {
+          "nums": "[2,0,1]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "2 0 1",
+        "actual_out": "0 1 2"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0076_minimum_window_substring",
+    "slug": "minimum-window-substring",
+    "has_solution": true,
+    "has_existing_tests": false,
+    "existing_test_count": 0,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "s: str",
+      "t: str"
+    ],
+    "return_type": "str",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"ADOBECODEBANC\", t = \"ABC\"",
+        "raw_output": "\"BANC\"",
+        "parsed_inputs": {
+          "s": "\"ADOBECODEBANC\"",
+          "t": "\"ABC\""
+        },
+        "mismatch_types": []
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"a\", t = \"a\"",
+        "raw_output": "\"a\"",
+        "parsed_inputs": {
+          "s": "\"a\"",
+          "t": "\"a\""
+        },
+        "mismatch_types": []
+      },
+      {
+        "num": 3,
+        "raw_input": "s = \"a\", t = \"aa\"",
+        "raw_output": "\"\"",
+        "parsed_inputs": {
+          "s": "\"a\"",
+          "t": "\"aa\""
+        },
+        "mismatch_types": []
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0077_combinations",
+    "slug": "combinations",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "n: int",
+      "k: int"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "n = 4, k = 2",
+        "raw_output": "[[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]",
+        "parsed_inputs": {
+          "n": "4",
+          "k": "2"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "4\n2",
+        "actual_out": "[[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "n = 1, k = 1",
+        "raw_output": "[[1]]",
+        "parsed_inputs": {
+          "n": "1",
+          "k": "1"
+        },
+        "mismatch_types": [],
+        "actual_in": "1\n1",
+        "actual_out": "[[1]]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0078_subsets",
+    "slug": "subsets",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "value_diff",
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [1,2,3]",
+        "raw_output": "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]",
+        "parsed_inputs": {
+          "nums": "[1,2,3]"
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "1,2,3",
+        "actual_out": "[[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0]",
+        "raw_output": "[[],[0]]",
+        "parsed_inputs": {
+          "nums": "[0]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "0",
+        "actual_out": "[[], [0]]"
+      }
+    ],
+    "suggested_fix": "manual_review",
+    "error": ""
+  },
+  {
+    "problem_id": "0079_word_search",
+    "slug": "word-search",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "board: List[List[str]]",
+      "word: str"
+    ],
+    "return_type": "bool",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "output_format",
+      "boolean_case"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCCED\"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "board": "[[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]]",
+          "word": "\"ABCCED\""
+        },
+        "mismatch_types": [
+          "output_format",
+          "boolean_case"
+        ],
+        "actual_in": "3,4\nA,B,C,E\nS,F,C,S\nA,D,E,E\nABCCED",
+        "actual_out": "True"
+      },
+      {
+        "num": 2,
+        "raw_input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"SEE\"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "board": "[[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]]",
+          "word": "\"SEE\""
+        },
+        "mismatch_types": [
+          "output_format",
+          "boolean_case"
+        ],
+        "actual_in": "3,4\nA,B,C,E\nS,F,C,S\nA,D,E,E\nSEE",
+        "actual_out": "True"
+      },
+      {
+        "num": 3,
+        "raw_input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCB\"",
+        "raw_output": "false",
+        "parsed_inputs": {
+          "board": "[[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]]",
+          "word": "\"ABCB\""
+        },
+        "mismatch_types": [
+          "output_format",
+          "boolean_case"
+        ],
+        "actual_in": "3,4\nA,B,C,E\nS,F,C,S\nA,D,E,E\nABCB",
+        "actual_out": "False"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0080_remove_duplicates_from_sorted_array_ii",
+    "slug": "remove-duplicates-from-sorted-array-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [1,1,1,2,2,3]",
+        "raw_output": "5, nums = [1,1,2,2,3,_]",
+        "parsed_inputs": {
+          "nums": "[1,1,1,2,2,3]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "1 1 1 2 2 3",
+        "actual_out": "5\n1 1 2 2 3"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0,0,1,1,1,1,2,3,3]",
+        "raw_output": "7, nums = [0,0,1,1,2,3,3,_,_]",
+        "parsed_inputs": {
+          "nums": "[0,0,1,1,1,1,2,3,3]"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "0 0 1 1 1 1 2 3 3",
+        "actual_out": "7\n0 0 1 1 2 3 3"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0088_merge_sorted_array",
+    "slug": "merge-sorted-array",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "nums1: List[int]",
+      "m: int",
+      "nums2: List[int]",
+      "n: int"
+    ],
+    "return_type": "None",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3",
+        "raw_output": "[1,2,2,3,5,6]",
+        "parsed_inputs": {
+          "nums1": "[1,2,3,0,0,0]",
+          "m": "3",
+          "nums2": "[2,5,6]",
+          "n": "3"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "1 2 3 0 0 0\n3\n2 5 6\n3",
+        "actual_out": "1 2 2 3 5 6"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums1 = [1], m = 1, nums2 = [], n = 0",
+        "raw_output": "[1]",
+        "parsed_inputs": {
+          "nums1": "[1]",
+          "m": "1",
+          "nums2": "[]",
+          "n": "0"
+        },
+        "mismatch_types": [
+          "output_format"
+        ],
+        "actual_in": "1\n1\n\n0",
+        "actual_out": "1"
+      },
+      {
+        "num": 3,
+        "raw_input": "nums1 = [0], m = 0, nums2 = [1], n = 1",
+        "raw_output": "[1]",
+        "parsed_inputs": {
+          "nums1": "[0]",
+          "m": "0",
+          "nums2": "[1]",
+          "n": "1"
+        },
+        "mismatch_types": [
+          "output_format"
+        ],
+        "actual_in": "0\n0\n1\n1",
+        "actual_out": "1"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0090_subsets_ii",
+    "slug": "subsets-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [1,2,2]",
+        "raw_output": "[[],[1],[1,2],[1,2,2],[2],[2,2]]",
+        "parsed_inputs": {
+          "nums": "[1,2,2]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "1,2,2",
+        "actual_out": "[[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0]",
+        "raw_output": "[[],[0]]",
+        "parsed_inputs": {
+          "nums": "[0]"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "0",
+        "actual_out": "[[], [0]]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0093_restore_ip_addresses",
+    "slug": "restore-ip-addresses",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "s: str"
+    ],
+    "return_type": "List[str]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "quote_style"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"25525511135\"",
+        "raw_output": "[\"255.255.11.135\",\"255.255.111.35\"]",
+        "parsed_inputs": {
+          "s": "\"25525511135\""
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "25525511135",
+        "actual_out": "['255.255.11.135', '255.255.111.35']"
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"0000\"",
+        "raw_output": "[\"0.0.0.0\"]",
+        "parsed_inputs": {
+          "s": "\"0000\""
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "0000",
+        "actual_out": "['0.0.0.0']"
+      },
+      {
+        "num": 3,
+        "raw_input": "s = \"101023\"",
+        "raw_output": "[\"1.0.10.23\",\"1.0.102.3\",\"10.1.0.23\",\"10.10.2.3\",\"101.0.2.3\"]",
+        "parsed_inputs": {
+          "s": "\"101023\""
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "101023",
+        "actual_out": "['1.0.10.23', '1.0.102.3', '10.1.0.23', '10.10.2.3', '101.0.2.3']"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0125_valid_palindrome",
+    "slug": "valid-palindrome",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "s: str"
+    ],
+    "return_type": "bool",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"A man, a plan, a canal: Panama\"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "s": "\"A man, a plan, a canal: Panama\""
+        },
+        "mismatch_types": [],
+        "actual_in": "A man, a plan, a canal: Panama",
+        "actual_out": "true"
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"race a car\"",
+        "raw_output": "false",
+        "parsed_inputs": {
+          "s": "\"race a car\""
+        },
+        "mismatch_types": [],
+        "actual_in": "race a car",
+        "actual_out": "false"
+      },
+      {
+        "num": 3,
+        "raw_input": "s = \" \"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "s": "\" \""
+        },
+        "mismatch_types": [],
+        "actual_in": "",
+        "actual_out": "true"
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0131_palindrome_partitioning",
+    "slug": "palindrome-partitioning",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 2,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "s: str"
+    ],
+    "return_type": "List[List[str]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "quote_style"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"aab\"",
+        "raw_output": "[[\"a\",\"a\",\"b\"],[\"aa\",\"b\"]]",
+        "parsed_inputs": {
+          "s": "\"aab\""
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "aab",
+        "actual_out": "[['a', 'a', 'b'], ['aa', 'b']]"
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"a\"",
+        "raw_output": "[[\"a\"]]",
+        "parsed_inputs": {
+          "s": "\"a\""
+        },
+        "mismatch_types": [
+          "quote_style"
+        ],
+        "actual_in": "a",
+        "actual_out": "[['a']]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0141_linked_list_cycle",
+    "slug": "linked-list-cycle",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "x: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "value_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "head = [3,2,0,-4], pos = 1",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "head": "[3,2,0,-4]",
+          "pos": "1"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "3 2 0 -4\n1",
+        "actual_out": "true"
+      },
+      {
+        "num": 2,
+        "raw_input": "head = [1,2], pos = 0",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "head": "[1,2]",
+          "pos": "0"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "value_diff"
+        ],
+        "actual_in": "1 2\n-1",
+        "actual_out": "false"
+      },
+      {
+        "num": 3,
+        "raw_input": "head = [1], pos = -1",
+        "raw_output": "false",
+        "parsed_inputs": {
+          "head": "[1]",
+          "pos": "-1"
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "1\n0",
+        "actual_out": "true"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0142_linked_list_cycle_ii",
+    "slug": "linked-list-cycle-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "x: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "value_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "head = [3,2,0,-4], pos = 1",
+        "raw_output": "tail connects to node index 1",
+        "parsed_inputs": {
+          "head": "[3,2,0,-4]",
+          "pos": "1"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "value_diff"
+        ],
+        "actual_in": "3 2 0 -4\n1",
+        "actual_out": "1"
+      },
+      {
+        "num": 2,
+        "raw_input": "head = [1,2], pos = 0",
+        "raw_output": "tail connects to node index 0",
+        "parsed_inputs": {
+          "head": "[1,2]",
+          "pos": "0"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "value_diff"
+        ],
+        "actual_in": "1 2\n-1",
+        "actual_out": "-1"
+      },
+      {
+        "num": 3,
+        "raw_input": "head = [1], pos = -1",
+        "raw_output": "no cycle",
+        "parsed_inputs": {
+          "head": "[1]",
+          "pos": "-1"
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "1\n0",
+        "actual_out": "0"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0202_happy_number",
+    "slug": "happy-number",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "n: int"
+    ],
+    "return_type": "bool",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "n = 19",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "n": "19"
+        },
+        "mismatch_types": [],
+        "actual_in": "19",
+        "actual_out": "true"
+      },
+      {
+        "num": 2,
+        "raw_input": "n = 2",
+        "raw_output": "false",
+        "parsed_inputs": {
+          "n": "2"
+        },
+        "mismatch_types": [],
+        "actual_in": "2",
+        "actual_out": "false"
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0209_minimum_size_subarray_sum",
+    "slug": "minimum-size-subarray-sum",
+    "has_solution": true,
+    "has_existing_tests": false,
+    "existing_test_count": 0,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "target: int",
+      "nums: List[int]"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "target = 7, nums = [2,3,1,2,4,3]",
+        "raw_output": "2",
+        "parsed_inputs": {
+          "target": "7",
+          "nums": "[2,3,1,2,4,3]"
+        },
+        "mismatch_types": []
+      },
+      {
+        "num": 2,
+        "raw_input": "target = 4, nums = [1,4,4]",
+        "raw_output": "1",
+        "parsed_inputs": {
+          "target": "4",
+          "nums": "[1,4,4]"
+        },
+        "mismatch_types": []
+      },
+      {
+        "num": 3,
+        "raw_input": "target = 11, nums = [1,1,1,1,1,1,1,1]",
+        "raw_output": "0",
+        "parsed_inputs": {
+          "target": "11",
+          "nums": "[1,1,1,1,1,1,1,1]"
+        },
+        "mismatch_types": []
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0215_kth_largest_element_in_an_array",
+    "slug": "kth-largest-element-in-an-array",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]",
+      "k: int"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [3,2,1,5,6,4], k = 2",
+        "raw_output": "5",
+        "parsed_inputs": {
+          "nums": "[3,2,1,5,6,4]",
+          "k": "2"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "3 2 1 5 6 4\n2",
+        "actual_out": "5"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [3,2,3,1,2,4,5,5,6], k = 4",
+        "raw_output": "4",
+        "parsed_inputs": {
+          "nums": "[3,2,3,1,2,4,5,5,6]",
+          "k": "4"
+        },
+        "mismatch_types": [
+          "separator_diff"
+        ],
+        "actual_in": "3 2 3 1 2 4 5 5 6\n4",
+        "actual_out": "4"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0216_combination_sum_iii",
+    "slug": "combination-sum-iii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "k: int",
+      "n: int"
+    ],
+    "return_type": "List[List[int]]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "serialization_diff",
+      "normalization_only"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "k = 3, n = 7",
+        "raw_output": "[[1,2,4]]",
+        "parsed_inputs": {
+          "k": "3",
+          "n": "7"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "3\n7",
+        "actual_out": "[[1, 2, 4]]"
+      },
+      {
+        "num": 2,
+        "raw_input": "k = 3, n = 9",
+        "raw_output": "[[1,2,6],[1,3,5],[2,3,4]]",
+        "parsed_inputs": {
+          "k": "3",
+          "n": "9"
+        },
+        "mismatch_types": [
+          "serialization_diff",
+          "normalization_only"
+        ],
+        "actual_in": "3\n9",
+        "actual_out": "[[1, 2, 6], [1, 3, 5], [2, 3, 4]]"
+      },
+      {
+        "num": 3,
+        "raw_input": "k = 4, n = 1",
+        "raw_output": "[]",
+        "parsed_inputs": {
+          "k": "4",
+          "n": "1"
+        },
+        "mismatch_types": [],
+        "actual_in": "4\n1",
+        "actual_out": "[]"
+      }
+    ],
+    "suggested_fix": "auto_normalize",
+    "error": ""
+  },
+  {
+    "problem_id": "0283_move_zeroes",
+    "slug": "move-zeroes",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "None",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [0,1,0,3,12]",
+        "raw_output": "[1,3,12,0,0]",
+        "parsed_inputs": {
+          "nums": "[0,1,0,3,12]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "0 1 0 3 12",
+        "actual_out": "1 3 12 0 0"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0]",
+        "raw_output": "[0]",
+        "parsed_inputs": {
+          "nums": "[0]"
+        },
+        "mismatch_types": [
+          "output_format"
+        ],
+        "actual_in": "0",
+        "actual_out": "0"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0340_longest_substring_with_at_most_k_distinct",
+    "slug": "longest-substring-with-at-most-k-distinct",
+    "has_solution": true,
+    "has_existing_tests": false,
+    "existing_test_count": 0,
+    "can_parse_examples": false,
+    "parsed_example_count": 0,
+    "param_types": [],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [],
+    "suggested_fix": "",
+    "error": "Failed to fetch question"
+  },
+  {
+    "problem_id": "0438_find_all_anagrams_in_a_string",
+    "slug": "find-all-anagrams-in-a-string",
+    "has_solution": true,
+    "has_existing_tests": false,
+    "existing_test_count": 0,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "s: str",
+      "p: str"
+    ],
+    "return_type": "List[int]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"cbaebabacd\", p = \"abc\"",
+        "raw_output": "[0,6]",
+        "parsed_inputs": {
+          "s": "\"cbaebabacd\"",
+          "p": "\"abc\""
+        },
+        "mismatch_types": []
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"abab\", p = \"ab\"",
+        "raw_output": "[0,1,2]",
+        "parsed_inputs": {
+          "s": "\"abab\"",
+          "p": "\"ab\""
+        },
+        "mismatch_types": []
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0567_permutation_in_string",
+    "slug": "permutation-in-string",
+    "has_solution": true,
+    "has_existing_tests": false,
+    "existing_test_count": 0,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "s1: str",
+      "s2: str"
+    ],
+    "return_type": "bool",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s1 = \"ab\", s2 = \"eidbaooo\"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "s1": "\"ab\"",
+          "s2": "\"eidbaooo\""
+        },
+        "mismatch_types": []
+      },
+      {
+        "num": 2,
+        "raw_input": "s1 = \"ab\", s2 = \"eidboaoo\"",
+        "raw_output": "false",
+        "parsed_inputs": {
+          "s1": "\"ab\"",
+          "s2": "\"eidboaoo\""
+        },
+        "mismatch_types": []
+      }
+    ],
+    "suggested_fix": "none",
+    "error": ""
+  },
+  {
+    "problem_id": "0680_valid_palindrome_ii",
+    "slug": "valid-palindrome-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "s: str"
+    ],
+    "return_type": "bool",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "value_diff"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "s = \"aba\"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "s": "\"aba\""
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "abca",
+        "actual_out": "true"
+      },
+      {
+        "num": 2,
+        "raw_input": "s = \"abca\"",
+        "raw_output": "true",
+        "parsed_inputs": {
+          "s": "\"abca\""
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "abc",
+        "actual_out": "false"
+      },
+      {
+        "num": 3,
+        "raw_input": "s = \"abc\"",
+        "raw_output": "false",
+        "parsed_inputs": {
+          "s": "\"abc\""
+        },
+        "mismatch_types": [
+          "value_diff"
+        ],
+        "actual_in": "a",
+        "actual_out": "true"
+      }
+    ],
+    "suggested_fix": "manual_review",
+    "error": ""
+  },
+  {
+    "problem_id": "0876_middle_of_the_linked_list",
+    "slug": "middle-of-the-linked-list",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "val=0: ",
+      "next=None: "
+    ],
+    "return_type": "",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "head = [1,2,3,4,5]",
+        "raw_output": "[3,4,5]",
+        "parsed_inputs": {
+          "head": "[1,2,3,4,5]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "1 2 3 4 5",
+        "actual_out": "3 4 5"
+      },
+      {
+        "num": 2,
+        "raw_input": "head = [1,2,3,4,5,6]",
+        "raw_output": "[4,5,6]",
+        "parsed_inputs": {
+          "head": "[1,2,3,4,5,6]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "1 2 3 4 5 6",
+        "actual_out": "4 5 6"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0905_sort_array_by_parity",
+    "slug": "sort-array-by-parity",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[int]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [3,1,2,4]",
+        "raw_output": "[2,4,3,1]",
+        "parsed_inputs": {
+          "nums": "[3,1,2,4]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "3 1 2 4",
+        "actual_out": "2 4 3 1"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [0]",
+        "raw_output": "[0]",
+        "parsed_inputs": {
+          "nums": "[0]"
+        },
+        "mismatch_types": [
+          "output_format"
+        ],
+        "actual_in": "0",
+        "actual_out": "0"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0922_sort_array_by_parity_ii",
+    "slug": "sort-array-by-parity-ii",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[int]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [4,2,5,7]",
+        "raw_output": "[4,5,2,7]",
+        "parsed_inputs": {
+          "nums": "[4,2,5,7]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "4 2 5 7",
+        "actual_out": "4 5 2 7"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [2,3]",
+        "raw_output": "[2,3]",
+        "parsed_inputs": {
+          "nums": "[2,3]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "2 3",
+        "actual_out": "2 3"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0977_squares_of_a_sorted_array",
+    "slug": "squares-of-a-sorted-array",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 2,
+    "param_types": [
+      "nums: List[int]"
+    ],
+    "return_type": "List[int]",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "nums = [-4,-1,0,3,10]",
+        "raw_output": "[0,1,9,16,100]",
+        "parsed_inputs": {
+          "nums": "[-4,-1,0,3,10]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "-4 -1 0 3 10",
+        "actual_out": "0 1 9 16 100"
+      },
+      {
+        "num": 2,
+        "raw_input": "nums = [-7,-3,2,3,11]",
+        "raw_output": "[4,9,9,49,121]",
+        "parsed_inputs": {
+          "nums": "[-7,-3,2,3,11]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "-7 -3 2 3 11",
+        "actual_out": "4 9 9 49 121"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  },
+  {
+    "problem_id": "0994_rotting_oranges",
+    "slug": "rotting-oranges",
+    "has_solution": true,
+    "has_existing_tests": true,
+    "existing_test_count": 3,
+    "can_parse_examples": true,
+    "parsed_example_count": 3,
+    "param_types": [
+      "grid: List[List[int]]"
+    ],
+    "return_type": "int",
+    "has_linkedlist": false,
+    "has_tree": false,
+    "mismatch_types": [
+      "separator_diff",
+      "output_format"
+    ],
+    "example_details": [
+      {
+        "num": 1,
+        "raw_input": "grid = [[2,1,1],[1,1,0],[0,1,1]]",
+        "raw_output": "4",
+        "parsed_inputs": {
+          "grid": "[[2,1,1],[1,1,0],[0,1,1]]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "3\n3\n2,1,1\n1,1,0\n0,1,1",
+        "actual_out": "4"
+      },
+      {
+        "num": 2,
+        "raw_input": "grid = [[2,1,1],[0,1,1],[1,0,1]]",
+        "raw_output": "-1",
+        "parsed_inputs": {
+          "grid": "[[2,1,1],[0,1,1],[1,0,1]]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "3\n3\n2,1,1\n0,1,1\n1,0,1",
+        "actual_out": "-1"
+      },
+      {
+        "num": 3,
+        "raw_input": "grid = [[0,2]]",
+        "raw_output": "0",
+        "parsed_inputs": {
+          "grid": "[[0,2]]"
+        },
+        "mismatch_types": [
+          "separator_diff",
+          "output_format"
+        ],
+        "actual_in": "1\n2\n0,2",
+        "actual_out": "0"
+      }
+    ],
+    "suggested_fix": "format_migration",
+    "error": ""
+  }
+]
