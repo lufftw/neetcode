@@ -28,6 +28,7 @@ from ..core.assemble import (
 )
 from ..core.io_schema import infer_io_schema
 from ..core.solve_generator import generate_solve_function
+from ..core.tiered_solve_generator import generate_tiered_solve
 
 
 class ReferenceGenerationResult:
@@ -176,10 +177,18 @@ def _generate_skeleton_content(
     # 8. Generate helper functions
     helper_func_code = emit_helper_functions(helper_functions, mode=helper_mode)
     
-    # 9. Generate solve() function
-    solve_fn = _generate_solve_function(stub_info, config)
+    # 9. Generate solve() function (with potential tiered helpers)
+    solve_result = _generate_solve_function(
+        stub_info, config, problem_id=question.frontend_question_id
+    )
     
-    # 10. Assemble module
+    # 10. If tiered mode has inline helpers, merge them
+    if solve_result.helper_code:
+        # Inline helpers from tiered generation
+        # They should replace/supplement the detected helpers
+        helpers_code = solve_result.helper_code
+    
+    # 11. Assemble module
     return assemble_module(
         header=header,
         imports=imports,
@@ -188,31 +197,50 @@ def _generate_skeleton_content(
         solutions_dict=solutions_dict,
         solution_classes=solution_class,
         helper_functions=helper_func_code,
-        solve_fn=solve_fn,
+        solve_fn=solve_result.solve_code,
     )
+
+
+class TieredSolveResult:
+    """Result from tiered solve generation."""
+    def __init__(self, solve_code: str, helper_code: str = "", tier: str = "0"):
+        self.solve_code = solve_code
+        self.helper_code = helper_code
+        self.tier = tier
 
 
 def _generate_solve_function(
     stub_info,
     config: CodeGenConfig,
-) -> str:
+    problem_id: int = None,
+) -> TieredSolveResult:
     """
     Generate the solve() function based on config.
     
     Modes:
         - "placeholder": Old-style placeholder with TODOs
         - "infer": Use solve_generator to auto-generate based on IO schema
+        - "tiered": Use tiered solve generator with problem config
     """
     method_name = stub_info.method_name
     
     # Check config for solve_mode
     solve_mode = getattr(config, 'solve_mode', 'placeholder')
     
+    if solve_mode == "tiered" and problem_id:
+        # Use tiered solve generator
+        result = generate_tiered_solve(stub_info, str(problem_id).zfill(4))
+        return TieredSolveResult(
+            solve_code=result.solve_code,
+            helper_code=result.helper_code,
+            tier=result.tier,
+        )
+    
     if solve_mode == "infer":
         # Use new solve_generator with IO schema inference
         io_schema = infer_io_schema(stub_info)
         result = generate_solve_function(stub_info, io_schema)
-        return result.code
+        return TieredSolveResult(solve_code=result.code)
     
     # Default: placeholder mode (backwards compatible)
     param_names = [name for name, _ in stub_info.params]
@@ -224,7 +252,7 @@ def _generate_solve_function(
         parse_comment = "# No parameters to parse"
         call_code = f"# result = solver.{method_name}()"
     
-    return assemble_solve_function(
+    solve_code = assemble_solve_function(
         method_name=method_name,
         input_format="TODO: Define based on problem",
         example_input="TODO: Add example from problem description",
@@ -232,6 +260,7 @@ def _generate_solve_function(
         call_code=call_code,
         output_format="# print(result)",
     )
+    return TieredSolveResult(solve_code=solve_code)
 
 
 def get_reference_path(problem_id: int, config: Optional[CodeGenConfig] = None) -> Path:
