@@ -13,22 +13,38 @@ Directory structure determines dependencies - no configuration needed.
 
 ---
 
+## Helper Classes Reference
+
+| Class | Description | Example Problems |
+|-------|-------------|------------------|
+| **ListNode** | Singly linked list | 2, 19, 21, 23, 24, 25, 61, 82, 83, 86, 92, 141, 142, 143, 146, 160, 203, 206, 234, 237, 328, 445, 725, 876 |
+| **TreeNode** | Binary tree | 94, 98, 100, 101, 102, 103, 104, 105, 108, 110, 111, 112, 114, 124, 144, 145, 199, 226, 230, 235, 236, 257, 297, 543, 572 |
+| **Node** | Random pointer list | 138 (Copy List with Random Pointer) |
+| **NodeGraph** | Graph with neighbors | 133 (Clone Graph), 207, 210, 261, 323, 399, 547 |
+| **NodeNary** | N-ary tree | 429 (N-ary Tree Level Order), 559 (Max Depth of N-ary Tree), 589, 590 |
+| **DoublyListNode** | Doubly linked list | 430 (Flatten Multilevel DLL), 146 (LRU Cache internal) |
+
+---
+
 ## Directory Structure
 
 ```
 packages/codegen/core/catalog/
-├── __init__.py                      # API (~40 lines)
+├── __init__.py                      # API (~120 lines)
 └── templates/
     ├── classes/                     # Base types (no dependencies)
     │   ├── ListNode.py
     │   ├── TreeNode.py
-    │   └── Node.py
+    │   ├── Node.py                  # Random pointer
+    │   ├── NodeGraph.py             # Graph neighbors
+    │   ├── NodeNary.py              # N-ary tree
+    │   └── DoublyListNode.py
     └── functions/
-        ├── ListNode/                # Depends on ListNode
-        │   ├── struct/              # Tier-1 (value conversion)
+        ├── ListNode/
+        │   ├── struct/              # Tier-1
         │   │   ├── list_to_linkedlist.py
         │   │   └── linkedlist_to_list.py
-        │   └── semantic/            # Tier-1.5 (identity/semantic)
+        │   └── semantic/            # Tier-1.5
         │       ├── build_list_with_cycle.py
         │       ├── node_to_index.py
         │       └── build_intersecting_lists.py
@@ -36,11 +52,72 @@ packages/codegen/core/catalog/
         │   └── struct/
         │       ├── list_to_tree.py
         │       └── tree_to_list.py
-        └── Node/
-            └── semantic/
-                ├── build_random_pointer_list.py
-                └── encode_random_pointer_list.py
+        ├── Node/
+        │   └── semantic/
+        │       ├── build_random_pointer_list.py
+        │       └── encode_random_pointer_list.py
+        ├── NodeGraph/
+        │   └── struct/
+        │       ├── adjacency_to_graph.py
+        │       └── graph_to_adjacency.py
+        ├── NodeNary/
+        │   └── struct/
+        │       ├── list_to_nary_tree.py
+        │       └── nary_tree_to_list.py
+        └── DoublyListNode/
+            └── struct/
+                ├── list_to_doubly_linked.py
+                └── doubly_linked_to_list.py
 ```
+
+---
+
+## Helper Functions Reference
+
+### ListNode Functions
+
+| Function | Tier | Description |
+|----------|------|-------------|
+| `list_to_linkedlist` | 1 | `[1,2,3]` → LinkedList |
+| `linkedlist_to_list` | 1 | LinkedList → `[1,2,3]` |
+| `build_list_with_cycle` | 1.5 | Build list with cycle at pos |
+| `node_to_index` | 1.5 | Find node's index in array |
+| `build_intersecting_lists` | 1.5 | Build two intersecting lists |
+
+### TreeNode Functions
+
+| Function | Tier | Description |
+|----------|------|-------------|
+| `list_to_tree` | 1 | Level-order list → BinaryTree |
+| `tree_to_list` | 1 | BinaryTree → level-order list |
+
+### Node (Random Pointer) Functions
+
+| Function | Tier | Description |
+|----------|------|-------------|
+| `build_random_pointer_list` | 1.5 | `[[val, idx], ...]` → list with random pointers |
+| `encode_random_pointer_list` | 1.5 | List with random pointers → `[[val, idx], ...]` |
+
+### NodeGraph Functions
+
+| Function | Tier | Description |
+|----------|------|-------------|
+| `adjacency_to_graph` | 1 | Adjacency list → Graph nodes |
+| `graph_to_adjacency` | 1 | Graph nodes → adjacency list |
+
+### NodeNary Functions
+
+| Function | Tier | Description |
+|----------|------|-------------|
+| `list_to_nary_tree` | 1 | Level-order with nulls → N-ary tree |
+| `nary_tree_to_list` | 1 | N-ary tree → level-order with nulls |
+
+### DoublyListNode Functions
+
+| Function | Tier | Description |
+|----------|------|-------------|
+| `list_to_doubly_linked` | 1 | `[1,2,3]` → DoublyLinkedList |
+| `doubly_linked_to_list` | 1 | DoublyLinkedList → `[1,2,3]` |
 
 ---
 
