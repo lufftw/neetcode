@@ -1,5 +1,5 @@
 def tree_to_list(root: 'TreeNode') -> list:
-    """Convert Binary Tree to level-order list."""
+"""Convert Binary Tree to level-order list."""
     if not root:
         return []
     

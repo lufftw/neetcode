@@ -1,5 +1,5 @@
 def list_to_tree(lst: list) -> 'TreeNode':
-    """Convert level-order list to Binary Tree."""
+"""Convert level-order list to Binary Tree."""
     if not lst or lst[0] is None:
         return None
     

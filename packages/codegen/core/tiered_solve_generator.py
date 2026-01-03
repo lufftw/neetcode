@@ -26,6 +26,7 @@ class TieredSolveResult:
     """Result of tiered solve() generation."""
     solve_code: str
     helper_code: str  # Inline helpers (if codec_mode is inline)
+    codec_import: str  # Import statement for codec (if codec_mode is import)
     imports: Set[str]
     tier: str
     codec_mode: str
@@ -267,9 +268,26 @@ def generate_tiered_solve(
         
         helper_code = "\n\n\n".join(helper_parts)
     
+    # Generate codec import for import mode (include classes + functions)
+    codec_import = ""
+    if config.codec_mode == "import" and config.codec_hints:
+        from packages.codegen.core.catalog import deps
+        
+        # Collect all imports (functions + their class dependencies)
+        all_imports = set()
+        for hint in config.codec_hints:
+            all_imports.add(hint)
+            for dep in deps(hint):
+                all_imports.add(dep)
+        
+        # Sort: classes first (capitalized), then functions
+        sorted_imports = sorted(all_imports, key=lambda x: (not x[0].isupper(), x))
+        codec_import = f"from runner.utils.codec import {', '.join(sorted_imports)}"
+    
     return TieredSolveResult(
         solve_code=solve_code,
         helper_code=helper_code,
+        codec_import=codec_import,
         imports={"sys", "json"},
         tier=config.tier,
         codec_mode=config.codec_mode,

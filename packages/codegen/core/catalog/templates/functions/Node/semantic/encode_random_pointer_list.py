@@ -1,5 +1,5 @@
 def encode_random_pointer_list(head: 'Node') -> list:
-    """Encode linked list with random pointers to pairs format."""
+"""Encode linked list with random pointers to pairs format."""
     if not head:
         return []
     nodes = []

@@ -275,6 +275,90 @@ def list_configured_problems() -> List[str]:
     return list(config.get("problems", {}).keys())
 
 
+def _get_solutions_path() -> Path:
+    """Get path to solutions directory."""
+    current = Path.cwd()
+    markers = ["pyproject.toml", ".git", ".neetcode"]
+    
+    while current != current.parent:
+        solutions_path = current / "solutions"
+        if solutions_path.exists():
+            return solutions_path
+        for marker in markers:
+            if (current / marker).exists():
+                return current / "solutions"
+        current = current.parent
+    
+    return Path.cwd() / "solutions"
+
+
+def has_existing_solution(problem_id: str) -> bool:
+    """
+    Check if problem has an existing solution file.
+    
+    Auto-detects from filesystem: solutions/{id}_*.py
+    
+    Args:
+        problem_id: Problem ID (e.g., "0142" or "142")
+        
+    Returns:
+        True if solution file exists
+    """
+    normalized_id = problem_id.zfill(4) if problem_id.isdigit() else problem_id
+    solutions_path = _get_solutions_path()
+    
+    # Look for files matching {id}_*.py
+    pattern = f"{normalized_id}_*.py"
+    matches = list(solutions_path.glob(pattern))
+    
+    return len(matches) > 0
+
+
+def get_solution_path(problem_id: str) -> Optional[Path]:
+    """
+    Get the path to an existing solution file.
+    
+    Args:
+        problem_id: Problem ID
+        
+    Returns:
+        Path to solution file, or None if not found
+    """
+    normalized_id = problem_id.zfill(4) if problem_id.isdigit() else problem_id
+    solutions_path = _get_solutions_path()
+    
+    pattern = f"{normalized_id}_*.py"
+    matches = list(solutions_path.glob(pattern))
+    
+    return matches[0] if matches else None
+
+
+def get_problems_with_solutions() -> List[str]:
+    """
+    Get all problems that have existing solution files.
+    
+    Auto-detects from filesystem.
+    
+    Returns:
+        List of problem IDs (4-digit format)
+    """
+    solutions_path = _get_solutions_path()
+    
+    if not solutions_path.exists():
+        return []
+    
+    problem_ids = set()
+    for f in solutions_path.glob("0*.py"):
+        # Extract problem ID from filename like "0142_linked_list_cycle_ii.py"
+        name = f.stem
+        if "_" in name:
+            pid = name.split("_")[0]
+            if pid.isdigit():
+                problem_ids.add(pid)
+    
+    return sorted(problem_ids)
+
+
 def get_problems_by_tier(tier: Tier) -> List[str]:
     """
     Get all problems of a specific tier.

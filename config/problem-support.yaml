@@ -130,6 +130,7 @@ problems:
     tier: "1"
     io_format: list_to_list
     codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    has_solution: true  # Hand-written with 2 solutions (FastSlow, TwoPass)
 
   # === TreeNode Problems ===
   "0094":
@@ -246,6 +247,7 @@ problems:
     inline_reason: "Output is node identity (cycle entry), needs node_to_index adapter"
     io_format: list_with_pos_to_node_index
     codec_hints: [build_list_with_cycle, node_to_index]
+    has_solution: true  # CANONICAL INLINE EXAMPLE - 2 solutions (Floyd, HashSet)
     generators:
       random: false
       complexity: false

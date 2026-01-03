@@ -1,7 +1,7 @@
 def node_to_index(node, nodes: list) -> int:
     """
     Find index of a node in the nodes array.
-    
+        
     Returns:
         0-based index, or -1 if not found
     """

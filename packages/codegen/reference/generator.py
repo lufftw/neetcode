@@ -179,11 +179,16 @@ def _generate_skeleton_content(
         stub_info, config, problem_id=question.frontend_question_id
     )
     
-    # 9. Determine helper code
+    # 9. Determine helper code and imports
     if solve_result.helper_code:
-        # Tiered mode with inline helpers replaces all detected helpers
+        # Tiered inline mode: embed all codec functions (including classes)
         helpers_code = solve_result.helper_code
         helper_func_code = ""  # Tiered inline includes all needed functions
+    elif solve_result.codec_import:
+        # Tiered import mode: import everything from codec (classes + functions)
+        imports = imports.rstrip() + "\n" + solve_result.codec_import
+        helpers_code = ""  # Classes imported from codec, no local definition
+        helper_func_code = ""  # Functions imported from codec
     else:
         # Standard mode: use detected helper functions
         helper_func_code = emit_helper_functions(helper_functions, mode=helper_mode)
@@ -203,9 +208,10 @@ def _generate_skeleton_content(
 
 class TieredSolveResult:
     """Result from tiered solve generation."""
-    def __init__(self, solve_code: str, helper_code: str = "", tier: str = "0"):
+    def __init__(self, solve_code: str, helper_code: str = "", codec_import: str = "", tier: str = "0"):
         self.solve_code = solve_code
         self.helper_code = helper_code
+        self.codec_import = codec_import
         self.tier = tier
 
 
@@ -233,6 +239,7 @@ def _generate_solve_function(
         return TieredSolveResult(
             solve_code=result.solve_code,
             helper_code=result.helper_code,
+            codec_import=result.codec_import,
             tier=result.tier,
         )
     
