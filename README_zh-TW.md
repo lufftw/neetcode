@@ -257,6 +257,8 @@ scripts\new_problem.bat 1 --with-tests
 ./scripts/new_problem.sh 1 --with-tests
 ```
 
+📖 **指南**：[建立新題目（new_problem）](docs/guides/new-problem.md)（wrapper、旗標、tiered 行為）
+
 這會自動建立：
 - `solutions/0001_two_sum.py` — 你的解答檔案
 - `tests/0001_two_sum_1.in/.out` — 題目範例測資（使用 `--with-tests` 時）
@@ -265,14 +267,17 @@ scripts\new_problem.bat 1 --with-tests
 
 ```bash
 # 新旗標
-scripts\new_problem.bat 1 --solve-mode tiered  # 使用 tiered codec 生成 solve()
-scripts\new_problem.bat 1 --codec-mode import  # 使用 import 模式（預設）
-scripts\new_problem.bat 1 --codec-mode inline  # 內嵌 codec（適合需要可複製到 LeetCode 的情境）
+scripts\new_problem.bat 1 --solve-mode tiered  # 使用 tiered solve() + codec 生成
+scripts\new_problem.bat 1 --header-level minimal  # 較短的題目 header（選用）
+scripts\new_problem.bat 1 --codec-mode import  # 覆寫 tiered 生成的 codec 模式
+scripts\new_problem.bat 1 --codec-mode inline  # 覆寫 tiered 生成的 codec 模式（內嵌 codec）
 
 # 自動偵測（不需要指定 --solve-mode）
 scripts\new_problem.bat 104  # 樹 (Tree) 題 → 自動使用 tiered codec + solve()
 scripts\new_problem.bat 142  # 鏈結串列 cycle 題 → 自動使用 tiered codec + solve()
 ```
+
+📖 **指南**：[建立練習檔（new_practice）](docs/guides/new-practice.md)（由 reference 產生/更新 `practices/`）
 
 **更多 CodeGen 指令（選用）：**
 
@@ -1089,6 +1094,8 @@ scripts\build_docs.bat --serve  # Windows
 - [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code Tasks、Debug 配置、工作流程範例
 - [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
 - [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) — 生成器檔案規格（generate(), edge cases, complexity）
+- [`docs/guides/new-problem.md`](docs/guides/new-problem.md) — 如何建立新題目骨架（`new_problem`）
+- [`docs/guides/new-practice.md`](docs/guides/new-practice.md) — 如何產生/更新練習檔（`new_practice`）
 - [`docs/architecture/architecture-migration.md`](docs/architecture/architecture-migration.md) — 多型架構遷移指南
 
 **本地文件建置（選擇性）：**

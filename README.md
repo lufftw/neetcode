@@ -252,6 +252,8 @@ scripts\new_problem.bat 1 --with-tests
 ./scripts/new_problem.sh 1 --with-tests
 ```
 
+📖 **Guide**: [Create New Problem](docs/guides/new-problem.md) (wrapper + flags + tiered behavior)
+
 This creates:
 - `solutions/0001_two_sum.py` — Your solution file
 - `tests/0001_two_sum_1.in/.out` — Example-based tests (when `--with-tests`)
@@ -260,14 +262,17 @@ This creates:
 
 ```bash
 # New flags
-scripts\new_problem.bat 1 --solve-mode tiered  # Use tiered codec generation
-scripts\new_problem.bat 1 --codec-mode import  # Use import mode (default)
-scripts\new_problem.bat 1 --codec-mode inline  # Embed codec inline
+scripts\new_problem.bat 1 --solve-mode tiered  # Use tiered solve() + codec generation
+scripts\new_problem.bat 1 --header-level minimal  # Shorter header (optional)
+scripts\new_problem.bat 1 --codec-mode import  # Override codec mode for tiered generation
+scripts\new_problem.bat 1 --codec-mode inline  # Override codec mode for tiered generation (embed codec)
 
 # Auto-detect (no need to specify --solve-mode)
 scripts\new_problem.bat 104  # Tree problems → auto tiered codec + solve()
 scripts\new_problem.bat 142  # Linked list cycle problems → auto tiered codec + solve()
 ```
+
+📖 **Guide**: [Create Practice File](docs/guides/new-practice.md) (generate/refresh `practices/` from reference)
 
 **More CodeGen commands (optional):**
 
@@ -1099,6 +1104,8 @@ If you want to test the exact GitHub Actions workflow locally, you can use `act`
 - [`docs/contracts/codec.md`](docs/contracts/codec.md) — Codec contract (import/inline helpers, semantics)
 - [`docs/contracts/problem-support-boundary.md`](docs/contracts/problem-support-boundary.md) — Problem support boundary & hard rules
 - [`docs/packages/codegen/README.md`](docs/packages/codegen/README.md) — CodeGen reference (new/practice/check/migrate)
+- [`docs/guides/new-problem.md`](docs/guides/new-problem.md) — How to create a new problem skeleton (`new_problem`)
+- [`docs/guides/new-practice.md`](docs/guides/new-practice.md) — How to generate/refresh practice files (`new_practice`)
 - [`docs/runner/README.md`](docs/runner/README.md) — Test runner spec (CLI options, memory profiling, output format)
 - [`docs/architecture/architecture-migration.md`](docs/architecture/architecture-migration.md) — Polymorphic architecture migration guide
 

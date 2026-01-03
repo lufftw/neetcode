@@ -56,6 +56,11 @@ def create_parser() -> argparse.ArgumentParser:
         help="solve() generation mode: placeholder (TODO), infer (auto), tiered (config-based)",
     )
     new_parser.add_argument(
+        "--codec-mode",
+        choices=["import", "inline"],
+        help="Override codec mode for tiered solve generation (default: from config/problem-support.yaml)",
+    )
+    new_parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Only print content, don't write file",
@@ -192,6 +197,7 @@ def cmd_new(args: argparse.Namespace) -> int:
         config=config,
         dry_run=args.dry_run,
         header_level=args.header_level,
+        codec_mode_override=args.codec_mode,
     )
     
     if args.dry_run and result.content:

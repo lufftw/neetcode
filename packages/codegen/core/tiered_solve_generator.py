@@ -193,6 +193,7 @@ def generate_tiered_solve(
     stub_info: StubInfo,
     problem_id: str,
     io_schema: IOSchema = None,
+    codec_mode_override: Optional[str] = None,
 ) -> TieredSolveResult:
     """
     Generate solve() function for Tier-1/1.5 problems.
@@ -208,8 +209,10 @@ def generate_tiered_solve(
     if io_schema is None:
         io_schema = infer_io_schema(stub_info)
     
-    # Load problem config
+    # Load problem config (then apply optional CLI override)
     config = load_problem_config(problem_id)
+    if codec_mode_override in ("import", "inline"):
+        config.codec_mode = codec_mode_override
     
     # Generate parse and output code
     parse_code, call_params = _generate_parse_code(io_schema.params, config)

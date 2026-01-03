@@ -1,15 +1,15 @@
-# Create Practice File (`new_practice.bat`)
+# Create Practice File (`new_practice`)
 
 > **Status**: Informational  
-> **Scope**: Creating practice skeleton files in `practices/` via `scripts/new_practice.bat` (Windows)  
+> **Scope**: Creating practice skeleton files in `practices/` via `scripts/new_practice.bat` / `scripts/new_practice.sh`  
 > **Last Updated**: {{ git_revision_date_localized }}  
 > **Created**: {{ git_creation_date_localized }}
 
-`scripts/new_practice.bat` is a **thin wrapper** around CodeGen:
+`scripts/new_practice.bat` / `scripts/new_practice.sh` are **thin wrappers** around CodeGen:
 
-- It runs `python -m packages.codegen practice ...`
-- It forwards all arguments as-is
-- It returns the same exit code as CodeGen
+- They run `python -m packages.codegen practice ...`
+- They forward all arguments as-is
+- They return the same exit code as CodeGen
 
 Source: [`scripts/new_practice.bat`](https://github.com/lufftw/neetcode/blob/main/scripts/new_practice.bat)
 
@@ -28,12 +28,20 @@ If the practice file already exists (and you are **not** using `--dry-run`), it 
 
 ---
 
-## Usage (Windows)
+## Usage
 
-Run from the repository root:
+Run from the repository root.
+
+### Windows
 
 ```bash
 .\scripts\new_practice.bat <problem_id> [--all-solutions] [--dry-run]
+```
+
+### Linux / macOS
+
+```bash
+./scripts/new_practice.sh <problem_id> [--all-solutions] [--dry-run]
 ```
 
 Equivalent direct command (same behavior):

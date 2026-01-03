@@ -115,11 +115,11 @@ plugins:
       show_author: true        # Show author: true(avatar) text(text) false(hidden), default: true
       locale: en               # Language: en
   - mindmaps-lastmod
-  # - privacy:
-  #     links: true
-  #     links_attr_map:
-  #       target: _blank
-  #     links_noopener: true
+  - privacy:
+      links: true
+      links_attr_map:
+        target: _blank
+      links_noopener: true
 
 # Navigation
 nav:
@@ -159,7 +159,8 @@ nav:
     - Build Docs Locally: guides/build-docs-manual.md
     - Local Docs Build Options: guides/local-docs-build.md
     - Run GitHub Actions Locally: guides/act-local-github-actions.md
-    - Create Practice File (Windows): guides/new-practice.md
+    - Create New Problem: guides/new-problem.md
+    - Create Practice File: guides/new-practice.md
     - MkDocs Content Guide: guides/mkdocs-content-guide.md
   - 📚 Reference:
     - Solution Contract: contracts/solution-contract.md

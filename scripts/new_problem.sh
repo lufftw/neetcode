@@ -8,8 +8,8 @@
 #    ./new_problem.sh 1 --with-tests         Also generate test files
 #    ./new_problem.sh 1 --solve-mode infer   Auto-generate solve()
 #    ./new_problem.sh 1 --solve-mode tiered  Use tiered codec generation
-#    ./new_problem.sh 1 --codec-mode import  Use import mode (default)
-#    ./new_problem.sh 1 --codec-mode inline  Embed codec inline
+#    ./new_problem.sh 1 --codec-mode import  Override codec mode for tiered generation
+#    ./new_problem.sh 1 --codec-mode inline  Override codec mode for tiered generation (embed codec)
 #    ./new_problem.sh 1 --dry-run            Preview without writing
 #  
 #  Tiered Problem Generation:

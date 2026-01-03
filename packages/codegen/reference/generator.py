@@ -56,6 +56,7 @@ def generate_reference_skeleton(
     config: Optional[CodeGenConfig] = None,
     dry_run: bool = False,
     header_level: Optional[HeaderLevel] = None,
+    codec_mode_override: Optional[str] = None,
 ) -> ReferenceGenerationResult:
     """
     Generate reference skeleton for a LeetCode problem.
@@ -107,7 +108,7 @@ def generate_reference_skeleton(
         )
     
     # Generate skeleton content
-    content = _generate_skeleton_content(question, config)
+    content = _generate_skeleton_content(question, config, codec_mode_override=codec_mode_override)
     
     if dry_run:
         return ReferenceGenerationResult(
@@ -139,6 +140,7 @@ def generate_reference_skeleton(
 def _generate_skeleton_content(
     question: Question,
     config: CodeGenConfig,
+    codec_mode_override: Optional[str] = None,
 ) -> str:
     """Generate the skeleton file content."""
     
@@ -177,7 +179,7 @@ def _generate_skeleton_content(
     
     # 8. Generate solve() function (with potential tiered helpers)
     solve_result = _generate_solve_function(
-        stub_info, config, problem_id=question.frontend_question_id
+        stub_info, config, problem_id=question.frontend_question_id, codec_mode_override=codec_mode_override
     )
     
     # 9. Determine helper code and imports
@@ -220,6 +222,7 @@ def _generate_solve_function(
     stub_info,
     config: CodeGenConfig,
     problem_id: int = None,
+    codec_mode_override: Optional[str] = None,
 ) -> TieredSolveResult:
     """
     Generate the solve() function based on config.
@@ -242,7 +245,11 @@ def _generate_solve_function(
             tier = get_tier(str(problem_id).zfill(4))
             if tier in ("1", "1.5"):
                 # Auto-use tiered mode for Tier-1/1.5 problems
-                result = generate_tiered_solve(stub_info, str(problem_id).zfill(4))
+                result = generate_tiered_solve(
+                    stub_info,
+                    str(problem_id).zfill(4),
+                    codec_mode_override=codec_mode_override,
+                )
                 return TieredSolveResult(
                     solve_code=result.solve_code,
                     helper_code=result.helper_code,
@@ -258,7 +265,11 @@ def _generate_solve_function(
     
     if solve_mode == "tiered" and problem_id:
         # Use tiered solve generator
-        result = generate_tiered_solve(stub_info, str(problem_id).zfill(4))
+        result = generate_tiered_solve(
+            stub_info,
+            str(problem_id).zfill(4),
+            codec_mode_override=codec_mode_override,
+        )
         return TieredSolveResult(
             solve_code=result.solve_code,
             helper_code=result.helper_code,
