@@ -561,49 +561,44 @@ if __name__ == "__main__":
 Compare multiple approaches for the same problem using the **polymorphic pattern**:
 
 ```python
-# solutions/0023_merge_k_sorted_lists.py
+# solutions/0215_kth_largest_element_in_an_array.py
 from _runner import get_solver
 
 SOLUTIONS = {
     "default": {
+        "class": "SolutionQuickselect",
+        "method": "findKthLargest",
+        "complexity": "O(n) average time, O(1) space",
+        "description": "Quickselect algorithm with random pivot",
+    },
+    "quickselect": {
+        "class": "SolutionQuickselect",
+        "method": "findKthLargest",
+        "complexity": "O(n) average time, O(1) space",
+        "description": "Quickselect algorithm with random pivot",
+    },
+    "heap": {
         "class": "SolutionHeap",
-        "method": "mergeKLists",
-        "complexity": "O(N log k)",
-        "description": "Min Heap approach"
-    },
-    "divide": {
-        "class": "SolutionDivideConquer",
-        "method": "mergeKLists",
-        "complexity": "O(N log k)",
-        "description": "Divide and Conquer"
-    },
-    "greedy": {
-        "class": "SolutionGreedy",
-        "method": "mergeKLists",
-        "complexity": "O(kN)",
-        "description": "Greedy comparison"
+        "method": "findKthLargest",
+        "complexity": "O(n log k) time, O(k) space",
+        "description": "Min-heap of size k",
     },
 }
 
+class SolutionQuickselect:
+    def findKthLargest(self, nums, k):
+        # Quickselect implementation
+        pass
+
 class SolutionHeap:
-    def mergeKLists(self, lists):
+    def findKthLargest(self, nums, k):
         # Heap implementation
-        pass
-
-class SolutionDivideConquer:
-    def mergeKLists(self, lists):
-        # Divide & Conquer implementation
-        pass
-
-class SolutionGreedy:
-    def mergeKLists(self, lists):
-        # Greedy implementation
         pass
 
 def solve():
     # ... parse input ...
     solver = get_solver(SOLUTIONS)
-    result = solver.mergeKLists(lists)
+    result = solver.findKthLargest(nums, k)
     print(result)
 ```
 
@@ -611,27 +606,39 @@ def solve():
 
 ```bash
 # Run specific solution
-python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
+python runner/test_runner.py 0215_kth_largest_element_in_an_array --method heap
 
 # Compare all solutions
-python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
+python runner/test_runner.py 0215_kth_largest_element_in_an_array --all --benchmark
 ```
 
 **Output:**
 
-```
-============================================================
-📊 Performance Comparison
-============================================================
-Method               Avg Time     Complexity      Pass Rate
-------------------------------------------------------------
-heap                    44.36ms   O(N log k)      3/3
-divide                  44.48ms   O(N log k)      3/3
-greedy                  44.82ms   O(kN)           3/3
-============================================================
+```text
+   ╔════════════════════════════════════════════════════╗
+   ║ 0215_kth_largest_element_in_an_array - Performance ║
+   ╠════════════════════════════════════════════════════╣
+   ║ default:     ████████████████░░░░  166ms           ║
+   ║ quickselect: █████████████████░░░  170ms           ║
+   ║ heap:        ████████████████████  224ms           ║
+   ╚════════════════════════════════════════════════════╝
+
+======================================================================
+Performance Comparison (Details)
+======================================================================
+
+Method         Avg Time   Pass Rate  Complexity    Peak RSS     P95 RSS
+-----------  ----------  ----------  --------------------  ----------  ----------
+default        166.01ms         3/3  O(n) average time, O(1) space       4.2MB       4.2MB
+quickselect    170.13ms         3/3  O(n) average time, O(1) space       4.2MB       4.2MB
+heap           224.22ms         3/3  O(n log k) time, O(k) space       4.2MB       4.2MB
+
+======================================================================
 ```
 
-Create with template: `scripts\new_problem.bat 0023_merge_k_lists --multi`
+> **Note:** The `Complexity` column is **declared metadata** from `SOLUTIONS`. If you want empirical estimation, use `--estimate` (requires `big-O` + `generate_for_complexity(n)`).
+
+Create with: `scripts\new_problem.bat 215` (then add more entries to `SOLUTIONS` if you want multiple approaches).
 
 > 📖 See [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md#solutions-metadata) for complete SOLUTIONS schema and validation rules.
 
