@@ -188,12 +188,24 @@ def _extract_with_regex(content: str, result: ExtractedInfrastructure) -> Extrac
     return result
 
 
-def clear_solution_body(solution_code: str) -> str:
+def clear_solution_body(
+    solution_code: str,
+    rename_to_solution: bool = True,
+) -> str:
     """
-    Clear the body of a Solution class, keeping only signature.
+    Clear the body of a Solution class, keeping only LeetCode-style methods.
+    
+    Keeps:
+      - __init__ (for design problems like LRU Cache, MinStack)
+      - All public methods (not starting with _)
+    
+    Removes:
+      - Private helper methods (starting with single _, like _mergeTwoLists)
+      - Other dunder methods (except __init__)
     
     Args:
         solution_code: Complete Solution class code
+        rename_to_solution: If True, rename class to "Solution" (LeetCode style)
         
     Returns:
         Solution class with cleared body (TODO placeholder)
@@ -201,19 +213,30 @@ def clear_solution_body(solution_code: str) -> str:
     try:
         tree = ast.parse(solution_code)
     except SyntaxError:
-        return _clear_body_regex(solution_code)
+        return _clear_body_regex(solution_code, rename_to_solution)
     
     lines = solution_code.split("\n")
     result_lines = []
     
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
-            # Keep class definition line
+            # Keep class definition line, optionally rename to "Solution"
             class_line = lines[node.lineno - 1]
+            if rename_to_solution and node.name.startswith("Solution"):
+                class_line = re.sub(r'class\s+Solution\w*', 'class Solution', class_line)
             result_lines.append(class_line)
             
             for item in node.body:
                 if isinstance(item, ast.FunctionDef):
+                    method_name = item.name
+                    
+                    # Keep: __init__ (design problems) + public methods
+                    # Skip: private helpers (_method) and other dunders (__str__ etc.)
+                    if method_name == "__init__":
+                        pass  # Keep __init__ for design problems
+                    elif method_name.startswith("_"):
+                        continue  # Skip private helpers and other dunders
+                    
                     # Get method signature
                     sig_line = lines[item.lineno - 1]
                     result_lines.append(sig_line)
@@ -224,21 +247,32 @@ def clear_solution_body(solution_code: str) -> str:
     return "\n".join(result_lines).rstrip()
 
 
-def _clear_body_regex(solution_code: str) -> str:
+def _clear_body_regex(
+    solution_code: str,
+    rename_to_solution: bool = True,
+) -> str:
     """Regex fallback for clearing solution body."""
-    # Find method signature and replace body
-    pattern = r'(def \w+\(self[^)]*\)[^:]*:)\s*(?:"""[\s\S]*?""")?[\s\S]*?(?=\n    def |\nclass |\Z)'
+    result = solution_code
+    
+    # Optionally rename class to "Solution"
+    if rename_to_solution:
+        result = re.sub(r'class\s+Solution\w*', 'class Solution', result)
+    
+    # Keep __init__ and public methods, skip private helpers (_method)
+    # Pattern matches: __init__ OR public methods (not starting with _)
+    pattern = r'(def\s+(?:__init__|(?!_)\w+)\(self[^)]*\)[^:]*:)\s*(?:"""[\s\S]*?""")?[\s\S]*?(?=\n    def |\nclass |\Z)'
     
     def replacer(match):
         sig = match.group(1)
         return f"{sig}\n        # TODO: Implement your solution\n        pass\n"
     
-    return re.sub(pattern, replacer, solution_code)
+    return re.sub(pattern, replacer, result)
 
 
 def transform_solutions_dict_for_practice(
     solutions_dict_raw: str,
     mode: str = "single",
+    leetcode_style: bool = True,
 ) -> str:
     """
     Transform SOLUTIONS dict for practice file.
@@ -246,6 +280,7 @@ def transform_solutions_dict_for_practice(
     Args:
         solutions_dict_raw: Original SOLUTIONS dictionary string
         mode: "single" (only default) or "all" (keep all entries)
+        leetcode_style: If True, rename class to "Solution" (LeetCode style)
         
     Returns:
         Transformed SOLUTIONS dict with cleared complexity/description
@@ -265,10 +300,12 @@ def transform_solutions_dict_for_practice(
             default_entry = solutions.get("default", {})
             solutions = {"default": default_entry}
         
-        # Clear complexity and description
+        # Clear complexity and description, optionally rename class
         for key, entry in solutions.items():
             entry["complexity"] = "TODO: O(?)"
             entry["description"] = "TODO: describe your approach"
+            if leetcode_style:
+                entry["class"] = "Solution"
         
         # Format back to string
         lines = [
@@ -303,12 +340,19 @@ def transform_solutions_dict_for_practice(
             '"description": "TODO: describe your approach"',
             result
         )
+        if leetcode_style:
+            result = re.sub(
+                r'"class":\s*"Solution\w*"',
+                '"class": "Solution"',
+                result
+            )
         return result
 
 
 def get_solution_classes_for_practice(
     infrastructure: ExtractedInfrastructure,
     mode: str = "single",
+    leetcode_style: bool = True,
 ) -> str:
     """
     Get Solution class(es) for practice file.
@@ -316,24 +360,99 @@ def get_solution_classes_for_practice(
     Args:
         infrastructure: Extracted infrastructure
         mode: "single" or "all"
+        leetcode_style: If True, rename class to "Solution" (LeetCode style)
         
     Returns:
-        Solution class(es) with cleared bodies
+        Solution class(es) with cleared bodies (only public methods + __init__)
     """
     if mode == "single":
-        # Only include "Solution" (default class)
+        # Get the class name from SOLUTIONS["default"]["class"]
+        default_class = _get_default_class_name(infrastructure.solutions_dict_raw)
+        
+        if default_class and default_class in infrastructure.solution_classes:
+            return clear_solution_body(
+                infrastructure.solution_classes[default_class],
+                rename_to_solution=leetcode_style,
+            )
+        
+        # Fallback: try "Solution" (generic name)
         if "Solution" in infrastructure.solution_classes:
-            return clear_solution_body(infrastructure.solution_classes["Solution"])
-        # Fallback to first available
+            return clear_solution_body(
+                infrastructure.solution_classes["Solution"],
+                rename_to_solution=leetcode_style,
+            )
+        
+        # Last resort: first available
         if infrastructure.solution_classes:
             first_name = sorted(infrastructure.solution_classes.keys())[0]
-            return clear_solution_body(infrastructure.solution_classes[first_name])
+            return clear_solution_body(
+                infrastructure.solution_classes[first_name],
+                rename_to_solution=leetcode_style,
+            )
         return ""
     
-    # "all" mode - include all Solution classes
+    # "all" mode - include all Solution classes (keep original names)
     cleared = []
     for name in sorted(infrastructure.solution_classes.keys()):
-        cleared.append(clear_solution_body(infrastructure.solution_classes[name]))
+        cleared.append(clear_solution_body(
+            infrastructure.solution_classes[name],
+            rename_to_solution=False,  # Keep original names in "all" mode
+        ))
     
     return "\n\n".join(cleared)
+
+
+def _get_default_class_name(solutions_dict_raw: str) -> Optional[str]:
+    """
+    Extract the class name from SOLUTIONS["default"]["class"].
+    
+    Args:
+        solutions_dict_raw: Raw SOLUTIONS dictionary string
+        
+    Returns:
+        Class name or None if not found
+    """
+    return _get_default_field(solutions_dict_raw, "class")
+
+
+def _get_default_method_name(solutions_dict_raw: str) -> Optional[str]:
+    """
+    Extract the method name from SOLUTIONS["default"]["method"].
+    
+    Args:
+        solutions_dict_raw: Raw SOLUTIONS dictionary string
+        
+    Returns:
+        Method name or None if not found
+    """
+    return _get_default_field(solutions_dict_raw, "method")
+
+
+def _get_default_field(solutions_dict_raw: str, field: str) -> Optional[str]:
+    """
+    Extract a field value from SOLUTIONS["default"].
+    
+    Args:
+        solutions_dict_raw: Raw SOLUTIONS dictionary string
+        field: Field name to extract ("class" or "method")
+        
+    Returns:
+        Field value or None if not found
+    """
+    try:
+        match = re.search(r'SOLUTIONS\s*=\s*(\{[\s\S]*\})', solutions_dict_raw)
+        if not match:
+            return None
+        
+        dict_str = match.group(1)
+        solutions = ast.literal_eval(dict_str)
+        
+        default_entry = solutions.get("default", {})
+        return default_entry.get(field)
+    except (ValueError, SyntaxError):
+        # Regex fallback
+        match = re.search(rf'"default"[^}}]*"{field}"\s*:\s*"([^"]+)"', solutions_dict_raw)
+        if match:
+            return match.group(1)
+        return None
 

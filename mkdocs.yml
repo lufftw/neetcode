@@ -115,11 +115,11 @@ plugins:
       show_author: true        # Show author: true(avatar) text(text) false(hidden), default: true
       locale: en               # Language: en
   - mindmaps-lastmod
-  # - privacy:
-  #     links: true
-  #     links_attr_map:
-  #       target: _blank
-  #     links_noopener: true
+  - privacy:
+      links: true
+      links_attr_map:
+        target: _blank
+      links_noopener: true
 
 # Navigation
 nav:
@@ -159,10 +159,15 @@ nav:
     - Build Docs Locally: guides/build-docs-manual.md
     - Local Docs Build Options: guides/local-docs-build.md
     - Run GitHub Actions Locally: guides/act-local-github-actions.md
+    - Create New Problem: guides/new-problem.md
+    - Create Practice File: guides/new-practice.md
     - MkDocs Content Guide: guides/mkdocs-content-guide.md
   - 📚 Reference:
     - Solution Contract: contracts/solution-contract.md
     - Generator Contract: contracts/generator-contract.md
+    - Test File Format: contracts/test-file-format.md
+    - Codec Contract: contracts/codec.md
+    - Problem Support Boundary: contracts/problem-support-boundary.md
     - Documentation Header Spec: contracts/documentation-header-spec.md
     - Ontology Design: reference/ontology-design.md
   - 🏗️ Architecture:
@@ -185,6 +190,7 @@ nav:
     - Overview: contributors/README.md
     - Testing Documentation: contributors/testing.md
     - Documentation Architecture: contributors/documentation-architecture.md
+    - Documentation Naming: contributors/documentation-naming.md
     - Package Documentation Strategy: contributors/package-documentation-strategy.md
     - Docs Directory Organization: contributors/docs-directory-organization.md
     - Virtual Environment Setup: contributors/virtual-env-setup.md

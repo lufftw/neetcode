@@ -249,16 +249,49 @@ chmod +x scripts/run_tests.sh scripts/run_case.sh scripts/new_problem.sh
 
 ```bash
 # Windows
-scripts\new_problem.bat 0001_two_sum
+scripts\new_problem.bat 1
+scripts\new_problem.bat 1 --with-tests
 
 # Linux/macOS
-./scripts/new_problem.sh 0001_two_sum
+./scripts/new_problem.sh 1
+./scripts/new_problem.sh 1 --with-tests
 ```
+
+📖 **指南**：[建立新題目（new_problem）](docs/guides/new-problem.md)（wrapper、旗標、tiered 行為）
 
 這會自動建立：
 - `solutions/0001_two_sum.py` — 你的解答檔案
-- `tests/0001_two_sum_1.in` — 測試輸入
-- `tests/0001_two_sum_1.out` — 預期輸出
+- `tests/0001_two_sum_1.in/.out` — 題目範例測資（使用 `--with-tests` 時）
+
+**新選項：**
+
+```bash
+# 新旗標
+scripts\new_problem.bat 1 --solve-mode tiered  # 使用 tiered solve() + codec 生成
+scripts\new_problem.bat 1 --header-level minimal  # 較短的題目 header（選用）
+scripts\new_problem.bat 1 --codec-mode import  # 覆寫 tiered 生成的 codec 模式
+scripts\new_problem.bat 1 --codec-mode inline  # 覆寫 tiered 生成的 codec 模式（內嵌 codec）
+
+# 自動偵測（不需要指定 --solve-mode）
+scripts\new_problem.bat 104  # 樹 (Tree) 題 → 自動使用 tiered codec + solve()
+scripts\new_problem.bat 142  # 鏈結串列 cycle 題 → 自動使用 tiered codec + solve()
+```
+
+📖 **指南**：[建立練習檔（new_practice）](docs/guides/new-practice.md)（由 reference 產生/更新 `practices/`）
+
+**更多 CodeGen 指令（選用）：**
+
+```bash
+# 檢查現有測資是否與 LeetCode 範例一致
+python -m packages.codegen check 1
+python -m packages.codegen check --all --limit 10
+
+# 遷移測資到 canonical JSON-literal 格式（先預覽）
+python -m packages.codegen migrate 1 --dry-run
+python -m packages.codegen migrate --all --dry-run
+```
+
+> 📖 完整參考：[`docs/packages/codegen/README.md`](docs/packages/codegen/README.md)
 
 ### 3. 執行測試
 
@@ -285,6 +318,9 @@ scripts\run_tests.bat 0001_two_sum
 | 功能 | 說明 |
 |:-----|:-----|
 | 🧪 **測試與驗證引擎** | ⭐ **核心功能** — 自動化測試、效能基準測試、隨機測資生成、複雜度估算。詳見 [測試與驗證指南](docs/runner/README.md) |
+| 🧰 **一鍵建立題目骨架（CodeGen）** | 只要輸入 LeetCode 題號，就能產生完整題目骨架：`solutions/*.py` +（可選）題目範例測資 `tests/*.in/.out` + 自動生成 `solve()`。遇到需要**複雜 I/O 轉換**的題型（例如樹、鏈結串列、cycle），可自動偵測並用 `--solve-mode tiered` 生成 codec-based `solve()`。詳見 [CodeGen 文件](docs/packages/codegen/README.md)。 |
+| 🧾 **Canonical 測資契約 + 自動遷移** | 測資採用 **JSON literal、每行一個值**（diff 友善、機器穩定）。內建 `check`（與 LeetCode 範例一致性檢查）與 `migrate`（自動轉換既有測資）。詳見 [`docs/contracts/test-file-format.md`](docs/contracts/test-file-format.md)。 |
+| 🧠 **記憶體剖析（選用）** | Runner 可顯示各方法的 **memory trace / ranking**（`--memory-trace`, `--trace-compare`, `--memory-per-case`），需安裝選用套件。詳見 [Runner 規格](docs/runner/README.md)。 |
 | 🤖 **AI 本體論分析** | AI 驅動的知識圖譜合成 — 發現人類遺漏的模式關聯 |
 | 🎲 **隨機測資生成** | 帶 Seed 確保可重現，支援 1000+ 筆壓力測試，自動儲存失敗測資 |
 | ⚖️ **自訂 Judge 函式** | 驗證多個正確答案，ICPC 風格驗證，可不需要預期輸出 |
@@ -359,8 +395,8 @@ scripts\run_tests.bat 0001_two_sum
 
 | 類型 | 輸出路徑 |
 |:-----|:---------|
-| **Evolved** | `docs/mindmaps/neetcode_ontology_agent_evolved_{lang}.md` |
-| **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
+| **Evolved（Markdown）** | `docs/mindmaps/neetcode-ontology-agent-evolved-{lang}.md`（`{lang}` = `en` 或 `zh-tw`） |
+| **Basic（Markdown）** | `docs/mindmaps/neetcode-ontology-ai-{lang}.md`（`{lang}` = `en` 或 `zh-tw`） |
 | **HTML** | `docs/pages/mindmaps/*.html` |
 
 > 📖 **Evolved Agent**：詳見 [`tools/mindmaps/ai-markmap-agent/README.md`](docs/tools/mindmaps/ai-markmap-agent/README.md) 了解架構、專家角色與配置。
@@ -442,6 +478,19 @@ python runner/test_runner.py <problem_name> --generate 10
 
 # 估算時間複雜度
 python runner/test_runner.py <problem_name> --estimate
+
+# 記憶體剖析（選用）
+python runner/test_runner.py <problem_name> --memory-trace
+python runner/test_runner.py <problem_name> --all --trace-compare
+
+# 儲存失敗的生成測資以便重現
+python runner/test_runner.py <problem_name> --generate 100 --seed 12345 --save-failed
+```
+
+**Runner 選用套件（啟用額外功能）：**
+
+```bash
+pip install big-O psutil sparklines tabulate
 ```
 
 ### 📝 解答檔案格式
@@ -472,16 +521,17 @@ class Solution:
 
 def solve():
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
-    # 解析輸入
-    nums = list(map(int, lines[0].split(',')))
-    target = int(lines[1])
+    # 解析輸入（canonical 格式：JSON literal，每行一個值）
+    nums = json.loads(lines[0])
+    target = json.loads(lines[1])
     
     # 執行解答（多型派發）
     solver = get_solver(SOLUTIONS)
     result = solver.twoSum(nums, target)
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 if __name__ == "__main__":
     solve()
@@ -500,14 +550,16 @@ if __name__ == "__main__":
 
 **輸入檔**（`tests/0001_two_sum_1.in`）：
 ```
-2,7,11,15
+[2,7,11,15]
 9
 ```
 
 **輸出檔**（`tests/0001_two_sum_1.out`）：
 ```
-[0, 1]
+[0,1]
 ```
+
+> 📖 完整契約：[`docs/contracts/test-file-format.md`](docs/contracts/test-file-format.md)
 
 ---
 
@@ -518,49 +570,44 @@ if __name__ == "__main__":
 使用**多型模式**比較同一題目的多種解法：
 
 ```python
-# solutions/0023_merge_k_sorted_lists.py
+# solutions/0215_kth_largest_element_in_an_array.py
 from _runner import get_solver
 
 SOLUTIONS = {
     "default": {
+        "class": "SolutionQuickselect",
+        "method": "findKthLargest",
+        "complexity": "O(n) average time, O(1) space",
+        "description": "Quickselect algorithm with random pivot",
+    },
+    "quickselect": {
+        "class": "SolutionQuickselect",
+        "method": "findKthLargest",
+        "complexity": "O(n) average time, O(1) space",
+        "description": "Quickselect algorithm with random pivot",
+    },
+    "heap": {
         "class": "SolutionHeap",
-        "method": "mergeKLists",
-        "complexity": "O(N log k)",
-        "description": "最小堆方法"
-    },
-    "divide": {
-        "class": "SolutionDivideConquer",
-        "method": "mergeKLists",
-        "complexity": "O(N log k)",
-        "description": "分治法"
-    },
-    "greedy": {
-        "class": "SolutionGreedy",
-        "method": "mergeKLists",
-        "complexity": "O(kN)",
-        "description": "貪婪比較"
+        "method": "findKthLargest",
+        "complexity": "O(n log k) time, O(k) space",
+        "description": "Min-heap of size k",
     },
 }
 
+class SolutionQuickselect:
+    def findKthLargest(self, nums, k):
+        # Quickselect 實作
+        pass
+
 class SolutionHeap:
-    def mergeKLists(self, lists):
+    def findKthLargest(self, nums, k):
         # 堆實作
-        pass
-
-class SolutionDivideConquer:
-    def mergeKLists(self, lists):
-        # 分治實作
-        pass
-
-class SolutionGreedy:
-    def mergeKLists(self, lists):
-        # 貪婪實作
         pass
 
 def solve():
     # ... 解析輸入 ...
     solver = get_solver(SOLUTIONS)
-    result = solver.mergeKLists(lists)
+    result = solver.findKthLargest(nums, k)
     print(result)
 ```
 
@@ -568,27 +615,39 @@ def solve():
 
 ```bash
 # 執行特定解法
-python runner/test_runner.py 0023_merge_k_sorted_lists --method heap
+python runner/test_runner.py 0215_kth_largest_element_in_an_array --method heap
 
 # 比較所有解法
-python runner/test_runner.py 0023_merge_k_sorted_lists --all --benchmark
+python runner/test_runner.py 0215_kth_largest_element_in_an_array --all --benchmark
 ```
 
 **輸出：**
 
-```
-============================================================
-📊 效能比較
-============================================================
-Method               Avg Time     Complexity      Pass Rate
-------------------------------------------------------------
-heap                    44.36ms   O(N log k)      3/3
-divide                  44.48ms   O(N log k)      3/3
-greedy                  44.82ms   O(kN)           3/3
-============================================================
+```text
+   ╔════════════════════════════════════════════════════╗
+   ║ 0215_kth_largest_element_in_an_array - Performance ║
+   ╠════════════════════════════════════════════════════╣
+   ║ default:     ███████████████████░  170ms           ║
+   ║ quickselect: ███████████████████░  167ms           ║
+   ║ heap:        ████████████████████  172ms           ║
+   ╚════════════════════════════════════════════════════╝
+
+======================================================================
+Performance Comparison (Details)
+======================================================================
+
+Method         Avg Time   Pass Rate  Complexity    Peak RSS     P95 RSS
+-----------  ----------  ----------  --------------------  ----------  ----------
+default        169.91ms         3/3  O(n) average time, O(1) space       4.2MB       4.2MB
+quickselect    167.50ms         3/3  O(n) average time, O(1) space       4.2MB       4.2MB
+heap           172.23ms         3/3  O(n log k) time, O(k) space       4.2MB       4.2MB
+
+======================================================================
 ```
 
-使用模板建立：`scripts\new_problem.bat 0023_merge_k_lists --multi`
+> **注意：** `Complexity` 欄位是 `SOLUTIONS` 的**宣告 metadata**。若要做經驗估計，請使用 `--estimate`（需要 `big-O` + `generate_for_complexity(n)`）。
+
+使用模板建立：`scripts\new_problem.bat 215`（再自行在 `SOLUTIONS` 加入更多方法/類別）。
 
 > 📖 完整 SOLUTIONS schema 和驗證規則請參見 [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md#solutions-metadata)。
 
@@ -1035,6 +1094,8 @@ scripts\build_docs.bat --serve  # Windows
 - [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code Tasks、Debug 配置、工作流程範例
 - [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) — 解答檔案規格（SOLUTIONS dict, JUDGE_FUNC）
 - [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) — 生成器檔案規格（generate(), edge cases, complexity）
+- [`docs/guides/new-problem.md`](docs/guides/new-problem.md) — 如何建立新題目骨架（`new_problem`）
+- [`docs/guides/new-practice.md`](docs/guides/new-practice.md) — 如何產生/更新練習檔（`new_practice`）
 - [`docs/architecture/architecture-migration.md`](docs/architecture/architecture-migration.md) — 多型架構遷移指南
 
 **本地文件建置（選擇性）：**

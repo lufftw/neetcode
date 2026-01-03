@@ -36,6 +36,8 @@ Constraints:
 
 Topics: Linked List, Divide And Conquer, Heap Priority Queue, Merge Sort
 """
+import ast
+import json
 from typing import List, Optional
 from _runner import get_solver
 
@@ -87,26 +89,33 @@ def judge(actual, expected, input_data: str) -> bool:
     Returns:
         bool: True if correct
     """
-    import json
-    import ast
-    
     # Parse input to get all values
-    lines = input_data.strip().split('\n')
-    k = int(lines[0])
+    lines = _coerce_input_lines(input_data)
+    if not lines:
+        return False
+    try:
+        k = int(lines[0])
+    except ValueError:
+        return False
     
     all_values = []
     for i in range(1, k + 1):
-        if i < len(lines) and lines[i] and lines[i] != 'empty':
-            values = list(map(int, lines[i].split(',')))
+        if i < len(lines):
+            raw_line = lines[i].strip()
+            if not raw_line or raw_line == 'empty':
+                continue
+            values = _parse_values_from_line(raw_line)
             all_values.extend(values)
     
     # Expected result: sorted merge of all lists
     correct = sorted(all_values)
     
-    # Parse actual output (may be list or string)
+    # Parse actual output (may be list, ListNode, or string)
     try:
         if isinstance(actual, list):
             actual_list = actual
+        elif isinstance(actual, ListNode):
+            actual_list = linkedlist_to_list(actual)
         else:
             actual_list = ast.literal_eval(str(actual).strip())
         return actual_list == correct
@@ -272,6 +281,40 @@ class SolutionGreedy:
         return dummy.next
 
 
+def _coerce_input_lines(input_data: str) -> list[str]:
+    """Normalize raw input into a list of lines."""
+    raw = input_data.strip()
+    if not raw:
+        return []
+
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        return raw.splitlines()
+
+    if isinstance(parsed, list):
+        return [str(item) for item in parsed]
+    if isinstance(parsed, str):
+        return parsed.splitlines()
+
+    return [str(parsed)]
+
+
+def _parse_values_from_line(line: str) -> list[int]:
+    """Normalize a single input line into a list of integers."""
+    line = line.strip()
+    if not line:
+        return []
+
+    if line.startswith('[') and line.endswith(']'):
+        parsed = ast.literal_eval(line)
+        if isinstance(parsed, list):
+            return [int(v) for v in parsed]
+        raise ValueError("expected list representation")
+
+    return [int(component.strip()) for component in line.split(',') if component.strip()]
+
+
 def list_to_linkedlist(lst: List[int]) -> Optional[ListNode]:
     """Convert Python list to LinkedList."""
     if not lst:
@@ -308,17 +351,21 @@ def solve():
     import sys
 
     # Parse input
-    lines = sys.stdin.read().strip().split('\n')
+    lines = _coerce_input_lines(sys.stdin.read())
+    if not lines:
+        print([])
+        return
     k = int(lines[0])
 
     # Keep raw lists for shape detection, then convert to LinkedList
     raw_lists = []
     for i in range(1, k + 1):
-        if i < len(lines) and lines[i] and lines[i] != 'empty':
-            values = list(map(int, lines[i].split(',')))
-            raw_lists.append(values)
-        else:
-            raw_lists.append([])
+        raw_values = []
+        if i < len(lines):
+            raw_line = lines[i].strip()
+            if raw_line and raw_line != 'empty':
+                raw_values = _parse_values_from_line(raw_line)
+        raw_lists.append(raw_values)
 
     # Variable 'lists' holds raw data for shape inference by get_solver()
     lists = raw_lists
