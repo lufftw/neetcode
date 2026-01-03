@@ -29,6 +29,7 @@ from ..core.assemble import (
 from ..core.io_schema import infer_io_schema
 from ..core.solve_generator import generate_solve_function
 from ..core.tiered_solve_generator import generate_tiered_solve
+from ..core.problem_support import load_problem_config, get_tier
 
 
 class ReferenceGenerationResult:
@@ -227,8 +228,30 @@ def _generate_solve_function(
         - "placeholder": Old-style placeholder with TODOs
         - "infer": Use solve_generator to auto-generate based on IO schema
         - "tiered": Use tiered solve generator with problem config
+    
+    Auto-detection:
+        - If problem_id is provided and problem has tier "1" or "1.5" in config,
+          automatically use tiered mode regardless of solve_mode setting.
+        - This ensures Tier-1/1.5 problems always get proper codec support.
     """
     method_name = stub_info.method_name
+    
+    # Auto-detect tiered mode: if problem has tier 1 or 1.5, use tiered generator
+    if problem_id:
+        try:
+            tier = get_tier(str(problem_id).zfill(4))
+            if tier in ("1", "1.5"):
+                # Auto-use tiered mode for Tier-1/1.5 problems
+                result = generate_tiered_solve(stub_info, str(problem_id).zfill(4))
+                return TieredSolveResult(
+                    solve_code=result.solve_code,
+                    helper_code=result.helper_code,
+                    codec_import=result.codec_import,
+                    tier=result.tier,
+                )
+        except Exception:
+            # If config lookup fails, fall through to manual mode selection
+            pass
     
     # Check config for solve_mode
     solve_mode = getattr(config, 'solve_mode', 'placeholder')

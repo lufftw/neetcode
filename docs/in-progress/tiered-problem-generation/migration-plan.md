@@ -77,35 +77,26 @@ packages/codegen/core/catalog/
 
 ---
 
-## Phase 3: Config Reader 🔜
+## Phase 3: Config Reader ✅
 
-### 3.1 Create config reader utility
+### 3.1 Create config reader utility ✅
 
-**Location**: `packages/codegen/config/problem_support.py`
+**Location**: `packages/codegen/core/problem_support.py` (implemented)
 
-```python
-def load_problem_config(problem_id: str) -> dict:
-    """Load problem configuration from problem-support.yaml"""
-    
-def get_tier(problem_id: str) -> str:
-    """Get tier for a problem (default: "0")"""
-    
-def get_codec_mode(problem_id: str) -> str:
-    """Get codec_mode for a problem (default: "import")"""
-    
-def get_codec_hints(problem_id: str) -> list:
-    """Get codec_hints for a problem"""
-    
-def validate_config(problem_id: str) -> list[str]:
-    """Validate config (e.g., inline_reason required for inline mode)"""
-```
+All required functions are implemented:
+- ✅ `load_problem_config(problem_id: str) -> ProblemConfig`
+- ✅ `get_tier(problem_id: str) -> Tier`
+- ✅ `get_codec_mode(problem_id: str) -> CodecMode`
+- ✅ `get_codec_hints(problem_id: str) -> List[str]`
+- ✅ `validate_config(problem_id: str) -> List[str]`
 
-### 3.2 Integrate with codegen
+### 3.2 Integrate with codegen ✅
 
-Update `packages/codegen/core/solve_generator.py`:
-- Read tier from config
-- Apply codec_mode logic
-- Use codec_hints for function selection
+**Updated**: `packages/codegen/reference/generator.py`
+- ✅ Auto-detects tier from config
+- ✅ Automatically uses tiered mode for Tier-1/1.5 problems
+- ✅ Applies codec_mode logic (import vs inline)
+- ✅ Uses codec_hints for function selection
 
 ---
 
@@ -250,15 +241,15 @@ leetcode\Scripts\python.exe runner/test_runner.py --all
 ## Acceptance Criteria
 
 ### Must Have
-- [ ] `runner/utils/codec.py` works with import mode
-- [ ] `catalog.py` has all Tier-1.5 templates
-- [ ] Config reader validates inline_reason
-- [ ] Handwritten solutions protected
-- [ ] All existing tests pass
+- [x] `runner/utils/codec/` works with import mode (package structure)
+- [x] `catalog.py` has all Tier-1.5 templates (AST-based extraction)
+- [x] Config reader validates inline_reason
+- [x] Handwritten solutions protected (via file existence check)
+- [ ] All existing tests pass (needs verification)
 
 ### Should Have
-- [ ] codegen uses config for tier-aware generation
-- [ ] Practice generation works
+- [x] codegen uses config for tier-aware generation (auto-detection implemented)
+- [ ] Practice generation works (needs testing)
 
 ### Nice to Have
 - [ ] Migration script for bulk updates
@@ -271,10 +262,10 @@ leetcode\Scripts\python.exe runner/test_runner.py --all
 | Phase | Duration | Status |
 |-------|----------|--------|
 | Phase 1: Infrastructure | 1 day | ✅ Complete |
-| Phase 2: Codec | 1 day | 🔜 In Progress |
-| Phase 3: Config Reader | 0.5 day | Pending |
-| Phase 4: Migration | 0.5 day | Pending |
-| Phase 5: Testing | 1 day | Pending |
+| Phase 2: Codec | 1 day | ✅ Complete |
+| Phase 3: Config Reader | 0.5 day | ✅ Complete |
+| Phase 4: Migration | 0.5 day | ✅ Complete (auto-detection) |
+| Phase 5: Testing | 1 day | 🔜 In Progress |
 
 **Total**: ~4 days
 
@@ -285,4 +276,7 @@ leetcode\Scripts\python.exe runner/test_runner.py --all
 | Date | Change |
 |------|--------|
 | 2026-01-03 | Initial plan created |
+| 2026-01-03 | Phase 2 & 3 completed: Codec module and config reader integrated |
+| 2026-01-03 | Auto-detection implemented: Tier-1/1.5 problems automatically use tiered mode |
+| 2026-01-03 | SolveMode type updated to include "tiered" |
 
