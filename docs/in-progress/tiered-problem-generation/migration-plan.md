@@ -27,9 +27,9 @@ This document outlines the implementation and migration plan for the Tiered Prob
 
 ---
 
-## Phase 2: Codec Implementation 🔜
+## Phase 2: Codec Implementation ✅
 
-### 2.1 Create `runner/utils/codec.py`
+### 2.1 Create `runner/utils/codec.py` ✅
 
 **Purpose**: Runtime codec for `codec_mode: import`
 
@@ -48,16 +48,32 @@ build_random_pointer_list(pairs) -> Node
 encode_random_pointer_list(head) -> list
 ```
 
-### 2.2 Update `packages/codegen/core/helpers/catalog.py`
+### 2.2 Refactor Catalog to Hybrid Structure ✅
 
-**Purpose**: Templates for `codec_mode: inline`
+**New Structure**:
+```
+packages/codegen/core/catalog/
+├── __init__.py              # Unified API
+├── registry.py              # Metadata registry
+└── templates/
+    ├── classes/
+    │   ├── ListNode.py
+    │   ├── TreeNode.py
+    │   └── Node.py
+    └── functions/
+        ├── struct/          # Tier-1
+        │   ├── list_to_linkedlist.py
+        │   └── ...
+        └── semantic/        # Tier-1.5
+            ├── build_list_with_cycle.py
+            └── ...
+```
 
-Add to `HELPER_FUNCTIONS`:
-- `build_list_with_cycle`
-- `node_to_index`
-- `build_intersecting_lists`
-- `build_random_pointer_list`
-- `encode_random_pointer_list`
+**Benefits**:
+- Templates are real Python files (testable, lintable)
+- Can be imported for runtime use
+- Can be read as strings for inline codegen
+- Registry only manages metadata
 
 ---
 
