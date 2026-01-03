@@ -160,7 +160,7 @@ problems:
     tier: "1.5"
     codec_mode: inline
     inline_reason: "Output is node identity, needs node_to_index adapter"
-    io_format: list_with_pos__out_node_index
+    io_format: list_with_pos_to_node_index
     codec_hints: [build_list_with_cycle, node_to_index]
     generators:
       random: false

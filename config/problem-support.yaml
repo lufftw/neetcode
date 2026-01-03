@@ -69,7 +69,7 @@ problems:
 
   "0141":
     tier: "1"
-    io_format: list_with_pos__out_bool
+    io_format: list_with_pos_to_bool
     codec_hints: [build_list_with_cycle]
 
   "0206":
@@ -91,7 +91,7 @@ problems:
     tier: "1.5"
     codec_mode: inline
     inline_reason: "Output is node identity (cycle entry), needs node_to_index adapter"
-    io_format: list_with_pos__out_node_index
+    io_format: list_with_pos_to_node_index
     codec_hints: [build_list_with_cycle, node_to_index]
     generators:
       random: false
@@ -101,7 +101,7 @@ problems:
     tier: "1.5"
     codec_mode: inline
     inline_reason: "Output is shared node identity, needs intersection detection"
-    io_format: two_lists_with_skips__out_node_value
+    io_format: two_lists_with_skips_to_node_value
     codec_hints: [build_intersecting_lists]
     generators:
       random: false

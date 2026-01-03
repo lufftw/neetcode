@@ -227,14 +227,14 @@ Config uses `io_format` keys to reference these definitions.
 | `two_lists_to_list` | `[list1]` `[list2]` | `[values]` |
 | `list_of_lists_to_list` | `[[l1],[l2],...]` | `[values]` |
 | `list_int_to_list` | `[values]` `int` | `[values]` |
-| `list_with_pos__out_bool` | `[values]` `pos` | `true/false` |
+| `list_with_pos_to_bool` | `[values]` `pos` | `true/false` |
 
 ### 6.2 Tier-1.5 Formats (Semantic)
 
 | io_format | Input | Output | Semantic |
 |-----------|-------|--------|----------|
-| `list_with_pos__out_node_index` | `[values]` `pos` | `index` or `-1` | Node identity |
-| `two_lists_with_skips__out_node_value` | `[listA]` `[listB]` `skipA` `skipB` | `value` or `-1` | Shared node |
+| `list_with_pos_to_node_index` | `[values]` `pos` | `index` or `-1` | Node identity |
+| `two_lists_with_skips_to_node_value` | `[listA]` `[listB]` `skipA` `skipB` | `value` or `-1` | Shared node |
 | `random_pointer_list` | `[[val,rand],...]` | `[[val,rand],...]` | Deep copy |
 
 ---
@@ -250,7 +250,7 @@ These examples illustrate how the rules apply. For the complete registry, see `c
 | **Tier** | `"1.5"` |
 | **codec_mode** | `inline` |
 | **inline_reason** | Output is node identity (cycle entry), needs `node_to_index` |
-| **io_format** | `list_with_pos__out_node_index` |
+| **io_format** | `list_with_pos_to_node_index` |
 
 **.in/.out**:
 ```
