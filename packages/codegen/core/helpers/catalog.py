@@ -163,6 +163,115 @@ HELPER_FUNCTIONS: Dict[str, str] = {
         result.pop()
     
     return result''',
+
+    # =========================================================================
+    # Tier-1.5: Semantic Codec Templates
+    # =========================================================================
+    
+    "build_list_with_cycle": '''def build_list_with_cycle(values: list, pos: int) -> tuple:
+    """
+    Build linked list with optional cycle.
+    
+    Args:
+        values: Node values
+        pos: Cycle position (0-based), -1 if no cycle
+        
+    Returns:
+        Tuple of (head, nodes_array)
+    """
+    if not values:
+        return None, []
+    nodes = [ListNode(v) for v in values]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i + 1]
+    if 0 <= pos < len(nodes):
+        nodes[-1].next = nodes[pos]
+    return nodes[0], nodes''',
+
+    "node_to_index": '''def node_to_index(node, nodes: list) -> int:
+    """
+    Find index of a node in the nodes array.
+    
+    Returns:
+        0-based index, or -1 if not found
+    """
+    if node is None:
+        return -1
+    for i, n in enumerate(nodes):
+        if n is node:
+            return i
+    return -1''',
+
+    "build_intersecting_lists": '''def build_intersecting_lists(listA: list, listB: list, skipA: int, skipB: int) -> tuple:
+    """
+    Build two linked lists that intersect at a shared node.
+    
+    Returns:
+        Tuple of (headA, headB, intersectionNode)
+    """
+    if not listA:
+        return None, None, None
+    
+    nodesA = [ListNode(v) for v in listA]
+    for i in range(len(nodesA) - 1):
+        nodesA[i].next = nodesA[i + 1]
+    
+    if skipB > 0 and listB:
+        nodesB = [ListNode(v) for v in listB[:skipB]]
+        for i in range(len(nodesB) - 1):
+            nodesB[i].next = nodesB[i + 1]
+        headB = nodesB[0]
+        if skipA < len(nodesA):
+            nodesB[-1].next = nodesA[skipA]
+            intersection = nodesA[skipA]
+        else:
+            intersection = None
+    else:
+        if skipA < len(nodesA):
+            headB = nodesA[skipA]
+            intersection = nodesA[skipA]
+        else:
+            headB = None
+            intersection = None
+    
+    return nodesA[0], headB, intersection''',
+
+    "build_random_pointer_list": '''def build_random_pointer_list(pairs: list) -> 'Node':
+    """
+    Build linked list with random pointers.
+    
+    Args:
+        pairs: List of [val, random_index] pairs
+    """
+    if not pairs:
+        return None
+    nodes = [Node(val=p[0]) for p in pairs]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i + 1]
+    for i, p in enumerate(pairs):
+        random_idx = p[1]
+        if random_idx is not None and 0 <= random_idx < len(nodes):
+            nodes[i].random = nodes[random_idx]
+    return nodes[0]''',
+
+    "encode_random_pointer_list": '''def encode_random_pointer_list(head: 'Node') -> list:
+    """Encode linked list with random pointers to pairs format."""
+    if not head:
+        return []
+    nodes = []
+    node_to_idx = {}
+    current = head
+    idx = 0
+    while current:
+        nodes.append(current)
+        node_to_idx[id(current)] = idx
+        current = current.next
+        idx += 1
+    result = []
+    for node in nodes:
+        random_idx = node_to_idx.get(id(node.random)) if node.random else None
+        result.append([node.val, random_idx])
+    return result''',
 }
 
 
@@ -209,8 +318,24 @@ def get_helpers_for_class(class_name: str) -> list:
     mapping = {
         "ListNode": ["list_to_linkedlist", "linkedlist_to_list"],
         "TreeNode": ["list_to_tree", "tree_to_list"],
+        "Node": ["build_random_pointer_list", "encode_random_pointer_list"],
     }
     return mapping.get(class_name, [])
+
+
+def get_tier_1_5_helpers() -> list:
+    """
+    Get all Tier-1.5 helper function names.
+    
+    These functions handle semantic I/O (node identity, cycles, etc.)
+    """
+    return [
+        "build_list_with_cycle",
+        "node_to_index",
+        "build_intersecting_lists",
+        "build_random_pointer_list",
+        "encode_random_pointer_list",
+    ]
 
 
 def list_all_helpers() -> list:
