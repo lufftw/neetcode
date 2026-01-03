@@ -163,6 +163,9 @@ nav:
   - 📚 Reference:
     - Solution Contract: contracts/solution-contract.md
     - Generator Contract: contracts/generator-contract.md
+    - Test File Format: contracts/test-file-format.md
+    - Codec Contract: contracts/codec.md
+    - Problem Support Boundary: contracts/problem-support-boundary.md
     - Documentation Header Spec: contracts/documentation-header-spec.md
     - Ontology Design: reference/ontology-design.md
   - 🏗️ Architecture:
@@ -185,6 +188,7 @@ nav:
     - Overview: contributors/README.md
     - Testing Documentation: contributors/testing.md
     - Documentation Architecture: contributors/documentation-architecture.md
+    - Documentation Naming: contributors/documentation-naming.md
     - Package Documentation Strategy: contributors/package-documentation-strategy.md
     - Docs Directory Organization: contributors/docs-directory-organization.md
     - Virtual Environment Setup: contributors/virtual-env-setup.md

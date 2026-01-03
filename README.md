@@ -244,16 +244,44 @@ chmod +x scripts/run_tests.sh scripts/run_case.sh scripts/new_problem.sh
 
 ```bash
 # Windows
-scripts\new_problem.bat 0001_two_sum
+scripts\new_problem.bat 1
+scripts\new_problem.bat 1 --with-tests
 
 # Linux/macOS
-./scripts/new_problem.sh 0001_two_sum
+./scripts/new_problem.sh 1
+./scripts/new_problem.sh 1 --with-tests
 ```
 
 This creates:
 - `solutions/0001_two_sum.py` — Your solution file
-- `tests/0001_two_sum_1.in` — Test input
-- `tests/0001_two_sum_1.out` — Expected output
+- `tests/0001_two_sum_1.in/.out` — Example-based tests (when `--with-tests`)
+
+**New options:**
+
+```bash
+# New flags
+scripts\new_problem.bat 1 --solve-mode tiered  # Use tiered codec generation
+scripts\new_problem.bat 1 --codec-mode import  # Use import mode (default)
+scripts\new_problem.bat 1 --codec-mode inline  # Embed codec inline
+
+# Auto-detect (no need to specify --solve-mode)
+scripts\new_problem.bat 104  # Tree problems → auto tiered codec + solve()
+scripts\new_problem.bat 142  # Linked list cycle problems → auto tiered codec + solve()
+```
+
+**More CodeGen commands (optional):**
+
+```bash
+# Check whether your existing tests match LeetCode examples
+python -m packages.codegen check 1
+python -m packages.codegen check --all --limit 10
+
+# Migrate tests to canonical JSON-literal format (preview first)
+python -m packages.codegen migrate 1 --dry-run
+python -m packages.codegen migrate --all --dry-run
+```
+
+> 📖 Full reference: [`docs/packages/codegen/README.md`](docs/packages/codegen/README.md)
 
 ### 3. Run Tests
 
@@ -280,6 +308,9 @@ scripts\run_tests.bat 0001_two_sum
 | Feature | Description |
 |:--------|:------------|
 | 🧪 **Testing & Validation Engine** | ⭐ **Core Feature** — Automated testing, benchmarking, random test generation, complexity estimation. See [Testing & Validation Guide](docs/runner/README.md) |
+| 🧰 **One-Command Scaffolding (CodeGen)** | Create a full problem scaffold from a LeetCode ID: `solutions/*.py` + optional example tests (`tests/*.in/.out`) + auto `solve()` generation. For problems with **non-trivial input/output adapters** (e.g. trees, linked lists, cycles), CodeGen can **auto-detect** and generate a tiered codec-based `solve()` (`--solve-mode tiered`). See [CodeGen Docs](docs/packages/codegen/README.md). |
+| 🧾 **Canonical Test Contract + Migration** | Test files use **JSON literal, one value per line** for diff-friendly, machine-stable I/O. Includes `check` (consistency vs LeetCode examples) and `migrate` (auto-convert existing tests) workflows. See [`docs/contracts/test-file-format.md`](docs/contracts/test-file-format.md). |
+| 🧠 **Memory Profiling (Optional)** | Runner can show **memory traces and rankings** across methods (`--memory-trace`, `--trace-compare`, `--memory-per-case`) when optional deps are installed. See [Runner Spec](docs/runner/README.md). |
 | 🤖 **AI Ontology Analysis** | AI-powered knowledge graph synthesis — discover pattern relationships humans miss |
 | 🎲 **Random Test Generation** | Seeded generators for reproducibility, stress test with 1000+ cases, auto-save failing cases |
 | ⚖️ **Custom Judge Functions** | Validate multiple correct answers, ICPC-style validation, works without expected output |
@@ -437,6 +468,19 @@ python runner/test_runner.py <problem_name> --generate 10
 
 # Estimate time complexity
 python runner/test_runner.py <problem_name> --estimate
+
+# Memory profiling (optional)
+python runner/test_runner.py <problem_name> --memory-trace
+python runner/test_runner.py <problem_name> --all --trace-compare
+
+# Save failing generated cases for reproduction
+python runner/test_runner.py <problem_name> --generate 100 --seed 12345 --save-failed
+```
+
+**Optional runner dependencies (enable extra features):**
+
+```bash
+pip install big-O psutil sparklines tabulate
 ```
 
 ### 📝 Solution File Format
@@ -467,16 +511,18 @@ class Solution:
 
 def solve():
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
     
     # Parse input
-    nums = list(map(int, lines[0].split(',')))
-    target = int(lines[1])
+    # Canonical format: JSON literal, one value per line
+    nums = json.loads(lines[0])
+    target = json.loads(lines[1])
     
     # Run solution (polymorphic dispatch)
     solver = get_solver(SOLUTIONS)
     result = solver.twoSum(nums, target)
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 if __name__ == "__main__":
     solve()
@@ -495,14 +541,16 @@ if __name__ == "__main__":
 
 **Input file** (`tests/0001_two_sum_1.in`):
 ```
-2,7,11,15
+[2,7,11,15]
 9
 ```
 
 **Output file** (`tests/0001_two_sum_1.out`):
 ```
-[0, 1]
+[0,1]
 ```
+
+> 📖 Full contract: [`docs/contracts/test-file-format.md`](docs/contracts/test-file-format.md)
 
 ---
 
@@ -641,6 +689,7 @@ from typing import Iterator, Optional
 
 def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     """Generate random test cases."""
+    import json
     if seed is not None:
         random.seed(seed)
     
@@ -654,7 +703,7 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
         n = random.randint(0, 1000)
         nums1 = sorted(random.randint(-10**6, 10**6) for _ in range(m))
         nums2 = sorted(random.randint(-10**6, 10**6) for _ in range(n))
-        yield f"{list(nums1)}\n{list(nums2)}".replace(' ', '')
+        yield f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
 ```
 
 **Usage:**
@@ -718,6 +767,9 @@ neetcode/
 ├── solutions/                 # 📝 Your solution files
 │   └── 0001_two_sum.py
 │
+├── practices/                 # 🧠 Practice workspace (generated practice files + history)
+│   └── _history/...
+│
 ├── tests/                     # 📋 Test cases
 │   ├── 0001_two_sum_1.in      # Input file
 │   ├── 0001_two_sum_1.out     # Expected output
@@ -725,6 +777,14 @@ neetcode/
 │
 ├── generators/                # 🎲 Random test generators (optional)
 │   └── 0001_two_sum.py        # generate(count, seed) function
+│
+├── packages/                  # 📦 Core packages (CodeGen, datasource, practice workspace)
+│   ├── codegen/               # `python -m packages.codegen ...`
+│   ├── leetcode_datasource/   # LeetCode metadata/source
+│   └── practice_workspace/    # Practice history utilities
+│
+├── config/                    # ⚙️ Living registries / policies
+│   └── problem-support.yaml   # Problem support boundary (tiers/codec hints, etc.)
 │
 ├── runner/                    # 🧪 Core testing & validation engine
 │   ├── test_runner.py         # CLI entry point & main orchestration
@@ -844,7 +904,7 @@ neetcode/
 ├── leetcode/                  # 🐍 Python virtual environment (3.11)
 │
 ├── scripts/                   # 🔧 Utility scripts
-│   ├── new_problem.bat / .sh  # Create new problem from template
+│   ├── new_problem.bat / .sh  # Create new problem (wrapper around packages/codegen)
 │   ├── run_tests.bat / .sh    # Run all tests for a problem
 │   ├── run_case.bat / .sh     # Run single test case
 │   └── build_docs.bat / .sh   # Build documentation site
@@ -865,9 +925,12 @@ neetcode/
 | Directory | Purpose | Target Audience |
 |:----------|:--------|:----------------|
 | `solutions/` | Write your solutions here | ✅ All users |
+| `practices/` | Practice workspace (generated practice files + history) | ✅ All users |
 | `tests/` | Add test cases (.in/.out) | ✅ All users |
 | `generators/` | Random test generators | ✅ All users |
 | `runner/` | Test execution engine | 🔧 Contributors |
+| `packages/` | Core packages (CodeGen, datasource, practice workspace) | 🔧 Contributors |
+| `config/` | Problem support registry & policy | 🔧 Contributors |
 | `templates/` | Problem templates | ✅ All users |
 | `.vscode/` | VS Code configuration | ✅ All users |
 | `docs/` | MkDocs documentation | 🔧 Contributors |
@@ -895,8 +958,14 @@ Documentation is organized by **target audience**:
 |:---------|:------------|
 | [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) | Solution file specification |
 | [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) | Generator file specification |
+| [`docs/contracts/test-file-format.md`](docs/contracts/test-file-format.md) | Canonical `.in`/`.out` format (JSON literal, one value per line) |
+| [`docs/contracts/codec.md`](docs/contracts/codec.md) | Codec contract (import/inline helpers, semantics) |
+| [`docs/contracts/problem-support-boundary.md`](docs/contracts/problem-support-boundary.md) | Problem support boundary & hard rules |
+| [`docs/packages/codegen/README.md`](docs/packages/codegen/README.md) | CodeGen reference (new/practice/check/migrate) |
+| [`docs/runner/README.md`](docs/runner/README.md) | Runner spec (CLI options, memory profiling, output format) |
 | [`docs/tools/README.md`](docs/tools/README.md) | Complete tools reference |
 | [`docs/contributors/README.md`](docs/contributors/README.md) | Maintainer guide |
+| [`docs/contributors/documentation-naming.md`](docs/contributors/documentation-naming.md) | Documentation naming convention (kebab-case) |
 | [`docs/contributors/documentation-architecture.md`](docs/contributors/documentation-architecture.md) | Documentation structure |
 
 ---
@@ -1016,8 +1085,14 @@ If you want to test the exact GitHub Actions workflow locally, you can use `act`
 - [`docs/contributors/README.md`](docs/contributors/README.md) — Maintainer guide
 - [`docs/contributors/testing.md`](docs/contributors/testing.md) — Testing documentation
 - [`docs/contributors/vscode-setup.md`](docs/contributors/vscode-setup.md) — VS Code tasks, debug configurations, workflow examples
+- [`docs/contributors/documentation-naming.md`](docs/contributors/documentation-naming.md) — Docs naming convention (kebab-case)
 - [`docs/contracts/solution-contract.md`](docs/contracts/solution-contract.md) — Solution file specification (SOLUTIONS dict, JUDGE_FUNC)
 - [`docs/contracts/generator-contract.md`](docs/contracts/generator-contract.md) — Generator file specification (generate(), edge cases, complexity)
+- [`docs/contracts/test-file-format.md`](docs/contracts/test-file-format.md) — Canonical `.in`/`.out` format (JSON literal, one value per line)
+- [`docs/contracts/codec.md`](docs/contracts/codec.md) — Codec contract (import/inline helpers, semantics)
+- [`docs/contracts/problem-support-boundary.md`](docs/contracts/problem-support-boundary.md) — Problem support boundary & hard rules
+- [`docs/packages/codegen/README.md`](docs/packages/codegen/README.md) — CodeGen reference (new/practice/check/migrate)
+- [`docs/runner/README.md`](docs/runner/README.md) — Test runner spec (CLI options, memory profiling, output format)
 - [`docs/architecture/architecture-migration.md`](docs/architecture/architecture-migration.md) — Polymorphic architecture migration guide
 
 **Local Documentation Build (Optional):**
