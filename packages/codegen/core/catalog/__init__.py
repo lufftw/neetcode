@@ -1,300 +1,169 @@
 """
-Catalog - Unified API for helper templates.
-
-This module provides a hybrid approach:
-- Templates are real Python files (testable, lintable)
-- Can be imported for runtime use
-- Can be read as strings for inline codegen
+Catalog - Template repository using directory-based dependencies.
 
 Usage:
-    # Get template as string (for inline codegen)
-    from packages.codegen.core.catalog import get_template
-    code = get_template("ListNode")
+    from packages.codegen.core.catalog import get, get_with_deps
     
-    # Get helper metadata
-    from packages.codegen.core.catalog import get_helper_meta
-    meta = get_helper_meta("build_list_with_cycle")
-    
-    # Import for runtime (if needed)
-    from packages.codegen.core.catalog.templates.classes import ListNode
+    code = get("ListNode")
+    code = get_with_deps("build_list_with_cycle")  # includes ListNode
+
+Directory structure defines dependencies:
+    templates/classes/         → base types (no deps)
+    templates/functions/<Class>/struct/    → Tier-1, depends on <Class>
+    templates/functions/<Class>/semantic/  → Tier-1.5, depends on <Class>
+
+See: docs/contracts/catalog-structure.md
 """
 
-import inspect
-import re
 from pathlib import Path
+from functools import lru_cache
 from typing import Optional, List, Dict
-
-from .registry import (
-    HelperMeta,
-    HelperCategory,
-    Tier,
-    get_helper_meta,
-    get_all_registries,
-    list_by_category,
-    list_by_tier,
-    get_dependencies,
-    CLASS_REGISTRY,
-    STRUCT_FUNC_REGISTRY,
-    SEMANTIC_FUNC_REGISTRY,
-)
-
-
-# =============================================================================
-# Template Loading
-# =============================================================================
 
 _TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 
-def get_template(name: str) -> Optional[str]:
+@lru_cache(maxsize=1)
+def _discover() -> Dict[str, Path]:
+    """Scan directory → {name: path}"""
+    return {
+        p.stem: p 
+        for p in _TEMPLATES_DIR.rglob("*.py") 
+        if not p.name.startswith("_")
+    }
+
+
+@lru_cache(maxsize=1)
+def _known_classes() -> set:
+    """Get all class names from classes/ directory."""
+    classes_dir = _TEMPLATES_DIR / "classes"
+    return {p.stem for p in classes_dir.glob("*.py") if not p.name.startswith("_")}
+
+
+def get(name: str) -> Optional[str]:
+    """Get template code by name."""
+    path = _discover().get(name)
+    return path.read_text(encoding="utf-8").strip() if path else None
+
+
+def deps(name: str) -> List[str]:
     """
-    Get template code as string.
+    Get dependencies from directory structure.
     
-    For codegen inline mode - extracts just the class/function definition
-    without imports or module docstrings.
-    
-    Args:
-        name: Helper name (e.g., "ListNode", "build_list_with_cycle")
-        
-    Returns:
-        Template code string, or None if not found
+    Rules (priority order):
+    1. File has TEMPLATE_META["depends_on"] → use it
+    2. Path is functions/<ClassName>/... → [<ClassName>]
+    3. Otherwise → []
     """
-    meta = get_helper_meta(name)
-    if not meta:
-        return None
+    path = _discover().get(name)
+    if not path:
+        return []
     
-    template_path = _TEMPLATES_DIR / meta.module_path
-    if not template_path.exists():
-        return None
+    # Check for TEMPLATE_META in file (for exceptions)
+    content = path.read_text(encoding="utf-8")
+    if "TEMPLATE_META" in content:
+        # Simple extraction: TEMPLATE_META = {"depends_on": [...]}
+        import ast
+        for node in ast.walk(ast.parse(content)):
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and target.id == "TEMPLATE_META":
+                        try:
+                            meta = ast.literal_eval(node.value)
+                            if isinstance(meta, dict) and "depends_on" in meta:
+                                return meta["depends_on"]
+                        except:
+                            pass
     
-    content = template_path.read_text(encoding="utf-8")
-    return _extract_definition(content, name, meta.category)
+    # Infer from path: functions/<ClassName>/...
+    parts = path.relative_to(_TEMPLATES_DIR).parts
+    if len(parts) >= 2 and parts[0] == "functions":
+        class_name = parts[1]
+        if class_name in _known_classes():
+            return [class_name]
+    
+    return []
 
 
-def get_template_raw(name: str) -> Optional[str]:
-    """
-    Get raw template file content (including imports/docstrings).
+def get_with_deps(name: str) -> str:
+    """Get template code with all dependencies resolved."""
+    seen = set()
+    parts = []
     
-    Args:
-        name: Helper name
-        
-    Returns:
-        Full file content, or None if not found
-    """
-    meta = get_helper_meta(name)
-    if not meta:
-        return None
+    def collect(n: str):
+        if n in seen:
+            return
+        seen.add(n)
+        for dep in deps(n):
+            collect(dep)
+        code = get(n)
+        if code:
+            parts.append(code)
     
-    template_path = _TEMPLATES_DIR / meta.module_path
-    if not template_path.exists():
-        return None
-    
-    return template_path.read_text(encoding="utf-8")
+    collect(name)
+    return "\n\n\n".join(parts)
 
 
-def _extract_definition(content: str, name: str, category: HelperCategory) -> str:
-    """
-    Extract just the class/function definition from template content.
-    
-    Removes:
-    - Module docstring
-    - Import statements
-    - Try/except import blocks
-    
-    Preserves:
-    - Docstrings inside the class/function definition
-    """
-    lines = content.split('\n')
-    result_lines = []
-    in_definition = False
-    in_try_block = False
-    in_module_docstring = False
-    
-    for i, line in enumerate(lines):
-        stripped = line.strip()
-        
-        # Once we're in the definition, include everything
-        if in_definition:
-            result_lines.append(line)
-            continue
-        
-        # Handle module-level multiline docstring
-        if in_module_docstring:
-            if '"""' in stripped:
-                in_module_docstring = False
-            continue
-        
-        # Skip module docstring at start (single or multi-line)
-        if stripped.startswith('"""') and not in_definition:
-            if stripped.count('"""') >= 2:
-                # Single line docstring like """text"""
-                continue
-            else:
-                # Start of multiline docstring
-                in_module_docstring = True
-                continue
-        
-        # Skip imports
-        if stripped.startswith(('from ', 'import ')):
-            continue
-        
-        # Skip try/except import blocks
-        if stripped == 'try:':
-            in_try_block = True
-            continue
-        if in_try_block:
-            if stripped.startswith('except'):
-                in_try_block = False
-                continue
-            continue
-        
-        # Skip empty lines before definition
-        if not stripped:
-            continue
-        
-        # Start of definition
-        if category == HelperCategory.CLASS and stripped.startswith('class '):
-            in_definition = True
-            result_lines.append(line)
-        elif category != HelperCategory.CLASS and stripped.startswith('def '):
-            in_definition = True
-            result_lines.append(line)
-    
-    return '\n'.join(result_lines).rstrip()
-
-
-# =============================================================================
-# Convenience Functions
-# =============================================================================
-
-def get_class_template(name: str) -> Optional[str]:
-    """Get a class template by name."""
-    if name not in CLASS_REGISTRY:
-        return None
-    return get_template(name)
-
-
-def get_function_template(name: str) -> Optional[str]:
-    """Get a function template by name."""
-    if name in STRUCT_FUNC_REGISTRY or name in SEMANTIC_FUNC_REGISTRY:
-        return get_template(name)
-    return None
-
-
-def get_templates_for_helpers(names: List[str]) -> Dict[str, str]:
-    """
-    Get multiple templates at once, resolving dependencies.
-    
-    Args:
-        names: List of helper names
-        
-    Returns:
-        Dict of {name: template_code}
-    """
-    result = {}
-    all_names = set(names)
-    
-    # Add dependencies
-    for name in names:
-        deps = get_dependencies(name)
-        all_names.update(deps)
-    
-    # Get templates
-    for name in all_names:
-        template = get_template(name)
-        if template:
-            result[name] = template
-    
-    return result
-
-
-def list_all_helpers() -> List[str]:
-    """List all available helper names."""
-    return list(get_all_registries().keys())
+def list_all() -> List[str]:
+    """List all template names."""
+    return list(_discover().keys())
 
 
 def list_classes() -> List[str]:
-    """List all class helper names."""
-    return list(CLASS_REGISTRY.keys())
+    """List all class template names."""
+    return list(_known_classes())
 
 
-def list_struct_functions() -> List[str]:
-    """List all struct function names (Tier-1)."""
-    return list(STRUCT_FUNC_REGISTRY.keys())
+def list_functions() -> List[str]:
+    """List all function template names."""
+    return [name for name in _discover() if name not in _known_classes()]
 
 
-def list_semantic_functions() -> List[str]:
-    """List all semantic function names (Tier-1.5)."""
-    return list(SEMANTIC_FUNC_REGISTRY.keys())
-
-
-# =============================================================================
-# Backward Compatibility (with old catalog.py)
-# =============================================================================
-
-def get_helper_code(name: str) -> Optional[str]:
+def tier(name: str) -> Optional[str]:
     """
-    Get helper class code by name.
+    Infer tier from path.
     
-    Backward compatible with old catalog.py API.
+    Returns:
+        "base" for classes/
+        "1" for functions/*/struct/
+        "1.5" for functions/*/semantic/
+        None if unknown
     """
-    return get_class_template(name)
-
-
-def get_helper_function(name: str) -> Optional[str]:
-    """
-    Get helper function code by name.
+    path = _discover().get(name)
+    if not path:
+        return None
     
-    Backward compatible with old catalog.py API.
-    """
-    return get_function_template(name)
+    parts = path.relative_to(_TEMPLATES_DIR).parts
+    if parts[0] == "classes":
+        return "base"
+    if len(parts) >= 3 and parts[0] == "functions":
+        if parts[2] == "struct":
+            return "1"
+        if parts[2] == "semantic":
+            return "1.5"
+    return None
+
+
+# Backward compatibility aliases
+get_template = get
+get_helper_code = get
+get_helper_function = get
 
 
 def get_helpers_for_class(class_name: str) -> List[str]:
-    """
-    Get related helper functions for a class.
-    
-    Backward compatible with old catalog.py API.
-    """
-    mapping = {
-        "ListNode": ["list_to_linkedlist", "linkedlist_to_list"],
-        "TreeNode": ["list_to_tree", "tree_to_list"],
-        "Node": ["build_random_pointer_list", "encode_random_pointer_list"],
-    }
-    return mapping.get(class_name, [])
+    """Get related helper functions for a class (backward compat)."""
+    result = []
+    for name, path in _discover().items():
+        parts = path.relative_to(_TEMPLATES_DIR).parts
+        if len(parts) >= 2 and parts[0] == "functions" and parts[1] == class_name:
+            result.append(name)
+    return result
 
 
 def get_tier_1_5_helpers() -> List[str]:
-    """Get all Tier-1.5 helper function names."""
-    return list_semantic_functions()
+    """Get all Tier-1.5 helper function names (backward compat)."""
+    return [name for name in list_all() if tier(name) == "1.5"]
 
 
-# Re-export registry functions
-__all__ = [
-    # Template loading
-    "get_template",
-    "get_template_raw",
-    "get_class_template",
-    "get_function_template",
-    "get_templates_for_helpers",
-    
-    # Listing
-    "list_all_helpers",
-    "list_classes",
-    "list_struct_functions",
-    "list_semantic_functions",
-    
-    # Metadata
-    "get_helper_meta",
-    "get_dependencies",
-    "HelperMeta",
-    "HelperCategory",
-    "Tier",
-    
-    # Backward compatibility
-    "get_helper_code",
-    "get_helper_function",
-    "get_helpers_for_class",
-    "get_tier_1_5_helpers",
-]
-
+def list_all_helpers() -> List[str]:
+    """Alias for list_all (backward compat)."""
+    return list_all()

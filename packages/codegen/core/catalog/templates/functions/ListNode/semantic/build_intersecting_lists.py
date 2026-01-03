@@ -1,35 +1,15 @@
-"""Build two linked lists that intersect at a shared node."""
-
-from typing import List, Tuple, Optional
-
-# Import for runtime use
-try:
-    from ...classes.ListNode import ListNode
-except ImportError:
-    pass
-
-
-def build_intersecting_lists(
-    listA: List[int],
-    listB: List[int],
-    skipA: int,
-    skipB: int
-) -> Tuple[Optional['ListNode'], Optional['ListNode'], Optional['ListNode']]:
+def build_intersecting_lists(listA: list, listB: list, skipA: int, skipB: int) -> tuple:
     """
     Build two linked lists that intersect at a shared node.
     
     Args:
         listA: Values for list A (including intersection)
-        listB: Values for list B (prefix only, before intersection)
-        skipA: Number of nodes in A before intersection
-        skipB: Number of nodes in B before intersection
+        listB: Values for list B (prefix before intersection)
+        skipA: Nodes in A before intersection
+        skipB: Nodes in B before intersection
         
     Returns:
         Tuple of (headA, headB, intersectionNode)
-        
-    Canonical semantics:
-        - skipA/skipB are 0-based counts
-        - If no intersection, returns (headA, headB, None)
     """
     if not listA:
         return None, None, None
@@ -57,4 +37,3 @@ def build_intersecting_lists(
             intersection = None
     
     return nodesA[0], headB, intersection
-

@@ -1,10 +1,5 @@
-"""Convert Binary Tree to level-order list."""
-
-from typing import List, Optional
-
-
-def tree_to_list(root: Optional['TreeNode']) -> List[Optional[int]]:
-    """Convert Binary Tree to level-order list (None for missing nodes)."""
+def tree_to_list(root: 'TreeNode') -> list:
+    """Convert Binary Tree to level-order list."""
     if not root:
         return []
     
@@ -20,9 +15,7 @@ def tree_to_list(root: Optional['TreeNode']) -> List[Optional[int]]:
         else:
             result.append(None)
     
-    # Remove trailing Nones
     while result and result[-1] is None:
         result.pop()
     
     return result
-

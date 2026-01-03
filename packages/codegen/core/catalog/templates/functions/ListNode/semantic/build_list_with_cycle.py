@@ -1,15 +1,4 @@
-"""Build linked list with optional cycle."""
-
-from typing import List, Tuple, Optional
-
-# Import for runtime use
-try:
-    from ...classes.ListNode import ListNode
-except ImportError:
-    pass
-
-
-def build_list_with_cycle(values: List[int], pos: int) -> Tuple[Optional['ListNode'], List['ListNode']]:
+def build_list_with_cycle(values: list, pos: int) -> tuple:
     """
     Build linked list with optional cycle.
     
@@ -19,10 +8,6 @@ def build_list_with_cycle(values: List[int], pos: int) -> Tuple[Optional['ListNo
         
     Returns:
         Tuple of (head, nodes_array)
-        
-    Canonical semantics:
-        - pos is 0-based
-        - pos = -1 means no cycle
     """
     if not values:
         return None, []
@@ -32,4 +17,3 @@ def build_list_with_cycle(values: List[int], pos: int) -> Tuple[Optional['ListNo
     if 0 <= pos < len(nodes):
         nodes[-1].next = nodes[pos]
     return nodes[0], nodes
-
