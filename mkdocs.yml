@@ -159,6 +159,7 @@ nav:
     - Build Docs Locally: guides/build-docs-manual.md
     - Local Docs Build Options: guides/local-docs-build.md
     - Run GitHub Actions Locally: guides/act-local-github-actions.md
+    - Create Practice File (Windows): guides/new-practice.md
     - MkDocs Content Guide: guides/mkdocs-content-guide.md
   - 📚 Reference:
     - Solution Contract: contracts/solution-contract.md
