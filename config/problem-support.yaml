@@ -47,10 +47,17 @@ problems:
   # ---------------------------------------------------------------------------
   # These use default codec_mode: import (DRY)
 
+  # === ListNode Problems ===
   "0002":
     tier: "1"
     io_format: list_to_list
     codec_hints: [list_to_linkedlist, linkedlist_to_list]
+
+  "0019":
+    tier: "1"
+    io_format: list_int_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Remove Nth Node From End of List
 
   "0021":
     tier: "1"
@@ -62,25 +69,171 @@ problems:
     io_format: list_of_lists_to_list
     codec_hints: [list_to_linkedlist, linkedlist_to_list]
 
+  "0024":
+    tier: "1"
+    io_format: list_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Swap Nodes in Pairs
+
   "0025":
     tier: "1"
     io_format: list_int_to_list
     codec_hints: [list_to_linkedlist, linkedlist_to_list]
+
+  "0061":
+    tier: "1"
+    io_format: list_int_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Rotate List
+
+  "0082":
+    tier: "1"
+    io_format: list_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Remove Duplicates from Sorted List II
+
+  "0083":
+    tier: "1"
+    io_format: list_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Remove Duplicates from Sorted List
 
   "0141":
     tier: "1"
     io_format: list_with_pos_to_bool
     codec_hints: [build_list_with_cycle]
 
+  "0203":
+    tier: "1"
+    io_format: list_int_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Remove Linked List Elements
+
   "0206":
     tier: "1"
     io_format: list_to_list
     codec_hints: [list_to_linkedlist, linkedlist_to_list]
 
+  "0234":
+    tier: "1"
+    io_format: list_to_bool
+    codec_hints: [list_to_linkedlist]
+    # Palindrome Linked List
+
+  "0328":
+    tier: "1"
+    io_format: list_to_list
+    codec_hints: [list_to_linkedlist, linkedlist_to_list]
+    # Odd Even Linked List
+
   "0876":
     tier: "1"
     io_format: list_to_list
     codec_hints: [list_to_linkedlist, linkedlist_to_list]
+
+  # === TreeNode Problems ===
+  "0094":
+    tier: "1"
+    io_format: tree_to_list
+    codec_hints: [list_to_tree]
+    # Binary Tree Inorder Traversal
+
+  "0100":
+    tier: "1"
+    io_format: two_trees_to_bool
+    codec_hints: [list_to_tree]
+    # Same Tree
+
+  "0101":
+    tier: "1"
+    io_format: tree_to_bool
+    codec_hints: [list_to_tree]
+    # Symmetric Tree
+
+  "0102":
+    tier: "1"
+    io_format: tree_to_list_of_lists
+    codec_hints: [list_to_tree]
+    # Binary Tree Level Order Traversal
+
+  "0104":
+    tier: "1"
+    io_format: tree_to_int
+    codec_hints: [list_to_tree]
+    # Maximum Depth of Binary Tree
+
+  "0110":
+    tier: "1"
+    io_format: tree_to_bool
+    codec_hints: [list_to_tree]
+    # Balanced Binary Tree
+
+  "0111":
+    tier: "1"
+    io_format: tree_to_int
+    codec_hints: [list_to_tree]
+    # Minimum Depth of Binary Tree
+
+  "0112":
+    tier: "1"
+    io_format: tree_int_to_bool
+    codec_hints: [list_to_tree]
+    # Path Sum
+
+  "0144":
+    tier: "1"
+    io_format: tree_to_list
+    codec_hints: [list_to_tree]
+    # Binary Tree Preorder Traversal
+
+  "0145":
+    tier: "1"
+    io_format: tree_to_list
+    codec_hints: [list_to_tree]
+    # Binary Tree Postorder Traversal
+
+  "0199":
+    tier: "1"
+    io_format: tree_to_list
+    codec_hints: [list_to_tree]
+    # Binary Tree Right Side View
+
+  "0226":
+    tier: "1"
+    io_format: tree_to_tree
+    codec_hints: [list_to_tree, tree_to_list]
+    # Invert Binary Tree
+
+  "0543":
+    tier: "1"
+    io_format: tree_to_int
+    codec_hints: [list_to_tree]
+    # Diameter of Binary Tree
+
+  "0572":
+    tier: "1"
+    io_format: two_trees_to_bool
+    codec_hints: [list_to_tree]
+    # Subtree of Another Tree
+
+  # === NodeNary Problems ===
+  "0559":
+    tier: "1"
+    io_format: nary_tree_to_int
+    codec_hints: [list_to_nary_tree]
+    # Maximum Depth of N-ary Tree
+
+  "0589":
+    tier: "1"
+    io_format: nary_tree_to_list
+    codec_hints: [list_to_nary_tree]
+    # N-ary Tree Preorder Traversal
+
+  "0590":
+    tier: "1"
+    io_format: nary_tree_to_list
+    codec_hints: [list_to_nary_tree]
+    # N-ary Tree Postorder Traversal
 
   # ---------------------------------------------------------------------------
   # Tier "1.5": Custom adapter needed, explicit inline
@@ -117,11 +270,31 @@ problems:
       random: false
       complexity: false
 
+  # === NodeGraph Problems ===
+  "0133":
+    tier: "1.5"
+    codec_mode: inline
+    inline_reason: "Graph cloning requires node identity tracking"
+    io_format: adjacency_to_adjacency
+    codec_hints: [adjacency_to_graph, graph_to_adjacency]
+    generators:
+      random: false
+      complexity: false
+    # Clone Graph
+
 # =============================================================================
 # Tier "2": Future work (tracking only)
 # =============================================================================
 tier2:
-  - "0133"  # Clone Graph
-  - "0297"  # Serialize and Deserialize Binary Tree
-  - "0430"  # Flatten a Multilevel Doubly Linked List
-  - "0323"  # Number of Connected Components (Graph)
+  - id: "0297"
+    name: "Serialize and Deserialize Binary Tree"
+    reason: "Custom serialization format, needs design-level solution"
+  - id: "0430"
+    name: "Flatten a Multilevel Doubly Linked List"
+    reason: "Multi-level pointer structure with child pointers"
+  - id: "0146"
+    name: "LRU Cache"
+    reason: "Class-based design, not function-based"
+  - id: "0380"
+    name: "Insert Delete GetRandom O(1)"
+    reason: "Class-based design with multiple methods"

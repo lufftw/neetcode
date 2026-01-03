@@ -109,26 +109,77 @@ Update `packages/codegen/core/solve_generator.py`:
 
 ---
 
-## Phase 4: Existing Solutions Migration 🔜
+## Phase 4: From-Scratch Generation Test Plan 🔜
 
-### 4.1 Inventory
+### 4.1 Test Problems (No Existing Solution)
 
-| Problem | Current State | Target State | Action |
-|---------|---------------|--------------|--------|
-| 0002 | Inline codec | Keep inline (handwritten) | None |
-| 0021 | Inline codec | Keep inline (handwritten) | None |
-| 0023 | Inline codec | Keep inline (handwritten) | None |
-| 0025 | Inline codec | Keep inline (handwritten) | None |
-| 0141 | Inline codec | Keep inline (handwritten) | None |
-| 0142 | Inline codec | Keep inline (handwritten) | None |
-| 0206 | — | — | — |
-| 0876 | Inline codec | Keep inline (handwritten) | None |
+These problems will be used to test from-scratch generation:
 
-### 4.2 Migration Rules
+#### Tier-1 ListNode (Value-based I/O)
+| ID | Name | Codec | Status |
+|----|------|-------|--------|
+| 0019 | Remove Nth Node From End | `list_to_linkedlist` | Pending |
+| 0024 | Swap Nodes in Pairs | `list_to_linkedlist` | Pending |
+| 0061 | Rotate List | `list_to_linkedlist` | Pending |
+| 0082 | Remove Duplicates II | `list_to_linkedlist` | Pending |
+| 0083 | Remove Duplicates | `list_to_linkedlist` | Pending |
+| 0203 | Remove List Elements | `list_to_linkedlist` | Pending |
+| 0234 | Palindrome Linked List | `list_to_linkedlist` | Pending |
+| 0328 | Odd Even Linked List | `list_to_linkedlist` | Pending |
 
-1. **Handwritten solutions**: NO automatic changes
-2. **Future generated solutions**: Follow config settings
-3. **Practice generation**: Always use existing solution as source
+#### Tier-1 TreeNode (Value-based I/O)
+| ID | Name | Codec | Status |
+|----|------|-------|--------|
+| 0094 | Inorder Traversal | `list_to_tree` | Pending |
+| 0100 | Same Tree | `list_to_tree` | Pending |
+| 0101 | Symmetric Tree | `list_to_tree` | Pending |
+| 0102 | Level Order Traversal | `list_to_tree` | Pending |
+| 0104 | Maximum Depth | `list_to_tree` | Pending |
+| 0110 | Balanced Binary Tree | `list_to_tree` | Pending |
+| 0111 | Minimum Depth | `list_to_tree` | Pending |
+| 0112 | Path Sum | `list_to_tree` | Pending |
+| 0144 | Preorder Traversal | `list_to_tree` | Pending |
+| 0145 | Postorder Traversal | `list_to_tree` | Pending |
+| 0199 | Right Side View | `list_to_tree` | Pending |
+| 0226 | Invert Binary Tree | `list_to_tree` | Pending |
+| 0543 | Diameter of Binary Tree | `list_to_tree` | Pending |
+| 0572 | Subtree of Another Tree | `list_to_tree` | Pending |
+
+#### Tier-1 NodeNary (Value-based I/O)
+| ID | Name | Codec | Status |
+|----|------|-------|--------|
+| 0559 | Max Depth N-ary Tree | `list_to_nary_tree` | Pending |
+| 0589 | N-ary Preorder | `list_to_nary_tree` | Pending |
+| 0590 | N-ary Postorder | `list_to_nary_tree` | Pending |
+
+#### Tier-1.5 (Semantic I/O)
+| ID | Name | Codec | Status |
+|----|------|-------|--------|
+| 0133 | Clone Graph | `adjacency_to_graph` | Pending |
+| 0138 | Copy List Random Pointer | `build_random_pointer_list` | Pending |
+| 0160 | Intersection of Two Lists | `build_intersecting_lists` | Pending |
+
+### 4.2 Existing Solutions (Protected)
+
+These have handwritten solutions - NO auto-overwrite:
+
+| ID | Name | Status |
+|----|------|--------|
+| 0002 | Add Two Numbers | ✅ Protected |
+| 0021 | Merge Two Sorted Lists | ✅ Protected |
+| 0023 | Merge k Sorted Lists | ✅ Protected |
+| 0025 | Reverse Nodes in k-Group | ✅ Protected |
+| 0141 | Linked List Cycle | ✅ Protected |
+| 0142 | Linked List Cycle II | ✅ Protected |
+| 0206 | Reverse Linked List | ✅ Protected |
+| 0876 | Middle of Linked List | ✅ Protected |
+
+### 4.3 Test Execution Order
+
+1. **Start with simplest**: 0094 (Inorder Traversal), 0104 (Max Depth)
+2. **Progress to LinkedList**: 0083 (Remove Dups), 0206 (Reverse)
+3. **Test semantic I/O**: 0160 (Intersection), 0133 (Clone Graph)
+4. **Validate N-ary**: 0559 (Max Depth N-ary)
 
 ---
 
