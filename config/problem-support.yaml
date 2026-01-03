@@ -1,0 +1,152 @@
+# Problem Support Configuration
+#
+# This file defines the support tier for each problem.
+# Used by codegen to determine auto-generation capabilities.
+#
+# Reference: docs/contracts/problem-support-boundary.md
+#
+# =============================================================================
+# Tier Definitions (整體支援等級)
+# =============================================================================
+# Tier determines OVERALL support, not just generation:
+#   - Parse: Example → .in/.out
+#   - Scaffold: Signature → runnable solve()
+#   - Practice: User fills method → can practice
+#   - Generator: random/complexity support
+#
+#   0   : Fully auto-generatable (signature → I/O derivable)
+#   1   : Needs codec, value-based I/O (auto-generatable with codec)
+#   1.5 : Practice supported, but needs manual adapter/semantics
+#   2   : Not yet supported (design/interactive/multi-op problems)
+#
+# Key insight:
+#   - Tier 0/1/1.5: ALL can practice (scaffold always generated)
+#   - Tier classification is about GENERATION capability, not practice capability
+#   - Solution file is self-contained executable environment
+
+# =============================================================================
+# Defaults for unlisted problems
+# =============================================================================
+defaults:
+  tier: 0
+  codec_mode: inline    # inline | import
+  scaffold: true        # Always generate solve() scaffold
+  golden_tests: true    # Generate tests from Examples
+  practice: true        # Practice template available
+  generators:
+    random: true
+    complexity: true
+
+# =============================================================================
+# Problems with non-default configuration
+# =============================================================================
+# Schema: Single unified map. Each problem can override any default field.
+#
+# Fields:
+#   tier: 0 | 1 | 1.5 | 2
+#   codec_mode: inline | import (how to include codec functions)
+#   io_format: string (key referencing format in docs)
+#   codec_hints: list[string] (codec functions needed)
+#   output_semantic: string (how to compare output)
+#   reason: string (why this tier, for documentation)
+#   generators: { random: bool, complexity: bool }
+
+problems:
+  # ---------------------------------------------------------------------------
+  # Tier-1: Needs codec, value-based I/O (auto-generatable)
+  # ---------------------------------------------------------------------------
+  # These problems need codec for structure building, but I/O is value-based.
+  # Output comparison is by value, not by identity.
+
+  "0002":
+    tier: 1
+    io_format: list_to_list
+    codec_hints: [build_list, list_to_values]
+
+  "0021":
+    tier: 1
+    io_format: two_lists_to_list
+    codec_hints: [build_list, list_to_values]
+
+  "0023":
+    tier: 1
+    io_format: list_of_lists_to_list
+    codec_hints: [build_list, list_to_values]
+
+  "0025":
+    tier: 1
+    io_format: list_int_to_list
+    codec_hints: [build_list, list_to_values]
+
+  "0141":
+    tier: 1
+    io_format: list_with_pos__out_bool
+    codec_hints: [build_list_with_cycle]
+    reason: "Output is bool (value-based), only input needs cycle construction"
+
+  "0206":
+    tier: 1
+    io_format: list_to_list
+    codec_hints: [build_list, list_to_values]
+
+  "0876":
+    tier: 1
+    io_format: list_to_list
+    codec_hints: [build_list, list_to_values]
+    reason: "Output is sublist values, value comparison is sufficient"
+
+  # ---------------------------------------------------------------------------
+  # Tier-1.5: Adapter-required (semantic I/O)
+  # ---------------------------------------------------------------------------
+  # These problems have output semantics that need problem knowledge.
+  # Key: OUTPUT comparison cannot be purely value-based.
+  # 
+  # IMPORTANT: Tier-1.5 can still PRACTICE!
+  #   - solve() scaffold is generated
+  #   - solve() needs manual adapter logic (codec + semantic translation)
+  #   - Solution.method() is TODO for user to implement
+  #
+  # codec_mode: inline is REQUIRED for Tier-1.5 (customization needed)
+
+  "0142":
+    tier: 1.5
+    codec_mode: inline
+    io_format: list_with_pos__out_node_index
+    codec_hints: [build_list_with_cycle, node_to_index]
+    output_semantic: node_ref_index
+    generators:
+      random: false
+      complexity: false
+    reason: "Output is node identity (cycle entry point), not value"
+
+  "0160":
+    tier: 1.5
+    codec_mode: inline
+    io_format: two_lists_with_skips__out_node_value
+    codec_hints: [build_intersecting_lists]
+    output_semantic: node_ref_value
+    generators:
+      random: false
+      complexity: false
+    reason: "Output is shared node identity, not just a value"
+
+  "0138":
+    tier: 1.5
+    codec_mode: inline
+    io_format: random_pointer_list
+    codec_hints: [build_random_pointer_list, encode_random_pointer_list]
+    generators:
+      random: false
+      complexity: false
+    reason: "Multi-pointer structure (next + random)"
+
+# -----------------------------------------------------------------------------
+# Tier-2: Future work (not yet planned)
+# -----------------------------------------------------------------------------
+# Listed here for tracking. No detailed config until we plan to support them.
+
+tier2:
+  - "0133"  # Clone Graph
+  - "0297"  # Serialize and Deserialize Binary Tree
+  - "0430"  # Flatten a Multilevel Doubly Linked List
+  - "0323"  # Number of Connected Components (Graph)
