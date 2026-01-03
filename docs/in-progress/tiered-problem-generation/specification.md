@@ -208,7 +208,7 @@ IF tier == "1.5":
 | Path | Purpose |
 |------|---------|
 | `docs/contracts/problem-support-boundary.md` | Contract (stable rules) |
-| `docs/contracts/catalog-structure.md` | Codec package structure |
+| `docs/contracts/codec.md` | Codec package contract |
 | `config/problem-support.yaml` | Living registry |
 | `runner/utils/codec/` | **Single Source**: Runtime + inline templates |
 | `packages/codegen/core/catalog/` | AST extraction from codec/ |
