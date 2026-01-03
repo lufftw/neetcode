@@ -385,8 +385,8 @@ Our **AI Ontology Analyzer** processes the entire knowledge graph — API Kernel
 
 | Type | Output Path |
 |:-----|:------------|
-| **Evolved** | `docs/mindmaps/neetcode_ontology_agent_evolved_{lang}.md` |
-| **Basic** | `docs/mindmaps/neetcode_ontology_ai_{lang}.md` |
+| **Evolved (Markdown)** | `docs/mindmaps/neetcode-ontology-agent-evolved-{lang}.md` (`{lang}` = `en` or `zh-tw`) |
+| **Basic (Markdown)** | `docs/mindmaps/neetcode-ontology-ai-{lang}.md` (`{lang}` = `en` or `zh-tw`) |
 | **HTML** | `docs/pages/mindmaps/*.html` |
 
 > 📖 **Evolved Agent**: See [`tools/mindmaps/ai-markmap-agent/README.md`](docs/tools/mindmaps/ai-markmap-agent/README.md) for architecture, expert roles, and configuration.
