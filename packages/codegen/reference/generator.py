@@ -174,21 +174,21 @@ def _generate_skeleton_content(
         class_name=stub_info.class_name,
     )
     
-    # 8. Generate helper functions
-    helper_func_code = emit_helper_functions(helper_functions, mode=helper_mode)
-    
-    # 9. Generate solve() function (with potential tiered helpers)
+    # 8. Generate solve() function (with potential tiered helpers)
     solve_result = _generate_solve_function(
         stub_info, config, problem_id=question.frontend_question_id
     )
     
-    # 10. If tiered mode has inline helpers, merge them
+    # 9. Determine helper code
     if solve_result.helper_code:
-        # Inline helpers from tiered generation
-        # They should replace/supplement the detected helpers
+        # Tiered mode with inline helpers replaces all detected helpers
         helpers_code = solve_result.helper_code
+        helper_func_code = ""  # Tiered inline includes all needed functions
+    else:
+        # Standard mode: use detected helper functions
+        helper_func_code = emit_helper_functions(helper_functions, mode=helper_mode)
     
-    # 11. Assemble module
+    # 10. Assemble module
     return assemble_module(
         header=header,
         imports=imports,

@@ -52,8 +52,8 @@ def create_parser() -> argparse.ArgumentParser:
     )
     new_parser.add_argument(
         "--solve-mode",
-        choices=["placeholder", "infer"],
-        help="solve() generation mode (default: placeholder)",
+        choices=["placeholder", "infer", "tiered"],
+        help="solve() generation mode: placeholder (TODO), infer (auto), tiered (config-based)",
     )
     new_parser.add_argument(
         "--dry-run",
