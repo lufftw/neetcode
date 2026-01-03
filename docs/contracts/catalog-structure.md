@@ -2,14 +2,45 @@
 
 > **Status**: Active  
 > **Created**: 2026-01-03  
-> **Purpose**: Define the directory structure and conventions for template catalog
+> **Updated**: 2026-01-03  
+> **Purpose**: Define the codec package structure and AST extraction conventions
 
 ---
 
 ## Overview
 
-The catalog stores reusable code templates (classes and functions) for code generation.
-Directory structure determines dependencies - no configuration needed.
+**Single Source of Truth**: All codec classes and functions live in `runner/utils/codec/`.
+
+The `catalog` module uses **AST extraction** to read code from this package for inline mode.
+No separate templates directory — DRY principle.
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    runner/utils/codec/                       │
+│                  (Single Source of Truth)                    │
+├─────────────────────────────────────────────────────────────┤
+│  classes/          functions/                                │
+│  ├─ list_node.py   ├─ list_node/                            │
+│  ├─ tree_node.py   │  ├─ struct.py    (Tier-1)              │
+│  ├─ node.py        │  └─ semantic.py  (Tier-1.5)            │
+│  ├─ node_graph.py  ├─ tree_node/                            │
+│  ├─ node_nary.py   ├─ node/                                 │
+│  └─ doubly_...py   ├─ node_graph/                           │
+│                    ├─ node_nary/                             │
+│                    └─ doubly_list_node/                      │
+└─────────────────────────────────────────────────────────────┘
+           │                           │
+           ▼                           ▼
+    Import Mode                  Inline Mode
+    ───────────                  ───────────
+    from runner.utils.codec      catalog.get_with_deps()
+    import list_to_tree          → AST extraction
+                                 → Embed in solution
+```
 
 ---
 
@@ -17,57 +48,49 @@ Directory structure determines dependencies - no configuration needed.
 
 | Class | Description | Example Problems |
 |-------|-------------|------------------|
-| **ListNode** | Singly linked list | 2, 19, 21, 23, 24, 25, 61, 82, 83, 86, 92, 141, 142, 143, 146, 160, 203, 206, 234, 237, 328, 445, 725, 876 |
-| **TreeNode** | Binary tree | 94, 98, 100, 101, 102, 103, 104, 105, 108, 110, 111, 112, 114, 124, 144, 145, 199, 226, 230, 235, 236, 257, 297, 543, 572 |
+| **ListNode** | Singly linked list | 2, 19, 21, 23, 24, 25, 61, 82, 83, 86, 92, 141, 142, 143, 160, 203, 206, 234, 328, 876 |
+| **TreeNode** | Binary tree | 94, 98, 100, 101, 102, 104, 105, 108, 110, 111, 112, 144, 145, 199, 226, 543, 572 |
 | **Node** | Random pointer list | 138 (Copy List with Random Pointer) |
-| **NodeGraph** | Graph with neighbors | 133 (Clone Graph), 207, 210, 261, 323, 399, 547 |
-| **NodeNary** | N-ary tree | 429 (N-ary Tree Level Order), 559 (Max Depth of N-ary Tree), 589, 590 |
-| **DoublyListNode** | Doubly linked list | 430 (Flatten Multilevel DLL), 146 (LRU Cache internal) |
+| **NodeGraph** | Graph with neighbors | 133 (Clone Graph), 207, 210, 261, 323 |
+| **NodeNary** | N-ary tree | 429, 559, 589, 590 |
+| **DoublyListNode** | Doubly linked list | 430, 146 (LRU Cache internal) |
 
 ---
 
 ## Directory Structure
 
 ```
-packages/codegen/core/catalog/
-├── __init__.py                      # API (~120 lines)
-└── templates/
-    ├── classes/                     # Base types (no dependencies)
-    │   ├── ListNode.py
-    │   ├── TreeNode.py
-    │   ├── Node.py                  # Random pointer
-    │   ├── NodeGraph.py             # Graph neighbors
-    │   ├── NodeNary.py              # N-ary tree
-    │   └── DoublyListNode.py
-    └── functions/
-        ├── ListNode/
-        │   ├── struct/              # Tier-1
-        │   │   ├── list_to_linkedlist.py
-        │   │   └── linkedlist_to_list.py
-        │   └── semantic/            # Tier-1.5
-        │       ├── build_list_with_cycle.py
-        │       ├── node_to_index.py
-        │       └── build_intersecting_lists.py
-        ├── TreeNode/
-        │   └── struct/
-        │       ├── list_to_tree.py
-        │       └── tree_to_list.py
-        ├── Node/
-        │   └── semantic/
-        │       ├── build_random_pointer_list.py
-        │       └── encode_random_pointer_list.py
-        ├── NodeGraph/
-        │   └── struct/
-        │       ├── adjacency_to_graph.py
-        │       └── graph_to_adjacency.py
-        ├── NodeNary/
-        │   └── struct/
-        │       ├── list_to_nary_tree.py
-        │       └── nary_tree_to_list.py
-        └── DoublyListNode/
-            └── struct/
-                ├── list_to_doubly_linked.py
-                └── doubly_linked_to_list.py
+runner/utils/codec/
+├── __init__.py                      # Re-export all (IDE entry point)
+├── classes/                         # Data structure definitions
+│   ├── __init__.py                  # Re-export classes
+│   ├── list_node.py                 # class ListNode
+│   ├── tree_node.py                 # class TreeNode
+│   ├── node.py                      # class Node (random pointer)
+│   ├── node_graph.py                # class NodeGraph
+│   ├── node_nary.py                 # class NodeNary
+│   └── doubly_list_node.py          # class DoublyListNode
+└── functions/                       # Conversion functions
+    ├── __init__.py                  # Re-export all functions
+    ├── list_node/                   # Depends on ListNode
+    │   ├── __init__.py
+    │   ├── struct.py                # Tier-1: list_to_linkedlist, etc.
+    │   └── semantic.py              # Tier-1.5: build_list_with_cycle, etc.
+    ├── tree_node/                   # Depends on TreeNode
+    │   ├── __init__.py
+    │   └── struct.py                # Tier-1: list_to_tree, tree_to_list
+    ├── node/                        # Depends on Node
+    │   ├── __init__.py
+    │   └── semantic.py              # Tier-1.5: build_random_pointer_list, etc.
+    ├── node_graph/                  # Depends on NodeGraph
+    │   ├── __init__.py
+    │   └── struct.py                # Tier-1: adjacency_to_graph, etc.
+    ├── node_nary/                   # Depends on NodeNary
+    │   ├── __init__.py
+    │   └── struct.py                # Tier-1: list_to_nary_tree, etc.
+    └── doubly_list_node/            # Depends on DoublyListNode
+        ├── __init__.py
+        └── struct.py                # Tier-1: list_to_doubly_linked, etc.
 ```
 
 ---
@@ -97,6 +120,7 @@ packages/codegen/core/catalog/
 |----------|------|-------------|
 | `build_random_pointer_list` | 1.5 | `[[val, idx], ...]` → list with random pointers |
 | `encode_random_pointer_list` | 1.5 | List with random pointers → `[[val, idx], ...]` |
+| `verify_deep_copy` | 1.5 | Verify deep copy has no shared nodes |
 
 ### NodeGraph Functions
 
@@ -121,76 +145,80 @@ packages/codegen/core/catalog/
 
 ---
 
-## Conventions
+## Dependency Resolution
 
-### 1. Dependency Resolution (Priority Order)
+Dependencies are inferred from the **directory structure**:
 
-| Priority | Condition | `depends_on` |
-|----------|-----------|--------------|
-| 1 | File has `TEMPLATE_META["depends_on"]` | Use specified value |
-| 2 | Path is `functions/<ClassName>/...` | `[<ClassName>]` |
-| 3 | Otherwise | `[]` |
+| Path Pattern | Dependency |
+|--------------|------------|
+| `classes/*.py` | None |
+| `functions/list_node/*.py` | `ListNode` |
+| `functions/tree_node/*.py` | `TreeNode` |
+| `functions/node/*.py` | `Node` |
+| `functions/node_graph/*.py` | `NodeGraph` |
+| `functions/node_nary/*.py` | `NodeNary` |
+| `functions/doubly_list_node/*.py` | `DoublyListNode` |
 
-### 2. Tier Inference
+---
+
+## Tier Inference
 
 | Path Pattern | Tier |
 |--------------|------|
 | `classes/*` | base |
-| `functions/*/struct/*` | 1 |
-| `functions/*/semantic/*` | 1.5 |
+| `functions/*/struct.py` | 1 |
+| `functions/*/semantic.py` | 1.5 |
 
-### 3. Template File Format
+---
 
-Templates MUST be **pure definitions** with no imports:
+## Usage
+
+### Import Mode (Runtime)
 
 ```python
-# ✅ CORRECT
-class ListNode:
-    """Singly linked list node."""
-    def __init__(self, val: int = 0, next: 'ListNode' = None):
-        self.val = val
-        self.next = next
+# In solution files
+from runner.utils.codec import list_to_tree, TreeNode
+
+root = list_to_tree([1, 2, 3])
 ```
 
-```python
-# ❌ WRONG (has import)
-from typing import Optional
+**IDE Support**: Go to Definition works — jumps directly to `tree_node.py`.
 
-class ListNode:
-    ...
-```
-
-**Reason**: Templates are pasted directly into generated files.
-
-### 4. Exception Handling (Multi-Dependency)
-
-For rare cases where a function depends on multiple classes, use `TEMPLATE_META`:
+### Inline Mode (Codegen)
 
 ```python
-# templates/functions/ListNode/semantic/some_multi_dep_func.py
+# In packages/codegen
+from packages.codegen.core.catalog import get, get_with_deps
 
-TEMPLATE_META = {"depends_on": ["ListNode", "TreeNode"]}
+# Get single definition
+code = get("ListNode")
 
-def some_multi_dep_func(...):
-    ...
+# Get with dependencies resolved
+code = get_with_deps("build_list_with_cycle")
+# Returns: ListNode class + build_list_with_cycle function
 ```
 
 ---
 
-## API
+## Catalog API
 
 ```python
-from packages.codegen.core.catalog import get, deps, get_with_deps
+from packages.codegen.core.catalog import (
+    get,            # Get single template code
+    deps,           # Get dependency list
+    get_with_deps,  # Get code with all dependencies
+    list_all,       # List all available names
+    list_classes,   # List all class names
+    list_functions, # List all function names
+    tier,           # Get tier for a name
+)
 
-# Get single template
-code = get("ListNode")
-
-# Get dependencies
-deps("build_list_with_cycle")  # → ["ListNode"]
-
-# Get template with all dependencies
-code = get_with_deps("build_list_with_cycle")
-# Returns: ListNode class + build_list_with_cycle function
+# Examples
+get("ListNode")  # Returns class definition
+deps("list_to_tree")  # Returns ["TreeNode"]
+get_with_deps("build_list_with_cycle")  # Returns ListNode + function
+tier("list_to_tree")  # Returns "1"
+tier("node_to_index")  # Returns "1.5"
 ```
 
 ---
@@ -208,35 +236,40 @@ code = get_with_deps("build_list_with_cycle")
     - node_to_index
 ```
 
-**No need to list `ListNode`** - catalog resolves dependencies automatically.
+**No need to list `ListNode`** — catalog resolves dependencies automatically via AST.
 
 ---
 
-## Adding New Templates
+## Adding New Codec
 
 ### Add a new class
 
-1. Create `templates/classes/NewClass.py`
-2. Done (auto-discovered)
+1. Create `runner/utils/codec/classes/new_class.py`
+2. Add to `classes/__init__.py`
+3. Add to `codec/__init__.py`
+4. Done (catalog auto-discovers via AST)
 
-### Add a function depending on existing class
+### Add a function
 
-1. Create `templates/functions/ListNode/struct/new_function.py`
-2. Done (dependency inferred from path)
-
-### Add a function with multiple dependencies
-
-1. Create file in primary dependency folder
-2. Add `TEMPLATE_META = {"depends_on": ["ClassA", "ClassB"]}`
+1. Create directory `runner/utils/codec/functions/new_class/`
+2. Create `struct.py` (Tier-1) or `semantic.py` (Tier-1.5)
+3. Add to `functions/new_class/__init__.py`
+4. Add to `functions/__init__.py`
+5. Add to `codec/__init__.py`
+6. Update `catalog/__init__.py` dependency mapping
+7. Done
 
 ---
 
-## Validation Rules
+## Key Benefits
 
-1. **Unique names**: No two templates can have the same stem name
-2. **Valid Python**: Templates must be syntactically valid
-3. **No imports**: Templates cannot have import statements
-4. **Dependency exists**: `depends_on` must reference existing classes
+| Feature | Benefit |
+|---------|---------|
+| **Single Source** | No sync issues between runtime and inline |
+| **AST Extraction** | Precise code extraction without imports |
+| **Directory Structure** | Dependencies self-documenting |
+| **IDE Support** | Full Go to Definition works |
+| **DRY** | One copy of each function |
 
 ---
 
@@ -245,4 +278,4 @@ code = get_with_deps("build_list_with_cycle")
 | Date | Change |
 |------|--------|
 | 2026-01-03 | Initial contract |
-
+| 2026-01-03 | Refactored: Single source with AST extraction |

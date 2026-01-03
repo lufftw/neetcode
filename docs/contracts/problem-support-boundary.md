@@ -146,7 +146,7 @@ tier: 1.5    # Avoid (YAML float parsing issues)
 
 | Mode | Description | Use Case |
 |------|-------------|----------|
-| `import` | Import from `runner/utils/codec.py` | Standard codec, DRY |
+| `import` | Import from `runner/utils/codec/` | Standard codec, DRY |
 | `inline` | Inline template into solution | Custom adapter, LeetCode-copyable |
 
 ### 4.2 Default

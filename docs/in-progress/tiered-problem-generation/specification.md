@@ -40,7 +40,7 @@ This feature establishes:
 | Item | Decision |
 |------|----------|
 | **tier format** | String `"1.5"` (not number) |
-| **import path** | `runner/utils/codec.py` |
+| **import path** | `runner/utils/codec/` (package) |
 | **inline_reason** | Required when `codec_mode: inline` |
 | **Tier-1.5 codec_mode** | Explicit `codec_mode: inline` (not inherited) |
 | **Tier-1.5 generators** | Default `false` |
@@ -167,7 +167,10 @@ problems:
       complexity: false
 
 tier2:
-  - "0133"  # Clone Graph
+  - id: "0297"
+    name: "Serialize and Deserialize Binary Tree"
+  - id: "0430"
+    name: "Flatten a Multilevel Doubly Linked List"
 ```
 
 ---
@@ -205,9 +208,12 @@ IF tier == "1.5":
 | Path | Purpose |
 |------|---------|
 | `docs/contracts/problem-support-boundary.md` | Contract (stable rules) |
+| `docs/contracts/catalog-structure.md` | Codec package structure |
 | `config/problem-support.yaml` | Living registry |
-| `runner/utils/codec.py` | Runtime codec (for import mode) |
-| `packages/codegen/core/helpers/catalog.py` | Templates (for inline mode) |
+| `runner/utils/codec/` | **Single Source**: Runtime + inline templates |
+| `packages/codegen/core/catalog/` | AST extraction from codec/ |
+| `packages/codegen/core/problem_support.py` | Config reader utility |
+| `packages/codegen/core/tiered_solve_generator.py` | Tiered solve() generation |
 
 ---
 
@@ -215,24 +221,28 @@ IF tier == "1.5":
 
 ### Phase 1: Framework Setup ✅
 - [x] Create `docs/contracts/problem-support-boundary.md`
+- [x] Create `docs/contracts/catalog-structure.md`
 - [x] Create `config/problem-support.yaml`
-- [ ] Update codegen to read config
 
-### Phase 2: Codec Implementation
-- [ ] Create `runner/utils/codec.py` (Tier-1 functions)
-- [ ] Add Tier-1.5 templates to `catalog.py`
-- [ ] Implement `codec_mode` logic in codegen
+### Phase 2: Codec Implementation ✅
+- [x] Create `runner/utils/codec/` package (Single Source of Truth)
+- [x] Implement all 6 classes: ListNode, TreeNode, Node, NodeGraph, NodeNary, DoublyListNode
+- [x] Implement all Tier-1 and Tier-1.5 functions
+- [x] Update `catalog/__init__.py` with AST extraction
 
-### Phase 3: codegen Integration
-- [ ] Read `problem-support.yaml` in codegen
-- [ ] Implement tier-aware scaffold generation
-- [ ] Implement `--force` flag for overwrites
-- [ ] Validate `inline_reason` when `codec_mode: inline`
+### Phase 3: codegen Integration ✅
+- [x] Create `packages/codegen/core/problem_support.py` (config reader)
+- [x] Create `packages/codegen/core/tiered_solve_generator.py`
+- [x] Implement `codec_mode` logic (import vs inline)
+- [x] Add `--solve-mode=tiered` CLI option
+- [x] Add `--codec-mode` CLI option (override config)
+- [x] Auto-detect `has_solution` from filesystem
 
 ### Phase 4: Testing
-- [ ] Test Tier-1 generation (0002, 0021, 0206)
-- [ ] Test Tier-1.5 generation (0142, 0160, 0138)
+- [x] Test Tier-1 generation (0104 Maximum Depth of Binary Tree)
+- [ ] Test Tier-1.5 inline generation (0142)
 - [ ] Test handwritten solution protection
+- [ ] Test practice generation
 
 ---
 
@@ -241,22 +251,22 @@ IF tier == "1.5":
 ### Hard Rules
 - [ ] Handwritten solutions are NOT overwritten without `--force`
 - [ ] `inline_reason` validation fails if missing for inline mode
-- [ ] Tier-1.5 generators default to `false`
+- [x] Tier-1.5 generators default to `false`
 
 ### Tier-1 Generation
-- [ ] `codegen new 2 --with-tests` generates scaffold with import mode
-- [ ] Generated `solve()` uses `from runner.utils.codec import ...`
+- [x] `codegen new 104 --solve-mode=tiered` generates scaffold with import mode
+- [x] Generated `solve()` uses `from runner.utils.codec import ...`
 - [ ] Tests pass with generated scaffold + manual algorithm
 
 ### Tier-1.5 Generation
-- [ ] `codegen new 142 --with-tests` generates scaffold with inline mode
+- [ ] `codegen new 142 --solve-mode=tiered` generates scaffold with inline mode
 - [ ] Generated `solve()` contains inlined codec functions
 - [ ] `inline_reason` is documented in generated file
 
 ### Practice Generation
 - [ ] `codegen practice 142` works with existing solution
-- [ ] Mechanical copy: only `Solution.method()` body is cleared
-- [ ] All infrastructure (solve, judge, helpers) preserved
+- [x] Mechanical copy: only `Solution.method()` body is cleared
+- [x] All infrastructure (solve, judge, helpers) preserved
 
 ---
 
