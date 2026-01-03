@@ -1,29 +1,70 @@
 # Problem Support Boundary
 
-> **Status**: Canonical Reference  
-> **Scope**: Defines system capabilities and boundaries for auto-generation  
+> **Status**: Contract (Stable)  
+> **Scope**: Defines system capabilities, boundaries, and hard rules for problem generation  
 > **Philosophy**: Anti-overengineering — extract patterns from working solutions
 
-This document defines what the system can and cannot auto-generate, and provides clear guidance for problems that require manual implementation.
+This document is a **Contract**: it defines rules that MUST be followed. Changes require review.
+
+For the living registry of per-problem configurations, see `config/problem-support.yaml`.
 
 ---
 
 ## Table of Contents
 
-1. [Core Principles](#1-core-principles)
-2. [Tier Classification](#2-tier-classification)
-3. [I/O Format Registry](#3-io-format-registry)
-4. [Tier-1.5 Problem Registry](#4-tier-15-problem-registry)
-5. [Tier-1 Problem Notes](#5-tier-1-problem-notes)
-6. [Codec Utilities](#6-codec-utilities)
-7. [Evolution Strategy](#7-evolution-strategy)
+1. [Hard Rules](#1-hard-rules)
+2. [Core Principles](#2-core-principles)
+3. [Tier Classification](#3-tier-classification)
+4. [Codec Mode Policy](#4-codec-mode-policy)
+5. [Canonical Semantics](#5-canonical-semantics)
+6. [I/O Format Registry](#6-io-format-registry)
+7. [Representative Examples](#7-representative-examples)
 8. [FAQ](#8-faq)
 
 ---
 
-## 1. Core Principles
+## 1. Hard Rules
 
-### 1.1 Judge is Semantic-Free
+These rules MUST NOT be violated.
+
+### Rule 1: Handwritten Solution Protection
+
+```
+IF solutions/{id}_{slug}.py EXISTS AND is_handwritten:
+    codegen MUST NOT overwrite without explicit --force flag
+    codegen MUST warn user before any modification
+```
+
+**Rationale**: Protect human effort. Auto-generation should never destroy manual work.
+
+### Rule 2: inline_reason Required for Inline Mode
+
+```
+IF codec_mode == "inline":
+    inline_reason MUST be non-empty string
+```
+
+**Rationale**: Force documentation of why inline is needed. Prevents accidental inline.
+
+### Rule 3: Tier-1.5 Generators Default Off
+
+```
+IF tier == "1.5":
+    generators.random DEFAULT false
+    generators.complexity DEFAULT false
+```
+
+**Rationale**: Tier-1.5 problems have complex semantics; random generation is risky.
+
+### Rule 4: Canonical Semantics (see Section 5)
+
+All codec implementations MUST follow canonical semantics. No exceptions.
+
+---
+
+## 2. Core Principles
+
+### 2.1 Judge is Semantic-Free
 
 Judge MUST NOT contain problem-specific logic.
 
@@ -33,136 +74,183 @@ Judge MUST NOT contain problem-specific logic.
 | Float tolerance (configurable) | Have `if problem_id == X` branches |
 | Order-independent comparison (flagged) | Implement problem-specific comparison |
 
-**Rationale**: If judge knows problem semantics, it becomes unmaintainable:
-```python
-# ❌ This is the path to madness
-if problem_id == 142:
-    compare_cycle_entry()
-elif problem_id == 160:
-    compare_shared_node()
-```
+### 2.2 solve() is the Adapter
 
-### 1.2 solve() is the Adapter
-
-For problems where I/O semantics cannot be derived from signature alone, the `solve()` function serves as the **adapter** between:
-
-- **Simple `.in/.out` format** — Human-friendly, Example-derivable
+The `solve()` function adapts between:
+- **Simple `.in/.out`** — Human-friendly, Example-derivable
 - **LeetCode structures** — ListNode, TreeNode, cycles, shared nodes
 
 ```
-.in/.out (simple)  ──→  solve()  ──→  Solution class
+.in/.out (simple)  ──→  solve()  ──→  Solution.method()
                          ↓
                     codec utilities
 ```
 
-### 1.3 Anti-Overengineering
+### 2.3 Solution = Self-Contained Executable Environment
+
+A solution file contains everything needed for practice generation:
+
+| Component | Purpose | Practice Generation |
+|-----------|---------|---------------------|
+| `solve()` | I/O translation | ✅ Keep as-is |
+| `JUDGE_FUNC` | Comparison semantics | ✅ Keep as-is |
+| `ListNode` etc. | Data structures | ✅ Keep as-is |
+| `Solution.method()` | Algorithm | ❌ Clear body → TODO |
+
+> **Practice generation is mechanical**: copy + clear method body.
+
+### 2.4 Anti-Overengineering
 
 > **Extract patterns from working solutions. Don't design universal systems upfront.**
 
-The evolution path:
+Evolution path:
 1. Write working `solve()` for complex problems
-2. Identify common patterns across solutions
-3. Extract patterns into codec utilities
+2. Identify common patterns
+3. Extract into codec utilities
 4. Update tier classification
 
 ---
 
-## 2. Tier Classification
+## 3. Tier Classification
 
-| Tier | Definition | Auto solve()? | Auto tests? | Example |
-|------|------------|---------------|-------------|---------|
-| **Tier-0** | Signature → I/O fully derivable | ✅ | ✅ | Two Sum |
-| **Tier-1** | Needs codec, value-based I/O | ✅ | ✅ | Add Two Numbers |
-| **Tier-1.5** | I/O semantics require problem knowledge | ❌ | ✅ | Cycle II |
-| **Tier-2** | Complex structures (future) | ❌ | ❌ | Clone Graph |
+**Tier = Overall support level (not just generation)**
 
-### 2.1 Tier-0: Fully Derivable
+| Tier | Definition | Scaffold | Practice | Generator |
+|------|------------|----------|----------|-----------|
+| **"0"** | Signature → I/O derivable | ✅ auto | ✅ | ✅ |
+| **"1"** | Needs codec, value-based I/O | ✅ auto | ✅ | ✅ |
+| **"1.5"** | I/O semantics need problem knowledge | ✅ scaffold | ✅ | ⚠️ manual |
+| **"2"** | Complex structures (future) | ❌ | ❌ | ❌ |
 
-The I/O format can be completely derived from the method signature.
+### Key Insights
 
-**Supported types**:
-- Scalars: `int`, `float`, `bool`, `str`
-- Arrays: `List[int]`, `List[str]`, `List[List[int]]`
-- No pointer structures
+- **Tier "0"/"1"/"1.5"**: ALL can practice (scaffold always generated)
+- **Tier classification**: About GENERATION capability, not practice capability
+- **Solution file is scaffold**: Does not mean "already solved"
+- **Practice does not depend on existing solutions**
 
-**Example**: Two Sum
-```python
-def twoSum(nums: List[int], target: int) -> List[int]:
+### Tier Format in Config
+
+Use **string** format for tier values:
+
+```yaml
+tier: "1.5"  # Correct
+tier: 1.5    # Avoid (YAML float parsing issues)
 ```
-→ Input: array + int, Output: array
-
-### 2.2 Tier-1: Value-Based I/O
-
-Requires codec to build/serialize structures, but I/O is purely value-based.
-
-**Supported types**:
-- `ListNode` (no cycles, value comparison)
-- `TreeNode` (level-order, value comparison)
-
-**Example**: Add Two Numbers
-```python
-def addTwoNumbers(l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-```
-→ Input: two value arrays, Output: value array
-
-### 2.3 Tier-1.5: Problem-Specific Semantics
-
-> **Tier-1.5 = I/O 語義無法由 signature + value alone 決定**
-
-This is NOT a system failure — it's an inherent property of the problem.
-
-**Characteristics**:
-- Output is node **identity** (not value)
-- Input requires auxiliary construction parameters
-- Comparison requires problem knowledge
-
-**Examples**: 0142, 0160, 0138, 0876
-
-### 2.4 Tier-2: Future Work
-
-Complex structures not yet planned for support.
-
-**Examples**: Graph clone, serialize/deserialize, multi-level lists
 
 ---
 
-## 3. I/O Format Registry
+## 4. Codec Mode Policy
 
-Config uses `io_format` keys to reference these canonical definitions.
-This prevents config drift and keeps format rules in one place.
+### 4.1 Two Modes
 
-### 3.1 Tier-1 Formats (Value-Based I/O)
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| `import` | Import from `runner/utils/codec.py` | Standard codec, DRY |
+| `inline` | Inline template into solution | Custom adapter, LeetCode-copyable |
 
-| io_format | Input | Output | Example Problem |
-|-----------|-------|--------|-----------------|
-| `list_to_list` | `[values]` | `[values]` | 0002, 0206, 0876 |
-| `two_lists_to_list` | `[list1]` `[list2]` | `[values]` | 0021 |
-| `list_of_lists_to_list` | `[[l1],[l2],...]` | `[values]` | 0023 |
-| `list_int_to_list` | `[values]` `int` | `[values]` | 0025 |
-| `list_with_pos__out_bool` | `[values]` `pos` | `true/false` | 0141 |
+### 4.2 Default
 
-### 3.2 Tier-1.5 Formats (Semantic I/O)
+```yaml
+defaults:
+  codec_mode: import
+```
+
+### 4.3 When to Use Inline (Hard Rules)
+
+`codec_mode: inline` is REQUIRED when:
+
+| # | Condition | Example |
+|---|-----------|---------|
+| 1 | **Custom adapter needed** (semantic translation) | 0142: `node_to_index` |
+| 2 | **Custom JUDGE_FUNC needed** | 0138: deep copy verification |
+| 3 | **LeetCode copy-paste required** | User request |
+
+### 4.4 Config Schema
+
+```yaml
+"0142":
+  tier: "1.5"
+  codec_mode: inline                    # Explicit (not inherited)
+  inline_reason: "Output is node identity, needs node_to_index adapter"
+  codec_hints: [build_list_with_cycle, node_to_index]
+```
+
+### 4.5 Import Path
+
+When `codec_mode: import`:
+
+```python
+from runner.utils.codec import list_to_linkedlist, linkedlist_to_list
+```
+
+---
+
+## 5. Canonical Semantics
+
+These semantics are **non-negotiable**. All implementations MUST follow.
+
+### 5.1 Index Base
+
+| Item | Canonical Value |
+|------|-----------------|
+| `node_to_index` | **0-based** |
+| `pos` (cycle position) | **0-based** |
+| Array indices | **0-based** |
+
+### 5.2 No-Result Representation
+
+| Situation | Canonical Value | Type |
+|-----------|-----------------|------|
+| No cycle found | `-1` | `int` |
+| No intersection | `-1` | `int` |
+| Null node | `-1` or `null` (context-dependent) | `int` or `null` |
+
+### 5.3 Boolean Output
+
+| Value | Canonical Format |
+|-------|------------------|
+| True | `true` (JSON lowercase) |
+| False | `false` (JSON lowercase) |
+
+---
+
+## 6. I/O Format Registry
+
+Config uses `io_format` keys to reference these definitions.
+
+### 6.1 Tier-1 Formats (Value-Based)
+
+| io_format | Input | Output |
+|-----------|-------|--------|
+| `list_to_list` | `[values]` | `[values]` |
+| `two_lists_to_list` | `[list1]` `[list2]` | `[values]` |
+| `list_of_lists_to_list` | `[[l1],[l2],...]` | `[values]` |
+| `list_int_to_list` | `[values]` `int` | `[values]` |
+| `list_with_pos__out_bool` | `[values]` `pos` | `true/false` |
+
+### 6.2 Tier-1.5 Formats (Semantic)
 
 | io_format | Input | Output | Semantic |
 |-----------|-------|--------|----------|
-| `list_with_pos__out_node_index` | `[values]` `pos` | `index` or `null` | Node identity |
-| `two_lists_with_skips__out_node_value` | `[listA]` `[listB]` `skipA` `skipB` | `value` or `null` | Shared node |
+| `list_with_pos__out_node_index` | `[values]` `pos` | `index` or `-1` | Node identity |
+| `two_lists_with_skips__out_node_value` | `[listA]` `[listB]` `skipA` `skipB` | `value` or `-1` | Shared node |
 | `random_pointer_list` | `[[val,rand],...]` | `[[val,rand],...]` | Deep copy |
 
 ---
 
-## 4. Tier-1.5 Problem Registry
+## 7. Representative Examples
 
-> **Key Insight**: Tier-1.5 is defined by **output semantic needing problem knowledge**,  
-> NOT by "input needs special construction".
+These examples illustrate how the rules apply. For the complete registry, see `config/problem-support.yaml`.
 
-### 0142 — Linked List Cycle II
+### 7.1 Tier-1.5 Example: 0142 Linked List Cycle II
 
 | Aspect | Detail |
 |--------|--------|
-| **Reason** | Output is node identity (cycle entry point) |
+| **Tier** | `"1.5"` |
+| **codec_mode** | `inline` |
+| **inline_reason** | Output is node identity (cycle entry), needs `node_to_index` |
 | **io_format** | `list_with_pos__out_node_index` |
-| **output_semantic** | `node_ref_index` |
 
 **.in/.out**:
 ```
@@ -173,38 +261,13 @@ This prevents config drift and keeps format rules in one place.
 1
 ```
 
-**Comparison**: Check if returned node index matches expected.
-
----
-
-### 0160 — Intersection of Two Linked Lists
+### 7.2 Tier-1.5 Example: 0138 Copy List with Random Pointer
 
 | Aspect | Detail |
 |--------|--------|
-| **Reason** | Output is shared node identity |
-| **io_format** | `two_lists_with_skips__out_node_value` |
-| **output_semantic** | `node_ref_value` |
-
-**.in/.out** (matches LeetCode Example format):
-```
-[4,1,8,4,5]
-[5,6,1,8,4,5]
-2
-3
-
-# .out
-8
-```
-
-**Comparison**: Check if returned node's value matches, or `null`.
-
----
-
-### 0138 — Copy List with Random Pointer
-
-| Aspect | Detail |
-|--------|--------|
-| **Reason** | Multi-pointer structure (next + random) |
+| **Tier** | `"1.5"` |
+| **codec_mode** | `inline` |
+| **inline_reason** | Multi-pointer structure + deep copy verification |
 | **io_format** | `random_pointer_list` |
 
 **.in/.out**:
@@ -215,114 +278,27 @@ This prevents config drift and keeps format rules in one place.
 [[7,null],[13,0],[11,4],[10,2],[1,0]]
 ```
 
-**Comparison**: Deep copy structure matches.
-
----
-
-## 5. Tier-1 Problem Notes
-
-These problems are **fully auto-generatable** with codec support.
-
-### 0141 — Linked List Cycle (Tier-1, NOT Tier-1.5)
-
-| Aspect | Detail |
-|--------|--------|
-| **io_format** | `list_with_pos__out_bool` |
-| **Why Tier-1** | Output is `bool` (value-based comparison) |
-
-Input needs cycle construction, but output comparison is trivial.
-
-### 0876 — Middle of the Linked List (Tier-1)
-
-| Aspect | Detail |
-|--------|--------|
-| **io_format** | `list_to_list` |
-| **Why Tier-1** | Output is value array, not node identity |
-
-LeetCode displays `[3,4,5]` which is the values from middle node onward.
-Value comparison is sufficient.
-
----
-
-## 6. Codec Utilities
-
-### 4.1 Available (Tier-1)
-
-| Function | Signature | Purpose |
-|----------|-----------|---------|
-| `build_list` | `(List[int]) → ListNode` | Array to linked list |
-| `list_to_values` | `(ListNode) → List[int]` | Linked list to array |
-| `build_tree` | `(List[Optional[int]]) → TreeNode` | Level-order to tree |
-| `tree_to_values` | `(TreeNode) → List[Optional[int]]` | Tree to level-order |
-
-### 4.2 To Be Extracted (Tier-1.5)
-
-These will be added as manual solutions are written:
-
-| Function | Source Problem | Status |
-|----------|----------------|--------|
-| `build_list_with_cycle` | 0141, 0142 | 🔜 Planned |
-| `build_intersecting_lists` | 0160 | 🔜 Planned |
-| `build_random_pointer_list` | 0138 | 🔜 Planned |
-| `encode_random_pointer_list` | 0138 | 🔜 Planned |
-
----
-
-## 7. Evolution Strategy
-
-### 5.1 Adding New Problem Support
-
-```
-Step 1: Classify the problem (Tier-0/1/1.5/2)
-Step 2: If Tier-1.5, add to config/problem-support.yaml
-Step 3: Write manual solve() with appropriate codec
-Step 4: After pattern emerges, extract to codec utilities
-Step 5: Update tier classification if now auto-generatable
-```
-
-### 5.2 Promoting Tier-1.5 → Tier-1
-
-When a pattern becomes common enough:
-
-1. Ensure codec utility exists and is tested
-2. Update `solve_generator.py` to use the codec
-3. Move problem from `tier1_5` to `tier1` in config
-4. Update this document
-
-### 5.3 Config File: `config/problem-support.yaml`
-
-```yaml
-tier1:
-  - "0002"
-  - "0021"
-
-tier1_5:
-  "0142":
-    reason: "Output is node identity"
-    codec_hints: ["build_list_with_cycle"]
-```
-
 ---
 
 ## 8. FAQ
 
-### Q: Why not use a universal graph format for everything?
+### Q: Why not use a universal graph format?
 
-**A**: Premature abstraction. We don't know what patterns will emerge until we write real solutions. A universal format adds complexity without proven benefit.
+**A**: Premature abstraction. We extract patterns from working solutions, not design upfront.
 
-### Q: Can I write my own solve() for a Tier-0 problem?
+### Q: Can I write custom solve() for a Tier-0 problem?
 
-**A**: Yes. The tier system defines what the system **can** auto-generate, not what you **must** use. Custom `solve()` always takes precedence.
+**A**: Yes. Tier defines what the system CAN auto-generate, not what you MUST use.
 
 ### Q: How do I know if a problem is Tier-1.5?
 
-**A**: Ask: "Can the I/O format be derived from the signature and values alone?"
-- If yes → Tier-0 or Tier-1
-- If no (needs problem-specific knowledge) → Tier-1.5
+**A**: Ask: "Can the I/O format be derived from signature and values alone?"
+- Yes → Tier-0 or Tier-1
+- No (needs problem knowledge) → Tier-1.5
 
-### Q: What if my solve() pattern is useful for other problems?
+### Q: What if codec_mode is not specified for Tier-1.5?
 
-**A**: Great! Extract it to `runner/utils/codec.py` and update this document.
+**A**: Config validation SHOULD warn. Tier-1.5 typically needs `inline`, and `inline_reason` is required.
 
 ---
 
@@ -330,9 +306,9 @@ tier1_5:
 
 | Document | Purpose |
 |----------|---------|
+| `config/problem-support.yaml` | Living registry of per-problem config |
 | [test-file-format.md](./test-file-format.md) | .in/.out format specification |
 | [solution-contract.md](./solution-contract.md) | solve() function requirements |
-| [generator-contract.md](./generator-contract.md) | Generator requirements |
 
 ---
 
@@ -341,4 +317,4 @@ tier1_5:
 | Date | Change |
 |------|--------|
 | 2026-01-03 | Initial version |
-
+| 2026-01-03 | Refactored as Contract; added Hard Rules, Canonical Semantics |
