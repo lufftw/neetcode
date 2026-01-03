@@ -218,6 +218,12 @@ problems:
     # Subtree of Another Tree
 
   # === NodeNary Problems ===
+  "0429":
+    tier: "1"
+    io_format: nary_tree_to_list_of_lists
+    codec_hints: [list_to_nary_tree]
+    # N-ary Tree Level Order Traversal
+
   "0559":
     tier: "1"
     io_format: nary_tree_to_int

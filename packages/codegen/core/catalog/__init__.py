@@ -145,6 +145,9 @@ def deps(name: str) -> List[str]:
                 "list_node": "ListNode",
                 "tree_node": "TreeNode",
                 "node": "Node",
+                "node_graph": "NodeGraph",
+                "node_nary": "NodeNary",
+                "doubly_list_node": "DoublyListNode",
             }
             
             if dep_dir in dir_to_class:
@@ -253,6 +256,9 @@ def get_helpers_for_class(class_name: str) -> List[str]:
         "ListNode": "list_node",
         "TreeNode": "tree_node",
         "Node": "node",
+        "NodeGraph": "node_graph",
+        "NodeNary": "node_nary",
+        "DoublyListNode": "doubly_list_node",
     }
     
     dir_name = class_to_dir.get(class_name)
