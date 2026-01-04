@@ -22,6 +22,13 @@ import argparse
 import sys
 from pathlib import Path
 
+# Fix Windows encoding for Unicode output (cp950 can't handle emojis)
+if sys.platform == "win32":
+    import io
+    # Force UTF-8 encoding for stdout/stderr
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
 # Add local src to path for agent-specific imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 

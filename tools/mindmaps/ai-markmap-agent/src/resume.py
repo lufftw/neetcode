@@ -26,14 +26,24 @@ class RunInfo:
         self.files = self._scan_files()
     
     def _parse_timestamp(self) -> datetime | None:
-        """Parse timestamp from run_id (run_YYYYMMDD_HHMMSS)."""
+        """Parse timestamp from run_id (run_YYYYMMDD_HHMMSS or run-YYYYMMDD-HHMMSS)."""
         try:
-            parts = self.run_id.split("_")
-            if len(parts) >= 3:
-                date_str = parts[1]  # YYYYMMDD
-                time_str = parts[2]  # HHMMSS
-                dt_str = f"{date_str}_{time_str}"
-                return datetime.strptime(dt_str, "%Y%m%d_%H%M%S")
+            # Try dash format first (current format: run-YYYYMMDD-HHMMSS)
+            if self.run_id.startswith("run-"):
+                parts = self.run_id.split("-")
+                if len(parts) >= 3:
+                    date_str = parts[1]  # YYYYMMDD
+                    time_str = parts[2]  # HHMMSS
+                    dt_str = f"{date_str}_{time_str}"
+                    return datetime.strptime(dt_str, "%Y%m%d_%H%M%S")
+            else:
+                # Fallback to underscore format (old format: run_YYYYMMDD_HHMMSS)
+                parts = self.run_id.split("_")
+                if len(parts) >= 3:
+                    date_str = parts[1]  # YYYYMMDD
+                    time_str = parts[2]  # HHMMSS
+                    dt_str = f"{date_str}_{time_str}"
+                    return datetime.strptime(dt_str, "%Y%m%d_%H%M%S")
         except (ValueError, IndexError):
             pass
         return None
@@ -139,8 +149,11 @@ def scan_previous_runs(debug_output_dir: Path) -> list[RunInfo]:
     
     runs = []
     for item in debug_output_dir.iterdir():
-        if item.is_dir() and item.name.startswith("run_") and not item.name.endswith("_regen_"):
+        # Support both formats: run_YYYYMMDD_HHMMSS (old) and run-YYYYMMDD-HHMMSS (current)
+        if item.is_dir() and (item.name.startswith("run_") or item.name.startswith("run-")):
             # Skip regeneration runs (they will be handled separately)
+            if "_regen_" in item.name or "-regen-" in item.name:
+                continue
             runs.append(RunInfo(item))
     
     # Sort by timestamp (oldest first) - so newest prints at the bottom
