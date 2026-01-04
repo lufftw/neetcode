@@ -214,7 +214,20 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Install main project packages (required for post-processing)
+# This makes leetcode_datasource available for link normalization
+pip install -e ../../../
 ```
+
+!!! warning "Post-processing requires main project packages"
+    The post-processing phase uses `leetcode_datasource` to normalize LeetCode problem links.
+    If you see `ModuleNotFoundError: No module named 'leetcode_datasource'`, run:
+    
+    ```bash
+    # From ai-markmap-agent directory, with venv activated
+    pip install -e ../../../
+    ```
 
 ---
 

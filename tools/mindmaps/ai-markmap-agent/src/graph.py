@@ -338,7 +338,8 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             # Initialize debug output manager with new regen directory
             original_run_id = resume_run_dir.name
             new_run_id = generate_regen_run_id(original_run_id)
-            debug_output_dir = Path(__file__).parent.parent.parent / "outputs" / "debug"
+            # Path: src/graph.py -> src/ -> ai-markmap-agent/ -> outputs/debug/
+            debug_output_dir = Path(__file__).parent.parent / "outputs" / "debug"
             new_run_dir = debug_output_dir / new_run_id
             reset_debug_manager()
             debug = get_debug_manager(config, run_dir=str(new_run_dir))
