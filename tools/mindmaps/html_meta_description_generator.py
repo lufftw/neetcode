@@ -26,13 +26,14 @@ except ImportError:
     print("Error: openai package not installed. Run: pip install openai")
     sys.exit(1)
 
-# Handle both module import and direct script execution
-_script_dir = Path(__file__).resolve().parent
-if str(_script_dir.parent) not in sys.path:
-    sys.path.insert(0, str(_script_dir.parent))
+# Add tools/ to Python path so mindmaps module can be imported
+SCRIPT_DIR = Path(__file__).parent
+TOOLS_DIR = SCRIPT_DIR.parent
+if str(TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIR))
 
-from tools.mindmaps.config import PROJECT_ROOT, META_DESCRIPTIONS_DIR
-from tools.mindmaps.toml_parser import parse_toml_simple
+from mindmaps.config import PROJECT_ROOT, META_DESCRIPTIONS_DIR
+from mindmaps.toml_parser import parse_toml_simple
 
 
 CONFIG_FILE = Path(__file__).resolve().parent / "html_meta_description_generator.toml"

@@ -13,6 +13,16 @@ Modules:
 - html_generator: HTML generation from markdown
 """
 
+import sys
+from pathlib import Path
+
+# Add tools/ to Python path so mindmaps module can be imported
+# This ensures that when ai_mindmap modules import from mindmaps, it works
+MODULE_DIR = Path(__file__).parent
+TOOLS_DIR = MODULE_DIR.parent.parent
+if str(TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIR))
+
 from .config import (
     load_config,
     get_model_config,

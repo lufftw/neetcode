@@ -9,9 +9,11 @@ outside of code blocks into Markmap tree structures.
 import sys
 from pathlib import Path
 
-# Add tools directory to path
-TOOLS_DIR = Path(__file__).parent
-sys.path.insert(0, str(TOOLS_DIR))
+# Add tools/ to Python path so mindmaps module can be imported
+SCRIPT_DIR = Path(__file__).parent
+TOOLS_DIR = SCRIPT_DIR.parent
+if str(TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIR))
 
 from mindmaps.helpers import convert_tables_in_markmap
 
