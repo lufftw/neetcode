@@ -21,7 +21,7 @@ except ImportError:
 # Type aliases
 HeaderLevel = Literal["minimal", "standard", "full"]
 HelperMode = Literal["inline", "import", "none"]
-SolveMode = Literal["placeholder", "infer"]
+SolveMode = Literal["placeholder", "infer", "tiered"]
 MultiSolutionMode = Literal["single", "all"]
 
 

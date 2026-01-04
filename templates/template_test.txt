@@ -15,11 +15,12 @@
 # ============================================
 # .in file format example (Two Sum)
 # ============================================
-# Line 1: nums array (comma separated)
-# Line 2: target number
+# Canonical test format: JSON literal, one value per line
+# Line 1: nums array (JSON)
+# Line 2: target number (JSON)
 #
 # Example:
-# 2,7,11,15
+# [2,7,11,15]
 # 9
 #
 # ============================================
@@ -28,12 +29,12 @@
 # The expected output from your program
 #
 # Example:
-# [0, 1]
+# [0,1]
 #
 # ============================================
 # Tips:
 # - Input format is defined by your solve() function
 # - Output format must match your print() result exactly
-# - Whitespace and newlines are normalized automatically
+# - Prefer printing JSON with `json.dumps(..., separators=(',', ':'))` for stable diffs
 # - Files must use LF line endings (Unix format)
 # ============================================

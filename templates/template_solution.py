@@ -38,12 +38,14 @@ def solve():
     Parse input from stdin, call Solution, print output.
     """
     import sys
+    import json
     data = sys.stdin.read().strip().split('\n')
     
     # TODO: Parse input according to problem format
     # Example for Two Sum:
-    # nums = list(map(int, data[0].split(',')))
-    # target = int(data[1])
+    # Canonical test format: JSON literal, one value per line
+    # nums = json.loads(data[0])
+    # target = json.loads(data[1])
     
     # Get solver instance (auto-selects based on SOLUTION_METHOD env var)
     solver = get_solver(SOLUTIONS)
@@ -52,7 +54,7 @@ def solve():
     # result = solver.solve(...)  # TODO: Change to actual method name
     
     # TODO: Print the result
-    # print(result)
+    # print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":

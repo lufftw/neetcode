@@ -1,4 +1,5 @@
 {
+    "python.languageServer": "Pylance",
     "python.defaultInterpreterPath": "${workspaceFolder}/leetcode/Scripts/python.exe",
     "[linux]": {
         "python.defaultInterpreterPath": "${workspaceFolder}/leetcode/bin/python"

@@ -28,6 +28,8 @@ from ..core.assemble import (
 )
 from ..core.io_schema import infer_io_schema
 from ..core.solve_generator import generate_solve_function
+from ..core.tiered_solve_generator import generate_tiered_solve
+from ..core.problem_support import load_problem_config, get_tier
 
 
 class ReferenceGenerationResult:
@@ -54,6 +56,7 @@ def generate_reference_skeleton(
     config: Optional[CodeGenConfig] = None,
     dry_run: bool = False,
     header_level: Optional[HeaderLevel] = None,
+    codec_mode_override: Optional[str] = None,
 ) -> ReferenceGenerationResult:
     """
     Generate reference skeleton for a LeetCode problem.
@@ -105,7 +108,7 @@ def generate_reference_skeleton(
         )
     
     # Generate skeleton content
-    content = _generate_skeleton_content(question, config)
+    content = _generate_skeleton_content(question, config, codec_mode_override=codec_mode_override)
     
     if dry_run:
         return ReferenceGenerationResult(
@@ -137,6 +140,7 @@ def generate_reference_skeleton(
 def _generate_skeleton_content(
     question: Question,
     config: CodeGenConfig,
+    codec_mode_override: Optional[str] = None,
 ) -> str:
     """Generate the skeleton file content."""
     
@@ -173,11 +177,24 @@ def _generate_skeleton_content(
         class_name=stub_info.class_name,
     )
     
-    # 8. Generate helper functions
-    helper_func_code = emit_helper_functions(helper_functions, mode=helper_mode)
+    # 8. Generate solve() function (with potential tiered helpers)
+    solve_result = _generate_solve_function(
+        stub_info, config, problem_id=question.frontend_question_id, codec_mode_override=codec_mode_override
+    )
     
-    # 9. Generate solve() function
-    solve_fn = _generate_solve_function(stub_info, config)
+    # 9. Determine helper code and imports
+    if solve_result.helper_code:
+        # Tiered inline mode: embed all codec functions (including classes)
+        helpers_code = solve_result.helper_code
+        helper_func_code = ""  # Tiered inline includes all needed functions
+    elif solve_result.codec_import:
+        # Tiered import mode: import everything from codec (classes + functions)
+        imports = imports.rstrip() + "\n" + solve_result.codec_import
+        helpers_code = ""  # Classes imported from codec, no local definition
+        helper_func_code = ""  # Functions imported from codec
+    else:
+        # Standard mode: use detected helper functions
+        helper_func_code = emit_helper_functions(helper_functions, mode=helper_mode)
     
     # 10. Assemble module
     return assemble_module(
@@ -188,31 +205,83 @@ def _generate_skeleton_content(
         solutions_dict=solutions_dict,
         solution_classes=solution_class,
         helper_functions=helper_func_code,
-        solve_fn=solve_fn,
+        solve_fn=solve_result.solve_code,
     )
+
+
+class TieredSolveResult:
+    """Result from tiered solve generation."""
+    def __init__(self, solve_code: str, helper_code: str = "", codec_import: str = "", tier: str = "0"):
+        self.solve_code = solve_code
+        self.helper_code = helper_code
+        self.codec_import = codec_import
+        self.tier = tier
 
 
 def _generate_solve_function(
     stub_info,
     config: CodeGenConfig,
-) -> str:
+    problem_id: int = None,
+    codec_mode_override: Optional[str] = None,
+) -> TieredSolveResult:
     """
     Generate the solve() function based on config.
     
     Modes:
         - "placeholder": Old-style placeholder with TODOs
         - "infer": Use solve_generator to auto-generate based on IO schema
+        - "tiered": Use tiered solve generator with problem config
+    
+    Auto-detection:
+        - If problem_id is provided and problem has tier "1" or "1.5" in config,
+          automatically use tiered mode regardless of solve_mode setting.
+        - This ensures Tier-1/1.5 problems always get proper codec support.
     """
     method_name = stub_info.method_name
     
+    # Auto-detect tiered mode: if problem has tier 1 or 1.5, use tiered generator
+    if problem_id:
+        try:
+            tier = get_tier(str(problem_id).zfill(4))
+            if tier in ("1", "1.5"):
+                # Auto-use tiered mode for Tier-1/1.5 problems
+                result = generate_tiered_solve(
+                    stub_info,
+                    str(problem_id).zfill(4),
+                    codec_mode_override=codec_mode_override,
+                )
+                return TieredSolveResult(
+                    solve_code=result.solve_code,
+                    helper_code=result.helper_code,
+                    codec_import=result.codec_import,
+                    tier=result.tier,
+                )
+        except Exception:
+            # If config lookup fails, fall through to manual mode selection
+            pass
+    
     # Check config for solve_mode
     solve_mode = getattr(config, 'solve_mode', 'placeholder')
+    
+    if solve_mode == "tiered" and problem_id:
+        # Use tiered solve generator
+        result = generate_tiered_solve(
+            stub_info,
+            str(problem_id).zfill(4),
+            codec_mode_override=codec_mode_override,
+        )
+        return TieredSolveResult(
+            solve_code=result.solve_code,
+            helper_code=result.helper_code,
+            codec_import=result.codec_import,
+            tier=result.tier,
+        )
     
     if solve_mode == "infer":
         # Use new solve_generator with IO schema inference
         io_schema = infer_io_schema(stub_info)
         result = generate_solve_function(stub_info, io_schema)
-        return result.code
+        return TieredSolveResult(solve_code=result.code)
     
     # Default: placeholder mode (backwards compatible)
     param_names = [name for name, _ in stub_info.params]
@@ -224,7 +293,7 @@ def _generate_solve_function(
         parse_comment = "# No parameters to parse"
         call_code = f"# result = solver.{method_name}()"
     
-    return assemble_solve_function(
+    solve_code = assemble_solve_function(
         method_name=method_name,
         input_format="TODO: Define based on problem",
         example_input="TODO: Add example from problem description",
@@ -232,6 +301,7 @@ def _generate_solve_function(
         call_code=call_code,
         output_format="# print(result)",
     )
+    return TieredSolveResult(solve_code=solve_code)
 
 
 def get_reference_path(problem_id: int, config: Optional[CodeGenConfig] = None) -> Path:
