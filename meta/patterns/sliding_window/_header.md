@@ -15,10 +15,10 @@ Every sliding window algorithm maintains an **invariant** — a condition that m
 
 ```
 Window State:
-┌─────────────────────────────────────────┐
+┌─────────────────────────────────────────────────┐
 │  ... [ left ─────── window ─────── right ] ...  │
-│       └─────── invariant holds ───────┘         │
-└─────────────────────────────────────────┘
+│         └────── invariant holds ──────┘         │
+└─────────────────────────────────────────────────┘
 ```
 
 ### Universal Template Structure

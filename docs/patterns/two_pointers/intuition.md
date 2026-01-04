@@ -27,14 +27,14 @@ The key insight: *You're not searching — you're eliminating. Every pointer mov
 Every two pointers algorithm maintains a **sacred region** — the space where the answer must exist.
 
 ```
-┌───────────────────────────────────────────────────────────────┐
-│                                                               │
+┌───────────────────────────────────────────────────────────────────────────┐
+│                                                                           │
 │   [excluded]  ←  left  ═══════ answer space ═══════  right → [excluded]   │
-│                                                               │
-│   Once excluded, never reconsidered.                          │
-│   The region between pointers is the ONLY remaining hope.     │
-│                                                               │
-└───────────────────────────────────────────────────────────────┘
+│                                                                           │
+│   Once excluded, never reconsidered.                                      │
+│   The region between pointers is the ONLY remaining hope.                 │
+│                                                                           │
+└───────────────────────────────────────────────────────────────────────────┘
 ```
 
 The invariant says: *If a valid answer exists, it lies within the current boundaries.* Moving a pointer is a declaration: "I've proven that nothing behind this pointer can be part of the answer."
@@ -74,12 +74,12 @@ Two pointer problems come in six distinct flavors. Recognizing the shape tells y
 Initial:    L ═══════════════════════════════════ R
             ↓                                     ↓
 Step 1:       L ═════════════════════════════ R
-                                               ↓
+                                              ↓
 Step 2:       L ═════════════════════════ R
               ↓
 Step 3:         L ═══════════════════ R
                          ...
-Final:                    L R  (or L crosses R)
+Final:                   L R  (or L crosses R)
 ```
 
 **The decision rule**: Based on the current pair's property:
@@ -193,15 +193,15 @@ This works because of the mathematical relationship between the meeting point an
 
 **The mental model** (Dutch National Flag):
 ```
-┌────────────────────────────────────────────────────────────────┐
-│                                                                │
-│   [  < pivot  ]  [  = pivot  ]  [  unclassified  ]  [ > pivot ]│
-│   └───────────┘  └───────────┘  └────────────────┘  └─────────┘│
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   [  < pivot  ]  [  = pivot  ]  [  unclassified  ]  [ > pivot ] │
+│   └───────────┘  └───────────┘  └────────────────┘  └─────────┘ │
 │    0      low-1   low    mid-1   mid         high   high+1   n-1│
-│                          ↑                                     │
-│                      examine this                              │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
+│                          ↑                                      │
+│                      examine this                               │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 **Three pointers, three regions**:
@@ -396,7 +396,7 @@ The magic: *No element is ever reconsidered.* This is the irreversibility that t
 ├─────────────────────────────────────────────────────────────────────────┤
 │  MERGE                                                                  │
 │  [1] [3] [5] →                                                          │
-│  [2] [4] [6] →        ══>  [1] [2] [3] [4] [5] [6]                       │
+│  [2] [4] [6] →        ══>  [1] [2] [3] [4] [5] [6]                      │
 │  Two sorted streams becoming one                                        │
 └─────────────────────────────────────────────────────────────────────────┘
 ```

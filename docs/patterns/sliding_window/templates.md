@@ -30,10 +30,10 @@ Every sliding window algorithm maintains an **invariant** — a condition that m
 
 ```
 Window State:
-┌─────────────────────────────────────────┐
+┌─────────────────────────────────────────────────┐
 │  ... [ left ─────── window ─────── right ] ...  │
-│       └─────── invariant holds ───────┘         │
-└─────────────────────────────────────────┘
+│         └────── invariant holds ──────┘         │
+└─────────────────────────────────────────────────┘
 ```
 
 ### 1.2 Universal Template Structure
@@ -443,10 +443,10 @@ Unlike variable-size windows, this problem uses a **fixed window** of size `len(
 ```
 Pattern: "ab" (length 2)
 Source:  "eidbaooo"
-         ├─┤        Window 0: "ei" - No match
-          ├─┤       Window 1: "id" - No match
-           ├─┤      Window 2: "db" - No match
-            ├─┤     Window 3: "ba" - MATCH! (permutation of "ab")
+          ├┤        Window 0: "ei" - No match
+           ├┤       Window 1: "id" - No match
+            ├┤      Window 2: "db" - No match
+             ├┤     Window 3: "ba" - MATCH! (permutation of "ab")
 ```
 
 ---
