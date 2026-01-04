@@ -6,11 +6,11 @@ Automatically reads ontology data based on config and lets GPT models creatively
 generate Markmap mind maps.
 
 Usage:
-    python tools/generate_mindmaps_ai.py                              # Interactive
-    python tools/generate_mindmaps_ai.py --config generate_mindmaps_ai.toml
-    python tools/generate_mindmaps_ai.py --goal interview
-    python tools/generate_mindmaps_ai.py --topic sliding_window
-    python tools/generate_mindmaps_ai.py --html-only                  # Generate HTML from existing Markdown files
+    python tools/mindmaps/generate_mindmaps_ai.py                              # Interactive
+    python tools/mindmaps/generate_mindmaps_ai.py --config generate_mindmaps_ai.toml
+    python tools/mindmaps/generate_mindmaps_ai.py --goal interview
+    python tools/mindmaps/generate_mindmaps_ai.py --topic sliding_window
+    python tools/mindmaps/generate_mindmaps_ai.py --html-only                  # Generate HTML from existing Markdown files
 
 Prompt Options:
     When an existing prompt is found, you can choose:
@@ -69,8 +69,7 @@ from ai_mindmap import (
 
 # Import from mindmaps package
 from mindmaps import load_problems
-from mindmaps.helpers import fix_table_links
-from mindmaps.post_processing import post_process_content
+from mindmaps.link_post_processor import add_links_to_mindmap
 
 # Try to import OpenAI for checking availability
 try:
@@ -81,7 +80,7 @@ except ImportError:
 
 # Paths
 PROJECT_ROOT = TOOLS_DIR.parent
-DEFAULT_CONFIG = TOOLS_DIR / "generate_mindmaps_ai.toml"
+DEFAULT_CONFIG = SCRIPT_DIR / "generate_mindmaps_ai.toml"
 
 
 def generate_mindmap_ai(config: dict[str, Any]) -> str:
@@ -171,7 +170,9 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
     
     print(f"\n🤖 Model Configuration:")
     print(f"   📝 Prompt optimization: {prompt_model_config['name']}")
+    print(f"      Max tokens: {prompt_model_config.get('max_completion_tokens', 'N/A')}")
     print(f"   🗺️  Mind map generation: {mindmap_model_config['name']}")
+    print(f"      Max tokens: {mindmap_model_config.get('max_completion_tokens', 'N/A')}")
     
     if not HAS_OPENAI:
         print("\n⚠️  OpenAI library not installed.")
@@ -228,16 +229,13 @@ def generate_mindmap_ai(config: dict[str, Any]) -> str:
                 ontology_data, docs_patterns, meta_patterns, problems_data, lang_config
             )
             
-            # Generate content
+            # Generate content (without links to save tokens)
             content = generate_with_openai(lang_system_prompt, lang_user_prompt, lang_config)
             
-            # Fix link formats in tables to ensure they're clickable
-            content = fix_table_links(content)
-            
-            # Apply post-processing to standardize links and add titles from cache
+            # Add links after generation (post-processing to save tokens)
             problems = load_problems()
-            content = post_process_content(content, problems)
-            print(f"   ✅ Post-processing applied (links standardized with titles)")
+            content = add_links_to_mindmap(content, problems)
+            print(f"   ✅ Links added via post-processing (saved tokens during generation)")
             
             all_contents[lang] = content
             

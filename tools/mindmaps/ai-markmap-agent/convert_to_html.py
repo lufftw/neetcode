@@ -152,7 +152,7 @@ def load_meta_description(
         project_root = script_dir.parent.parent
     
     # Build path: meta_descriptions_dir / filename
-    meta_dir_str = config.get("meta_descriptions_dir", "tools/mindmaps/meta")
+    meta_dir_str = config.get("meta_descriptions_dir", "tools/mindmaps/core/meta")
     meta_dir = project_root / meta_dir_str if not Path(meta_dir_str).is_absolute() else Path(meta_dir_str)
     
     desc_path = meta_dir / meta_description_file

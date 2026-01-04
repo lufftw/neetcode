@@ -3,8 +3,20 @@
 
 from __future__ import annotations
 
+import sys
 import re
+from pathlib import Path
 from typing import Any, Optional
+
+# Add project root and packages/ to sys.path so bundled packages can be imported
+# This file is at: tools/mindmaps/core/post_processing.py
+# __file__ -> tools/mindmaps/core/ -> mindmaps/ -> tools/ -> project root (4 levels up)
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_PACKAGES_DIR = _PROJECT_ROOT / "packages"
+for p in (_PROJECT_ROOT, _PACKAGES_DIR):
+    p_str = str(p)
+    if p_str not in sys.path:
+        sys.path.insert(0, p_str)
 
 from .config import PROJECT_ROOT
 from .data import ProblemData

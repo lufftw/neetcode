@@ -45,6 +45,14 @@ from .core import (
     post_process_content,
 )
 
+# Import link post-processing functions
+from .link_post_processor import (
+    add_links_to_mindmap,
+    simplify_leetcode_links,
+    preprocess_for_llm,
+    LinkPostProcessor,
+)
+
 __all__ = [
     # Config
     "MindmapsConfig",
@@ -82,5 +90,10 @@ __all__ = [
     # Post-processing
     "PostProcessor",
     "post_process_content",
+    # Link post-processing
+    "add_links_to_mindmap",
+    "simplify_leetcode_links",
+    "preprocess_for_llm",
+    "LinkPostProcessor",
 ]
 

@@ -36,7 +36,7 @@ prompt_max_completion_tokens = 10000
 mindmap_model = "gpt-5.2"
 mindmap_temperature = 0.7
 # GPT-5.1-codex uses max_completion_tokens (older models use max_tokens)
-mindmap_max_completion_tokens = 10000
+mindmap_max_completion_tokens = 128000
 
 # -----------------------------------------------------------------------------
 # Common Configuration
@@ -66,11 +66,11 @@ html_directory = "docs/pages/mindmaps"
 
 # Meta description files for HTML <meta name="description"> tag
 # Maps language code to meta description file path (relative to project root)
-# If not specified, will try to auto-detect: tools/mindmaps/meta/{filename}_{lang}.txt
+# If not specified, will try to auto-detect: tools/mindmaps/core/meta/{filename}_{lang}.txt
 # Example (uncomment and customize):
 # meta_descriptions = { 
-#     "en" = "tools/mindmaps/meta/neetcode-ontology-ai-en.txt", 
-#     "zh-TW" = "tools/mindmaps/meta/neetcode-ontology-ai-zh-tw.txt" 
+#     "en" = "tools/mindmaps/core/meta/neetcode-ontology-ai-en.txt", 
+#     "zh-TW" = "tools/mindmaps/core/meta/neetcode-ontology-ai-zh-tw.txt" 
 # }
 meta_descriptions = { }
 
@@ -159,7 +159,7 @@ include_problems = true     # XXXX_*.md - Problem snippets
 enabled = true
 
 # Maximum number of problems to include (0 = unlimited)
-limit = 50
+limit = 0
 
 # Filter by difficulty (empty list [] = all difficulties)
 difficulties = [
@@ -209,10 +209,18 @@ focus_topic = ""
 
 # Style
 # Options: "creative", "academic", "practical", "minimal", "balanced"
-style = "balanced"
+style = "creative"
 
 # Custom instructions (optional, will be appended to prompt)
 custom_instructions = """
+Please generate a comprehensive and detailed mind map. Include:
+- Extensive explanations and details for each pattern and API kernel
+- More examples and use cases
+- Detailed complexity analysis
+- More problem coverage and connections
+- In-depth comparisons and trade-offs
+- Comprehensive code templates and implementation notes
+Generate a thorough, detailed mind map that maximizes the use of the available token limit.
 """
 
 # =============================================================================

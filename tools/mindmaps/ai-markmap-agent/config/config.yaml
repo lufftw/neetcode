@@ -136,7 +136,7 @@ experts:
       persona_prompt: "prompts/experts/architect-persona.md"
       behavior_prompt: "prompts/experts/architect-behavior.md"
       temperature: 0.6
-      max_tokens: 8192
+      max_tokens: 16384
       focus: "api_kernel_design"
       focus_areas:
         - "API Kernel abstraction and composability"
@@ -151,7 +151,7 @@ experts:
       persona_prompt: "prompts/experts/professor-persona.md"
       behavior_prompt: "prompts/experts/professor-behavior.md"
       temperature: 0.5
-      max_tokens: 8192
+      max_tokens: 16384
       focus: "correctness_pedagogy"
       focus_areas:
         - "Concept accuracy and precision"
@@ -166,7 +166,7 @@ experts:
       persona_prompt: "prompts/experts/engineer-persona.md"
       behavior_prompt: "prompts/experts/engineer-behavior.md"
       temperature: 0.6
-      max_tokens: 8192
+      max_tokens: 16384
       focus: "practical_value"
       focus_areas:
         - "Interview frequency and importance"
@@ -328,8 +328,8 @@ output:
     prompt_on_reset: true
   
   final_dirs:
-    markdown: "../../docs/mindmaps"
-    html: "../../docs/pages/mindmaps"
+    markdown: "docs/mindmaps"
+    html: "docs/pages/mindmaps"
   
   naming:
     prefix: "neetcode"

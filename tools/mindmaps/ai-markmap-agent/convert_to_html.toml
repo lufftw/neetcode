@@ -5,7 +5,7 @@
 # =============================================================================
 
 # Default meta descriptions directory (relative to project root)
-meta_descriptions_dir = "tools/mindmaps/meta"
+meta_descriptions_dir = "tools/mindmaps/core/meta"
 
 # Preset conversion tasks
 [presets]

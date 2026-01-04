@@ -148,7 +148,8 @@ def save_all_markmaps(
     config = config or ConfigLoader.get_config()
     output_config = config.get("output", {})
     final_dirs = output_config.get("final_dirs", {})
-    base_dir = Path(__file__).parent.parent.parent
+    # Use project root as base_dir (consistent with graph.py)
+    base_dir = Path(__file__).parent.parent.parent.parent
     md_output_dir = (base_dir / final_dirs.get("markdown", "outputs/final")).resolve()
     html_output_dir = (base_dir / final_dirs.get("html", "outputs/final")).resolve()
     

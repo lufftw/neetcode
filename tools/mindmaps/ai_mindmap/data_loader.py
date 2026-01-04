@@ -10,8 +10,13 @@ from pathlib import Path
 from typing import Any
 
 # Paths
-TOOLS_DIR = Path(__file__).parent.parent
-PROJECT_ROOT = TOOLS_DIR.parent
+# From tools/mindmaps/ai_mindmap/data_loader.py:
+#   parent -> tools/mindmaps/ai_mindmap
+#   parent.parent -> tools/mindmaps
+#   parent.parent.parent -> tools
+#   parent.parent.parent.parent -> project root
+TOOLS_DIR = Path(__file__).parent.parent.parent  # tools/mindmaps/ai_mindmap -> tools
+PROJECT_ROOT = TOOLS_DIR.parent  # tools -> project root
 DOCS_PATTERNS_DIR = PROJECT_ROOT / "docs" / "patterns"
 META_PATTERNS_DIR = PROJECT_ROOT / "meta" / "patterns"
 

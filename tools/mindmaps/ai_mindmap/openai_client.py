@@ -117,6 +117,8 @@ def generate_with_openai(
     max_completion_tokens = model_config["max_completion_tokens"]
     api_base = model_config["api_base"]
     
+    print(f"   🔧 API Configuration: model={model}, max_completion_tokens={max_completion_tokens}, temperature={temperature}")
+    
     # Get API key
     api_key = get_api_key()
     if not api_key:

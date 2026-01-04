@@ -146,9 +146,18 @@ def _get_default_system_prompt() -> str:
     
     ## CRITICAL: Problem Reference Format
     
-    When mentioning LeetCode problems, use this simple format: `LeetCode {number}`
+    When mentioning LeetCode problems, use this simplified format:
+    - `LeetCode {number}` or `LeetCode {number} - {title}`
+    - Use full "LeetCode" not "LC"
+    - DO NOT include URLs or links - post-processing will add them automatically
+    - DO NOT use markdown link syntax like `[LeetCode X](url)`
     
-    DO NOT include URLs or links - post-processing will add them automatically.
+    Example:
+    - ✅ Correct: `LeetCode 11` or `LeetCode 11 - Container With Most Water`
+    - ❌ Wrong: `[LeetCode 11](url)` or `LC 11` or `LeetCode 11 - Container With Most Water · [Solution](url)`
+    
+    Post-processing will automatically convert all `LeetCode N` references to complete links
+    with titles and solution URLs. You only need to output the plain text format.
     
     Output Markmap Markdown directly, without any explanations.
     """).strip()
@@ -268,7 +277,12 @@ def build_user_prompt(
             })
         
         problems_header = sections_config.get("problems_header", "\n## 🎯 Problem Data\n")
-        problems_note = sections_config.get("problems_note", "Note: Use `LeetCode {leetcode_id}` format to reference problems. Links and titles will be added automatically by post-processing.\n")
+        problems_note = sections_config.get(
+            "problems_note",
+            "**Important:** Use simplified format `LeetCode {leetcode_id}` or `LeetCode {leetcode_id} - {title}` "
+            "when referencing problems. Use full \"LeetCode\" not \"LC\". "
+            "DO NOT include URLs or markdown links - post-processing will add them automatically.\n"
+        )
         sections.append(problems_header)
         sections.append(problems_note)
         sections.append("```json")

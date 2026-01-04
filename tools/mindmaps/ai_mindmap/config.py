@@ -8,12 +8,18 @@ from pathlib import Path
 from typing import Any
 
 # Paths
-TOOLS_DIR = Path(__file__).parent.parent
-PROJECT_ROOT = TOOLS_DIR.parent
+# From tools/mindmaps/ai_mindmap/config.py:
+#   parent -> tools/mindmaps/ai_mindmap
+#   parent.parent -> tools/mindmaps
+#   parent.parent.parent -> tools
+#   parent.parent.parent.parent -> project root
+TOOLS_DIR = Path(__file__).parent.parent.parent  # tools/mindmaps/ai_mindmap -> tools
+MINDMAPS_DIR = Path(__file__).parent.parent  # tools/mindmaps/ai_mindmap -> tools/mindmaps
+PROJECT_ROOT = TOOLS_DIR.parent  # tools -> project root
 
 # Default model - use a chat model available via /v1/chat/completions
 DEFAULT_MODEL = "gpt-4.1"
-DEFAULT_CONFIG_PATH = TOOLS_DIR / "generate_mindmaps_ai.toml"
+DEFAULT_CONFIG_PATH = MINDMAPS_DIR / "generate_mindmaps_ai.toml"
 
 
 def load_config(config_path: Path | None = None) -> dict[str, Any]:

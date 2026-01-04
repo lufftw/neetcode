@@ -18,11 +18,17 @@ import argparse
 import sys
 from pathlib import Path
 
-# Add tools/ to Python path so mindmaps module can be imported
+# Add tools/, project root, and packages/ to Python path so mindmaps module and bundled packages can be imported
 SCRIPT_DIR = Path(__file__).parent
 TOOLS_DIR = SCRIPT_DIR.parent
+PROJECT_ROOT = TOOLS_DIR.parent
+PACKAGES_DIR = PROJECT_ROOT / "packages"
 if str(TOOLS_DIR) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+if str(PACKAGES_DIR) not in sys.path:
+    sys.path.insert(0, str(PACKAGES_DIR))
 
 from mindmaps import (
     MINDMAP_TYPES,
