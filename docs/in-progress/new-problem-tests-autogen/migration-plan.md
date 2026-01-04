@@ -119,7 +119,7 @@ for nums, val in edge_cases:
 ### Verification
 
 ```bash
-python -m packages.codegen check --all --report json > coverage-report.json
+python -m codegen check --all --report json > coverage-report.json
 ```
 
 ### OUT_OF_SCOPE Problems (Tier-1 Future Work)
@@ -802,7 +802,7 @@ pytest .dev/tests_solutions/test_all_solutions.py::TestAllSolutions::test_genera
 
 **Verification:**
 ```bash
-python -m packages.codegen check --all --report json > coverage-report.json
+python -m codegen check --all --report json > coverage-report.json
 # Result: 44 generatable, 1 fetch_error
 ```
 

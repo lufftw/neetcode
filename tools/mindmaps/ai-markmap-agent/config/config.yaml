@@ -39,10 +39,10 @@ urls:
 # -----------------------------------------------------------------------------
 data_sources:
   base_paths:
-    ontology: "../../../ontology"
-    problems: "../../../meta/problems"
-    patterns: "../../../meta/patterns"
-    roadmaps: "../../../roadmaps"
+    ontology: "../../../../ontology"
+    problems: "../../../../meta/problems"
+    patterns: "../../../../meta/patterns"
+    roadmaps: "../../../../roadmaps"
 
   ontology:
     enabled: true

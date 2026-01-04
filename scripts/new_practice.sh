@@ -20,5 +20,5 @@
 #    ./new_practice.sh 23                    Merge k Sorted Lists
 # ============================================
 
-python -m packages.codegen practice "$@"
+python -m codegen practice "$@"
 

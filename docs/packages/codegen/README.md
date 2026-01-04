@@ -1,8 +1,8 @@
 # CodeGen
 
 > **Status**: Canonical Reference  
-> **Scope**: `packages/codegen/` - Solution skeleton generation with test extraction  
-> **Related**: [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md)
+> **Scope**: `src/codegen/` - Solution skeleton generation with test extraction  
+> **Related**: [Package README](https://github.com/lufftw/neetcode/blob/main/src/codegen/README.md)
 
 CodeGen generates solution and practice skeleton files for LeetCode problems, providing the infrastructure needed for a LeetCode-like practice experience. It also extracts example test cases from problem descriptions and validates test file consistency.
 
@@ -86,7 +86,7 @@ The module is designed as a **stateless** generator - it produces output based o
 
 ## Interfaces
 
-High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md).
+High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/src/codegen/README.md).
 
 ### Core Generation
 
@@ -124,19 +124,19 @@ High-level summary of public APIs. For complete API reference, see [Package READ
 
 ```bash
 # Basic generation
-python -m packages.codegen new <problem_id>
+python -m codegen new <problem_id>
 
 # With test files from examples
-python -m packages.codegen new <problem_id> --with-tests
+python -m codegen new <problem_id> --with-tests
 
 # With auto-generated solve()
-python -m packages.codegen new <problem_id> --solve-mode infer
+python -m codegen new <problem_id> --solve-mode infer
 
 # Combined
-python -m packages.codegen new <problem_id> --with-tests --solve-mode infer --force
+python -m codegen new <problem_id> --with-tests --solve-mode infer --force
 
 # Preview without writing
-python -m packages.codegen new <problem_id> --dry-run
+python -m codegen new <problem_id> --dry-run
 ```
 
 | Flag | Description |
@@ -150,23 +150,23 @@ python -m packages.codegen new <problem_id> --dry-run
 ### Generate Practice Skeleton
 
 ```bash
-python -m packages.codegen practice <problem_id>
-python -m packages.codegen practice <problem_id> --all-solutions
+python -m codegen practice <problem_id>
+python -m codegen practice <problem_id> --all-solutions
 ```
 
 ### Check Test Consistency
 
 ```bash
 # Check single problem
-python -m packages.codegen check <problem_id>
-python -m packages.codegen check <problem_id> -v
+python -m codegen check <problem_id>
+python -m codegen check <problem_id> -v
 
 # Check all problems
-python -m packages.codegen check --all
-python -m packages.codegen check --all --limit 10
+python -m codegen check --all
+python -m codegen check --all --limit 10
 
 # JSON output
-python -m packages.codegen check --all --report json
+python -m codegen check --all --report json
 ```
 
 | Status | Meaning |
@@ -180,16 +180,16 @@ python -m packages.codegen check --all --report json
 
 ```bash
 # Preview migration
-python -m packages.codegen migrate <problem_id> --dry-run -v
+python -m codegen migrate <problem_id> --dry-run -v
 
 # Migrate single problem
-python -m packages.codegen migrate <problem_id>
+python -m codegen migrate <problem_id>
 
 # Migrate all problems
-python -m packages.codegen migrate --all --dry-run
+python -m codegen migrate --all --dry-run
 
 # Migrate without backup
-python -m packages.codegen migrate --all --no-backup
+python -m codegen migrate --all --no-backup
 ```
 
 ---
@@ -256,16 +256,16 @@ When `codegen new <problem_id> --with-tests` is invoked:
 
 ```bash
 # 1. Check current state
-python -m packages.codegen check --all
+python -m codegen check --all
 
 # 2. Preview migration
-python -m packages.codegen migrate --all --dry-run
+python -m codegen migrate --all --dry-run
 
 # 3. Migrate with backup
-python -m packages.codegen migrate --all
+python -m codegen migrate --all
 
 # 4. Verify
-python -m packages.codegen check --all
+python -m codegen check --all
 ```
 
 ---
@@ -454,7 +454,7 @@ CLI flag > .neetcode/codegen.toml > package defaults
 
 | Document | Content |
 |----------|---------|
-| [Package README](https://github.com/lufftw/neetcode/blob/main/packages/codegen/README.md) | Quick reference, API details |
+| [Package README](https://github.com/lufftw/neetcode/blob/main/src/codegen/README.md) | Quick reference, API details |
 | [Solution Contract](../../contracts/solution-contract.md) | Output file requirements |
 | [LeetCode DataSource](../leetcode_datasource/README.md) | Problem data source |
 | [Practice Workspace](../practice_workspace/README.md) | History management |
@@ -529,7 +529,7 @@ if __name__ == "__main__":
 ```
 codegen/
 ├── __init__.py              # Public API re-exports
-├── __main__.py              # python -m packages.codegen
+├── __main__.py              # python -m codegen
 ├── cli.py                   # CLI: new / practice / check / migrate
 ├── checker.py               # Test consistency checker
 ├── analyzer.py              # Mismatch analysis and reporting

@@ -1,4 +1,4 @@
-"""Entry point for python -m packages.codegen."""
+"""Entry point for python -m codegen."""
 import sys
 from .cli import main
 

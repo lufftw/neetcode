@@ -278,12 +278,12 @@ scripts\new_problem.bat 142  # Linked list cycle problems → auto tiered codec 
 
 ```bash
 # Check whether your existing tests match LeetCode examples
-python -m packages.codegen check 1
-python -m packages.codegen check --all --limit 10
+python -m codegen check 1
+python -m codegen check --all --limit 10
 
 # Migrate tests to canonical JSON-literal format (preview first)
-python -m packages.codegen migrate 1 --dry-run
-python -m packages.codegen migrate --all --dry-run
+python -m codegen migrate 1 --dry-run
+python -m codegen migrate --all --dry-run
 ```
 
 > 📖 Full reference: [`docs/packages/codegen/README.md`](docs/packages/codegen/README.md)
@@ -790,8 +790,8 @@ neetcode/
 ├── generators/                # 🎲 Random test generators (optional)
 │   └── 0001_two_sum.py        # generate(count, seed) function
 │
-├── packages/                  # 📦 Core packages (CodeGen, datasource, practice workspace)
-│   ├── codegen/               # `python -m packages.codegen ...`
+├── src/                       # 📦 Core packages (CodeGen, datasource, practice workspace)
+│   ├── codegen/               # `python -m codegen ...`
 │   ├── leetcode_datasource/   # LeetCode metadata/source
 │   └── practice_workspace/    # Practice history utilities
 │
@@ -898,7 +898,7 @@ neetcode/
 │   │   ├── problem-relations.md
 │   │   ├── roadmap-paths.md
 │   │   └── solution-variants.md
-│   ├── packages/              # Package documentation
+│   ├── packages/              # Package documentation (for src/ packages)
 │   │   ├── codegen/           # CodeGen package docs
 │   │   ├── leetcode_datasource/  # LeetCode datasource docs
 │   │   └── practice_workspace/  # Practice workspace docs
@@ -1004,7 +1004,7 @@ neetcode/
 ├── leetcode/                  # 🐍 Python virtual environment (3.11)
 │
 ├── scripts/                   # 🔧 Utility scripts
-│   ├── new_problem.bat / .sh  # Create new problem (wrapper around packages/codegen)
+│   ├── new_problem.bat / .sh  # Create new problem (wrapper around codegen)
 │   ├── run_tests.bat / .sh    # Run all tests for a problem
 │   ├── run_case.bat / .sh     # Run single test case
 │   └── build_docs.bat / .sh   # Build documentation site

@@ -31,7 +31,7 @@ This document defines the documentation strategy for core modules in this projec
 │                    Allowed Dependencies                       │
 │                                                               │
 │   ┌──────────┐         ┌──────────────┐                      │
-│   │  tools/  │ ──────► │  packages/   │                      │
+│   │  tools/  │ ──────► │    src/      │                      │
 │   └──────────┘         └──────────────┘                      │
 │        │                      │                               │
 │        │                      ▼                               │

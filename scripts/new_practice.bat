@@ -22,6 +22,6 @@ REM    new_practice.bat 146                   LRU Cache (design)
 REM    new_practice.bat 23                    Merge k Sorted Lists
 REM ============================================
 
-python -m packages.codegen practice %*
+python -m codegen practice %*
 exit /b %ERRORLEVEL%
 

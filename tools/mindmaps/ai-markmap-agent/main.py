@@ -22,7 +22,7 @@ import argparse
 import sys
 from pathlib import Path
 
-# Add src to path for imports
+# Add local src to path for agent-specific imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from src.config_loader import (

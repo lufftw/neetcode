@@ -283,12 +283,12 @@ scripts\new_problem.bat 142  # 鏈結串列 cycle 題 → 自動使用 tiered co
 
 ```bash
 # 檢查現有測資是否與 LeetCode 範例一致
-python -m packages.codegen check 1
-python -m packages.codegen check --all --limit 10
+python -m codegen check 1
+python -m codegen check --all --limit 10
 
 # 遷移測資到 canonical JSON-literal 格式（先預覽）
-python -m packages.codegen migrate 1 --dry-run
-python -m packages.codegen migrate --all --dry-run
+python -m codegen migrate 1 --dry-run
+python -m codegen migrate --all --dry-run
 ```
 
 > 📖 完整參考：[`docs/packages/codegen/README.md`](docs/packages/codegen/README.md)
@@ -793,8 +793,8 @@ neetcode/
 ├── generators/                # 🎲 隨機測資生成器（可選）
 │   └── 0001_two_sum.py        # generate(count, seed) 函式
 │
-├── packages/                  # 📦 核心套件（CodeGen、datasource、practice workspace）
-│   ├── codegen/               # `python -m packages.codegen ...`
+├── src/                       # 📦 核心套件（CodeGen、datasource、practice workspace）
+│   ├── codegen/               # `python -m codegen ...`
 │   ├── leetcode_datasource/   # LeetCode 元資料/來源
 │   └── practice_workspace/    # 練習歷史工具
 │
@@ -901,7 +901,7 @@ neetcode/
 │   │   ├── problem-relations.md
 │   │   ├── roadmap-paths.md
 │   │   └── solution-variants.md
-│   ├── packages/              # 套件文件
+│   ├── packages/              # 套件文件（對應 src/ 下的套件）
 │   │   ├── codegen/           # CodeGen 套件文件
 │   │   ├── leetcode_datasource/  # LeetCode 資料來源文件
 │   │   └── practice_workspace/  # 練習工作區文件

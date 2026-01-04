@@ -25,5 +25,5 @@ REM    new_problem.bat 142                    Linked List Cycle II (Tier-1.5, au
 REM    new_problem.bat 15 --with-tests        3Sum with example tests
 REM ============================================
 
-python -m packages.codegen new %*
+python -m codegen new %*
 exit /b %ERRORLEVEL%

@@ -7,7 +7,7 @@
 
 `scripts/new_practice.bat` / `scripts/new_practice.sh` are **thin wrappers** around CodeGen:
 
-- They run `python -m packages.codegen practice ...`
+- They run `python -m codegen practice ...`
 - They forward all arguments as-is
 - They return the same exit code as CodeGen
 
@@ -47,7 +47,7 @@ Run from the repository root.
 Equivalent direct command (same behavior):
 
 ```bash
-python -m packages.codegen practice <problem_id> [--all-solutions] [--dry-run]
+python -m codegen practice <problem_id> [--all-solutions] [--dry-run]
 ```
 
 ---

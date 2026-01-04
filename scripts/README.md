@@ -45,7 +45,7 @@ This directory contains utility scripts for project maintenance and development.
 
 ### Create New Problem
 
-The `new_problem` script is a thin wrapper around `python -m packages.codegen new`, providing full access to the code generation engine.
+The `new_problem` script is a thin wrapper around `python -m codegen new`, providing full access to the code generation engine.
 
 ```bash
 # Windows - Basic generation

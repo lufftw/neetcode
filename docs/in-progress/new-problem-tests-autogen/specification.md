@@ -29,7 +29,7 @@ For complete documentation, see:
 - Provide a single, consistent entrypoint for creating a new problem scaffold:
   - Generate the solution file under `solutions/`
   - Optionally generate example-based tests under `tests/`
-- Preserve the existing Windows workflow via `scripts/new_problem.bat`, while keeping all business logic in `packages/codegen` for cross-platform use
+- Preserve the existing Windows workflow via `scripts/new_problem.bat`, while keeping all business logic in `codegen` for cross-platform use
 - Support problem ID inputs `3` and `0003` (auto-pad to 4 digits)
 - Auto-resolve the LeetCode slug/title for filename generation (no slug input required)
 - Default-safe behavior:
@@ -360,18 +360,18 @@ Check whether LeetCode examples can be parsed and whether existing test files ma
 
 ```bash
 # Check single problem
-python -m packages.codegen check 1
-python -m packages.codegen check 1 -v          # Verbose
+python -m codegen check 1
+python -m codegen check 1 -v          # Verbose
 
 # Check all problems
-python -m packages.codegen check --all
-python -m packages.codegen check --all --limit 10
+python -m codegen check --all
+python -m codegen check --all --limit 10
 
 # Generatability only (skip consistency check)
-python -m packages.codegen check 1 --generatable
+python -m codegen check 1 --generatable
 
 # Output formats
-python -m packages.codegen check --all --report json
+python -m codegen check --all --report json
 ```
 
 ### Check Results
@@ -564,7 +564,7 @@ LeetCode shows: `Output: 2, nums = [2,2,_,_]`
 ### CLI Usage
 
 ```bash
-python -m packages.codegen.analyzer
+python -m codegen.analyzer
 ```
 
 ### Code Location
@@ -583,7 +583,7 @@ python -m packages.codegen.analyzer
 - [x] `io_schema.py` - 從 LeetCode signature 推導 IO 規則
 - [x] `example_parser.py` - 從 Question.Body 解析 Example
 - [x] `checker.py` - 可生成性 + 一致性檢查
-- [x] CLI: `python -m packages.codegen check`
+- [x] CLI: `python -m codegen check`
 - [x] `analyzer.py` - 全量 mismatch 分類報告
 - [x] 修正 `stub_parser.py` LinkedList 解析問題
 - [x] **Step 3: 建立格式遷移工具** `migrator.py`

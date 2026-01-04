@@ -7,7 +7,7 @@
 
 `scripts/new_problem.bat` / `scripts/new_problem.sh` are **thin wrappers** around CodeGen:
 
-- They run `python -m packages.codegen new ...`
+- They run `python -m codegen new ...`
 - They forward all arguments as-is
 - They return the same exit code as CodeGen
 
@@ -43,7 +43,7 @@ Run from the repository root.
 ### Equivalent direct command (same behavior)
 
 ```bash
-python -m packages.codegen new <problem_id> [options]
+python -m codegen new <problem_id> [options]
 ```
 
 ---

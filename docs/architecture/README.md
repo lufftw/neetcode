@@ -16,7 +16,7 @@ The project follows a clean dependency hierarchy:
 │                    Dependency Direction                      │
 │                                                              │
 │   ┌──────────┐         ┌──────────────┐                     │
-│   │  tools/  │ ──────► │  packages/   │                     │
+│   │  tools/  │ ──────► │    src/      │                     │
 │   └──────────┘         └──────────────┘                     │
 │        │                      │                              │
 │        │                      ▼                              │

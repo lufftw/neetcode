@@ -1,8 +1,8 @@
 # LeetCode DataSource
 
 > **Status**: Canonical Reference  
-> **Scope**: `packages/leetcode_datasource/` - LeetCode problem data layer  
-> **Related**: [Package README](https://github.com/lufftw/neetcode/blob/main/packages/leetcode_datasource/README.md)
+> **Scope**: `src/leetcode_datasource/` - LeetCode problem data layer  
+> **Related**: [Package README](https://github.com/lufftw/neetcode/blob/main/src/leetcode_datasource/README.md)
 
 LeetCode DataSource provides a unified data layer for accessing LeetCode problem metadata with caching, persistent storage, and pluggable network fetching.
 
@@ -76,7 +76,7 @@ LeetCode DataSource is the **data foundation** for the NeetCode practice framewo
 
 ## Interfaces
 
-High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/packages/leetcode_datasource/README.md).
+High-level summary of public APIs. For complete API reference, see [Package README](https://github.com/lufftw/neetcode/blob/main/src/leetcode_datasource/README.md).
 
 | Interface | Purpose |
 |-----------|---------|
@@ -97,7 +97,7 @@ High-level summary of public APIs. For complete API reference, see [Package READ
 │                    Dependency Direction                      │
 │                                                              │
 │   ┌──────────┐         ┌──────────────────────────┐         │
-│   │  tools/  │ ──────► │  packages/               │         │
+│   │  tools/  │ ──────► │       src/               │         │
 │   └──────────┘         │  └─ leetcode_datasource  │         │
 │        │               └──────────────────────────┘         │
 │        │                      │                              │
@@ -341,7 +341,7 @@ LeetCodeDataSourceError (base)
 
 | Document | Content |
 |----------|---------|
-| [Package README](https://github.com/lufftw/neetcode/blob/main/packages/leetcode_datasource/README.md) | Quick reference, API details |
+| [Package README](https://github.com/lufftw/neetcode/blob/main/src/leetcode_datasource/README.md) | Quick reference, API details |
 | [CodeGen Spec](../codegen/README.md) | Consumer of this data |
 | [Architecture Overview](../../architecture/packages-overview.md) | System architecture |
 

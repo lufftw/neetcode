@@ -12,9 +12,9 @@ Canonical Format:
 - Strings: "abc" (double quotes)
 
 Usage:
-    python -m packages.codegen.migrator 0001_two_sum      # Migrate single problem
-    python -m packages.codegen.migrator --all             # Migrate all problems
-    python -m packages.codegen.migrator --all --dry-run   # Preview changes
+    python -m codegen.migrator 0001_two_sum      # Migrate single problem
+    python -m codegen.migrator --all             # Migrate all problems
+    python -m codegen.migrator --all --dry-run   # Preview changes
 """
 
 import sys

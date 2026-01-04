@@ -607,7 +607,7 @@ tests/{problem_id}_{slug}_{case_number}.{in|out}
 9
 ```
 
-> 💡 **Migration**: Use `python -m packages.codegen migrate` to convert existing tests to canonical format.
+> 💡 **Migration**: Use `python -m codegen migrate` to convert existing tests to canonical format.
 
 #### Output File Format (`.out`)
 
@@ -645,10 +645,10 @@ Test files can be automatically generated from LeetCode examples:
 
 ```bash
 # Generate solution skeleton with test files
-python -m packages.codegen new 1 --with-tests
+python -m codegen new 1 --with-tests
 
 # Generate tests for existing solution
-python -m packages.codegen.core.test_generator  # See module for API
+python -m codegen.core.test_generator  # See module for API
 ```
 
 #### Optional `.out` Files

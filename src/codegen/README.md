@@ -31,24 +31,24 @@ Generates reference (`solutions/`) and practice (`practices/`) skeleton files fo
 
 ```bash
 # Generate reference skeleton
-python -m packages.codegen new <problem_id>
+python -m codegen new <problem_id>
 
 # Generate with automatic test files
-python -m packages.codegen new <problem_id> --with-tests
+python -m codegen new <problem_id> --with-tests
 
 # Generate with auto-inferred solve()
-python -m packages.codegen new <problem_id> --solve-mode infer
+python -m codegen new <problem_id> --solve-mode infer
 
 # Generate practice skeleton
-python -m packages.codegen practice <problem_id>
+python -m codegen practice <problem_id>
 
 # Check test consistency
-python -m packages.codegen check <problem_id>
-python -m packages.codegen check --all
+python -m codegen check <problem_id>
+python -m codegen check --all
 
 # Migrate tests to canonical format
-python -m packages.codegen migrate <problem_id>
-python -m packages.codegen migrate --all --dry-run
+python -m codegen migrate <problem_id>
+python -m codegen migrate --all --dry-run
 ```
 
 ## Public API

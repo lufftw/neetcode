@@ -23,4 +23,4 @@
 #    ./new_problem.sh 15 --with-tests        3Sum with example tests
 # ============================================
 
-python -m packages.codegen new "$@"
+python -m codegen new "$@"

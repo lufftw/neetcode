@@ -128,7 +128,7 @@ docs/
 │       ├── cli-output-memory.md
 │       └── input-scale-metrics.md
 │
-├── packages/                             # ═══ Package Documentation ═══
+├── packages/                             # ═══ Package Documentation (src/) ═══
 │   ├── codegen/                          # CodeGen specification
 │   │   └── README.md
 │   ├── leetcode_datasource/              # DataSource specification
