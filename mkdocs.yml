@@ -153,7 +153,7 @@ nav:
     - Solution Variants: mindmaps/solution-variants.md
     - Difficulty × Topics: mindmaps/difficulty-topics.md
   - 🔧 Guides:
-    - Testing & Validation Engine: runner/README.md
+    - Virtual Environment Setup: contributors/virtual-env-setup.md
     - VSCode Setup: contributors/vscode-setup.md
     - GitHub Pages Setup: guides/github-pages-setup.md
     - Build Docs Locally: guides/build-docs-manual.md
@@ -175,12 +175,22 @@ nav:
     - Packages Overview: architecture/packages-overview.md
     - Architecture Migration: architecture/architecture-migration.md
   - 📦 Packages:
-    - Runner: runner/README.md
+    - Runner:
+      - Overview: runner/README.md
+      - CLI Output Contract: runner/cli-output-contract.md
+      - Profiling:
+        - Input Scale Metrics: runner/profiling/input-scale-metrics.md
+        - CLI Output (Memory): runner/profiling/cli-output-memory.md
+      - Benchmarking:
+        - Memory Metrics: runner/benchmarking/memory-metrics.md
     - CodeGen: packages/codegen/README.md
     - LeetCode DataSource: packages/leetcode_datasource/README.md
     - Practice Workspace: packages/practice_workspace/README.md
   - 🛠️ Tools:
     - Overview: tools/README.md
+    - LeetCode API: tools/leetcode-api/README.md
+    - Docstring Formatter: tools/docstring/README.md
+    - Maintenance Tools: tools/maintenance/README.md
     - Mind Maps:
       - Generator: tools/mindmaps/README.md
       - AI Markmap Agent: tools/mindmaps/ai-markmap-agent/README.md
@@ -193,7 +203,6 @@ nav:
     - Documentation Naming: contributors/documentation-naming.md
     - Package Documentation Strategy: contributors/package-documentation-strategy.md
     - Docs Directory Organization: contributors/docs-directory-organization.md
-    - Virtual Environment Setup: contributors/virtual-env-setup.md
 
 # Extra
 extra:
