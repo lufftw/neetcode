@@ -13,7 +13,7 @@ exclude_docs: |
 theme:
   name: material
   language: en
-  custom_dir: docs/.mkdocs/overrides
+  custom_dir: docs/_mkdocs/overrides
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
@@ -204,7 +204,7 @@ extra:
   generator: false
 
 extra_css:
-  - .mkdocs/stylesheets/extra.css
+  - _mkdocs/stylesheets/extra.css
   - assets/document_dates/user.config.css
 
 extra_javascript:

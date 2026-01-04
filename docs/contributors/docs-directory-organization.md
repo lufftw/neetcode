@@ -26,7 +26,7 @@ This document defines the organization of the `docs/` directory, including folde
 
 | Category | Location | Purpose |
 |----------|----------|---------|
-| **MkDocs Infrastructure** | `docs/.mkdocs/` | Theme, styles, assets, config |
+| **MkDocs Infrastructure** | `docs/_mkdocs/` | Theme, styles, assets, config |
 | **Package Documentation** | `docs/packages/<pkg>/` | System-level specs for core modules |
 | **Contracts & Standards** | `docs/contracts/` | Cross-cutting specifications |
 | **How-to Guides** | `docs/guides/` | Step-by-step tutorials |
@@ -72,7 +72,7 @@ docs/
 ├── BingSiteAuth.xml                      # Bing verification
 ├── google8e4b975a9b708272.html           # Google verification
 │
-├── .mkdocs/                              # ═══ MkDocs Infrastructure ═══
+├── _mkdocs/                              # ═══ MkDocs Infrastructure ═══
 │   ├── overrides/                        # Theme overrides
 │   └── stylesheets/                      # Custom CSS
 │
@@ -163,7 +163,7 @@ docs/
 
 ## 3. Folder Purposes
 
-### 3.1 `.mkdocs/` — MkDocs Infrastructure
+### 3.1 `_mkdocs/` — MkDocs Infrastructure
 
 Contains all MkDocs-related configuration and assets that are NOT documentation content.
 
@@ -172,9 +172,9 @@ Contains all MkDocs-related configuration and assets that are NOT documentation 
 | `overrides/` | MkDocs Material theme customizations |
 | `stylesheets/` | Custom CSS files |
 
-**Note**: The `assets/` directory is at `docs/assets/` (not under `.mkdocs/`) because the `document-dates` plugin requires it. See Section 5.2 for plugin rules.
+**Note**: The `assets/` directory is at `docs/assets/` (not under `_mkdocs/`) because the `document-dates` plugin requires it. See Section 5.2 for plugin rules.
 
-**Why `.mkdocs/`?**
+**Why `_mkdocs/`?**
 - Prefix `.` indicates infrastructure, not content
 - Many MkDocs plugins cannot access repo root
 - Keeps content docs clean from infrastructure files
@@ -273,7 +273,7 @@ System-level documentation for core modules. See [Package Documentation Strategy
 
 ```
 Is it MkDocs infrastructure (styles, assets, config)?
-├── YES → docs/.mkdocs/
+├── YES → docs/_mkdocs/
 └── NO ↓
 
 Is it a cross-cutting specification/contract?
@@ -316,7 +316,7 @@ Is it about a tool?
 | `docs/codegen-spec.md` | `docs/packages/codegen/README.md` | Package docs go in package folder |
 | `docs/solution-contract.md` | `docs/contracts/solution-contract.md` | Contracts go in contracts/ |
 | `docs/act-local-github-actions.md` | `docs/guides/act-local-github-actions.md` | How-to guides go in guides/ |
-| `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` | Infrastructure goes in .mkdocs/ |
+| `docs/stylesheets/` | `docs/_mkdocs/stylesheets/` | Infrastructure goes in _mkdocs/ |
 | `docs/new-feature-spec.md` | `docs/in-progress/new-feature/specification.md` | Development specs go in in-progress/ |
 
 ---
@@ -325,7 +325,7 @@ Is it about a tool?
 
 ### 5.1 Configuration Updates
 
-When moving infrastructure to `docs/.mkdocs/`, update `mkdocs.yml`:
+When moving infrastructure to `docs/_mkdocs/`, update `mkdocs.yml`:
 
 ```yaml
 # Before
@@ -337,10 +337,10 @@ extra_css:
 
 # After
 theme:
-  custom_dir: docs/.mkdocs/overrides
+  custom_dir: docs/_mkdocs/overrides
 
 extra_css:
-  - .mkdocs/stylesheets/extra.css
+  - _mkdocs/stylesheets/extra.css
 ```
 
 ### 5.2 Plugin Configuration
@@ -350,7 +350,7 @@ Update any plugins that reference infrastructure paths:
 | Plugin | Config Key | New Path |
 |--------|------------|----------|
 | `document-dates` | (internal) | `docs/authors.yml` (must be at root, not configurable) |
-| `theme` | `custom_dir` | `docs/.mkdocs/overrides` |
+| `theme` | `custom_dir` | `docs/_mkdocs/overrides` |
 
 #### document-dates Plugin Rules
 
@@ -384,10 +384,10 @@ Create new directories:
 
 ```bash
 # MkDocs infrastructure
-# Note: docs/.mkdocs/assets/ is NOT created - document-dates plugin uses docs/assets/
-mkdir -p docs/.mkdocs/overrides
-mkdir -p docs/.mkdocs/stylesheets
-# Note: docs/.mkdocs/pages/ is NOT created - pages stay in docs/pages/
+# Note: docs/_mkdocs/assets/ is NOT created - document-dates plugin uses docs/assets/
+mkdir -p docs/_mkdocs/overrides
+mkdir -p docs/_mkdocs/stylesheets
+# Note: docs/_mkdocs/pages/ is NOT created - pages stay in docs/pages/
 
 # Documentation folders
 mkdir -p docs/contracts
@@ -404,8 +404,8 @@ mkdir -p docs/reference
 | From | To | Note |
 |------|-----|------|
 | `docs/assets/` | **DO NOT MOVE** | Contains `document_dates/` - plugin-managed (see plugin rules below) |
-| `docs/overrides/` | `docs/.mkdocs/overrides/` | |
-| `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` | |
+| `docs/overrides/` | `docs/_mkdocs/overrides/` | |
+| `docs/stylesheets/` | `docs/_mkdocs/stylesheets/` | |
 | `docs/pages/` | **DO NOT MOVE** | Generated output, stays in place |
 | `docs/authors.yml` | **DO NOT MOVE** | Plugin requires root location |
 
@@ -488,10 +488,10 @@ After verifying everything works:
 
 ### Phase 1: Create Structure
 
-- [x] ~~Create `docs/.mkdocs/assets/`~~ (NOT created - document-dates plugin uses `docs/assets/`)
-- [x] Create `docs/.mkdocs/overrides/`
-- [x] Create `docs/.mkdocs/stylesheets/`
-- [x] ~~Create `docs/.mkdocs/pages/`~~ (not needed, stays in docs/)
+- [x] ~~Create `docs/_mkdocs/assets/`~~ (NOT created - document-dates plugin uses `docs/assets/`)
+- [x] Create `docs/_mkdocs/overrides/`
+- [x] Create `docs/_mkdocs/stylesheets/`
+- [x] ~~Create `docs/_mkdocs/pages/`~~ (not needed, stays in docs/)
 - [x] Create `docs/contracts/`
 - [x] Create `docs/guides/`
 - [x] Create `docs/architecture/`
@@ -503,8 +503,8 @@ After verifying everything works:
 ### Phase 2: Move MkDocs Infrastructure
 
 - [x] Keep `docs/assets/` in place (DO NOT MOVE - contains `document_dates/` managed by plugin, see Section 5.2)
-- [x] Move `docs/overrides/` → `docs/.mkdocs/overrides/`
-- [x] Move `docs/stylesheets/` → `docs/.mkdocs/stylesheets/`
+- [x] Move `docs/overrides/` → `docs/_mkdocs/overrides/`
+- [x] Move `docs/stylesheets/` → `docs/_mkdocs/stylesheets/`
 - [x] Keep `docs/pages/` in place (DO NOT MOVE - generated output)
 - [x] Keep `docs/authors.yml` in place (plugin requires root)
 

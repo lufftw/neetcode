@@ -405,11 +405,11 @@ A: By default, MkDocs generates a `sitemap.xml` where all pages have the same `l
 
 1. **Create the overrides directory:**
    ```bash
-   mkdir docs/.mkdocs/overrides
+   mkdir docs/_mkdocs/overrides
    ```
 
 2. **Create the custom sitemap template:**
-   Create `docs/.mkdocs/overrides/sitemap.xml` with the following content:
+   Create `docs/_mkdocs/overrides/sitemap.xml` with the following content:
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
