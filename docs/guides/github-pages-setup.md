@@ -385,10 +385,6 @@ jobs:
           cp -r docs/pages/mindmaps site/pages/mindmaps
           cp -r docs/pages/assets site/pages/assets 2>/dev/null || true
       
-      - name: Copy .mkdocs assets
-        run: |
-          cp -r docs/.mkdocs site/.mkdocs
-      
       - name: Setup Pages
         uses: actions/configure-pages@v4
       

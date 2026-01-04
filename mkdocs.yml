@@ -5,10 +5,6 @@ site_url: https://lufftw.github.io/neetcode/
 repo_url: https://github.com/lufftw/neetcode
 repo_name: neetcode
 
-# Development server configuration
-# When using mkdocs serve, use root path to avoid base path issues
-dev_addr: '127.0.0.1:8000'
-
 # Exclude files from build
 exclude_docs: |
   mindmaps/README.md
@@ -119,11 +115,11 @@ plugins:
       show_author: true        # Show author: true(avatar) text(text) false(hidden), default: true
       locale: en               # Language: en
   - mindmaps-lastmod
-  # - privacy:
-  #     links: true
-  #     links_attr_map:
-  #       target: _blank
-  #     links_noopener: true
+  - privacy:
+      links: true
+      links_attr_map:
+        target: _blank
+      links_noopener: true
 
 # Navigation
 nav:
