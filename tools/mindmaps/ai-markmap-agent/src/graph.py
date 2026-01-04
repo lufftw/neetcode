@@ -1037,6 +1037,9 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
         print("\n[Phase 6] Post-processing...")
         debug = get_debug_manager(config)
         
+        # Get resume config early - needed for multiple checks below
+        resume_config = state.get("_resume_config", {})
+        
         # Merge writer outputs (English, raw) and translations (e.g., Chinese, raw)
         # Post-processing will normalize links for BOTH English and translated outputs
         writer_outputs = state.get("writer_outputs", {})
@@ -1081,7 +1084,6 @@ def build_markmap_graph(config: dict[str, Any] | None = None) -> StateGraph:
             print("     3. In resume mode: translations not loaded from previous run")
         
         # Check if resuming and ask user whether to run post-processing
-        resume_config = state.get("_resume_config", {})
         reuse_stages = resume_config.get("reuse_stages", {}) if resume_config else {}
         
         # If in resume mode and post_processing is marked for reuse, check for existing output

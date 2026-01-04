@@ -7,7 +7,7 @@ This package provides:
     - Reusable components: solution_header, helpers, stub_parser
 
 Usage:
-    from packages.codegen import (
+    from codegen import (
         generate_reference_skeleton,
         generate_practice_skeleton,
         render_solution_header,

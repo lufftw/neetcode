@@ -13,10 +13,10 @@ The generator automatically:
 - Composes header, problem, and footer sections
 
 Usage:
-    python tools/generate_pattern_docs.py                    # Generate all
-    python tools/generate_pattern_docs.py --pattern sliding_window
-    python tools/generate_pattern_docs.py --validate         # Validate only
-    python tools/generate_pattern_docs.py --list             # List available
+    python tools/patterndocs/generate_pattern_docs.py                    # Generate all
+    python tools/patterndocs/generate_pattern_docs.py --pattern sliding_window
+    python tools/patterndocs/generate_pattern_docs.py --validate         # Validate only
+    python tools/patterndocs/generate_pattern_docs.py --list             # List available
 
 File Ordering:
     Each pattern directory can include _config.toml to control file order:

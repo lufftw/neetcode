@@ -102,13 +102,13 @@ def main():
         'docs/tools/README.md',
         'docs/github-pages-setup.md',
         'docs/build-docs-manual.md',
-        'tools/ai-markmap-agent/convert_to_html.toml',
-        'tools/ai-markmap-agent/convert_to_html.py',
-        'tools/ai-markmap-agent/docs/design-v4.md',
-        'tools/ai-markmap-agent/docs/design-v3.md',
-        'tools/ai-markmap-agent/docs/design-v2.md',
-        'tools/ai_mindmap/html_generator.py',
-        'tools/generate_mindmaps_ai.toml',
+        'tools/mindmaps/ai-markmap-agent/convert_to_html.toml',
+        'tools/mindmaps/ai-markmap-agent/convert_to_html.py',
+        'tools/mindmaps/ai-markmap-agent/docs/design-v4.md',
+        'tools/mindmaps/ai-markmap-agent/docs/design-v3.md',
+        'tools/mindmaps/ai-markmap-agent/docs/design-v2.md',
+        'tools/mindmaps/ai_mindmap/html_generator.py',
+        'tools/mindmaps/generate_mindmaps_ai.toml',
     ]
     
     print(f"Checking {len(files_to_check)} files for HTML references...")

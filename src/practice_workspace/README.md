@@ -58,7 +58,7 @@ practice_workspace/
 ## Usage
 
 ```python
-from packages.practice_workspace import (
+from practice_workspace import (
     save_to_history,
     list_history,
     restore_from_history,

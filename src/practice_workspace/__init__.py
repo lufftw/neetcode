@@ -6,7 +6,7 @@ This package manages:
     - History listing and restore operations
 
 Usage:
-    from packages.practice_workspace import (
+    from practice_workspace import (
         save_to_history,
         list_history,
         restore_from_history,

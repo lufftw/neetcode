@@ -129,8 +129,8 @@ source leetcode/bin/activate
 pip install -r requirements.txt
 
 # 3. Generate mindmaps
-python tools/generate_mindmaps.py        # Markdown
-python tools/generate_mindmaps.py --html # HTML
+python tools/mindmaps/generate_mindmaps.py        # Markdown
+python tools/mindmaps/generate_mindmaps.py --html # HTML
 
 # 4. Build MkDocs site
 python -m mkdocs build
@@ -212,13 +212,13 @@ python -m mkdocs build
 
 ```bash
 # Generate all interactive mind maps (rule-based)
-python tools/generate_mindmaps.py --html
+python tools/mindmaps/generate_mindmaps.py --html
 
 # Generate specific mind map
-python tools/generate_mindmaps.py --html --type pattern_hierarchy
+python tools/mindmaps/generate_mindmaps.py --html --type pattern_hierarchy
 
 # Use autoloader mode (optional)
-python tools/generate_mindmaps.py --html --autoloader
+python tools/mindmaps/generate_mindmaps.py --html --autoloader
 ```
 
 **Output:** HTML files are generated in `docs/pages/mindmaps/`
@@ -246,10 +246,10 @@ python tools/generate_mindmaps.py --html --autoloader
 2. **Generate AI mindmaps:**
    ```bash
    # Generate both English and 繁體中文 versions
-   python tools/generate_mindmaps_ai.py --config tools/generate_mindmaps_ai.toml
+   python tools/mindmaps/generate_mindmaps_ai.py --config tools/mindmaps/generate_mindmaps_ai.toml
    
    # Or use interactive mode
-   python tools/generate_mindmaps_ai.py
+   python tools/mindmaps/generate_mindmaps_ai.py
    ```
 
 3. **Verify generated files:**
@@ -289,7 +289,7 @@ python tools/generate_mindmaps.py --html --autoloader
 - **Transparency**: Makes the AI generation process transparent and auditable
 
 **Configuration:**
-- Edit `tools/generate_mindmaps_ai.toml` to customize:
+- Edit `tools/mindmaps/generate_mindmaps_ai.toml` to customize:
   - Output language(s): `language = ["en", "zh-TW"]`
   - HTML generation: `generate_html = true`
   - Output directory: `html_directory = "docs/pages/mindmaps"`
@@ -340,7 +340,7 @@ on:
       - 'docs/**'
       - 'ontology/**'
       - 'meta/**'
-      - 'tools/generate_mindmaps.py'
+      - 'tools/mindmaps/generate_mindmaps.py'
       - 'mkdocs.yml'
   workflow_dispatch:  # Allow manual trigger
 
@@ -370,8 +370,8 @@ jobs:
       
       - name: Generate Mind Maps (Markdown + HTML)
         run: |
-          python tools/generate_mindmaps.py        # Generate Markdown
-          python tools/generate_mindmaps.py --html # Generate HTML
+          python tools/mindmaps/generate_mindmaps.py        # Generate Markdown
+          python tools/mindmaps/generate_mindmaps.py --html # Generate HTML
       
       # Note: AI mindmaps are NOT generated in CI/CD
       # They must be manually generated and committed to the repository
@@ -384,6 +384,10 @@ jobs:
         run: |
           cp -r docs/pages/mindmaps site/pages/mindmaps
           cp -r docs/pages/assets site/pages/assets 2>/dev/null || true
+      
+      - name: Copy .mkdocs assets
+        run: |
+          cp -r docs/.mkdocs site/.mkdocs
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -560,8 +564,8 @@ The README.md already includes links to interactive mind maps:
 3. GitHub Actions automatically triggers
    ↓
 4. Generate rule-based mind maps
-   python tools/generate_mindmaps.py        # Markdown
-   python tools/generate_mindmaps.py --html # HTML
+   python tools/mindmaps/generate_mindmaps.py        # Markdown
+   python tools/mindmaps/generate_mindmaps.py --html # HTML
    ↓
 5. Build MkDocs site
    mkdocs build
@@ -584,7 +588,7 @@ The README.md already includes links to interactive mind maps:
    $env:OPENAI_API_KEY = "sk-..."
    ↓
 2. Generate AI mindmaps locally
-   python tools/generate_mindmaps_ai.py
+   python tools/mindmaps/generate_mindmaps_ai.py
    ↓
 3. Review generated HTML files
    docs/pages/mindmaps/neetcode_ontology_ai_*.html
@@ -628,7 +632,7 @@ A: Yes! Configure it in Settings → Pages → Custom domain.
 After modifying `ontology/` or `meta/`, push to GitHub. GitHub Actions will automatically regenerate and redeploy.
 
 **For AI-powered mind maps:**
-1. Generate locally with `python tools/generate_mindmaps_ai.py`
+1. Generate locally with `python tools/mindmaps/generate_mindmaps_ai.py`
 2. Commit the generated HTML files (`docs/pages/mindmaps/neetcode_ontology_ai_*.html`)
 3. Also commit the prompt file (`tools/prompts/generated/mindmap-prompt.md`) for traceability
 4. Push to GitHub

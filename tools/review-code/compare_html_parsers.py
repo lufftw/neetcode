@@ -46,7 +46,7 @@ if sys.platform == 'win32':
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from packages.leetcode_datasource import LeetCodeDataSource
+from leetcode_datasource import LeetCodeDataSource
 
 # ============================================================
 # Method A: Regex/String-based (adapted from tools/docstring/formatter.py)

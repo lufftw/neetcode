@@ -137,10 +137,10 @@ Indexing MUST be **1-based**.
 
 ### Problem Metadata
 
-Codegen MUST resolve `leetcode_title_slug` for the given ID using `packages/leetcode_datasource`:
+Codegen MUST resolve `leetcode_title_slug` for the given ID using `leetcode_datasource`:
 
 ```python
-from packages.leetcode_datasource import LeetCodeDataSource
+from leetcode_datasource import LeetCodeDataSource
 
 ds = LeetCodeDataSource()
 question = ds.get_by_frontend_id(problem_id)

@@ -8,7 +8,7 @@ reusing infrastructure from reference solutions when available.
 from pathlib import Path
 from typing import Optional
 
-from packages.leetcode_datasource import LeetCodeDataSource
+from leetcode_datasource import LeetCodeDataSource
 
 from ..core.config import CodeGenConfig, load_config
 from ..core.assemble import assemble_module, assemble_practice_marker

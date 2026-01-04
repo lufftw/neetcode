@@ -187,8 +187,8 @@ root = list_to_tree([1, 2, 3])
 ### Inline Mode (Codegen)
 
 ```python
-# In packages/codegen
-from packages.codegen.core.catalog import get, get_with_deps
+# In codegen
+from codegen.core.catalog import get, get_with_deps
 
 # Get single definition
 code = get("ListNode")
@@ -203,7 +203,7 @@ code = get_with_deps("build_list_with_cycle")
 ## Catalog API
 
 ```python
-from packages.codegen.core.catalog import (
+from codegen.core.catalog import (
     get,            # Get single template code
     deps,           # Get dependency list
     get_with_deps,  # Get code with all dependencies

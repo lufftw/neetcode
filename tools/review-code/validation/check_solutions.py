@@ -12,11 +12,11 @@ Exit Codes:
 - 1: Errors found
 
 Usage:
-    python tools/check_solutions.py
-    python tools/check_solutions.py --verbose
-    python tools/check_solutions.py --list-warnings  # List files with warnings only
-    python tools/check_solutions.py --show-warnings  # Show warnings with suggestions
-    python tools/check_solutions.py --fix  # Auto-fix simple issues (future)
+    python tools/review-code/validation/check_solutions.py
+    python tools/review-code/validation/check_solutions.py --verbose
+    python tools/review-code/validation/check_solutions.py --list-warnings  # List files with warnings only
+    python tools/review-code/validation/check_solutions.py --show-warnings  # Show warnings with suggestions
+    python tools/review-code/validation/check_solutions.py --fix  # Auto-fix simple issues (future)
 """
 import re
 import sys

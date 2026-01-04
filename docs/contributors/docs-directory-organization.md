@@ -73,11 +73,14 @@ docs/
 ├── google8e4b975a9b708272.html           # Google verification
 │
 ├── .mkdocs/                              # ═══ MkDocs Infrastructure ═══
-│   ├── assets/                           # Static assets
-│   │   ├── avatar/                       # Author avatars
-│   │   └── document_dates/               # Plugin config
 │   ├── overrides/                        # Theme overrides
 │   └── stylesheets/                      # Custom CSS
+│
+├── assets/                               # Static assets (document-dates plugin uses this)
+│   └── document_dates/                   # Plugin config & author avatars (plugin-managed)
+│       ├── avatar/                       # Author avatars (referenced in authors.yml)
+│       ├── user.config.css               # Plugin custom CSS config
+│       └── user.config.js                # Plugin custom JS config
 │
 ├── authors.yml                           # Author definitions (plugin requires root)
 ├── pages/                                # Generated HTML (mindmaps) - DO NOT MOVE
@@ -166,11 +169,10 @@ Contains all MkDocs-related configuration and assets that are NOT documentation 
 
 | Subfolder | Purpose |
 |-----------|---------|
-| `assets/` | Static files (avatars, images, plugin configs) |
 | `overrides/` | MkDocs Material theme customizations |
 | `stylesheets/` | Custom CSS files |
-| `pages/` | Generated HTML output (mindmaps) |
-| `authors.yml` | Author definitions for document-dates plugin |
+
+**Note**: The `assets/` directory is at `docs/assets/` (not under `.mkdocs/`) because the `document-dates` plugin requires it. See Section 5.2 for plugin rules.
 
 **Why `.mkdocs/`?**
 - Prefix `.` indicates infrastructure, not content
@@ -347,8 +349,28 @@ Update any plugins that reference infrastructure paths:
 
 | Plugin | Config Key | New Path |
 |--------|------------|----------|
-| `document-dates` | (internal) | `docs/.mkdocs/authors.yml` |
+| `document-dates` | (internal) | `docs/authors.yml` (must be at root, not configurable) |
 | `theme` | `custom_dir` | `docs/.mkdocs/overrides` |
+
+#### document-dates Plugin Rules
+
+The `document-dates` plugin has specific requirements:
+
+1. **`authors.yml` location**: Must be at `docs/authors.yml` (root of docs directory). The plugin does NOT support custom paths through its configuration. It will:
+   - First check `docs/authors.yml`
+   - Fallback to `material/blog` plugin's `authors_file` config if file not found (only if blog plugin is used)
+
+2. **`assets/document_dates/` directory**: The plugin automatically:
+   - Copies default config files to `docs/assets/document_dates/` during build
+   - Adds `assets/document_dates/user.config.css` and `assets/document_dates/user.config.js` to `extra_css` and `extra_javascript` automatically
+   - **Do NOT manually add these paths in `mkdocs.yml`** - the plugin handles it
+
+3. **Custom configuration files and avatars**: 
+   - All files (config files and author avatars) are stored in `docs/assets/document_dates/`
+   - Plugin copies default config files to `docs/assets/document_dates/` if they don't exist
+   - Custom files in `docs/assets/document_dates/` override plugin defaults
+   - Author avatars are stored in `docs/assets/document_dates/avatar/` and referenced in `authors.yml` as `assets/document_dates/avatar/...`
+   - **DO NOT migrate** `docs/assets/document_dates/` - it's managed by the plugin
 
 ---
 
@@ -362,10 +384,10 @@ Create new directories:
 
 ```bash
 # MkDocs infrastructure
-mkdir -p docs/.mkdocs/assets
+# Note: docs/.mkdocs/assets/ is NOT created - document-dates plugin uses docs/assets/
 mkdir -p docs/.mkdocs/overrides
 mkdir -p docs/.mkdocs/stylesheets
-mkdir -p docs/.mkdocs/pages
+# Note: docs/.mkdocs/pages/ is NOT created - pages stay in docs/pages/
 
 # Documentation folders
 mkdir -p docs/contracts
@@ -381,11 +403,18 @@ mkdir -p docs/reference
 
 | From | To | Note |
 |------|-----|------|
-| `docs/assets/` | `docs/.mkdocs/assets/` | |
+| `docs/assets/` | **DO NOT MOVE** | Contains `document_dates/` - plugin-managed (see plugin rules below) |
 | `docs/overrides/` | `docs/.mkdocs/overrides/` | |
 | `docs/stylesheets/` | `docs/.mkdocs/stylesheets/` | |
 | `docs/pages/` | **DO NOT MOVE** | Generated output, stays in place |
 | `docs/authors.yml` | **DO NOT MOVE** | Plugin requires root location |
+
+**Important**: The `document-dates` plugin automatically manages `docs/assets/document_dates/`:
+- Plugin copies default config files to `docs/assets/document_dates/` during build if they don't exist
+- Custom files in `docs/assets/document_dates/` (including `user.config.css`, `user.config.js`, and `avatar/`) override plugin defaults
+- Author avatars are stored in `docs/assets/document_dates/avatar/` and referenced in `authors.yml`
+- **DO NOT migrate** `docs/assets/document_dates/` - it's plugin-managed
+- See Section 5.2 for detailed plugin rules
 
 ### 6.3 Phase 3: Move Contracts
 
@@ -459,7 +488,7 @@ After verifying everything works:
 
 ### Phase 1: Create Structure
 
-- [x] Create `docs/.mkdocs/assets/`
+- [x] ~~Create `docs/.mkdocs/assets/`~~ (NOT created - document-dates plugin uses `docs/assets/`)
 - [x] Create `docs/.mkdocs/overrides/`
 - [x] Create `docs/.mkdocs/stylesheets/`
 - [x] ~~Create `docs/.mkdocs/pages/`~~ (not needed, stays in docs/)
@@ -473,7 +502,7 @@ After verifying everything works:
 
 ### Phase 2: Move MkDocs Infrastructure
 
-- [x] Move `docs/assets/` → `docs/.mkdocs/assets/`
+- [x] Keep `docs/assets/` in place (DO NOT MOVE - contains `document_dates/` managed by plugin, see Section 5.2)
 - [x] Move `docs/overrides/` → `docs/.mkdocs/overrides/`
 - [x] Move `docs/stylesheets/` → `docs/.mkdocs/stylesheets/`
 - [x] Keep `docs/pages/` in place (DO NOT MOVE - generated output)

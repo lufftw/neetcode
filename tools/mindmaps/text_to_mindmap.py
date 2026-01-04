@@ -6,10 +6,10 @@ Converts ANY text input into structured mind maps using LLM.
 Supports multiple output formats: Markdown, Mermaid, Markmap HTML.
 
 Usage:
-    python tools/text_to_mindmap.py --input "Your text here"
-    python tools/text_to_mindmap.py --file input.txt
-    python tools/text_to_mindmap.py --file input.txt --format mermaid
-    python tools/text_to_mindmap.py --file input.txt --format html --output mindmap.html
+    python tools/mindmaps/text_to_mindmap.py --input "Your text here"
+    python tools/mindmaps/text_to_mindmap.py --file input.txt
+    python tools/mindmaps/text_to_mindmap.py --file input.txt --format mermaid
+    python tools/mindmaps/text_to_mindmap.py --file input.txt --format html --output mindmap.html
 
 Supported LLM Backends:
     - OpenAI (GPT-4, GPT-3.5)

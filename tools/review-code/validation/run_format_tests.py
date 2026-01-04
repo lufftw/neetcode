@@ -3,9 +3,9 @@
 Standalone script to run solution format tests.
 
 Usage:
-    python tools/run_format_tests.py
-    python tools/run_format_tests.py --verbose
-    python tools/run_format_tests.py --quiet
+    python tools/review-code/validation/run_format_tests.py
+    python tools/review-code/validation/run_format_tests.py --verbose
+    python tools/review-code/validation/run_format_tests.py --quiet
 """
 import sys
 import unittest

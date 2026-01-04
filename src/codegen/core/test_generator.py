@@ -287,7 +287,7 @@ def generate_tests_from_datasource(
     if str(_TOOLS_PATH) not in sys.path:
         sys.path.insert(0, str(_TOOLS_PATH))
     
-    from packages.leetcode_datasource import LeetCodeDataSource
+    from leetcode_datasource import LeetCodeDataSource
     
     if tests_dir is None:
         tests_dir = _PROJECT_ROOT / "tests"

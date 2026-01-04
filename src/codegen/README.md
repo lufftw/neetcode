@@ -117,7 +117,7 @@ codegen/
 ## Usage
 
 ```python
-from packages.codegen import (
+from codegen import (
     generate_reference_skeleton,
     generate_practice_skeleton,
     render_solution_header,
@@ -127,14 +127,14 @@ from packages.codegen import (
 generate_reference_skeleton(1)  # Two Sum
 
 # Generate reference with test files
-from packages.codegen.core.test_generator import generate_tests_from_datasource
+from codegen.core.test_generator import generate_tests_from_datasource
 generate_tests_from_datasource(1, force=True)
 
 # Generate practice skeleton
 generate_practice_skeleton(1)
 
 # Check test consistency
-from packages.codegen.checker import TestChecker
+from codegen.checker import TestChecker
 checker = TestChecker()
 result = checker.check_problem(1)
 print(result.summary())

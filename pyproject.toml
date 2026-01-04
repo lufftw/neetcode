@@ -10,8 +10,8 @@ requires-python = ">=3.8"
 dependencies = ["pyyaml", "tomli;python_version<'3.11'"]
 
 [project.scripts]
-codegen = "packages.codegen.cli:main"
-practice = "packages.practice_workspace.cli:main"
+codegen = "codegen.cli:main"
+practice = "practice_workspace.cli:main"
 
 [project.entry-points."mkdocs.plugins"]
 mindmaps-lastmod = "mkdocs_plugins.mindmaps_lastmod:MindmapsLastmodPlugin"
@@ -19,6 +19,7 @@ mindmaps-lastmod = "mkdocs_plugins.mindmaps_lastmod:MindmapsLastmodPlugin"
 [tool.setuptools]
 # Explicitly list all packages
 packages = [
+    # Root packages
     "generators",
     "mkdocs_plugins",
     "runner",
@@ -26,20 +27,23 @@ packages = [
     "runner.display", 
     "runner.analysis",
     "runner.core",
-    "packages",
-    "packages.leetcode_datasource",
-    "packages.leetcode_datasource.models",
-    "packages.leetcode_datasource.storage",
-    "packages.leetcode_datasource.serialization",
-    "packages.leetcode_datasource.fetchers",
-    "packages.codegen",
-    "packages.codegen.core",
-    "packages.codegen.core.helpers",
-    "packages.codegen.reference",
-    "packages.codegen.practice",
-    "packages.practice_workspace",
+    # src/ packages (src layout)
+    "leetcode_datasource",
+    "leetcode_datasource.models",
+    "leetcode_datasource.storage",
+    "leetcode_datasource.serialization",
+    "leetcode_datasource.fetchers",
+    "codegen",
+    "codegen.core",
+    "codegen.core.helpers",
+    "codegen.reference",
+    "codegen.practice",
+    "practice_workspace",
 ]
 
-# Map packages to correct locations
+# Map src/ packages to correct locations
 [tool.setuptools.package-dir]
 "" = "."
+"leetcode_datasource" = "src/leetcode_datasource"
+"codegen" = "src/codegen"
+"practice_workspace" = "src/practice_workspace"

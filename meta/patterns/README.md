@@ -81,9 +81,9 @@ After creating or updating source files, regenerate the documentation:
 
 ```bash
 # Generate specific pattern
-python tools/generate_pattern_docs.py --pattern <pattern_name>
+python tools/patterndocs/generate_pattern_docs.py --pattern <pattern_name>
 
 # Generate all patterns
-python tools/generate_pattern_docs.py --all
+python tools/patterndocs/generate_pattern_docs.py --all
 ```
 

@@ -6,9 +6,9 @@ Generates SEO-friendly meta descriptions from Markdown files using OpenAI GPT-4o
 Follows the Meta Description Generation Spec for optimal SERP display.
 
 Usage:
-    python tools/html_meta_description_generator.py                    # Generate all configured files
-    python tools/html_meta_description_generator.py --file path.md    # Generate specific file
-    python tools/html_meta_description_generator.py --list            # List configured files
+    python tools/mindmaps/html_meta_description_generator.py                    # Generate all configured files
+    python tools/mindmaps/html_meta_description_generator.py --file path.md    # Generate specific file
+    python tools/mindmaps/html_meta_description_generator.py --list            # List configured files
 """
 
 from __future__ import annotations

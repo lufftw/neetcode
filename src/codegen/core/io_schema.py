@@ -180,7 +180,7 @@ def infer_io_schema(stub: StubInfo) -> IOSchema:
         IOSchema with inferred format rules for all parameters
         
     Example:
-        >>> from packages.codegen.core.stub_parser import parse_code_stub
+        >>> from codegen.core.stub_parser import parse_code_stub
         >>> code = '''
         ... class Solution:
         ...     def twoSum(self, nums: List[int], target: int) -> List[int]:

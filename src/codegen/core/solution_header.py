@@ -8,7 +8,7 @@ import html
 import re
 from typing import Literal, Optional, Union
 
-from packages.leetcode_datasource import Question, ProblemInfo
+from leetcode_datasource import Question, ProblemInfo
 
 
 HeaderLevel = Literal["minimal", "standard", "full"]
@@ -32,7 +32,7 @@ def render_solution_header(
         str: Formatted docstring (including triple quotes)
     
     Example:
-        >>> from packages.leetcode_datasource import LeetCodeDataSource
+        >>> from leetcode_datasource import LeetCodeDataSource
         >>> ds = LeetCodeDataSource()
         >>> q = ds.get_by_frontend_id(1)
         >>> header = render_solution_header(q)

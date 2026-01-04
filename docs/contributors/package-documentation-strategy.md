@@ -367,7 +367,7 @@ python -m tools.codegen --problem 1
 <!-- GOOD -->
 ## Public API
 ```python
-from packages.codegen import generate_reference_skeleton
+from codegen import generate_reference_skeleton
 generate_reference_skeleton(problem_id=1)
 ```
 ```

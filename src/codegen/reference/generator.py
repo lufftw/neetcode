@@ -7,7 +7,7 @@ Generates canonical solution files in solutions/ directory.
 from pathlib import Path
 from typing import Optional, Tuple
 
-from packages.leetcode_datasource import LeetCodeDataSource, Question
+from leetcode_datasource import LeetCodeDataSource, Question
 
 from ..core.config import CodeGenConfig, load_config, HeaderLevel
 from ..core.solution_header import render_solution_header

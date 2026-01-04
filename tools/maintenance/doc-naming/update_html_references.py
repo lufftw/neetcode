@@ -89,8 +89,8 @@ def update_file_content(filepath: Path, mapping: Dict[str, str]) -> bool:
 
 
 def update_generate_mindmaps_py() -> bool:
-    """Update tools/generate_mindmaps.py to generate kebab-case HTML filenames."""
-    filepath = Path("tools/generate_mindmaps.py")
+    """Update tools/mindmaps/generate_mindmaps.py to generate kebab-case HTML filenames."""
+    filepath = Path("tools/mindmaps/generate_mindmaps.py")
     if not filepath.exists():
         return False
     
@@ -128,11 +128,11 @@ def main():
     
     # Files to check and update
     files_to_check = [
-        "tools/generate_mindmaps.py",
-        "tools/html_meta_description_generator.toml",
-        "tools/ai_mindmap/html_generator.py",
-        "tools/generate_mindmaps_ai.py",
-        "tools/generate_mindmaps_ai.toml",
+        "tools/mindmaps/generate_mindmaps.py",
+        "tools/mindmaps/html_meta_description_generator.toml",
+        "tools/mindmaps/ai_mindmap/html_generator.py",
+        "tools/mindmaps/generate_mindmaps_ai.py",
+        "tools/mindmaps/generate_mindmaps_ai.toml",
     ]
     
     print("Step 1: Updating Python scripts...")
@@ -149,8 +149,8 @@ def main():
     
     print("\nStep 2: Updating generate_mindmaps.py HTML filename generation...")
     if update_generate_mindmaps_py():
-        print("  OK: Updated HTML filename generation in tools/generate_mindmaps.py")
-        updated_files.append("tools/generate_mindmaps.py")
+        print("  OK: Updated HTML filename generation in tools/mindmaps/generate_mindmaps.py")
+        updated_files.append("tools/mindmaps/generate_mindmaps.py")
     else:
         print("  SKIP: No changes needed")
     

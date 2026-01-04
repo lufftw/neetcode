@@ -14,7 +14,7 @@ Single Source of Truth: runner/utils/codec/
         └── node/          - Depends on Node
 
 Usage:
-    from packages.codegen.core.catalog import get, get_with_deps, deps
+    from codegen.core.catalog import get, get_with_deps, deps
     
     code = get("ListNode")           # Get class definition
     code = get("list_to_tree")       # Get function definition

@@ -13,9 +13,9 @@ Exit Codes:
 - 1: Errors found but not fixed
 
 Usage:
-    python tools/check_test_files.py              # List problematic files
-    python tools/check_test_files.py --fix        # List and fix
-    python tools/check_test_files.py --verbose    # Show detailed info
+    python tools/review-code/validation/check_test_files.py              # List problematic files
+    python tools/review-code/validation/check_test_files.py --fix        # List and fix
+    python tools/review-code/validation/check_test_files.py --verbose    # Show detailed info
 """
 import sys
 from pathlib import Path

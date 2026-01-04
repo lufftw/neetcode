@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from .stub_parser import StubInfo
 from .io_schema import IOSchema, ParamSchema, ParamFormat, infer_io_schema
 from .problem_support import load_problem_config, ProblemConfig
-from packages.codegen.core.catalog import get, get_with_deps
+from codegen.core.catalog import get, get_with_deps
 
 
 @dataclass
@@ -244,7 +244,7 @@ def generate_tiered_solve(
     helper_code = ""
     if config.codec_mode == "inline":
         # Inline mode: embed all codec functions (deduplicated, deps first)
-        from packages.codegen.core.catalog import deps
+        from codegen.core.catalog import deps
         
         # Collect all needed templates with proper ordering
         seen = set()
@@ -274,7 +274,7 @@ def generate_tiered_solve(
     # Generate codec import for import mode (include classes + functions)
     codec_import = ""
     if config.codec_mode == "import" and config.codec_hints:
-        from packages.codegen.core.catalog import deps
+        from codegen.core.catalog import deps
         
         # Collect all imports (functions + their class dependencies)
         all_imports = set()

@@ -782,6 +782,9 @@ neetcode/
 ├── solutions/                 # 📝 你的解答檔案
 │   └── 0001_two_sum.py
 │
+├── practices/                 # 🧠 練習工作區（生成的練習檔案 + 歷史記錄）
+│   └── _history/...
+│
 ├── tests/                     # 📋 測試案例
 │   ├── 0001_two_sum_1.in      # 輸入檔
 │   ├── 0001_two_sum_1.out     # 預期輸出
@@ -790,17 +793,48 @@ neetcode/
 ├── generators/                # 🎲 隨機測資生成器（可選）
 │   └── 0001_two_sum.py        # generate(count, seed) 函式
 │
+├── packages/                  # 📦 核心套件（CodeGen、datasource、practice workspace）
+│   ├── codegen/               # `python -m packages.codegen ...`
+│   ├── leetcode_datasource/   # LeetCode 元資料/來源
+│   └── practice_workspace/    # 練習歷史工具
+│
+├── config/                    # ⚙️ 動態註冊表 / 政策
+│   └── problem-support.yaml   # 問題支援邊界（tiers/codec 提示等）
+│
 ├── runner/                    # 🧪 核心測試與驗證引擎
 │   ├── test_runner.py         # CLI 入口點 & 主要流程
 │   ├── case_runner.py         # 單一測資執行器（除錯用）
-│   ├── executor.py            # 測試案例執行（subprocess）
-│   ├── compare.py             # 輸出比較（exact/sorted/set/judge）
-│   ├── reporter.py            # 結果格式化 & 效能報告
+│   ├── executor.py            # 測試案例執行（subprocess）[legacy]
+│   ├── compare.py             # 輸出比較（exact/sorted/set/judge）[legacy]
+│   ├── reporter.py            # 結果格式化 & 效能報告 [legacy]
 │   ├── module_loader.py       # 動態模組載入
 │   ├── complexity_estimator.py # 時間複雜度估算（big_O）
 │   ├── paths.py               # 路徑工具
 │   ├── io_utils.py            # 檔案 I/O 操作
 │   ├── util.py                # Re-exports（向後兼容）
+│   ├── solution_parser.py     # 解答檔案解析
+│   ├── memory_profiler.py     # 記憶體剖析工具
+│   ├── method_runner.py       # 方法層級執行 [legacy]
+│   ├── analysis/              # 分析模組
+│   │   ├── complexity.py      # 複雜度分析
+│   │   ├── input_scale.py    # 輸入規模分析
+│   │   ├── input_shape.py    # 輸入形狀分析
+│   │   ├── memory_profiler.py # 記憶體剖析
+│   │   ├── shape_protocol.py  # 形狀協定定義
+│   │   └── type_shape.py      # 類型形狀分析
+│   ├── core/                  # 核心執行模組
+│   │   ├── executor.py        # 測試案例執行（subprocess）
+│   │   └── method_runner.py   # 方法層級執行
+│   ├── display/               # 顯示與報告模組
+│   │   ├── benchmark.py       # 效能基準顯示
+│   │   ├── memory.py          # 記憶體顯示
+│   │   └── reporter.py        # 結果格式化 & 效能報告
+│   ├── utils/                 # 工具模組
+│   │   ├── codec/             # Codec 工具（list_node, tree_node 等）
+│   │   ├── compare.py         # 輸出比較
+│   │   ├── loader.py          # 模組載入工具
+│   │   ├── parser.py          # 解析工具
+│   │   └── paths.py           # 路徑工具
 │   └── README.md              # 快速參考指南
 │
 │   📖 詳見 [測試與驗證指南](docs/runner/README.md) — 驅動自動化測試、效能基準測試、隨機測資生成與複雜度估算的核心引擎
@@ -820,24 +854,89 @@ neetcode/
 ├── docs/                      # 📚 文件（MkDocs）
 │   ├── index.md               # 首頁（English）
 │   ├── index_zh-TW.md         # 首頁（繁體中文）
+│   ├── architecture/          # 架構文件
+│   │   ├── README.md          # 架構概覽
+│   │   ├── architecture-migration.md  # 架構遷移指南
+│   │   └── packages-overview.md  # 套件概覽
+│   ├── contracts/             # 契約規格
+│   │   ├── codec.md          # Codec 契約
+│   │   ├── documentation-header-spec.md  # 文件標頭規格
+│   │   ├── generator-contract.md  # 生成器契約
+│   │   ├── problem-support-boundary.md  # 問題支援邊界
+│   │   ├── solution-contract.md  # 解答契約
+│   │   └── test-file-format.md  # 測資檔案格式
 │   ├── contributors/          # 維護者文件
 │   │   ├── README.md          # 完整維護者指南
+│   │   ├── docs-directory-organization.md  # 文件目錄組織
+│   │   ├── documentation-architecture.md  # 文件架構
+│   │   ├── documentation-naming.md  # 文件命名慣例
+│   │   ├── package-documentation-strategy.md  # 套件文件策略
 │   │   ├── testing.md         # 完整測試文件
-│   │   ├── vscode-setup.md    # VS Code Tasks 與 Debug 配置
 │   │   ├── virtual-env-setup.md  # 虛擬環境設定
-│   │   └── documentation-architecture.md  # 文件架構
+│   │   └── vscode-setup.md    # VS Code Tasks 與 Debug 配置
+│   ├── guides/               # 使用者指南
+│   │   ├── act-local-github-actions.md  # 本地執行 GitHub Actions
+│   │   ├── build-docs-manual.md  # 手動建置文件
+│   │   ├── github-pages-setup.md  # GitHub Pages 設定
+│   │   ├── local-docs-build.md  # 本地文件建置選項
+│   │   ├── mkdocs-content-guide.md  # MkDocs 內容指南
+│   │   ├── new-practice.md    # 建立練習檔
+│   │   └── new-problem.md     # 建立新題目
+│   ├── in-progress/           # 進行中的文件
+│   │   ├── README.md          # 進行中文檔概覽
+│   │   ├── new-problem-tests-autogen/  # 測資自動生成遷移
+│   │   └── tiered-problem-generation/  # Tiered 生成規格
+│   ├── mindmaps/              # 生成的心智圖 Markdown
+│   │   ├── index.md          # 心智圖概覽
+│   │   ├── algorithm-usage.md
+│   │   ├── company-coverage.md
+│   │   ├── data-structure.md
+│   │   ├── difficulty-topics.md
+│   │   ├── family-derivation.md
+│   │   ├── neetcode-ontology-agent-evolved-en.md
+│   │   ├── neetcode-ontology-agent-evolved-zh-tw.md
+│   │   ├── neetcode-ontology-ai-en.md
+│   │   ├── neetcode-ontology-ai-zh-tw.md
+│   │   ├── pattern-hierarchy.md
+│   │   ├── problem-relations.md
+│   │   ├── roadmap-paths.md
+│   │   └── solution-variants.md
+│   ├── packages/              # 套件文件
+│   │   ├── codegen/           # CodeGen 套件文件
+│   │   ├── leetcode_datasource/  # LeetCode 資料來源文件
+│   │   └── practice_workspace/  # 練習工作區文件
+│   ├── patterns/              # 生成的模式文件
+│   │   ├── README.md          # 模式概覽
+│   │   ├── backtracking_exploration/
+│   │   ├── sliding_window/
+│   │   └── two_pointers/
+│   ├── pages/                 # 生成的 HTML（gitignored）
+│   │   ├── assets/           # HTML 資源
+│   │   └── mindmaps/         # 互動式心智圖 HTML
+│   ├── reference/             # 參考文件
+│   │   └── ontology-design.md  # 本體論設計
+│   ├── runner/                # Runner 文件
+│   │   ├── README.md          # Runner 概覽
+│   │   ├── cli-output-contract.md  # CLI 輸出契約
+│   │   ├── benchmarking/     # 效能基準測試文件
+│   │   │   └── memory-metrics.md
+│   │   └── profiling/        # 剖析文件
+│   │       ├── cli-output-memory.md
+│   │       └── input-scale-metrics.md
 │   ├── tools/                 # 工具文件
 │   │   ├── README.md          # 完整工具參考
-│   │   ├── ai-markmap-agent/  # AI Markmap Agent 文件
-│   │   ├── mindmaps/          # 心智圖生成器文件
-│   │   └── patterndocs/       # 模式文件生成器文件
-│   ├── mindmaps/              # 生成的心智圖 Markdown
-│   ├── patterns/              # 生成的模式文件
-│   ├── pages/                 # 生成的 HTML（gitignored）
+│   │   ├── docstring/        # 文件字串工具
+│   │   ├── leetcode-api/     # LeetCode API 工具
+│   │   ├── maintenance/      # 維護工具
+│   │   ├── mindmaps/         # 心智圖工具
+│   │   │   ├── README.md     # 心智圖生成器文件
+│   │   └── ai-markmap-agent/  # AI Markmap Agent 文件
+│   │   ├── patterndocs/      # 模式文件生成器
+│   │   └── review-code/      # 程式碼審查工具
 │   ├── assets/                # 文件資源（圖片、CSS、JS）
-│   ├── overrides/             # MkDocs 主題覆蓋
-│   ├── getting-started/       # 快速開始指南
-│   └── stylesheets/           # 自訂 CSS
+│   │   └── document_dates/   # 文件日期資源
+│   ├── authors.yml            # 作者資訊
+│   └── robots.txt             # Robots.txt（SEO 用）
 │
 ├── tools/                     # 🛠️ 工具腳本
 │   ├── mindmaps/              # 🗺️ 思維導圖工具（全部整合）
@@ -929,9 +1028,12 @@ neetcode/
 | 目錄 | 用途 | 對象 |
 |:-----|:-----|:-----|
 | `solutions/` | 在這裡撰寫解答 | ✅ 所有使用者 |
+| `practices/` | 練習工作區（生成的練習檔案 + 歷史記錄） | ✅ 所有使用者 |
 | `tests/` | 新增測資（.in/.out） | ✅ 所有使用者 |
 | `generators/` | 隨機測資生成器 | ✅ 所有使用者 |
 | `runner/` | 測試執行引擎 | 🔧 貢獻者 |
+| `packages/` | 核心套件（CodeGen、datasource、practice workspace） | 🔧 貢獻者 |
+| `config/` | 問題支援註冊表與政策 | 🔧 貢獻者 |
 | `templates/` | 題目模板 | ✅ 所有使用者 |
 | `.vscode/` | VS Code 配置 | ✅ 所有使用者 |
 | `docs/` | MkDocs 文件 | 🔧 貢獻者 |

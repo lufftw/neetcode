@@ -6,8 +6,8 @@ Reads a markdown file and generates the corresponding HTML file
 with the markdown content embedded for Markmap rendering.
 
 Usage:
-    python tools/sync_mindmap_html.py docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
-    python tools/sync_mindmap_html.py --all  # Sync all md files in docs/mindmaps/
+    python tools/mindmaps/sync_mindmap_html.py docs/mindmaps/neetcode-ontology-agent-evolved-zh-tw.md
+    python tools/mindmaps/sync_mindmap_html.py --all  # Sync all md files in docs/mindmaps/
 """
 
 from __future__ import annotations
@@ -168,7 +168,7 @@ def main() -> int:
     elif args.files:
         files = [Path(f) for f in args.files]
     else:
-        print("Usage: python tools/sync_mindmap_html.py <file.md> or --all")
+        print("Usage: python tools/mindmaps/sync_mindmap_html.py <file.md> or --all")
         return 1
     
     if not files:

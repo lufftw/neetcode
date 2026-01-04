@@ -801,14 +801,37 @@ neetcode/
 ├── runner/                    # 🧪 Core testing & validation engine
 │   ├── test_runner.py         # CLI entry point & main orchestration
 │   ├── case_runner.py         # Single case runner (for debugging)
-│   ├── executor.py            # Test case execution (subprocess)
-│   ├── compare.py             # Output comparison (exact/sorted/set/judge)
-│   ├── reporter.py            # Result formatting & benchmark display
+│   ├── executor.py            # Test case execution (subprocess) [legacy]
+│   ├── compare.py             # Output comparison (exact/sorted/set/judge) [legacy]
+│   ├── reporter.py            # Result formatting & benchmark display [legacy]
 │   ├── module_loader.py       # Dynamic module loading
 │   ├── complexity_estimator.py # Time complexity estimation (big_O)
 │   ├── paths.py               # Path utilities
 │   ├── io_utils.py            # File I/O operations
 │   ├── util.py                # Re-exports (backward compatible)
+│   ├── solution_parser.py     # Solution file parsing
+│   ├── memory_profiler.py     # Memory profiling utilities
+│   ├── method_runner.py       # Method-level execution [legacy]
+│   ├── analysis/              # Analysis modules
+│   │   ├── complexity.py      # Complexity analysis
+│   │   ├── input_scale.py     # Input scale analysis
+│   │   ├── input_shape.py     # Input shape analysis
+│   │   ├── memory_profiler.py # Memory profiling
+│   │   ├── shape_protocol.py  # Shape protocol definitions
+│   │   └── type_shape.py       # Type shape analysis
+│   ├── core/                  # Core execution modules
+│   │   ├── executor.py        # Test case execution (subprocess)
+│   │   └── method_runner.py   # Method-level execution
+│   ├── display/               # Display & reporting modules
+│   │   ├── benchmark.py       # Benchmark display
+│   │   ├── memory.py          # Memory display
+│   │   └── reporter.py        # Result formatting & benchmark display
+│   ├── utils/                 # Utility modules
+│   │   ├── codec/             # Codec utilities (list_node, tree_node, etc.)
+│   │   ├── compare.py         # Output comparison
+│   │   ├── loader.py          # Module loading utilities
+│   │   ├── parser.py          # Parsing utilities
+│   │   └── paths.py           # Path utilities
 │   └── README.md              # Quick reference guide
 │
 │   📖 See [Testing & Validation Guide](docs/runner/README.md) — Core engine for automated testing, benchmarking, random test generation, and complexity estimation
@@ -828,24 +851,89 @@ neetcode/
 ├── docs/                      # 📚 Documentation (MkDocs)
 │   ├── index.md               # Homepage (English)
 │   ├── index_zh-TW.md         # Homepage (繁體中文)
+│   ├── architecture/          # Architecture documentation
+│   │   ├── README.md          # Architecture overview
+│   │   ├── architecture-migration.md  # Architecture migration guide
+│   │   └── packages-overview.md  # Packages overview
+│   ├── contracts/             # Contract specifications
+│   │   ├── codec.md          # Codec contract
+│   │   ├── documentation-header-spec.md  # Documentation header spec
+│   │   ├── generator-contract.md  # Generator contract
+│   │   ├── problem-support-boundary.md  # Problem support boundary
+│   │   ├── solution-contract.md  # Solution contract
+│   │   └── test-file-format.md  # Test file format
 │   ├── contributors/          # Maintainer documentation
 │   │   ├── README.md          # Full maintainer guide
+│   │   ├── docs-directory-organization.md  # Docs directory organization
+│   │   ├── documentation-architecture.md  # Documentation structure
+│   │   ├── documentation-naming.md  # Documentation naming convention
+│   │   ├── package-documentation-strategy.md  # Package documentation strategy
 │   │   ├── testing.md         # Complete testing documentation
-│   │   ├── vscode-setup.md    # VS Code tasks & debug configs
 │   │   ├── virtual-env-setup.md  # Virtual environment setup
-│   │   └── documentation-architecture.md  # Documentation structure
+│   │   └── vscode-setup.md    # VS Code tasks & debug configs
+│   ├── guides/                # User guides
+│   │   ├── act-local-github-actions.md  # Run GitHub Actions locally
+│   │   ├── build-docs-manual.md  # Build docs manually
+│   │   ├── github-pages-setup.md  # GitHub Pages setup
+│   │   ├── local-docs-build.md  # Local docs build options
+│   │   ├── mkdocs-content-guide.md  # MkDocs content guide
+│   │   ├── new-practice.md    # Create practice file
+│   │   └── new-problem.md     # Create new problem
+│   ├── in-progress/           # Work in progress documentation
+│   │   ├── README.md          # In-progress docs overview
+│   │   ├── new-problem-tests-autogen/  # Test autogen migration
+│   │   └── tiered-problem-generation/  # Tiered generation spec
+│   ├── mindmaps/              # Generated mind map markdown
+│   │   ├── index.md          # Mind maps overview
+│   │   ├── algorithm-usage.md
+│   │   ├── company-coverage.md
+│   │   ├── data-structure.md
+│   │   ├── difficulty-topics.md
+│   │   ├── family-derivation.md
+│   │   ├── neetcode-ontology-agent-evolved-en.md
+│   │   ├── neetcode-ontology-agent-evolved-zh-tw.md
+│   │   ├── neetcode-ontology-ai-en.md
+│   │   ├── neetcode-ontology-ai-zh-tw.md
+│   │   ├── pattern-hierarchy.md
+│   │   ├── problem-relations.md
+│   │   ├── roadmap-paths.md
+│   │   └── solution-variants.md
+│   ├── packages/              # Package documentation
+│   │   ├── codegen/           # CodeGen package docs
+│   │   ├── leetcode_datasource/  # LeetCode datasource docs
+│   │   └── practice_workspace/  # Practice workspace docs
+│   ├── patterns/              # Generated pattern documentation
+│   │   ├── README.md          # Patterns overview
+│   │   ├── backtracking_exploration/
+│   │   ├── sliding_window/
+│   │   └── two_pointers/
+│   ├── pages/                 # Generated HTML (gitignored)
+│   │   ├── assets/           # HTML assets
+│   │   └── mindmaps/         # Interactive mind map HTML
+│   ├── reference/             # Reference documentation
+│   │   └── ontology-design.md  # Ontology design
+│   ├── runner/                # Runner documentation
+│   │   ├── README.md          # Runner overview
+│   │   ├── cli-output-contract.md  # CLI output contract
+│   │   ├── benchmarking/     # Benchmarking docs
+│   │   │   └── memory-metrics.md
+│   │   └── profiling/        # Profiling docs
+│   │       ├── cli-output-memory.md
+│   │       └── input-scale-metrics.md
 │   ├── tools/                 # Tools documentation
 │   │   ├── README.md          # Complete tools reference
-│   │   ├── ai-markmap-agent/  # AI Markmap Agent docs
-│   │   ├── mindmaps/          # Mind Maps Generator docs
-│   │   └── patterndocs/       # Pattern Docs Generator docs
-│   ├── mindmaps/              # Generated mind map markdown
-│   ├── patterns/              # Generated pattern documentation
-│   ├── pages/                 # Generated HTML (gitignored)
+│   │   ├── docstring/        # Docstring tools
+│   │   ├── leetcode-api/     # LeetCode API tools
+│   │   ├── maintenance/      # Maintenance tools
+│   │   ├── mindmaps/         # Mind maps tools
+│   │   │   ├── README.md     # Mind maps generator docs
+│   │   └── ai-markmap-agent/  # AI Markmap Agent docs
+│   │   ├── patterndocs/      # Pattern docs generator
+│   │   └── review-code/      # Code review tools
 │   ├── assets/                # Documentation assets (images, CSS, JS)
-│   ├── overrides/             # MkDocs theme overrides
-│   ├── getting-started/       # Getting started guides
-│   └── stylesheets/           # Custom CSS
+│   │   └── document_dates/   # Document date assets
+│   ├── authors.yml            # Author information
+│   └── robots.txt             # Robots.txt for SEO
 │
 ├── tools/                     # 🛠️ Utility scripts
 │   ├── mindmaps/              # 🗺️ Mind map tools (all integrated)

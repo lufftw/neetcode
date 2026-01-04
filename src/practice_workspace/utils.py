@@ -11,14 +11,14 @@ from typing import Optional
 
 def get_practice_dir() -> Path:
     """Get the practices directory path."""
-    from packages.codegen.core.config import load_config
+    from codegen.core.config import load_config
     config = load_config()
     return config.practices_path
 
 
 def get_history_dir() -> Path:
     """Get the practice history directory path."""
-    from packages.codegen.core.config import load_config
+    from codegen.core.config import load_config
     config = load_config()
     return config.history_path
 
@@ -33,7 +33,7 @@ def get_practice_path(problem_id: int) -> Path:
     Returns:
         Path to the practice file
     """
-    from packages.codegen.practice.generator import get_practice_path as _get_path
+    from codegen.practice.generator import get_practice_path as _get_path
     return _get_path(problem_id)
 
 
@@ -47,7 +47,7 @@ def get_practice_stem(problem_id: int) -> str:
     Returns:
         File stem (e.g., "0001_two_sum")
     """
-    from packages.leetcode_datasource import LeetCodeDataSource
+    from leetcode_datasource import LeetCodeDataSource
     
     ds = LeetCodeDataSource()
     slug = ds.get_slug(problem_id)
