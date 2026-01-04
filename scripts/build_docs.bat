@@ -55,7 +55,7 @@ echo.
 
 REM Step 1: Generate Mind Maps (Markdown)
 echo [1/5] Generating mind maps (Markdown)...
-"%VENV_PYTHON%" tools/generate_mindmaps.py
+"%VENV_PYTHON%" tools/mindmaps/generate_mindmaps.py
 if errorlevel 1 (
     echo Error: Failed to generate mind maps
     exit /b 1
@@ -63,7 +63,7 @@ if errorlevel 1 (
 
 REM Step 2: Generate Mind Maps (HTML)
 echo [2/5] Generating mind maps (HTML)...
-"%VENV_PYTHON%" tools/generate_mindmaps.py --html
+"%VENV_PYTHON%" tools/mindmaps/generate_mindmaps.py --html
 if errorlevel 1 (
     echo Error: Failed to generate HTML mind maps
     exit /b 1
@@ -77,7 +77,7 @@ echo.
 set /p GENERATE_AI="Generate AI mind maps? (Y/N): "
 if /i "%GENERATE_AI%"=="Y" (
     echo Generating AI mind maps...
-    "%VENV_PYTHON%" tools/generate_mindmaps_ai.py
+    "%VENV_PYTHON%" tools/mindmaps/generate_mindmaps_ai.py
     if errorlevel 1 (
         echo Warning: Failed to generate AI mind maps (may need OPENAI_API_KEY)
         echo Continuing with build...

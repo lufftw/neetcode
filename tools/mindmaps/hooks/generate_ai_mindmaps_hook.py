@@ -3,7 +3,7 @@
 Pre-commit hook for generating AI mind maps.
 
 Only runs when:
-1. Files in ontology/, meta/problems/, or tools/generate_mindmaps.py are modified
+1. Files in ontology/, meta/problems/, or tools/mindmaps/generate_mindmaps.py are modified
 2. Not skipped via [skip-ai] in commit message or SKIP_AI_MINDMAPS env var
 
 API Key: Interactive input (not stored)
@@ -89,7 +89,7 @@ def main() -> int:
     
     # Check if relevant files changed
     if not check_changed_files():
-        print("ℹ️  No relevant files changed (ontology/, meta/problems/, tools/generate_mindmaps.py).")
+        print("ℹ️  No relevant files changed (ontology/, meta/problems/, tools/mindmaps/generate_mindmaps.py).")
         print("   Skipping AI mind map generation.")
         return 0
     
