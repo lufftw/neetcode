@@ -1,0 +1,56 @@
+# Problem: Search in Rotated Sorted Array
+# https://leetcode.com/problems/search-in-rotated-sorted-array/
+
+# ===== Problem Info =====
+id = "0033"
+slug = "0033_search_in_rotated_sorted_array"
+title = "Search in Rotated Sorted Array"
+leetcode_id = 33
+url = "https://leetcode.com/problems/search-in-rotated-sorted-array/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75", "binary_search_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_rotated"]
+families         = ["binary_search_rotated_array"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0081", "0153", "0154", "0033"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "BinarySearchBoundary"
+derived_problems = ["0081"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0033_search_in_rotated_sorted_array.py"
+tests_dir = "tests/0033_search_in_rotated_sorted_array/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "search"
+
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_rotated"]
+families         = ["binary_search_rotated_array"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0081", "0153"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(log n) time, O(1) space"
+notes      = "Sorted-half detection: identify which half is sorted, then check if target lies in that range."

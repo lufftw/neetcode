@@ -1,0 +1,56 @@
+# Problem: Koko Eating Bananas
+# https://leetcode.com/problems/koko-eating-bananas/
+
+# ===== Problem Info =====
+id = "0875"
+slug = "0875_koko_eating_bananas"
+title = "Koko Eating Bananas"
+leetcode_id = 875
+url = "https://leetcode.com/problems/koko-eating-bananas/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search"]
+companies = ["google", "amazon", "meta", "facebook"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "binary_search_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_on_answer", "binary_search_minimize_maximum"]
+families         = ["binary_search_answer"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["1011", "0410", "1482", "2064"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "BinarySearchBoundary"
+derived_problems = ["1011", "0410"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0875_koko_eating_bananas.py"
+tests_dir = "tests/0875_koko_eating_bananas/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minEatingSpeed"
+
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_on_answer", "binary_search_minimize_maximum"]
+families         = ["binary_search_answer"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["1011", "0410"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n log m) time, O(1) space, where m = max(piles)"
+notes      = "Binary search on answer space [1, max(piles)]. Predicate: can_finish(speed) = total_hours <= h. Monotonic property ensures correctness."

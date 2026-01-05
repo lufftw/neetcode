@@ -1,0 +1,56 @@
+# Problem: Find First and Last Position of Element in Sorted Array
+# https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+
+# ===== Problem Info =====
+id = "0034"
+slug = "0034_find_first_and_last_position_of_element_in_sorted_array"
+title = "Find First and Last Position of Element in Sorted Array"
+leetcode_id = 34
+url = "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg", "linkedin"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "binary_search_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_lower_bound", "binary_search_upper_bound"]
+families         = ["binary_search_boundary"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0035", "0278", "0704"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "BinarySearchBoundary"
+derived_problems = ["0035", "0278"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0034_find_first_and_last_position_of_element_in_sorted_array.py"
+tests_dir = "tests/0034_find_first_and_last_position_of_element_in_sorted_array/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "searchRange"
+
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_lower_bound", "binary_search_upper_bound"]
+families         = ["binary_search_boundary"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0035", "0278"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(log n) time, O(1) space"
+notes      = "Two binary searches: lower_bound for first occurrence, upper_bound - 1 for last. This is the BASE TEMPLATE for boundary search problems."
