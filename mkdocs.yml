@@ -149,6 +149,9 @@ nav:
     - Heap / Priority Queue:
       - Intuition: patterns/heap/intuition.md
       - Templates: patterns/heap/templates.md
+    - Graph Traversal (DFS/BFS):
+      - Intuition: patterns/graph/intuition.md
+      - Templates: patterns/graph/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
