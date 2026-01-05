@@ -19,11 +19,24 @@ problem_files = [
 ]
 
 # Footer files (appear last, typically comparison, decision, mapping, templates)
+# Advanced concepts added for pattern transferability
 footer_files = [
     "_comparison.md",
     "_decision.md",
     "_mapping.md",
-    "_templates.md"
+    "_templates.md",
+    # Advanced Concepts (⭐⭐⭐⭐⭐ - Foundation for transferability)
+    "_adv-inequality.md",
+    "_adv-existence-optimization.md",
+    "_adv-domain-typing.md",
+    "_adv-boundary-stability.md",
+    "_adv-greedy-combo.md",
+    # Advanced Concepts (⭐⭐⭐⭐ - Engineering refinement)
+    "_adv-sentinel-bounds.md",
+    "_adv-failure-modes.md",
+    # Advanced Concepts (⭐⭐⭐ - Pattern boundaries)
+    "_adv-alternatives.md",
+    "_adv-summary.md"
 ]
 
 # Output configuration

@@ -93,12 +93,19 @@ data_sources:
         path: "backtracking_exploration"
         enabled: true
         config_file: "_config.toml"
+      - name: "monotonic_stack"
+        path: "monotonic_stack"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
     files:
       - name: "sliding_window_path"
         path: "sliding_window_path.toml"
+        enabled: true
+      - name: "monotonic_stack_path"
+        path: "monotonic_stack_path.toml"
         enabled: true
       - name: "neetcode_150"
         path: "neetcode_150.toml"

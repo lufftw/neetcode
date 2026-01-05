@@ -1,0 +1,49 @@
+# Problem: Create Maximum Number
+# https://leetcode.com/problems/create-maximum-number/
+
+# ===== Problem Info =====
+id = "0321"
+slug = "0321_create_maximum_number"
+title = "Create Maximum Number"
+leetcode_id = 321
+url = "https://leetcode.com/problems/create-maximum-number/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "two_pointers", "stack", "greedy", "monotonic_stack"]
+companies = ["google"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_greedy_selection"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack", "greedy"]
+related_problems = ["0402", "0316"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0321_create_maximum_number.py"
+generator = "generators/0321_create_maximum_number.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maxNumber"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_greedy_selection"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack", "greedy"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(k^2 * (m + n)) time, O(k) space"
+notes      = "Enumerate splits, extract max subsequence, merge greedily."

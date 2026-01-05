@@ -58,6 +58,11 @@ name = "Binary Search Mastery"
 summary = "Step-by-step path to master binary search patterns."
 
 [[roadmaps]]
+id = "monotonic_stack_path"
+name = "Monotonic Stack Mastery"
+summary = "Step-by-step path to master monotonic stack patterns."
+
+[[roadmaps]]
 id = "dp_path"
 name = "Dynamic Programming Path"
 summary = "Progressive path through DP patterns."

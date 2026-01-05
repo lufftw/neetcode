@@ -31,7 +31,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
-| `MonotonicStack` | *coming soon* | Monotonic stack patterns | LeetCode 84, 85, 496 |
+| `MonotonicStack` | 💡 [Intuition](monotonic_stack/intuition.md) · 🛠️ [Templates](monotonic_stack/templates.md) | Boundary resolution via monotonicity | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907, 2104 |
 
 ---
 

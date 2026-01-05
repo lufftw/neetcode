@@ -71,9 +71,44 @@ api_kernel = "MonotonicStack"
 summary = "Find next smaller element for each position."
 
 [[patterns]]
+id = "monotonic_stack_circular"
+api_kernel = "MonotonicStack"
+summary = "Next greater/smaller with circular array (2n traversal)."
+
+[[patterns]]
 id = "histogram_max_rectangle"
 api_kernel = "MonotonicStack"
-summary = "Find largest rectangle in histogram."
+summary = "Find largest rectangle in histogram using boundary expansion."
+
+[[patterns]]
+id = "maximal_rectangle_matrix"
+api_kernel = "MonotonicStack"
+summary = "Find maximal rectangle in binary matrix (row-by-row histogram)."
+
+[[patterns]]
+id = "monotonic_stack_span"
+api_kernel = "MonotonicStack"
+summary = "Count consecutive dominated elements (span calculation)."
+
+[[patterns]]
+id = "monotonic_stack_contribution"
+api_kernel = "MonotonicStack"
+summary = "Sum contributions using boundary products (subarray min/max sums)."
+
+[[patterns]]
+id = "monotonic_stack_container"
+api_kernel = "MonotonicStack"
+summary = "Water/container problems using valley resolution."
+
+[[patterns]]
+id = "monotonic_stack_greedy_selection"
+api_kernel = "MonotonicStack"
+summary = "Greedy optimal prefix selection (remove digits, create max number)."
+
+[[patterns]]
+id = "monotonic_stack_lexicographic"
+api_kernel = "MonotonicStack"
+summary = "Build lexicographically smallest/largest result."
 
 # === Binary Search Patterns ===
 [[patterns]]
