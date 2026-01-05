@@ -98,63 +98,104 @@ python -m codegen new <leetcode_id> --with-tests
 
 ### 1.2 Solution File Structure
 
-Every solution file MUST include:
+Every solution file MUST follow this exact structure. See [Solution Contract](../contracts/solution-contract.md) for complete specification.
+
+#### Required Elements
+
+| Element | Required | Description |
+|---------|----------|-------------|
+| File-level docstring | ✅ | Problem description with Link, Examples, Constraints |
+| `from _runner import get_solver` | ✅ | Required import for polymorphic dispatch |
+| `SOLUTIONS` dict | ✅ | Metadata with `"default"` key required |
+| Solution class(es) | ✅ | One or more classes implementing the solution |
+| `JUDGE_FUNC` | ✅ | Custom validation (required for pattern problems) |
+| `solve()` function | ✅ | Entry point for stdin/stdout execution |
+
+#### Complete Solution Template
 
 ```python
 # solutions/0496_next_greater_element_i.py
 """
-LeetCode 496 - Next Greater Element I
+Problem: Next Greater Element I
+Link: https://leetcode.com/problems/next-greater-element-i/
 
-Problem: Given two arrays nums1 and nums2, find the next greater element
-for each element in nums1 within nums2.
+The next greater element of some element x in an array is the first greater
+element that is to the right of x in the same array.
+You are given two distinct 0-indexed integer arrays nums1 and nums2, where
+nums1 is a subset of nums2.
 
-Pattern: Monotonic Stack (Next Greater Element)
-Complexity: O(n + m) time, O(n) space
+Example 1:
+    Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+    Output: [-1,3,-1]
+    Explanation: The next greater element for each value of nums1 is as follows:
+                 - 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+                 - 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
+                 - 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+
+Example 2:
+    Input: nums1 = [2,4], nums2 = [1,2,3,4]
+    Output: [3,-1]
+
+Constraints:
+- 1 <= nums1.length <= nums2.length <= 1000
+- 0 <= nums1[i], nums2[i] <= 10^4
+- All integers in nums1 and nums2 are unique.
+- All the integers of nums1 also appear in nums2.
+
+Topics: Array, Hash Table, Stack, Monotonic Stack
 """
+
 import json
 from typing import List
+
 from _runner import get_solver
 
-# ============================================================
-# Solution Metadata
-# ============================================================
 
 SOLUTIONS = {
     "default": {
-        "class": "SolutionStack",
+        "class": "SolutionMonotonicStack",
         "method": "nextGreaterElement",
         "complexity": "O(n + m) time, O(n) space",
-        "description": "Monotonic decreasing stack with hash map",
+        "description": "Monotonic decreasing stack with hash map lookup",
     },
-    # Add variants here if needed
+    "stack": {
+        "class": "SolutionMonotonicStack",
+        "method": "nextGreaterElement",
+        "complexity": "O(n + m) time, O(n) space",
+        "description": "Monotonic decreasing stack with hash map lookup",
+    },
+    "brute": {
+        "class": "SolutionBruteForce",
+        "method": "nextGreaterElement",
+        "complexity": "O(m * n) time, O(1) space",
+        "description": "Linear scan for each query element",
+    },
 }
 
-# ============================================================
-# Solution Classes
-# ============================================================
 
-class SolutionStack:
-    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        # Implementation here
-        pass
-
-# ============================================================
-# JUDGE_FUNC (Required for generated tests)
-# ============================================================
-
+# ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
 def judge(actual, expected, input_data: str) -> bool:
     """
-    Validate solution output.
+    Validate result: check if actual output is the correct NGE array.
 
     Args:
-        actual: Solution output (may be list or string)
-        expected: Expected output from .out file (None for generated tests)
-        input_data: Raw input string from .in file
+        actual: Program output (list as string or list)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (nums1 and nums2 on separate lines)
 
     Returns:
-        bool: True if output is correct
+        bool: True if correct NGE results
     """
-    # Parse actual (handle both list and string types)
+    lines = input_data.strip().split("\n")
+    nums1 = json.loads(lines[0]) if lines[0] else []
+    nums2 = json.loads(lines[1]) if len(lines) > 1 else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_nge(nums1, nums2)
+
+    # Parse actual output (may be list or string)
     if isinstance(actual, list):
         actual_list = actual
     else:
@@ -164,46 +205,156 @@ def judge(actual, expected, input_data: str) -> bool:
         except (ValueError, json.JSONDecodeError):
             return False
 
-    # For static tests: compare with expected
-    if expected is not None:
-        if isinstance(expected, list):
-            return actual_list == expected
-        expected_str = expected.strip()
-        try:
-            expected_list = json.loads(expected_str) if expected_str else []
-        except (ValueError, json.JSONDecodeError):
-            return False
-        return actual_list == expected_list
+    return actual_list == correct
 
-    # For generated tests: validate using input
-    lines = input_data.strip().split('\n')
-    nums1 = json.loads(lines[0])
-    nums2 = json.loads(lines[1])
 
-    # Add validation logic here
-    return len(actual_list) == len(nums1)
+def _reference_nge(nums1: List[int], nums2: List[int]) -> List[int]:
+    """O(n + m) reference using monotonic stack."""
+    nge_map: dict[int, int] = {}
+    stack: list[int] = []
+
+    for num in nums2:
+        while stack and stack[-1] < num:
+            nge_map[stack.pop()] = num
+        stack.append(num)
+
+    return [nge_map.get(x, -1) for x in nums1]
+
 
 JUDGE_FUNC = judge
 
-# ============================================================
-# Entry Point
-# ============================================================
+
+# ============================================================================
+# Solution 1: Monotonic Decreasing Stack + Hash Map
+# Time: O(n + m), Space: O(n)
+#   - Precompute NGE for all elements in nums2 using monotonic stack
+#   - Stack stores indices of candidates awaiting their next greater element
+#   - When a larger element appears, it becomes NGE for all smaller candidates
+#   - Hash map enables O(1) lookup for nums1 queries
+#
+# Key Insight: The stack maintains a decreasing sequence of unresolved elements.
+# When we encounter a larger element, it "resolves" all smaller elements on top.
+# ============================================================================
+class SolutionMonotonicStack:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        next_greater_map: dict[int, int] = {}
+        candidate_stack: list[int] = []  # Stores values (not indices) since unique
+
+        # Build NGE map: process nums2 to find next greater for each element
+        for current_value in nums2:
+            # Resolve all candidates that found their next greater element
+            while candidate_stack and candidate_stack[-1] < current_value:
+                resolved_value = candidate_stack.pop()
+                next_greater_map[resolved_value] = current_value
+
+            # Current element becomes a new candidate awaiting its NGE
+            candidate_stack.append(current_value)
+
+        # Elements remaining in stack have no next greater element
+        # They will return -1 via dict.get() default
+
+        # Look up NGE for each query element
+        return [next_greater_map.get(query, -1) for query in nums1]
+
+
+# ============================================================================
+# Solution 2: Brute Force Linear Scan
+# Time: O(m * n), Space: O(1)
+#   - For each element in nums1, find its position in nums2
+#   - Scan right from that position to find the first greater element
+#   - Simple but inefficient for large inputs
+#
+# Educational Value: Establishes baseline before optimization.
+# ============================================================================
+class SolutionBruteForce:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        result: list[int] = []
+        nums2_length = len(nums2)
+
+        for query in nums1:
+            # Find position of query element in nums2
+            position = nums2.index(query)
+
+            # Scan rightward for next greater element
+            next_greater = -1
+            for scan_idx in range(position + 1, nums2_length):
+                if nums2[scan_idx] > query:
+                    next_greater = nums2[scan_idx]
+                    break
+
+            result.append(next_greater)
+
+        return result
+
 
 def solve():
+    """
+    Input format (JSON per line):
+        Line 1: nums1 as JSON array
+        Line 2: nums2 as JSON array
+
+    Output format:
+        JSON array of next greater elements
+    """
     import sys
-    data = sys.stdin.read().strip().split('\n')
-    nums1 = json.loads(data[0])
-    nums2 = json.loads(data[1])
+
+    lines = sys.stdin.read().strip().split("\n")
+    nums1 = json.loads(lines[0])
+    nums2 = json.loads(lines[1])
 
     solver = get_solver(SOLUTIONS)
     result = solver.nextGreaterElement(nums1, nums2)
-    print(json.dumps(result, separators=(',', ':')))
+
+    print(json.dumps(result))
+
 
 if __name__ == "__main__":
     solve()
 ```
 
-### 1.3 JUDGE_FUNC Requirements
+### 1.3 File-Level Docstring Requirements
+
+The docstring MUST include:
+
+| Field | Required | Format |
+|-------|----------|--------|
+| `Problem:` | ✅ | Problem title |
+| `Link:` | ✅ | `https://leetcode.com/problems/{slug}/` (NO `/description/` suffix) |
+| Description | ✅ | Problem statement |
+| `Example N:` | ✅ | At least one example with Input/Output/Explanation |
+| `Constraints:` | ✅ | All LeetCode constraints |
+| `Topics:` | Recommended | LeetCode topic tags |
+
+### 1.4 SOLUTIONS Dict Requirements
+
+| Rule | Requirement |
+|------|-------------|
+| `"default"` key | ✅ REQUIRED - used when no `--method` flag specified |
+| `"class"` field | ✅ REQUIRED - must match actual class name in file |
+| `"method"` field | ✅ REQUIRED - must match LeetCode method signature |
+| `"complexity"` field | Recommended - e.g., `"O(n) time, O(n) space"` |
+| `"description"` field | Recommended - brief algorithm description |
+
+### 1.5 Solution Block Comment Format
+
+**CRITICAL**: No blank line between comment block and class definition.
+
+```python
+# ============================================================================
+# Solution N: {Approach Name}
+# Time: O(?), Space: O(?)
+#   - {Key insight 1}
+#   - {Key insight 2}
+#   - {Implementation detail}
+#
+# {Optional extended explanation}
+# ============================================================================
+class SolutionName:   # ← NO blank line here
+    def methodName(self, ...):
+        ...
+```
+
+### 1.6 JUDGE_FUNC Requirements
 
 The `JUDGE_FUNC` is **mandatory** for pattern problems. Key requirements:
 
@@ -211,10 +362,75 @@ The `JUDGE_FUNC` is **mandatory** for pattern problems. Key requirements:
 |-------------|-------------|
 | Handle both types | `actual` may be `list` or `str` depending on context |
 | Support `expected=None` | Generated tests have no expected output |
-| Parse `input_data` | Use input to validate correctness |
+| Reference solution | Include `_reference_{name}()` helper to compute correct answer |
+| Parse `input_data` | Use `json.loads()` to parse input |
 | Return boolean | `True` for pass, `False` for fail |
 
-> **Reference**: [Solution Contract](../contracts/solution-contract.md#judge_func-specification)
+#### JUDGE_FUNC Template
+
+```python
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate result."""
+    # 1. Parse input
+    lines = input_data.strip().split("\n")
+    param1 = json.loads(lines[0])
+    param2 = json.loads(lines[1]) if len(lines) > 1 else None
+
+    # 2. Compute correct answer using reference
+    correct = _reference_solution(param1, param2)
+
+    # 3. Parse actual (handle both list and string)
+    if isinstance(actual, list):
+        actual_list = actual
+    else:
+        actual_str = actual.strip()
+        try:
+            actual_list = json.loads(actual_str) if actual_str else []
+        except (ValueError, json.JSONDecodeError):
+            return False
+
+    # 4. Compare
+    return actual_list == correct
+
+
+def _reference_solution(param1, param2):
+    """Reference implementation for validation."""
+    # Implement correct algorithm here
+    pass
+
+
+JUDGE_FUNC = judge
+```
+
+### 1.7 solve() Function Requirements
+
+```python
+def solve():
+    """
+    Input format (JSON per line):
+        Line 1: {param1 description}
+        Line 2: {param2 description}
+
+    Output format:
+        {output description}
+    """
+    import sys
+
+    lines = sys.stdin.read().strip().split("\n")
+    param1 = json.loads(lines[0])
+    param2 = json.loads(lines[1])
+
+    solver = get_solver(SOLUTIONS)
+    result = solver.methodName(param1, param2)
+
+    print(json.dumps(result))  # Use json.dumps for arrays
+
+
+if __name__ == "__main__":
+    solve()
+```
+
+> **Reference**: [Solution Contract](../contracts/solution-contract.md)
 
 ---
 
