@@ -2,21 +2,14 @@
 Problem: Online Stock Span
 Link: https://leetcode.com/problems/online-stock-span/
 
-Design an algorithm that collects daily price quotes for some stock and
-returns the span of that stock's price for the current day.
+Design an algorithm that collects daily price quotes for some stock and returns the span of that stock's price for the current day.
+The span of the stock's price in one day is the maximum number of consecutive days (starting from that day and going backward) for which the stock price was less than or equal to the price of that day.
 
-The span of the stock's price in one day is the maximum number of consecutive
-days (starting from that day and going backward) for which the stock price
-was less than or equal to the price of that day.
-
-Implement the StockSpanner class:
-- StockSpanner() Initializes the object of the class.
-- int next(int price) Returns the span of the stock's price given that
-  today's price is price.
+Example 1:
 
 Constraints:
 - 1 <= price <= 10^5
-- At most 10^4 calls will be made to next
+- At most 10^4 calls will be made to next.
 
 Topics: Stack, Design, Monotonic Stack, Data Stream
 """
@@ -37,7 +30,7 @@ SOLUTIONS = {
 
 
 # ============================================================================
-# Solution: Monotonic Decreasing Stack with Span Accumulation
+# Solution 1: Monotonic Decreasing Stack with Span Accumulation
 # Time: O(1) amortized per call, Space: O(n) total
 #   - Stack stores (price, accumulated_span) pairs
 #   - When new price dominates stack top, pop and absorb its span
