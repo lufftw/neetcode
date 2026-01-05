@@ -1,0 +1,30 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Merge → Insert → Non-overlapping → Arrows → Intersections
+problem_files = [
+    "0056-merge-intervals.md",
+    "0057-insert-interval.md",
+    "0435-non-overlapping-intervals.md",
+    "0452-minimum-number-of-arrows.md",
+    "0986-interval-list-intersections.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/interval/templates.md
+[output]
+subdirectory = "interval"
+filename = "templates.md"
