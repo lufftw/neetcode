@@ -65,6 +65,26 @@ class Node:
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Clone Graph solution - compare adjacency lists."""
+    # For clone graph, we compare the adjacency list representations
+    if expected is not None:
+        return actual == expected
+
+    # Judge-only mode: the output should match input structure
+    import json
+    adj_list = json.loads(input_data.strip())
+
+    # actual is the adjacency list of the cloned graph
+    return actual == adj_list
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata
 # ============================================
 SOLUTIONS = {

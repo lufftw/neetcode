@@ -47,6 +47,51 @@ from _runner import get_solver
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Is Graph Bipartite solution."""
+    import json
+
+    # Parse input
+    graph = json.loads(input_data.strip())
+
+    # If expected is available, compare directly
+    if expected is not None:
+        return actual == expected
+
+    # Judge-only mode: compute expected using reference solution
+    expected_result = _is_bipartite(graph)
+    return actual == expected_result
+
+
+def _is_bipartite(graph):
+    """Reference solution for validation."""
+    from collections import deque
+
+    n = len(graph)
+    color = [-1] * n
+
+    for start in range(n):
+        if color[start] != -1:
+            continue
+        queue = deque([start])
+        color[start] = 0
+        while queue:
+            node = queue.popleft()
+            for neighbor in graph[node]:
+                if color[neighbor] == -1:
+                    color[neighbor] = 1 - color[node]
+                    queue.append(neighbor)
+                elif color[neighbor] == color[node]:
+                    return False
+    return True
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata
 # ============================================
 SOLUTIONS = {

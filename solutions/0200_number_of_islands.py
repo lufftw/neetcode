@@ -41,6 +41,56 @@ from _runner import get_solver
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Number of Islands solution."""
+    import json
+    import copy
+
+    # Parse input
+    grid = json.loads(input_data.strip())
+
+    # If expected is available, compare directly
+    if expected is not None:
+        return actual == expected
+
+    # Judge-only mode: compute expected using reference solution
+    grid_copy = copy.deepcopy(grid)
+    expected_count = _count_islands(grid_copy)
+    return actual == expected_count
+
+
+def _count_islands(grid):
+    """Reference solution for validation."""
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    count = 0
+
+    def dfs(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1':
+            return
+        grid[r][c] = '0'
+        dfs(r + 1, c)
+        dfs(r - 1, c)
+        dfs(r, c + 1)
+        dfs(r, c - 1)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                count += 1
+                dfs(r, c)
+
+    return count
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata
 # ============================================
 SOLUTIONS = {

@@ -44,6 +44,43 @@ from _runner import get_solver
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Keys and Rooms solution."""
+    import json
+
+    # Parse input
+    rooms = json.loads(input_data.strip())
+
+    # If expected is available, compare directly
+    if expected is not None:
+        return actual == expected
+
+    # Judge-only mode: compute expected using reference solution
+    expected_result = _can_visit_all(rooms)
+    return actual == expected_result
+
+
+def _can_visit_all(rooms):
+    """Reference solution for validation."""
+    visited = {0}
+    stack = [0]
+
+    while stack:
+        room = stack.pop()
+        for key in rooms[room]:
+            if key not in visited:
+                visited.add(key)
+                stack.append(key)
+
+    return len(visited) == len(rooms)
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata
 # ============================================
 SOLUTIONS = {

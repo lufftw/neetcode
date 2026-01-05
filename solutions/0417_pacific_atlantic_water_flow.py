@@ -39,6 +39,64 @@ from _runner import get_solver
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Pacific Atlantic Water Flow solution."""
+    import json
+
+    # Normalize to set of tuples for comparison
+    actual_set = set(tuple(x) for x in actual)
+
+    if expected is not None:
+        expected_set = set(tuple(x) for x in expected)
+        return actual_set == expected_set
+
+    # Judge-only mode: compute expected using reference solution
+    heights = json.loads(input_data.strip())
+    expected_result = _pacific_atlantic(heights)
+    expected_set = set(tuple(x) for x in expected_result)
+
+    return actual_set == expected_set
+
+
+def _pacific_atlantic(heights):
+    """Reference solution for validation."""
+    from collections import deque
+
+    if not heights or not heights[0]:
+        return []
+
+    rows, cols = len(heights), len(heights[0])
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    def bfs(sources):
+        reachable = set(sources)
+        queue = deque(sources)
+        while queue:
+            row, col = queue.popleft()
+            for dr, dc in directions:
+                nr, nc = row + dr, col + dc
+                if (0 <= nr < rows and 0 <= nc < cols and
+                    (nr, nc) not in reachable and
+                    heights[nr][nc] >= heights[row][col]):
+                    reachable.add((nr, nc))
+                    queue.append((nr, nc))
+        return reachable
+
+    pacific = [(0, c) for c in range(cols)] + [(r, 0) for r in range(rows)]
+    atlantic = [(rows - 1, c) for c in range(cols)] + [(r, cols - 1) for r in range(rows)]
+
+    pacific_reach = bfs(pacific)
+    atlantic_reach = bfs(atlantic)
+
+    return [[r, c] for r, c in pacific_reach & atlantic_reach]
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata
 # ============================================
 SOLUTIONS = {

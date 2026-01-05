@@ -44,6 +44,44 @@ from _runner import get_solver
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Find if Path Exists in Graph solution."""
+    import json
+
+    # Parse input
+    lines = input_data.strip().split('\n')
+    n = int(lines[0])
+    edges = json.loads(lines[1])
+    source = int(lines[2])
+    destination = int(lines[3])
+
+    # If expected is available, compare directly
+    if expected is not None:
+        return actual == expected
+
+    # Judge-only mode: compute expected using Union-Find
+    parent = list(range(n))
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    for u, v in edges:
+        pu, pv = find(u), find(v)
+        if pu != pv:
+            parent[pu] = pv
+
+    expected_result = find(source) == find(destination)
+    return actual == expected_result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata
 # ============================================
 SOLUTIONS = {

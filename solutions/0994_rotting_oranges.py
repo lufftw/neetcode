@@ -39,6 +39,66 @@ from _runner import get_solver
 
 
 # ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Rotting Oranges solution."""
+    import json
+    import copy
+    from collections import deque
+
+    # Parse input
+    grid = json.loads(input_data.strip())
+
+    # If expected is available, compare directly
+    if expected is not None:
+        return actual == expected
+
+    # Judge-only mode: compute expected using reference solution
+    grid_copy = copy.deepcopy(grid)
+    expected_result = _rotting_oranges(grid_copy)
+    return actual == expected_result
+
+
+def _rotting_oranges(grid):
+    """Reference solution for validation."""
+    from collections import deque
+
+    rows, cols = len(grid), len(grid[0])
+    queue = deque()
+    fresh = 0
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 2:
+                queue.append((r, c))
+            elif grid[r][c] == 1:
+                fresh += 1
+
+    if fresh == 0:
+        return 0
+
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    minutes = -1
+
+    while queue:
+        minutes += 1
+        for _ in range(len(queue)):
+            r, c = queue.popleft()
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                    grid[nr][nc] = 2
+                    fresh -= 1
+                    queue.append((nr, nc))
+
+    return minutes if fresh == 0 else -1
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
 # SOLUTIONS metadata - tells test_runner which solutions are available
 # Polymorphic pattern: each entry specifies class + method
 # ============================================
