@@ -47,7 +47,9 @@ SOLUTIONS = {
         "class": "Solution",
         "method": "orangesRotting",
         "complexity": "O(m*n) time, O(m*n) space",
-        "description": "BFS approach",
+        "description": "Multi-source BFS approach",
+        "api_kernels": ["GridBFSMultiSource"],
+        "patterns": ["graph_bfs_multi_source"],
     },
 }
 
