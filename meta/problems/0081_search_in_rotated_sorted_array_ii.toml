@@ -1,0 +1,56 @@
+# Problem: Search in Rotated Sorted Array II
+# https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+
+# ===== Problem Info =====
+id = "0081"
+slug = "0081_search_in_rotated_sorted_array_ii"
+title = "Search in Rotated Sorted Array II"
+leetcode_id = 81
+url = "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search"]
+companies = ["google", "amazon", "meta", "microsoft", "linkedin"]
+
+# ===== Roadmaps =====
+roadmaps = ["binary_search_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_rotated_duplicates"]
+families         = ["binary_search_rotated_array"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0033", "0153", "0154"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0081_search_in_rotated_sorted_array_ii.py"
+tests_dir = "tests/0081_search_in_rotated_sorted_array_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "search"
+
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_rotated_duplicates"]
+families         = ["binary_search_rotated_array"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0033", "0153"]
+
+role       = "variant"
+variant    = "with_duplicates"
+based_on   = ["0033#default"]
+delta      = "Handle ambiguous case when nums[left] == nums[mid] == nums[right] by linear shrink."
+complexity = "O(n) worst case, O(log n) average time, O(1) space"
+notes      = "Duplicates can cause worst-case O(n). Example: [1,1,1,0,1,1,1] - cannot determine sorted half."

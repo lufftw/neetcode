@@ -26,10 +26,10 @@ Each pattern provides **two learning paths** to help you master the concepts:
 |------------|-------------------|-------------|----------|
 | `SubstringSlidingWindow` | 💡 [Intuition](sliding_window/intuition.md) · 🛠️ [Templates](sliding_window/templates.md) | Dynamic window over sequences | LeetCode 3, 76, 159, 209, 340, 438, 567 |
 | `TwoPointersTraversal` | 💡 [Intuition](two_pointers/intuition.md) · 🛠️ [Templates](two_pointers/templates.md) | Two pointer traversal patterns | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
+| `BinarySearchBoundary` | 💡 [Intuition](binary_search/intuition.md) · 🛠️ [Templates](binary_search/templates.md) | Binary search boundaries | LeetCode 33, 34, 35, 81, 162, 875, 1011 |
 | `BacktrackingExploration` | 💡 [Intuition](backtracking_exploration/intuition.md) · 🛠️ [Templates](backtracking_exploration/templates.md) | Exhaustive search with pruning | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
-| `BinarySearchBoundary` | *coming soon* | Binary search boundaries | LeetCode 4, 33, 34, 35 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
 | `MonotonicStack` | *coming soon* | Monotonic stack patterns | LeetCode 84, 85, 496 |
 

@@ -81,5 +81,5 @@ def compose_document(
         f"*Document generated for NeetCode Practice Framework — API Kernel: {config.kernel_id}*"
     ])
     
-    return "\n\n".join(final_sections)
+    return "\n\n".join(final_sections) + "\n"
 

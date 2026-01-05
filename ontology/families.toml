@@ -21,6 +21,18 @@ id = "binary_search_answer"
 summary = "Problems where answer is found by binary searching a value space."
 
 [[families]]
+id = "binary_search_boundary"
+summary = "Problems finding first/last occurrence or insert position using boundary search."
+
+[[families]]
+id = "binary_search_rotated_array"
+summary = "Problems searching in rotated sorted arrays."
+
+[[families]]
+id = "binary_search_peak"
+summary = "Problems finding peak/valley elements using slope detection."
+
+[[families]]
 id = "backtracking_combinatorial"
 summary = "Problems generating permutations, combinations, or placements."
 

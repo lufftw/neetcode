@@ -14,6 +14,7 @@ The pattern documentation module:
 - Automatically numbers sections and generates table of contents
 - Organizes content by pattern (API kernel)
 - Supports multiple problem examples per pattern
+- **No environment variables required** - The script automatically configures Python path
 
 ## Module Structure
 
@@ -89,9 +90,10 @@ The `config.py` module automatically infers kernel mappings from `ontology/patte
 **Kernel ID Mapping:**
 The module maps directory names to API Kernel IDs (configurable in `tools/patterndocs/generate_pattern_docs.toml`):
 - `sliding_window` → `SubstringSlidingWindow`
-- `bfs_grid` → `GridBFSMultiSource`
-- `backtracking_exploration` → `BacktrackingExploration`
 - `two_pointers` → `TwoPointersTraversal`
+- `binary_search` → `BinarySearchBoundary`
+- `backtracking_exploration` → `BacktrackingExploration`
+- `bfs_grid` → `GridBFSMultiSource`
 - ... (see `tools/patterndocs/generate_pattern_docs.toml` for full list)
 
 **Paths:**
@@ -371,18 +373,34 @@ Test coverage includes:
 
 1. Create directory: `meta/patterns/<pattern_name>/`
 2. Add `_header.md` with introduction (required)
+   - Must include `> **API Kernel**: \`KernelID\`` line for kernel identification
 3. Add problem files (e.g., `0003-base.md`)
 4. Optionally add footer files (`_comparison.md`, `_decision.md`, `_mapping.md`, `_templates.md`)
-5. Optionally create `_config.toml` to control file order:
+5. Optionally create `_config.toml` to control file order and output path:
    ```toml
    header_files = ["_header.md"]
    problem_files = ["0003-base.md", "0076-variant.md"]
    footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+   # Optional: Custom output path (generates to subdirectory)
+   [output]
+   subdirectory = "pattern_name"
+   filename = "templates.md"
    ```
 6. Run generator:
    ```bash
    python tools/patterndocs/generate_pattern_docs.py --pattern <pattern_name>
    ```
+
+**Available Patterns:**
+```bash
+python tools/patterndocs/generate_pattern_docs.py --list
+# Output:
+#   backtracking_exploration -> BacktrackingExploration
+#   binary_search -> BinarySearchBoundary
+#   sliding_window -> SubstringSlidingWindow
+#   two_pointers -> TwoPointersTraversal
+```
 
 ### Adding Kernel ID Mapping
 
@@ -424,11 +442,29 @@ meta/patterns/sliding_window/
 
 ```
 meta/patterns/binary_search/
-├── _header.md
-├── 0704-base.md
-├── _decision.md          # When to use binary search
-└── _templates.md
+├── _config.toml              # File ordering + output config
+├── _header.md                # Core Concepts
+├── 0001-base-template.md     # Predicate Boundary Search
+├── 0704-exact-match.md       # Exact Match Search
+├── 0034-lower-upper-bound.md # Lower/Upper Bound (LC 34, 35)
+├── 0033-rotated-array.md     # Rotated Sorted Array (LC 33, 81)
+├── 0875-answer-space.md      # Answer Space (LC 875, 1011)
+├── 0162-peak-finding.md      # Peak Finding (LC 162)
+├── 0099-off-by-one.md        # Off-by-One Handling
+├── _comparison.md            # Pattern Comparison Table
+├── _decision.md              # When to Use Binary Search
+├── _mapping.md               # LeetCode Problem Mapping
+└── _templates.md             # Template Quick Reference
 ```
+
+**Output Configuration:**
+The `_config.toml` can specify a custom output path:
+```toml
+[output]
+subdirectory = "binary_search"
+filename = "templates.md"
+```
+This generates to `docs/patterns/binary_search/templates.md` instead of `docs/patterns/binary_search.md`.
 
 ## See Also
 

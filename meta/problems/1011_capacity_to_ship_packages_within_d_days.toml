@@ -1,0 +1,56 @@
+# Problem: Capacity To Ship Packages Within D Days
+# https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+
+# ===== Problem Info =====
+id = "1011"
+slug = "1011_capacity_to_ship_packages_within_d_days"
+title = "Capacity To Ship Packages Within D Days"
+leetcode_id = 1011
+url = "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["binary_search_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_on_answer", "binary_search_minimize_maximum"]
+families         = ["binary_search_answer"]
+data_structures  = ["array"]
+algorithms       = ["binary_search", "greedy"]
+related_problems = ["0875", "0410", "1482", "2064"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1011_capacity_to_ship_packages_within_d_days.py"
+tests_dir = "tests/1011_capacity_to_ship_packages_within_d_days/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "shipWithinDays"
+
+api_kernels      = ["BinarySearchBoundary"]
+patterns         = ["binary_search_on_answer", "binary_search_minimize_maximum"]
+families         = ["binary_search_answer"]
+data_structures  = ["array"]
+algorithms       = ["binary_search", "greedy"]
+related_problems = ["0875", "0410"]
+
+role       = "variant"
+variant    = "shipping_capacity"
+based_on   = ["0875#default"]
+delta      = "Answer space is [max(weights), sum(weights)]. Greedy feasibility check loads packages in order."
+complexity = "O(n log S) time, O(1) space, where S = sum(weights)"
+notes      = "Classic minimize-the-maximum pattern. Greedy packing is optimal because packages must be shipped in order."

@@ -1,0 +1,102 @@
+# Binary Search Mastery Path
+# Step-by-step learning path for mastering binary search patterns
+
+id = "binary_search_path"
+name = "Binary Search Mastery Path"
+api_kernel = "BinarySearchBoundary"
+summary = "Master binary search from boundary conditions to answer space search."
+
+# ===== Step 1: Foundation - Boundary Search =====
+[[steps]]
+order = 1
+problem = "0035_search_insert_position"
+role = "base"
+pattern = "binary_search_lower_bound"
+prerequisite = []
+delta = ""
+note = "Learn the canonical lower_bound template. Foundation for all boundary searches."
+
+[[steps]]
+order = 2
+problem = "0034_find_first_and_last_position_of_element_in_sorted_array"
+role = "base"
+pattern = "binary_search_lower_bound"
+prerequisite = ["0035"]
+delta = "Combine lower_bound and upper_bound for range queries."
+note = "Apply lower_bound twice to find first and last occurrence."
+
+# ===== Step 2: Rotated Array Search =====
+[[steps]]
+order = 3
+problem = "0033_search_in_rotated_sorted_array"
+role = "base"
+pattern = "binary_search_rotated"
+prerequisite = ["0035"]
+delta = "Identify sorted half, then check if target lies in that range."
+note = "Key insight: one half is always sorted after rotation."
+
+[[steps]]
+order = 4
+problem = "0081_search_in_rotated_sorted_array_ii"
+role = "variant"
+pattern = "binary_search_rotated_duplicates"
+prerequisite = ["0033"]
+delta = "Handle ambiguous case (left == mid == right) with linear shrink."
+note = "Duplicates can cause worst-case O(n). Practice handling edge cases."
+
+# ===== Step 3: Peak Finding =====
+[[steps]]
+order = 5
+problem = "0162_find_peak_element"
+role = "base"
+pattern = "binary_search_peak_finding"
+prerequisite = ["0035"]
+delta = "Use slope direction instead of value comparison."
+note = "Ascending slope means peak is on right; descending means peak is at mid or left."
+
+# ===== Step 4: Binary Search on Answer Space =====
+[[steps]]
+order = 6
+problem = "0875_koko_eating_bananas"
+role = "base"
+pattern = "binary_search_on_answer"
+prerequisite = ["0035"]
+delta = "Binary search on answer value, not array index."
+note = "Classic minimize-the-maximum. Search answer space [1, max(piles)]."
+
+[[steps]]
+order = 7
+problem = "1011_capacity_to_ship_packages_within_d_days"
+role = "variant"
+pattern = "binary_search_minimize_maximum"
+prerequisite = ["0875"]
+delta = "Answer space is [max(weights), sum(weights)]. Greedy feasibility."
+note = "Same pattern as Koko. Practice the minimize-maximum template."
+
+# ===== Advanced (Future) =====
+# [[steps]]
+# order = 8
+# problem = "0410_split_array_largest_sum"
+# role = "variant"
+# pattern = "binary_search_minimize_maximum"
+# prerequisite = ["0875", "1011"]
+# delta = "Minimize the largest subarray sum when splitting into k parts."
+# note = "Harder variant requiring DP intuition for feasibility check."
+
+# [[steps]]
+# order = 9
+# problem = "0153_find_minimum_in_rotated_sorted_array"
+# role = "variant"
+# pattern = "binary_search_rotated"
+# prerequisite = ["0033"]
+# delta = "Find pivot point (minimum) instead of searching for target."
+# note = "Complementary to search - find the rotation point."
+
+# [[steps]]
+# order = 10
+# problem = "0852_peak_index_in_a_mountain_array"
+# role = "variant"
+# pattern = "binary_search_peak_finding"
+# prerequisite = ["0162"]
+# delta = "Guaranteed single peak (mountain shape)."
+# note = "Simpler version of peak finding with guaranteed unimodal array."
