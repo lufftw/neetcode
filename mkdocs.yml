@@ -137,6 +137,9 @@ nav:
     - Binary Search:
       - Intuition: patterns/binary_search/intuition.md
       - Templates: patterns/binary_search/templates.md
+    - Monotonic Stack:
+      - Intuition: patterns/monotonic_stack/intuition.md
+      - Templates: patterns/monotonic_stack/templates.md
     - Backtracking Exploration:
       - Intuition: patterns/backtracking_exploration/intuition.md
       - Templates: patterns/backtracking_exploration/templates.md
@@ -160,6 +163,7 @@ nav:
     - VSCode Setup: contributors/vscode-setup.md
     - Create New Problem: guides/new-problem.md
     - Create Practice File: guides/new-practice.md
+    - Create New Pattern: guides/new-pattern.md
   - 📚 Reference:
     - Solution Contract: contracts/solution-contract.md
     - Generator Contract: contracts/generator-contract.md
