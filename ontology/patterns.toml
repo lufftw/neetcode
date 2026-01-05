@@ -87,14 +87,54 @@ api_kernel = "BinarySearchBoundary"
 summary = "Find last index where predicate is true."
 
 [[patterns]]
+id = "binary_search_lower_bound"
+api_kernel = "BinarySearchBoundary"
+summary = "Find first index where nums[i] >= target."
+
+[[patterns]]
+id = "binary_search_upper_bound"
+api_kernel = "BinarySearchBoundary"
+summary = "Find first index where nums[i] > target."
+
+[[patterns]]
+id = "binary_search_exact_match"
+api_kernel = "BinarySearchBoundary"
+summary = "Find exact value in sorted array or return not found."
+
+[[patterns]]
+id = "binary_search_insert_position"
+api_kernel = "BinarySearchBoundary"
+summary = "Find position where target should be inserted to maintain order."
+
+[[patterns]]
 id = "binary_search_on_answer"
 api_kernel = "BinarySearchBoundary"
 summary = "Binary search on answer space (minimize/maximize)."
 
 [[patterns]]
+id = "binary_search_minimize_maximum"
+api_kernel = "BinarySearchBoundary"
+summary = "Binary search to minimize the maximum value (capacity, time, etc.)."
+
+[[patterns]]
+id = "binary_search_maximize_minimum"
+api_kernel = "BinarySearchBoundary"
+summary = "Binary search to maximize the minimum value."
+
+[[patterns]]
 id = "binary_search_rotated"
 api_kernel = "BinarySearchBoundary"
-summary = "Binary search in rotated sorted array."
+summary = "Binary search in rotated sorted array (distinct elements)."
+
+[[patterns]]
+id = "binary_search_rotated_duplicates"
+api_kernel = "BinarySearchBoundary"
+summary = "Binary search in rotated sorted array with duplicates."
+
+[[patterns]]
+id = "binary_search_peak_finding"
+api_kernel = "BinarySearchBoundary"
+summary = "Find peak element using slope direction detection."
 
 # === Backtracking Patterns ===
 [[patterns]]
