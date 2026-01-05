@@ -1,0 +1,70 @@
+# Problem: Car Pooling
+# https://leetcode.com/problems/car-pooling/
+
+# ===== Problem Info =====
+id = "1094"
+slug = "1094_car_pooling"
+title = "Car Pooling"
+leetcode_id = 1094
+url = "https://leetcode.com/problems/car-pooling/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "sorting", "heap_priority_queue", "simulation", "prefix_sum"]
+companies = ["lyft", "google", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["DifferenceArray"]
+patterns         = ["difference_array"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["difference_array", "prefix_sum"]
+related_problems = ["1109", "0253"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1094_car_pooling.py"
+generator = "generators/1094_car_pooling.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDifferenceArray"
+method = "carPooling"
+
+api_kernels      = ["DifferenceArray"]
+patterns         = ["difference_array"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["difference_array", "prefix_sum"]
+
+role       = "variant"
+variant    = "range_update"
+based_on   = ["1109#default"]
+delta      = "Check capacity constraint instead of computing final values."
+complexity = "O(n + m) time, O(m) space"
+notes      = "Difference array for range updates, prefix sum to verify capacity."
+
+[[solutions]]
+key    = "events"
+class  = "SolutionEvents"
+method = "carPooling"
+
+patterns         = ["sweep_line"]
+algorithms       = ["sweep_line", "sorting"]
+
+role       = "variant"
+variant    = "event_based"
+based_on   = []
+delta      = "Sort events and simulate pickup/dropoff."
+complexity = "O(n log n) time, O(n) space"
+notes      = "Event-based approach: sort by location, process in order."

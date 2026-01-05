@@ -1,0 +1,55 @@
+# Problem: Range Sum Query 2D - Immutable
+# https://leetcode.com/problems/range-sum-query-2d-immutable/
+
+# ===== Problem Info =====
+id = "0304"
+slug = "0304_range_sum_query_2d_immutable"
+title = "Range Sum Query 2D - Immutable"
+leetcode_id = 304
+url = "https://leetcode.com/problems/range-sum-query-2d-immutable/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "design", "matrix", "prefix_sum"]
+companies = ["google", "meta", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PrefixSum2D"]
+patterns         = ["prefix_sum_2d"]
+families         = ["prefix_sum"]
+data_structures  = ["matrix", "array"]
+algorithms       = ["prefix_sum", "inclusion_exclusion"]
+related_problems = ["0303", "0308"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "PrefixSum2D"
+derived_problems = ["0308"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0304_range_sum_query_2d_immutable.py"
+generator = "generators/0304_range_sum_query_2d_immutable.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "NumMatrix"
+method = "sumRegion"
+
+api_kernels      = ["PrefixSum2D"]
+patterns         = ["prefix_sum_2d"]
+families         = ["prefix_sum"]
+data_structures  = ["matrix", "array"]
+algorithms       = ["prefix_sum", "inclusion_exclusion"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0303#default"]
+delta      = "Extend to 2D using inclusion-exclusion principle."
+complexity = "O(m*n) init, O(1) query"
+notes      = "2D prefix sum with inclusion-exclusion for rectangle queries."

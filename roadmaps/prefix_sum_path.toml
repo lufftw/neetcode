@@ -1,0 +1,79 @@
+# Prefix Sum Mastery Path
+# Step-by-step learning path for mastering prefix sum and difference array patterns
+
+id = "prefix_sum_path"
+name = "Prefix Sum Mastery Path"
+api_kernel = "PrefixSumRangeQuery"
+summary = "Master prefix sum patterns from basic range queries to 2D sums and difference arrays."
+
+[[steps]]
+order = 1
+problem = "0303_range_sum_query_immutable"
+role = "base"
+pattern = "prefix_sum_range_query"
+prerequisite = []
+delta = ""
+note = "Learn the canonical prefix sum template for O(1) range sum queries."
+
+[[steps]]
+order = 2
+problem = "0560_subarray_sum_equals_k"
+role = "base"
+pattern = "prefix_sum_subarray_sum"
+prerequisite = ["0303"]
+delta = "Combine prefix sum with hash map to count subarrays with target sum."
+note = "Key insight: count prefix sums rather than enumerate all subarrays."
+
+[[steps]]
+order = 3
+problem = "0525_contiguous_array"
+role = "variant"
+pattern = "prefix_sum_transform"
+prerequisite = ["0560"]
+delta = "Transform 0->-1 to convert equal count into sum=0 problem."
+note = "Learn the transformation technique to map problems to prefix sum."
+
+[[steps]]
+order = 4
+problem = "0523_continuous_subarray_sum"
+role = "variant"
+pattern = "prefix_sum_modular_arithmetic"
+prerequisite = ["0560"]
+delta = "Use modular arithmetic: same remainder means divisible difference."
+note = "Extend prefix sum with modulo operations."
+
+[[steps]]
+order = 5
+problem = "0304_range_sum_query_2d_immutable"
+role = "base"
+pattern = "prefix_sum_2d"
+prerequisite = ["0303"]
+delta = "Extend to 2D using inclusion-exclusion principle."
+note = "Master 2D prefix sum with rectangle queries."
+
+[[steps]]
+order = 6
+problem = "0238_product_of_array_except_self"
+role = "base"
+pattern = "prefix_suffix_product"
+prerequisite = ["0303"]
+delta = "Apply prefix/suffix concept to products instead of sums."
+note = "Learn prefix and suffix products for product-except-self problems."
+
+[[steps]]
+order = 7
+problem = "1109_corporate_flight_bookings"
+role = "base"
+pattern = "difference_array"
+prerequisite = ["0303"]
+delta = "Inverse of prefix sum: mark endpoints, prefix sum to materialize."
+note = "Learn the canonical difference array for range update problems."
+
+[[steps]]
+order = 8
+problem = "1094_car_pooling"
+role = "variant"
+pattern = "difference_array"
+prerequisite = ["1109"]
+delta = "Check capacity constraint during prefix sum computation."
+note = "Apply difference array with constraint verification."

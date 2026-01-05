@@ -1,0 +1,33 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Base template → Hash map variant → Transform → 2D → Difference array
+problem_files = [
+    "0303-range-sum-base.md",
+    "0560-subarray-sum-k.md",
+    "0525-contiguous-array.md",
+    "0523-continuous-subarray-sum.md",
+    "0304-2d-range-sum.md",
+    "0238-product-except-self.md",
+    "1094-car-pooling.md",
+    "1109-flight-bookings.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/prefix_sum/templates.md
+[output]
+subdirectory = "prefix_sum"
+filename = "templates.md"

@@ -1,0 +1,55 @@
+# Problem: Contiguous Array
+# https://leetcode.com/problems/contiguous-array/
+
+# ===== Problem Info =====
+id = "0525"
+slug = "0525_contiguous_array"
+title = "Contiguous Array"
+leetcode_id = 525
+url = "https://leetcode.com/problems/contiguous-array/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "prefix_sum"]
+companies = ["meta", "google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PrefixSumSubarraySum"]
+patterns         = ["prefix_sum_transform"]
+families         = ["prefix_sum"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["prefix_sum", "transform"]
+related_problems = ["0560", "0523", "0930"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0525_contiguous_array.py"
+generator = "generators/0525_contiguous_array.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionPrefixSum"
+method = "findMaxLength"
+
+api_kernels      = ["PrefixSumSubarraySum"]
+patterns         = ["prefix_sum_transform"]
+families         = ["prefix_sum"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["prefix_sum", "transform"]
+
+role       = "variant"
+variant    = "transform"
+based_on   = ["0560#default"]
+delta      = "Transform 0->-1, find longest subarray with sum=0."
+complexity = "O(n) time, O(n) space"
+notes      = "Classic transform technique: convert counting problem to sum=0 problem."

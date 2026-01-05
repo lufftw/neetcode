@@ -1,0 +1,55 @@
+# Problem: Corporate Flight Bookings
+# https://leetcode.com/problems/corporate-flight-bookings/
+
+# ===== Problem Info =====
+id = "1109"
+slug = "1109_corporate_flight_bookings"
+title = "Corporate Flight Bookings"
+leetcode_id = 1109
+url = "https://leetcode.com/problems/corporate-flight-bookings/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "prefix_sum"]
+companies = ["bloomberg", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["DifferenceArray"]
+patterns         = ["difference_array"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["difference_array", "prefix_sum"]
+related_problems = ["1094", "0370"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "DifferenceArray"
+derived_problems = ["1094"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1109_corporate_flight_bookings.py"
+generator = "generators/1109_corporate_flight_bookings.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDifferenceArray"
+method = "corpFlightBookings"
+
+api_kernels      = ["DifferenceArray"]
+patterns         = ["difference_array"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["difference_array", "prefix_sum"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n + m) time, O(n) space"
+notes      = "Canonical difference array: mark range starts/ends, prefix sum for final values."

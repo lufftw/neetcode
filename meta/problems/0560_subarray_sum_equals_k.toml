@@ -1,0 +1,55 @@
+# Problem: Subarray Sum Equals K
+# https://leetcode.com/problems/subarray-sum-equals-k/
+
+# ===== Problem Info =====
+id = "0560"
+slug = "0560_subarray_sum_equals_k"
+title = "Subarray Sum Equals K"
+leetcode_id = 560
+url = "https://leetcode.com/problems/subarray-sum-equals-k/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "prefix_sum"]
+companies = ["meta", "google", "amazon", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PrefixSumSubarraySum"]
+patterns         = ["prefix_sum_subarray_count"]
+families         = ["prefix_sum"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["prefix_sum"]
+related_problems = ["0303", "0525", "0523", "0974"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "PrefixSumSubarraySum"
+derived_problems = ["0525", "0523", "0974"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0560_subarray_sum_equals_k.py"
+generator = "generators/0560_subarray_sum_equals_k.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionPrefixSum"
+method = "subarraySum"
+
+api_kernels      = ["PrefixSumSubarraySum"]
+patterns         = ["prefix_sum_subarray_count"]
+families         = ["prefix_sum"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["prefix_sum"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(n) space"
+notes      = "Prefix sum + hash map for counting subarrays. Key: initialize {0: 1}."

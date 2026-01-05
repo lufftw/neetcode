@@ -418,5 +418,30 @@ summary = "Answer range sum queries in O(1)."
 
 [[patterns]]
 id = "prefix_sum_subarray_sum"
-api_kernel = "PrefixSumRangeQuery"
-summary = "Find subarrays with target sum using prefix sum + hash map."
+api_kernel = "PrefixSumSubarraySum"
+summary = "Find/count subarrays with target sum using prefix sum + hash map."
+
+[[patterns]]
+id = "prefix_sum_transform"
+api_kernel = "PrefixSumSubarraySum"
+summary = "Transform problem (e.g., 0->-1) then find subarray with sum=0."
+
+[[patterns]]
+id = "prefix_sum_modular_arithmetic"
+api_kernel = "PrefixSumSubarraySum"
+summary = "Find subarrays with sum divisible by k using prefix sum modulo."
+
+[[patterns]]
+id = "prefix_sum_2d"
+api_kernel = "PrefixSum2D"
+summary = "2D prefix sum for rectangle sum queries using inclusion-exclusion."
+
+[[patterns]]
+id = "prefix_suffix_product"
+api_kernel = "PrefixProduct"
+summary = "Prefix and suffix products for product-except-self problems."
+
+[[patterns]]
+id = "difference_array"
+api_kernel = "DifferenceArray"
+summary = "Range update operations using difference array (inverse of prefix sum)."

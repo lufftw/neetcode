@@ -1,0 +1,55 @@
+# Problem: Range Sum Query - Immutable
+# https://leetcode.com/problems/range-sum-query-immutable/
+
+# ===== Problem Info =====
+id = "0303"
+slug = "0303_range_sum_query_immutable"
+title = "Range Sum Query - Immutable"
+leetcode_id = 303
+url = "https://leetcode.com/problems/range-sum-query-immutable/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "design", "prefix_sum"]
+companies = ["google", "meta", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PrefixSumRangeQuery"]
+patterns         = ["prefix_sum_range_query"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["prefix_sum"]
+related_problems = ["0304", "0307", "0560"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "PrefixSumRangeQuery"
+derived_problems = ["0304", "0560", "0525"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0303_range_sum_query_immutable.py"
+generator = "generators/0303_range_sum_query_immutable.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "NumArray"
+method = "sumRange"
+
+api_kernels      = ["PrefixSumRangeQuery"]
+patterns         = ["prefix_sum_range_query"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["prefix_sum"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) init, O(1) query"
+notes      = "Base template for prefix sum range queries."

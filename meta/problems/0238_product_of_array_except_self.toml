@@ -1,0 +1,70 @@
+# Problem: Product of Array Except Self
+# https://leetcode.com/problems/product-of-array-except-self/
+
+# ===== Problem Info =====
+id = "0238"
+slug = "0238_product_of_array_except_self"
+title = "Product of Array Except Self"
+leetcode_id = 238
+url = "https://leetcode.com/problems/product-of-array-except-self/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "prefix_sum"]
+companies = ["meta", "amazon", "apple", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PrefixProduct"]
+patterns         = ["prefix_suffix_product"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["prefix_product"]
+related_problems = ["0042", "0152"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "PrefixProduct"
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0238_product_of_array_except_self.py"
+generator = "generators/0238_product_of_array_except_self.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionPrefixSuffix"
+method = "productExceptSelf"
+
+api_kernels      = ["PrefixProduct"]
+patterns         = ["prefix_suffix_product"]
+families         = ["prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["prefix_product"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space (excluding output)"
+notes      = "Two-pass: prefix products forward, suffix products backward."
+
+[[solutions]]
+key    = "two_pass"
+class  = "SolutionTwoArrays"
+method = "productExceptSelf"
+
+patterns         = ["prefix_suffix_product"]
+algorithms       = ["prefix_product"]
+
+role       = "variant"
+variant    = "educational"
+based_on   = ["0238#default"]
+delta      = "Separate prefix and suffix arrays for clarity."
+complexity = "O(n) time, O(n) space"
+notes      = "More intuitive but uses extra space."

@@ -1,0 +1,55 @@
+# Problem: Continuous Subarray Sum
+# https://leetcode.com/problems/continuous-subarray-sum/
+
+# ===== Problem Info =====
+id = "0523"
+slug = "0523_continuous_subarray_sum"
+title = "Continuous Subarray Sum"
+leetcode_id = 523
+url = "https://leetcode.com/problems/continuous-subarray-sum/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "math", "prefix_sum"]
+companies = ["meta", "google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["prefix_sum_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PrefixSumSubarraySum"]
+patterns         = ["prefix_sum_modular_arithmetic"]
+families         = ["prefix_sum"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["prefix_sum", "modular_arithmetic"]
+related_problems = ["0560", "0525", "0974"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0523_continuous_subarray_sum.py"
+generator = "generators/0523_continuous_subarray_sum.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionPrefixMod"
+method = "checkSubarraySum"
+
+api_kernels      = ["PrefixSumSubarraySum"]
+patterns         = ["prefix_sum_modular_arithmetic"]
+families         = ["prefix_sum"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["prefix_sum", "modular_arithmetic"]
+
+role       = "variant"
+variant    = "modular"
+based_on   = ["0560#default"]
+delta      = "prefix % k instead of prefix sum; check length >= 2."
+complexity = "O(n) time, O(min(n, k)) space"
+notes      = "Uses modular arithmetic: if prefix[j]%k == prefix[i]%k, subarray divisible by k."
