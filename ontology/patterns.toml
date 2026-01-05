@@ -27,7 +27,40 @@ id = "sliding_window_fixed_size"
 api_kernel = "SubstringSlidingWindow"
 summary = "Fixed-size sliding window."
 
-# === BFS Patterns ===
+# === Graph Traversal Patterns ===
+
+# -- DFS Patterns --
+[[patterns]]
+id = "graph_dfs_connected_components"
+api_kernel = "GraphDFS"
+summary = "Count/identify connected components using DFS flood fill."
+
+[[patterns]]
+id = "graph_dfs_reachability"
+api_kernel = "GraphDFS"
+summary = "Check if target is reachable from source using DFS."
+
+[[patterns]]
+id = "graph_clone"
+api_kernel = "GraphDFS"
+summary = "Deep copy graph using DFS with old→new node mapping."
+
+# -- BFS Patterns --
+[[patterns]]
+id = "graph_bfs_multi_source"
+api_kernel = "GridBFSMultiSource"
+summary = "Multi-source BFS for simultaneous propagation from multiple sources."
+
+[[patterns]]
+id = "graph_bfs_reachability"
+api_kernel = "GraphBFS"
+summary = "Check reachability using BFS traversal."
+
+[[patterns]]
+id = "graph_bfs_connected_components"
+api_kernel = "GraphBFS"
+summary = "Count connected components using BFS flood fill."
+
 [[patterns]]
 id = "grid_bfs_propagation"
 api_kernel = "GridBFSMultiSource"
@@ -42,6 +75,12 @@ summary = "Find shortest path in unweighted graph using BFS."
 id = "bfs_level_order"
 api_kernel = "TreeTraversalBFS"
 summary = "Process tree/graph level by level."
+
+# -- Bipartite/Coloring --
+[[patterns]]
+id = "graph_bipartite"
+api_kernel = "GraphBFS"
+summary = "Check if graph is bipartite using two-coloring BFS/DFS."
 
 # === Merge Patterns ===
 [[patterns]]

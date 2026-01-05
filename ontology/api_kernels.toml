@@ -81,3 +81,15 @@ summary = "Trie-based prefix matching and autocomplete."
 [[api_kernels]]
 id = "HeapTopK"
 summary = "Maintain top K elements using heap."
+
+[[api_kernels]]
+id = "GraphDFS"
+summary = "Depth-first graph traversal for exploration and connectivity."
+
+[[api_kernels]]
+id = "GraphBFS"
+summary = "Breadth-first graph traversal for shortest paths and level-based exploration."
+
+[[api_kernels]]
+id = "UnionFind"
+summary = "Disjoint set union with path compression for efficient connectivity queries."

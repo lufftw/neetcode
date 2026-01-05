@@ -1,0 +1,70 @@
+# Graph Traversal (DFS/BFS) Mastery Path
+# Step-by-step learning path for mastering graph traversal patterns
+
+id = "graph_traversal_path"
+name = "Graph Traversal (DFS/BFS) Mastery Path"
+api_kernel = "GraphDFS"
+summary = "Master graph traversal from connected components to bipartite checking and multi-source BFS."
+
+[[steps]]
+order = 1
+problem = "0200_number_of_islands"
+role = "base"
+pattern = "graph_dfs_connected_components"
+prerequisite = []
+delta = ""
+note = "Foundation for all graph traversal. Learn DFS flood fill to count connected components."
+
+[[steps]]
+order = 2
+problem = "0133_clone_graph"
+role = "base"
+pattern = "graph_clone"
+prerequisite = ["0200"]
+delta = "Add hash map for old→new node mapping to handle cycles."
+note = "Learn graph cloning with cycle handling. Key insight: map prevents revisiting."
+
+[[steps]]
+order = 3
+problem = "0841_keys_and_rooms"
+role = "variant"
+pattern = "graph_dfs_reachability"
+prerequisite = ["0200"]
+delta = "Single-source reachability instead of counting all components."
+note = "Simple reachability check. Can all nodes be reached from source?"
+
+[[steps]]
+order = 4
+problem = "0994_rotting_oranges"
+role = "base"
+pattern = "graph_bfs_multi_source"
+prerequisite = ["0200"]
+delta = "Multi-source BFS: initialize queue with ALL sources, not just one."
+note = "Classic multi-source BFS. BFS levels = time units for propagation."
+
+[[steps]]
+order = 5
+problem = "0417_pacific_atlantic_water_flow"
+role = "variant"
+pattern = "graph_bfs_multi_source"
+prerequisite = ["0994"]
+delta = "Reverse direction: start from destination (oceans), find what's reachable going uphill."
+note = "Key insight: reverse the problem direction for easier solution."
+
+[[steps]]
+order = 6
+problem = "0785_is_graph_bipartite"
+role = "base"
+pattern = "graph_bipartite"
+prerequisite = ["0200", "0994"]
+delta = "Add coloring: alternate colors at each BFS level or DFS call."
+note = "Two-coloring problem. Conflict = same color neighbors = not bipartite."
+
+[[steps]]
+order = 7
+problem = "1971_find_if_path_exists_in_graph"
+role = "variant"
+pattern = "graph_dfs_reachability"
+prerequisite = ["0841"]
+delta = "Point-to-point connectivity. Can also use Union-Find for multiple queries."
+note = "Compare DFS/BFS vs Union-Find trade-offs. Union-Find better for multiple queries."
