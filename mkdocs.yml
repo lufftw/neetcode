@@ -143,6 +143,12 @@ nav:
     - Backtracking Exploration:
       - Intuition: patterns/backtracking_exploration/intuition.md
       - Templates: patterns/backtracking_exploration/templates.md
+    - Prefix Sum:
+      - Intuition: patterns/prefix_sum/intuition.md
+      - Templates: patterns/prefix_sum/templates.md
+    - Heap / Priority Queue:
+      - Intuition: patterns/heap/intuition.md
+      - Templates: patterns/heap/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
