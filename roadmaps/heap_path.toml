@@ -1,0 +1,70 @@
+# Heap / Priority Queue Mastery Path
+# Step-by-step learning path for mastering heap patterns
+
+id = "heap_path"
+name = "Heap / Priority Queue Mastery Path"
+api_kernel = "HeapTopK"
+summary = "Master heap patterns from basic selection to streaming median and scheduling."
+
+[[steps]]
+order = 1
+problem = "1046_last_stone_weight"
+role = "base"
+pattern = "heap_greedy_simulation"
+prerequisite = []
+delta = ""
+note = "Learn basic max-heap operations with simple simulation."
+
+[[steps]]
+order = 2
+problem = "0215_kth_largest_element_in_an_array"
+role = "base"
+pattern = "heap_kth_element"
+prerequisite = ["1046"]
+delta = "Use min-heap of size k instead of max-heap of all elements."
+note = "Classic kth element problem. Understand why min-heap for max problem."
+
+[[steps]]
+order = 3
+problem = "0347_top_k_frequent_elements"
+role = "variant"
+pattern = "heap_top_k"
+prerequisite = ["0215"]
+delta = "Sort by frequency instead of value; combine with hash map."
+note = "Two-phase approach: count frequencies, then top-k selection."
+
+[[steps]]
+order = 4
+problem = "0295_find_median_from_data_stream"
+role = "base"
+pattern = "heap_median_stream"
+prerequisite = ["0215"]
+delta = "Use two heaps (max + min) to maintain sorted halves."
+note = "Classic two-heap pattern for streaming median."
+
+[[steps]]
+order = 5
+problem = "0023_merge_k_sorted_lists"
+role = "base"
+pattern = "merge_k_sorted_heap"
+prerequisite = ["0215"]
+delta = "Min-heap of k heads for k-way merge."
+note = "Classic k-way merge using heap. Foundation for external sorting."
+
+[[steps]]
+order = 6
+problem = "0253_meeting_rooms_ii"
+role = "base"
+pattern = "heap_interval_scheduling"
+prerequisite = ["0215"]
+delta = "Min-heap of end times for resource allocation."
+note = "Interval scheduling with heap. Track when resources become free."
+
+[[steps]]
+order = 7
+problem = "0621_task_scheduler"
+role = "advanced"
+pattern = "heap_task_scheduler"
+prerequisite = ["0253"]
+delta = "Max-heap with cooldown queue for greedy scheduling."
+note = "Combines greedy selection with cooldown constraint."

@@ -399,6 +399,21 @@ id = "heap_median_stream"
 api_kernel = "HeapTopK"
 summary = "Maintain median of data stream using two heaps."
 
+[[patterns]]
+id = "heap_interval_scheduling"
+api_kernel = "HeapTopK"
+summary = "Min-heap of end times for interval/meeting room scheduling."
+
+[[patterns]]
+id = "heap_task_scheduler"
+api_kernel = "HeapTopK"
+summary = "Greedy scheduling with max-heap and cooldown constraint."
+
+[[patterns]]
+id = "heap_greedy_simulation"
+api_kernel = "HeapTopK"
+summary = "Repeatedly process largest/smallest element in simulation."
+
 # === Union Find Patterns ===
 [[patterns]]
 id = "union_find_connected_components"
