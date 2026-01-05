@@ -1,0 +1,36 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by conceptual progression)
+# Order: Base NGE -> Circular -> Histogram -> Span -> Contribution -> Valley -> Greedy
+problem_files = [
+    "0496-next-greater-element.md",
+    "0503-circular-boundary.md",
+    "0084-histogram-expansion.md",
+    "0739-span-distance.md",
+    "0907-contribution-counting.md",
+    "0042-container-valley.md",
+    "0402-greedy-monotonic.md"
+]
+
+# Footer files (appear last)
+# Robustness/termination concepts followed by reference tables
+footer_files = [
+    "_robustness.md",
+    "_termination.md",
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/monotonic_stack/templates.md
+[output]
+subdirectory = "monotonic_stack"
+filename = "templates.md"
