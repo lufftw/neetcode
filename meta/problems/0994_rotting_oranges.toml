@@ -14,11 +14,11 @@ topics = ["array", "breadth_first_search", "matrix"]
 companies = ["amazon", "microsoft", "google", "meta"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "graph_bfs_path"]
+roadmaps = ["neetcode_150", "graph_traversal_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["GridBFSMultiSource"]
-patterns         = ["grid_bfs_propagation"]
+patterns         = ["graph_bfs_multi_source"]
 families         = ["graph_wavefront", "matrix_traversal"]
 data_structures  = ["grid", "queue"]
 algorithms       = ["bfs"]

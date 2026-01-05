@@ -1,0 +1,74 @@
+# Problem: Number of Islands
+# https://leetcode.com/problems/number-of-islands/
+
+# ===== Problem Info =====
+id = "0200"
+slug = "0200_number_of_islands"
+title = "Number of Islands"
+leetcode_id = 200
+url = "https://leetcode.com/problems/number-of-islands/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "depth_first_search", "breadth_first_search", "union_find", "matrix"]
+companies = ["amazon", "microsoft", "google", "meta", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "graph_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GraphDFS"]
+patterns         = ["graph_dfs_connected_components"]
+families         = ["graph_traversal", "matrix_traversal"]
+data_structures  = ["grid", "set"]
+algorithms       = ["dfs", "bfs", "union_find"]
+related_problems = ["0695", "0463", "0827", "0130", "0417"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "GraphDFS"
+derived_problems = ["0695", "0463", "0130"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0200_number_of_islands.py"
+generator = "generators/0200_number_of_islands.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "numIslands"
+
+api_kernels      = ["GraphDFS"]
+patterns         = ["graph_dfs_connected_components"]
+families         = ["graph_traversal"]
+data_structures  = ["grid"]
+algorithms       = ["dfs"]
+
+role       = "base"
+variant    = "dfs_flood_fill"
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Base template for connected components. DFS flood fill marks entire island, count equals number of DFS calls from unvisited cells."
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "numIslands"
+
+api_kernels      = ["GraphBFS"]
+patterns         = ["graph_bfs_connected_components"]
+families         = ["graph_traversal"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs"]
+
+role       = "variant"
+variant    = "bfs_flood_fill"
+based_on   = ["0200#default"]
+delta      = "Use BFS instead of DFS. Better for avoiding stack overflow on large grids."
+complexity = "O(m*n) time, O(min(m,n)) space"
+notes      = "BFS approach with explicit queue. Queue size bounded by min(m,n)."

@@ -1,0 +1,74 @@
+# Problem: Keys and Rooms
+# https://leetcode.com/problems/keys-and-rooms/
+
+# ===== Problem Info =====
+id = "0841"
+slug = "0841_keys_and_rooms"
+title = "Keys and Rooms"
+leetcode_id = 841
+url = "https://leetcode.com/problems/keys-and-rooms/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "graph"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["graph_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GraphDFS"]
+patterns         = ["graph_dfs_reachability"]
+families         = ["graph_traversal"]
+data_structures  = ["graph", "set"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0547", "1971"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0841_keys_and_rooms.py"
+generator = "generators/0841_keys_and_rooms.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "canVisitAllRooms"
+
+api_kernels      = ["GraphDFS"]
+patterns         = ["graph_dfs_reachability"]
+families         = ["graph_traversal"]
+data_structures  = ["graph", "set"]
+algorithms       = ["dfs"]
+
+role       = "variant"
+variant    = "dfs_reachability"
+based_on   = ["0200#default"]
+delta      = "Single-source reachability check. Return visited count equals total."
+complexity = "O(V+E) time, O(V) space"
+notes      = "Keys in room = directed edges. Check if all nodes reachable from node 0."
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "canVisitAllRooms"
+
+api_kernels      = ["GraphBFS"]
+patterns         = ["graph_bfs_reachability"]
+families         = ["graph_traversal"]
+data_structures  = ["graph", "set", "queue"]
+algorithms       = ["bfs"]
+
+role       = "variant"
+variant    = "bfs_reachability"
+based_on   = ["0841#default"]
+delta      = "BFS instead of DFS for reachability."
+complexity = "O(V+E) time, O(V) space"
+notes      = "Iterative BFS traversal."

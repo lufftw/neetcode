@@ -1,0 +1,74 @@
+# Problem: Clone Graph
+# https://leetcode.com/problems/clone-graph/
+
+# ===== Problem Info =====
+id = "0133"
+slug = "0133_clone_graph"
+title = "Clone Graph"
+leetcode_id = 133
+url = "https://leetcode.com/problems/clone-graph/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["hash_table", "depth_first_search", "breadth_first_search", "graph"]
+companies = ["meta", "amazon", "google", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "graph_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GraphDFS"]
+patterns         = ["graph_clone"]
+families         = ["graph_traversal", "graph_construction"]
+data_structures  = ["graph", "hash_table"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0138", "1485"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = ["0138"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0133_clone_graph.py"
+generator = "generators/0133_clone_graph.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "cloneGraph"
+
+api_kernels      = ["GraphDFS"]
+patterns         = ["graph_clone"]
+families         = ["graph_traversal"]
+data_structures  = ["graph", "hash_table"]
+algorithms       = ["dfs"]
+
+role       = "base"
+variant    = "dfs_hash_map"
+based_on   = []
+delta      = ""
+complexity = "O(V+E) time, O(V) space"
+notes      = "Map old→new nodes. On first visit create clone, on revisit return existing clone. Handles cycles via the mapping."
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "cloneGraph"
+
+api_kernels      = ["GraphBFS"]
+patterns         = ["graph_clone"]
+families         = ["graph_traversal"]
+data_structures  = ["graph", "hash_table", "queue"]
+algorithms       = ["bfs"]
+
+role       = "variant"
+variant    = "bfs_hash_map"
+based_on   = ["0133#default"]
+delta      = "Iterative BFS instead of recursive DFS."
+complexity = "O(V+E) time, O(V) space"
+notes      = "Create clone when discovered, connect neighbors when processing."
