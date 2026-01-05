@@ -1,0 +1,33 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by conceptual progression)
+# Order: Base template -> Exact match -> Boundary -> Rotated -> Answer space -> Peak
+problem_files = [
+    "0001-base-template.md",
+    "0704-exact-match.md",
+    "0034-lower-upper-bound.md",
+    "0033-rotated-array.md",
+    "0875-answer-space.md",
+    "0162-peak-finding.md",
+    "0099-off-by-one.md"
+]
+
+# Footer files (appear last, typically comparison, decision, mapping, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/binary_search/templates.md
+[output]
+subdirectory = "binary_search"
+filename = "templates.md"
