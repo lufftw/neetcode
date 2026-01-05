@@ -134,6 +134,9 @@ nav:
     - Two Pointers:
       - Intuition: patterns/two_pointers/intuition.md
       - Templates: patterns/two_pointers/templates.md
+    - Binary Search:
+      - Intuition: patterns/binary_search/intuition.md
+      - Templates: patterns/binary_search/templates.md
     - Backtracking Exploration:
       - Intuition: patterns/backtracking_exploration/intuition.md
       - Templates: patterns/backtracking_exploration/templates.md
