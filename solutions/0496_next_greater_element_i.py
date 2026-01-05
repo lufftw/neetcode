@@ -83,13 +83,17 @@ def judge(actual, expected, input_data: str) -> bool:
     # Compute correct answer using reference solution
     correct = _reference_nge(nums1, nums2)
 
-    # Parse actual output
-    actual_str = actual.strip()
-    try:
-        actual_list = json.loads(actual_str) if actual_str else []
-        return actual_list == correct
-    except (ValueError, json.JSONDecodeError):
-        return False
+    # Parse actual output (may be list or string)
+    if isinstance(actual, list):
+        actual_list = actual
+    else:
+        actual_str = actual.strip()
+        try:
+            actual_list = json.loads(actual_str) if actual_str else []
+        except (ValueError, json.JSONDecodeError):
+            return False
+
+    return actual_list == correct
 
 
 def _reference_nge(nums1: List[int], nums2: List[int]) -> List[int]:
