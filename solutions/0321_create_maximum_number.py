@@ -44,6 +44,75 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the maximum number.
+
+    Args:
+        actual: Program output (list as string or list)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (nums1, nums2, k on separate lines)
+
+    Returns:
+        bool: True if correct maximum number
+    """
+    import json
+    lines = input_data.strip().split("\n")
+    nums1 = json.loads(lines[0]) if lines[0] else []
+    nums2 = json.loads(lines[1]) if len(lines) > 1 else []
+    k = int(lines[2]) if len(lines) > 2 else 0
+
+    # Compute correct answer using reference solution
+    correct = _reference_max_number(nums1, nums2, k)
+
+    # Parse actual output
+    actual_str = actual.strip()
+    try:
+        actual_list = json.loads(actual_str) if actual_str else []
+        return actual_list == correct
+    except (ValueError, json.JSONDecodeError):
+        return False
+
+
+def _reference_max_number(nums1: List[int], nums2: List[int], k: int) -> List[int]:
+    """O(k^2 * (m + n)) reference solution."""
+    def max_subseq(arr: List[int], length: int) -> List[int]:
+        drop = len(arr) - length
+        stack: list[int] = []
+        for num in arr:
+            while drop and stack and stack[-1] < num:
+                stack.pop()
+                drop -= 1
+            stack.append(num)
+        return stack[:length]
+
+    def merge(seq1: List[int], seq2: List[int]) -> List[int]:
+        result: list[int] = []
+        i, j = 0, 0
+        while i < len(seq1) or j < len(seq2):
+            if seq1[i:] > seq2[j:]:
+                result.append(seq1[i])
+                i += 1
+            else:
+                result.append(seq2[j])
+                j += 1
+        return result
+
+    m, n = len(nums1), len(nums2)
+    best: list[int] = []
+    for i in range(max(0, k - n), min(k, m) + 1):
+        candidate = merge(max_subseq(nums1, i), max_subseq(nums2, k - i))
+        if candidate > best:
+            best = candidate
+    return best
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution: Greedy Split + Max Subsequence + Greedy Merge
 # Time: O(k^2 * (m + n)), Space: O(k)
 #   - Enumerate all ways to split k digits: i from nums1, k-i from nums2

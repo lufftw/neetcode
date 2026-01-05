@@ -56,6 +56,60 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct trapped water.
+
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (canonical JSON format)
+
+    Returns:
+        bool: True if correct trapped water amount
+    """
+    import json
+    line = input_data.strip()
+    height = json.loads(line) if line else []
+
+    # Compute correct answer using O(n) two-pass DP
+    correct = _reference_trap(height)
+
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _reference_trap(height: List[int]) -> int:
+    """O(n) reference solution using prefix max arrays."""
+    if not height:
+        return 0
+    n = len(height)
+    left_max = [0] * n
+    right_max = [0] * n
+
+    left_max[0] = height[0]
+    for i in range(1, n):
+        left_max[i] = max(left_max[i - 1], height[i])
+
+    right_max[n - 1] = height[n - 1]
+    for i in range(n - 2, -1, -1):
+        right_max[i] = max(right_max[i + 1], height[i])
+
+    water = 0
+    for i in range(n):
+        water += min(left_max[i], right_max[i]) - height[i]
+    return water
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Monotonic Decreasing Stack (Valley Resolution)
 # Time: O(n), Space: O(n)
 #   - Maintain stack of indices with decreasing heights

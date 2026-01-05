@@ -30,6 +30,63 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output matches expected spans.
+
+    Args:
+        actual: Program output (list of results as string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (methods and args on separate lines)
+
+    Returns:
+        bool: True if correct span values for all next() calls
+    """
+    lines = input_data.strip().split("\n")
+    methods = json.loads(lines[0]) if lines[0] else []
+    args = json.loads(lines[1]) if len(lines) > 1 else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_stock_span(methods, args)
+
+    # Parse actual output
+    actual_str = actual.strip()
+    try:
+        actual_list = json.loads(actual_str) if actual_str else []
+        return actual_list == correct
+    except (ValueError, json.JSONDecodeError):
+        return False
+
+
+def _reference_stock_span(methods: list, args: list) -> list:
+    """Reference solution for stock span."""
+    results: list = []
+    spanner = None
+    stack: list[tuple[int, int]] = []
+
+    for method, arg in zip(methods, args):
+        if method == "StockSpanner":
+            spanner = True
+            stack = []
+            results.append(None)
+        elif method == "next":
+            price = arg[0]
+            span = 1
+            while stack and stack[-1][0] <= price:
+                _, prev_span = stack.pop()
+                span += prev_span
+            stack.append((price, span))
+            results.append(span)
+
+    return results
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Monotonic Decreasing Stack with Span Accumulation
 # Time: O(1) amortized per call, Space: O(n) total
 #   - Stack stores (price, accumulated_span) pairs

@@ -56,6 +56,61 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the maximal rectangle area.
+
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (canonical JSON format)
+
+    Returns:
+        bool: True if correct maximal rectangle area
+    """
+    line = input_data.strip()
+    matrix = json.loads(line) if line else []
+
+    # Compute correct answer using O(rows * cols) histogram approach
+    correct = _reference_maximal_rect(matrix)
+
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _reference_maximal_rect(matrix: List[List[str]]) -> int:
+    """O(rows * cols) reference using histogram + stack."""
+    if not matrix or not matrix[0]:
+        return 0
+    cols = len(matrix[0])
+    heights = [0] * (cols + 1)  # +1 for sentinel
+    max_area = 0
+
+    for row in matrix:
+        for j in range(cols):
+            heights[j] = heights[j] + 1 if row[j] == "1" else 0
+
+        # Largest rectangle in histogram
+        stack: list[int] = []
+        for i, h in enumerate(heights):
+            while stack and heights[stack[-1]] > h:
+                height = heights[stack.pop()]
+                width = i if not stack else i - stack[-1] - 1
+                max_area = max(max_area, height * width)
+            stack.append(i)
+
+    return max_area
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Row-by-Row Histogram with Monotonic Stack
 # Time: O(rows * cols), Space: O(cols)
 #   - Transform each row into a histogram: height[j] = consecutive 1s above

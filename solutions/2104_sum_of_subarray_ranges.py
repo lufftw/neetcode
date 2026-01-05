@@ -76,6 +76,53 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct sum of ranges.
+
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (JSON array)
+
+    Returns:
+        bool: True if correct sum of subarray ranges
+    """
+    import json
+    line = input_data.strip()
+    nums = json.loads(line) if line else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_subarray_ranges(nums)
+
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _reference_subarray_ranges(nums: List[int]) -> int:
+    """O(n^2) reference using brute force for verification."""
+    n = len(nums)
+    result = 0
+
+    for i in range(n):
+        min_val = max_val = nums[i]
+        for j in range(i, n):
+            min_val = min(min_val, nums[j])
+            max_val = max(max_val, nums[j])
+            result += max_val - min_val
+
+    return result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Dual Monotonic Stacks (Contribution Counting)
 # Time: O(n), Space: O(n)
 #   - Range sum = sum of all subarray maxs - sum of all subarray mins

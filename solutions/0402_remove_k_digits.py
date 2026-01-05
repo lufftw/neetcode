@@ -42,6 +42,56 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the smallest number.
+
+    Args:
+        actual: Program output (string with or without quotes)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (num on line 1, k on line 2)
+
+    Returns:
+        bool: True if correct smallest number after removing k digits
+    """
+    import json
+    lines = input_data.strip().split("\n")
+    num = json.loads(lines[0]) if lines[0] else ""
+    k = int(lines[1]) if len(lines) > 1 else 0
+
+    # Compute correct answer using reference solution
+    correct = _reference_remove_k(num, k)
+
+    # Handle JSON-encoded string output
+    actual_str = actual.strip()
+    if actual_str.startswith('"') and actual_str.endswith('"'):
+        actual_str = json.loads(actual_str)
+
+    return actual_str == correct
+
+
+def _reference_remove_k(num: str, k: int) -> str:
+    """O(n) reference using greedy stack."""
+    stack: list[str] = []
+    for digit in num:
+        while k and stack and stack[-1] > digit:
+            stack.pop()
+            k -= 1
+        stack.append(digit)
+    # Remove remaining k digits from end
+    if k:
+        stack = stack[:-k]
+    # Remove leading zeros and handle empty result
+    result = "".join(stack).lstrip("0")
+    return result if result else "0"
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Greedy Monotonic Increasing Stack
 # Time: O(n), Space: O(n)
 #   - Build monotonically increasing stack of digits (greedy best prefix)

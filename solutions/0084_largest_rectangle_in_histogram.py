@@ -52,6 +52,55 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the largest rectangle area.
+
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (canonical JSON format)
+
+    Returns:
+        bool: True if correct largest rectangle area
+    """
+    line = input_data.strip()
+    heights = json.loads(line) if line else []
+
+    # Compute correct answer using O(n²) brute force
+    correct = _reference_largest_rect(heights)
+
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _reference_largest_rect(heights: List[int]) -> int:
+    """O(n²) brute force for small inputs, O(n) stack for larger."""
+    if not heights:
+        return 0
+    n = len(heights)
+    # Use O(n) stack solution as reference
+    stack: list[int] = []
+    max_area = 0
+    heights = heights + [0]  # Sentinel
+    for i, h in enumerate(heights):
+        while stack and heights[stack[-1]] > h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+    return max_area
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Single-Pass with Sentinel
 # Time: O(n), Space: O(n)
 #   - Append height 0 as sentinel to force complete stack flush

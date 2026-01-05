@@ -52,6 +52,55 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct circular NGE array.
+
+    Args:
+        actual: Program output (list as string or list)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (JSON array)
+
+    Returns:
+        bool: True if correct NGE results
+    """
+    line = input_data.strip()
+    nums = json.loads(line) if line else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_circular_nge(nums)
+
+    # Parse actual output
+    actual_str = actual.strip()
+    try:
+        actual_list = json.loads(actual_str) if actual_str else []
+        return actual_list == correct
+    except (ValueError, json.JSONDecodeError):
+        return False
+
+
+def _reference_circular_nge(nums: List[int]) -> List[int]:
+    """O(n) reference using two-pass circular traversal."""
+    n = len(nums)
+    result = [-1] * n
+    stack: list[int] = []
+
+    for i in range(2 * n):
+        idx = i % n
+        while stack and nums[stack[-1]] < nums[idx]:
+            result[stack.pop()] = nums[idx]
+        if i < n:
+            stack.append(i)
+
+    return result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Two-Pass Circular Traversal
 # Time: O(n), Space: O(n)
 #   - Traverse the array twice (2n iterations) to simulate circular wrap

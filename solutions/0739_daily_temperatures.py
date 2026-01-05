@@ -54,6 +54,54 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct wait days array.
+
+    Args:
+        actual: Program output (list as string or list)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (JSON array)
+
+    Returns:
+        bool: True if correct wait days for warmer temperatures
+    """
+    line = input_data.strip()
+    temperatures = json.loads(line) if line else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_daily_temps(temperatures)
+
+    # Parse actual output
+    actual_str = actual.strip()
+    try:
+        actual_list = json.loads(actual_str) if actual_str else []
+        return actual_list == correct
+    except (ValueError, json.JSONDecodeError):
+        return False
+
+
+def _reference_daily_temps(temps: List[int]) -> List[int]:
+    """O(n) reference using monotonic stack."""
+    n = len(temps)
+    result = [0] * n
+    stack: list[int] = []
+
+    for i, temp in enumerate(temps):
+        while stack and temps[stack[-1]] < temp:
+            prev_day = stack.pop()
+            result[prev_day] = i - prev_day
+        stack.append(i)
+
+    return result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Monotonic Decreasing Stack
 # Time: O(n), Space: O(n)
 #   - Stack stores indices of days waiting for a warmer temperature

@@ -38,6 +38,56 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the lex-smallest unique result.
+
+    Args:
+        actual: Program output (string with or without quotes)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (quoted JSON format)
+
+    Returns:
+        bool: True if correct lexicographically smallest result
+    """
+    import json
+    line = input_data.strip()
+    s = json.loads(line) if line else ""
+
+    # Compute correct answer using reference solution
+    correct = _reference_remove_dups(s)
+
+    # Handle JSON-encoded string output
+    actual_str = actual.strip()
+    if actual_str.startswith('"') and actual_str.endswith('"'):
+        actual_str = json.loads(actual_str)
+
+    return actual_str == correct
+
+
+def _reference_remove_dups(s: str) -> str:
+    """O(n) reference using greedy stack."""
+    last_occurrence = {char: idx for idx, char in enumerate(s)}
+    in_stack: set[str] = set()
+    stack: list[str] = []
+
+    for idx, char in enumerate(s):
+        if char in in_stack:
+            continue
+        while stack and stack[-1] > char and last_occurrence[stack[-1]] > idx:
+            in_stack.remove(stack.pop())
+        stack.append(char)
+        in_stack.add(char)
+
+    return "".join(stack)
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Greedy Monotonic Stack with Constraints
 # Time: O(n), Space: O(26) = O(1)
 #   - Track last occurrence of each character for safe removal decisions

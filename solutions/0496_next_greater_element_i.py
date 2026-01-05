@@ -62,6 +62,53 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct NGE array.
+
+    Args:
+        actual: Program output (list as string or list)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (nums1 and nums2 on separate lines)
+
+    Returns:
+        bool: True if correct NGE results
+    """
+    lines = input_data.strip().split("\n")
+    nums1 = json.loads(lines[0]) if lines[0] else []
+    nums2 = json.loads(lines[1]) if len(lines) > 1 else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_nge(nums1, nums2)
+
+    # Parse actual output
+    actual_str = actual.strip()
+    try:
+        actual_list = json.loads(actual_str) if actual_str else []
+        return actual_list == correct
+    except (ValueError, json.JSONDecodeError):
+        return False
+
+
+def _reference_nge(nums1: List[int], nums2: List[int]) -> List[int]:
+    """O(n + m) reference using monotonic stack."""
+    nge_map: dict[int, int] = {}
+    stack: list[int] = []
+
+    for num in nums2:
+        while stack and stack[-1] < num:
+            nge_map[stack.pop()] = num
+        stack.append(num)
+
+    return [nge_map.get(x, -1) for x in nums1]
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Monotonic Decreasing Stack + Hash Map
 # Time: O(n + m), Space: O(n)
 #   - Precompute NGE for all elements in nums2 using monotonic stack

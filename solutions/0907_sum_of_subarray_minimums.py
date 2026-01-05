@@ -50,6 +50,71 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result: check if actual output is the correct sum mod 10^9+7.
+
+    Args:
+        actual: Program output (integer as string or int)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string (JSON array)
+
+    Returns:
+        bool: True if correct sum of subarray minimums
+    """
+    import json
+    line = input_data.strip()
+    arr = json.loads(line) if line else []
+
+    # Compute correct answer using reference solution
+    correct = _reference_sum_subarray_mins(arr)
+
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+        return actual_val == correct
+    except (ValueError, TypeError):
+        return False
+
+
+def _reference_sum_subarray_mins(arr: List[int]) -> int:
+    """O(n) reference using contribution counting."""
+    MOD = 10**9 + 7
+    n = len(arr)
+    if n == 0:
+        return 0
+
+    # Find previous less element (strictly less for left boundary)
+    left = [0] * n
+    stack: list[int] = []
+    for i in range(n):
+        while stack and arr[stack[-1]] >= arr[i]:
+            stack.pop()
+        left[i] = i - stack[-1] if stack else i + 1
+        stack.append(i)
+
+    # Find next less element (less or equal for right boundary - handles duplicates)
+    right = [0] * n
+    stack = []
+    for i in range(n - 1, -1, -1):
+        while stack and arr[stack[-1]] > arr[i]:
+            stack.pop()
+        right[i] = stack[-1] - i if stack else n - i
+        stack.append(i)
+
+    # Contribution of each element
+    result = 0
+    for i in range(n):
+        result = (result + arr[i] * left[i] * right[i]) % MOD
+
+    return result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution 1: Contribution Counting with Boundary Precomputation
 # Time: O(n), Space: O(n)
 #   - For each element, find left/right boundaries using monotonic stack
