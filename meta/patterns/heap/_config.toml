@@ -1,0 +1,32 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Kth element → Top-K → Median stream → K-way merge → Interval → Scheduler → Greedy sim
+problem_files = [
+    "0215-kth-largest-base.md",
+    "0347-top-k-frequent.md",
+    "0295-median-stream.md",
+    "0023-merge-k-sorted.md",
+    "0253-meeting-rooms-ii.md",
+    "0621-task-scheduler.md",
+    "1046-last-stone-weight.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/heap/templates.md
+[output]
+subdirectory = "heap"
+filename = "templates.md"
