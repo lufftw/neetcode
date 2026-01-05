@@ -1,0 +1,63 @@
+# Problem: Maximal Rectangle
+# https://leetcode.com/problems/maximal-rectangle/
+
+# ===== Problem Info =====
+id = "0085"
+slug = "0085_maximal_rectangle"
+title = "Maximal Rectangle"
+leetcode_id = 85
+url = "https://leetcode.com/problems/maximal-rectangle/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "dynamic_programming", "stack", "matrix", "monotonic_stack"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["maximal_rectangle_matrix"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack", "matrix"]
+algorithms       = ["monotonic_stack"]
+related_problems = ["0084", "0221"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0085_maximal_rectangle.py"
+generator = "generators/0085_maximal_rectangle.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionHistogramStack"
+method = "maximalRectangle"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["maximal_rectangle_matrix"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0084#default"]
+delta      = "Build histogram row-by-row, apply 0084 algorithm."
+complexity = "O(rows * cols) time, O(cols) space"
+notes      = "Extends histogram solution to 2D matrix."
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "maximalRectangle"
+
+patterns         = ["maximal_rectangle_matrix"]
+algorithms       = ["dynamic_programming"]
+
+role       = "variant"
+variant    = "dp"
+based_on   = ["0085#default"]
+delta      = "Track height, left, right boundaries with DP."
+complexity = "O(rows * cols) time, O(cols) space"

@@ -1,0 +1,49 @@
+# Problem: Remove Duplicate Letters
+# https://leetcode.com/problems/remove-duplicate-letters/
+
+# ===== Problem Info =====
+id = "0316"
+slug = "0316_remove_duplicate_letters"
+title = "Remove Duplicate Letters"
+leetcode_id = 316
+url = "https://leetcode.com/problems/remove-duplicate-letters/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "stack", "greedy", "monotonic_stack"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_lexicographic"]
+families         = ["stack_monotonic"]
+data_structures  = ["string", "stack", "hash_set"]
+algorithms       = ["monotonic_stack", "greedy"]
+related_problems = ["0402", "1081"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0316_remove_duplicate_letters.py"
+generator = "generators/0316_remove_duplicate_letters.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "removeDuplicateLetters"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_lexicographic"]
+families         = ["stack_monotonic"]
+data_structures  = ["string", "stack"]
+algorithms       = ["monotonic_stack", "greedy"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(26) = O(1) space"
+notes      = "Greedy increasing stack with occurrence tracking."

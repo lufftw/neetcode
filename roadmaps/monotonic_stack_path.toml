@@ -1,0 +1,115 @@
+# Monotonic Stack Mastery Path
+# Step-by-step learning path for mastering monotonic stack pattern
+
+id = "monotonic_stack_path"
+name = "Monotonic Stack Mastery Path"
+api_kernel = "MonotonicStack"
+summary = "Master the monotonic stack pattern from basics to advanced variations."
+
+[[steps]]
+order = 1
+problem = "0496_next_greater_element_i"
+role = "base"
+pattern = "next_greater_element"
+prerequisite = []
+delta = ""
+note = "Learn the canonical monotonic stack template with next greater element."
+
+[[steps]]
+order = 2
+problem = "0739_daily_temperatures"
+role = "variant"
+pattern = "monotonic_stack_span"
+prerequisite = ["0496"]
+delta = "Track distance to next greater instead of value."
+note = "Practice span/distance calculation with monotonic stack."
+
+[[steps]]
+order = 3
+problem = "0503_next_greater_element_ii"
+role = "variant"
+pattern = "monotonic_stack_circular"
+prerequisite = ["0496"]
+delta = "Handle circular array with 2n traversal."
+note = "Extend NGE to circular arrays."
+
+[[steps]]
+order = 4
+problem = "0901_online_stock_span"
+role = "variant"
+pattern = "monotonic_stack_span"
+prerequisite = ["0739"]
+delta = "Online span calculation with span accumulation."
+note = "Design class with amortized O(1) per call."
+
+[[steps]]
+order = 5
+problem = "0084_largest_rectangle_in_histogram"
+role = "base"
+pattern = "histogram_max_rectangle"
+prerequisite = ["0496"]
+delta = "Find left and right boundaries for area calculation."
+note = "Classic histogram problem using boundary expansion."
+
+[[steps]]
+order = 6
+problem = "0085_maximal_rectangle"
+role = "variant"
+pattern = "maximal_rectangle_matrix"
+prerequisite = ["0084"]
+delta = "Build histogram row-by-row, apply histogram algorithm."
+note = "Extend histogram solution to 2D matrix."
+
+[[steps]]
+order = 7
+problem = "0042_trapping_rain_water"
+role = "variant"
+pattern = "monotonic_stack_container"
+prerequisite = ["0084"]
+delta = "Resolve valleys layer by layer as taller walls appear."
+note = "Water trapping using valley resolution."
+
+[[steps]]
+order = 8
+problem = "0907_sum_of_subarray_minimums"
+role = "advanced"
+pattern = "monotonic_stack_contribution"
+prerequisite = ["0084"]
+delta = "Count contribution using left_count * right_count formula."
+note = "Sum via contribution counting with boundary products."
+
+[[steps]]
+order = 9
+problem = "2104_sum_of_subarray_ranges"
+role = "advanced"
+pattern = "monotonic_stack_contribution"
+prerequisite = ["0907"]
+delta = "Dual stacks: sum of max - sum of min."
+note = "Extension of 907 with both min and max contribution."
+
+[[steps]]
+order = 10
+problem = "0402_remove_k_digits"
+role = "variant"
+pattern = "monotonic_stack_greedy_selection"
+prerequisite = ["0496"]
+delta = "Greedy increasing stack to build smallest number."
+note = "Greedy digit removal using monotonic property."
+
+[[steps]]
+order = 11
+problem = "0316_remove_duplicate_letters"
+role = "advanced"
+pattern = "monotonic_stack_lexicographic"
+prerequisite = ["0402"]
+delta = "Greedy increasing with occurrence constraint."
+note = "Lexicographically smallest with unique letters."
+
+[[steps]]
+order = 12
+problem = "0321_create_maximum_number"
+role = "advanced"
+pattern = "monotonic_stack_greedy_selection"
+prerequisite = ["0402"]
+delta = "Split k across two arrays, merge greedily."
+note = "Combine max subsequence extraction with greedy merge."

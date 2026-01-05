@@ -1,0 +1,63 @@
+# Problem: Next Greater Element II
+# https://leetcode.com/problems/next-greater-element-ii/
+
+# ===== Problem Info =====
+id = "0503"
+slug = "0503_next_greater_element_ii"
+title = "Next Greater Element II"
+leetcode_id = 503
+url = "https://leetcode.com/problems/next-greater-element-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "stack", "monotonic_stack"]
+companies = ["amazon", "google", "meta", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_circular"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+related_problems = ["0496", "0556"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0503_next_greater_element_ii.py"
+generator = "generators/0503_next_greater_element_ii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionTwoPass"
+method = "nextGreaterElements"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_circular"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0496#default"]
+delta      = "Two-pass traversal for circular array."
+complexity = "O(n) time, O(n) space"
+notes      = "Traverse 2n elements, only push during first n."
+
+[[solutions]]
+key    = "concat"
+class  = "SolutionVirtualConcat"
+method = "nextGreaterElements"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_circular"]
+
+role       = "variant"
+variant    = "virtual_concat"
+based_on   = ["0503#default"]
+delta      = "Conceptually double the array using modulo."
+complexity = "O(n) time, O(n) space"

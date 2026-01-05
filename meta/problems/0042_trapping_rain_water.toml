@@ -1,0 +1,81 @@
+# Problem: Trapping Rain Water
+# https://leetcode.com/problems/trapping-rain-water/
+
+# ===== Problem Info =====
+id = "0042"
+slug = "0042_trapping_rain_water"
+title = "Trapping Rain Water"
+leetcode_id = 42
+url = "https://leetcode.com/problems/trapping-rain-water/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "two_pointers", "dynamic_programming", "stack", "monotonic_stack"]
+companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_container"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack", "two_pointers", "dynamic_programming"]
+related_problems = ["0011", "0084", "0407"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0042_trapping_rain_water.py"
+generator = "generators/0042_trapping_rain_water.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionMonotonicStack"
+method = "trap"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_container"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(n) space"
+notes      = "Monotonic decreasing stack resolves valleys layer by layer."
+
+[[solutions]]
+key    = "twopointer"
+class  = "SolutionTwoPointer"
+method = "trap"
+
+api_kernels      = ["TwoPointersTraversal"]
+patterns         = ["two_pointer_opposite"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+
+role       = "variant"
+variant    = "two_pointer"
+based_on   = ["0042#default"]
+delta      = "O(1) space using running left/right max."
+complexity = "O(n) time, O(1) space"
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "trap"
+
+patterns         = ["dp_precompute"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+
+role       = "variant"
+variant    = "dp"
+based_on   = ["0042#default"]
+delta      = "Precompute left_max and right_max arrays."
+complexity = "O(n) time, O(n) space"

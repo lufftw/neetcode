@@ -1,0 +1,64 @@
+# Problem: Sum of Subarray Ranges
+# https://leetcode.com/problems/sum-of-subarray-ranges/
+
+# ===== Problem Info =====
+id = "2104"
+slug = "2104_sum_of_subarray_ranges"
+title = "Sum of Subarray Ranges"
+leetcode_id = 2104
+url = "https://leetcode.com/problems/sum-of-subarray-ranges/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "stack", "monotonic_stack"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_contribution"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+related_problems = ["0907", "0084"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/2104_sum_of_subarray_ranges.py"
+generator = "generators/2104_sum_of_subarray_ranges.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDualStack"
+method = "subArrayRanges"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_contribution"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0907#default"]
+delta      = "Sum of max - sum of min using dual stacks."
+complexity = "O(n) time, O(n) space"
+notes      = "Extends 907 by computing both min and max contributions."
+
+[[solutions]]
+key    = "brute"
+class  = "SolutionBrute"
+method = "subArrayRanges"
+
+patterns         = []
+algorithms       = ["brute_force"]
+
+role       = "variant"
+variant    = "brute_force"
+based_on   = ["2104#default"]
+delta      = "Enumerate all subarrays and track running min/max."
+complexity = "O(n^2) time, O(1) space"
+notes      = "Acceptable for n <= 1000."

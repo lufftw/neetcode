@@ -1,0 +1,63 @@
+# Problem: Sum of Subarray Minimums
+# https://leetcode.com/problems/sum-of-subarray-minimums/
+
+# ===== Problem Info =====
+id = "0907"
+slug = "0907_sum_of_subarray_minimums"
+title = "Sum of Subarray Minimums"
+leetcode_id = 907
+url = "https://leetcode.com/problems/sum-of-subarray-minimums/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "stack", "monotonic_stack"]
+companies = ["google", "amazon", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_contribution"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+related_problems = ["2104", "0084"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0907_sum_of_subarray_minimums.py"
+generator = "generators/0907_sum_of_subarray_minimums.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionContribution"
+method = "sumSubarrayMins"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_contribution"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack"]
+algorithms       = ["monotonic_stack"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0084#default"]
+delta      = "Count contribution using left_count * right_count."
+complexity = "O(n) time, O(n) space"
+notes      = "Each element contributes arr[i] * left * right to sum."
+
+[[solutions]]
+key    = "single"
+class  = "SolutionSinglePass"
+method = "sumSubarrayMins"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_contribution"]
+
+role       = "variant"
+variant    = "single_pass"
+based_on   = ["0907#default"]
+delta      = "Compute contribution on-pop instead of precomputing boundaries."
+complexity = "O(n) time, O(n) space"

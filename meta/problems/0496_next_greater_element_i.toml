@@ -1,0 +1,69 @@
+# Problem: Next Greater Element I
+# https://leetcode.com/problems/next-greater-element-i/
+
+# ===== Problem Info =====
+id = "0496"
+slug = "0496_next_greater_element_i"
+title = "Next Greater Element I"
+leetcode_id = 496
+url = "https://leetcode.com/problems/next-greater-element-i/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "hash_table", "stack", "monotonic_stack"]
+companies = ["amazon", "google", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["next_greater_element"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack", "hash_map"]
+algorithms       = ["monotonic_stack"]
+related_problems = ["0503", "0556", "0739"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "MonotonicStack"
+derived_problems = ["0503", "0739", "0901"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0496_next_greater_element_i.py"
+generator = "generators/0496_next_greater_element_i.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionStack"
+method = "nextGreaterElement"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["next_greater_element"]
+families         = ["stack_monotonic"]
+data_structures  = ["array", "stack", "hash_map"]
+algorithms       = ["monotonic_stack"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n + m) time, O(n) space"
+notes      = "Canonical monotonic stack template with hash map for lookup."
+
+[[solutions]]
+key    = "brute"
+class  = "SolutionBrute"
+method = "nextGreaterElement"
+
+patterns         = []
+algorithms       = ["brute_force"]
+
+role       = "variant"
+variant    = "brute_force"
+based_on   = ["0496#default"]
+delta      = "Linear scan for each element."
+complexity = "O(m * n) time, O(1) space"

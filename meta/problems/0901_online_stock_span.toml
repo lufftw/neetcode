@@ -1,0 +1,49 @@
+# Problem: Online Stock Span
+# https://leetcode.com/problems/online-stock-span/
+
+# ===== Problem Info =====
+id = "0901"
+slug = "0901_online_stock_span"
+title = "Online Stock Span"
+leetcode_id = 901
+url = "https://leetcode.com/problems/online-stock-span/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["stack", "design", "monotonic_stack", "data_stream"]
+companies = ["amazon", "google", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_span"]
+families         = ["stack_monotonic"]
+data_structures  = ["stack"]
+algorithms       = ["monotonic_stack"]
+related_problems = ["0739", "0496"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0901_online_stock_span.py"
+generator = "generators/0901_online_stock_span.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "StockSpanner"
+method = "next"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_span"]
+families         = ["stack_monotonic"]
+data_structures  = ["stack"]
+algorithms       = ["monotonic_stack"]
+
+role       = "base"
+variant    = ""
+based_on   = ["0739#default"]
+delta      = "Online design with span accumulation."
+complexity = "O(1) amortized per call, O(n) space"
+notes      = "Store (price, span) pairs; accumulate spans when popping."

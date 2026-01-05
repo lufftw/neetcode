@@ -1,0 +1,49 @@
+# Problem: Remove K Digits
+# https://leetcode.com/problems/remove-k-digits/
+
+# ===== Problem Info =====
+id = "0402"
+slug = "0402_remove_k_digits"
+title = "Remove K Digits"
+leetcode_id = 402
+url = "https://leetcode.com/problems/remove-k-digits/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "stack", "greedy", "monotonic_stack"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_stack_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_greedy_selection"]
+families         = ["stack_monotonic"]
+data_structures  = ["string", "stack"]
+algorithms       = ["monotonic_stack", "greedy"]
+related_problems = ["0316", "0321", "0738"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0402_remove_k_digits.py"
+generator = "generators/0402_remove_k_digits.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "removeKdigits"
+
+api_kernels      = ["MonotonicStack"]
+patterns         = ["monotonic_stack_greedy_selection"]
+families         = ["stack_monotonic"]
+data_structures  = ["string", "stack"]
+algorithms       = ["monotonic_stack", "greedy"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(n) space"
+notes      = "Greedy increasing stack to build smallest number."
