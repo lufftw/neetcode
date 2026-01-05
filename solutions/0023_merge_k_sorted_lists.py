@@ -138,6 +138,9 @@ import heapq
 # ============================================
 # Solution 1: Min Heap (Priority Queue)
 # Time: O(N log k), Space: O(k)
+#
+# Pattern: merge_k_sorted_heap
+# See: docs/patterns/heap/templates.md Section 4 (K-Way Merge)
 # ============================================
 class SolutionHeap:
     """
@@ -185,6 +188,9 @@ class SolutionHeap:
 # ============================================
 # Solution 2: Divide and Conquer (merge lists in pairs)
 # Time: O(N log k), Space: O(1)
+#
+# Pattern: merge_k_sorted_divide
+# See: docs/patterns/heap/templates.md Section 4 (K-Way Merge)
 # ============================================
 class SolutionDivideConquer:
     """

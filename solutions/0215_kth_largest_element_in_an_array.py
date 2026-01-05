@@ -98,6 +98,9 @@ JUDGE_FUNC = judge
 #   - Uses partition scheme from quicksort
 #   - Random pivot selection for expected O(n) performance
 #   - In-place partitioning
+#
+# Pattern: heap_kth_element (quickselect variant)
+# See: docs/patterns/heap/templates.md Section 1 (Base Template)
 # ============================================
 class SolutionQuickselect:
     """
@@ -166,6 +169,9 @@ class SolutionQuickselect:
 #   - Maintains min-heap of size k
 #   - Root is the kth largest element
 #   - Better when k is small relative to n
+#
+# Pattern: heap_kth_element
+# See: docs/patterns/heap/templates.md Section 1 (Base Template)
 # ============================================
 class SolutionHeap:
     """
