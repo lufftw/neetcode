@@ -1,0 +1,74 @@
+# Problem: Top K Frequent Elements
+# https://leetcode.com/problems/top-k-frequent-elements/
+
+# ===== Problem Info =====
+id = "0347"
+slug = "0347_top_k_frequent_elements"
+title = "Top K Frequent Elements"
+leetcode_id = 347
+url = "https://leetcode.com/problems/top-k-frequent-elements/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "divide_and_conquer", "sorting", "heap", "bucket_sort", "counting", "quickselect"]
+companies = ["amazon", "meta", "google", "microsoft", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "heap_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_top_k"]
+families         = ["heap_priority", "frequency_counting"]
+data_structures  = ["array", "hash_table", "min_heap"]
+algorithms       = ["heap", "bucket_sort"]
+related_problems = ["0215", "0451", "0692"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0347_top_k_frequent_elements.py"
+generator = "generators/0347_top_k_frequent_elements.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionHeap"
+method = "topKFrequent"
+
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_top_k"]
+families         = ["heap_priority", "frequency_counting"]
+data_structures  = ["array", "hash_table", "min_heap"]
+algorithms       = ["heap"]
+
+role       = "variant"
+variant    = "frequency_based"
+based_on   = ["0215#heap"]
+delta      = "Sort by frequency instead of value; use Counter for frequency map."
+complexity = "O(n + m log k) time, O(m + k) space"
+notes      = "Min-heap of size k sorted by frequency. Two-phase: count then select."
+
+[[solutions]]
+key    = "bucket"
+class  = "SolutionBucket"
+method = "topKFrequent"
+
+api_kernels      = []
+patterns         = []
+families         = ["frequency_counting"]
+data_structures  = ["array"]
+algorithms       = ["bucket_sort"]
+
+role       = "variant"
+variant    = "bucket_sort"
+based_on   = []
+delta      = "O(n) bucket sort when frequency is bounded."
+complexity = "O(n) time, O(n) space"
+notes      = "Bucket sort by frequency. Index = frequency, collect from highest bucket."

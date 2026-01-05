@@ -1,0 +1,56 @@
+# Problem: Find Median from Data Stream
+# https://leetcode.com/problems/find-median-from-data-stream/
+
+# ===== Problem Info =====
+id = "0295"
+slug = "0295_find_median_from_data_stream"
+title = "Find Median from Data Stream"
+leetcode_id = 295
+url = "https://leetcode.com/problems/find-median-from-data-stream/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["two_pointers", "design", "sorting", "heap", "data_stream"]
+companies = ["amazon", "meta", "google", "microsoft", "apple", "netflix"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "heap_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_median_stream"]
+families         = ["heap_priority", "data_stream"]
+data_structures  = ["min_heap", "max_heap"]
+algorithms       = ["heap", "online_algorithm"]
+related_problems = ["0480", "0703"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = ["0480"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0295_find_median_from_data_stream.py"
+generator = "generators/0295_find_median_from_data_stream.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "MedianFinder"
+method = "findMedian"
+
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_median_stream"]
+families         = ["heap_priority", "data_stream"]
+data_structures  = ["min_heap", "max_heap"]
+algorithms       = ["heap", "online_algorithm"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(log n) add, O(1) find"
+notes      = "Two heaps: max-heap for lower half, min-heap for upper half. Classic streaming median pattern."

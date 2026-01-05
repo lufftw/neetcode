@@ -1,0 +1,74 @@
+# Problem: Meeting Rooms II
+# https://leetcode.com/problems/meeting-rooms-ii/
+
+# ===== Problem Info =====
+id = "0253"
+slug = "0253_meeting_rooms_ii"
+title = "Meeting Rooms II"
+leetcode_id = 253
+url = "https://leetcode.com/problems/meeting-rooms-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "two_pointers", "greedy", "sorting", "heap", "prefix_sum"]
+companies = ["amazon", "meta", "google", "microsoft", "bloomberg", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "heap_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_interval_scheduling"]
+families         = ["heap_priority", "interval_scheduling"]
+data_structures  = ["array", "min_heap"]
+algorithms       = ["heap", "sweep_line", "greedy"]
+related_problems = ["0252", "0056", "0435", "1094"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0253_meeting_rooms_ii.py"
+generator = "generators/0253_meeting_rooms_ii.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionHeap"
+method = "minMeetingRooms"
+
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_interval_scheduling"]
+families         = ["heap_priority", "interval_scheduling"]
+data_structures  = ["array", "min_heap"]
+algorithms       = ["heap", "greedy"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(n) space"
+notes      = "Min-heap of end times for greedy room assignment. Classic interval scheduling pattern."
+
+[[solutions]]
+key    = "sweep"
+class  = "SolutionSweepLine"
+method = "minMeetingRooms"
+
+api_kernels      = []
+patterns         = ["sweep_line"]
+families         = ["interval_scheduling"]
+data_structures  = ["array"]
+algorithms       = ["sweep_line", "sorting"]
+
+role       = "variant"
+variant    = "sweep_line"
+based_on   = []
+delta      = "Track events (+1 start, -1 end) and find max concurrent."
+complexity = "O(n log n) time, O(n) space"
+notes      = "Sweep line approach: sort events, track concurrent meetings."

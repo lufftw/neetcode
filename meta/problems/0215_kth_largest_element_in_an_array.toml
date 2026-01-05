@@ -14,7 +14,7 @@ topics = ["array", "divide_and_conquer", "sorting", "heap", "quickselect"]
 companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "uber"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "blind_75"]
+roadmaps = ["neetcode_150", "blind_75", "heap_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["TwoPointerPartition", "HeapTopK"]

@@ -1,0 +1,74 @@
+# Problem: Task Scheduler
+# https://leetcode.com/problems/task-scheduler/
+
+# ===== Problem Info =====
+id = "0621"
+slug = "0621_task_scheduler"
+title = "Task Scheduler"
+leetcode_id = 621
+url = "https://leetcode.com/problems/task-scheduler/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "greedy", "sorting", "heap", "counting"]
+companies = ["meta", "amazon", "google", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "heap_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_task_scheduler"]
+families         = ["heap_priority", "greedy_scheduling"]
+data_structures  = ["array", "max_heap", "queue"]
+algorithms       = ["heap", "greedy", "math"]
+related_problems = ["0767", "0358", "1834"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = ["0767"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0621_task_scheduler.py"
+generator = "generators/0621_task_scheduler.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionMath"
+method = "leastInterval"
+
+api_kernels      = []
+patterns         = []
+families         = ["greedy_scheduling"]
+data_structures  = ["array"]
+algorithms       = ["math", "counting"]
+
+role       = "variant"
+variant    = "math_formula"
+based_on   = []
+delta      = "Direct calculation based on max frequency."
+complexity = "O(n) time, O(1) space"
+notes      = "Mathematical formula: (max_freq - 1) * (n + 1) + max_freq_count."
+
+[[solutions]]
+key    = "heap"
+class  = "SolutionHeap"
+method = "leastInterval"
+
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_task_scheduler"]
+families         = ["heap_priority", "greedy_scheduling"]
+data_structures  = ["max_heap", "queue"]
+algorithms       = ["heap", "greedy"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n * m) time, O(k) space"
+notes      = "Greedy scheduling with max-heap. Always pick most frequent available task."

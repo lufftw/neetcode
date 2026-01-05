@@ -1,0 +1,56 @@
+# Problem: Last Stone Weight
+# https://leetcode.com/problems/last-stone-weight/
+
+# ===== Problem Info =====
+id = "1046"
+slug = "1046_last_stone_weight"
+title = "Last Stone Weight"
+leetcode_id = 1046
+url = "https://leetcode.com/problems/last-stone-weight/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "heap"]
+companies = ["amazon", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["heap_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_greedy_simulation"]
+families         = ["heap_priority", "greedy_simulation"]
+data_structures  = ["array", "max_heap"]
+algorithms       = ["heap", "simulation"]
+related_problems = ["1049", "1167"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = ["1049"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1046_last_stone_weight.py"
+generator = "generators/1046_last_stone_weight.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionHeap"
+method = "lastStoneWeight"
+
+api_kernels      = ["HeapTopK"]
+patterns         = ["heap_greedy_simulation"]
+families         = ["heap_priority", "greedy_simulation"]
+data_structures  = ["array", "max_heap"]
+algorithms       = ["heap", "simulation"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(n) space"
+notes      = "Max-heap simulation of stone smashing. Repeatedly extract two largest."
