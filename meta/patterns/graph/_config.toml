@@ -1,0 +1,32 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Connected components → Clone → Multi-source BFS → Bipartite → Reachability → Shortest path
+problem_files = [
+    "0200-number-of-islands.md",
+    "0133-clone-graph.md",
+    "0417-pacific-atlantic.md",
+    "0994-rotting-oranges.md",
+    "0785-is-graph-bipartite.md",
+    "0841-keys-and-rooms.md",
+    "1971-find-path-exists.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/graph/templates.md
+[output]
+subdirectory = "graph"
+filename = "templates.md"
