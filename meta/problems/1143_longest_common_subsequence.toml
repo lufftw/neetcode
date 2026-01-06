@@ -1,0 +1,73 @@
+# ===== Problem Info =====
+id = "1143"
+slug = "1143_longest_common_subsequence"
+title = "Longest Common Subsequence"
+leetcode_id = 1143
+url = "https://leetcode.com/problems/longest-common-subsequence/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["String", "Dynamic Programming"]
+companies = ["Amazon", "Google", "Microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["string_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_lcs"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0072", "0516", "0583", "1092"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "StringDP"
+derived_problems = ["0516", "0583", "1092"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1143_longest_common_subsequence.py"
+generator = "generators/1143_longest_common_subsequence.py"
+tests_dir = "tests/1143_longest_common_subsequence/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "longestCommonSubsequence"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_lcs"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Classic 2D DP for comparing two strings"
+
+[[solutions]]
+key    = "space_optimized"
+class  = "SolutionSpaceOptimized"
+method = "longestCommonSubsequence"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_lcs"]
+families         = ["string_dp"]
+data_structures  = ["array_1d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "variant"
+variant    = "space_optimized"
+based_on   = ["default"]
+delta      = "Use rolling array for O(min(m,n)) space"
+complexity = "O(m*n) time, O(min(m,n)) space"
+notes      = "Space-optimized version using two rows"

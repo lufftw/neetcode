@@ -1,0 +1,73 @@
+# ===== Problem Info =====
+id = "0072"
+slug = "0072_edit_distance"
+title = "Edit Distance"
+leetcode_id = 72
+url = "https://leetcode.com/problems/edit-distance/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["String", "Dynamic Programming"]
+companies = ["Amazon", "Google", "Facebook", "Microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["string_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_edit_distance"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["1143", "0583", "0712", "0161"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "StringDP"
+derived_problems = ["0583", "0712"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0072_edit_distance.py"
+generator = "generators/0072_edit_distance.py"
+tests_dir = "tests/0072_edit_distance/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minDistance"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_edit_distance"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Levenshtein distance with insert, delete, replace operations"
+
+[[solutions]]
+key    = "space_optimized"
+class  = "SolutionSpaceOptimized"
+method = "minDistance"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_edit_distance"]
+families         = ["string_dp"]
+data_structures  = ["array_1d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "variant"
+variant    = "space_optimized"
+based_on   = ["default"]
+delta      = "Use rolling array for O(min(m,n)) space"
+complexity = "O(m*n) time, O(min(m,n)) space"
+notes      = "Space-optimized version using two rows"

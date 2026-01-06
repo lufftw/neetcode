@@ -1,0 +1,73 @@
+# ===== Problem Info =====
+id = "0010"
+slug = "0010_regular_expression_matching"
+title = "Regular Expression Matching"
+leetcode_id = 10
+url = "https://leetcode.com/problems/regular-expression-matching/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["String", "Dynamic Programming", "Recursion"]
+companies = ["Google", "Facebook", "Amazon", "Microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["string_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_matching"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming", "recursion"]
+related_problems = ["0044", "1143"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "StringDP"
+derived_problems = ["0044"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0010_regular_expression_matching.py"
+generator = "generators/0010_regular_expression_matching.py"
+tests_dir = "tests/0010_regular_expression_matching/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "isMatch"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_matching"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Bottom-up DP handling . and * wildcards"
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "isMatch"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_matching"]
+families         = ["string_dp"]
+data_structures  = ["hash_map"]
+algorithms       = ["dynamic_programming", "recursion", "memoization"]
+related_problems = []
+
+role       = "variant"
+variant    = "top_down"
+based_on   = ["default"]
+delta      = "Top-down recursion with memoization"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Recursive approach with lru_cache"

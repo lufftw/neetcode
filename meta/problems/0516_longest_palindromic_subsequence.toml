@@ -1,0 +1,73 @@
+# ===== Problem Info =====
+id = "0516"
+slug = "0516_longest_palindromic_subsequence"
+title = "Longest Palindromic Subsequence"
+leetcode_id = 516
+url = "https://leetcode.com/problems/longest-palindromic-subsequence/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["String", "Dynamic Programming"]
+companies = ["Amazon", "LinkedIn"]
+
+# ===== Roadmaps =====
+roadmaps = ["string_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_palindrome"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["1143", "0005", "0647", "1312"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0516_longest_palindromic_subsequence.py"
+generator = "generators/0516_longest_palindromic_subsequence.py"
+tests_dir = "tests/0516_longest_palindromic_subsequence/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "longestPalindromeSubseq"
+
+api_kernels      = ["StringDP"]
+patterns         = ["string_dp_palindrome", "string_dp_lcs"]
+families         = ["string_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "variant"
+variant    = "lcs_reduction"
+based_on   = ["1143"]
+delta      = "LPS(s) = LCS(s, reverse(s))"
+complexity = "O(n^2) time, O(n^2) space"
+notes      = "Reduce to LCS by comparing string with its reverse"
+
+[[solutions]]
+key    = "interval_dp"
+class  = "SolutionIntervalDP"
+method = "longestPalindromeSubseq"
+
+api_kernels      = ["StringDP", "IntervalDP"]
+patterns         = ["string_dp_palindrome", "interval_dp_basic"]
+families         = ["string_dp", "interval_dp"]
+data_structures  = ["array_2d"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "variant"
+variant    = "interval_dp"
+based_on   = []
+delta      = "Direct interval DP: dp[i][j] = LPS of s[i:j+1]"
+complexity = "O(n^2) time, O(n^2) space"
+notes      = "Interval DP approach filling by increasing length"
