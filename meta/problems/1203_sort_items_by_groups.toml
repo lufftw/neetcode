@@ -1,0 +1,41 @@
+# Problem: Sort Items by Groups Respecting Dependencies
+# https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/
+
+id = "1203"
+slug = "1203_sort_items_by_groups"
+title = "Sort Items by Groups Respecting Dependencies"
+leetcode_id = 1203
+url = "https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/"
+
+difficulty = "hard"
+topics = ["depth_first_search", "breadth_first_search", "graph", "topological_sort"]
+companies = ["google"]
+
+roadmaps = ["topological_sort_pattern_path"]
+
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_two_level"]
+families         = ["topological_sort", "graph_traversal"]
+data_structures  = ["array", "graph", "hash_table"]
+algorithms       = ["kahns_algorithm"]
+related_problems = ["0207", "0210", "0802"]
+
+[pattern_role]
+is_base_template = false
+base_problem = "0207"
+delta_from_base = "Two-level topological sort (groups, then items)"
+
+[files]
+solution  = "solutions/1203_sort_items_by_groups.py"
+generator = "generators/1203_sort_items_by_groups.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionTwoLevel"
+method = "sortItems"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_two_level"]
+role       = "advanced"
+complexity = "O(V+E) time, O(V+E) space"
+notes      = "Sort groups first, then items within each group."

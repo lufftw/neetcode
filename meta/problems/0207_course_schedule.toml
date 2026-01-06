@@ -1,0 +1,51 @@
+# Problem: Course Schedule
+# https://leetcode.com/problems/course-schedule/
+
+id = "0207"
+slug = "0207_course_schedule"
+title = "Course Schedule"
+leetcode_id = 207
+url = "https://leetcode.com/problems/course-schedule/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "graph", "topological_sort"]
+companies = ["amazon", "meta", "google", "microsoft"]
+
+roadmaps = ["neetcode_150", "topological_sort_pattern_path"]
+
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_cycle_detection"]
+families         = ["topological_sort", "graph_traversal"]
+data_structures  = ["array", "graph"]
+algorithms       = ["kahns_algorithm", "dfs"]
+related_problems = ["0210", "0802", "1203"]
+
+[pattern_role]
+is_base_template = true
+base_for_kernel = "TopologicalSort"
+derived_problems = ["0210", "0802", "1203"]
+
+[files]
+solution  = "solutions/0207_course_schedule.py"
+generator = "generators/0207_course_schedule.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionKahn"
+method = "canFinish"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_cycle_detection"]
+role       = "base"
+complexity = "O(V+E) time, O(V+E) space"
+notes      = "Base template for topological sort using Kahn's algorithm."
+
+[[solutions]]
+key    = "dfs"
+class  = "SolutionDFS"
+method = "canFinish"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_dfs"]
+role       = "alternative"
+complexity = "O(V+E) time, O(V+E) space"
+notes      = "DFS three-color cycle detection."

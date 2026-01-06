@@ -1,0 +1,51 @@
+# Problem: Course Schedule II
+# https://leetcode.com/problems/course-schedule-ii/
+
+id = "0210"
+slug = "0210_course_schedule_ii"
+title = "Course Schedule II"
+leetcode_id = 210
+url = "https://leetcode.com/problems/course-schedule-ii/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "graph", "topological_sort"]
+companies = ["amazon", "meta", "google", "microsoft"]
+
+roadmaps = ["neetcode_150", "topological_sort_pattern_path"]
+
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_ordering"]
+families         = ["topological_sort", "graph_traversal"]
+data_structures  = ["array", "graph"]
+algorithms       = ["kahns_algorithm", "dfs"]
+related_problems = ["0207", "0802", "1203"]
+
+[pattern_role]
+is_base_template = false
+base_problem = "0207"
+delta_from_base = "Return actual order instead of boolean"
+
+[files]
+solution  = "solutions/0210_course_schedule_ii.py"
+generator = "generators/0210_course_schedule_ii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionKahn"
+method = "findOrder"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_ordering"]
+role       = "derived"
+complexity = "O(V+E) time, O(V+E) space"
+notes      = "Collect nodes during Kahn's traversal."
+
+[[solutions]]
+key    = "dfs"
+class  = "SolutionDFS"
+method = "findOrder"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_dfs_postorder"]
+role       = "alternative"
+complexity = "O(V+E) time, O(V+E) space"
+notes      = "DFS postorder with reverse at end."

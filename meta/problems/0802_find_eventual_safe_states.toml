@@ -1,0 +1,51 @@
+# Problem: Find Eventual Safe States
+# https://leetcode.com/problems/find-eventual-safe-states/
+
+id = "0802"
+slug = "0802_find_eventual_safe_states"
+title = "Find Eventual Safe States"
+leetcode_id = 802
+url = "https://leetcode.com/problems/find-eventual-safe-states/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "graph", "topological_sort"]
+companies = ["google", "amazon"]
+
+roadmaps = ["topological_sort_pattern_path"]
+
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_safe_states"]
+families         = ["topological_sort", "graph_traversal"]
+data_structures  = ["array", "graph"]
+algorithms       = ["dfs", "kahns_algorithm"]
+related_problems = ["0207", "0210", "1203"]
+
+[pattern_role]
+is_base_template = false
+base_problem = "0207"
+delta_from_base = "Find nodes not part of any cycle"
+
+[files]
+solution  = "solutions/0802_find_eventual_safe_states.py"
+generator = "generators/0802_find_eventual_safe_states.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "eventualSafeNodes"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_safe_states"]
+role       = "derived"
+complexity = "O(V+E) time, O(V) space"
+notes      = "DFS three-color safe node detection."
+
+[[solutions]]
+key    = "reverse_kahn"
+class  = "SolutionReverseKahn"
+method = "eventualSafeNodes"
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_sort_reverse_graph"]
+role       = "alternative"
+complexity = "O(V+E) time, O(V+E) space"
+notes      = "Reverse graph + Kahn's from terminals."
