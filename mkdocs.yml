@@ -173,6 +173,9 @@ nav:
     - Greedy Core:
       - Intuition: patterns/greedy_core/intuition.md
       - Templates: patterns/greedy_core/templates.md
+    - DP 1D Linear:
+      - Intuition: patterns/dp_1d_linear/intuition.md
+      - Templates: patterns/dp_1d_linear/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
