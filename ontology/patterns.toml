@@ -797,3 +797,25 @@ summary = "Minimum items to cover all requirements using dp[mask]."
 id = "bitmask_dp_tsp"
 api_kernel = "BitmaskDP"
 summary = "TSP-style DP: dp[mask][last] for min cost visiting all nodes."
+
+# ===== String DP Patterns =====
+
+[[patterns]]
+id = "string_dp_lcs"
+api_kernel = "StringDP"
+summary = "Longest Common Subsequence: dp[i][j] = LCS of s[0:i] and t[0:j]."
+
+[[patterns]]
+id = "string_dp_edit_distance"
+api_kernel = "StringDP"
+summary = "Edit Distance: min operations (insert, delete, replace) to transform."
+
+[[patterns]]
+id = "string_dp_palindrome"
+api_kernel = "StringDP"
+summary = "Longest Palindromic Subsequence via LCS(s, reverse(s))."
+
+[[patterns]]
+id = "string_dp_matching"
+api_kernel = "StringDP"
+summary = "Regex/wildcard matching with . and * patterns."

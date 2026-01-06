@@ -121,3 +121,8 @@ summary = "Step-by-step path to master tree DP: include/exclude, path contributi
 id = "bitmask_dp_path"
 name = "Bitmask DP Mastery"
 summary = "Step-by-step path to master bitmask DP: subset enumeration, BFS with bitmask, set cover."
+
+[[roadmaps]]
+id = "string_dp_path"
+name = "String DP Mastery"
+summary = "Step-by-step path to master string DP: LCS, edit distance, palindrome, regex matching."

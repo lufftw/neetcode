@@ -1,0 +1,133 @@
+# String DP Learning Path
+
+[roadmap]
+id = "string_dp_path"
+name = "String DP Mastery"
+description = """
+Master String DP for comparing, transforming, and matching strings.
+Progress from basic LCS to edit distance to regex matching.
+"""
+api_kernel = "StringDP"
+difficulty_range = ["medium", "hard"]
+estimated_problems = 4
+
+prerequisites = [
+    "Basic 1D dynamic programming",
+    "2D array manipulation",
+    "String basics",
+]
+
+objectives = [
+    "Understand 2D DP state for comparing strings",
+    "Master LCS and its variants",
+    "Handle edit distance operations",
+    "Implement regex matching with wildcards",
+]
+
+# =============================================================================
+# Stage 1: LCS Foundation
+# =============================================================================
+[[stages]]
+id = "lcs"
+name = "Longest Common Subsequence"
+description = "Master the foundational 2D DP pattern for comparing two strings"
+pattern = "string_dp_lcs"
+
+focus_points = [
+    "2D state definition: dp[i][j] = LCS of prefixes",
+    "Match transition: dp[i-1][j-1] + 1",
+    "Mismatch transition: max(dp[i-1][j], dp[i][j-1])",
+    "Space optimization to O(min(m,n))",
+]
+
+[[stages.problems]]
+id = "1143"
+title = "Longest Common Subsequence"
+difficulty = "medium"
+role = "base_template"
+notes = "Canonical LCS problem - foundation for all string DP"
+
+# =============================================================================
+# Stage 2: Edit Distance
+# =============================================================================
+[[stages]]
+id = "edit_distance"
+name = "Edit Distance"
+description = "Extend LCS to handle transformation operations"
+pattern = "string_dp_edit_distance"
+
+focus_points = [
+    "Three operations: insert, delete, replace",
+    "Non-zero base cases: dp[i][0] = i, dp[0][j] = j",
+    "Mismatch: 1 + min(replace, delete, insert)",
+    "Direction matters: insert = dp[i][j-1], delete = dp[i-1][j]",
+]
+
+[[stages.problems]]
+id = "0072"
+title = "Edit Distance"
+difficulty = "medium"
+role = "base_template"
+notes = "Classic Levenshtein distance - transforms LCS maximization to minimization"
+
+# =============================================================================
+# Stage 3: Palindrome Subsequence
+# =============================================================================
+[[stages]]
+id = "palindrome"
+name = "Palindrome Subsequence"
+description = "Apply LCS reduction technique for palindrome problems"
+pattern = "string_dp_palindrome"
+
+focus_points = [
+    "Reduction insight: LPS(s) = LCS(s, reverse(s))",
+    "Alternative: Interval DP approach",
+    "Bridge to Interval DP pattern",
+]
+
+[[stages.problems]]
+id = "0516"
+title = "Longest Palindromic Subsequence"
+difficulty = "medium"
+role = "variant"
+notes = "Shows reduction technique - applies LCS to single-string problem"
+
+# =============================================================================
+# Stage 4: Regex Matching
+# =============================================================================
+[[stages]]
+id = "regex"
+name = "Regex Matching"
+description = "Handle complex pattern matching with wildcards"
+pattern = "string_dp_matching"
+
+focus_points = [
+    "Boolean dp[i][j] = can s[0:i] match p[0:j]?",
+    "Handle '.' as any single character",
+    "Handle '*' as zero or more of preceding",
+    "Complex base cases for patterns like a*b*",
+]
+
+[[stages.problems]]
+id = "0010"
+title = "Regular Expression Matching"
+difficulty = "hard"
+role = "advanced"
+notes = "Capstone problem - complex transitions, non-trivial base cases"
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+String DP compares prefixes: dp[i][j] represents the answer for s[0:i] and t[0:j].
+Each cell depends on diagonal (both shrink), up (first shrinks), left (second shrinks).
+The transition depends on whether current characters match or mismatch.
+"""
+
+complexity_guide = """
+- LCS: O(mn) time, O(mn) → O(min(m,n)) space
+- Edit Distance: O(mn) time, O(mn) → O(min(m,n)) space
+- Palindrome: O(n²) time, O(n²) → O(n) space
+- Regex Matching: O(mn) time, O(mn) space
+"""

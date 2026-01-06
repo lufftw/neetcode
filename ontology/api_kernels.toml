@@ -133,3 +133,7 @@ summary = "Dynamic programming on trees: include/exclude, path contribution, mul
 [[api_kernels]]
 id = "BitmaskDP"
 summary = "State compression DP using bitmasks: subset enumeration, TSP-style, set cover."
+
+[[api_kernels]]
+id = "StringDP"
+summary = "2D DP on two strings: LCS, edit distance, regex matching, palindrome subsequence."
