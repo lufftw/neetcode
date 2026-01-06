@@ -161,6 +161,9 @@ nav:
     - Tree Traversal:
       - Intuition: patterns/tree/intuition.md
       - Templates: patterns/tree/templates.md
+    - Topological Sort:
+      - Intuition: patterns/topological_sort/intuition.md
+      - Templates: patterns/topological_sort/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
