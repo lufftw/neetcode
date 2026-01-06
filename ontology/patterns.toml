@@ -499,3 +499,24 @@ summary = "Prefix and suffix products for product-except-self problems."
 id = "difference_array"
 api_kernel = "DifferenceArray"
 summary = "Range update operations using difference array (inverse of prefix sum)."
+
+# === Interval Patterns ===
+[[patterns]]
+id = "interval_merge"
+api_kernel = "IntervalMerge"
+summary = "Sort by start, merge adjacent overlapping intervals."
+
+[[patterns]]
+id = "interval_insert"
+api_kernel = "IntervalMerge"
+summary = "Insert new interval into sorted list using three-phase processing."
+
+[[patterns]]
+id = "interval_scheduling"
+api_kernel = "IntervalScheduling"
+summary = "Sort by end, greedily select maximum non-overlapping intervals."
+
+[[patterns]]
+id = "interval_intersection"
+api_kernel = "IntervalMerge"
+summary = "Two-pointer merge to find intersections of two sorted interval lists."

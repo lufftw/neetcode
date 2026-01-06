@@ -93,3 +93,11 @@ summary = "Breadth-first graph traversal for shortest paths and level-based expl
 [[api_kernels]]
 id = "UnionFind"
 summary = "Disjoint set union with path compression for efficient connectivity queries."
+
+[[api_kernels]]
+id = "IntervalMerge"
+summary = "Merge overlapping intervals after sorting by start time."
+
+[[api_kernels]]
+id = "IntervalScheduling"
+summary = "Greedy interval selection by sorting by end time for maximum non-overlap."

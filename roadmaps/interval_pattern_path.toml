@@ -1,0 +1,74 @@
+# Interval Pattern Learning Path
+# A structured progression through interval manipulation problems
+
+[roadmap]
+id = "interval_pattern_path"
+title = "Interval Pattern Mastery"
+description = """
+Master interval problems through a structured learning path.
+Start with merge fundamentals, then scheduling, then advanced variations.
+"""
+
+# === Step 1: Merge Fundamentals ===
+[[steps]]
+order = 1
+title = "Merge Intervals (Base Template)"
+problem_id = "0056"
+concepts = ["sort_by_start", "overlap_detection", "merge_adjacent"]
+notes = """
+Base template for interval merging:
+- Sort by start time
+- Overlapping intervals become adjacent after sorting
+- Extend end if overlap, else add new interval
+"""
+
+# === Step 2: Insert Interval ===
+[[steps]]
+order = 2
+title = "Insert Interval"
+problem_id = "0057"
+concepts = ["three_phase_processing", "already_sorted_input"]
+notes = """
+Variant of merge pattern for sorted input:
+- Phase 1: Add all before overlap
+- Phase 2: Merge overlapping region
+- Phase 3: Add all after overlap
+"""
+
+# === Step 3: Greedy Scheduling (Base Template) ===
+[[steps]]
+order = 3
+title = "Non-overlapping Intervals (Scheduling)"
+problem_id = "0435"
+concepts = ["sort_by_end", "greedy_selection", "interval_scheduling"]
+notes = """
+Base template for interval scheduling:
+- Sort by END time (not start!)
+- Greedy: always keep earliest-ending interval
+- Min removals = total - max non-overlapping
+"""
+
+# === Step 4: Minimum Arrows ===
+[[steps]]
+order = 4
+title = "Minimum Arrows to Burst Balloons"
+problem_id = "0452"
+concepts = ["group_counting", "greedy_covering"]
+notes = """
+Variant of scheduling pattern:
+- Same greedy approach, different interpretation
+- Count overlapping groups instead of removals
+"""
+
+# === Step 5: Interval Intersections ===
+[[steps]]
+order = 5
+title = "Interval List Intersections"
+problem_id = "0986"
+concepts = ["two_pointer_merge", "intersection_detection"]
+notes = """
+Combines interval pattern with two-pointer technique:
+- Two pointers for two sorted lists
+- Intersection: [max(starts), min(ends)]
+- Advance pointer with smaller end
+"""
