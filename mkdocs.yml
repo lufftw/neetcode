@@ -170,6 +170,9 @@ nav:
     - Trie:
       - Intuition: patterns/trie/intuition.md
       - Templates: patterns/trie/templates.md
+    - Greedy Core:
+      - Intuition: patterns/greedy_core/intuition.md
+      - Templates: patterns/greedy_core/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

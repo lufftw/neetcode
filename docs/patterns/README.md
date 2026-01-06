@@ -38,6 +38,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `TopologicalSort` | 💡 [Intuition](topological_sort/intuition.md) · 🛠️ [Templates](topological_sort/templates.md) | Dependency ordering and cycle detection | LeetCode 207, 210, 802, 1203 |
 | `ShortestPath` | 💡 [Intuition](shortest_path/intuition.md) · 🛠️ [Templates](shortest_path/templates.md) | Dijkstra, 0-1 BFS, Bellman-Ford | LeetCode 743, 787, 1368, 1631, 2290 |
 | `Trie` | 💡 [Intuition](trie/intuition.md) · 🛠️ [Templates](trie/templates.md) | Prefix tree operations, autocomplete | LeetCode 208, 211, 212, 648, 1268 |
+| `GreedyCore` | 💡 [Intuition](greedy_core/intuition.md) · 🛠️ [Templates](greedy_core/templates.md) | Non-interval, non-heap greedy invariants | LeetCode 55, 45, 134, 135, 455, 1029 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |

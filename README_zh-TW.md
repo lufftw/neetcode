@@ -432,6 +432,7 @@ scripts\run_tests.bat 0001_two_sum
 | `TopologicalSort` | 💡 [直覺理解](docs/patterns/topological_sort/intuition.md) · 🛠️ [模板](docs/patterns/topological_sort/templates.md) | LeetCode 207, 210, 802, 1203 |
 | `ShortestPath` | 💡 [直覺理解](docs/patterns/shortest_path/intuition.md) · 🛠️ [模板](docs/patterns/shortest_path/templates.md) | LeetCode 743, 787, 1368, 1631, 2290 |
 | `Trie` | 💡 [直覺理解](docs/patterns/trie/intuition.md) · 🛠️ [模板](docs/patterns/trie/templates.md) | LeetCode 208, 211, 212, 648, 1268 |
+| `GreedyCore` | 💡 [直覺理解](docs/patterns/greedy_core/intuition.md) · 🛠️ [模板](docs/patterns/greedy_core/templates.md) | LeetCode 55, 45, 134, 135, 455, 1029 |
 | `GridBFSMultiSource` | *即將推出* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *即將推出* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *即將推出* | LeetCode 25, 206, 92 |
