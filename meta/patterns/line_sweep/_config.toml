@@ -1,0 +1,16 @@
+# Line Sweep Pattern Configuration
+# Controls file ordering for template generation
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0253-meeting-rooms-ii.md",
+    "1094-car-pooling.md",
+    "0218-the-skyline-problem.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "line_sweep"
+filename = "templates.md"
