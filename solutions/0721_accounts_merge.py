@@ -1,0 +1,200 @@
+# solutions/0721_accounts_merge.py
+"""
+Problem: Accounts Merge
+Link: https://leetcode.com/problems/accounts-merge/
+
+Given a list of accounts where each element accounts[i] is a list of strings, where the first
+element accounts[i][0] is a name, and the rest of the elements are emails representing emails
+of the account.
+
+Now, we would like to merge these accounts. Two accounts definitely belong to the same person
+if there is some common email to both accounts. Note that even if two accounts have the same
+name, they may belong to different people as people could have the same name. A person can
+have any number of accounts initially, but all of their accounts definitely have the same name.
+
+After merging the accounts, return the accounts in the following format: the first element of
+each account is the name, and the rest of the elements are emails in sorted order. The accounts
+themselves can be returned in any order.
+
+Example 1:
+    Input: accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],
+                       ["John","johnsmith@mail.com","john00@mail.com"],
+                       ["Mary","mary@mail.com"],
+                       ["John","johnnybravo@mail.com"]]
+    Output: [["John","john00@mail.com","john_newyork@mail.com","johnsmith@mail.com"],
+             ["Mary","mary@mail.com"],
+             ["John","johnnybravo@mail.com"]]
+
+Constraints:
+- 1 <= accounts.length <= 1000
+- 2 <= accounts[i].length <= 10
+- 1 <= accounts[i][j].length <= 30
+- accounts[i][0] consists of English letters.
+- accounts[i][j] (for j > 0) is a valid email.
+
+Topics: Array, String, DFS, BFS, Union Find, Sorting
+"""
+from typing import List
+from collections import defaultdict
+from _runner import get_solver
+
+
+# ============================================
+# JUDGE_FUNC - Required for generator support
+# ============================================
+def judge(actual, expected, input_data: str) -> bool:
+    """Validate Accounts Merge solution."""
+    import json
+
+    # Parse input
+    accounts = json.loads(input_data.strip())
+
+    # Normalize: sort emails within each account, then sort all accounts
+    def normalize(result):
+        return sorted([acc[0]] + sorted(acc[1:]) for acc in result)
+
+    # If expected is available, compare directly
+    if expected is not None:
+        return normalize(actual) == normalize(expected)
+
+    # Judge-only mode: compute expected
+    expected_result = _accounts_merge(accounts)
+    return normalize(actual) == normalize(expected_result)
+
+
+def _accounts_merge(accounts):
+    """Reference solution for validation."""
+    from collections import defaultdict
+
+    n = len(accounts)
+    parent = list(range(n))
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(x, y):
+        px, py = find(x), find(y)
+        if px != py:
+            parent[py] = px
+
+    email_to_account = {}
+    for i, account in enumerate(accounts):
+        for email in account[1:]:
+            if email in email_to_account:
+                union(i, email_to_account[email])
+            else:
+                email_to_account[email] = i
+
+    root_to_emails = defaultdict(set)
+    for email, acc_idx in email_to_account.items():
+        root = find(acc_idx)
+        root_to_emails[root].add(email)
+
+    result = []
+    for root, emails in root_to_emails.items():
+        name = accounts[root][0]
+        result.append([name] + sorted(emails))
+
+    return result
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================
+# SOLUTIONS metadata
+# ============================================
+SOLUTIONS = {
+    "default": {
+        "class": "Solution",
+        "method": "accountsMerge",
+        "complexity": "O(n × k × α(n)) time, O(n × k) space",
+        "description": "Union-Find for equivalence grouping",
+        "api_kernels": ["UnionFindConnectivity"],
+        "patterns": ["union_find_equivalence_grouping"],
+    },
+}
+
+
+# ============================================
+# Solution 1: Union-Find Equivalence Grouping
+# Time: O(n × k × α(n)), Space: O(n × k)
+# ============================================
+class Solution:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        """
+        Merge accounts sharing common emails.
+
+        Key Insight:
+        - Map each email to first account index that has it
+        - If email seen before, union current account with previous
+        - Collect emails by component root
+        """
+        n = len(accounts)
+        parent = list(range(n))
+        rank = [0] * n
+
+        def find(x: int) -> int:
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(x: int, y: int) -> None:
+            px, py = find(x), find(y)
+            if px == py:
+                return
+            if rank[px] < rank[py]:
+                px, py = py, px
+            parent[py] = px
+            if rank[px] == rank[py]:
+                rank[px] += 1
+
+        # Map email to first account index
+        email_to_account: dict[str, int] = {}
+
+        for i, account in enumerate(accounts):
+            for email in account[1:]:
+                if email in email_to_account:
+                    union(i, email_to_account[email])
+                else:
+                    email_to_account[email] = i
+
+        # Collect emails by root
+        root_to_emails: dict[int, set[str]] = defaultdict(set)
+        for email, account_idx in email_to_account.items():
+            root = find(account_idx)
+            root_to_emails[root].add(email)
+
+        # Build result
+        result: list[list[str]] = []
+        for root, emails in root_to_emails.items():
+            name = accounts[root][0]
+            result.append([name] + sorted(emails))
+
+        return result
+
+
+def solve():
+    """
+    Input format (canonical JSON):
+    Line 1: 2D array accounts
+
+    Output format:
+    2D array of merged accounts
+    """
+    import sys
+    import json
+    lines = sys.stdin.read().strip().split('\n')
+
+    accounts = json.loads(lines[0])
+
+    solver = get_solver(SOLUTIONS)
+    result = solver.accountsMerge(accounts)
+
+    print(json.dumps(result))
+
+
+if __name__ == "__main__":
+    solve()
