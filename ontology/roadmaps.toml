@@ -111,3 +111,8 @@ summary = "Step-by-step path to master range queries with updates: BIT, Segment 
 id = "line_sweep_path"
 name = "Line Sweep Mastery"
 summary = "Step-by-step path to master line sweep: event counting, capacity tracking, height tracking."
+
+[[roadmaps]]
+id = "tree_dp_path"
+name = "Tree DP Mastery"
+summary = "Step-by-step path to master tree DP: include/exclude, path contribution, multi-state."

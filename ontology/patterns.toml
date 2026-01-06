@@ -753,3 +753,25 @@ summary = "Track maximum height using heap or sorted container."
 id = "difference_array_sweep"
 api_kernel = "LineSweep"
 summary = "Offline range updates using difference array and prefix sum."
+
+# ===== Tree DP Patterns =====
+
+[[patterns]]
+id = "tree_dp_include_exclude"
+api_kernel = "TreeDP"
+summary = "Binary choice per node: track (with_node, without_node) states."
+
+[[patterns]]
+id = "tree_dp_path_contribution"
+api_kernel = "TreeDP"
+summary = "Path optimization: return single-branch contribution, track global max."
+
+[[patterns]]
+id = "tree_dp_multi_state"
+api_kernel = "TreeDP"
+summary = "Multiple states per node for coverage/coloring constraints."
+
+[[patterns]]
+id = "tree_dp_coverage"
+api_kernel = "TreeDP"
+summary = "Minimum coverage problems: cameras, dominators, vertex cover."

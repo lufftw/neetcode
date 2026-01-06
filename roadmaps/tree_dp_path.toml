@@ -1,0 +1,37 @@
+# Tree DP Mastery Path
+# Step-by-step learning path for mastering tree DP patterns
+
+id = "tree_dp_path"
+name = "Tree DP Mastery Path"
+api_kernel = "TreeDP"
+summary = "Master tree DP: include/exclude, path contribution, multi-state coverage."
+
+# === Step 1: Include/Exclude (House Robber III) ===
+[[steps]]
+order = 1
+problem = "0337_house_robber_iii"
+role = "base"
+pattern = "tree_dp_include_exclude"
+prerequisite = []
+delta = ""
+note = "Learn basic tree DP: two states (with_node, without_node) per node."
+
+# === Step 2: Path Contribution (Max Path Sum) ===
+[[steps]]
+order = 2
+problem = "0124_binary_tree_maximum_path_sum"
+role = "apply"
+pattern = "tree_dp_path_contribution"
+prerequisite = ["0337"]
+delta = "return_single_branch"
+note = "Path optimization: return single branch, track global max."
+
+# === Step 3: Multi-State (Binary Tree Cameras) ===
+[[steps]]
+order = 3
+problem = "0968_binary_tree_cameras"
+role = "apply"
+pattern = "tree_dp_multi_state"
+prerequisite = ["0337"]
+delta = "three_states"
+note = "Advanced tree DP with 3 states for coverage constraints."

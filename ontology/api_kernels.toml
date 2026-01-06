@@ -125,3 +125,7 @@ summary = "Range queries with point updates: Segment Tree, Fenwick Tree (BIT), m
 [[api_kernels]]
 id = "LineSweep"
 summary = "Line sweep for interval processing: event counting, capacity tracking, height tracking."
+
+[[api_kernels]]
+id = "TreeDP"
+summary = "Dynamic programming on trees: include/exclude, path contribution, multi-state coverage."
