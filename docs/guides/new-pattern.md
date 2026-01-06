@@ -13,159 +13,90 @@ This guide describes the complete workflow for developing a new algorithm patter
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-- [Phase 1: Pattern Documentation (templates.md)](#phase-1-pattern-documentation-templatesmd)
-- [Phase 2: Solution Files](#phase-2-solution-files)
-- [Phase 3: Test Infrastructure (Generators)](#phase-3-test-infrastructure-generators)
-- [Phase 4: Intuition Guide](#phase-4-intuition-guide)
-- [Phase 5: Problem Metadata](#phase-5-problem-metadata)
-- [Phase 6: Ontology and Roadmaps](#phase-6-ontology-and-roadmaps)
-- [Phase 7: Mindmap Integration](#phase-7-mindmap-integration)
-- [Phase 8: Navigation and Version Control](#phase-8-navigation-and-version-control)
+- [Phase 1: Meta Pattern Sources](#phase-1-meta-pattern-sources)
+- [Phase 2: Templates and Intuition](#phase-2-templates-and-intuition)
+- [Phase 3: Solutions](#phase-3-solutions)
+- [Phase 4: Generators](#phase-4-generators)
+- [Phase 5: Test Files](#phase-5-test-files)
+- [Phase 6: Problem Metadata](#phase-6-problem-metadata)
+- [Phase 7: Ontology and Roadmap](#phase-7-ontology-and-roadmap)
+- [Phase 8: Navigation and Integration](#phase-8-navigation-and-integration)
 - [Quick Reference Checklist](#quick-reference-checklist)
-- [Example: Monotonic Stack Pattern](#example-monotonic-stack-pattern)
+- [Example Patterns](#example-patterns)
 
 ---
 
 ## Overview
 
-A complete pattern implementation consists of these components:
+A complete pattern implementation consists of 8 phases:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                        Pattern Development Pipeline                          │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  Phase 1: Templates        Phase 2: Solutions      Phase 3: Generators      │
-│  ┌──────────────────┐     ┌──────────────────┐    ┌──────────────────┐     │
-│  │ meta/patterns/   │────▶│ solutions/*.py   │───▶│ generators/*.py  │     │
-│  │ docs/patterns/   │     │ - Reference      │    │ - JUDGE_FUNC     │     │
-│  │   templates.md   │     │   templates.md   │    │ - Edge cases     │     │
-│  └──────────────────┘     └──────────────────┘    └──────────────────┘     │
-│          │                                                 │                │
-│          ▼                                                 ▼                │
-│  Phase 4: Intuition        Phase 5: Metadata       Phase 6: Ontology       │
-│  ┌──────────────────┐     ┌──────────────────┐    ┌──────────────────┐     │
-│  │ docs/patterns/   │     │ meta/problems/   │───▶│ ontology/*.toml  │     │
-│  │   intuition.md   │     │ *.toml           │    │ roadmaps/*.toml  │     │
-│  └──────────────────┘     └──────────────────┘    └──────────────────┘     │
-│                                                            │                │
-│                                                            ▼                │
-│                           Phase 7: Mindmaps       Phase 8: Version Control │
-│                          ┌──────────────────┐    ┌──────────────────┐     │
-│                          │ ai-markmap-agent │───▶│ mkdocs.yml       │     │
-│                          │ config.yaml      │    │ git + PR         │     │
-│                          └──────────────────┘    └──────────────────┘     │
+│  Phase 1: Meta Sources    Phase 2: Docs           Phase 3: Solutions        │
+│  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐      │
+│  │ meta/patterns/   │───▶│ docs/patterns/   │───▶│ solutions/*.py   │      │
+│  │ _config.toml     │    │ templates.md     │    │ JUDGE_FUNC       │      │
+│  │ _header.md       │    │ intuition.md     │    │ solve()          │      │
+│  │ problem files    │    └──────────────────┘    └──────────────────┘      │
+│  └──────────────────┘             │                       │                 │
+│          │                        │                       │                 │
+│          ▼                        │                       ▼                 │
+│  Phase 4: Generators     Phase 5: Tests          Phase 6: Metadata         │
+│  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐      │
+│  │ generators/*.py  │───▶│ tests/*.in       │    │ meta/problems/   │      │
+│  │ generate()       │    │ tests/*.out      │    │ *.toml           │      │
+│  └──────────────────┘    └──────────────────┘    └──────────────────┘      │
+│                                   │                       │                 │
+│                                   ▼                       ▼                 │
+│                          Phase 7: Ontology       Phase 8: Navigation        │
+│                          ┌──────────────────┐    ┌──────────────────┐      │
+│                          │ ontology/*.toml  │───▶│ mkdocs.yml       │      │
+│                          │ roadmaps/*.toml  │    │ README.md        │      │
+│                          └──────────────────┘    │ config.yaml      │      │
+│                                                  └──────────────────┘      │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
-
-### Critical Workflow Order
-
-**IMPORTANT**: The phases MUST be executed in this order:
-
-1. **Templates FIRST** → Solutions reference the canonical templates
-2. **Solutions SECOND** → Implement algorithms exactly as documented
-3. **Generators THIRD** → Test solutions using JUDGE_FUNC
-4. **Intuition FOURTH** → Written after understanding real implementation challenges
 
 ### Deliverables Summary
 
 | Phase | Directory | Files Created |
 |-------|-----------|---------------|
-| 1 | `meta/patterns/`, `docs/patterns/` | Pattern snippets → `templates.md` (generated) |
-| 2 | `solutions/` | `{id}_{slug}.py` for each problem (references templates) |
-| 3 | `generators/` | Generator files with `generate()` function |
-| 4 | `docs/patterns/` | `intuition.md` (manually written) |
-| 5 | `meta/problems/` | `{id}_{slug}.toml` problem metadata |
-| 6 | `ontology/`, `roadmaps/` | Taxonomy + learning path |
-| 7 | `tools/mindmaps/` | Config updates for AI mindmap generation |
-| 8 | `mkdocs.yml`, Git | Navigation update + feature branch + PR |
+| 1 | `meta/patterns/{pattern}/` | `_config.toml`, `_header.md`, problem files, footer files |
+| 2 | `docs/patterns/{pattern}/` | `templates.md` (generated), `intuition.md` (manual) |
+| 3 | `solutions/` | `{id}_{slug}.py` with JUDGE_FUNC |
+| 4 | `generators/` | `{id}_{slug}.py` with `generate()` |
+| 5 | `tests/` | `{id}_{slug}_{n}.in/.out` files |
+| 6 | `meta/problems/` | `{id}_{slug}.toml` metadata |
+| 7 | `ontology/`, `roadmaps/` | API kernel, patterns, roadmap |
+| 8 | Various | Navigation updates + merge to main |
 
-### Documentation-Only Workflow
-
-For cases where you only need pattern documentation (no solutions, generators, or ontology updates), use this minimal workflow:
-
-#### Branch Naming Convention
+### Branch Naming Convention
 
 ```bash
 feat/pattern-{pattern_name}
 # Examples:
-# feat/pattern-greedy-core
-# feat/pattern-dp-1d-linear
-# feat/pattern-math-number-theory
+# feat/pattern-bitmask-dp
+# feat/pattern-tree-dp
+# feat/pattern-line-sweep
 ```
 
-#### Workflow Steps
-
-1. **Create branch**: `git checkout -b feat/pattern-{pattern_name}`
-
-2. **Phase 1 - Scaffold**: Create `meta/patterns/{pattern}/` source files
-   - `_config.toml` (file ordering)
-   - `_header.md` (must include `> **API Kernel**: \`KernelID\``)
-   - Problem files: `{id}-{slug}.md`
-   - Footer files: `_decision.md`, `_templates.md` or `_toolbox.md`, etc.
-
-3. **Phase 1 - Generate**: Run pattern docs generator
-   ```bash
-   mkdir -p docs/patterns/{pattern}
-   python tools/patterndocs/generate_pattern_docs.py --pattern {pattern}
-   ```
-
-4. **Phase 4 - Intuition**: Write `docs/patterns/{pattern}/intuition.md` manually
-
-5. **Phase 8 - Index Wiring**: Update all index files:
-   - `mkdocs.yml` - Add navigation entry
-   - `docs/patterns/README.md` - Add to pattern table
-   - `README.md` - Add to pattern documentation section
-   - `README_zh-TW.md` - Add to pattern documentation section (Chinese)
-
-6. **Verify**: Run mkdocs build to check for broken links
-   ```bash
-   mkdocs build --strict
-   ```
-
-7. **Commit, Push, Merge**: Follow commit structure below
-
-#### Recommended Commit Structure
+### Recommended Commit Structure
 
 ```bash
-# Commit 1: Scaffold meta files
-git add meta/patterns/{pattern}/
+# Each phase gets its own commit for clean history
 git commit -m "meta({pattern}): Phase 1 - Add pattern source files"
-
-# Commit 2: Generated templates + manual intuition
-git add docs/patterns/{pattern}/
 git commit -m "docs({pattern}): Phase 2 - Add templates and intuition guide"
-
-# Commit 3: Index wiring
-git add mkdocs.yml docs/patterns/README.md README.md README_zh-TW.md
-git commit -m "docs({pattern}): Phase 3 - Add navigation and pattern index"
+git commit -m "solutions({pattern}): Phase 3 - Add/update solutions"
+git commit -m "generators({pattern}): Phase 4 - Add test generators"
+git commit -m "tests({pattern}): Phase 5 - Add test files"
+git commit -m "meta({pattern}): Phase 6 - Add problem metadata"
+git commit -m "ontology({pattern}): Phase 7 - Add to ontology and create roadmap"
+git commit -m "docs({pattern}): Phase 8 - Add navigation to mkdocs.yml"
 ```
-
-#### Documentation-Only Checklist
-
-Before merging, verify:
-
-- [ ] `meta/patterns/{pattern}/_config.toml` exists with correct file ordering
-- [ ] `meta/patterns/{pattern}/_header.md` contains `> **API Kernel**: \`...\``
-- [ ] `docs/patterns/{pattern}/templates.md` generated successfully
-- [ ] `docs/patterns/{pattern}/intuition.md` written with pattern signals and pitfalls
-- [ ] `mkdocs.yml` has navigation entry under `📐 Patterns`
-- [ ] `docs/patterns/README.md` has pattern in Available Pattern Guides table
-- [ ] `README.md` has pattern in Pattern Documentation table
-- [ ] `README_zh-TW.md` has pattern in Pattern Documentation table (Chinese labels)
-- [ ] `mkdocs build --strict` passes (no broken links)
-- [ ] All links use correct relative paths
-
-#### Common Pitfalls
-
-| Pitfall | Solution |
-|---------|----------|
-| Missing output directory | Create `docs/patterns/{pattern}/` before running generator |
-| Missing API Kernel in header | Add `> **API Kernel**: \`KernelID\`` to `_header.md` |
-| Broken links in mkdocs | Use relative paths: `{pattern}/intuition.md` not `patterns/{pattern}/intuition.md` |
-| Forgot to update Chinese README | Always update both `README.md` and `README_zh-TW.md` |
-| CRLF line endings | Ensure LF endings: `git config core.autocrlf input` |
 
 ---
 
@@ -173,1213 +104,1024 @@ Before merging, verify:
 
 Before starting, ensure you have:
 
-1. **Problem Selection**: Identify 8-15 LeetCode problems that represent the pattern
+1. **Problem Selection**: Identify 3-6 LeetCode problems that represent the pattern
 2. **Pattern Analysis**: Understand the core algorithm and its variations
-3. **Learning Order**: Determine the pedagogical progression (base → variants → advanced)
+3. **Learning Order**: Determine the pedagogical progression (base → variants)
 
 ### Recommended Problem Selection
 
 | Role | Count | Description |
 |------|-------|-------------|
-| Base Template | 1-2 | Canonical problem that teaches the core pattern |
-| Direct Variants | 3-5 | Same pattern with minor modifications |
-| Advanced Applications | 3-5 | Complex problems combining the pattern with others |
-| Edge Cases | 1-2 | Problems that test edge case handling |
+| Base Template | 1 | Canonical problem that teaches the core pattern |
+| Variants | 2-4 | Same pattern with different applications |
+| Advanced | 0-2 | Complex problems combining with other patterns |
+
+### Example Problem Selections
+
+| Pattern | Problems | Rationale |
+|---------|----------|-----------|
+| Bitmask DP | LC 78, 847, 1125 | Enumeration → BFS + bitmask → Set cover |
+| Tree DP | LC 337, 124, 968 | Include/exclude → Path contribution → Multi-state |
+| Line Sweep | LC 253, 1094, 218 | Event counting → Capacity → Height tracking |
 
 ---
 
-## Phase 1: Pattern Documentation (templates.md)
+## Phase 1: Meta Pattern Sources
 
-**Purpose**: Create the canonical template documentation BEFORE writing solutions. Solutions should reference and implement these templates exactly.
+**Purpose**: Create source files that will be assembled into `templates.md`.
 
-### 1.1 Why Templates First?
+### 1.1 Create Branch and Directory
 
-| Reason | Explanation |
-|--------|-------------|
-| **Consistency** | All solutions follow the same variable names and structure |
-| **Documentation-Driven** | Forces clear thinking about the algorithm before coding |
-| **Reviewability** | Solutions can be verified against documented templates |
-| **Teaching Quality** | Templates serve as learning reference for readers |
-
-### 1.2 Create Meta Pattern Directory
-
-Create source files in `meta/patterns/{pattern_name}/`:
-
-```
-meta/patterns/{pattern_name}/
-├── _config.toml              # File ordering and output configuration
-├── _header.md                # Core concepts (REQUIRED: must include API Kernel)
-├── _templates.md             # Code templates with variable naming standards
-├── _comparison.md            # Comparison with similar patterns
-├── _decision.md              # Decision flowchart for when to use
-├── _mapping.md               # Maps sub-patterns to LeetCode problems
-└── {problem_id}-{topic}.md   # Problem-specific implementation snippets
+```bash
+git checkout -b feat/pattern-{pattern_name}
+mkdir -p meta/patterns/{pattern_name}
 ```
 
-#### 1.2.1 _config.toml (Required)
+### 1.2 Create _config.toml
 
-Controls file ordering and output path:
+Controls file ordering and output:
 
 ```toml
-# Pattern Documentation Configuration
+# meta/patterns/{pattern_name}/_config.toml
+
 header_files = ["_header.md"]
 
-# Problem files ordered by learning progression
 problem_files = [
-    "0303-range-sum-base.md",
-    "0560-subarray-sum-k.md",
-    "0525-contiguous-array.md",
-    "0304-2d-range-sum.md",
-    "1094-difference-array.md"
+    "0078-subsets.md",
+    "0847-shortest-path-visiting-all-nodes.md",
+    "1125-smallest-sufficient-team.md"
 ]
 
-footer_files = [
-    "_comparison.md",
-    "_decision.md",
-    "_mapping.md",
-    "_templates.md"
-]
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
 
 [output]
-subdirectory = "prefix_sum"
+subdirectory = "{pattern_name}"
 filename = "templates.md"
 ```
 
-#### 1.2.2 _header.md (Required)
+### 1.3 Create _header.md
 
-**CRITICAL**: Must include `> **API Kernel**: \`KernelID\`` line.
-
-```markdown
-# Prefix Sum Patterns: Complete Reference
-
-> **API Kernel**: `PrefixSumRangeQuery`
-> **Core Mechanism**: Precompute cumulative sums for O(1) range sum queries.
-
-## Core Concepts
-
-### The Prefix Sum Principle
-
-Given array `nums`, prefix sum `P[i]` = sum of `nums[0..i-1]`:
-- `P[0] = 0` (empty prefix)
-- `P[i] = P[i-1] + nums[i-1]`
-
-Range sum `[i, j]` = `P[j+1] - P[i]` in O(1).
-```
-
-#### 1.2.3 Problem Snippet Files
-
-Each problem snippet provides the canonical implementation:
+**CRITICAL**: Must include `> **API Kernel**: \`KernelID\``.
 
 ```markdown
-## Base Template: Range Sum Query (LeetCode 303)
+# {Pattern Name} Pattern
 
-> **Problem**: Handle multiple range sum queries efficiently.
-> **Invariant**: `prefix[i]` = sum of all elements before index `i`.
-> **Role**: BASE TEMPLATE for `PrefixSumRangeQuery` API Kernel.
+## API Kernel: `{KernelID}`
 
-### Implementation
+> **Core Mechanism**: {One-line description of what this pattern does}.
+
+## Why {Pattern Name}?
+
+{Pattern Name} solves problems where:
+- {Condition 1}
+- {Condition 2}
+- {Condition 3}
+
+## Core Insight
+
+{Key algorithmic insight that makes this pattern work}
+
+## Universal Template Structure
 
 \`\`\`python
-class NumArray:
-    def __init__(self, nums: List[int]):
-        # Initialize with 0 for empty prefix
-        self.prefix_sum: List[int] = [0]
-        for num in nums:
-            self.prefix_sum.append(self.prefix_sum[-1] + num)
-
-    def sumRange(self, left: int, right: int) -> int:
-        return self.prefix_sum[right + 1] - self.prefix_sum[left]
+def pattern_template(params):
+    # State initialization
+    # Main loop
+    # Return result
 \`\`\`
 
-### Trace Example
+## Pattern Variants
+
+| Pattern | State | Transition | Example |
+|---------|-------|------------|---------|
+| **Variant 1** | ... | ... | Problem name |
+| **Variant 2** | ... | ... | Problem name |
+```
+
+### 1.4 Create Problem Snippet Files
+
+Each problem gets a markdown file:
+
+```markdown
+# {ID}. {Problem Title}
+
+## Problem Link
+https://leetcode.com/problems/{slug}/
+
+## Difficulty
+{Easy|Medium|Hard}
+
+## Tags
+- {Tag1}
+- {Tag2}
+
+## Pattern
+{Pattern Name} - {Sub-pattern}
+
+## API Kernel
+`{KernelID}`
+
+## Problem Summary
+{One paragraph problem description}
+
+## Key Insight
+
+{What makes this problem solvable with this pattern}
+
+## Template Mapping
+
+\`\`\`python
+def solution(params):
+    # Implementation following the template
+    pass
+\`\`\`
+
+## Complexity
+- Time: O(?)
+- Space: O(?)
+
+## Why This Problem {First|Second|Third}?
+
+{Pedagogical reasoning for problem ordering}
+
+## Common Mistakes
+
+1. **Mistake 1** - {Description}
+2. **Mistake 2** - {Description}
+
+## Related Problems
+- LC {id}: {title}
+```
+
+### 1.5 Create Footer Files
+
+**_comparison.md** - Side-by-side comparison:
+
+```markdown
+## Problem Comparison
+
+| Problem | Core Pattern | State | Transition | Output |
+|---------|-------------|-------|------------|--------|
+| **{Problem 1}** | ... | ... | ... | ... |
+| **{Problem 2}** | ... | ... | ... | ... |
+
+## Pattern Evolution
 
 \`\`\`
-Input: nums = [-2, 0, 3, -5, 2, -1]
-Prefix:       [0, -2, -2, 1, -4, -2, -3]
-
-Query: sumRange(0, 2) = prefix[3] - prefix[0] = 1
+Problem 1
+    ↓
+{What changes}
+    ↓
+Problem 2
+    ↓
+{What changes}
+    ↓
+Problem 3
 \`\`\`
 ```
 
-### 1.3 Generate templates.md
+**_decision.md** - Decision flowchart:
 
-First, create the output directory if it doesn't exist:
+```markdown
+## Decision Tree
 
-```bash
-# Create output directory
-mkdir -p docs/patterns/{pattern_name}
+\`\`\`
+Start: {Initial question}?
+            │
+            ▼
+    ┌───────────────────┐
+    │ {Decision point}  │
+    └───────────────────┘
+            │
+    ┌───────┴───────┐
+    ▼               ▼
+{Option 1}     {Option 2}
+\`\`\`
+
+## Pattern Selection Guide
+
+### Use {Pattern 1} when:
+- ✅ {Condition}
+- ✅ {Condition}
+
+### Use {Pattern 2} when:
+- ✅ {Condition}
+- ✅ {Condition}
 ```
 
-Then run the pattern documentation generator:
+**_templates.md** - Copy-paste ready templates:
 
-```bash
-# Generate templates.md from meta/patterns sources
-python tools/patterndocs/generate_pattern_docs.py --pattern {pattern_name}
+```markdown
+## Universal Templates
 
-# Example
-python tools/patterndocs/generate_pattern_docs.py --pattern prefix_sum
-```
+### Template 1: {Name}
 
-This creates `docs/patterns/{pattern_name}/templates.md`.
+\`\`\`python
+def template_1(params):
+    """Description"""
+    # Implementation
+    pass
+\`\`\`
 
-> **Note**: The generator expects the output directory to exist. If you see a "directory not found" error, ensure you created the directory first.
-
-> **Reference**: [Pattern Docs Generator](../tools/patterndocs/README.md)
+**Use for**: LC {ids}
 
 ---
 
-## Phase 2: Solution Files
+### Template 2: {Name}
 
-**Purpose**: Implement solutions that reference and follow `templates.md` exactly.
+\`\`\`python
+def template_2(params):
+    """Description"""
+    # Implementation
+    pass
+\`\`\`
 
-> **Reference**: [Solution Contract](../contracts/solution-contract.md) - Complete specification for solution file structure
-
-### 2.1 Create Solution Skeleton
-
-For each problem, create a solution file in `solutions/`:
-
-```bash
-# Option A: Use CodeGen (recommended for new problems)
-python -m codegen new <leetcode_id> --with-tests
-
-# Option B: Manual creation
-# Create: solutions/{id:04d}_{slug}.py
+**Use for**: LC {ids}
 ```
 
-### 2.2 Solution File Structure
+### 1.6 Commit Phase 1
 
-Every solution file MUST follow this exact structure. See [Solution Contract](../contracts/solution-contract.md) for complete specification.
+```bash
+git add meta/patterns/{pattern_name}/
+git commit -m "meta({pattern_name}): Phase 1 - Add pattern source files
 
-#### Required Elements
+Add {Pattern Name} pattern with {N} problems:
+- {Problem 1}
+- {Problem 2}
+- {Problem 3}
 
-| Element | Required | Description |
-|---------|----------|-------------|
-| File-level docstring | ✅ | Problem description with Link, Examples, Constraints |
-| `from _runner import get_solver` | ✅ | Required import for polymorphic dispatch |
-| `SOLUTIONS` dict | ✅ | Metadata with `"default"` key required |
-| Solution class(es) | ✅ | One or more classes implementing the solution |
-| `JUDGE_FUNC` | ✅ | Custom validation (required for pattern problems) |
-| `solve()` function | ✅ | Entry point for stdin/stdout execution |
+Includes header, comparison, decision tree, and templates."
+```
 
-#### Complete Solution Template
+---
+
+## Phase 2: Templates and Intuition
+
+**Purpose**: Generate `templates.md` and create `intuition.md`.
+
+### 2.1 Create Output Directory
+
+```bash
+mkdir -p docs/patterns/{pattern_name}
+```
+
+### 2.2 Generate templates.md
+
+```bash
+PYTHONPATH=. python tools/patterndocs/generate_pattern_docs.py --pattern {pattern_name}
+```
+
+### 2.3 Create intuition.md
+
+Write `docs/patterns/{pattern_name}/intuition.md` manually:
+
+```markdown
+# {Pattern Name} - Intuition Guide
+
+## The Mental Model: {Analogy}
+
+{Relatable analogy that explains the pattern}
+
+## Why {Pattern Name}?
+
+{Explanation of why this approach works}
+
+## Core Insight
+
+{Key algorithmic insight}
+
+## Pattern 1: {Sub-pattern Name}
+
+**The insight**: {What makes this work}
+
+\`\`\`
+{Visual diagram or trace}
+\`\`\`
+
+The code:
+\`\`\`python
+# Key implementation detail
+\`\`\`
+
+## Pattern 2: {Sub-pattern Name}
+
+{Similar structure}
+
+## Common Mistakes
+
+### Mistake 1: {Title}
+
+\`\`\`python
+❌ # Wrong way
+✅ # Right way
+\`\`\`
+
+## Quick Pattern Recognition
+
+| Clue | Pattern |
+|------|---------|
+| "{keyword}" | {Sub-pattern} |
+| "{keyword}" | {Sub-pattern} |
+
+## Visual Summary
+
+\`\`\`
+{ASCII diagram summarizing the pattern}
+\`\`\`
+```
+
+### 2.4 Commit Phase 2
+
+```bash
+git add docs/patterns/{pattern_name}/
+git commit -m "docs({pattern_name}): Phase 2 - Add templates and intuition guide
+
+Generate templates.md from pattern sources.
+Add intuition.md with mental models:
+- {Model 1}
+- {Model 2}
+- {Model 3}"
+```
+
+---
+
+## Phase 3: Solutions
+
+**Purpose**: Create solution files that implement the patterns.
+
+### 3.1 Check for Existing Solutions
+
+```bash
+ls solutions/{id1}_*.py solutions/{id2}_*.py solutions/{id3}_*.py 2>/dev/null
+```
+
+### 3.2 Create New Solutions
+
+For each problem without a solution:
 
 ```python
-# solutions/0496_next_greater_element_i.py
+# solutions/{id}_{slug}.py
 """
-Problem: Next Greater Element I
-Link: https://leetcode.com/problems/next-greater-element-i/
+Problem: {Title}
+Link: https://leetcode.com/problems/{slug}/
 
-The next greater element of some element x in an array is the first greater
-element that is to the right of x in the same array.
-You are given two distinct 0-indexed integer arrays nums1 and nums2, where
-nums1 is a subset of nums2.
+{Problem description}
 
 Example 1:
-    Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
-    Output: [-1,3,-1]
-    Explanation: The next greater element for each value of nums1 is as follows:
-                 - 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
-                 - 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
-                 - 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
-
-Example 2:
-    Input: nums1 = [2,4], nums2 = [1,2,3,4]
-    Output: [3,-1]
+    Input: ...
+    Output: ...
 
 Constraints:
-- 1 <= nums1.length <= nums2.length <= 1000
-- 0 <= nums1[i], nums2[i] <= 10^4
-- All integers in nums1 and nums2 are unique.
-- All the integers of nums1 also appear in nums2.
+- ...
 
-Topics: Array, Hash Table, Stack, Monotonic Stack
+Topics: {Topic1}, {Topic2}
 """
-
-import json
 from typing import List
-
 from _runner import get_solver
 
 
 SOLUTIONS = {
     "default": {
-        "class": "SolutionMonotonicStack",
-        "method": "nextGreaterElement",
-        "complexity": "O(n + m) time, O(n) space",
-        "description": "Monotonic decreasing stack with hash map lookup",
-    },
-    "stack": {
-        "class": "SolutionMonotonicStack",
-        "method": "nextGreaterElement",
-        "complexity": "O(n + m) time, O(n) space",
-        "description": "Monotonic decreasing stack with hash map lookup",
-    },
-    "brute": {
-        "class": "SolutionBruteForce",
-        "method": "nextGreaterElement",
-        "complexity": "O(m * n) time, O(1) space",
-        "description": "Linear scan for each query element",
+        "class": "Solution",
+        "method": "{methodName}",
+        "complexity": "O(?) time, O(?) space",
+        "description": "{Brief description}",
     },
 }
 
 
 # ============================================================================
-# JUDGE_FUNC - Required for generator support
+# JUDGE_FUNC - Required for problems with multiple valid answers
 # ============================================================================
 def judge(actual, expected, input_data: str) -> bool:
-    """
-    Validate result: check if actual output is the correct NGE array.
+    """Validate result."""
+    import json
+    lines = input_data.strip().split('\n')
+    # Parse input
+    param1 = json.loads(lines[0])
 
-    Args:
-        actual: Program output (list as string or list)
-        expected: Expected output (None if from generator)
-        input_data: Raw input string (nums1 and nums2 on separate lines)
+    # Compute correct answer or validate actual
+    # ...
 
-    Returns:
-        bool: True if correct NGE results
-    """
-    lines = input_data.strip().split("\n")
-    nums1 = json.loads(lines[0]) if lines[0] else []
-    nums2 = json.loads(lines[1]) if len(lines) > 1 else []
-
-    # Compute correct answer using reference solution
-    correct = _reference_nge(nums1, nums2)
-
-    # Parse actual output (may be list or string)
-    if isinstance(actual, list):
-        actual_list = actual
-    else:
-        actual_str = actual.strip()
-        try:
-            actual_list = json.loads(actual_str) if actual_str else []
-        except (ValueError, json.JSONDecodeError):
-            return False
-
-    return actual_list == correct
-
-
-def _reference_nge(nums1: List[int], nums2: List[int]) -> List[int]:
-    """O(n + m) reference using monotonic stack."""
-    nge_map: dict[int, int] = {}
-    stack: list[int] = []
-
-    for num in nums2:
-        while stack and stack[-1] < num:
-            nge_map[stack.pop()] = num
-        stack.append(num)
-
-    return [nge_map.get(x, -1) for x in nums1]
+    return actual == expected  # or custom validation
 
 
 JUDGE_FUNC = judge
 
 
 # ============================================================================
-# Solution 1: Monotonic Decreasing Stack + Hash Map
-# Time: O(n + m), Space: O(n)
-#   - Precompute NGE for all elements in nums2 using monotonic stack
-#   - Stack stores indices of candidates awaiting their next greater element
-#   - When a larger element appears, it becomes NGE for all smaller candidates
-#   - Hash map enables O(1) lookup for nums1 queries
-#
-# Key Insight: The stack maintains a decreasing sequence of unresolved elements.
-# When we encounter a larger element, it "resolves" all smaller elements on top.
-# ============================================================================
-class SolutionMonotonicStack:
-    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        next_greater_map: dict[int, int] = {}
-        candidate_stack: list[int] = []  # Stores values (not indices) since unique
-
-        # Build NGE map: process nums2 to find next greater for each element
-        for current_value in nums2:
-            # Resolve all candidates that found their next greater element
-            while candidate_stack and candidate_stack[-1] < current_value:
-                resolved_value = candidate_stack.pop()
-                next_greater_map[resolved_value] = current_value
-
-            # Current element becomes a new candidate awaiting its NGE
-            candidate_stack.append(current_value)
-
-        # Elements remaining in stack have no next greater element
-        # They will return -1 via dict.get() default
-
-        # Look up NGE for each query element
-        return [next_greater_map.get(query, -1) for query in nums1]
-
-
-# ============================================================================
-# Solution 2: Brute Force Linear Scan
-# Time: O(m * n), Space: O(1)
-#   - For each element in nums1, find its position in nums2
-#   - Scan right from that position to find the first greater element
-#   - Simple but inefficient for large inputs
-#
-# Educational Value: Establishes baseline before optimization.
-# ============================================================================
-class SolutionBruteForce:
-    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        result: list[int] = []
-        nums2_length = len(nums2)
-
-        for query in nums1:
-            # Find position of query element in nums2
-            position = nums2.index(query)
-
-            # Scan rightward for next greater element
-            next_greater = -1
-            for scan_idx in range(position + 1, nums2_length):
-                if nums2[scan_idx] > query:
-                    next_greater = nums2[scan_idx]
-                    break
-
-            result.append(next_greater)
-
-        return result
-
-
-def solve():
-    """
-    Input format (JSON per line):
-        Line 1: nums1 as JSON array
-        Line 2: nums2 as JSON array
-
-    Output format:
-        JSON array of next greater elements
-    """
-    import sys
-
-    lines = sys.stdin.read().strip().split("\n")
-    nums1 = json.loads(lines[0])
-    nums2 = json.loads(lines[1])
-
-    solver = get_solver(SOLUTIONS)
-    result = solver.nextGreaterElement(nums1, nums2)
-
-    print(json.dumps(result))
-
-
-if __name__ == "__main__":
-    solve()
-```
-
-### 1.3 File-Level Docstring Requirements
-
-The docstring MUST include:
-
-| Field | Required | Format |
-|-------|----------|--------|
-| `Problem:` | ✅ | Problem title |
-| `Link:` | ✅ | `https://leetcode.com/problems/{slug}/` (NO `/description/` suffix) |
-| Description | ✅ | Problem statement |
-| `Example N:` | ✅ | At least one example with Input/Output/Explanation |
-| `Constraints:` | ✅ | All LeetCode constraints |
-| `Topics:` | Recommended | LeetCode topic tags |
-
-### 1.4 SOLUTIONS Dict Requirements
-
-| Rule | Requirement |
-|------|-------------|
-| `"default"` key | ✅ REQUIRED - used when no `--method` flag specified |
-| `"class"` field | ✅ REQUIRED - must match actual class name in file |
-| `"method"` field | ✅ REQUIRED - must match LeetCode method signature |
-| `"complexity"` field | Recommended - e.g., `"O(n) time, O(n) space"` |
-| `"description"` field | Recommended - brief algorithm description |
-
-### 1.5 Solution Block Comment Format
-
-**CRITICAL**: No blank line between comment block and class definition.
-
-```python
-# ============================================================================
-# Solution N: {Approach Name}
+# Solution: {Approach Name}
 # Time: O(?), Space: O(?)
 #   - {Key insight 1}
 #   - {Key insight 2}
-#   - {Implementation detail}
-#
-# {Optional extended explanation}
 # ============================================================================
-class SolutionName:   # ← NO blank line here
-    def methodName(self, ...):
-        ...
-```
-
-### 1.6 Writing High-Quality Solutions (Dual Perspective)
-
-Solutions should be written from two merged perspectives:
-
-| Perspective | Focus | What It Provides |
-|-------------|-------|------------------|
-| **Algorithm Expert** | Correctness, complexity, mathematical reasoning | Why the algorithm works, invariants, edge cases |
-| **Engineering Lead** | Maintainability, readability, production-quality | Clean naming, clear structure, documentation |
-
-#### Quality Standards
-
-**Variable Naming**:
-- Use semantically clear names: `prefix_sum` not `ps`, `first_occurrence` not `fo`
-- Match template names in `docs/patterns/*/templates.md` exactly
-- Names should reveal intent: `char_frequency` not `freq`, `window_sum` not `ws`
-
-**Comments**:
-- Explain **WHY**, not what (the code shows what)
-- Include invariants and loop reasoning
-- Reference pattern documentation when applicable
-
-**Code Structure**:
-- Group related operations with blank lines
-- Use type hints consistently
-- Keep methods focused and single-purpose
-
-#### Example: High-Quality Solution
-
-```python
-# ============================================================================
-# Solution: Prefix Sum + Hash Map
-# Time: O(n), Space: O(n)
-#
-# Core Insight (Algorithm Expert):
-#   If prefix[j] - prefix[i] = k, then subarray (i, j] sums to k.
-#   We count occurrences of (prefix_sum - k) seen so far.
-#
-# Why Hash Map (Algorithm Expert):
-#   Instead of O(n²) brute force checking all pairs, we use a hash map to
-#   answer "how many times have we seen this prefix sum?" in O(1).
-#
-# Why Initialize {0: 1} (Engineering Lead - Edge Case):
-#   Handles subarrays starting from index 0. If prefix_sum == k at position i,
-#   we need to count the "empty prefix" (sum 0 at position -1).
-#
-# Pattern Reference: prefix_sum_subarray_sum
-# See: docs/patterns/prefix_sum/templates.md Section 2
-# ============================================================================
-class SolutionPrefixSum:
-    def subarraySum(self, nums: List[int], k: int) -> int:
-        subarray_count = 0
-        prefix_sum = 0
-
-        # Map: prefix_sum value -> count of occurrences
-        # Initialize with {0: 1} for subarrays starting at index 0
-        sum_frequency: dict[int, int] = {0: 1}
-
-        for num in nums:
-            # Extend prefix sum with current element
-            prefix_sum += num
-
-            # Key insight: If (prefix_sum - k) was seen before, those positions
-            # mark valid subarray starts. Add their count to result.
-            complement = prefix_sum - k
-            subarray_count += sum_frequency.get(complement, 0)
-
-            # Record current prefix sum for future elements
-            sum_frequency[prefix_sum] = sum_frequency.get(prefix_sum, 0) + 1
-
-        return subarray_count
-```
-
-#### Anti-Patterns to Avoid
-
-| Anti-Pattern | Problem | Better Approach |
-|--------------|---------|-----------------|
-| `for i in range(len(nums))` + `nums[i]` | Verbose, index-focused | `for i, num in enumerate(nums)` or `for num in nums` |
-| Single-letter variables | Unclear intent | Descriptive names: `n` → `array_length` |
-| Magic numbers | Unexplained constants | Named constants or comments |
-| Overly clever one-liners | Hard to debug/maintain | Clear multi-line with comments |
-| Comments stating the obvious | Noise, not signal | Focus on WHY, not WHAT |
-
-### 1.7 JUDGE_FUNC Requirements
-
-The `JUDGE_FUNC` is **mandatory** for pattern problems. Key requirements:
-
-| Requirement | Description |
-|-------------|-------------|
-| Handle both types | `actual` may be `list` or `str` depending on context |
-| Support `expected=None` | Generated tests have no expected output |
-| Reference solution | Include `_reference_{name}()` helper to compute correct answer |
-| Parse `input_data` | Use `json.loads()` to parse input |
-| Return boolean | `True` for pass, `False` for fail |
-
-#### JUDGE_FUNC Template
-
-```python
-def judge(actual, expected, input_data: str) -> bool:
-    """Validate result."""
-    # 1. Parse input
-    lines = input_data.strip().split("\n")
-    param1 = json.loads(lines[0])
-    param2 = json.loads(lines[1]) if len(lines) > 1 else None
-
-    # 2. Compute correct answer using reference
-    correct = _reference_solution(param1, param2)
-
-    # 3. Parse actual (handle both list and string)
-    if isinstance(actual, list):
-        actual_list = actual
-    else:
-        actual_str = actual.strip()
-        try:
-            actual_list = json.loads(actual_str) if actual_str else []
-        except (ValueError, json.JSONDecodeError):
-            return False
-
-    # 4. Compare
-    return actual_list == correct
+class Solution:
+    def methodName(self, params) -> ReturnType:
+        """Implementation."""
+        pass
 
 
-def _reference_solution(param1, param2):
-    """Reference implementation for validation."""
-    # Implement correct algorithm here
-    pass
-
-
-JUDGE_FUNC = judge
-```
-
-### 1.8 solve() Function Requirements
-
-```python
 def solve():
     """
-    Input format (JSON per line):
-        Line 1: {param1 description}
-        Line 2: {param2 description}
-
-    Output format:
-        {output description}
+    Input format:
+    Line 1: {description}
     """
     import sys
+    import json
+    lines = sys.stdin.read().strip().split('\n')
 
-    lines = sys.stdin.read().strip().split("\n")
     param1 = json.loads(lines[0])
-    param2 = json.loads(lines[1])
 
     solver = get_solver(SOLUTIONS)
-    result = solver.methodName(param1, param2)
+    result = solver.methodName(param1)
 
-    print(json.dumps(result))  # Use json.dumps for arrays
+    print(json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == "__main__":
     solve()
 ```
 
-> **Reference**: [Solution Contract](../contracts/solution-contract.md)
+### 3.3 Update Existing Solutions
+
+If a solution exists, add the pattern-specific approach:
+
+```python
+# Add to SOLUTIONS dict
+SOLUTIONS = {
+    "default": {...},
+    "{new_approach}": {
+        "class": "Solution{Approach}",
+        "method": "{methodName}",
+        "complexity": "O(?) time, O(?) space",
+        "description": "{Brief description}",
+    },
+}
+
+# Add new solution class
+class Solution{Approach}:
+    def methodName(self, params):
+        pass
+```
+
+### 3.4 Commit Phase 3
+
+```bash
+git add solutions/{id1}_*.py solutions/{id2}_*.py solutions/{id3}_*.py
+git commit -m "solutions({pattern_name}): Phase 3 - Add/update solutions
+
+{Add|Update} solutions for:
+- {Problem 1}
+- {Problem 2}
+- {Problem 3}"
+```
 
 ---
 
-## Phase 3: Test Infrastructure (Generators)
+## Phase 4: Generators
 
-**Purpose**: Create test generators that produce valid test cases and use JUDGE_FUNC for validation.
+**Purpose**: Create test generators for each problem.
 
-> **Reference**: [Generator Contract](../contracts/generator-contract.md) - Complete specification for generator functions
-
-### 3.1 Create Test Generator
-
-For each problem, create a generator in `generators/`:
+### 4.1 Create Generator Files
 
 ```python
-# generators/0496_next_greater_element_i.py
+# generators/{id}_{slug}.py
 """
-Test Case Generator for Problem 496 - Next Greater Element I
+Random test generator for LC {id}: {Title}
 
-LeetCode Constraints:
-- 1 <= nums1.length <= 1000
-- 1 <= nums2.length <= 1000
-- 0 <= nums1[i], nums2[i] <= 10^4
-- All integers in nums1 and nums2 are unique
-- All integers of nums1 also appear in nums2
+Constraints:
+- {constraint 1}
+- {constraint 2}
 """
-import json
 import random
+import json
 from typing import Iterator, Optional
 
 
 def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     """
-    Generate random test case inputs.
+    Generate random test cases.
 
-    Args:
-        count: Number of test cases to generate
-        seed: Random seed for reproducibility
-
-    Yields:
-        str: Test input in .in file format
+    Yields test input strings in the format expected by the solution.
     """
     if seed is not None:
         random.seed(seed)
 
-    # Edge cases first
-    edge_cases = [
-        ([4, 1, 2], [1, 3, 4, 2]),      # Classic example
-        ([2, 4], [1, 2, 3, 4]),          # All have next greater
-        ([4, 3, 2, 1], [4, 3, 2, 1]),    # Decreasing - all -1
-        ([1], [1]),                       # Single element
-    ]
-
-    for nums1, nums2 in edge_cases:
-        yield f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
-        count -= 1
-        if count <= 0:
-            return
-
-    # Random cases
     for _ in range(count):
-        yield _generate_case()
+        # Generate valid input according to constraints
+        param1 = _generate_param1()
 
-
-def _generate_case() -> str:
-    """Generate a single valid random test case."""
-    # Generate nums2 with unique values
-    size2 = random.randint(5, 100)
-    nums2 = random.sample(range(10001), size2)
-
-    # nums1 is a subset of nums2
-    size1 = random.randint(1, min(size2, 50))
-    nums1 = random.sample(nums2, size1)
-
-    return f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
+        yield json.dumps(param1, separators=(',', ':'))
 
 
 def generate_for_complexity(n: int) -> str:
-    """Generate test case with specific size for complexity estimation."""
-    nums2 = list(range(n))
-    random.shuffle(nums2)
-    nums1 = random.sample(nums2, min(n, n // 2 + 1))
-    return f"{json.dumps(nums1, separators=(',', ':'))}\n{json.dumps(nums2, separators=(',', ':'))}"
+    """
+    Generate test case with specific size n for complexity estimation.
+    """
+    # Generate input of size n
+    param1 = _generate_size_n(n)
+
+    return json.dumps(param1, separators=(',', ':'))
+
+
+def _generate_param1():
+    """Helper to generate valid param1."""
+    pass
+
+
+if __name__ == "__main__":
+    print("Sample test cases:")
+    for i, test in enumerate(generate(5, seed=42), 1):
+        print(f"Test {i}: {test}")
 ```
 
-### 3.2 Generate Test Files
-
-Use the generator to create input files, then run solutions to create output files:
+### 4.2 Commit Phase 4
 
 ```bash
-# Step 1: Generate input files
-cd /path/to/neetcode
+git add generators/{id1}_*.py generators/{id2}_*.py generators/{id3}_*.py
+git commit -m "generators({pattern_name}): Phase 4 - Add test generators
 
-# Using Python to generate inputs
-python -c "
-from generators.{problem} import generate
-import json
+Add generators for:
+- {Problem 1}
+- {Problem 2}
+- {Problem 3}"
+```
 
-for i, test_input in enumerate(generate(count=7, seed=42), 1):
-    with open(f'tests/{problem}_{i}.in', 'w', newline='\n') as f:
-        f.write(test_input)
-    print(f'Created tests/{problem}_{i}.in')
-"
+---
 
-# Step 2: Generate outputs by running the solution
-for i in 1 2 3 4 5 6 7; do
-    python solutions/{problem}.py < tests/{problem}_${i}.in > tests/{problem}_${i}.out
+## Phase 5: Test Files
+
+**Purpose**: Generate input and output test files.
+
+### 5.1 Create Input Files
+
+For each problem, create 5 test cases:
+
+```bash
+# tests/{id}_{slug}_{n}.in
+# Each line is a JSON value
+[1,2,3]
+4
+```
+
+### 5.2 Generate Output Files
+
+Run solutions to create outputs:
+
+```bash
+for prob in {id1}_{slug1} {id2}_{slug2} {id3}_{slug3}; do
+  for i in 1 2 3 4 5; do
+    PYTHONPATH=. python "solutions/${prob}.py" < "tests/${prob}_${i}.in" > "tests/${prob}_${i}.out"
+    echo "Created tests/${prob}_${i}.out"
+  done
 done
 ```
 
-### 3.3 Run Tests to Verify
+### 5.3 Verify Tests Pass
 
 ```bash
-# Test single problem
-python runner/test_runner.py {problem_id}
-
-# Test all problems in pattern (example for monotonic stack)
-python runner/test_runner.py 0042 0084 0085 0316 0321 0402 0496 0503 0739 0901 0907 2104
-
-# Run with generated tests
-python runner/test_runner.py {problem_id} --generate 10 --seed 42
+PYTHONPATH=. python runner/test_runner.py {id1}_{slug1}
+PYTHONPATH=. python runner/test_runner.py {id2}_{slug2}
+PYTHONPATH=. python runner/test_runner.py {id3}_{slug3}
 ```
 
-### 3.4 Test File Format
-
-Files must use canonical JSON format:
-
-```
-tests/{problem_id}_{slug}_{n}.in   # Input file
-tests/{problem_id}_{slug}_{n}.out  # Expected output file
-```
+### 5.4 Test File Format
 
 | Rule | Correct | Incorrect |
 |------|---------|-----------|
 | No spaces after comma | `[1,2,3]` | `[1, 2, 3]` |
-| Double quotes | `"hello"` | `'hello'` |
-| Lowercase booleans | `true` | `True` |
 | LF line endings | `\n` | `\r\n` |
+| Single newline at end | `...\n` | `...\n\n` |
 
-> **Reference**: [Test File Format](../contracts/test-file-format.md)
+### 5.5 Commit Phase 5
+
+```bash
+git add tests/{id1}_*.in tests/{id1}_*.out tests/{id2}_*.in tests/{id2}_*.out tests/{id3}_*.in tests/{id3}_*.out
+git commit -m "tests({pattern_name}): Phase 5 - Add test files
+
+Add 5 test cases each for:
+- {Problem 1}
+- {Problem 2}
+- {Problem 3}
+
+All tests pass with exact/judge validation."
+```
 
 ---
 
-## Phase 4: Intuition Guide
+## Phase 6: Problem Metadata
 
-**Purpose**: Create a narrative guide that builds intuition and helps readers recognize when to use this pattern.
+**Purpose**: Create metadata files linking problems to patterns.
 
-> **Note**: Write `intuition.md` AFTER completing solutions and generators. Real implementation experience informs better explanations.
-
-### 4.1 Create Intuition Guide
-
-Create `docs/patterns/{pattern_name}/intuition.md` manually:
-
-```markdown
-# Prefix Sum: Intuition Guide
-
-## The Mental Model
-
-Imagine you're tracking a bank account balance over time...
-
-## Pattern Recognition Signals
-
-### Signal: "Sum of subarray"
-When you see: "find subarray with sum = k", "count subarrays", "range sum"
-Think: Prefix sum + hash map
-
-### Signal: "Range updates"
-When you see: "add value to range [i, j]", "increment interval"
-Think: Difference array (inverse of prefix sum)
-
-### Signal: "Multiple range queries"
-When you see: "answer Q queries", "immutable array"
-Think: Precompute prefix sum once
-
-## Common Pitfalls
-
-1. **Off-by-one errors**: Remember `prefix[i]` = sum of elements BEFORE index `i`
-2. **Forgetting {0: 1}**: For subarray sum = k, initialize with empty prefix
-3. **Integer overflow**: For large arrays, consider using `long` type
-
-## Practice Progression
-
-1. **LC 303** (Range Sum Query) - Build the intuition
-2. **LC 560** (Subarray Sum = K) - Add hash map
-3. **LC 525** (Contiguous Array) - Transform problem
-4. **LC 1094** (Car Pooling) - Difference array
-5. **LC 304** (2D Range Sum) - Extend to 2D
-```
-
-### 4.2 Update Pattern Indexes
-
-Update all pattern index files to include the new pattern:
-
-1. **`docs/patterns/README.md`** - Add to API Kernel table
-2. **`README.md`** - Add to pattern documentation section
-3. **`README_zh-TW.md`** - Add to pattern documentation section (Chinese labels)
-4. **`mkdocs.yml`** - Add navigation entry under `📐 Patterns`
-
-Example for `docs/patterns/README.md`:
-
-```markdown
-| `{PatternName}` | 💡 [Intuition]({pattern}/intuition.md) · 🛠️ [Templates]({pattern}/templates.md) | Description | LeetCode IDs |
-```
-
-Example for `mkdocs.yml` (add under Patterns section):
-
-```yaml
-- {Pattern Display Name}:
-  - Intuition: patterns/{pattern}/intuition.md
-  - Templates: patterns/{pattern}/templates.md
-```
-
-> **Important**: Both English and Chinese README files must be updated to maintain consistency.
-
----
-
-## Phase 5: Problem Metadata
-
-**Purpose**: Create metadata files that link problems to patterns, roadmaps, and learning paths.
-
-> **Reference**: [Test File Format](../contracts/test-file-format.md) - Problem metadata structure
-
-### 5.1 Create Problem Metadata Files
-
-For each problem, create `meta/problems/{id}_{slug}.toml`:
+### 6.1 Create Problem Metadata
 
 ```toml
-# meta/problems/0496_next_greater_element_i.toml
+# meta/problems/{id}_{slug}.toml
 
 # ===== Problem Info =====
-id = "0496"
-slug = "0496_next_greater_element_i"
-title = "Next Greater Element I"
-leetcode_id = 496
-url = "https://leetcode.com/problems/next-greater-element-i/"
+id = "{id}"
+slug = "{id}_{slug}"
+title = "{Title}"
+leetcode_id = {leetcode_id}
+url = "https://leetcode.com/problems/{slug}/"
 
 # ===== LeetCode Official Metadata =====
-difficulty = "easy"
-topics = ["array", "hash_table", "stack", "monotonic_stack"]
-companies = ["amazon", "google", "meta"]
+difficulty = "{easy|medium|hard}"
+topics = ["{topic1}", "{topic2}"]
+companies = ["{company1}", "{company2}"]
 
 # ===== Roadmaps =====
-roadmaps = ["monotonic_stack_path"]
+roadmaps = ["{pattern_name}_path"]
 
 # ===== Ontology Tags (Problem Level) =====
-api_kernels      = ["MonotonicStack"]
-patterns         = ["next_greater_element"]
-families         = ["stack_monotonic"]
-data_structures  = ["array", "stack", "hash_table"]
-algorithms       = ["monotonic_stack"]
-related_problems = ["0503", "0739", "0901"]
+api_kernels      = ["{KernelID}"]
+patterns         = ["{pattern_name}_{sub_pattern}"]
+families         = ["{pattern_name}"]
+data_structures  = ["{ds1}", "{ds2}"]
+algorithms       = ["{algo1}", "{algo2}"]
+related_problems = ["{related_id1}", "{related_id2}"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = {true|false}
+base_for_kernel = "{KernelID}"  # Only if is_base_template = true
+derived_problems = ["{id1}", "{id2}"]
 
 # ===== File Locations =====
 [files]
-solution  = "solutions/0496_next_greater_element_i.py"
-generator = "generators/0496_next_greater_element_i.py"
-tests_dir = "tests/"
+solution  = "solutions/{id}_{slug}.py"
+generator = "generators/{id}_{slug}.py"
+tests_dir = "tests/{id}_{slug}/"
 
 # ===== Solutions =====
 [[solutions]]
 key    = "default"
-class  = "SolutionStack"
-method = "nextGreaterElement"
+class  = "Solution"
+method = "{methodName}"
 
-api_kernels      = ["MonotonicStack"]
-patterns         = ["next_greater_element"]
-families         = ["stack_monotonic"]
-data_structures  = ["array", "stack", "hash_table"]
-algorithms       = ["monotonic_stack"]
+api_kernels      = ["{KernelID}"]
+patterns         = ["{pattern_name}_{sub_pattern}"]
+families         = ["{pattern_name}"]
+data_structures  = ["{ds1}", "{ds2}"]
+algorithms       = ["{algo1}", "{algo2}"]
+related_problems = ["{related_id1}", "{related_id2}"]
 
-role       = "base"
+role       = "{base|variant}"
 variant    = ""
 based_on   = []
-delta      = "Canonical next greater element with hash map lookup."
-complexity = "O(n + m) time, O(n) space"
-notes      = "Base template for all monotonic stack problems."
+delta      = ""
+complexity = "O(?) time, O(?) space"
+notes      = "{Description of the approach}"
+```
+
+### 6.2 Commit Phase 6
+
+```bash
+git add meta/problems/{id1}_*.toml meta/problems/{id2}_*.toml meta/problems/{id3}_*.toml
+git commit -m "meta({pattern_name}): Phase 6 - Add problem metadata
+
+Add metadata for:
+- {Problem 1}
+- {Problem 2}
+- {Problem 3}"
 ```
 
 ---
 
-## Phase 6: Ontology and Roadmaps
+## Phase 7: Ontology and Roadmap
 
-**Purpose**: Register patterns and learning paths in the taxonomy system.
+**Purpose**: Register pattern in taxonomy and create learning path.
 
-> **Reference**: [Ontology Design](../reference/ontology-design.md) - Taxonomy structure
+### 7.1 Add API Kernel (if new)
 
-### 6.1 Update ontology/patterns.toml
-
-Add new patterns to the ontology:
+Edit `ontology/api_kernels.toml`:
 
 ```toml
-# ontology/patterns.toml
-
-# Add under appropriate section
-[[patterns]]
-id = "next_greater_element"
-api_kernel = "MonotonicStack"
-summary = "Find next greater element for each position."
-
-[[patterns]]
-id = "monotonic_stack_span"
-api_kernel = "MonotonicStack"
-summary = "Count consecutive dominated elements (span calculation)."
-
-[[patterns]]
-id = "monotonic_stack_contribution"
-api_kernel = "MonotonicStack"
-summary = "Sum contributions using boundary products (subarray min/max sums)."
-
-# Add more sub-patterns as needed...
+[[api_kernels]]
+id = "{KernelID}"
+summary = "{One-line description of the kernel}"
 ```
 
-### 6.2 Update ontology/roadmaps.toml
+### 7.2 Add Patterns
 
-Register the new roadmap:
+Edit `ontology/patterns.toml`:
 
 ```toml
-# ontology/roadmaps.toml
+# ===== {Pattern Name} Patterns =====
 
+[[patterns]]
+id = "{pattern_name}_{sub_pattern1}"
+api_kernel = "{KernelID}"
+summary = "{Description of sub-pattern 1}"
+
+[[patterns]]
+id = "{pattern_name}_{sub_pattern2}"
+api_kernel = "{KernelID}"
+summary = "{Description of sub-pattern 2}"
+```
+
+### 7.3 Add Roadmap Entry
+
+Edit `ontology/roadmaps.toml`:
+
+```toml
 [[roadmaps]]
-id = "monotonic_stack_path"
-name = "Monotonic Stack Mastery"
-summary = "Step-by-step path to master monotonic stack patterns."
+id = "{pattern_name}_path"
+name = "{Pattern Name} Mastery"
+summary = "Step-by-step path to master {pattern name}: {sub-pattern1}, {sub-pattern2}."
 ```
 
-### 6.3 Create Roadmap File
+### 7.4 Create Roadmap File
 
-Create `roadmaps/{pattern}_path.toml`:
+Create `roadmaps/{pattern_name}_path.toml`:
 
 ```toml
-# roadmaps/monotonic_stack_path.toml
+# {Pattern Name} Learning Path
 
-# Roadmap metadata
-id = "monotonic_stack_path"
-name = "Monotonic Stack Mastery Path"
-api_kernel = "MonotonicStack"
+[roadmap]
+id = "{pattern_name}_path"
+name = "{Pattern Name} Mastery"
+description = """
+Master {pattern name} for {problem type}.
+Progress from {basic} to {advanced}.
+"""
+api_kernel = "{KernelID}"
+difficulty_range = ["{min}", "{max}"]
+estimated_problems = {N}
 
-# Learning steps in order
-[[steps]]
-order = 1
-problem = "0496_next_greater_element_i"
-role = "base"
-pattern = "next_greater_element"
-prerequisite = []
-delta = ""
-note = "Learn the canonical monotonic stack template with next greater element."
+prerequisites = [
+    "{Prerequisite 1}",
+    "{Prerequisite 2}",
+]
 
-[[steps]]
-order = 2
-problem = "0503_next_greater_element_ii"
+objectives = [
+    "{Learning objective 1}",
+    "{Learning objective 2}",
+]
+
+# =============================================================================
+# Stage 1: {Stage Name}
+# =============================================================================
+[[stages]]
+id = "{sub_pattern1}"
+name = "{Sub-pattern 1 Name}"
+description = "{What this stage teaches}"
+pattern = "{pattern_name}_{sub_pattern1}"
+
+focus_points = [
+    "{Focus point 1}",
+    "{Focus point 2}",
+]
+
+[[stages.problems]]
+id = "{id1}"
+title = "{Title}"
+difficulty = "{difficulty}"
+role = "base_template"
+notes = "{Why this problem is first}"
+
+# =============================================================================
+# Stage 2: {Stage Name}
+# =============================================================================
+[[stages]]
+id = "{sub_pattern2}"
+name = "{Sub-pattern 2 Name}"
+description = "{What this stage teaches}"
+pattern = "{pattern_name}_{sub_pattern2}"
+
+[[stages.problems]]
+id = "{id2}"
+title = "{Title}"
+difficulty = "{difficulty}"
 role = "variant"
-pattern = "monotonic_stack_circular"
-prerequisite = ["0496"]
-delta = "Circular array handling with 2n traversal."
-note = "Extends base pattern to circular arrays using modulo indexing."
+notes = "{What this problem adds}"
 
-[[steps]]
-order = 3
-problem = "0739_daily_temperatures"
-role = "variant"
-pattern = "monotonic_stack_span"
-prerequisite = ["0496"]
-delta = "Track distance instead of value."
-note = "Same pattern, different output format (distance vs value)."
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+{Main takeaway from this pattern}
+"""
 
-# Continue with remaining problems...
+complexity_guide = """
+- {Sub-pattern 1}: O(?) time, O(?) space
+- {Sub-pattern 2}: O(?) time, O(?) space
+"""
+```
+
+### 7.5 Commit Phase 7
+
+```bash
+git add ontology/api_kernels.toml ontology/patterns.toml ontology/roadmaps.toml roadmaps/{pattern_name}_path.toml
+git commit -m "ontology({pattern_name}): Phase 7 - Add to ontology and create roadmap
+
+Add {KernelID} API kernel with patterns:
+- {sub_pattern1}
+- {sub_pattern2}
+
+Add {pattern_name}_path roadmap with {N}-stage progression."
 ```
 
 ---
 
-## Phase 7: Mindmap Integration
+## Phase 8: Navigation and Integration
 
-**Purpose**: Configure AI mindmap generation for the new pattern.
+**Purpose**: Update all navigation files and merge to main.
 
-### 7.1 Update AI Markmap Agent Config
+### 8.1 Update mkdocs.yml
+
+Add under `📐 Patterns`:
+
+```yaml
+    - {Pattern Display Name}:
+      - Intuition: patterns/{pattern_name}/intuition.md
+      - Templates: patterns/{pattern_name}/templates.md
+```
+
+### 8.2 Update Mindmap Config
 
 Edit `tools/mindmaps/ai-markmap-agent/config/config.yaml`:
 
 ```yaml
-data_sources:
-  # Add pattern directory
-  patterns:
-    enabled: true
-    directories:
-      - name: "sliding_window"
-        path: "sliding_window"
-        enabled: true
-        config_file: "_config.toml"
-      # Add new pattern
-      - name: "monotonic_stack"
-        path: "monotonic_stack"
+# Under data_sources.patterns.directories:
+      - name: "{pattern_name}"
+        path: "{pattern_name}"
         enabled: true
         config_file: "_config.toml"
 
-  # Add roadmap file
-  roadmaps:
-    enabled: true
-    files:
-      - name: "sliding_window_path"
-        path: "sliding_window_path.toml"
-        enabled: true
-      # Add new roadmap
-      - name: "monotonic_stack_path"
-        path: "monotonic_stack_path.toml"
+# Under data_sources.roadmaps.files:
+      - name: "{pattern_name}_path"
+        path: "{pattern_name}_path.toml"
         enabled: true
 ```
 
-### 7.2 Verify Configuration
+### 8.3 Update README.md
 
-The following configs auto-include new content (no changes needed):
+Add to Pattern Documentation table:
 
-| Config File | Behavior |
-|-------------|----------|
-| `tools/mindmaps/generate_mindmaps_ai.toml` | Empty `include = []` means all files |
-| `tools/mindmaps/generate_mindmaps.toml` | SEO descriptions only |
-
----
-
-## Phase 8: Navigation and Version Control
-
-**Purpose**: Update navigation, create feature branch, and submit PR.
-
-### 8.1 Update mkdocs.yml Navigation
-
-Add the new pattern documentation to `mkdocs.yml`:
-
-```yaml
-nav:
-  - Patterns:
-    - patterns/index.md
-    - Sliding Window:
-      - patterns/sliding_window/templates.md
-      - patterns/sliding_window/intuition.md
-    # Add new pattern
-    - Prefix Sum:
-      - patterns/prefix_sum/templates.md
-      - patterns/prefix_sum/intuition.md
+```markdown
+| `{KernelID}` | 💡 [Intuition](docs/patterns/{pattern_name}/intuition.md) · 🛠️ [Templates](docs/patterns/{pattern_name}/templates.md) | LeetCode {ids} |
 ```
 
-### 8.2 Create Feature Branch
+### 8.4 Update README_zh-TW.md
 
-```bash
-git checkout -b feat/{pattern-name}-pattern
+Add to Pattern Documentation table (Chinese labels):
+
+```markdown
+| `{KernelID}` | 💡 [直覺理解](docs/patterns/{pattern_name}/intuition.md) · 🛠️ [模板](docs/patterns/{pattern_name}/templates.md) | LeetCode {ids} |
 ```
 
-### 8.3 Commit Changes
+### 8.5 Update docs/patterns/README.md
 
-Organize commits by phase:
+Add to Available Pattern Guides table:
 
-```bash
-# Commit solutions
-git add solutions/*.py
-git commit -m "feat(solutions): add {pattern} solution files with test cases"
-
-# Commit generators and tests
-git add generators/*.py tests/*.in tests/*.out
-git commit -m "test: add test generators and cases for {pattern} problems"
-
-# Commit documentation
-git add meta/patterns/{pattern}/ docs/patterns/{pattern}/
-git commit -m "docs({pattern}): add pattern documentation and intuition guide"
-
-# Commit ontology and metadata
-git add ontology/*.toml roadmaps/*.toml meta/problems/*.toml
-git commit -m "feat(ontology): add {pattern} patterns, roadmap, and problem metadata"
-
-# Commit mindmap config
-git add tools/mindmaps/
-git commit -m "chore: update mindmap configs for {pattern}"
+```markdown
+| `{KernelID}` | 💡 [Intuition]({pattern_name}/intuition.md) · 🛠️ [Templates]({pattern_name}/templates.md) | {Description} | LeetCode {ids} |
 ```
 
-### 8.4 Push and Create PR
+### 8.6 Commit Phase 8
 
 ```bash
-# Push branch
-git push -u origin feat/{pattern-name}-pattern
+git add mkdocs.yml tools/mindmaps/ai-markmap-agent/config/config.yaml README.md README_zh-TW.md docs/patterns/README.md
+git commit -m "docs({pattern_name}): Phase 8 - Add navigation to mkdocs.yml
 
-# Create PR
-gh pr create --title "feat: Complete {Pattern Name} Pattern Implementation" --body "$(cat <<'EOF'
-## Summary
+Add {Pattern Name} to:
+- mkdocs.yml navigation
+- mindmap config (patterns + roadmap)
+- README.md pattern table
+- README_zh-TW.md pattern table
+- docs/patterns/README.md index"
+```
 
-- Implement complete {Pattern Name} pattern with N LeetCode problems
-- Add comprehensive documentation, generators, and test infrastructure
-- Update ontology with new patterns and learning roadmap
+### 8.7 Merge to Main
 
-## Changes
+```bash
+# Switch to main and merge
+git checkout main
+git pull origin main
+git merge feat/pattern-{pattern_name} --no-edit
 
-### Solutions (N problems)
-- Problem 1
-- Problem 2
-- ...
+# Push to remote
+git push origin main
 
-### Documentation
-- `docs/patterns/{pattern}/intuition.md` - Story-based learning guide
-- `docs/patterns/{pattern}/templates.md` - Generated code templates
-- `meta/patterns/{pattern}/` - Source pattern snippets
-
-### Infrastructure
-- N test generators in `generators/`
-- M test files in `tests/`
-- JUDGE_FUNC added to all solution files
-
-### Ontology & Metadata
-- X new patterns in `ontology/patterns.toml`
-- `{pattern}_path` roadmap with Y-step learning path
-- N problem metadata files in `meta/problems/`
-- Updated ai-markmap-agent config
-
-## Test plan
-
-- [ ] All solutions pass tests
-- [ ] Test generators produce valid input/output pairs
-- [ ] JUDGE_FUNC handles both list and string types
-- [ ] Documentation builds correctly
-EOF
-)"
+# Delete feature branch
+git branch -d feat/pattern-{pattern_name}
 ```
 
 ---
 
 ## Quick Reference Checklist
 
-### Pre-Development
+### Phase 1: Meta Pattern Sources
+- [ ] Create branch: `git checkout -b feat/pattern-{pattern_name}`
+- [ ] Create directory: `mkdir -p meta/patterns/{pattern_name}`
+- [ ] Create `_config.toml` with file ordering
+- [ ] Create `_header.md` with `> **API Kernel**: \`...\``
+- [ ] Create problem markdown files
+- [ ] Create `_comparison.md`, `_decision.md`, `_templates.md`
+- [ ] Commit Phase 1
 
-- [ ] Identify 8-15 representative problems
-- [ ] Analyze pattern and variations
-- [ ] Determine learning progression order
+### Phase 2: Templates and Intuition
+- [ ] Create directory: `mkdir -p docs/patterns/{pattern_name}`
+- [ ] Generate: `python tools/patterndocs/generate_pattern_docs.py --pattern {pattern_name}`
+- [ ] Write `intuition.md` with mental models
+- [ ] Commit Phase 2
 
-### Phase 1: Pattern Documentation (templates.md)
+### Phase 3: Solutions
+- [ ] Check for existing solutions
+- [ ] Create new solution files with JUDGE_FUNC
+- [ ] Add pattern variants to existing solutions
+- [ ] Commit Phase 3
 
-- [ ] Create `meta/patterns/{pattern}/_config.toml`
-- [ ] Create `meta/patterns/{pattern}/_header.md` with API Kernel
-- [ ] Create `meta/patterns/{pattern}/_templates.md`
-- [ ] Create problem snippets `{id}-{topic}.md`
-- [ ] Run `python tools/patterndocs/generate_pattern_docs.py --pattern {pattern}`
-- [ ] Verify `docs/patterns/{pattern}/templates.md` generated correctly
+### Phase 4: Generators
+- [ ] Create generator files with `generate()` function
+- [ ] Include edge cases
+- [ ] Add `generate_for_complexity()` (optional)
+- [ ] Commit Phase 4
 
-### Phase 2: Solution Files
+### Phase 5: Test Files
+- [ ] Create 5 input files per problem
+- [ ] Generate output files by running solutions
+- [ ] Verify all tests pass
+- [ ] Commit Phase 5
 
-- [ ] Create `solutions/{id}_{slug}.py` for each problem
-- [ ] Reference `templates.md` in solution comments
-- [ ] Include `SOLUTIONS` dict with metadata
-- [ ] Implement `JUDGE_FUNC` that handles both types
-- [ ] Add `solve()` entry point
-
-### Phase 3: Test Infrastructure (Generators)
-
-- [ ] Create `generators/{id}_{slug}.py` for each problem
-- [ ] Include edge cases as first test cases
-- [ ] Generate 5-7 test cases per problem
-- [ ] Verify all tests pass with `python runner/test_runner.py`
-- [ ] Fix any CRLF line ending issues
-
-### Phase 4: Intuition Guide
-
-- [ ] Write `docs/patterns/{pattern}/intuition.md`
-- [ ] Include pattern recognition signals
-- [ ] Include common pitfalls
-- [ ] Include practice progression
-- [ ] Update `docs/patterns/README.md`
-
-### Phase 5: Problem Metadata
-
+### Phase 6: Problem Metadata
 - [ ] Create `meta/problems/{id}_{slug}.toml` for each problem
-- [ ] Include ontology tags (api_kernels, patterns, families)
+- [ ] Include ontology tags
 - [ ] Link to roadmaps
+- [ ] Commit Phase 6
 
-### Phase 6: Ontology and Roadmaps
-
+### Phase 7: Ontology and Roadmap
+- [ ] Add API kernel to `ontology/api_kernels.toml` (if new)
 - [ ] Add patterns to `ontology/patterns.toml`
-- [ ] Add roadmap to `ontology/roadmaps.toml`
-- [ ] Create `roadmaps/{pattern}_path.toml`
+- [ ] Add roadmap entry to `ontology/roadmaps.toml`
+- [ ] Create `roadmaps/{pattern_name}_path.toml`
+- [ ] Commit Phase 7
 
-### Phase 7: Mindmap Integration
-
+### Phase 8: Navigation and Integration
+- [ ] Update `mkdocs.yml`
 - [ ] Update `tools/mindmaps/ai-markmap-agent/config/config.yaml`
-
-### Phase 8: Navigation and Version Control
-
-- [ ] Update `mkdocs.yml` navigation
-- [ ] Create feature branch
-- [ ] Commit changes by phase
-- [ ] Push and create PR
-- [ ] Merge to main after review
+- [ ] Update `README.md`
+- [ ] Update `README_zh-TW.md`
+- [ ] Update `docs/patterns/README.md`
+- [ ] Commit Phase 8
+- [ ] Merge to main
+- [ ] Push to remote
+- [ ] Delete feature branch
 
 ---
 
-## Example: Monotonic Stack Pattern
+## Example Patterns
 
-The Monotonic Stack pattern implementation serves as a reference:
+These patterns serve as implementation references:
 
-| Component | Count | Location |
-|-----------|-------|----------|
-| Solutions | 12 | `solutions/0042_*.py`, `solutions/0084_*.py`, ... |
-| Generators | 12 | `generators/0042_*.py`, `generators/0084_*.py`, ... |
-| Test files | 84 | `tests/0042_*`, `tests/0084_*`, ... |
-| Pattern snippets | 15 | `meta/patterns/monotonic_stack/*` |
-| Docs | 2 | `docs/patterns/monotonic_stack/intuition.md`, `templates.md` |
-| Problem metadata | 12 | `meta/problems/0042_*.toml`, ... |
-| Roadmap | 1 | `roadmaps/monotonic_stack_path.toml` |
-| Ontology patterns | 10 | Added to `ontology/patterns.toml` |
+| Pattern | Problems | Files | Reference |
+|---------|----------|-------|-----------|
+| **Bitmask DP** | LC 78, 847, 1125 | 47 | Subset enumeration, BFS + bitmask, set cover |
+| **Tree DP** | LC 337, 124, 968 | 47 | Include/exclude, path contribution, multi-state |
+| **Line Sweep** | LC 253, 1094, 218 | 47 | Event counting, capacity, height tracking |
+| **Segment Tree/Fenwick** | LC 307, 315, 327 | 47 | Range queries with updates, inversion counting |
 
-### Problems in Monotonic Stack Pattern
+### Directory Structure Example (Bitmask DP)
 
-| ID | Problem | Role | Sub-Pattern |
-|----|---------|------|-------------|
-| 0496 | Next Greater Element I | Base | next_greater_element |
-| 0503 | Next Greater Element II | Variant | circular |
-| 0739 | Daily Temperatures | Variant | span |
-| 0901 | Online Stock Span | Variant | span |
-| 0084 | Largest Rectangle in Histogram | Advanced | histogram |
-| 0085 | Maximal Rectangle | Advanced | matrix_histogram |
-| 0907 | Sum of Subarray Minimums | Advanced | contribution |
-| 2104 | Sum of Subarray Ranges | Advanced | contribution |
-| 0042 | Trapping Rain Water | Advanced | container |
-| 0402 | Remove K Digits | Advanced | greedy |
-| 0316 | Remove Duplicate Letters | Advanced | lexicographic |
-| 0321 | Create Maximum Number | Advanced | greedy_selection |
+```
+meta/patterns/bitmask_dp/
+├── _config.toml
+├── _header.md
+├── 0078-subsets.md
+├── 0847-shortest-path-visiting-all-nodes.md
+├── 1125-smallest-sufficient-team.md
+├── _comparison.md
+├── _decision.md
+└── _templates.md
+
+docs/patterns/bitmask_dp/
+├── templates.md    # Generated
+└── intuition.md    # Manual
+
+solutions/
+├── 0078_subsets.py              # Existing, updated
+├── 0847_shortest_path_visiting_all_nodes.py  # New
+└── 1125_smallest_sufficient_team.py          # New
+
+generators/
+├── 0078_subsets.py              # Existing
+├── 0847_shortest_path_visiting_all_nodes.py  # New
+└── 1125_smallest_sufficient_team.py          # New
+
+tests/
+├── 0847_shortest_path_visiting_all_nodes_{1-5}.{in,out}
+└── 1125_smallest_sufficient_team_{1-5}.{in,out}
+
+meta/problems/
+├── 0078_subsets.toml            # Updated
+├── 0847_shortest_path_visiting_all_nodes.toml  # New
+└── 1125_smallest_sufficient_team.toml          # New
+
+roadmaps/
+└── bitmask_dp_path.toml         # New
+```
 
 ---
 
