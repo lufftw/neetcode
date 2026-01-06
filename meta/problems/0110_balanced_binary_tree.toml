@@ -1,0 +1,56 @@
+# Problem: Balanced Binary Tree
+# https://leetcode.com/problems/balanced-binary-tree/
+
+# ===== Problem Info =====
+id = "0110"
+slug = "0110_balanced_binary_tree"
+title = "Balanced Binary Tree"
+leetcode_id = 110
+url = "https://leetcode.com/problems/balanced-binary-tree/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["tree", "depth_first_search", "binary_tree"]
+companies = ["amazon", "google", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "tree_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_property_validation"]
+families         = ["tree_traversal", "tree_property"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+related_problems = ["0104", "0543", "0111"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0110_balanced_binary_tree.py"
+generator = "generators/0110_balanced_binary_tree.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "isBalanced"
+
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_property_validation"]
+families         = ["tree_traversal", "tree_property"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+
+role       = "base"
+variant    = "early_termination"
+based_on   = ["0104#default"]
+delta      = "Return sentinel -1 to propagate failure early instead of checking after."
+complexity = "O(n) time, O(h) space"
+notes      = "Early termination pattern: return -1 as sentinel when balance fails. Avoids redundant subtree traversal."

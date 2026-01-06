@@ -73,6 +73,11 @@ name = "Tree Problems Path"
 summary = "Comprehensive tree problem patterns."
 
 [[roadmaps]]
+id = "tree_traversal_path"
+name = "Tree Traversal Mastery"
+summary = "Step-by-step path to master tree traversal from DFS/BFS to path problems."
+
+[[roadmaps]]
 id = "graph_path"
 name = "Graph Problems Path"
 summary = "Comprehensive graph problem patterns."

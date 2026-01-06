@@ -1,0 +1,27 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+header_files = [
+    "_header.md"
+]
+
+# Problem files ordered by learning progression
+# Order: Basic DFS → Level order → Properties → Path problems
+problem_files = [
+    "0094-binary-tree-inorder-traversal.md",
+    "0102-binary-tree-level-order-traversal.md",
+    "0104-maximum-depth-of-binary-tree.md",
+    "0110-balanced-binary-tree.md",
+    "0543-diameter-of-binary-tree.md",
+    "0124-binary-tree-maximum-path-sum.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+[output]
+subdirectory = "tree"
+filename = "templates.md"

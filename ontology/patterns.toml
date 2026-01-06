@@ -412,6 +412,8 @@ api_kernel = "DPInterval"
 summary = "Palindrome-related DP (longest, count, etc.)."
 
 # === Tree Patterns ===
+
+# -- DFS Traversal Orders --
 [[patterns]]
 id = "tree_dfs_recursive"
 api_kernel = "TreeTraversalDFS"
@@ -421,6 +423,49 @@ summary = "Recursive DFS on tree."
 id = "tree_dfs_iterative"
 api_kernel = "TreeTraversalDFS"
 summary = "Iterative DFS using explicit stack."
+
+[[patterns]]
+id = "tree_dfs_inorder"
+api_kernel = "TreeTraversalDFS"
+summary = "Inorder traversal: Left → Node → Right. BST gives sorted order."
+
+[[patterns]]
+id = "tree_dfs_preorder"
+api_kernel = "TreeTraversalDFS"
+summary = "Preorder traversal: Node → Left → Right. Copy/serialize tree."
+
+[[patterns]]
+id = "tree_dfs_postorder"
+api_kernel = "TreeTraversalDFS"
+summary = "Postorder traversal: Left → Right → Node. Delete tree, compute subtree values."
+
+# -- BFS Patterns --
+[[patterns]]
+id = "tree_bfs_level_order"
+api_kernel = "TreeTraversalBFS"
+summary = "Level-order traversal using queue with level-size batching."
+
+# -- Property Patterns --
+[[patterns]]
+id = "tree_property_computation"
+api_kernel = "TreeTraversalDFS"
+summary = "Compute tree properties (height, depth, node count) recursively."
+
+[[patterns]]
+id = "tree_property_validation"
+api_kernel = "TreeTraversalDFS"
+summary = "Validate tree properties with early termination using sentinel values."
+
+# -- Path Patterns --
+[[patterns]]
+id = "tree_path_computation"
+api_kernel = "TreeTraversalDFS"
+summary = "Compute path metrics (diameter, longest path) with return-vs-update pattern."
+
+[[patterns]]
+id = "tree_path_sum"
+api_kernel = "TreeTraversalDFS"
+summary = "Track path sums, skipping negative subtrees with max(0, gain)."
 
 # === Heap Patterns ===
 [[patterns]]

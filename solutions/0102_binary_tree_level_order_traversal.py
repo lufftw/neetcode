@@ -1,28 +1,27 @@
-# solutions/0104_maximum_depth_of_binary_tree.py
+# solutions/0102_binary_tree_level_order_traversal.py
 """
-Problem: Maximum Depth of Binary Tree
-Link: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+Problem: Binary Tree Level Order Traversal
+Link: https://leetcode.com/problems/binary-tree-level-order-traversal/
 
-Given the root of a binary tree, return its maximum depth.
-
-A binary tree's maximum depth is the number of nodes along the longest path
-from the root node down to the farthest leaf node.
+Given the root of a binary tree, return the level order traversal of its nodes' values.
+(i.e., from left to right, level by level).
 
 Example 1:
     Input: root = [3,9,20,null,null,15,7]
-    Output: 3
+    Output: [[3],[9,20],[15,7]]
 
 Example 2:
-    Input: root = [1,null,2]
-    Output: 2
+    Input: root = [1]
+    Output: [[1]]
 
 Constraints:
-- The number of nodes in the tree is in the range [0, 10^4].
-- -100 <= Node.val <= 100
+- The number of nodes in the tree is in the range [0, 2000].
+- -1000 <= Node.val <= 1000
 
-Topics: Tree, Depth-First Search, Breadth-First Search, Binary Tree
+Topics: Tree, Breadth-First Search, Binary Tree
 """
-from typing import Optional
+from typing import List, Optional
+from collections import deque
 from _runner import get_solver
 
 
@@ -51,24 +50,43 @@ JUDGE_FUNC = judge
 SOLUTIONS = {
     "default": {
         "class": "Solution",
-        "method": "maxDepth",
-        "complexity": "O(n) time, O(h) space",
-        "description": "Recursive DFS computing max depth",
-        "api_kernels": ["TreeTraversalDFS"],
-        "patterns": ["tree_property_computation"],
+        "method": "levelOrder",
+        "complexity": "O(n) time, O(w) space",
+        "description": "BFS with queue, process level by level",
+        "api_kernels": ["TreeTraversalBFS"],
+        "patterns": ["tree_bfs_level_order"],
     },
 }
 
 
 # ============================================
-# Solution 1: Recursive DFS
+# Solution 1: BFS Level Order
 # ============================================
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        """Maximum depth via recursive DFS."""
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """Level-order traversal using BFS."""
         if not root:
-            return 0
-        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+            return []
+
+        result: list[list[int]] = []
+        queue: deque[TreeNode] = deque([root])
+
+        while queue:
+            level: list[int] = []
+            level_size = len(queue)
+
+            for _ in range(level_size):
+                node = queue.popleft()
+                level.append(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+            result.append(level)
+
+        return result
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
@@ -102,9 +120,9 @@ def solve():
     root = _build_tree(values)
 
     solver = get_solver(SOLUTIONS)
-    result = solver.maxDepth(root)
+    result = solver.levelOrder(root)
 
-    print(result)
+    print(json.dumps(result))
 
 
 if __name__ == "__main__":

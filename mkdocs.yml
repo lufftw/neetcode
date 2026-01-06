@@ -158,6 +158,9 @@ nav:
     - Union-Find:
       - Intuition: patterns/union_find/intuition.md
       - Templates: patterns/union_find/templates.md
+    - Tree Traversal:
+      - Intuition: patterns/tree/intuition.md
+      - Templates: patterns/tree/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

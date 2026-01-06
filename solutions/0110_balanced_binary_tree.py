@@ -1,26 +1,26 @@
-# solutions/0104_maximum_depth_of_binary_tree.py
+# solutions/0110_balanced_binary_tree.py
 """
-Problem: Maximum Depth of Binary Tree
-Link: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+Problem: Balanced Binary Tree
+Link: https://leetcode.com/problems/balanced-binary-tree/
 
-Given the root of a binary tree, return its maximum depth.
+Given a binary tree, determine if it is height-balanced.
 
-A binary tree's maximum depth is the number of nodes along the longest path
-from the root node down to the farthest leaf node.
+A height-balanced binary tree is a binary tree in which the depth of the two subtrees of
+every node never differs by more than one.
 
 Example 1:
     Input: root = [3,9,20,null,null,15,7]
-    Output: 3
+    Output: true
 
 Example 2:
-    Input: root = [1,null,2]
-    Output: 2
+    Input: root = [1,2,2,3,3,null,null,4,4]
+    Output: false
 
 Constraints:
-- The number of nodes in the tree is in the range [0, 10^4].
-- -100 <= Node.val <= 100
+- The number of nodes in the tree is in the range [0, 5000].
+- -10^4 <= Node.val <= 10^4
 
-Topics: Tree, Depth-First Search, Breadth-First Search, Binary Tree
+Topics: Tree, Depth-First Search, Binary Tree
 """
 from typing import Optional
 from _runner import get_solver
@@ -51,24 +51,43 @@ JUDGE_FUNC = judge
 SOLUTIONS = {
     "default": {
         "class": "Solution",
-        "method": "maxDepth",
+        "method": "isBalanced",
         "complexity": "O(n) time, O(h) space",
-        "description": "Recursive DFS computing max depth",
+        "description": "DFS with early termination using sentinel -1",
         "api_kernels": ["TreeTraversalDFS"],
-        "patterns": ["tree_property_computation"],
+        "patterns": ["tree_property_validation"],
     },
 }
 
 
 # ============================================
-# Solution 1: Recursive DFS
+# Solution 1: DFS with Early Termination
 # ============================================
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        """Maximum depth via recursive DFS."""
-        if not root:
-            return 0
-        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        """
+        Check if tree is height-balanced.
+
+        Returns height if balanced, -1 if not (early termination).
+        """
+        def check(node: Optional[TreeNode]) -> int:
+            if not node:
+                return 0
+
+            left = check(node.left)
+            if left == -1:
+                return -1
+
+            right = check(node.right)
+            if right == -1:
+                return -1
+
+            if abs(left - right) > 1:
+                return -1
+
+            return 1 + max(left, right)
+
+        return check(root) != -1
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
@@ -102,9 +121,9 @@ def solve():
     root = _build_tree(values)
 
     solver = get_solver(SOLUTIONS)
-    result = solver.maxDepth(root)
+    result = solver.isBalanced(root)
 
-    print(result)
+    print(str(result).lower())
 
 
 if __name__ == "__main__":

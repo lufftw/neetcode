@@ -1,26 +1,29 @@
-# solutions/0104_maximum_depth_of_binary_tree.py
+# solutions/0543_diameter_of_binary_tree.py
 """
-Problem: Maximum Depth of Binary Tree
-Link: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+Problem: Diameter of Binary Tree
+Link: https://leetcode.com/problems/diameter-of-binary-tree/
 
-Given the root of a binary tree, return its maximum depth.
+Given the root of a binary tree, return the length of the diameter of the tree.
 
-A binary tree's maximum depth is the number of nodes along the longest path
-from the root node down to the farthest leaf node.
+The diameter of a binary tree is the length of the longest path between any two nodes
+in a tree. This path may or may not pass through the root.
+
+The length of a path between two nodes is represented by the number of edges between them.
 
 Example 1:
-    Input: root = [3,9,20,null,null,15,7]
+    Input: root = [1,2,3,4,5]
     Output: 3
+    Explanation: 3 is the length of the path [4,2,1,3] or [5,2,1,3].
 
 Example 2:
-    Input: root = [1,null,2]
-    Output: 2
+    Input: root = [1,2]
+    Output: 1
 
 Constraints:
-- The number of nodes in the tree is in the range [0, 10^4].
+- The number of nodes in the tree is in the range [1, 10^4].
 - -100 <= Node.val <= 100
 
-Topics: Tree, Depth-First Search, Breadth-First Search, Binary Tree
+Topics: Tree, Depth-First Search, Binary Tree
 """
 from typing import Optional
 from _runner import get_solver
@@ -51,24 +54,42 @@ JUDGE_FUNC = judge
 SOLUTIONS = {
     "default": {
         "class": "Solution",
-        "method": "maxDepth",
+        "method": "diameterOfBinaryTree",
         "complexity": "O(n) time, O(h) space",
-        "description": "Recursive DFS computing max depth",
+        "description": "DFS tracking max path through each node",
         "api_kernels": ["TreeTraversalDFS"],
-        "patterns": ["tree_property_computation"],
+        "patterns": ["tree_path_computation"],
     },
 }
 
 
 # ============================================
-# Solution 1: Recursive DFS
+# Solution 1: DFS Path Tracking
 # ============================================
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        """Maximum depth via recursive DFS."""
-        if not root:
-            return 0
-        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        """
+        Longest path between any two nodes (in edges).
+
+        Track maximum left_height + right_height during height computation.
+        """
+        self.diameter = 0
+
+        def height(node: Optional[TreeNode]) -> int:
+            if not node:
+                return 0
+
+            left_h = height(node.left)
+            right_h = height(node.right)
+
+            # Update diameter (path through this node)
+            self.diameter = max(self.diameter, left_h + right_h)
+
+            # Return height for parent
+            return 1 + max(left_h, right_h)
+
+        height(root)
+        return self.diameter
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
@@ -102,7 +123,7 @@ def solve():
     root = _build_tree(values)
 
     solver = get_solver(SOLUTIONS)
-    result = solver.maxDepth(root)
+    result = solver.diameterOfBinaryTree(root)
 
     print(result)
 

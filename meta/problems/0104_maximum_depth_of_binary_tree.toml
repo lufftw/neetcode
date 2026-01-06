@@ -1,0 +1,56 @@
+# Problem: Maximum Depth of Binary Tree
+# https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+# ===== Problem Info =====
+id = "0104"
+slug = "0104_maximum_depth_of_binary_tree"
+title = "Maximum Depth of Binary Tree"
+leetcode_id = 104
+url = "https://leetcode.com/problems/maximum-depth-of-binary-tree/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["tree", "depth_first_search", "breadth_first_search", "binary_tree"]
+companies = ["amazon", "linkedin", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "tree_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_property_computation"]
+families         = ["tree_traversal", "tree_property"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+related_problems = ["0111", "0110", "0543"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0104_maximum_depth_of_binary_tree.py"
+generator = "generators/0104_maximum_depth_of_binary_tree.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maxDepth"
+
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_property_computation"]
+families         = ["tree_traversal", "tree_property"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+
+role       = "example"
+variant    = "recursive_depth"
+based_on   = ["0094#default"]
+delta      = "Compute property (depth) instead of collecting values."
+complexity = "O(n) time, O(h) space"
+notes      = "Classic postorder pattern: depth(node) = 1 + max(depth(left), depth(right))."
