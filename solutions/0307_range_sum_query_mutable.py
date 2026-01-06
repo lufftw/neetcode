@@ -288,7 +288,9 @@ def solve():
     ops = json.loads(lines[0])
     args = json.loads(lines[1])
 
-    solver = get_solver(SOLUTIONS)
+    # Design pattern problem - instantiate directly
+    # First operation is always "NumArray" with initial array
+    solver = NumArrayBIT(args[0][0])
     result = solver.process_operations(ops, args)
 
     print(json.dumps(result, separators=(",", ":")))
