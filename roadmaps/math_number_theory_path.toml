@@ -1,0 +1,37 @@
+# Math / Number Theory Mastery Path
+# Step-by-step learning path for mastering number theory problems
+
+id = "math_number_theory_path"
+name = "Math / Number Theory Mastery Path"
+api_kernel = "MathNumberTheory"
+summary = "Master number theory: GCD/LCM, prime sieve, base conversion."
+
+# === Step 1: GCD ===
+[[steps]]
+order = 1
+problem = "1979_find_greatest_common_divisor_of_array"
+role = "base"
+pattern = "gcd_euclidean"
+prerequisite = []
+delta = ""
+note = "Learn GCD using Euclidean algorithm."
+
+# === Step 2: Prime Sieve ===
+[[steps]]
+order = 2
+problem = "0204_count_primes"
+role = "base"
+pattern = "prime_sieve"
+prerequisite = []
+delta = ""
+note = "Learn Sieve of Eratosthenes for prime counting."
+
+# === Step 3: Base Conversion ===
+[[steps]]
+order = 3
+problem = "0168_excel_sheet_column_title"
+role = "base"
+pattern = "base_conversion"
+prerequisite = []
+delta = ""
+note = "Learn base conversion with 1-indexed adjustment."

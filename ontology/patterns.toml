@@ -684,3 +684,19 @@ summary = "Unbounded knapsack to minimize items needed for target."
 id = "unbounded_knapsack_count"
 api_kernel = "DPKnapsackSubset"
 summary = "Unbounded knapsack to count combinations (coins outer loop)."
+
+# === Math / Number Theory Patterns ===
+[[patterns]]
+id = "gcd_euclidean"
+api_kernel = "MathNumberTheory"
+summary = "GCD using Euclidean algorithm: gcd(a,b) = gcd(b, a%b)."
+
+[[patterns]]
+id = "prime_sieve"
+api_kernel = "MathNumberTheory"
+summary = "Sieve of Eratosthenes for prime counting/listing."
+
+[[patterns]]
+id = "base_conversion"
+api_kernel = "MathNumberTheory"
+summary = "Convert between number bases with mod and divide."

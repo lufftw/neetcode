@@ -96,3 +96,8 @@ summary = "Step-by-step path to master 1D linear DP: Fibonacci, min-cost, includ
 id = "dp_knapsack_subset_path"
 name = "DP Knapsack/Subset Mastery"
 summary = "Step-by-step path to master knapsack/subset DP: 0/1 and unbounded variants."
+
+[[roadmaps]]
+id = "math_number_theory_path"
+name = "Math / Number Theory Mastery"
+summary = "Step-by-step path to master number theory: GCD, primes, base conversion."

@@ -1,0 +1,43 @@
+# Problem Metadata: Excel Sheet Column Title (LeetCode 168)
+
+id = "0168"
+slug = "0168_excel_sheet_column_title"
+title = "Excel Sheet Column Title"
+leetcode_id = 168
+url = "https://leetcode.com/problems/excel-sheet-column-title/"
+
+difficulty = "easy"
+topics = ["math", "string"]
+companies = ["amazon", "microsoft", "google"]
+
+roadmaps = ["math_number_theory_path"]
+
+api_kernels = ["MathNumberTheory"]
+patterns = ["base_conversion"]
+families = ["math_number_theory"]
+data_structures = ["string"]
+algorithms = ["math"]
+related_problems = ["0171"]
+
+[files]
+solution = "solutions/0168_excel_sheet_column_title.py"
+generator = "generators/0168_excel_sheet_column_title.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionMath"
+method = "convertToTitle"
+
+api_kernels = ["MathNumberTheory"]
+patterns = ["base_conversion"]
+families = ["math_number_theory"]
+data_structures = ["string"]
+algorithms = ["math"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Base-26 conversion with 1-indexed adjustment."
+complexity = "O(log n) time, O(log n) space"
+notes = "Key insight: subtract 1 to convert 1-26 to 0-25 range."

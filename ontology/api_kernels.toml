@@ -113,3 +113,7 @@ summary = "1D linear DP: Fibonacci-style, min-cost path, include/exclude, runnin
 [[api_kernels]]
 id = "DPKnapsackSubset"
 summary = "Knapsack/subset DP: 0/1 and unbounded variants for boolean, count, and optimization."
+
+[[api_kernels]]
+id = "MathNumberTheory"
+summary = "Number theory: GCD/LCM, prime sieve, base conversion, modular arithmetic."
