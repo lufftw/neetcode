@@ -81,6 +81,27 @@ A complete pattern implementation consists of these components:
 | 7 | `tools/mindmaps/` | Config updates for AI mindmap generation |
 | 8 | `mkdocs.yml`, Git | Navigation update + feature branch + PR |
 
+### Documentation-Only Workflow
+
+For cases where you only need pattern documentation (no solutions, generators, or ontology updates), use this minimal workflow:
+
+1. **Phase 1**: Create `meta/patterns/{pattern}/` source files and generate `templates.md`
+2. **Phase 4**: Write `docs/patterns/{pattern}/intuition.md` manually
+3. **Phase 8 (partial)**: Update indexes (`docs/patterns/README.md`, `README.md`, `README_zh-TW.md`, `mkdocs.yml`) and create PR
+
+**Recommended commit structure for documentation-only patterns:**
+
+```bash
+# Commit 1: Scaffold pattern structure
+git commit -m "docs({pattern}): scaffold {pattern} pattern"
+
+# Commit 2: Add generated templates and intuition guide
+git commit -m "docs({pattern}): add templates and intuition guide"
+
+# Commit 3: Wire into indexes
+git commit -m "docs: wire {pattern} pattern into indexes"
+```
+
 ---
 
 ## Prerequisites
@@ -217,7 +238,14 @@ Query: sumRange(0, 2) = prefix[3] - prefix[0] = 1
 
 ### 1.3 Generate templates.md
 
-Run the pattern documentation generator:
+First, create the output directory if it doesn't exist:
+
+```bash
+# Create output directory
+mkdir -p docs/patterns/{pattern_name}
+```
+
+Then run the pattern documentation generator:
 
 ```bash
 # Generate templates.md from meta/patterns sources
@@ -228,6 +256,8 @@ python tools/patterndocs/generate_pattern_docs.py --pattern prefix_sum
 ```
 
 This creates `docs/patterns/{pattern_name}/templates.md`.
+
+> **Note**: The generator expects the output directory to exist. If you see a "directory not found" error, ensure you created the directory first.
 
 > **Reference**: [Pattern Docs Generator](../tools/patterndocs/README.md)
 
@@ -856,21 +886,30 @@ Think: Precompute prefix sum once
 5. **LC 304** (2D Range Sum) - Extend to 2D
 ```
 
-### 4.2 Update Patterns README
+### 4.2 Update Pattern Indexes
 
-Add the new pattern to `docs/patterns/README.md`:
+Update all pattern index files to include the new pattern:
+
+1. **`docs/patterns/README.md`** - Add to API Kernel table
+2. **`README.md`** - Add to pattern documentation section
+3. **`README_zh-TW.md`** - Add to pattern documentation section (Chinese labels)
+4. **`mkdocs.yml`** - Add navigation entry under `📐 Patterns`
+
+Example for `docs/patterns/README.md`:
 
 ```markdown
-## Available Patterns
-
-| Pattern | API Kernel | Key Problems |
-|---------|------------|--------------|
-| [Sliding Window](./sliding_window/) | SubstringSlidingWindow | LC 3, 76, 567 |
-| [Two Pointers](./two_pointers/) | TwoPointersTraversal | LC 15, 11, 42 |
-| [Binary Search](./binary_search/) | BinarySearchBoundary | LC 704, 34, 875 |
-| [Monotonic Stack](./monotonic_stack/) | MonotonicStack | LC 496, 739, 84 |
-| [Prefix Sum](./prefix_sum/) | PrefixSumRangeQuery | LC 303, 560, 304 |
+| `{PatternName}` | 💡 [Intuition]({pattern}/intuition.md) · 🛠️ [Templates]({pattern}/templates.md) | Description | LeetCode IDs |
 ```
+
+Example for `mkdocs.yml` (add under Patterns section):
+
+```yaml
+- {Pattern Display Name}:
+  - Intuition: patterns/{pattern}/intuition.md
+  - Templates: patterns/{pattern}/templates.md
+```
+
+> **Important**: Both English and Chinese README files must be updated to maintain consistency.
 
 ---
 
