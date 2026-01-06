@@ -1,0 +1,17 @@
+# String DP Pattern - Configuration
+# Controls file ordering for templates.md generation
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "1143-longest-common-subsequence.md",
+    "0072-edit-distance.md",
+    "0516-longest-palindromic-subsequence.md",
+    "0010-regular-expression-matching.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "string_dp"
+filename = "templates.md"
