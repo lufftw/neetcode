@@ -125,6 +125,10 @@ data_sources:
         path: "tree_dp"
         enabled: true
         config_file: "_config.toml"
+      - name: "bitmask_dp"
+        path: "bitmask_dp"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -155,6 +159,9 @@ data_sources:
         enabled: true
       - name: "tree_dp_path"
         path: "tree_dp_path.toml"
+        enabled: true
+      - name: "bitmask_dp_path"
+        path: "bitmask_dp_path.toml"
         enabled: true
       - name: "neetcode_150"
         path: "neetcode_150.toml"

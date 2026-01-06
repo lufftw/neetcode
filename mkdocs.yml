@@ -192,6 +192,9 @@ nav:
     - Tree DP:
       - Intuition: patterns/tree_dp/intuition.md
       - Templates: patterns/tree_dp/templates.md
+    - Bitmask DP:
+      - Intuition: patterns/bitmask_dp/intuition.md
+      - Templates: patterns/bitmask_dp/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
