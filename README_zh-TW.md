@@ -440,6 +440,7 @@ scripts\run_tests.bat 0001_two_sum
 | `LineSweep` | 💡 [直覺理解](docs/patterns/line_sweep/intuition.md) · 🛠️ [模板](docs/patterns/line_sweep/templates.md) | LeetCode 253, 1094, 218 |
 | `TreeDP` | 💡 [直覺理解](docs/patterns/tree_dp/intuition.md) · 🛠️ [模板](docs/patterns/tree_dp/templates.md) | LeetCode 337, 124, 968 |
 | `BitmaskDP` | 💡 [直覺理解](docs/patterns/bitmask_dp/intuition.md) · 🛠️ [模板](docs/patterns/bitmask_dp/templates.md) | LeetCode 78, 847, 1125 |
+| `StringDP` | 💡 [直覺理解](docs/patterns/string_dp/intuition.md) · 🛠️ [模板](docs/patterns/string_dp/templates.md) | LeetCode 1143, 72, 516, 10 |
 | `GridBFSMultiSource` | *即將推出* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *即將推出* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *即將推出* | LeetCode 25, 206, 92 |
