@@ -1,0 +1,19 @@
+# Pattern Documentation Configuration for Segment Tree / Fenwick Tree
+header_files = ["_header.md"]
+
+# Problem files ordered by learning progression
+problem_files = [
+    "0307-range-sum-query-mutable.md",
+    "0315-count-smaller-after-self.md",
+    "0327-count-of-range-sum.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+[output]
+subdirectory = "segment_tree_fenwick"
+filename = "templates.md"
