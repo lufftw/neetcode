@@ -1,0 +1,16 @@
+# Tree DP Pattern Configuration
+# Controls file ordering for template generation
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0337-house-robber-iii.md",
+    "0124-binary-tree-maximum-path-sum.md",
+    "0968-binary-tree-cameras.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "tree_dp"
+filename = "templates.md"
