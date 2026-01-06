@@ -1,0 +1,49 @@
+# Problem Metadata: Min Cost Climbing Stairs (LeetCode 746)
+
+# ===== Problem Info =====
+id = "0746"
+slug = "0746_min_cost_climbing_stairs"
+title = "Min Cost Climbing Stairs"
+leetcode_id = 746
+url = "https://leetcode.com/problems/min-cost-climbing-stairs/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["dp_1d_linear_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["DP1DLinear"]
+patterns = ["min_cost_path"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0070"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0746_min_cost_climbing_stairs.py"
+generator = "generators/0746_min_cost_climbing_stairs.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "minCostClimbingStairs"
+
+api_kernels = ["DP1DLinear"]
+patterns = ["min_cost_path"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "variant"
+variant = "min_cost"
+based_on = ["0070"]
+delta = "Change from counting ways to minimizing cost."
+complexity = "O(n) time, O(1) space"
+notes = "Extends Fibonacci template to optimization problems."

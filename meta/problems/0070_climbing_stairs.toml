@@ -1,0 +1,49 @@
+# Problem Metadata: Climbing Stairs (LeetCode 70)
+
+# ===== Problem Info =====
+id = "0070"
+slug = "0070_climbing_stairs"
+title = "Climbing Stairs"
+leetcode_id = 70
+url = "https://leetcode.com/problems/climbing-stairs/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["math", "dynamic_programming", "memoization"]
+companies = ["amazon", "google", "microsoft", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["dp_1d_linear_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["DP1DLinear"]
+patterns = ["fibonacci_style", "count_ways"]
+families = ["dp_1d"]
+data_structures = ["none"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0746", "0198"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0070_climbing_stairs.py"
+generator = "generators/0070_climbing_stairs.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "climbStairs"
+
+api_kernels = ["DP1DLinear"]
+patterns = ["fibonacci_style", "count_ways"]
+families = ["dp_1d"]
+data_structures = ["none"]
+algorithms = ["dynamic_programming"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical Fibonacci-style DP template."
+complexity = "O(n) time, O(1) space"
+notes = "Base template for counting ways problems."
