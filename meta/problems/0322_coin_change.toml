@@ -1,0 +1,43 @@
+# Problem Metadata: Coin Change (LeetCode 322)
+
+id = "0322"
+slug = "0322_coin_change"
+title = "Coin Change"
+leetcode_id = 322
+url = "https://leetcode.com/problems/coin-change/"
+
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "bfs"]
+companies = ["amazon", "google", "microsoft", "apple", "meta"]
+
+roadmaps = ["dp_knapsack_subset_path"]
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["unbounded_knapsack_min"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0518", "0279"]
+
+[files]
+solution = "solutions/0322_coin_change.py"
+generator = "generators/0322_coin_change.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "coinChange"
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["unbounded_knapsack_min"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical unbounded knapsack minimum template."
+complexity = "O(n * amount) time, O(amount) space"
+notes = "Forward iteration allows coin reuse. Base for minimum-items problems."

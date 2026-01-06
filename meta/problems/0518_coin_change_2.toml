@@ -1,0 +1,43 @@
+# Problem Metadata: Coin Change 2 (LeetCode 518)
+
+id = "0518"
+slug = "0518_coin_change_2"
+title = "Coin Change 2"
+leetcode_id = 518
+url = "https://leetcode.com/problems/coin-change-ii/"
+
+difficulty = "medium"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "bloomberg"]
+
+roadmaps = ["dp_knapsack_subset_path"]
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["unbounded_knapsack_count"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0322", "0377"]
+
+[files]
+solution = "solutions/0518_coin_change_2.py"
+generator = "generators/0518_coin_change_2.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "change"
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["unbounded_knapsack_count"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "variant"
+variant = "count_combinations"
+based_on = ["0322"]
+delta = "Count combinations (coins outer loop) instead of minimum."
+complexity = "O(n * amount) time, O(amount) space"
+notes = "Coins outer loop gives combinations, amount outer gives permutations."
