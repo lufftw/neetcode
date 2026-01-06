@@ -28,10 +28,16 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `TwoPointersTraversal` | 💡 [Intuition](two_pointers/intuition.md) · 🛠️ [Templates](two_pointers/templates.md) | Two pointer traversal patterns | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
 | `BinarySearchBoundary` | 💡 [Intuition](binary_search/intuition.md) · 🛠️ [Templates](binary_search/templates.md) | Binary search boundaries | LeetCode 33, 34, 35, 81, 162, 875, 1011 |
 | `BacktrackingExploration` | 💡 [Intuition](backtracking_exploration/intuition.md) · 🛠️ [Templates](backtracking_exploration/templates.md) | Exhaustive search with pruning | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
+| `MonotonicStack` | 💡 [Intuition](monotonic_stack/intuition.md) · 🛠️ [Templates](monotonic_stack/templates.md) | Boundary resolution via monotonicity | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907, 2104 |
+| `PrefixSum` | 💡 [Intuition](prefix_sum/intuition.md) · 🛠️ [Templates](prefix_sum/templates.md) | Range queries and subarray sums | LeetCode 238, 303, 304, 523, 525, 560, 1094, 1109 |
+| `Heap` | 💡 [Intuition](heap/intuition.md) · 🛠️ [Templates](heap/templates.md) | Top-K, median, scheduling | LeetCode 23, 215, 253, 295, 347, 621, 1046 |
+| `GraphDFS` / `GraphBFS` | 💡 [Intuition](graph/intuition.md) · 🛠️ [Templates](graph/templates.md) | Graph traversal patterns | LeetCode 133, 200, 417, 785, 841, 994, 1971 |
+| `IntervalMerge` / `IntervalScheduling` | 💡 [Intuition](interval/intuition.md) · 🛠️ [Templates](interval/templates.md) | Interval merge and scheduling | LeetCode 56, 57, 435, 452, 986 |
+| `UnionFindConnectivity` | 💡 [Intuition](union_find/intuition.md) · 🛠️ [Templates](union_find/templates.md) | Disjoint set connectivity | LeetCode 547, 684, 721, 990, 1319 |
+| `TreeTraversalDFS` / `TreeTraversalBFS` | 💡 [Intuition](tree/intuition.md) · 🛠️ [Templates](tree/templates.md) | Tree DFS/BFS and path problems | LeetCode 94, 102, 104, 110, 124, 543 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
-| `MonotonicStack` | 💡 [Intuition](monotonic_stack/intuition.md) · 🛠️ [Templates](monotonic_stack/templates.md) | Boundary resolution via monotonicity | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907, 2104 |
 
 ---
 
