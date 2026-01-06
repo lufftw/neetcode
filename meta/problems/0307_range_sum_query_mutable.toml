@@ -1,0 +1,67 @@
+# meta/problems/0307_range_sum_query_mutable.toml
+
+# ===== Problem Info =====
+id = "0307"
+slug = "0307_range_sum_query_mutable"
+title = "Range Sum Query - Mutable"
+leetcode_id = 307
+url = "https://leetcode.com/problems/range-sum-query-mutable/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "design", "binary_indexed_tree", "segment_tree"]
+companies = ["google", "amazon", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["segment_tree_fenwick_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SegmentTreeFenwick"]
+patterns         = ["range_sum_update"]
+families         = ["range_query"]
+data_structures  = ["array", "binary_indexed_tree", "segment_tree"]
+algorithms       = ["fenwick_tree", "segment_tree"]
+related_problems = ["0303", "0304", "0308"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0307_range_sum_query_mutable.py"
+generator = "generators/0307_range_sum_query_mutable.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "NumArrayBIT"
+method = "process_operations"
+
+api_kernels      = ["SegmentTreeFenwick"]
+patterns         = ["fenwick_tree"]
+families         = ["range_query"]
+data_structures  = ["array", "binary_indexed_tree"]
+algorithms       = ["fenwick_tree"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = "Canonical Fenwick Tree for range sum with point updates."
+complexity = "O(n log n) build, O(log n) ops"
+notes      = "Base template for all BIT problems."
+
+[[solutions]]
+key    = "segment_tree"
+class  = "NumArraySegmentTree"
+method = "process_operations"
+
+api_kernels      = ["SegmentTreeFenwick"]
+patterns         = ["segment_tree"]
+families         = ["range_query"]
+data_structures  = ["array", "segment_tree"]
+algorithms       = ["segment_tree"]
+
+role       = "variant"
+variant    = "segment_tree"
+based_on   = ["default"]
+delta      = "Segment Tree alternative - more flexible for range min/max."
+complexity = "O(n) build, O(log n) ops"
+notes      = "Better for range min/max queries."

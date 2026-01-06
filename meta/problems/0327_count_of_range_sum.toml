@@ -1,0 +1,49 @@
+# meta/problems/0327_count_of_range_sum.toml
+
+# ===== Problem Info =====
+id = "0327"
+slug = "0327_count_of_range_sum"
+title = "Count of Range Sum"
+leetcode_id = 327
+url = "https://leetcode.com/problems/count-of-range-sum/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "binary_search", "divide_and_conquer", "binary_indexed_tree", "segment_tree", "merge_sort", "ordered_set"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["segment_tree_fenwick_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SegmentTreeFenwick", "PrefixSumRangeQuery"]
+patterns         = ["range_sum_count", "merge_sort_counting"]
+families         = ["range_query", "prefix_sum"]
+data_structures  = ["array"]
+algorithms       = ["merge_sort", "prefix_sum"]
+related_problems = ["0315", "0493"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0327_count_of_range_sum.py"
+generator = "generators/0327_count_of_range_sum.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionMergeSort"
+method = "countRangeSum"
+
+api_kernels      = ["SegmentTreeFenwick", "PrefixSumRangeQuery"]
+patterns         = ["merge_sort_counting", "prefix_sum"]
+families         = ["range_query"]
+data_structures  = ["array"]
+algorithms       = ["merge_sort", "prefix_sum"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = "Merge sort with range counting on prefix sums."
+complexity = "O(n log n) time, O(n) space"
+notes      = "Combines prefix sum insight with merge sort counting."

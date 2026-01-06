@@ -1,0 +1,67 @@
+# meta/problems/0315_count_of_smaller_numbers_after_self.toml
+
+# ===== Problem Info =====
+id = "0315"
+slug = "0315_count_of_smaller_numbers_after_self"
+title = "Count of Smaller Numbers After Self"
+leetcode_id = 315
+url = "https://leetcode.com/problems/count-of-smaller-numbers-after-self/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "binary_search", "divide_and_conquer", "binary_indexed_tree", "segment_tree", "merge_sort", "ordered_set"]
+companies = ["google", "amazon", "meta", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["segment_tree_fenwick_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SegmentTreeFenwick"]
+patterns         = ["count_inversions", "coordinate_compression"]
+families         = ["range_query", "inversion_count"]
+data_structures  = ["array", "binary_indexed_tree"]
+algorithms       = ["fenwick_tree", "merge_sort", "coordinate_compression"]
+related_problems = ["0327", "0493"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0315_count_of_smaller_numbers_after_self.py"
+generator = "generators/0315_count_of_smaller_numbers_after_self.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionBIT"
+method = "countSmaller"
+
+api_kernels      = ["SegmentTreeFenwick"]
+patterns         = ["fenwick_tree", "coordinate_compression"]
+families         = ["inversion_count"]
+data_structures  = ["array", "binary_indexed_tree"]
+algorithms       = ["fenwick_tree", "coordinate_compression"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = "BIT with coordinate compression, process right-to-left."
+complexity = "O(n log n) time, O(n) space"
+notes      = "Classic inversion counting pattern."
+
+[[solutions]]
+key    = "merge_sort"
+class  = "SolutionMergeSort"
+method = "countSmaller"
+
+api_kernels      = ["SegmentTreeFenwick"]
+patterns         = ["merge_sort_counting"]
+families         = ["inversion_count"]
+data_structures  = ["array"]
+algorithms       = ["merge_sort"]
+
+role       = "variant"
+variant    = "merge_sort"
+based_on   = ["default"]
+delta      = "Merge sort with inversion counting during merge."
+complexity = "O(n log n) time, O(n) space"
+notes      = "Alternative approach using divide and conquer."
