@@ -1,0 +1,51 @@
+# Problem: Cheapest Flights Within K Stops
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/
+
+id = "0787"
+slug = "0787_cheapest_flights_within_k_stops"
+title = "Cheapest Flights Within K Stops"
+leetcode_id = 787
+url = "https://leetcode.com/problems/cheapest-flights-within-k-stops/"
+
+difficulty = "medium"
+topics = ["dynamic_programming", "depth_first_search", "breadth_first_search", "graph", "heap", "shortest_path"]
+companies = ["amazon", "meta", "google", "airbnb", "uber"]
+
+roadmaps = ["neetcode_150", "shortest_path_pattern_path"]
+
+api_kernels      = ["ShortestPath"]
+patterns         = ["bellman_ford", "dijkstra_state_space"]
+families         = ["shortest_path", "graph_traversal"]
+data_structures  = ["array", "graph", "heap"]
+algorithms       = ["bellman_ford", "dijkstra"]
+related_problems = ["0743", "1631", "1368", "2290"]
+
+[pattern_role]
+is_base_template = false
+variation_of = "0743"
+variation_type = "edge_limit_constraint"
+
+[files]
+solution  = "solutions/0787_cheapest_flights_within_k_stops.py"
+generator = "generators/0787_cheapest_flights_within_k_stops.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionBellmanFord"
+method = "findCheapestPrice"
+api_kernels      = ["ShortestPath"]
+patterns         = ["bellman_ford"]
+role       = "primary"
+complexity = "O(K * E) time, O(V) space"
+notes      = "Bellman-Ford variant: K iterations for at most K edges."
+
+[[solutions]]
+key    = "dijkstra"
+class  = "SolutionDijkstra"
+method = "findCheapestPrice"
+api_kernels      = ["ShortestPath"]
+patterns         = ["dijkstra_state_space"]
+role       = "alternative"
+complexity = "O((V*K) log(V*K)) time, O(V*K) space"
+notes      = "State-space Dijkstra: state = (node, stops_used)."

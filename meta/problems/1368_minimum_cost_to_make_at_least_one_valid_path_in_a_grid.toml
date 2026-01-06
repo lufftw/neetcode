@@ -1,0 +1,41 @@
+# Problem: Minimum Cost to Make at Least One Valid Path in a Grid
+# https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/
+
+id = "1368"
+slug = "1368_minimum_cost_to_make_at_least_one_valid_path_in_a_grid"
+title = "Minimum Cost to Make at Least One Valid Path in a Grid"
+leetcode_id = 1368
+url = "https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/"
+
+difficulty = "hard"
+topics = ["array", "breadth_first_search", "graph", "heap", "matrix", "shortest_path"]
+companies = ["google", "amazon"]
+
+roadmaps = ["shortest_path_pattern_path"]
+
+api_kernels      = ["ShortestPath"]
+patterns         = ["0_1_bfs"]
+families         = ["shortest_path", "graph_traversal", "grid_traversal"]
+data_structures  = ["array", "matrix", "deque"]
+algorithms       = ["0_1_bfs"]
+related_problems = ["0743", "1631", "0787", "2290"]
+
+[pattern_role]
+is_base_template = false
+variation_of = "0743"
+variation_type = "binary_edge_weights"
+
+[files]
+solution  = "solutions/1368_minimum_cost_to_make_at_least_one_valid_path_in_a_grid.py"
+generator = "generators/1368_minimum_cost_to_make_at_least_one_valid_path_in_a_grid.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minCost"
+api_kernels      = ["ShortestPath"]
+patterns         = ["0_1_bfs"]
+role       = "primary"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "0-1 BFS: following arrow costs 0, changing direction costs 1."

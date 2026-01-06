@@ -1,0 +1,41 @@
+# Problem: Network Delay Time
+# https://leetcode.com/problems/network-delay-time/
+
+id = "0743"
+slug = "0743_network_delay_time"
+title = "Network Delay Time"
+leetcode_id = 743
+url = "https://leetcode.com/problems/network-delay-time/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "graph", "heap", "shortest_path"]
+companies = ["amazon", "google", "meta", "bloomberg"]
+
+roadmaps = ["neetcode_150", "shortest_path_pattern_path"]
+
+api_kernels      = ["ShortestPath"]
+patterns         = ["dijkstra"]
+families         = ["shortest_path", "graph_traversal"]
+data_structures  = ["array", "graph", "heap"]
+algorithms       = ["dijkstra"]
+related_problems = ["1631", "0787", "1368", "2290"]
+
+[pattern_role]
+is_base_template = true
+base_for_kernel = "ShortestPath"
+derived_problems = ["1631", "0787", "1368", "2290"]
+
+[files]
+solution  = "solutions/0743_network_delay_time.py"
+generator = "generators/0743_network_delay_time.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "networkDelayTime"
+api_kernels      = ["ShortestPath"]
+patterns         = ["dijkstra"]
+role       = "base"
+complexity = "O((V+E) log V) time, O(V+E) space"
+notes      = "Base template for Dijkstra's shortest path algorithm."

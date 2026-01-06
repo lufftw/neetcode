@@ -1,0 +1,41 @@
+# Problem: Path With Minimum Effort
+# https://leetcode.com/problems/path-with-minimum-effort/
+
+id = "1631"
+slug = "1631_path_with_minimum_effort"
+title = "Path With Minimum Effort"
+leetcode_id = 1631
+url = "https://leetcode.com/problems/path-with-minimum-effort/"
+
+difficulty = "medium"
+topics = ["array", "binary_search", "breadth_first_search", "depth_first_search", "graph", "heap", "matrix", "union_find"]
+companies = ["google", "amazon", "meta"]
+
+roadmaps = ["shortest_path_pattern_path"]
+
+api_kernels      = ["ShortestPath"]
+patterns         = ["dijkstra_minimax"]
+families         = ["shortest_path", "graph_traversal", "grid_traversal"]
+data_structures  = ["array", "matrix", "heap"]
+algorithms       = ["dijkstra", "minimax"]
+related_problems = ["0743", "0787", "1368", "2290"]
+
+[pattern_role]
+is_base_template = false
+variation_of = "0743"
+variation_type = "minimax_objective"
+
+[files]
+solution  = "solutions/1631_path_with_minimum_effort.py"
+generator = "generators/1631_path_with_minimum_effort.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minimumEffortPath"
+api_kernels      = ["ShortestPath"]
+patterns         = ["dijkstra_minimax"]
+role       = "primary"
+complexity = "O(m*n log(m*n)) time, O(m*n) space"
+notes      = "Minimax Dijkstra: minimize the maximum edge weight on path."
