@@ -1,0 +1,56 @@
+# Problem: Non-overlapping Intervals
+# https://leetcode.com/problems/non-overlapping-intervals/
+
+# ===== Problem Info =====
+id = "0435"
+slug = "0435_non_overlapping_intervals"
+title = "Non-overlapping Intervals"
+leetcode_id = 435
+url = "https://leetcode.com/problems/non-overlapping-intervals/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "greedy", "sorting"]
+companies = ["meta", "amazon", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "interval_pattern_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalScheduling"]
+patterns         = ["interval_scheduling"]
+families         = ["interval", "greedy"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+related_problems = ["0452", "0646", "1235"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "IntervalScheduling"
+derived_problems = ["0452", "0646"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0435_non_overlapping_intervals.py"
+generator = "generators/0435_non_overlapping_intervals.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "eraseOverlapIntervals"
+
+api_kernels      = ["IntervalScheduling"]
+patterns         = ["interval_scheduling"]
+families         = ["interval", "greedy"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+
+role       = "base"
+variant    = "greedy_by_end"
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(1) space"
+notes      = "Base template for interval scheduling. Sort by end, greedily select non-overlapping."

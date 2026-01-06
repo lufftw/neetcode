@@ -1,0 +1,56 @@
+# Problem: Minimum Number of Arrows to Burst Balloons
+# https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+
+# ===== Problem Info =====
+id = "0452"
+slug = "0452_minimum_number_of_arrows_to_burst_balloons"
+title = "Minimum Number of Arrows to Burst Balloons"
+leetcode_id = 452
+url = "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "greedy", "sorting"]
+companies = ["meta", "amazon", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["interval_pattern_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalScheduling"]
+patterns         = ["interval_scheduling"]
+families         = ["interval", "greedy"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+related_problems = ["0435", "0253", "0056"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0452_minimum_number_of_arrows_to_burst_balloons.py"
+generator = "generators/0452_minimum_number_of_arrows_to_burst_balloons.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "findMinArrowPoints"
+
+api_kernels      = ["IntervalScheduling"]
+patterns         = ["interval_scheduling"]
+families         = ["interval", "greedy"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+
+role       = "variant"
+variant    = "group_counting"
+based_on   = ["0435#default"]
+delta      = "Count overlapping groups instead of removals. Same greedy approach."
+complexity = "O(n log n) time, O(1) space"
+notes      = "Variant of interval scheduling. Count groups = max non-overlapping."

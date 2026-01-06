@@ -1,0 +1,56 @@
+# Problem: Merge Intervals
+# https://leetcode.com/problems/merge-intervals/
+
+# ===== Problem Info =====
+id = "0056"
+slug = "0056_merge_intervals"
+title = "Merge Intervals"
+leetcode_id = 56
+url = "https://leetcode.com/problems/merge-intervals/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "sorting"]
+companies = ["google", "meta", "amazon", "bloomberg", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "interval_pattern_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_merge"]
+families         = ["interval"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "merge"]
+related_problems = ["0057", "0435", "0252", "0253"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "IntervalMerge"
+derived_problems = ["0057", "0252", "0253"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0056_merge_intervals.py"
+generator = "generators/0056_merge_intervals.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "merge"
+
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_merge"]
+families         = ["interval"]
+data_structures  = ["array"]
+algorithms       = ["sorting"]
+
+role       = "base"
+variant    = "sort_and_merge"
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(n) space"
+notes      = "Base template for interval merging. Sort by start, merge adjacent overlaps."

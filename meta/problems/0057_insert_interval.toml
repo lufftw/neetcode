@@ -1,0 +1,56 @@
+# Problem: Insert Interval
+# https://leetcode.com/problems/insert-interval/
+
+# ===== Problem Info =====
+id = "0057"
+slug = "0057_insert_interval"
+title = "Insert Interval"
+leetcode_id = 57
+url = "https://leetcode.com/problems/insert-interval/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array"]
+companies = ["google", "meta", "amazon", "linkedin"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "interval_pattern_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_insert"]
+families         = ["interval"]
+data_structures  = ["array"]
+algorithms       = ["merge"]
+related_problems = ["0056", "0715", "0352"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0057_insert_interval.py"
+generator = "generators/0057_insert_interval.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "insert"
+
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_insert"]
+families         = ["interval"]
+data_structures  = ["array"]
+algorithms       = ["merge"]
+
+role       = "variant"
+variant    = "three_phase_insert"
+based_on   = ["0056#default"]
+delta      = "Three-phase processing: before, merge, after. Already sorted input."
+complexity = "O(n) time, O(n) space"
+notes      = "Variant of merge pattern. Process in three phases without re-sorting."

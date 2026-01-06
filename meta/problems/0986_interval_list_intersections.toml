@@ -1,0 +1,56 @@
+# Problem: Interval List Intersections
+# https://leetcode.com/problems/interval-list-intersections/
+
+# ===== Problem Info =====
+id = "0986"
+slug = "0986_interval_list_intersections"
+title = "Interval List Intersections"
+leetcode_id = 986
+url = "https://leetcode.com/problems/interval-list-intersections/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "two_pointers"]
+companies = ["meta", "google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["interval_pattern_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_intersection"]
+families         = ["interval", "two_pointers"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers", "merge"]
+related_problems = ["0056", "0088", "0349"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0986_interval_list_intersections.py"
+generator = "generators/0986_interval_list_intersections.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "intervalIntersection"
+
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_intersection"]
+families         = ["interval", "two_pointers"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers"]
+
+role       = "variant"
+variant    = "two_pointer_intersection"
+based_on   = ["0056#default"]
+delta      = "Two sorted lists, find intersections. Two-pointer merge technique."
+complexity = "O(m+n) time, O(min(m,n)) space"
+notes      = "Variant combining interval and two-pointer patterns."
