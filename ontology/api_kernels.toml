@@ -105,3 +105,7 @@ summary = "Greedy interval selection by sorting by end time for maximum non-over
 [[api_kernels]]
 id = "GreedyCore"
 summary = "Core greedy patterns: reachability tracking, prefix min/reset, sort+match, two-pass bidirectional."
+
+[[api_kernels]]
+id = "DP1DLinear"
+summary = "1D linear DP: Fibonacci-style, min-cost path, include/exclude, running min/max."

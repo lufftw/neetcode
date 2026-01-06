@@ -86,3 +86,8 @@ summary = "Comprehensive graph problem patterns."
 id = "greedy_core_path"
 name = "Greedy Core Mastery"
 summary = "Step-by-step path to master core greedy patterns: reachability, prefix min/reset, sort+match."
+
+[[roadmaps]]
+id = "dp_1d_linear_path"
+name = "DP 1D Linear Mastery"
+summary = "Step-by-step path to master 1D linear DP: Fibonacci, min-cost, include/exclude, running min/max."

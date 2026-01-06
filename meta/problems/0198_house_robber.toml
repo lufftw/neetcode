@@ -1,0 +1,49 @@
+# Problem Metadata: House Robber (LeetCode 198)
+
+# ===== Problem Info =====
+id = "0198"
+slug = "0198_house_robber"
+title = "House Robber"
+leetcode_id = 198
+url = "https://leetcode.com/problems/house-robber/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "microsoft", "apple", "linkedin"]
+
+# ===== Roadmaps =====
+roadmaps = ["dp_1d_linear_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["DP1DLinear"]
+patterns = ["include_exclude", "max_non_adjacent"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0213", "0070"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0198_house_robber.py"
+generator = "generators/0198_house_robber.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "rob"
+
+api_kernels = ["DP1DLinear"]
+patterns = ["include_exclude", "max_non_adjacent"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical include/exclude DP template."
+complexity = "O(n) time, O(1) space"
+notes = "Base template for non-adjacent selection problems."

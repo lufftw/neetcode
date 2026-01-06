@@ -1,0 +1,49 @@
+# Problem Metadata: Best Time to Buy and Sell Stock (LeetCode 121)
+
+# ===== Problem Info =====
+id = "0121"
+slug = "0121_best_time_to_buy_and_sell_stock"
+title = "Best Time to Buy and Sell Stock"
+leetcode_id = 121
+url = "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "microsoft", "apple", "meta", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["dp_1d_linear_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["DP1DLinear"]
+patterns = ["running_min_max", "kadane_style"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0053", "0122"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0121_best_time_to_buy_and_sell_stock.py"
+generator = "generators/0121_best_time_to_buy_and_sell_stock.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "maxProfit"
+
+api_kernels = ["DP1DLinear"]
+patterns = ["running_min_max", "kadane_style"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Track running minimum and maximum profit."
+complexity = "O(n) time, O(1) space"
+notes = "Kadane-style running min/max template."

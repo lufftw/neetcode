@@ -1,0 +1,57 @@
+# DP 1D Linear Mastery Path
+# Step-by-step learning path for mastering 1D linear dynamic programming
+
+id = "dp_1d_linear_path"
+name = "DP 1D Linear Mastery Path"
+api_kernel = "DP1DLinear"
+summary = "Master 1D linear DP: Fibonacci-style, min-cost path, include/exclude, running min/max."
+
+# === Step 1: Fibonacci-Style Base ===
+[[steps]]
+order = 1
+problem = "0070_climbing_stairs"
+role = "base"
+pattern = "fibonacci_style"
+prerequisite = []
+delta = ""
+note = "Learn the canonical Fibonacci-style DP: dp[i] = dp[i-1] + dp[i-2]."
+
+# === Step 2: Min Cost Path ===
+[[steps]]
+order = 2
+problem = "0746_min_cost_climbing_stairs"
+role = "variant"
+pattern = "min_cost_path"
+prerequisite = ["0070"]
+delta = "Change from counting to minimization."
+note = "Extends Fibonacci template to cost optimization."
+
+# === Step 3: Include/Exclude Base ===
+[[steps]]
+order = 3
+problem = "0198_house_robber"
+role = "base"
+pattern = "include_exclude"
+prerequisite = []
+delta = ""
+note = "Learn the include/exclude pattern: dp[i] = max(dp[i-1], dp[i-2] + val[i])."
+
+# === Step 4: Circular Decomposition ===
+[[steps]]
+order = 4
+problem = "0213_house_robber_ii"
+role = "variant"
+pattern = "circular_decomposition"
+prerequisite = ["0198"]
+delta = "Decompose circular into two linear subproblems."
+note = "Handle circular constraint by excluding first or last."
+
+# === Step 5: Running Min/Max ===
+[[steps]]
+order = 5
+problem = "0121_best_time_to_buy_and_sell_stock"
+role = "base"
+pattern = "running_min_max"
+prerequisite = []
+delta = ""
+note = "Kadane-style: track running minimum for optimal sell decision."

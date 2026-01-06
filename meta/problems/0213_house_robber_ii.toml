@@ -1,0 +1,49 @@
+# Problem Metadata: House Robber II (LeetCode 213)
+
+# ===== Problem Info =====
+id = "0213"
+slug = "0213_house_robber_ii"
+title = "House Robber II"
+leetcode_id = 213
+url = "https://leetcode.com/problems/house-robber-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["dp_1d_linear_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["DP1DLinear"]
+patterns = ["circular_decomposition", "include_exclude"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0198"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0213_house_robber_ii.py"
+generator = "generators/0213_house_robber_ii.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "rob"
+
+api_kernels = ["DP1DLinear"]
+patterns = ["circular_decomposition", "include_exclude"]
+families = ["dp_1d"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "variant"
+variant = "circular"
+based_on = ["0198"]
+delta = "Decompose circular array into two linear subproblems."
+complexity = "O(n) time, O(1) space"
+notes = "Extends House Robber by handling circular constraint."
