@@ -189,6 +189,9 @@ nav:
     - Line Sweep:
       - Intuition: patterns/line_sweep/intuition.md
       - Templates: patterns/line_sweep/templates.md
+    - Tree DP:
+      - Intuition: patterns/tree_dp/intuition.md
+      - Templates: patterns/tree_dp/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

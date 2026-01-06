@@ -44,6 +44,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `MathNumberTheory` | 💡 [Intuition](math_number_theory/intuition.md) · 🛠️ [Templates](math_number_theory/templates.md) | GCD, primes, modular arithmetic, base conversion | LeetCode 1979, 204, 168 |
 | `SegmentTreeFenwick` | 💡 [Intuition](segment_tree_fenwick/intuition.md) · 🛠️ [Templates](segment_tree_fenwick/templates.md) | Range queries with updates, inversion counting | LeetCode 307, 315, 327 |
 | `LineSweep` | 💡 [Intuition](line_sweep/intuition.md) · 🛠️ [Templates](line_sweep/templates.md) | Event counting, capacity tracking, height tracking | LeetCode 253, 1094, 218 |
+| `TreeDP` | 💡 [Intuition](tree_dp/intuition.md) · 🛠️ [Templates](tree_dp/templates.md) | Include/exclude, path contribution, multi-state | LeetCode 337, 124, 968 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |

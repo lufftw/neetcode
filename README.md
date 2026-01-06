@@ -433,6 +433,7 @@ Each pattern provides **two learning paths**:
 | `MathNumberTheory` | 💡 [Intuition](docs/patterns/math_number_theory/intuition.md) · 🛠️ [Templates](docs/patterns/math_number_theory/templates.md) | LeetCode 1979, 204, 168 |
 | `SegmentTreeFenwick` | 💡 [Intuition](docs/patterns/segment_tree_fenwick/intuition.md) · 🛠️ [Templates](docs/patterns/segment_tree_fenwick/templates.md) | LeetCode 307, 315, 327 |
 | `LineSweep` | 💡 [Intuition](docs/patterns/line_sweep/intuition.md) · 🛠️ [Templates](docs/patterns/line_sweep/templates.md) | LeetCode 253, 1094, 218 |
+| `TreeDP` | 💡 [Intuition](docs/patterns/tree_dp/intuition.md) · 🛠️ [Templates](docs/patterns/tree_dp/templates.md) | LeetCode 337, 124, 968 |
 | `GridBFSMultiSource` | *coming soon* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | LeetCode 25, 206, 92 |
