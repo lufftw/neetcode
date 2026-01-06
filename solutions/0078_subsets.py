@@ -32,6 +32,12 @@ SOLUTIONS = {
         "complexity": "O(n × 2^n) time, O(n) space",
         "description": "Backtracking with start-index canonicalization",
     },
+    "bitmask": {
+        "class": "SolutionBitmask",
+        "method": "subsets",
+        "complexity": "O(n × 2^n) time, O(1) extra space",
+        "description": "Bitmask enumeration - iterate all 2^n masks",
+    },
 }
 
 
@@ -126,6 +132,51 @@ class Solution:
         
         backtrack(0)
         return results
+
+
+# ============================================================================
+# Solution 2: Bitmask Enumeration
+# Time: O(n × 2^n), Space: O(1) extra (excluding output)
+#   - Each integer 0 to 2^n-1 represents a unique subset
+#   - Bit i set means include nums[i]
+#   - Iterate and decode each mask
+# ============================================================================
+class SolutionBitmask:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        """
+        Generate all subsets using bitmask enumeration.
+
+        Key Insight:
+        - There are 2^n subsets of an n-element set
+        - Each integer from 0 to 2^n-1 uniquely represents a subset
+        - Bit i being set (1) means include nums[i]
+
+        Example for nums = [1, 2, 3]:
+            mask=0 (000): []
+            mask=1 (001): [1]
+            mask=2 (010): [2]
+            mask=3 (011): [1, 2]
+            mask=4 (100): [3]
+            mask=5 (101): [1, 3]
+            mask=6 (110): [2, 3]
+            mask=7 (111): [1, 2, 3]
+
+        Time: O(n × 2^n) - iterate 2^n masks, decode each in O(n)
+        Space: O(1) extra - no recursion stack
+        """
+        n = len(nums)
+        result = []
+
+        # Iterate all 2^n possible masks
+        for mask in range(1 << n):
+            # Decode mask to subset
+            subset = []
+            for i in range(n):
+                if mask & (1 << i):  # Check if bit i is set
+                    subset.append(nums[i])
+            result.append(subset)
+
+        return result
 
 
 def solve():
