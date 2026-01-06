@@ -1,0 +1,43 @@
+# Problem Metadata: Count Primes (LeetCode 204)
+
+id = "0204"
+slug = "0204_count_primes"
+title = "Count Primes"
+leetcode_id = 204
+url = "https://leetcode.com/problems/count-primes/"
+
+difficulty = "medium"
+topics = ["array", "math", "enumeration", "number_theory"]
+companies = ["amazon", "microsoft"]
+
+roadmaps = ["math_number_theory_path"]
+
+api_kernels = ["MathNumberTheory"]
+patterns = ["prime_sieve"]
+families = ["math_number_theory"]
+data_structures = ["array"]
+algorithms = ["math", "sieve"]
+related_problems = ["1979", "0168"]
+
+[files]
+solution = "solutions/0204_count_primes.py"
+generator = "generators/0204_count_primes.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionSieve"
+method = "countPrimes"
+
+api_kernels = ["MathNumberTheory"]
+patterns = ["prime_sieve"]
+families = ["math_number_theory"]
+data_structures = ["array"]
+algorithms = ["math", "sieve"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical Sieve of Eratosthenes."
+complexity = "O(n log log n) time, O(n) space"
+notes = "Classic prime counting algorithm."

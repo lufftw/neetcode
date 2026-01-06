@@ -1,0 +1,43 @@
+# Problem Metadata: Find GCD of Array (LeetCode 1979)
+
+id = "1979"
+slug = "1979_find_greatest_common_divisor_of_array"
+title = "Find Greatest Common Divisor of Array"
+leetcode_id = 1979
+url = "https://leetcode.com/problems/find-greatest-common-divisor-of-array/"
+
+difficulty = "easy"
+topics = ["array", "math", "number_theory"]
+companies = ["amazon"]
+
+roadmaps = ["math_number_theory_path"]
+
+api_kernels = ["MathNumberTheory"]
+patterns = ["gcd_euclidean"]
+families = ["math_number_theory"]
+data_structures = ["array"]
+algorithms = ["math"]
+related_problems = ["0204", "0168"]
+
+[files]
+solution = "solutions/1979_find_greatest_common_divisor_of_array.py"
+generator = "generators/1979_find_greatest_common_divisor_of_array.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionMath"
+method = "findGCD"
+
+api_kernels = ["MathNumberTheory"]
+patterns = ["gcd_euclidean"]
+families = ["math_number_theory"]
+data_structures = ["array"]
+algorithms = ["math"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical GCD using Euclidean algorithm."
+complexity = "O(n + log(min)) time, O(1) space"
+notes = "Base template for GCD problems."
