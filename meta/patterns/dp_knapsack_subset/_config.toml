@@ -1,0 +1,20 @@
+# Pattern Documentation Configuration for DP Knapsack/Subset
+header_files = ["_header.md"]
+
+# Problem files ordered by learning progression
+problem_files = [
+    "0416-partition-equal-subset-sum.md",
+    "0494-target-sum.md",
+    "0322-coin-change.md",
+    "0518-coin-change-2.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+[output]
+subdirectory = "dp_knapsack_subset"
+filename = "templates.md"
