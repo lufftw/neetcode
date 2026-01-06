@@ -186,6 +186,9 @@ nav:
     - Segment Tree/Fenwick Tree:
       - Intuition: patterns/segment_tree_fenwick/intuition.md
       - Templates: patterns/segment_tree_fenwick/templates.md
+    - Line Sweep:
+      - Intuition: patterns/line_sweep/intuition.md
+      - Templates: patterns/line_sweep/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
