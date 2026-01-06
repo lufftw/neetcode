@@ -1,0 +1,22 @@
+# Topological Sort Pattern Configuration
+# Problems ordered by learning progression
+
+header_files = ["_header.md"]
+
+# Problem files ordered by learning progression
+problem_files = [
+    "0207-course-schedule.md",
+    "0210-course-schedule-ii.md",
+    "0802-find-eventual-safe-states.md",
+    "1203-sort-items-by-groups.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+[output]
+subdirectory = "topological_sort"
+filename = "templates.md"
