@@ -1,0 +1,17 @@
+# Monotonic Deque Pattern - Configuration
+# Controls file ordering for templates.md generation
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0239-sliding-window-maximum.md",
+    "1438-longest-continuous-subarray-with-absolute-diff-limit.md",
+    "0862-shortest-subarray-with-sum-at-least-k.md",
+    "1499-max-value-of-equation.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "monotonic_deque"
+filename = "templates.md"
