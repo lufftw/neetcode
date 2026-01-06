@@ -1,0 +1,61 @@
+# Tree Traversal Mastery Path
+# Step-by-step learning path for mastering tree traversal patterns
+
+id = "tree_traversal_path"
+name = "Tree Traversal Mastery Path"
+api_kernel = "TreeTraversalDFS"
+summary = "Master tree traversal from basic DFS/BFS to path problems and property validation."
+
+[[steps]]
+order = 1
+problem = "0094_binary_tree_inorder_traversal"
+role = "base"
+pattern = "tree_dfs_inorder"
+prerequisite = []
+delta = ""
+note = "Foundation for tree DFS. Learn Left → Node → Right recursion. BST gives sorted order."
+
+[[steps]]
+order = 2
+problem = "0102_binary_tree_level_order_traversal"
+role = "base"
+pattern = "tree_bfs_level_order"
+prerequisite = []
+delta = "Use queue instead of stack. Process level by level using size batching."
+note = "Foundation for tree BFS. Key insight: snapshot queue size before processing level."
+
+[[steps]]
+order = 3
+problem = "0104_maximum_depth_of_binary_tree"
+role = "example"
+pattern = "tree_property_computation"
+prerequisite = ["0094"]
+delta = "Compute property (depth) instead of collecting values. Postorder pattern."
+note = "Classic recursive pattern: depth(node) = 1 + max(left, right). Base case: None → 0."
+
+[[steps]]
+order = 4
+problem = "0110_balanced_binary_tree"
+role = "base"
+pattern = "tree_property_validation"
+prerequisite = ["0104"]
+delta = "Return sentinel -1 to propagate failure. Early termination optimization."
+note = "Learn early termination pattern. Return -1 as soon as balance fails anywhere."
+
+[[steps]]
+order = 5
+problem = "0543_diameter_of_binary_tree"
+role = "base"
+pattern = "tree_path_computation"
+prerequisite = ["0104"]
+delta = "Track global max during height computation. Return vs Update pattern."
+note = "Key insight: return height for parent, update global with path through node."
+
+[[steps]]
+order = 6
+problem = "0124_binary_tree_maximum_path_sum"
+role = "hard"
+pattern = "tree_path_sum"
+prerequisite = ["0543"]
+delta = "Path sum instead of edge count. Skip negative subtrees with max(0, gain)."
+note = "Same Return vs Update pattern but with sums. Critical: can skip negative contributions."
