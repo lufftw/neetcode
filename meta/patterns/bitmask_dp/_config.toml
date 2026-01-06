@@ -1,0 +1,16 @@
+# Bitmask DP Pattern Configuration
+# Controls file ordering for template generation
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0078-subsets.md",
+    "0847-shortest-path-visiting-all-nodes.md",
+    "1125-smallest-sufficient-team.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "bitmask_dp"
+filename = "templates.md"
