@@ -1,0 +1,67 @@
+# Greedy Core Mastery Path
+# Step-by-step learning path for mastering core greedy patterns
+
+id = "greedy_core_path"
+name = "Greedy Core Mastery Path"
+api_kernel = "GreedyCore"
+summary = "Master core greedy patterns: reachability, prefix min/reset, sort+match, two-pass bidirectional."
+
+# === Step 1: Reachability Base ===
+[[steps]]
+order = 1
+problem = "0055_jump_game"
+role = "base"
+pattern = "reachability"
+prerequisite = []
+delta = ""
+note = "Learn the canonical reachability tracking pattern: track farthest position, early exit."
+
+# === Step 2: Reachability Variant (Min Jumps) ===
+[[steps]]
+order = 2
+problem = "0045_jump_game_ii"
+role = "variant"
+pattern = "min_jumps"
+prerequisite = ["0055"]
+delta = "Track minimum jumps using BFS-like level traversal."
+note = "Extends reachability to count minimum steps with level boundaries."
+
+# === Step 3: Prefix Min/Reset Base ===
+[[steps]]
+order = 3
+problem = "0134_gas_station"
+role = "base"
+pattern = "prefix_min_reset"
+prerequisite = []
+delta = ""
+note = "Learn prefix deficit tracking with candidate reset on negative balance."
+
+# === Step 4: Two-Pass Greedy ===
+[[steps]]
+order = 4
+problem = "0135_candy"
+role = "base"
+pattern = "two_pass_greedy"
+prerequisite = []
+delta = ""
+note = "Learn two-pass greedy to satisfy bidirectional constraints."
+
+# === Step 5: Sort+Match Base ===
+[[steps]]
+order = 5
+problem = "0455_assign_cookies"
+role = "base"
+pattern = "sort_match"
+prerequisite = []
+delta = ""
+note = "Learn canonical sort + two-pointer match for greedy assignment."
+
+# === Step 6: Cost Difference Variant ===
+[[steps]]
+order = 6
+problem = "1029_two_city_scheduling"
+role = "variant"
+pattern = "cost_difference"
+prerequisite = ["0455"]
+delta = "Sort by cost difference to optimize assignment decisions."
+note = "Extends sort+match to cost optimization by sorting on delta values."

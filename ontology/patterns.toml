@@ -586,3 +586,34 @@ summary = "Group items by transitive equivalence (shared elements)."
 id = "union_find_constraint_satisfaction"
 api_kernel = "UnionFindConnectivity"
 summary = "Check satisfiability of equality/inequality constraints."
+
+# === Greedy Core Patterns ===
+[[patterns]]
+id = "reachability"
+api_kernel = "GreedyCore"
+summary = "Track farthest reachable position with single-pass greedy."
+
+[[patterns]]
+id = "min_jumps"
+api_kernel = "GreedyCore"
+summary = "Count minimum jumps using BFS-like level traversal with reachability."
+
+[[patterns]]
+id = "prefix_min_reset"
+api_kernel = "GreedyCore"
+summary = "Track prefix deficit with candidate reset on negative balance."
+
+[[patterns]]
+id = "two_pass_greedy"
+api_kernel = "GreedyCore"
+summary = "Two-pass greedy to satisfy bidirectional constraints."
+
+[[patterns]]
+id = "sort_match"
+api_kernel = "GreedyCore"
+summary = "Sort both sequences then greedily match elements."
+
+[[patterns]]
+id = "cost_difference"
+api_kernel = "GreedyCore"
+summary = "Sort by cost difference to optimize assignment decisions."

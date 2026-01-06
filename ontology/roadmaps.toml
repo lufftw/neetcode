@@ -81,3 +81,8 @@ summary = "Step-by-step path to master tree traversal from DFS/BFS to path probl
 id = "graph_path"
 name = "Graph Problems Path"
 summary = "Comprehensive graph problem patterns."
+
+[[roadmaps]]
+id = "greedy_core_path"
+name = "Greedy Core Mastery"
+summary = "Step-by-step path to master core greedy patterns: reachability, prefix min/reset, sort+match."
