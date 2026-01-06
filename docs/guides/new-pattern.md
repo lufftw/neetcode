@@ -85,22 +85,87 @@ A complete pattern implementation consists of these components:
 
 For cases where you only need pattern documentation (no solutions, generators, or ontology updates), use this minimal workflow:
 
-1. **Phase 1**: Create `meta/patterns/{pattern}/` source files and generate `templates.md`
-2. **Phase 4**: Write `docs/patterns/{pattern}/intuition.md` manually
-3. **Phase 8 (partial)**: Update indexes (`docs/patterns/README.md`, `README.md`, `README_zh-TW.md`, `mkdocs.yml`) and create PR
-
-**Recommended commit structure for documentation-only patterns:**
+#### Branch Naming Convention
 
 ```bash
-# Commit 1: Scaffold pattern structure
-git commit -m "docs({pattern}): scaffold {pattern} pattern"
-
-# Commit 2: Add generated templates and intuition guide
-git commit -m "docs({pattern}): add templates and intuition guide"
-
-# Commit 3: Wire into indexes
-git commit -m "docs: wire {pattern} pattern into indexes"
+feat/pattern-{pattern_name}
+# Examples:
+# feat/pattern-greedy-core
+# feat/pattern-dp-1d-linear
+# feat/pattern-math-number-theory
 ```
+
+#### Workflow Steps
+
+1. **Create branch**: `git checkout -b feat/pattern-{pattern_name}`
+
+2. **Phase 1 - Scaffold**: Create `meta/patterns/{pattern}/` source files
+   - `_config.toml` (file ordering)
+   - `_header.md` (must include `> **API Kernel**: \`KernelID\``)
+   - Problem files: `{id}-{slug}.md`
+   - Footer files: `_decision.md`, `_templates.md` or `_toolbox.md`, etc.
+
+3. **Phase 1 - Generate**: Run pattern docs generator
+   ```bash
+   mkdir -p docs/patterns/{pattern}
+   python tools/patterndocs/generate_pattern_docs.py --pattern {pattern}
+   ```
+
+4. **Phase 4 - Intuition**: Write `docs/patterns/{pattern}/intuition.md` manually
+
+5. **Phase 8 - Index Wiring**: Update all index files:
+   - `mkdocs.yml` - Add navigation entry
+   - `docs/patterns/README.md` - Add to pattern table
+   - `README.md` - Add to pattern documentation section
+   - `README_zh-TW.md` - Add to pattern documentation section (Chinese)
+
+6. **Verify**: Run mkdocs build to check for broken links
+   ```bash
+   mkdocs build --strict
+   ```
+
+7. **Commit, Push, Merge**: Follow commit structure below
+
+#### Recommended Commit Structure
+
+```bash
+# Commit 1: Scaffold meta files
+git add meta/patterns/{pattern}/
+git commit -m "meta({pattern}): Phase 1 - Add pattern source files"
+
+# Commit 2: Generated templates + manual intuition
+git add docs/patterns/{pattern}/
+git commit -m "docs({pattern}): Phase 2 - Add templates and intuition guide"
+
+# Commit 3: Index wiring
+git add mkdocs.yml docs/patterns/README.md README.md README_zh-TW.md
+git commit -m "docs({pattern}): Phase 3 - Add navigation and pattern index"
+```
+
+#### Documentation-Only Checklist
+
+Before merging, verify:
+
+- [ ] `meta/patterns/{pattern}/_config.toml` exists with correct file ordering
+- [ ] `meta/patterns/{pattern}/_header.md` contains `> **API Kernel**: \`...\``
+- [ ] `docs/patterns/{pattern}/templates.md` generated successfully
+- [ ] `docs/patterns/{pattern}/intuition.md` written with pattern signals and pitfalls
+- [ ] `mkdocs.yml` has navigation entry under `📐 Patterns`
+- [ ] `docs/patterns/README.md` has pattern in Available Pattern Guides table
+- [ ] `README.md` has pattern in Pattern Documentation table
+- [ ] `README_zh-TW.md` has pattern in Pattern Documentation table (Chinese labels)
+- [ ] `mkdocs build --strict` passes (no broken links)
+- [ ] All links use correct relative paths
+
+#### Common Pitfalls
+
+| Pitfall | Solution |
+|---------|----------|
+| Missing output directory | Create `docs/patterns/{pattern}/` before running generator |
+| Missing API Kernel in header | Add `> **API Kernel**: \`KernelID\`` to `_header.md` |
+| Broken links in mkdocs | Use relative paths: `{pattern}/intuition.md` not `patterns/{pattern}/intuition.md` |
+| Forgot to update Chinese README | Always update both `README.md` and `README_zh-TW.md` |
+| CRLF line endings | Ensure LF endings: `git config core.autocrlf input` |
 
 ---
 
