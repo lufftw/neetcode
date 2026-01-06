@@ -1,0 +1,57 @@
+# Problem: Smallest Sufficient Team
+# https://leetcode.com/problems/smallest-sufficient-team/
+
+# ===== Problem Info =====
+id = "1125"
+slug = "1125_smallest_sufficient_team"
+title = "Smallest Sufficient Team"
+leetcode_id = 1125
+url = "https://leetcode.com/problems/smallest-sufficient-team/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "dynamic_programming", "bit_manipulation", "bitmask"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["bitmask_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BitmaskDP"]
+patterns         = ["bitmask_dp_set_cover"]
+families         = ["bitmask_dp"]
+data_structures  = ["hash_map"]
+algorithms       = ["dynamic_programming", "bit_manipulation"]
+related_problems = ["1723", "1986"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "BitmaskDP"
+derived_problems = ["1723", "1986"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1125_smallest_sufficient_team.py"
+generator = "generators/1125_smallest_sufficient_team.py"
+tests_dir = "tests/1125_smallest_sufficient_team/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "smallestSufficientTeam"
+
+api_kernels      = ["BitmaskDP"]
+patterns         = ["bitmask_dp_set_cover"]
+families         = ["bitmask_dp"]
+data_structures  = ["hash_map"]
+algorithms       = ["dynamic_programming", "bit_manipulation"]
+related_problems = ["1723", "1986"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(people × 2^skills) time, O(2^skills) space"
+notes      = "BASE TEMPLATE for set cover with bitmask DP. dp[mask] = smallest team to cover skills in mask. Encode skills as bitmask, iterate people to expand coverage."

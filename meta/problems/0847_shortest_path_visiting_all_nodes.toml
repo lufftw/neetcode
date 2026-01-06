@@ -1,0 +1,57 @@
+# Problem: Shortest Path Visiting All Nodes
+# https://leetcode.com/problems/shortest-path-visiting-all-nodes/
+
+# ===== Problem Info =====
+id = "0847"
+slug = "0847_shortest_path_visiting_all_nodes"
+title = "Shortest Path Visiting All Nodes"
+leetcode_id = 847
+url = "https://leetcode.com/problems/shortest-path-visiting-all-nodes/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["dynamic_programming", "bit_manipulation", "bfs", "graph"]
+companies = ["google", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["bitmask_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BitmaskDP", "GraphBFS"]
+patterns         = ["bitmask_dp_bfs", "tsp_variant"]
+families         = ["bitmask_dp"]
+data_structures  = ["graph", "queue"]
+algorithms       = ["bfs", "bit_manipulation"]
+related_problems = ["0943", "1494"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "BitmaskDP"
+derived_problems = ["0943", "1494"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0847_shortest_path_visiting_all_nodes.py"
+generator = "generators/0847_shortest_path_visiting_all_nodes.py"
+tests_dir = "tests/0847_shortest_path_visiting_all_nodes/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "shortestPathLength"
+
+api_kernels      = ["BitmaskDP", "GraphBFS"]
+patterns         = ["bitmask_dp_bfs"]
+families         = ["bitmask_dp"]
+data_structures  = ["graph", "queue", "set"]
+algorithms       = ["bfs", "bit_manipulation"]
+related_problems = ["0943", "1494"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n × 2^n) time, O(n × 2^n) space"
+notes      = "BASE TEMPLATE for BFS with bitmask state. State = (node, visited_mask). Multi-source BFS from all nodes. Early termination when full_mask reached."

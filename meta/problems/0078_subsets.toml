@@ -17,11 +17,11 @@ companies = ["google", "amazon", "meta", "microsoft", "apple", "uber"]
 roadmaps = ["neetcode_150"]
 
 # ===== Ontology Tags (Problem Level) =====
-api_kernels      = ["BacktrackingExploration"]
-patterns         = ["backtracking_subset"]
-families         = ["backtracking_combinatorial"]
+api_kernels      = ["BacktrackingExploration", "BitmaskDP"]
+patterns         = ["backtracking_subset", "bitmask_dp_enumeration"]
+families         = ["backtracking_combinatorial", "bitmask_dp"]
 data_structures  = ["array"]
-algorithms       = ["backtracking"]
+algorithms       = ["backtracking", "bit_manipulation"]
 related_problems = ["0090", "0077", "0046"]
 
 # ===== Pattern Role =====
@@ -55,4 +55,23 @@ based_on   = []
 delta      = ""
 complexity = "O(n × 2^n) time, O(n) space"
 notes      = "BASE TEMPLATE for subset enumeration. Use start_index for canonical ordering. Every node (including empty) is a valid subset. Key difference from permutations: no 'used' array needed, collect at every node."
+
+[[solutions]]
+key    = "bitmask"
+class  = "SolutionBitmask"
+method = "subsets"
+
+api_kernels      = ["BitmaskDP"]
+patterns         = ["bitmask_dp_enumeration"]
+families         = ["bitmask_dp"]
+data_structures  = ["array"]
+algorithms       = ["bit_manipulation"]
+related_problems = ["0847", "1125"]
+
+role       = "base"
+variant    = "bitmask"
+based_on   = []
+delta      = ""
+complexity = "O(n × 2^n) time, O(1) extra space"
+notes      = "BASE TEMPLATE for bitmask subset enumeration. Each integer 0 to 2^n-1 represents a unique subset. Decode mask using bit check (mask & (1 << i))."
 
