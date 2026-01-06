@@ -113,6 +113,10 @@ data_sources:
         path: "math_number_theory"
         enabled: true
         config_file: "_config.toml"
+      - name: "segment_tree_fenwick"
+        path: "segment_tree_fenwick"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -134,6 +138,9 @@ data_sources:
         enabled: true
       - name: "math_number_theory_path"
         path: "math_number_theory_path.toml"
+        enabled: true
+      - name: "segment_tree_fenwick_path"
+        path: "segment_tree_fenwick_path.toml"
         enabled: true
       - name: "neetcode_150"
         path: "neetcode_150.toml"

@@ -431,6 +431,7 @@ Each pattern provides **two learning paths**:
 | `DP1DLinear` | 💡 [Intuition](docs/patterns/dp_1d_linear/intuition.md) · 🛠️ [Templates](docs/patterns/dp_1d_linear/templates.md) | LeetCode 70, 198, 213, 121, 746 |
 | `DPKnapsackSubset` | 💡 [Intuition](docs/patterns/dp_knapsack_subset/intuition.md) · 🛠️ [Templates](docs/patterns/dp_knapsack_subset/templates.md) | LeetCode 416, 494, 322, 518 |
 | `MathNumberTheory` | 💡 [Intuition](docs/patterns/math_number_theory/intuition.md) · 🛠️ [Templates](docs/patterns/math_number_theory/templates.md) | LeetCode 1979, 204, 168 |
+| `SegmentTreeFenwick` | 💡 [Intuition](docs/patterns/segment_tree_fenwick/intuition.md) · 🛠️ [Templates](docs/patterns/segment_tree_fenwick/templates.md) | LeetCode 307, 315, 327 |
 | `GridBFSMultiSource` | *coming soon* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | LeetCode 25, 206, 92 |

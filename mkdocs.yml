@@ -183,6 +183,9 @@ nav:
     - Math/Number Theory:
       - Intuition: patterns/math_number_theory/intuition.md
       - Templates: patterns/math_number_theory/templates.md
+    - Segment Tree/Fenwick Tree:
+      - Intuition: patterns/segment_tree_fenwick/intuition.md
+      - Templates: patterns/segment_tree_fenwick/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

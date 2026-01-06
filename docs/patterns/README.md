@@ -42,6 +42,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `DP1DLinear` | 💡 [Intuition](dp_1d_linear/intuition.md) · 🛠️ [Templates](dp_1d_linear/templates.md) | 1D dynamic programming backbone | LeetCode 70, 198, 213, 121, 746 |
 | `DPKnapsackSubset` | 💡 [Intuition](dp_knapsack_subset/intuition.md) · 🛠️ [Templates](dp_knapsack_subset/templates.md) | 0/1 and unbounded knapsack patterns | LeetCode 416, 494, 322, 518 |
 | `MathNumberTheory` | 💡 [Intuition](math_number_theory/intuition.md) · 🛠️ [Templates](math_number_theory/templates.md) | GCD, primes, modular arithmetic, base conversion | LeetCode 1979, 204, 168 |
+| `SegmentTreeFenwick` | 💡 [Intuition](segment_tree_fenwick/intuition.md) · 🛠️ [Templates](segment_tree_fenwick/templates.md) | Range queries with updates, inversion counting | LeetCode 307, 315, 327 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
