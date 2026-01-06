@@ -121,3 +121,7 @@ summary = "Number theory: GCD/LCM, prime sieve, base conversion, modular arithme
 [[api_kernels]]
 id = "SegmentTreeFenwick"
 summary = "Range queries with point updates: Segment Tree, Fenwick Tree (BIT), merge sort counting."
+
+[[api_kernels]]
+id = "LineSweep"
+summary = "Line sweep for interval processing: event counting, capacity tracking, height tracking."

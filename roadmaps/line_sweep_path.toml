@@ -1,0 +1,37 @@
+# Line Sweep Mastery Path
+# Step-by-step learning path for mastering line sweep patterns
+
+id = "line_sweep_path"
+name = "Line Sweep Mastery Path"
+api_kernel = "LineSweep"
+summary = "Master line sweep: event counting, capacity tracking, height tracking."
+
+# === Step 1: Event Counting (Meeting Rooms II) ===
+[[steps]]
+order = 1
+problem = "0253_meeting_rooms_ii"
+role = "base"
+pattern = "line_sweep_event_counting"
+prerequisite = []
+delta = ""
+note = "Learn basic event counting: +1 at start, -1 at end, find max overlap."
+
+# === Step 2: Capacity Tracking (Car Pooling) ===
+[[steps]]
+order = 2
+problem = "1094_car_pooling"
+role = "apply"
+pattern = "line_sweep_capacity_tracking"
+prerequisite = ["0253"]
+delta = "variable_weights"
+note = "Apply line sweep with weighted events and capacity threshold."
+
+# === Step 3: Height Tracking (Skyline Problem) ===
+[[steps]]
+order = 3
+problem = "0218_the_skyline_problem"
+role = "apply"
+pattern = "line_sweep_height_tracking"
+prerequisite = ["0253"]
+delta = "max_tracking"
+note = "Advanced line sweep with heap/sorted container for max height tracking."

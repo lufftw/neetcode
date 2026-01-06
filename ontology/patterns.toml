@@ -731,3 +731,25 @@ summary = "Count pairs/inversions during merge sort."
 id = "coordinate_compression"
 api_kernel = "SegmentTreeFenwick"
 summary = "Map large value range to small rank range for BIT usage."
+
+# ===== Line Sweep Patterns =====
+
+[[patterns]]
+id = "line_sweep_event_counting"
+api_kernel = "LineSweep"
+summary = "Count overlapping intervals using +1/-1 events."
+
+[[patterns]]
+id = "line_sweep_capacity_tracking"
+api_kernel = "LineSweep"
+summary = "Track capacity/load across positions using weighted events."
+
+[[patterns]]
+id = "line_sweep_height_tracking"
+api_kernel = "LineSweep"
+summary = "Track maximum height using heap or sorted container."
+
+[[patterns]]
+id = "difference_array_sweep"
+api_kernel = "LineSweep"
+summary = "Offline range updates using difference array and prefix sum."

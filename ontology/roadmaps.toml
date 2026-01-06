@@ -106,3 +106,8 @@ summary = "Step-by-step path to master number theory: GCD, primes, base conversi
 id = "segment_tree_fenwick_path"
 name = "Segment Tree / Fenwick Tree Mastery"
 summary = "Step-by-step path to master range queries with updates: BIT, Segment Tree, merge sort counting."
+
+[[roadmaps]]
+id = "line_sweep_path"
+name = "Line Sweep Mastery"
+summary = "Step-by-step path to master line sweep: event counting, capacity tracking, height tracking."
