@@ -1,0 +1,21 @@
+# Pattern Documentation Configuration for DP 1D Linear
+header_files = ["_header.md"]
+
+# Problem files ordered by learning progression
+problem_files = [
+    "0070-climbing-stairs.md",
+    "0746-min-cost-climbing-stairs.md",
+    "0198-house-robber.md",
+    "0213-house-robber-ii.md",
+    "0121-best-time-to-buy-sell-stock.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+[output]
+subdirectory = "dp_1d_linear"
+filename = "templates.md"
