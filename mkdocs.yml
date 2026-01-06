@@ -152,6 +152,9 @@ nav:
     - Graph Traversal (DFS/BFS):
       - Intuition: patterns/graph/intuition.md
       - Templates: patterns/graph/templates.md
+    - Interval:
+      - Intuition: patterns/interval/intuition.md
+      - Templates: patterns/interval/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
