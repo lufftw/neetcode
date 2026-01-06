@@ -586,3 +586,29 @@ summary = "Group items by transitive equivalence (shared elements)."
 id = "union_find_constraint_satisfaction"
 api_kernel = "UnionFindConnectivity"
 summary = "Check satisfiability of equality/inequality constraints."
+
+# === DP Knapsack/Subset Patterns ===
+[[patterns]]
+id = "knapsack_01_boolean"
+api_kernel = "DPKnapsackSubset"
+summary = "0/1 Knapsack to check if target sum is achievable."
+
+[[patterns]]
+id = "knapsack_01_count"
+api_kernel = "DPKnapsackSubset"
+summary = "0/1 Knapsack to count ways to achieve target sum."
+
+[[patterns]]
+id = "target_transformation"
+api_kernel = "DPKnapsackSubset"
+summary = "Transform +/- assignment to subset sum via algebraic manipulation."
+
+[[patterns]]
+id = "unbounded_knapsack_min"
+api_kernel = "DPKnapsackSubset"
+summary = "Unbounded knapsack to minimize items needed for target."
+
+[[patterns]]
+id = "unbounded_knapsack_count"
+api_kernel = "DPKnapsackSubset"
+summary = "Unbounded knapsack to count combinations (coins outer loop)."

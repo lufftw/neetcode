@@ -1,0 +1,47 @@
+# DP Knapsack/Subset Mastery Path
+# Step-by-step learning path for mastering knapsack and subset DP problems
+
+id = "dp_knapsack_subset_path"
+name = "DP Knapsack/Subset Mastery Path"
+api_kernel = "DPKnapsackSubset"
+summary = "Master knapsack/subset DP: 0/1 and unbounded variants for boolean, count, and optimization."
+
+# === Step 1: 0/1 Knapsack Boolean ===
+[[steps]]
+order = 1
+problem = "0416_partition_equal_subset_sum"
+role = "base"
+pattern = "knapsack_01_boolean"
+prerequisite = []
+delta = ""
+note = "Learn 0/1 knapsack with backward iteration for boolean reachability."
+
+# === Step 2: 0/1 Knapsack Count with Transformation ===
+[[steps]]
+order = 2
+problem = "0494_target_sum"
+role = "variant"
+pattern = "knapsack_01_count"
+prerequisite = ["0416"]
+delta = "Transform +/- to subset selection, count instead of boolean."
+note = "Algebraic transformation: P = (target + total) / 2."
+
+# === Step 3: Unbounded Knapsack Minimum ===
+[[steps]]
+order = 3
+problem = "0322_coin_change"
+role = "base"
+pattern = "unbounded_knapsack_min"
+prerequisite = []
+delta = ""
+note = "Learn unbounded knapsack with forward iteration (coins reusable)."
+
+# === Step 4: Unbounded Knapsack Count Combinations ===
+[[steps]]
+order = 4
+problem = "0518_coin_change_2"
+role = "variant"
+pattern = "unbounded_knapsack_count"
+prerequisite = ["0322"]
+delta = "Count combinations (coins outer) instead of minimum."
+note = "Coins outer = combinations, amount outer = permutations."

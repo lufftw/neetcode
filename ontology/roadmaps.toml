@@ -81,3 +81,8 @@ summary = "Step-by-step path to master tree traversal from DFS/BFS to path probl
 id = "graph_path"
 name = "Graph Problems Path"
 summary = "Comprehensive graph problem patterns."
+
+[[roadmaps]]
+id = "dp_knapsack_subset_path"
+name = "DP Knapsack/Subset Mastery"
+summary = "Step-by-step path to master knapsack/subset DP: 0/1 and unbounded variants."

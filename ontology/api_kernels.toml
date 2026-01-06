@@ -101,3 +101,7 @@ summary = "Merge overlapping intervals after sorting by start time."
 [[api_kernels]]
 id = "IntervalScheduling"
 summary = "Greedy interval selection by sorting by end time for maximum non-overlap."
+
+[[api_kernels]]
+id = "DPKnapsackSubset"
+summary = "Knapsack/subset DP: 0/1 and unbounded variants for boolean, count, and optimization."
