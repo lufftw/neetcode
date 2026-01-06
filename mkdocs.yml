@@ -164,6 +164,9 @@ nav:
     - Topological Sort:
       - Intuition: patterns/topological_sort/intuition.md
       - Templates: patterns/topological_sort/templates.md
+    - Shortest Path:
+      - Intuition: patterns/shortest_path/intuition.md
+      - Templates: patterns/shortest_path/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
