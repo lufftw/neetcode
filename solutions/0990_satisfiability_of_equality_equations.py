@@ -46,8 +46,14 @@ def judge(actual, expected, input_data: str) -> bool:
     # Parse input
     equations = json.loads(input_data.strip())
 
+    # Normalize actual to boolean
+    if isinstance(actual, str):
+        actual = actual.lower() == 'true'
+
     # If expected is available, compare directly
     if expected is not None:
+        if isinstance(expected, str):
+            expected = expected.lower() == 'true'
         return actual == expected
 
     # Judge-only mode: compute expected
