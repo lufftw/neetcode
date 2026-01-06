@@ -167,6 +167,9 @@ nav:
     - Shortest Path:
       - Intuition: patterns/shortest_path/intuition.md
       - Templates: patterns/shortest_path/templates.md
+    - Trie:
+      - Intuition: patterns/trie/intuition.md
+      - Templates: patterns/trie/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
