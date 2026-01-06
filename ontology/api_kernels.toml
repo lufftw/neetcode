@@ -117,3 +117,7 @@ summary = "Knapsack/subset DP: 0/1 and unbounded variants for boolean, count, an
 [[api_kernels]]
 id = "MathNumberTheory"
 summary = "Number theory: GCD/LCM, prime sieve, base conversion, modular arithmetic."
+
+[[api_kernels]]
+id = "SegmentTreeFenwick"
+summary = "Range queries with point updates: Segment Tree, Fenwick Tree (BIT), merge sort counting."

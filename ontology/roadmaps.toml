@@ -101,3 +101,8 @@ summary = "Step-by-step path to master knapsack/subset DP: 0/1 and unbounded var
 id = "math_number_theory_path"
 name = "Math / Number Theory Mastery"
 summary = "Step-by-step path to master number theory: GCD, primes, base conversion."
+
+[[roadmaps]]
+id = "segment_tree_fenwick_path"
+name = "Segment Tree / Fenwick Tree Mastery"
+summary = "Step-by-step path to master range queries with updates: BIT, Segment Tree, merge sort counting."

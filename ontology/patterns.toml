@@ -700,3 +700,34 @@ summary = "Sieve of Eratosthenes for prime counting/listing."
 id = "base_conversion"
 api_kernel = "MathNumberTheory"
 summary = "Convert between number bases with mod and divide."
+
+# === Segment Tree / Fenwick Tree Patterns ===
+[[patterns]]
+id = "range_sum_update"
+api_kernel = "SegmentTreeFenwick"
+summary = "Range sum queries with point updates using BIT or Segment Tree."
+
+[[patterns]]
+id = "fenwick_tree"
+api_kernel = "SegmentTreeFenwick"
+summary = "Fenwick Tree (BIT) for prefix sum and point update in O(log n)."
+
+[[patterns]]
+id = "segment_tree"
+api_kernel = "SegmentTreeFenwick"
+summary = "Segment Tree for flexible range queries (sum, min, max) with updates."
+
+[[patterns]]
+id = "count_inversions"
+api_kernel = "SegmentTreeFenwick"
+summary = "Count inversions using BIT with coordinate compression."
+
+[[patterns]]
+id = "merge_sort_counting"
+api_kernel = "SegmentTreeFenwick"
+summary = "Count pairs/inversions during merge sort."
+
+[[patterns]]
+id = "coordinate_compression"
+api_kernel = "SegmentTreeFenwick"
+summary = "Map large value range to small rank range for BIT usage."

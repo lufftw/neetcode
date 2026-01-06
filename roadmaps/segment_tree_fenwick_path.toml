@@ -1,0 +1,37 @@
+# Segment Tree / Fenwick Tree Mastery Path
+# Step-by-step learning path for mastering range queries with updates
+
+id = "segment_tree_fenwick_path"
+name = "Segment Tree / Fenwick Tree Mastery Path"
+api_kernel = "SegmentTreeFenwick"
+summary = "Master range queries with point updates: Fenwick Tree, Segment Tree, merge sort counting."
+
+# === Step 1: Range Sum Query with Updates (BIT/Segment Tree Basics) ===
+[[steps]]
+order = 1
+problem = "0307_range_sum_query_mutable"
+role = "base"
+pattern = "fenwick_tree"
+prerequisite = []
+delta = ""
+note = "Learn Fenwick Tree (BIT) and Segment Tree for range sum with point updates."
+
+# === Step 2: Inversion Counting with BIT ===
+[[steps]]
+order = 2
+problem = "0315_count_of_smaller_numbers_after_self"
+role = "apply"
+pattern = "count_inversions"
+prerequisite = ["0307"]
+delta = "coordinate_compression"
+note = "Apply BIT to count inversions with coordinate compression."
+
+# === Step 3: Range Sum Counting with Merge Sort ===
+[[steps]]
+order = 3
+problem = "0327_count_of_range_sum"
+role = "apply"
+pattern = "merge_sort_counting"
+prerequisite = ["0315"]
+delta = "prefix_sum"
+note = "Combine prefix sum with merge sort counting for range sum queries."
