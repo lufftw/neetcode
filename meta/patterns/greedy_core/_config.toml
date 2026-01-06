@@ -1,0 +1,23 @@
+# Pattern Documentation Configuration for Greedy Core
+header_files = ["_header.md"]
+
+# Problem files ordered by learning progression
+problem_files = [
+    "0055-jump-game.md",
+    "0045-jump-game-ii.md",
+    "0134-gas-station.md",
+    "0135-candy.md",
+    "0455-assign-cookies.md",
+    "1029-two-city-scheduling.md"
+]
+
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+
+[output]
+subdirectory = "greedy_core"
+filename = "templates.md"
