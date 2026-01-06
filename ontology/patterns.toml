@@ -775,3 +775,25 @@ summary = "Multiple states per node for coverage/coloring constraints."
 id = "tree_dp_coverage"
 api_kernel = "TreeDP"
 summary = "Minimum coverage problems: cameras, dominators, vertex cover."
+
+# ===== Bitmask DP Patterns =====
+
+[[patterns]]
+id = "bitmask_dp_enumeration"
+api_kernel = "BitmaskDP"
+summary = "Generate all subsets by iterating bitmasks 0 to 2^n-1."
+
+[[patterns]]
+id = "bitmask_dp_bfs"
+api_kernel = "BitmaskDP"
+summary = "BFS with (node, visited_mask) state for TSP-style problems."
+
+[[patterns]]
+id = "bitmask_dp_set_cover"
+api_kernel = "BitmaskDP"
+summary = "Minimum items to cover all requirements using dp[mask]."
+
+[[patterns]]
+id = "bitmask_dp_tsp"
+api_kernel = "BitmaskDP"
+summary = "TSP-style DP: dp[mask][last] for min cost visiting all nodes."

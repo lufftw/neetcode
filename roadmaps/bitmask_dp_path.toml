@@ -1,0 +1,120 @@
+# Bitmask DP Learning Path
+# Mastering state compression DP using bitmasks
+
+[roadmap]
+id = "bitmask_dp_path"
+name = "Bitmask DP Mastery"
+description = """
+Master bitmask dynamic programming for subset-based problems.
+Progress from basic subset enumeration to complex TSP and set cover problems.
+"""
+api_kernel = "BitmaskDP"
+difficulty_range = ["medium", "hard"]
+estimated_problems = 3
+
+# Prerequisites
+prerequisites = [
+    "Basic DP concepts",
+    "Bit manipulation operations",
+    "Understanding of 2^n complexity",
+]
+
+# Learning objectives
+objectives = [
+    "Represent subsets as bitmasks",
+    "Enumerate all 2^n subsets efficiently",
+    "Combine BFS with bitmask state",
+    "Solve set cover problems with DP",
+]
+
+# =============================================================================
+# Stage 1: Subset Enumeration
+# =============================================================================
+[[stages]]
+id = "subset_enumeration"
+name = "Subset Enumeration"
+description = "Learn to generate all subsets using bitmask iteration."
+pattern = "bitmask_dp_enumeration"
+
+focus_points = [
+    "Map integers 0 to 2^n-1 to unique subsets",
+    "Check bit i with: mask & (1 << i)",
+    "Set bit i with: mask | (1 << i)",
+    "Understand O(n × 2^n) complexity",
+]
+
+[[stages.problems]]
+id = "0078"
+title = "Subsets"
+difficulty = "medium"
+role = "base_template"
+notes = "Foundation for bitmask enumeration. Each mask from 0 to 2^n-1 represents a unique subset."
+
+# =============================================================================
+# Stage 2: BFS with Bitmask State
+# =============================================================================
+[[stages]]
+id = "bfs_bitmask"
+name = "BFS + Bitmask State"
+description = "Combine BFS with bitmask to track visited nodes."
+pattern = "bitmask_dp_bfs"
+
+focus_points = [
+    "State = (current_node, visited_mask)",
+    "Multi-source BFS initialization",
+    "Early termination when full_mask reached",
+    "O(n × 2^n) state space",
+]
+
+[[stages.problems]]
+id = "0847"
+title = "Shortest Path Visiting All Nodes"
+difficulty = "hard"
+role = "base_template"
+notes = "TSP variant with BFS. State includes both position and visited set. Can revisit nodes."
+
+# =============================================================================
+# Stage 3: Set Cover DP
+# =============================================================================
+[[stages]]
+id = "set_cover"
+name = "Set Cover DP"
+description = "Minimize items needed to cover all requirements."
+pattern = "bitmask_dp_set_cover"
+
+focus_points = [
+    "dp[mask] = minimum items to cover skills in mask",
+    "Encode requirements as bitmasks",
+    "Iterate people to expand coverage",
+    "Reconstruct optimal team from DP",
+]
+
+[[stages.problems]]
+id = "1125"
+title = "Smallest Sufficient Team"
+difficulty = "hard"
+role = "base_template"
+notes = "Classic set cover with bitmask DP. Skills encoded as bits, track minimum team per mask."
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+Bitmask DP represents 'which items are selected' as integers, enabling O(1) state transitions
+and efficient enumeration of all 2^n subsets.
+"""
+
+complexity_guide = """
+- Subset Enumeration: O(n × 2^n) time, O(1) space
+- BFS + Bitmask: O(n × 2^n) time and space
+- Set Cover DP: O(items × 2^requirements) time, O(2^requirements) space
+"""
+
+constraint_check = """
+Bitmask DP is feasible when n ≤ 20:
+- n = 10: 2^10 = 1,024 states (fast)
+- n = 16: 2^16 = 65,536 states (ok)
+- n = 20: 2^20 = 1,048,576 states (borderline)
+- n > 20: Usually too slow
+"""

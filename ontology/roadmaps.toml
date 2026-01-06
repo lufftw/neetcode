@@ -116,3 +116,8 @@ summary = "Step-by-step path to master line sweep: event counting, capacity trac
 id = "tree_dp_path"
 name = "Tree DP Mastery"
 summary = "Step-by-step path to master tree DP: include/exclude, path contribution, multi-state."
+
+[[roadmaps]]
+id = "bitmask_dp_path"
+name = "Bitmask DP Mastery"
+summary = "Step-by-step path to master bitmask DP: subset enumeration, BFS with bitmask, set cover."

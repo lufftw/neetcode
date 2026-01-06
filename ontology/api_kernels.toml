@@ -129,3 +129,7 @@ summary = "Line sweep for interval processing: event counting, capacity tracking
 [[api_kernels]]
 id = "TreeDP"
 summary = "Dynamic programming on trees: include/exclude, path contribution, multi-state coverage."
+
+[[api_kernels]]
+id = "BitmaskDP"
+summary = "State compression DP using bitmasks: subset enumeration, TSP-style, set cover."
