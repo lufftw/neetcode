@@ -586,3 +586,44 @@ summary = "Group items by transitive equivalence (shared elements)."
 id = "union_find_constraint_satisfaction"
 api_kernel = "UnionFindConnectivity"
 summary = "Check satisfiability of equality/inequality constraints."
+
+# === DP 1D Linear Patterns ===
+[[patterns]]
+id = "fibonacci_style"
+api_kernel = "DP1DLinear"
+summary = "Count ways using Fibonacci-like recurrence dp[i] = dp[i-1] + dp[i-2]."
+
+[[patterns]]
+id = "count_ways"
+api_kernel = "DP1DLinear"
+summary = "Count distinct ways to reach a state."
+
+[[patterns]]
+id = "min_cost_path"
+api_kernel = "DP1DLinear"
+summary = "Minimize cost to reach goal using dp[i] = min(dp[i-1], dp[i-2]) + cost[i]."
+
+[[patterns]]
+id = "include_exclude"
+api_kernel = "DP1DLinear"
+summary = "Choose to include or exclude element: dp[i] = max(dp[i-1], dp[i-2] + val[i])."
+
+[[patterns]]
+id = "max_non_adjacent"
+api_kernel = "DP1DLinear"
+summary = "Maximum sum of non-adjacent elements."
+
+[[patterns]]
+id = "circular_decomposition"
+api_kernel = "DP1DLinear"
+summary = "Decompose circular array into two linear subproblems."
+
+[[patterns]]
+id = "running_min_max"
+api_kernel = "DP1DLinear"
+summary = "Track running minimum/maximum for optimal decision."
+
+[[patterns]]
+id = "kadane_style"
+api_kernel = "DP1DLinear"
+summary = "Kadane's algorithm style for max subarray/profit problems."

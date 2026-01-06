@@ -101,3 +101,7 @@ summary = "Merge overlapping intervals after sorting by start time."
 [[api_kernels]]
 id = "IntervalScheduling"
 summary = "Greedy interval selection by sorting by end time for maximum non-overlap."
+
+[[api_kernels]]
+id = "DP1DLinear"
+summary = "1D linear DP: Fibonacci-style, min-cost path, include/exclude, running min/max."

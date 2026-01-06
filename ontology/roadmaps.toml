@@ -81,3 +81,8 @@ summary = "Step-by-step path to master tree traversal from DFS/BFS to path probl
 id = "graph_path"
 name = "Graph Problems Path"
 summary = "Comprehensive graph problem patterns."
+
+[[roadmaps]]
+id = "dp_1d_linear_path"
+name = "DP 1D Linear Mastery"
+summary = "Step-by-step path to master 1D linear DP: Fibonacci, min-cost, include/exclude, running min/max."
