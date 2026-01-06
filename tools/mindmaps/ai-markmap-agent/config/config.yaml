@@ -97,6 +97,10 @@ data_sources:
         path: "monotonic_stack"
         enabled: true
         config_file: "_config.toml"
+      - name: "greedy_core"
+        path: "greedy_core"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -106,6 +110,9 @@ data_sources:
         enabled: true
       - name: "monotonic_stack_path"
         path: "monotonic_stack_path.toml"
+        enabled: true
+      - name: "greedy_core_path"
+        path: "greedy_core_path.toml"
         enabled: true
       - name: "neetcode_150"
         path: "neetcode_150.toml"
