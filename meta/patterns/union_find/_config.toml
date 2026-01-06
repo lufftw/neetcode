@@ -1,0 +1,30 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Basic connectivity → Cycle detection → Account merge → Count components → Equation validation
+problem_files = [
+    "0547-number-of-provinces.md",
+    "0684-redundant-connection.md",
+    "0721-accounts-merge.md",
+    "1319-number-of-operations-to-make-network-connected.md",
+    "0990-satisfiability-of-equality-equations.md"
+]
+
+# Footer files (appear last, comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/union_find/templates.md
+[output]
+subdirectory = "union_find"
+filename = "templates.md"
