@@ -1,0 +1,56 @@
+# Problem: Binary Tree Level Order Traversal
+# https://leetcode.com/problems/binary-tree-level-order-traversal/
+
+# ===== Problem Info =====
+id = "0102"
+slug = "0102_binary_tree_level_order_traversal"
+title = "Binary Tree Level Order Traversal"
+leetcode_id = 102
+url = "https://leetcode.com/problems/binary-tree-level-order-traversal/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["tree", "breadth_first_search", "binary_tree"]
+companies = ["amazon", "microsoft", "meta", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "tree_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeTraversalBFS"]
+patterns         = ["tree_bfs_level_order"]
+families         = ["tree_traversal"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0103", "0107", "0199", "0637"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "TreeTraversalBFS"
+derived_problems = ["0103", "0107", "0199", "0637"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0102_binary_tree_level_order_traversal.py"
+generator = "generators/0102_binary_tree_level_order_traversal.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "levelOrder"
+
+api_kernels      = ["TreeTraversalBFS"]
+patterns         = ["tree_bfs_level_order"]
+families         = ["tree_traversal"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["bfs"]
+
+role       = "base"
+variant    = "bfs_level_batching"
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(w) space"
+notes      = "Base template for tree BFS. Process level by level using queue size batching."

@@ -1,0 +1,74 @@
+# Problem: Binary Tree Inorder Traversal
+# https://leetcode.com/problems/binary-tree-inorder-traversal/
+
+# ===== Problem Info =====
+id = "0094"
+slug = "0094_binary_tree_inorder_traversal"
+title = "Binary Tree Inorder Traversal"
+leetcode_id = 94
+url = "https://leetcode.com/problems/binary-tree-inorder-traversal/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["stack", "tree", "depth_first_search", "binary_tree"]
+companies = ["amazon", "microsoft", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "tree_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_dfs_inorder"]
+families         = ["tree_traversal"]
+data_structures  = ["binary_tree", "stack"]
+algorithms       = ["dfs", "recursion"]
+related_problems = ["0144", "0145", "0102"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = "TreeTraversalDFS"
+derived_problems = ["0144", "0145", "0230"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0094_binary_tree_inorder_traversal.py"
+generator = "generators/0094_binary_tree_inorder_traversal.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionRecursive"
+method = "inorderTraversal"
+
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_dfs_inorder"]
+families         = ["tree_traversal"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+
+role       = "base"
+variant    = "recursive_dfs"
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(h) space"
+notes      = "Base template for tree DFS. Inorder: Left → Node → Right. Fundamental for BST operations."
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterative"
+method = "inorderTraversal"
+
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_dfs_iterative"]
+families         = ["tree_traversal"]
+data_structures  = ["binary_tree", "stack"]
+algorithms       = ["dfs"]
+
+role       = "variant"
+variant    = "iterative_stack"
+based_on   = ["0094#default"]
+delta      = "Use explicit stack instead of recursion. Better for deep trees."
+complexity = "O(n) time, O(h) space"
+notes      = "Iterative approach avoids stack overflow on deep trees."

@@ -1,0 +1,56 @@
+# Problem: Binary Tree Maximum Path Sum
+# https://leetcode.com/problems/binary-tree-maximum-path-sum/
+
+# ===== Problem Info =====
+id = "0124"
+slug = "0124_binary_tree_maximum_path_sum"
+title = "Binary Tree Maximum Path Sum"
+leetcode_id = 124
+url = "https://leetcode.com/problems/binary-tree-maximum-path-sum/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["dynamic_programming", "tree", "depth_first_search", "binary_tree"]
+companies = ["meta", "amazon", "google", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "tree_traversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_path_sum"]
+families         = ["tree_traversal", "tree_path"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+related_problems = ["0543", "0112", "0687", "0129"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = true
+base_for_kernel = ""
+derived_problems = ["0687", "0129"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0124_binary_tree_maximum_path_sum.py"
+generator = "generators/0124_binary_tree_maximum_path_sum.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maxPathSum"
+
+api_kernels      = ["TreeTraversalDFS"]
+patterns         = ["tree_path_sum"]
+families         = ["tree_traversal", "tree_path"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "recursion"]
+
+role       = "base"
+variant    = "return_vs_update"
+based_on   = ["0543#default"]
+delta      = "Track path sum instead of edge count. Skip negative subtrees with max(0, gain)."
+complexity = "O(n) time, O(h) space"
+notes      = "Return vs Update pattern: update global max with path through node as apex, return single-branch gain for parent. Skip negative subtrees to maximize sum."
