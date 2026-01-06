@@ -1,0 +1,14 @@
+# Trie Pattern - File Ordering Configuration
+# This file controls the order of markdown files in the generated documentation.
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0208-implement-trie.md",
+    "0211-design-add-and-search-words.md",
+    "0212-word-search-ii.md",
+    "0648-replace-words.md",
+    "1268-search-suggestions-system.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
