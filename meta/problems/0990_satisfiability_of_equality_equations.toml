@@ -1,0 +1,39 @@
+# Problem: Satisfiability of Equality Equations
+# https://leetcode.com/problems/satisfiability-of-equality-equations/
+
+id = "0990"
+slug = "0990_satisfiability_of_equality_equations"
+title = "Satisfiability of Equality Equations"
+leetcode_id = 990
+url = "https://leetcode.com/problems/satisfiability-of-equality-equations/"
+
+difficulty = "medium"
+topics = ["array", "string", "union_find", "graph"]
+companies = ["amazon", "microsoft"]
+
+roadmaps = ["union_find_pattern_path"]
+
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_constraint_satisfaction"]
+families         = ["union_find"]
+data_structures  = ["array"]
+algorithms       = ["union_find"]
+related_problems = ["0721", "0399", "1061"]
+
+[pattern_role]
+is_base_template = false
+
+[files]
+solution  = "solutions/0990_satisfiability_of_equality_equations.py"
+generator = "generators/0990_satisfiability_of_equality_equations.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "equationsPossible"
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_constraint_satisfaction"]
+role       = "variant"
+complexity = "O(n × α(26)) time, O(1) space"
+notes      = "Two-pass: union equalities, then check inequalities."

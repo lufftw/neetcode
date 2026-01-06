@@ -1,0 +1,41 @@
+# Problem: Number of Provinces
+# https://leetcode.com/problems/number-of-provinces/
+
+id = "0547"
+slug = "0547_number_of_provinces"
+title = "Number of Provinces"
+leetcode_id = 547
+url = "https://leetcode.com/problems/number-of-provinces/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "union_find", "graph"]
+companies = ["amazon", "meta", "google"]
+
+roadmaps = ["neetcode_150", "union_find_pattern_path"]
+
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_connected_components"]
+families         = ["union_find", "graph_traversal"]
+data_structures  = ["array"]
+algorithms       = ["union_find", "dfs"]
+related_problems = ["0200", "0323", "1319"]
+
+[pattern_role]
+is_base_template = true
+base_for_kernel = "UnionFindConnectivity"
+derived_problems = ["1319", "0323"]
+
+[files]
+solution  = "solutions/0547_number_of_provinces.py"
+generator = "generators/0547_number_of_provinces.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionUnionFind"
+method = "findCircleNum"
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_connected_components"]
+role       = "base"
+complexity = "O(n² × α(n)) time, O(n) space"
+notes      = "Base template for Union-Find connectivity."

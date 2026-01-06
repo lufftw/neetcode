@@ -1,0 +1,41 @@
+# Problem: Redundant Connection
+# https://leetcode.com/problems/redundant-connection/
+
+id = "0684"
+slug = "0684_redundant_connection"
+title = "Redundant Connection"
+leetcode_id = 684
+url = "https://leetcode.com/problems/redundant-connection/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "union_find", "graph"]
+companies = ["google", "amazon"]
+
+roadmaps = ["union_find_pattern_path"]
+
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_cycle_detection"]
+families         = ["union_find"]
+data_structures  = ["array"]
+algorithms       = ["union_find"]
+related_problems = ["0685", "0261"]
+
+[pattern_role]
+is_base_template = true
+base_for_kernel = "UnionFindConnectivity"
+derived_problems = ["0685"]
+
+[files]
+solution  = "solutions/0684_redundant_connection.py"
+generator = "generators/0684_redundant_connection.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "findRedundantConnection"
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_cycle_detection"]
+role       = "base"
+complexity = "O(n × α(n)) time, O(n) space"
+notes      = "Base template for cycle detection with Union-Find."

@@ -1,0 +1,39 @@
+# Problem: Number of Operations to Make Network Connected
+# https://leetcode.com/problems/number-of-operations-to-make-network-connected/
+
+id = "1319"
+slug = "1319_number_of_operations_to_make_network_connected"
+title = "Number of Operations to Make Network Connected"
+leetcode_id = 1319
+url = "https://leetcode.com/problems/number-of-operations-to-make-network-connected/"
+
+difficulty = "medium"
+topics = ["depth_first_search", "breadth_first_search", "union_find", "graph"]
+companies = ["microsoft", "amazon"]
+
+roadmaps = ["union_find_pattern_path"]
+
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_connected_components"]
+families         = ["union_find"]
+data_structures  = ["array"]
+algorithms       = ["union_find"]
+related_problems = ["0547", "1579", "1101"]
+
+[pattern_role]
+is_base_template = false
+
+[files]
+solution  = "solutions/1319_number_of_operations_to_make_network_connected.py"
+generator = "generators/1319_number_of_operations_to_make_network_connected.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "makeConnected"
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_connected_components"]
+role       = "variant"
+complexity = "O(E × α(n)) time, O(n) space"
+notes      = "Count components and check edge availability."

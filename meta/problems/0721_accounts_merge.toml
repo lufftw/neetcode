@@ -1,0 +1,39 @@
+# Problem: Accounts Merge
+# https://leetcode.com/problems/accounts-merge/
+
+id = "0721"
+slug = "0721_accounts_merge"
+title = "Accounts Merge"
+leetcode_id = 721
+url = "https://leetcode.com/problems/accounts-merge/"
+
+difficulty = "medium"
+topics = ["array", "string", "depth_first_search", "union_find", "sorting"]
+companies = ["meta", "google", "amazon"]
+
+roadmaps = ["union_find_pattern_path"]
+
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_equivalence_grouping"]
+families         = ["union_find"]
+data_structures  = ["array", "hash_map"]
+algorithms       = ["union_find"]
+related_problems = ["0990", "0839", "1202"]
+
+[pattern_role]
+is_base_template = false
+
+[files]
+solution  = "solutions/0721_accounts_merge.py"
+generator = "generators/0721_accounts_merge.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "accountsMerge"
+api_kernels      = ["UnionFindConnectivity"]
+patterns         = ["union_find_equivalence_grouping"]
+role       = "variant"
+complexity = "O(n × k × α(n)) time, O(n × k) space"
+notes      = "Union-Find for equivalence grouping by common elements."
