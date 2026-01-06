@@ -415,12 +415,21 @@ Each pattern provides **two learning paths**:
 |:-----------|:-------------------|:---------|
 | `SubstringSlidingWindow` | 💡 [Intuition](docs/patterns/sliding_window/intuition.md) · 🛠️ [Templates](docs/patterns/sliding_window/templates.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
 | `TwoPointersTraversal` | 💡 [Intuition](docs/patterns/two_pointers/intuition.md) · 🛠️ [Templates](docs/patterns/two_pointers/templates.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
+| `BinarySearchBoundary` | 💡 [Intuition](docs/patterns/binary_search/intuition.md) · 🛠️ [Templates](docs/patterns/binary_search/templates.md) | LeetCode 33, 34, 35, 81, 162, 875, 1011 |
 | `BacktrackingExploration` | 💡 [Intuition](docs/patterns/backtracking_exploration/intuition.md) · 🛠️ [Templates](docs/patterns/backtracking_exploration/templates.md) | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
+| `MonotonicStack` | 💡 [Intuition](docs/patterns/monotonic_stack/intuition.md) · 🛠️ [Templates](docs/patterns/monotonic_stack/templates.md) | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907, 2104 |
+| `PrefixSum` | 💡 [Intuition](docs/patterns/prefix_sum/intuition.md) · 🛠️ [Templates](docs/patterns/prefix_sum/templates.md) | LeetCode 238, 303, 304, 523, 525, 560, 1094, 1109 |
+| `Heap` | 💡 [Intuition](docs/patterns/heap/intuition.md) · 🛠️ [Templates](docs/patterns/heap/templates.md) | LeetCode 23, 215, 253, 295, 347, 621, 1046 |
+| `GraphTraversal` | 💡 [Intuition](docs/patterns/graph/intuition.md) · 🛠️ [Templates](docs/patterns/graph/templates.md) | LeetCode 133, 200, 417, 785, 841, 994, 1971 |
+| `IntervalMerge` | 💡 [Intuition](docs/patterns/interval/intuition.md) · 🛠️ [Templates](docs/patterns/interval/templates.md) | LeetCode 56, 57, 435, 452, 986 |
+| `UnionFind` | 💡 [Intuition](docs/patterns/union_find/intuition.md) · 🛠️ [Templates](docs/patterns/union_find/templates.md) | LeetCode 547, 684, 721, 990, 1319 |
+| `TreeTraversal` | 💡 [Intuition](docs/patterns/tree/intuition.md) · 🛠️ [Templates](docs/patterns/tree/templates.md) | LeetCode 94, 102, 104, 110, 124, 543 |
+| `TopologicalSort` | 💡 [Intuition](docs/patterns/topological_sort/intuition.md) · 🛠️ [Templates](docs/patterns/topological_sort/templates.md) | LeetCode 207, 210, 802, 1203 |
+| `ShortestPath` | 💡 [Intuition](docs/patterns/shortest_path/intuition.md) · 🛠️ [Templates](docs/patterns/shortest_path/templates.md) | LeetCode 743, 787, 1368, 1631, 2290 |
+| `Trie` | 💡 [Intuition](docs/patterns/trie/intuition.md) · 🛠️ [Templates](docs/patterns/trie/templates.md) | LeetCode 208, 211, 212, 648, 1268 |
 | `GridBFSMultiSource` | *coming soon* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | LeetCode 23, 21, 88 |
-| `BinarySearchBoundary` | *coming soon* | LeetCode 4, 33, 34, 35 |
 | `LinkedListInPlaceReversal` | *coming soon* | LeetCode 25, 206, 92 |
-| `MonotonicStack` | *coming soon* | LeetCode 84, 85, 496 |
 
 👉 **[View All Pattern Guides →](docs/patterns/README.md)**
 

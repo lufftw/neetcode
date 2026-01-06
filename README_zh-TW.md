@@ -420,12 +420,21 @@ scripts\run_tests.bat 0001_two_sum
 |:---------|:---------|:-----|
 | `SubstringSlidingWindow` | 💡 [直覺理解](docs/patterns/sliding_window/intuition.md) · 🛠️ [模板](docs/patterns/sliding_window/templates.md) | LeetCode 3, 76, 159, 209, 340, 438, 567 |
 | `TwoPointersTraversal` | 💡 [直覺理解](docs/patterns/two_pointers/intuition.md) · 🛠️ [模板](docs/patterns/two_pointers/templates.md) | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
+| `BinarySearchBoundary` | 💡 [直覺理解](docs/patterns/binary_search/intuition.md) · 🛠️ [模板](docs/patterns/binary_search/templates.md) | LeetCode 33, 34, 35, 81, 162, 875, 1011 |
 | `BacktrackingExploration` | 💡 [直覺理解](docs/patterns/backtracking_exploration/intuition.md) · 🛠️ [模板](docs/patterns/backtracking_exploration/templates.md) | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
+| `MonotonicStack` | 💡 [直覺理解](docs/patterns/monotonic_stack/intuition.md) · 🛠️ [模板](docs/patterns/monotonic_stack/templates.md) | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907, 2104 |
+| `PrefixSum` | 💡 [直覺理解](docs/patterns/prefix_sum/intuition.md) · 🛠️ [模板](docs/patterns/prefix_sum/templates.md) | LeetCode 238, 303, 304, 523, 525, 560, 1094, 1109 |
+| `Heap` | 💡 [直覺理解](docs/patterns/heap/intuition.md) · 🛠️ [模板](docs/patterns/heap/templates.md) | LeetCode 23, 215, 253, 295, 347, 621, 1046 |
+| `GraphTraversal` | 💡 [直覺理解](docs/patterns/graph/intuition.md) · 🛠️ [模板](docs/patterns/graph/templates.md) | LeetCode 133, 200, 417, 785, 841, 994, 1971 |
+| `IntervalMerge` | 💡 [直覺理解](docs/patterns/interval/intuition.md) · 🛠️ [模板](docs/patterns/interval/templates.md) | LeetCode 56, 57, 435, 452, 986 |
+| `UnionFind` | 💡 [直覺理解](docs/patterns/union_find/intuition.md) · 🛠️ [模板](docs/patterns/union_find/templates.md) | LeetCode 547, 684, 721, 990, 1319 |
+| `TreeTraversal` | 💡 [直覺理解](docs/patterns/tree/intuition.md) · 🛠️ [模板](docs/patterns/tree/templates.md) | LeetCode 94, 102, 104, 110, 124, 543 |
+| `TopologicalSort` | 💡 [直覺理解](docs/patterns/topological_sort/intuition.md) · 🛠️ [模板](docs/patterns/topological_sort/templates.md) | LeetCode 207, 210, 802, 1203 |
+| `ShortestPath` | 💡 [直覺理解](docs/patterns/shortest_path/intuition.md) · 🛠️ [模板](docs/patterns/shortest_path/templates.md) | LeetCode 743, 787, 1368, 1631, 2290 |
+| `Trie` | 💡 [直覺理解](docs/patterns/trie/intuition.md) · 🛠️ [模板](docs/patterns/trie/templates.md) | LeetCode 208, 211, 212, 648, 1268 |
 | `GridBFSMultiSource` | *即將推出* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *即將推出* | LeetCode 23, 21, 88 |
-| `BinarySearchBoundary` | *即將推出* | LeetCode 4, 33, 34, 35 |
 | `LinkedListInPlaceReversal` | *即將推出* | LeetCode 25, 206, 92 |
-| `MonotonicStack` | *即將推出* | LeetCode 84, 85, 496 |
 
 👉 **[查看所有模式指南 →](docs/patterns/README.md)**
 
