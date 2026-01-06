@@ -8,6 +8,7 @@ repo_name: neetcode
 # Exclude files from build
 exclude_docs: |
   mindmaps/README.md
+  in-progress/**
 
 # Theme
 theme:
