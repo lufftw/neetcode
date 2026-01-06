@@ -520,3 +520,24 @@ summary = "Sort by end, greedily select maximum non-overlapping intervals."
 id = "interval_intersection"
 api_kernel = "IntervalMerge"
 summary = "Two-pointer merge to find intersections of two sorted interval lists."
+
+# === Union-Find Patterns ===
+[[patterns]]
+id = "union_find_connected_components"
+api_kernel = "UnionFindConnectivity"
+summary = "Count or identify connected components using Union-Find."
+
+[[patterns]]
+id = "union_find_cycle_detection"
+api_kernel = "UnionFindConnectivity"
+summary = "Detect cycle by checking if union connects already-connected nodes."
+
+[[patterns]]
+id = "union_find_equivalence_grouping"
+api_kernel = "UnionFindConnectivity"
+summary = "Group items by transitive equivalence (shared elements)."
+
+[[patterns]]
+id = "union_find_constraint_satisfaction"
+api_kernel = "UnionFindConnectivity"
+summary = "Check satisfiability of equality/inequality constraints."

@@ -1,0 +1,70 @@
+# Union-Find Pattern Learning Path
+
+[roadmap]
+id = "union_find_pattern_path"
+title = "Union-Find Pattern Mastery"
+description = """
+Master Union-Find (Disjoint Set Union) through a structured learning path.
+Start with basic connectivity, then cycle detection, then advanced applications.
+"""
+
+[[steps]]
+order = 1
+title = "Number of Provinces (Base Template)"
+problem_id = "0547"
+concepts = ["path_compression", "union_by_rank", "component_counting"]
+notes = """
+Base template for Union-Find:
+- Initialize parent[i] = i
+- Find with path compression
+- Union by rank
+- Count components by tracking successful unions
+"""
+
+[[steps]]
+order = 2
+title = "Redundant Connection (Cycle Detection)"
+problem_id = "0684"
+concepts = ["cycle_detection", "edge_ordering"]
+notes = """
+Cycle detection pattern:
+- Process edges in order
+- Union returns False = cycle found
+- That edge is redundant
+"""
+
+[[steps]]
+order = 3
+title = "Accounts Merge (Equivalence Grouping)"
+problem_id = "0721"
+concepts = ["item_to_index_mapping", "transitive_equivalence"]
+notes = """
+Equivalence grouping pattern:
+- Map items (emails) to account indices
+- Union accounts sharing common items
+- Collect items by root
+"""
+
+[[steps]]
+order = 4
+title = "Network Connected (Operations Count)"
+problem_id = "1319"
+concepts = ["edge_availability", "component_counting"]
+notes = """
+Network connectivity pattern:
+- Check if enough edges (n-1 minimum)
+- Count components
+- Need (components-1) operations to connect all
+"""
+
+[[steps]]
+order = 5
+title = "Equality Equations (Constraint Satisfaction)"
+problem_id = "0990"
+concepts = ["two_pass_processing", "constraint_checking"]
+notes = """
+Constraint satisfaction pattern:
+- Pass 1: Union all equalities
+- Pass 2: Check all inequalities
+- Order matters for transitive relationships
+"""
