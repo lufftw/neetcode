@@ -14,7 +14,7 @@ topics = ["array", "two_pointers", "greedy", "sorting", "heap", "prefix_sum"]
 companies = ["amazon", "meta", "google", "microsoft", "bloomberg", "uber"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "heap_path"]
+roadmaps = ["neetcode_150", "heap_path", "line_sweep_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["HeapTopK"]

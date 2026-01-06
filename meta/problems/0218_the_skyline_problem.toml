@@ -1,0 +1,67 @@
+# meta/problems/0218_the_skyline_problem.toml
+
+# ===== Problem Info =====
+id = "0218"
+slug = "0218_the_skyline_problem"
+title = "The Skyline Problem"
+leetcode_id = 218
+url = "https://leetcode.com/problems/the-skyline-problem/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "divide_and_conquer", "binary_indexed_tree", "segment_tree", "line_sweep", "heap", "ordered_set"]
+companies = ["google", "meta", "microsoft", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["line_sweep_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["LineSweep"]
+patterns         = ["line_sweep_height_tracking", "sweep_line"]
+families         = ["line_sweep", "interval_processing"]
+data_structures  = ["array", "heap", "sorted_set"]
+algorithms       = ["line_sweep", "heap"]
+related_problems = ["0253", "1094"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0218_the_skyline_problem.py"
+generator = "generators/0218_the_skyline_problem.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionHeapLazy"
+method = "getSkyline"
+
+api_kernels      = ["LineSweep"]
+patterns         = ["line_sweep_height_tracking"]
+families         = ["line_sweep"]
+data_structures  = ["array", "heap"]
+algorithms       = ["line_sweep", "heap"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(n) space"
+notes      = "Max-heap with lazy deletion for tracking active building heights."
+
+[[solutions]]
+key    = "sortedlist"
+class  = "SolutionSortedList"
+method = "getSkyline"
+
+api_kernels      = ["LineSweep"]
+patterns         = ["line_sweep_height_tracking"]
+families         = ["line_sweep"]
+data_structures  = ["array", "sorted_set"]
+algorithms       = ["line_sweep"]
+
+role       = "variant"
+variant    = "sorted_container"
+based_on   = ["default"]
+delta      = "Use SortedList for O(log n) add/remove/max instead of lazy heap deletion."
+complexity = "O(n log n) time, O(n) space"
+notes      = "Cleaner implementation with sortedcontainers, same complexity."

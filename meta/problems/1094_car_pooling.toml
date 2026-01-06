@@ -14,7 +14,7 @@ topics = ["array", "sorting", "heap_priority_queue", "simulation", "prefix_sum"]
 companies = ["lyft", "google", "bloomberg"]
 
 # ===== Roadmaps =====
-roadmaps = ["prefix_sum_path"]
+roadmaps = ["prefix_sum_path", "line_sweep_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["DifferenceArray"]
