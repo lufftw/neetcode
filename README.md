@@ -429,6 +429,7 @@ Each pattern provides **two learning paths**:
 | `Trie` | 💡 [Intuition](docs/patterns/trie/intuition.md) · 🛠️ [Templates](docs/patterns/trie/templates.md) | LeetCode 208, 211, 212, 648, 1268 |
 | `GreedyCore` | 💡 [Intuition](docs/patterns/greedy_core/intuition.md) · 🛠️ [Templates](docs/patterns/greedy_core/templates.md) | LeetCode 55, 45, 134, 135, 455, 1029 |
 | `DP1DLinear` | 💡 [Intuition](docs/patterns/dp_1d_linear/intuition.md) · 🛠️ [Templates](docs/patterns/dp_1d_linear/templates.md) | LeetCode 70, 198, 213, 121, 746 |
+| `DPKnapsackSubset` | 💡 [Intuition](docs/patterns/dp_knapsack_subset/intuition.md) · 🛠️ [Templates](docs/patterns/dp_knapsack_subset/templates.md) | LeetCode 416, 494, 322, 518 |
 | `GridBFSMultiSource` | *coming soon* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | LeetCode 25, 206, 92 |

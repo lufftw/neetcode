@@ -176,6 +176,9 @@ nav:
     - DP 1D Linear:
       - Intuition: patterns/dp_1d_linear/intuition.md
       - Templates: patterns/dp_1d_linear/templates.md
+    - DP Knapsack/Subset:
+      - Intuition: patterns/dp_knapsack_subset/intuition.md
+      - Templates: patterns/dp_knapsack_subset/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
