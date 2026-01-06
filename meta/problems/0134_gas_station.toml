@@ -1,0 +1,49 @@
+# Problem Metadata: Gas Station (LeetCode 134)
+
+# ===== Problem Info =====
+id = "0134"
+slug = "0134_gas_station"
+title = "Gas Station"
+leetcode_id = 134
+url = "https://leetcode.com/problems/gas-station/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "greedy"]
+companies = ["amazon", "microsoft", "google", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["greedy_core_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["GreedyCore"]
+patterns = ["prefix_min_reset"]
+families = ["greedy_circular"]
+data_structures = ["array"]
+algorithms = ["greedy"]
+related_problems = ["0055", "0045"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0134_gas_station.py"
+generator = "generators/0134_gas_station.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionGreedy"
+method = "canCompleteCircuit"
+
+api_kernels = ["GreedyCore"]
+patterns = ["prefix_min_reset"]
+families = ["greedy_circular"]
+data_structures = ["array"]
+algorithms = ["greedy"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical prefix minimum with reset kernel."
+complexity = "O(n) time, O(1) space"
+notes = "Base template for prefix deficit tracking with candidate reset."

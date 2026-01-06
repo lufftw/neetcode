@@ -1,0 +1,49 @@
+# Problem Metadata: Jump Game II (LeetCode 45)
+
+# ===== Problem Info =====
+id = "0045"
+slug = "0045_jump_game_ii"
+title = "Jump Game II"
+leetcode_id = 45
+url = "https://leetcode.com/problems/jump-game-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "greedy"]
+companies = ["amazon", "microsoft", "google", "meta", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["greedy_core_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["GreedyCore"]
+patterns = ["reachability", "min_jumps"]
+families = ["greedy_reachability"]
+data_structures = ["array"]
+algorithms = ["greedy", "bfs"]
+related_problems = ["0055"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0045_jump_game_ii.py"
+generator = "generators/0045_jump_game_ii.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionGreedy"
+method = "jump"
+
+api_kernels = ["GreedyCore"]
+patterns = ["reachability", "min_jumps"]
+families = ["greedy_reachability"]
+data_structures = ["array"]
+algorithms = ["greedy", "bfs"]
+
+role = "variant"
+variant = "min_jumps"
+based_on = ["0055"]
+delta = "Track minimum jumps using BFS-like level traversal."
+complexity = "O(n) time, O(1) space"
+notes = "Extends reachability kernel to count minimum jumps."

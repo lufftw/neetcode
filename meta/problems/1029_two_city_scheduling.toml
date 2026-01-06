@@ -1,0 +1,49 @@
+# Problem Metadata: Two City Scheduling (LeetCode 1029)
+
+# ===== Problem Info =====
+id = "1029"
+slug = "1029_two_city_scheduling"
+title = "Two City Scheduling"
+leetcode_id = 1029
+url = "https://leetcode.com/problems/two-city-scheduling/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "greedy", "sorting"]
+companies = ["bloomberg", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["greedy_core_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["GreedyCore"]
+patterns = ["sort_match", "cost_difference"]
+families = ["greedy_matching"]
+data_structures = ["array"]
+algorithms = ["greedy", "sorting"]
+related_problems = ["0455"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/1029_two_city_scheduling.py"
+generator = "generators/1029_two_city_scheduling.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionGreedy"
+method = "twoCitySchedCost"
+
+api_kernels = ["GreedyCore"]
+patterns = ["sort_match", "cost_difference"]
+families = ["greedy_matching"]
+data_structures = ["array"]
+algorithms = ["greedy", "sorting"]
+
+role = "variant"
+variant = "cost_difference"
+based_on = ["0455"]
+delta = "Sort by cost difference to optimize assignment."
+complexity = "O(n log n) time, O(1) space"
+notes = "Extends sort+match to cost optimization scenarios."

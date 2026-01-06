@@ -1,0 +1,49 @@
+# Problem Metadata: Candy (LeetCode 135)
+
+# ===== Problem Info =====
+id = "0135"
+slug = "0135_candy"
+title = "Candy"
+leetcode_id = 135
+url = "https://leetcode.com/problems/candy/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "greedy"]
+companies = ["amazon", "google", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["greedy_core_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["GreedyCore"]
+patterns = ["two_pass_greedy"]
+families = ["greedy_bidirectional"]
+data_structures = ["array"]
+algorithms = ["greedy"]
+related_problems = ["0455"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0135_candy.py"
+generator = "generators/0135_candy.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionTwoPass"
+method = "candy"
+
+api_kernels = ["GreedyCore"]
+patterns = ["two_pass_greedy"]
+families = ["greedy_bidirectional"]
+data_structures = ["array"]
+algorithms = ["greedy"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Two-pass greedy to satisfy bidirectional constraints."
+complexity = "O(n) time, O(n) space"
+notes = "Classic example of handling constraints from both directions."

@@ -1,0 +1,49 @@
+# Problem Metadata: Assign Cookies (LeetCode 455)
+
+# ===== Problem Info =====
+id = "0455"
+slug = "0455_assign_cookies"
+title = "Assign Cookies"
+leetcode_id = 455
+url = "https://leetcode.com/problems/assign-cookies/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["array", "two_pointers", "greedy", "sorting"]
+companies = ["amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["greedy_core_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["GreedyCore"]
+patterns = ["sort_match"]
+families = ["greedy_matching"]
+data_structures = ["array"]
+algorithms = ["greedy", "sorting", "two_pointers"]
+related_problems = ["1029"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0455_assign_cookies.py"
+generator = "generators/0455_assign_cookies.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionGreedy"
+method = "findContentChildren"
+
+api_kernels = ["GreedyCore"]
+patterns = ["sort_match"]
+families = ["greedy_matching"]
+data_structures = ["array"]
+algorithms = ["greedy", "sorting", "two_pointers"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical sort + match kernel."
+complexity = "O(n log n + m log m) time, O(1) space"
+notes = "Base template for greedy matching after sorting."

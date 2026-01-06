@@ -1,0 +1,49 @@
+# Problem Metadata: Jump Game (LeetCode 55)
+
+# ===== Problem Info =====
+id = "0055"
+slug = "0055_jump_game"
+title = "Jump Game"
+leetcode_id = 55
+url = "https://leetcode.com/problems/jump-game/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "greedy"]
+companies = ["amazon", "microsoft", "apple", "google", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["greedy_core_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["GreedyCore"]
+patterns = ["reachability"]
+families = ["greedy_reachability"]
+data_structures = ["array"]
+algorithms = ["greedy"]
+related_problems = ["0045", "0134"]
+
+# ===== File Locations =====
+[files]
+solution = "solutions/0055_jump_game.py"
+generator = "generators/0055_jump_game.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "SolutionGreedy"
+method = "canJump"
+
+api_kernels = ["GreedyCore"]
+patterns = ["reachability"]
+families = ["greedy_reachability"]
+data_structures = ["array"]
+algorithms = ["greedy"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical reachability check with farthest reach tracking."
+complexity = "O(n) time, O(1) space"
+notes = "Base template for GreedyCore reachability kernel."
