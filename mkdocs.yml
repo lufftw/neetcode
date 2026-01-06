@@ -155,6 +155,9 @@ nav:
     - Interval:
       - Intuition: patterns/interval/intuition.md
       - Templates: patterns/interval/templates.md
+    - Union-Find:
+      - Intuition: patterns/union_find/intuition.md
+      - Templates: patterns/union_find/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
