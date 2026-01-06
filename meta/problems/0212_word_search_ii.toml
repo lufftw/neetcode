@@ -1,0 +1,51 @@
+# Problem: Word Search II
+# https://leetcode.com/problems/word-search-ii/
+
+id = "0212"
+slug = "0212_word_search_ii"
+title = "Word Search II"
+leetcode_id = 212
+url = "https://leetcode.com/problems/word-search-ii/"
+
+difficulty = "hard"
+topics = ["array", "string", "backtracking", "trie", "matrix"]
+companies = ["amazon", "meta", "google", "microsoft", "apple"]
+
+roadmaps = ["neetcode_150", "trie_pattern_path"]
+
+api_kernels      = ["Trie"]
+patterns         = ["trie_backtracking"]
+families         = ["trie", "backtracking", "grid_traversal"]
+data_structures  = ["trie", "matrix"]
+algorithms       = ["trie_operations", "dfs", "backtracking"]
+related_problems = ["0208", "0211", "0079"]
+
+[pattern_role]
+is_base_template = false
+variation_of = "0208"
+variation_type = "trie_plus_backtracking"
+
+[files]
+solution  = "solutions/0212_word_search_ii.py"
+generator = "generators/0212_word_search_ii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "findWords"
+api_kernels      = ["Trie"]
+patterns         = ["trie_backtracking"]
+role       = "primary"
+complexity = "O(M*N*4^L) time, O(W*L) space"
+notes      = "Trie + backtracking with branch pruning."
+
+[[solutions]]
+key    = "simple"
+class  = "SolutionSimple"
+method = "findWords"
+api_kernels      = ["Trie"]
+patterns         = ["trie_backtracking"]
+role       = "alternative"
+complexity = "O(M*N*4^L) time, O(W*L) space"
+notes      = "Simpler version without pruning optimization."

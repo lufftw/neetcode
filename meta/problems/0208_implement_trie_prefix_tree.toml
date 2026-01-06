@@ -1,0 +1,51 @@
+# Problem: Implement Trie (Prefix Tree)
+# https://leetcode.com/problems/implement-trie-prefix-tree/
+
+id = "0208"
+slug = "0208_implement_trie_prefix_tree"
+title = "Implement Trie (Prefix Tree)"
+leetcode_id = 208
+url = "https://leetcode.com/problems/implement-trie-prefix-tree/"
+
+difficulty = "medium"
+topics = ["hash_table", "string", "design", "trie"]
+companies = ["amazon", "google", "meta", "microsoft"]
+
+roadmaps = ["neetcode_150", "trie_pattern_path"]
+
+api_kernels      = ["Trie"]
+patterns         = ["basic_trie"]
+families         = ["trie", "string_processing"]
+data_structures  = ["trie", "hash_table"]
+algorithms       = ["trie_operations"]
+related_problems = ["0211", "0212", "0648", "1268"]
+
+[pattern_role]
+is_base_template = true
+base_for_kernel = "Trie"
+derived_problems = ["0211", "0212", "0648", "1268"]
+
+[files]
+solution  = "solutions/0208_implement_trie_prefix_tree.py"
+generator = "generators/0208_implement_trie_prefix_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Trie"
+design_class = true
+api_kernels      = ["Trie"]
+patterns         = ["basic_trie"]
+role       = "base"
+complexity = "O(L) time per operation, O(N*L) space"
+notes      = "Base template for Trie operations."
+
+[[solutions]]
+key    = "array"
+class  = "TrieArray"
+design_class = true
+api_kernels      = ["Trie"]
+patterns         = ["basic_trie"]
+role       = "alternative"
+complexity = "O(L) time per operation, O(N*L*26) space"
+notes      = "Fixed-size array for children (faster lookup)."

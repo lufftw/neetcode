@@ -1,0 +1,51 @@
+# Problem: Design Add and Search Words Data Structure
+# https://leetcode.com/problems/design-add-and-search-words-data-structure/
+
+id = "0211"
+slug = "0211_design_add_and_search_words_data_structure"
+title = "Design Add and Search Words Data Structure"
+leetcode_id = 211
+url = "https://leetcode.com/problems/design-add-and-search-words-data-structure/"
+
+difficulty = "medium"
+topics = ["string", "depth_first_search", "design", "trie"]
+companies = ["amazon", "meta", "google"]
+
+roadmaps = ["neetcode_150", "trie_pattern_path"]
+
+api_kernels      = ["Trie"]
+patterns         = ["trie_wildcard_search"]
+families         = ["trie", "string_processing"]
+data_structures  = ["trie"]
+algorithms       = ["trie_operations", "dfs"]
+related_problems = ["0208", "0212", "0648", "1268"]
+
+[pattern_role]
+is_base_template = false
+variation_of = "0208"
+variation_type = "wildcard_search"
+
+[files]
+solution  = "solutions/0211_design_add_and_search_words_data_structure.py"
+generator = "generators/0211_design_add_and_search_words_data_structure.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "WordDictionary"
+design_class = true
+api_kernels      = ["Trie"]
+patterns         = ["trie_wildcard_search"]
+role       = "primary"
+complexity = "O(L) add, O(26^D * L) search with D wildcards"
+notes      = "DFS for '.' wildcard support."
+
+[[solutions]]
+key    = "iterative"
+class  = "WordDictionaryIterative"
+design_class = true
+api_kernels      = ["Trie"]
+patterns         = ["trie_wildcard_search"]
+role       = "alternative"
+complexity = "O(L) add, O(26^D * L) search with D wildcards"
+notes      = "Iterative with explicit stack."

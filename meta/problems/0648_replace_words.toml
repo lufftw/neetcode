@@ -1,0 +1,51 @@
+# Problem: Replace Words
+# https://leetcode.com/problems/replace-words/
+
+id = "0648"
+slug = "0648_replace_words"
+title = "Replace Words"
+leetcode_id = 648
+url = "https://leetcode.com/problems/replace-words/"
+
+difficulty = "medium"
+topics = ["array", "hash_table", "string", "trie"]
+companies = ["amazon", "google"]
+
+roadmaps = ["trie_pattern_path"]
+
+api_kernels      = ["Trie"]
+patterns         = ["trie_prefix_replacement"]
+families         = ["trie", "string_processing"]
+data_structures  = ["trie", "hash_table"]
+algorithms       = ["trie_operations"]
+related_problems = ["0208", "0211", "0212", "1268"]
+
+[pattern_role]
+is_base_template = false
+variation_of = "0208"
+variation_type = "shortest_prefix_match"
+
+[files]
+solution  = "solutions/0648_replace_words.py"
+generator = "generators/0648_replace_words.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "replaceWords"
+api_kernels      = ["Trie"]
+patterns         = ["trie_prefix_replacement"]
+role       = "primary"
+complexity = "O(D*L + W*L) time, O(D*L) space"
+notes      = "Find shortest matching prefix via trie."
+
+[[solutions]]
+key    = "hashset"
+class  = "SolutionHashSet"
+method = "replaceWords"
+api_kernels      = ["Trie"]
+patterns         = ["trie_prefix_replacement"]
+role       = "alternative"
+complexity = "O(W*L^2) time, O(D*L) space"
+notes      = "Hash set approach - simpler but slower."
