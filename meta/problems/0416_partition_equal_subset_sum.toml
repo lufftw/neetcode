@@ -1,0 +1,43 @@
+# Problem Metadata: Partition Equal Subset Sum (LeetCode 416)
+
+id = "0416"
+slug = "0416_partition_equal_subset_sum"
+title = "Partition Equal Subset Sum"
+leetcode_id = 416
+url = "https://leetcode.com/problems/partition-equal-subset-sum/"
+
+difficulty = "medium"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "meta"]
+
+roadmaps = ["dp_knapsack_subset_path"]
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["knapsack_01_boolean"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0494", "0698"]
+
+[files]
+solution = "solutions/0416_partition_equal_subset_sum.py"
+generator = "generators/0416_partition_equal_subset_sum.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "canPartition"
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["knapsack_01_boolean"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = "Canonical 0/1 Knapsack boolean template."
+complexity = "O(n * target) time, O(target) space"
+notes = "Base template for subset reachability problems."

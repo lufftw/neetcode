@@ -105,6 +105,10 @@ data_sources:
         path: "dp_1d_linear"
         enabled: true
         config_file: "_config.toml"
+      - name: "dp_knapsack_subset"
+        path: "dp_knapsack_subset"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -120,6 +124,9 @@ data_sources:
         enabled: true
       - name: "dp_1d_linear_path"
         path: "dp_1d_linear_path.toml"
+        enabled: true
+      - name: "dp_knapsack_subset_path"
+        path: "dp_knapsack_subset_path.toml"
         enabled: true
       - name: "neetcode_150"
         path: "neetcode_150.toml"

@@ -109,3 +109,7 @@ summary = "Core greedy patterns: reachability tracking, prefix min/reset, sort+m
 [[api_kernels]]
 id = "DP1DLinear"
 summary = "1D linear DP: Fibonacci-style, min-cost path, include/exclude, running min/max."
+
+[[api_kernels]]
+id = "DPKnapsackSubset"
+summary = "Knapsack/subset DP: 0/1 and unbounded variants for boolean, count, and optimization."

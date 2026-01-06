@@ -1,0 +1,43 @@
+# Problem Metadata: Target Sum (LeetCode 494)
+
+id = "0494"
+slug = "0494_target_sum"
+title = "Target Sum"
+leetcode_id = 494
+url = "https://leetcode.com/problems/target-sum/"
+
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "backtracking"]
+companies = ["amazon", "google", "meta"]
+
+roadmaps = ["dp_knapsack_subset_path"]
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["knapsack_01_count", "target_transformation"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0416"]
+
+[files]
+solution = "solutions/0494_target_sum.py"
+generator = "generators/0494_target_sum.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key = "default"
+class = "SolutionDP"
+method = "findTargetSumWays"
+
+api_kernels = ["DPKnapsackSubset"]
+patterns = ["knapsack_01_count", "target_transformation"]
+families = ["dp_knapsack"]
+data_structures = ["array"]
+algorithms = ["dynamic_programming"]
+
+role = "variant"
+variant = "count_transformation"
+based_on = ["0416"]
+delta = "Transform to subset sum count using P = (target + total) / 2."
+complexity = "O(n * target) time, O(target) space"
+notes = "Algebraic transformation reduces +/- assignment to subset selection."

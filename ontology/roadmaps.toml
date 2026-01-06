@@ -91,3 +91,8 @@ summary = "Step-by-step path to master core greedy patterns: reachability, prefi
 id = "dp_1d_linear_path"
 name = "DP 1D Linear Mastery"
 summary = "Step-by-step path to master 1D linear DP: Fibonacci, min-cost, include/exclude, running min/max."
+
+[[roadmaps]]
+id = "dp_knapsack_subset_path"
+name = "DP Knapsack/Subset Mastery"
+summary = "Step-by-step path to master knapsack/subset DP: 0/1 and unbounded variants."
