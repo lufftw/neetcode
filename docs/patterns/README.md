@@ -36,6 +36,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `UnionFindConnectivity` | 💡 [Intuition](union_find/intuition.md) · 🛠️ [Templates](union_find/templates.md) | Disjoint set connectivity | LeetCode 547, 684, 721, 990, 1319 |
 | `TreeTraversalDFS` / `TreeTraversalBFS` | 💡 [Intuition](tree/intuition.md) · 🛠️ [Templates](tree/templates.md) | Tree DFS/BFS and path problems | LeetCode 94, 102, 104, 110, 124, 543 |
 | `TopologicalSort` | 💡 [Intuition](topological_sort/intuition.md) · 🛠️ [Templates](topological_sort/templates.md) | Dependency ordering and cycle detection | LeetCode 207, 210, 802, 1203 |
+| `ShortestPath` | 💡 [Intuition](shortest_path/intuition.md) · 🛠️ [Templates](shortest_path/templates.md) | Dijkstra, 0-1 BFS, Bellman-Ford | LeetCode 743, 787, 1368, 1631, 2290 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
