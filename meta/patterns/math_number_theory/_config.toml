@@ -1,0 +1,18 @@
+# Pattern Documentation Configuration for Math / Number Theory
+header_files = ["_header.md"]
+
+# Problem files ordered by concept grouping
+problem_files = [
+    "1979-gcd-of-array.md",
+    "0204-count-primes.md",
+    "0168-excel-column-title.md"
+]
+
+footer_files = [
+    "_toolbox.md",
+    "_decision.md"
+]
+
+[output]
+subdirectory = "math_number_theory"
+filename = "templates.md"
