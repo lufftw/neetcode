@@ -435,6 +435,7 @@ scripts\run_tests.bat 0001_two_sum
 | `GreedyCore` | 💡 [直覺理解](docs/patterns/greedy_core/intuition.md) · 🛠️ [模板](docs/patterns/greedy_core/templates.md) | LeetCode 55, 45, 134, 135, 455, 1029 |
 | `DP1DLinear` | 💡 [直覺理解](docs/patterns/dp_1d_linear/intuition.md) · 🛠️ [模板](docs/patterns/dp_1d_linear/templates.md) | LeetCode 70, 198, 213, 121, 746 |
 | `DPKnapsackSubset` | 💡 [直覺理解](docs/patterns/dp_knapsack_subset/intuition.md) · 🛠️ [模板](docs/patterns/dp_knapsack_subset/templates.md) | LeetCode 416, 494, 322, 518 |
+| `MathNumberTheory` | 💡 [直覺理解](docs/patterns/math_number_theory/intuition.md) · 🛠️ [模板](docs/patterns/math_number_theory/templates.md) | LeetCode 1979, 204, 168 |
 | `GridBFSMultiSource` | *即將推出* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *即將推出* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *即將推出* | LeetCode 25, 206, 92 |

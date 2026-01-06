@@ -179,6 +179,9 @@ nav:
     - DP Knapsack/Subset:
       - Intuition: patterns/dp_knapsack_subset/intuition.md
       - Templates: patterns/dp_knapsack_subset/templates.md
+    - Math/Number Theory:
+      - Intuition: patterns/math_number_theory/intuition.md
+      - Templates: patterns/math_number_theory/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
