@@ -81,3 +81,8 @@ summary = "Step-by-step path to master tree traversal from DFS/BFS to path probl
 id = "graph_path"
 name = "Graph Problems Path"
 summary = "Comprehensive graph problem patterns."
+
+[[roadmaps]]
+id = "math_number_theory_path"
+name = "Math / Number Theory Mastery"
+summary = "Step-by-step path to master number theory: GCD, primes, base conversion."

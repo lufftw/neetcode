@@ -586,3 +586,19 @@ summary = "Group items by transitive equivalence (shared elements)."
 id = "union_find_constraint_satisfaction"
 api_kernel = "UnionFindConnectivity"
 summary = "Check satisfiability of equality/inequality constraints."
+
+# === Math / Number Theory Patterns ===
+[[patterns]]
+id = "gcd_euclidean"
+api_kernel = "MathNumberTheory"
+summary = "GCD using Euclidean algorithm: gcd(a,b) = gcd(b, a%b)."
+
+[[patterns]]
+id = "prime_sieve"
+api_kernel = "MathNumberTheory"
+summary = "Sieve of Eratosthenes for prime counting/listing."
+
+[[patterns]]
+id = "base_conversion"
+api_kernel = "MathNumberTheory"
+summary = "Convert between number bases with mod and divide."
