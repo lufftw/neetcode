@@ -1,0 +1,64 @@
+# meta/problems/0337_house_robber_iii.toml
+
+# ===== Problem Info =====
+id = "0337"
+slug = "0337_house_robber_iii"
+title = "House Robber III"
+leetcode_id = 337
+url = "https://leetcode.com/problems/house-robber-iii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["dynamic_programming", "tree", "depth_first_search", "binary_tree"]
+companies = ["uber", "amazon", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["tree_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeDP"]
+patterns         = ["tree_dp_include_exclude"]
+families         = ["tree_dp", "house_robber"]
+data_structures  = ["binary_tree"]
+algorithms       = ["tree_dp", "dfs"]
+related_problems = ["0198", "0213", "0124"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0337_house_robber_iii.py"
+generator = "generators/0337_house_robber_iii.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDP"
+method = "rob"
+
+api_kernels      = ["TreeDP"]
+patterns         = ["tree_dp_include_exclude"]
+families         = ["tree_dp"]
+data_structures  = ["binary_tree"]
+algorithms       = ["tree_dp", "dfs"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(h) space"
+notes      = "Tree DP with include/exclude states. Base template for tree DP pattern."
+
+[[solutions]]
+key    = "memo"
+class  = "SolutionMemo"
+method = "rob"
+
+patterns         = ["tree_dp_include_exclude"]
+algorithms       = ["memoization", "dfs"]
+
+role       = "variant"
+variant    = "memoization"
+based_on   = ["default"]
+delta      = "Use memoization dict instead of tuple states."
+complexity = "O(n) time, O(n) space"
+notes      = "Alternative using explicit memoization."

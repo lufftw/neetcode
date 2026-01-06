@@ -1,0 +1,64 @@
+# meta/problems/0968_binary_tree_cameras.toml
+
+# ===== Problem Info =====
+id = "0968"
+slug = "0968_binary_tree_cameras"
+title = "Binary Tree Cameras"
+leetcode_id = 968
+url = "https://leetcode.com/problems/binary-tree-cameras/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["dynamic_programming", "tree", "depth_first_search", "binary_tree"]
+companies = ["amazon", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["tree_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeDP"]
+patterns         = ["tree_dp_multi_state", "tree_dp_coverage"]
+families         = ["tree_dp", "coverage"]
+data_structures  = ["binary_tree"]
+algorithms       = ["tree_dp", "greedy", "dfs"]
+related_problems = ["0337", "0124"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0968_binary_tree_cameras.py"
+generator = "generators/0968_binary_tree_cameras.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionGreedy"
+method = "minCameraCover"
+
+api_kernels      = ["TreeDP"]
+patterns         = ["tree_dp_multi_state"]
+families         = ["tree_dp"]
+data_structures  = ["binary_tree"]
+algorithms       = ["greedy", "dfs"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(h) space"
+notes      = "Greedy with 3-state machine: not_covered, covered, has_camera."
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "minCameraCover"
+
+patterns         = ["tree_dp_multi_state"]
+algorithms       = ["tree_dp", "dfs"]
+
+role       = "variant"
+variant    = "explicit_dp"
+based_on   = ["default"]
+delta      = "Explicit DP with 3 states instead of greedy transitions."
+complexity = "O(n) time, O(h) space"
+notes      = "More explicit state representation, same complexity."

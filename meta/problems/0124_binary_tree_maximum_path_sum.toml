@@ -14,7 +14,7 @@ topics = ["dynamic_programming", "tree", "depth_first_search", "binary_tree"]
 companies = ["meta", "amazon", "google", "microsoft", "bloomberg"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "tree_traversal_path"]
+roadmaps = ["neetcode_150", "tree_traversal_path", "tree_dp_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["TreeTraversalDFS"]
