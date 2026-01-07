@@ -1,0 +1,29 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Find Index (base) -> Shortest Palindrome -> Repeated Substring -> Happy Prefix
+problem_files = [
+    "0028-find-index.md",
+    "0214-shortest-palindrome.md",
+    "0459-repeated-substring.md",
+    "1392-longest-happy-prefix.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/string_matching/templates.md
+[output]
+subdirectory = "string_matching"
+filename = "templates.md"
