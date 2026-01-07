@@ -46,7 +46,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `LineSweep` | 💡 [Intuition](line_sweep/intuition.md) · 🛠️ [Templates](line_sweep/templates.md) | Event counting, capacity tracking, height tracking | LeetCode 253, 1094, 218 |
 | `TreeDP` | 💡 [Intuition](tree_dp/intuition.md) · 🛠️ [Templates](tree_dp/templates.md) | Include/exclude, path contribution, multi-state | LeetCode 337, 124, 968 |
 | `BitmaskDP` | 💡 [Intuition](bitmask_dp/intuition.md) · 🛠️ [Templates](bitmask_dp/templates.md) | Subset enumeration, BFS with bitmask, set cover | LeetCode 78, 847, 1125 |
-| `StringDP` | 💡 [Intuition](string_dp/intuition.md) · 🛠️ [Templates](string_dp/templates.md) | LCS, edit distance, palindrome, regex matching | LeetCode 1143, 72, 516, 10 |
+| `StringDP` | 💡 [Intuition](string_dp/intuition.md) · 🛠️ [Templates](string_dp/templates.md) | LCS, edit distance, palindrome, regex matching | LeetCode 1143, 72, 516, 10, 44 |
 | `MonotonicDeque` | 💡 [Intuition](monotonic_deque/intuition.md) · 🛠️ [Templates](monotonic_deque/templates.md) | Sliding window min/max, bounded range, prefix sum optimization | LeetCode 239, 1438, 862, 1499 |
 | `IntervalDP` | 💡 [Intuition](interval_dp/intuition.md) · 🛠️ [Templates](interval_dp/templates.md) | Burst balloons, polygon triangulation, cut stick, strange printer | LeetCode 312, 1039, 1547, 664 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
