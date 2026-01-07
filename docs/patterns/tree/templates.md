@@ -816,8 +816,6 @@ Result: 42 (path: 15→20→7)
 
 ---
 
----
-
 ## 8. Pattern Comparison
 
 ### 8.1 DFS vs BFS for Trees
@@ -874,8 +872,6 @@ def path_property(node):
 | Validate structure | Early termination | Balanced, BST valid |
 | Longest path | Path tracking | Diameter, max path sum |
 | By level | BFS | Level order, zigzag |
-
----
 
 ---
 
@@ -949,8 +945,6 @@ What should recursion return?
 | Any single traversal | O(n) | O(h) |
 | BFS level order | O(n) | O(w) |
 | Property computation | O(n) | O(h) |
-
----
 
 ---
 
