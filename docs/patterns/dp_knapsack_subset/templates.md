@@ -92,8 +92,6 @@ for num in nums:
 
 ---
 
----
-
 ## 7. Base Template: Partition Equal Subset Sum (LeetCode 416)
 
 > **Problem**: Can array be partitioned into two subsets with equal sum?
@@ -407,8 +405,6 @@ Result: 4 ways: (5), (2,2,1), (2,1,1,1), (1,1,1,1,1)
 
 ---
 
----
-
 ## 11. Pattern Comparison
 
 ### 11.1 0/1 Knapsack vs Unbounded Knapsack
@@ -436,8 +432,6 @@ Result: 4 ways: (5), (2,2,1), (2,1,1,1), (1,1,1,1,1)
 | **Reachable?** | `or` | False, dp[0]=True | `dp[s] = dp[s] or dp[s-item]` |
 | **Count ways** | `+=` | 0, dp[0]=1 | `dp[s] += dp[s-item]` |
 | **Min items** | `min` | inf, dp[0]=0 | `dp[s] = min(dp[s], dp[s-item]+1)` |
-
----
 
 ---
 
@@ -501,8 +495,6 @@ Some problems need transformation before applying knapsack:
 | Target Sum (+/-) | subset_sum = (total + target) / 2 |
 | Partition | target = total / 2 |
 | Last Stone Weight | Same as partition |
-
----
 
 ---
 
