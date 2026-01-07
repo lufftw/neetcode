@@ -56,16 +56,18 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: 2D DP
 # Time: O(m*n), Space: O(m*n)
-#   - State: edit_cost[i][j] = min edits to convert word1[0:i] to word2[0:j]
-#   - Base case: edit_cost[i][0] = i (delete all), edit_cost[0][j] = j (insert all)
-#   - Transition: if match, edit_cost[i][j] = edit_cost[i-1][j-1]
-#                 else, edit_cost[i][j] = 1 + min(replace, delete, insert)
+#   - Classic dual-sequence DP (Levenshtein distance)
+#   - Three operations: replace, delete, insert
 # ============================================================================
 class Solution:
+    # State: edit_cost[i][j] = min edits to convert word1[0:i] to word2[0:j]
+    # Base case: edit_cost[i][0] = i (delete all), edit_cost[0][j] = j (insert all)
+    # Transition: if match, edit_cost[i][j] = edit_cost[i-1][j-1]
+    #             else, edit_cost[i][j] = 1 + min(replace, delete, insert)
+
     def minDistance(self, word1: str, word2: str) -> int:
         source_len, target_len = len(word1), len(word2)
 
-        # edit_cost[i][j] = min operations to convert word1[0:i] to word2[0:j]
         edit_cost: list[list[int]] = [
             [0] * (target_len + 1) for _ in range(source_len + 1)
         ]

@@ -52,16 +52,18 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: 2D DP
 # Time: O(m*n), Space: O(m*n)
-#   - State: lcs_length[i][j] = LCS length for text1[0:i] and text2[0:j]
-#   - Base case: lcs_length[i][0] = lcs_length[0][j] = 0 (empty string)
-#   - Transition: if match, lcs_length[i][j] = lcs_length[i-1][j-1] + 1
-#                 else, lcs_length[i][j] = max(lcs_length[i-1][j], lcs_length[i][j-1])
+#   - Classic dual-sequence DP pattern
+#   - Match extends diagonal; mismatch takes best of skip-either
 # ============================================================================
 class Solution:
+    # State: lcs_length[i][j] = LCS length for text1[0:i] and text2[0:j]
+    # Base case: lcs_length[i][0] = lcs_length[0][j] = 0 (empty string)
+    # Transition: if match, lcs_length[i][j] = lcs_length[i-1][j-1] + 1
+    #             else, lcs_length[i][j] = max(lcs_length[i-1][j], lcs_length[i][j-1])
+
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         len_1, len_2 = len(text1), len(text2)
 
-        # lcs_length[i][j] = LCS length for text1[0:i] and text2[0:j]
         lcs_length: list[list[int]] = [
             [0] * (len_2 + 1) for _ in range(len_1 + 1)
         ]

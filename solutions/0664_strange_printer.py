@@ -24,12 +24,15 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: Interval DP (Character Printing)
 # Time: O(n³), Space: O(n²)
-#   - State: min_turns[i][j] = min turns to print s[i:j+1]
-#   - Base case: min_turns[i][i] = 1 (single char needs 1 turn)
-#   - Transition: if s[k] == s[i], extend first print to cover s[k]
+#   - When s[k] == s[i], extend first print to cover s[k] (saves one turn)
 #   - Preprocess: remove consecutive duplicates (don't affect answer)
 # ============================================================================
 class Solution:
+    # State: min_turns[i][j] = minimum turns to print s[i:j+1]
+    # Base case: min_turns[i][i] = 1 (single char needs 1 turn)
+    # Transition: min_turns[i][j] = min(min_turns[i+1][j] + 1,
+    #                                   min_turns[i+1][k-1] + min_turns[k][j]) for s[k]==s[i]
+
     def strangePrinter(self, s: str) -> int:
         # Remove consecutive duplicates (they don't affect answer)
         s = ''.join(c for idx, c in enumerate(s) if idx == 0 or c != s[idx - 1])
@@ -38,12 +41,11 @@ class Solution:
         if string_length == 0:
             return 0
 
-        # min_turns[i][j] = minimum turns to print s[i:j+1]
         min_turns: list[list[int]] = [
             [0] * string_length for _ in range(string_length)
         ]
 
-        # Base case: single character needs 1 turn
+        # Base case
         for idx in range(string_length):
             min_turns[idx][idx] = 1
 

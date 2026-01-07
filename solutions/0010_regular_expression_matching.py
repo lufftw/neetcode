@@ -57,16 +57,18 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: 2D DP (Bottom-Up)
 # Time: O(m*n), Space: O(m*n)
-#   - State: is_match[i][j] = True if s[0:i] matches p[0:j]
-#   - Base case: is_match[0][0] = True; is_match[0][j] handles a*, a*b* patterns
-#   - Transition: if p[j-1] == '*', check zero-match or one-match cases
-#                 else, check char match or '.' wildcard
+#   - Handle '*' as zero-or-more of preceding element
+#   - Handle '.' as single character wildcard
 # ============================================================================
 class Solution:
+    # State: is_match[i][j] = True if s[0:i] matches p[0:j]
+    # Base case: is_match[0][0] = True; is_match[0][j] handles a*, a*b* patterns
+    # Transition: if p[j-1] == '*', check zero-match or one-match cases
+    #             else, check char match or '.' wildcard
+
     def isMatch(self, s: str, p: str) -> bool:
         text_len, pattern_len = len(s), len(p)
 
-        # is_match[i][j] = True if s[0:i] matches p[0:j]
         is_match: list[list[bool]] = [
             [False] * (pattern_len + 1) for _ in range(text_len + 1)
         ]
