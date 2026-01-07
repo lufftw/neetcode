@@ -105,8 +105,6 @@ def _find_node(self, prefix: str) -> Optional[TrieNode]:
 
 ---
 
----
-
 ## 6. Problem: Implement Trie (Prefix Tree) [LC 208] - BASE
 
 > **Pattern**: Basic Trie Operations
@@ -190,8 +188,6 @@ startsWith("ap") → True  (node exists)
 
 - **Time**: O(L) per operation where L = string length
 - **Space**: O(N × L) worst case for N words of length L
-
----
 
 ---
 
@@ -304,8 +300,6 @@ search("b.d"):
 
 - **Time**: O(L) without wildcards, O(26^W × L) worst case with W wildcards
 - **Space**: O(N × L) for trie + O(L) recursion stack
-
----
 
 ---
 
@@ -434,8 +428,6 @@ Result: ["oath", "eat"]
 
 ---
 
----
-
 ## 9. Problem: Replace Words [LC 648]
 
 > **Pattern**: Trie Prefix Replacement
@@ -555,8 +547,6 @@ Where D = dictionary size, W = words in sentence, L = word length.
 
 - **Time**: O(D × L + W × L) - build trie + process words
 - **Space**: O(D × L) for trie
-
----
 
 ---
 
@@ -710,8 +700,6 @@ Query "mouse": ["mouse","mousepad"]
 
 ---
 
----
-
 ## 11. Pattern Comparison
 
 | Problem | Trie Modification | Search Type | Extra Data |
@@ -759,8 +747,6 @@ Need exact word lookup?
             Return multiple suggestions?
             └─ Yes → Autocomplete Trie (LC 1268)
 ```
-
----
 
 ---
 
@@ -820,8 +806,6 @@ Do you need prefix operations?
 - Very short strings (< 5 chars) → Overhead may not be worth it
 - Memory-constrained environment → Trie nodes have overhead
 - Need fuzzy matching → Consider edit distance algorithms instead
-
----
 
 ---
 
