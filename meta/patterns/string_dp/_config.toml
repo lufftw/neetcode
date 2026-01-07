@@ -1,17 +1,31 @@
-# String DP Pattern - Configuration
-# Controls file ordering for templates.md generation
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
 
-header_files = ["_header.md"]
-
-problem_files = [
-    "1143-longest-common-subsequence.md",
-    "0072-edit-distance.md",
-    "0516-longest-palindromic-subsequence.md",
-    "0010-regular-expression-matching.md"
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
 ]
 
-footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+# Problem files (appear in middle, ordered by learning progression)
+# Order: LCS (base) -> Edit Distance -> Palindrome -> Regex -> Wildcard
+problem_files = [
+    "1143-lcs-base.md",
+    "0072-edit-distance.md",
+    "0516-palindrome-subseq.md",
+    "0010-regex-matching.md",
+    "0044-wildcard-matching.md"
+]
 
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_mapping.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/string_dp/templates.md
 [output]
 subdirectory = "string_dp"
 filename = "templates.md"

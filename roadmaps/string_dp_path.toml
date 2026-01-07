@@ -9,7 +9,7 @@ Progress from basic LCS to edit distance to regex matching.
 """
 api_kernel = "StringDP"
 difficulty_range = ["medium", "hard"]
-estimated_problems = 4
+estimated_problems = 5
 
 prerequisites = [
     "Basic 1D dynamic programming",
@@ -114,6 +114,13 @@ title = "Regular Expression Matching"
 difficulty = "hard"
 role = "advanced"
 notes = "Capstone problem - complex transitions, non-trivial base cases"
+
+[[stages.problems]]
+id = "0044"
+title = "Wildcard Matching"
+difficulty = "hard"
+role = "variant"
+notes = "Simpler '*' semantics than regex - matches any sequence directly"
 
 # =============================================================================
 # Summary

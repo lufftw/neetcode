@@ -1,0 +1,80 @@
+# ===== Problem Info =====
+id = "0044"
+slug = "0044_wildcard_matching"
+title = "Wildcard Matching"
+leetcode_id = 44
+url = "https://leetcode.com/problems/wildcard-matching/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["string", "dynamic_programming", "greedy", "recursion"]
+companies = ["google", "amazon", "meta", "microsoft", "two_sigma"]
+
+# ===== Roadmaps =====
+roadmaps = ["string_dp_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels = ["StringDP"]
+patterns = ["wildcard_matching"]
+families = ["string_dp", "pattern_matching"]
+data_structures = ["string", "array"]
+algorithms = ["dynamic_programming", "greedy"]
+related_problems = ["0010"]
+
+# ===== Solutions =====
+[[solutions]]
+key = "default"
+class = "Solution"
+method = "isMatch"
+
+api_kernels = ["StringDP"]
+patterns = ["wildcard_matching"]
+families = ["string_dp", "pattern_matching"]
+data_structures = ["string", "array"]
+algorithms = ["dynamic_programming"]
+related_problems = ["0010"]
+
+role = "base"
+variant = ""
+based_on = []
+delta = ""
+complexity = "O(m*n) time, O(m*n) space"
+notes = "2D DP - simpler than regex since '*' matches any sequence directly"
+
+[[solutions]]
+key = "space_optimized"
+class = "SolutionSpaceOptimized"
+method = "isMatch"
+
+api_kernels = ["StringDP"]
+patterns = ["wildcard_matching"]
+families = ["string_dp", "pattern_matching"]
+data_structures = ["string", "array"]
+algorithms = ["dynamic_programming"]
+related_problems = []
+
+role = "variant"
+variant = "space_optimized"
+based_on = ["0044#default"]
+delta = "Use two rows instead of full table"
+complexity = "O(m*n) time, O(n) space"
+notes = "Rolling array optimization"
+
+[[solutions]]
+key = "greedy"
+class = "SolutionGreedy"
+method = "isMatch"
+
+api_kernels = ["StringDP"]
+patterns = ["wildcard_matching"]
+families = ["string_dp", "pattern_matching"]
+data_structures = ["string"]
+algorithms = ["greedy"]
+related_problems = []
+
+role = "variant"
+variant = "greedy_backtracking"
+based_on = ["0044#default"]
+delta = "Greedy matching with backtracking on '*'"
+complexity = "O(m*n) worst, O(m+n) average time, O(1) space"
+notes = "Track last '*' position and backtrack on mismatch"
