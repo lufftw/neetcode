@@ -270,6 +270,37 @@ class ClassName:   # ← No blank line before class/function
 - ❌ Redundant restating of code logic
 - ❌ More than 4 bullet points
 
+#### Dynamic Programming Solutions
+
+For DP solutions, place the **State/Base case/Transition** definitions as **class-level comments** inside the class body, not in the block comment header.
+
+**Format:**
+
+```python
+# ============================================================================
+# Solution 1: Interval DP (Character Printing)
+# Time: O(n³), Space: O(n²)
+#   - Key insight: when s[k] == s[i], extend first print to cover s[k]
+#   - Preprocess: remove consecutive duplicates
+# ============================================================================
+class Solution:
+    # State: dp[i][j] = minimum turns to print s[i:j+1]
+    # Base case: dp[i][i] = 1 (single char needs 1 turn)
+    # Transition: dp[i][j] = min(dp[i+1][j] + 1,
+    #                            dp[i+1][k-1] + dp[k][j]) for s[k]==s[i]
+
+    def strangePrinter(self, s: str) -> int:
+        ...
+```
+
+| Location | Content |
+|----------|---------|
+| Block comment | Algorithm name, Time/Space complexity, key insights (2-3 bullets) |
+| Class-level comment | `# State:`, `# Base case:`, `# Transition:` definitions |
+| Inline comments | Brief markers like `# Base case`, `# Transition` near code |
+
+**Rationale:** DP definitions are implementation details that belong close to the code. Block comments should focus on high-level algorithmic insights.
+
 #### Internal Function Comments
 
 Internal comments **within methods** are acceptable and encouraged for documenting:
