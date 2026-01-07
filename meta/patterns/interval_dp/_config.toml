@@ -1,0 +1,17 @@
+# Interval DP Pattern - Configuration
+# Controls file ordering for templates.md generation
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0312-burst-balloons.md",
+    "1039-minimum-score-triangulation-of-polygon.md",
+    "1547-minimum-cost-to-cut-a-stick.md",
+    "0664-strange-printer.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "interval_dp"
+filename = "templates.md"
