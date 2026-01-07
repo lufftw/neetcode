@@ -1,0 +1,24 @@
+[problem]
+id = "0214"
+title = "Shortest Palindrome"
+difficulty = "hard"
+url = "https://leetcode.com/problems/shortest-palindrome/"
+tags = ["String", "Rolling Hash", "String Matching", "Hash Function"]
+
+[solution]
+api_kernel = "StringMatching"
+pattern = "string_matching_kmp_concatenation"
+complexity_time = "O(n)"
+complexity_space = "O(n)"
+
+[notes]
+key_insight = """
+Find the longest palindromic prefix, then prepend the reverse of the remaining suffix.
+Use KMP on s + '#' + reverse(s): the failure function's last value gives the
+longest proper prefix that is also a suffix, which equals the palindrome prefix length.
+"""
+common_mistakes = [
+    "Forgetting the '#' separator (causes false matches across boundary)",
+    "Not handling empty string or single character cases",
+    "Computing reverse incorrectly",
+]
