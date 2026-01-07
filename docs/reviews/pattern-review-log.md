@@ -44,7 +44,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | binary_search | Tier 2 | 2025-01-07 | 0/0/1/2 | Reviewed |
 | bitmask_dp | Pending | - | - | Queued |
 | dp_1d_linear | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
-| dp_knapsack_subset | Pending | - | - | Queued |
+| dp_knapsack_subset | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | game_theory_dp | Pending | - | - | Queued |
 | graph | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | greedy_core | Pending | - | - | Queued |
@@ -847,6 +847,67 @@ END TEMPLATE
 - **Previous Tier**: Pending
 - **New Tier**: Tier 2 (Silver)
 - **Rationale**: Strong foundational DP pattern with clear Include/Exclude framework. The space optimization section is particularly valuable for interview prep. Fewer duplicate separators than other patterns (4 vs 7-8), indicating slightly cleaner formatting. Excellent intuition.md with 1D DP backbone mental model.
+
+### Action Items
+- [x] Fix duplicate section separators (4 locations)
+
+---
+
+## DP Knapsack/Subset Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/dp_knapsack_subset/templates.md` (618 lines)
+- `docs/patterns/dp_knapsack_subset/intuition.md` (224 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `DPKnapsackSubset` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [DPKS-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/dp_knapsack_subset/templates.md` (4 locations between sections 6-13) |
+| **Issue** | Double `---` separators appear between sections 6-7, 10-11, 11-12, and 12-13, creating visual inconsistency. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Removed duplicate separators (4 locations). |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `DPKnapsackSubset` with clear "take or skip" mechanism |
+| **Two Major Variants** | ✅ Section 3 clearly distinguishes 0/1 vs Unbounded Knapsack |
+| **Iteration Direction** | ✅ Backwards vs Forwards direction explained with examples |
+| **State Definition Patterns** | ✅ Boolean/Count/Minimize variants with transition formulas |
+| **DP vs Backtracking Guide** | ✅ Section 5 provides clear selection criteria |
+| **Space Optimization** | ✅ Section 6 shows 2D → 1D reduction with "why backwards" explanation |
+| **Pattern Variants** | ✅ 4 problems: LC 416, 494, 322, 518 with full implementations |
+| **Code Templates Summary** | ✅ Section 13 with 6 templates covering all variants |
+| **Decision Flowchart** | ✅ Section 12 with ASCII flowchart and pattern selection guide |
+| **Transformation Patterns** | ✅ Section 12.3 covers Target Sum, Partition transformations |
+| **Intuition Quality** | ✅ "Take it or leave it" mental model, burglar backpack analogy |
+| **Common Pitfalls** | ✅ 3 pitfalls: wrong iteration direction, combinations vs permutations, edge cases |
+| **Practice Progression** | ✅ Level 1-4: LC 416 → 494 → 322 → 518 |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Excellent coverage of knapsack family with clear 0/1 vs Unbounded distinction. The iteration direction explanation is particularly valuable - a common source of confusion. Strong transformation patterns section for problems like Target Sum. Same number of duplicate separators as dp_1d_linear (4).
 
 ### Action Items
 - [x] Fix duplicate section separators (4 locations)
