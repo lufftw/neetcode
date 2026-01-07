@@ -145,3 +145,7 @@ summary = "Deque maintaining monotonic order for sliding window min/max queries.
 [[api_kernels]]
 id = "IntervalDP"
 summary = "DP on intervals [i,j] with split point enumeration: burst balloons, polygon, cutting, printing."
+
+[[api_kernels]]
+id = "StringMatching"
+summary = "KMP failure function and Rabin-Karp rolling hash for pattern matching, periodicity, and prefix-suffix queries."
