@@ -1,0 +1,24 @@
+[problem]
+id = "0877"
+title = "Stone Game"
+difficulty = "medium"
+url = "https://leetcode.com/problems/stone-game/"
+tags = ["Array", "Math", "Dynamic Programming", "Game Theory"]
+
+[solution]
+api_kernel = "GameTheoryDP"
+pattern = "game_theory_interval"
+complexity_time = "O(1)"
+complexity_space = "O(1)"
+
+[notes]
+key_insight = """
+With even number of piles, Alice can always win by controlling which "color"
+of piles (even vs odd indexed) she takes. She can force all of one color,
+and one color must have more stones (sum is odd).
+"""
+common_mistakes = [
+    "Using DP when math solution exists",
+    "Not recognizing the even pile constraint",
+    "Forgetting perspective switch in minimax",
+]

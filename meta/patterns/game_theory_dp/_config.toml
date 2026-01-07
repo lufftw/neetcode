@@ -1,0 +1,30 @@
+# Pattern Documentation Configuration
+# Controls the order of files when composing the final document
+
+# Header files (appear first, typically only _header.md)
+header_files = [
+    "_header.md"
+]
+
+# Problem files (appear in middle, ordered by learning progression)
+# Order: Stone Game (base) -> Predict Winner -> Can I Win -> Stone Game II -> Stone Game III
+problem_files = [
+    "0877-stone-game.md",
+    "0486-predict-the-winner.md",
+    "0464-can-i-win.md",
+    "1140-stone-game-ii.md",
+    "1406-stone-game-iii.md"
+]
+
+# Footer files (appear last, typically comparison, decision, templates)
+footer_files = [
+    "_comparison.md",
+    "_decision.md",
+    "_templates.md"
+]
+
+# Output configuration
+# Generate to: docs/patterns/game_theory_dp/templates.md
+[output]
+subdirectory = "game_theory_dp"
+filename = "templates.md"

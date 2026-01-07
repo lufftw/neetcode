@@ -890,3 +890,20 @@ summary = "Period detection: period = n - failure[n-1], check divisibility."
 id = "string_matching_kmp_direct"
 api_kernel = "StringMatching"
 summary = "Direct failure function application for longest prefix-suffix."
+
+# ===== Game Theory DP Patterns =====
+
+[[patterns]]
+id = "game_theory_interval"
+api_kernel = "GameTheoryDP"
+summary = "Interval minimax: take from ends, track score difference, dp[i][j]."
+
+[[patterns]]
+id = "game_theory_linear"
+api_kernel = "GameTheoryDP"
+summary = "Linear minimax: take from front, fixed choices (1-3), dp[start]."
+
+[[patterns]]
+id = "game_theory_bitmask"
+api_kernel = "GameTheoryDP"
+summary = "Bitmask minimax: select from pool without reuse, win/lose states."

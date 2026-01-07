@@ -149,3 +149,7 @@ summary = "DP on intervals [i,j] with split point enumeration: burst balloons, p
 [[api_kernels]]
 id = "StringMatching"
 summary = "KMP failure function and Rabin-Karp rolling hash for pattern matching, periodicity, and prefix-suffix queries."
+
+[[api_kernels]]
+id = "GameTheoryDP"
+summary = "Minimax DP for two-player games: interval games, bitmask games, and linear games with optimal play."

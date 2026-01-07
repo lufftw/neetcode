@@ -1,0 +1,24 @@
+[problem]
+id = "0486"
+title = "Predict the Winner"
+difficulty = "medium"
+url = "https://leetcode.com/problems/predict-the-winner/"
+tags = ["Array", "Math", "Dynamic Programming", "Recursion", "Game Theory"]
+
+[solution]
+api_kernel = "GameTheoryDP"
+pattern = "game_theory_interval"
+complexity_time = "O(n²)"
+complexity_space = "O(n²)"
+
+[notes]
+key_insight = """
+Track score difference from current player's perspective.
+dp(left, right) = max(take_left - dp(left+1, right), take_right - dp(left, right-1)).
+Player 1 wins if dp(0, n-1) >= 0 (tie counts as win).
+"""
+common_mistakes = [
+    "Using > instead of >= for win condition (tie counts as P1 win)",
+    "Not handling odd-length arrays correctly",
+    "Forgetting the subtraction for perspective switch",
+]
