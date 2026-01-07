@@ -1172,8 +1172,6 @@ Result: 1
 
 ---
 
----
-
 ## 9. Comparison with Similar Patterns
 
 ### 9.1 Heap vs Sorting
@@ -1212,8 +1210,6 @@ Result: 1
 | **Space** | O(k) | O(1) iterative, O(log k) recursive |
 | **Streaming** | ✅ Can process on-the-fly | ❌ Need all lists upfront |
 | **Implementation** | Simpler | More code |
-
----
 
 ---
 
@@ -1293,8 +1289,6 @@ Before implementing, verify:
   - k > n elements
   - Duplicate values
   - Tie-breaking rules
-
----
 
 ---
 

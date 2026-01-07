@@ -48,7 +48,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | game_theory_dp | Pending | - | - | Queued |
 | graph | Pending | - | - | Queued |
 | greedy_core | Pending | - | - | Queued |
-| heap | Pending | - | - | Queued |
+| heap | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | interval | Pending | - | - | Queued |
 | interval_dp | Pending | - | - | Queued |
 | line_sweep | Pending | - | - | Queued |
@@ -315,6 +315,61 @@ END TEMPLATE
 - **Previous Tier**: Pending
 - **New Tier**: Tier 2 (Silver)
 - **Rationale**: Excellent structure with comprehensive coverage of prefix sum family. Strong pedagogical flow from basic to advanced variants. Minor cosmetic issue with duplicate separators doesn't impact quality significantly.
+
+### Action Items
+- [x] Fix duplicate section separators
+
+---
+
+## Heap Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/heap/templates.md` (1457 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `HeapTopK` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [HP-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/heap/templates.md:1174-1175, 1217-1218, 1297-1298` |
+| **Issue** | Double `---` separators appear between sections 8-9, 9-10, and 10-11, creating visual inconsistency. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Remove duplicate separators. |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ Present: `HeapTopK` with mechanism description |
+| **Core Invariant** | ✅ Clear: "Min-heap of size k contains the k largest elements" |
+| **Pattern Variants** | ✅ 7 variants: Kth Element, Top-K, Streaming Median, K-Way Merge, Interval Scheduling, Task Scheduler, Greedy Simulation |
+| **Template Quick Reference** | ✅ Correctly placed at Section 11 (end) |
+| **Decision Flowchart** | ✅ ASCII flowchart with decision tree |
+| **Complexity Comparisons** | ✅ Heap vs Sort vs Quickselect tables |
+| **Common Operations Reference** | ✅ heapq module operations documented |
+| **Trace Examples** | ✅ Step-by-step heap evolution shown |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Comprehensive coverage of heap patterns with excellent decision flowchart. The 7 pattern variants are clearly organized with complexity comparisons. Minor cosmetic issue with duplicate separators.
 
 ### Action Items
 - [x] Fix duplicate section separators
