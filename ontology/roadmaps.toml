@@ -126,3 +126,8 @@ summary = "Step-by-step path to master bitmask DP: subset enumeration, BFS with 
 id = "string_dp_path"
 name = "String DP Mastery"
 summary = "Step-by-step path to master string DP: LCS, edit distance, palindrome, regex matching."
+
+[[roadmaps]]
+id = "monotonic_deque_path"
+name = "Monotonic Deque Mastery"
+summary = "Step-by-step path to master monotonic deque: sliding window max, bounded range, prefix sum optimization."

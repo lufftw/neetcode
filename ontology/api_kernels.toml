@@ -137,3 +137,7 @@ summary = "State compression DP using bitmasks: subset enumeration, TSP-style, s
 [[api_kernels]]
 id = "StringDP"
 summary = "2D DP on two strings: LCS, edit distance, regex matching, palindrome subsequence."
+
+[[api_kernels]]
+id = "MonotonicDeque"
+summary = "Deque maintaining monotonic order for sliding window min/max queries."

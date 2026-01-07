@@ -1,0 +1,152 @@
+# Monotonic Deque Learning Path
+
+[roadmap]
+id = "monotonic_deque_path"
+name = "Monotonic Deque Mastery"
+description = """
+Master Monotonic Deque for sliding window min/max queries and optimization problems.
+Progress from basic sliding window max to bounded range to prefix sum optimization.
+"""
+api_kernel = "MonotonicDeque"
+difficulty_range = ["medium", "hard"]
+estimated_problems = 4
+
+prerequisites = [
+    "Basic sliding window pattern",
+    "Monotonic stack understanding",
+    "Deque (double-ended queue) operations",
+    "Prefix sum basics",
+]
+
+objectives = [
+    "Understand when to use monotonic deque vs monotonic stack",
+    "Master sliding window max/min with O(n) time",
+    "Handle bounded range problems with two deques",
+    "Apply prefix sum + monotonic deque for subarray problems",
+    "Optimize equations by decomposing into deque-friendly forms",
+]
+
+# =============================================================================
+# Stage 1: Sliding Window Maximum
+# =============================================================================
+[[stages]]
+id = "sliding_max"
+name = "Sliding Window Maximum"
+description = "Master the foundational monotonic deque pattern for window max"
+pattern = "monotonic_deque_sliding_max"
+
+focus_points = [
+    "Store indices, not values, in the deque",
+    "Maintain decreasing order: remove smaller elements from back",
+    "Remove out-of-window elements from front",
+    "Front of deque is always current window's maximum",
+]
+
+[[stages.problems]]
+id = "0239"
+title = "Sliding Window Maximum"
+difficulty = "hard"
+role = "base_template"
+notes = "Canonical monotonic deque problem - foundation for all variants"
+
+# =============================================================================
+# Stage 2: Bounded Range
+# =============================================================================
+[[stages]]
+id = "bounded_range"
+name = "Bounded Range Problems"
+description = "Extend to problems requiring both min and max tracking"
+pattern = "monotonic_deque_bounded_range"
+
+focus_points = [
+    "Use two deques: one for max, one for min",
+    "Shrink window from left when max - min exceeds limit",
+    "Both deques track same window, synchronized by left pointer",
+    "O(n) amortized: each element enters/exits deques once",
+]
+
+[[stages.problems]]
+id = "1438"
+title = "Longest Continuous Subarray With Absolute Diff Limit"
+difficulty = "medium"
+role = "variant"
+notes = "Two-deque pattern: track both min and max simultaneously"
+
+# =============================================================================
+# Stage 3: Prefix Sum Optimization
+# =============================================================================
+[[stages]]
+id = "prefix_sum"
+name = "Prefix Sum + Monotonic Deque"
+description = "Combine prefix sums with monotonic deque for subarray problems"
+pattern = "monotonic_deque_prefix_sum"
+
+focus_points = [
+    "Transform subarray sum to prefix[j] - prefix[i]",
+    "Find minimum prefix[i] where i < j and prefix[j] - prefix[i] >= k",
+    "Monotonic increasing deque for minimum prefix values",
+    "Pop from front when condition satisfied (shortest subarray)",
+    "Pop from back to maintain increasing order",
+]
+
+[[stages.problems]]
+id = "0862"
+title = "Shortest Subarray with Sum at Least K"
+difficulty = "hard"
+role = "advanced"
+notes = "Prefix sum reduction + deque optimization - handles negative numbers"
+
+# =============================================================================
+# Stage 4: Equation Optimization
+# =============================================================================
+[[stages]]
+id = "equation_optimization"
+name = "Equation Optimization"
+description = "Decompose equations into deque-friendly components"
+pattern = "monotonic_deque_optimization"
+
+focus_points = [
+    "Identify equation: yi + yj + |xi - xj| with constraint",
+    "Decompose: (yi - xi) + (yj + xj) when xj > xi",
+    "Maximize (yi - xi) for valid candidates using monotonic deque",
+    "Combine with constraint (xj - xi <= k) for window pruning",
+]
+
+[[stages.problems]]
+id = "1499"
+title = "Max Value of Equation"
+difficulty = "hard"
+role = "capstone"
+notes = "Algebraic decomposition + monotonic deque - equation optimization"
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+Monotonic deque maintains a window of candidates where ordering guarantees
+the optimal element is always at the front. Unlike monotonic stack (which
+processes elements once), deque allows both ends for window sliding:
+- Pop front: remove out-of-window elements
+- Pop back: maintain monotonic property
+- Push back: add new candidates
+- Read front: get optimal answer
+"""
+
+complexity_guide = """
+- Sliding Window Max: O(n) time, O(k) space
+- Bounded Range: O(n) time, O(n) space (two deques)
+- Prefix Sum + Deque: O(n) time, O(n) space
+- Equation Optimization: O(n) time, O(n) space
+
+Key: Each element enters/exits deque at most once = amortized O(1) per operation.
+"""
+
+pattern_recognition = """
+Use monotonic deque when:
+1. Need min/max over sliding window of variable or fixed size
+2. Need to track both min and max simultaneously
+3. Subarray problem reducible to prefix[j] - prefix[i] optimization
+4. Equation can be decomposed into i-dependent and j-dependent parts
+5. Need O(n) instead of O(n log n) heap-based solution
+"""

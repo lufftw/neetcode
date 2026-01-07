@@ -819,3 +819,25 @@ summary = "Longest Palindromic Subsequence via LCS(s, reverse(s))."
 id = "string_dp_matching"
 api_kernel = "StringDP"
 summary = "Regex/wildcard matching with . and * patterns."
+
+# ===== Monotonic Deque Patterns =====
+
+[[patterns]]
+id = "monotonic_deque_sliding_max"
+api_kernel = "MonotonicDeque"
+summary = "Sliding window maximum using decreasing deque of indices."
+
+[[patterns]]
+id = "monotonic_deque_bounded_range"
+api_kernel = "MonotonicDeque"
+summary = "Longest subarray with bounded min-max difference using two deques."
+
+[[patterns]]
+id = "monotonic_deque_prefix_sum"
+api_kernel = "MonotonicDeque"
+summary = "Shortest subarray with sum >= k using prefix sums and monotonic deque."
+
+[[patterns]]
+id = "monotonic_deque_optimization"
+api_kernel = "MonotonicDeque"
+summary = "Optimize equations by decomposing into x-dependent and x-independent parts."
