@@ -60,7 +60,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | shortest_path | Pending | - | - | Queued |
 | string_dp | Pending | - | - | Queued |
 | string_matching | Pending | - | - | Queued |
-| topological_sort | Pending | - | - | Queued |
+| topological_sort | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | tree | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | tree_dp | Pending | - | - | Queued |
 | trie | Pending | - | - | Queued |
@@ -609,6 +609,65 @@ END TEMPLATE
 
 ### Action Items
 - [x] Fix duplicate section separators (3 locations)
+
+---
+
+## Topological Sort Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/topological_sort/templates.md` (928 lines)
+- `docs/patterns/topological_sort/intuition.md` (232 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `TopologicalSort` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [TS-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/topological_sort/templates.md` (7 locations between sections 1-8) |
+| **Issue** | Double `---` separators appear between all major sections, creating visual inconsistency. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Removed duplicate separators (7 locations). |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `TopologicalSort` with clear DAG ordering description |
+| **Core Concepts** | ✅ Section 1 covers both Kahn's and DFS algorithms with full code |
+| **Pattern Variants** | ✅ 4 variants: Cycle Detection (207), Return Order (210), Safe States (802), Multi-level (1203) |
+| **Code Templates Summary** | ✅ Section 8 at end with 4 templates (Kahn's, DFS, Cycle Detection, Safe Nodes) |
+| **Decision Framework** | ✅ ASCII decision flowchart (Section 7) |
+| **Kahn's vs DFS Comparison** | ✅ Clear comparison table with use-case guidance |
+| **Three-Color Cycle Detection** | ✅ WHITE→GRAY→BLACK pattern well explained |
+| **Trace Examples** | ✅ Step-by-step traces for all problem variants |
+| **Intuition Quality** | ✅ 5 mental models: Dependency Chain, Peeling Layers, DFS Postorder, Three-Color, Safe States |
+| **Common Pitfalls** | ✅ 4 pitfalls: wrong edge direction, disconnected components, self-loops, forgetting reverse |
+| **Practice Progression** | ✅ Level 1-4 problem sequence |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Comprehensive topological sort coverage with both Kahn's and DFS algorithms fully implemented. The three-color cycle detection is particularly well explained. Strong decision framework for choosing between algorithms. Excellent intuition.md with 5 mental models. More duplicate separators than other patterns (7 vs typical 3), but still minor cosmetic issue.
+
+### Action Items
+- [x] Fix duplicate section separators (7 locations)
 
 ---
 
