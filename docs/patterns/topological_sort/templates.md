@@ -145,8 +145,6 @@ def dfs_topological_sort(num_nodes: int, edges: List[List[int]]) -> List[int]:
 
 ---
 
----
-
 ## 2. Base Template: Course Schedule (LeetCode 207)
 
 > **Problem**: Determine if all courses can be finished given prerequisites.
@@ -266,8 +264,6 @@ Kahn's Algorithm:
 
   4 == 4 → True (no cycle)
 ```
-
----
 
 ---
 
@@ -392,8 +388,6 @@ DFS Postorder (starting from 0):
   Postorder: [3, 1, 2, 0]
   Reversed:  [0, 2, 1, 3] ✓
 ```
-
----
 
 ---
 
@@ -522,8 +516,6 @@ DFS from 5, 6: Terminal, safe
 
 Answer: [2, 4, 5, 6]
 ```
-
----
 
 ---
 
@@ -670,8 +662,6 @@ Result: [6, 3, 4, 5, 2, 0, 1, 7]
 
 ---
 
----
-
 ## 6. Pattern Comparison
 
 ### 6.1 Kahn's Algorithm vs DFS Postorder
@@ -709,8 +699,6 @@ Choose DFS when:
 ├── Stack depth is not a concern
 └── Already doing other DFS operations
 ```
-
----
 
 ---
 
@@ -768,8 +756,6 @@ Problem involves ordering/dependencies?
 2. **Wrong edge direction**: Prerequisite A→B means A must come BEFORE B
 3. **Not handling disconnected components**: Process ALL unvisited nodes
 4. **Stack overflow**: Use iterative version for deep graphs
-
----
 
 ---
 
