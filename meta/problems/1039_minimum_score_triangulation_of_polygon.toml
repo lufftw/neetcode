@@ -1,0 +1,24 @@
+[problem]
+id = "1039"
+title = "Minimum Score Triangulation of Polygon"
+difficulty = "medium"
+url = "https://leetcode.com/problems/minimum-score-triangulation-of-polygon/"
+tags = ["Array", "Dynamic Programming"]
+
+[solution]
+api_kernel = "IntervalDP"
+pattern = "interval_dp_polygon"
+complexity_time = "O(n³)"
+complexity_space = "O(n²)"
+
+[notes]
+key_insight = """
+For edge (i, j), choose a third vertex k to form a triangle.
+This splits the polygon into two smaller polygons with edges (i, k) and (k, j).
+Same structure as burst balloons but with geometric interpretation.
+"""
+common_mistakes = [
+    "Starting interval length at 2 instead of 3 (need at least 3 vertices)",
+    "Confusing vertex indices with edge indices",
+    "Not recognizing the similarity to burst balloons",
+]

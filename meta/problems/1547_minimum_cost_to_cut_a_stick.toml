@@ -1,0 +1,24 @@
+[problem]
+id = "1547"
+title = "Minimum Cost to Cut a Stick"
+difficulty = "hard"
+url = "https://leetcode.com/problems/minimum-cost-to-cut-a-stick/"
+tags = ["Array", "Dynamic Programming", "Sorting"]
+
+[solution]
+api_kernel = "IntervalDP"
+pattern = "interval_dp_cut"
+complexity_time = "O(m³)"
+complexity_space = "O(m²)"
+
+[notes]
+key_insight = """
+Transform cuts into intervals by adding boundaries 0 and n.
+Think about which cut to make LAST in each segment.
+Cost of last cut = length of segment = cuts[j] - cuts[i].
+"""
+common_mistakes = [
+    "Forgetting to add boundary positions 0 and n",
+    "Not sorting the cut positions",
+    "Using j - i instead of cuts[j] - cuts[i] for cost",
+]

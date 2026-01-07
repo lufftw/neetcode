@@ -1,0 +1,25 @@
+[problem]
+id = "0664"
+title = "Strange Printer"
+difficulty = "hard"
+url = "https://leetcode.com/problems/strange-printer/"
+tags = ["String", "Dynamic Programming"]
+
+[solution]
+api_kernel = "IntervalDP"
+pattern = "interval_dp_printer"
+complexity_time = "O(n³)"
+complexity_space = "O(n²)"
+
+[notes]
+key_insight = """
+Different recurrence from standard interval DP.
+When s[k] == s[i], we can extend the first print to cover s[k],
+reducing the number of turns needed.
+Preprocessing: remove consecutive duplicates.
+"""
+common_mistakes = [
+    "Not removing consecutive duplicate characters",
+    "Wrong base case (single char needs 1 turn)",
+    "Missing the character matching optimization",
+]

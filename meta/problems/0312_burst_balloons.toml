@@ -1,0 +1,24 @@
+[problem]
+id = "0312"
+title = "Burst Balloons"
+difficulty = "hard"
+url = "https://leetcode.com/problems/burst-balloons/"
+tags = ["Array", "Dynamic Programming"]
+
+[solution]
+api_kernel = "IntervalDP"
+pattern = "interval_dp_burst"
+complexity_time = "O(n³)"
+complexity_space = "O(n²)"
+
+[notes]
+key_insight = """
+Think about which balloon to burst LAST in each interval.
+If k is burst last in (i, j), then nums[i] and nums[j] are still boundaries.
+Add virtual balloons [1] at boundaries to handle edge cases cleanly.
+"""
+common_mistakes = [
+    "Forgetting to add boundary balloons [1] at start and end",
+    "Thinking 'first to burst' instead of 'last to burst'",
+    "Wrong interval bounds (exclusive vs inclusive)",
+]
