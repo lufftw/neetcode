@@ -47,7 +47,10 @@ SOLUTIONS = {
 # Solution 1: LCS with Reversed String
 # Time: O(n^2), Space: O(n^2)
 #   - Key insight: LPS(s) = LCS(s, reverse(s))
-#   - Any common subsequence of s and reverse(s) is palindromic
+#   - State: lcs_length[i][j] = LCS length for s[0:i] and reversed_s[0:j]
+#   - Base case: lcs_length[i][0] = lcs_length[0][j] = 0
+#   - Transition: if match, lcs_length[i][j] = lcs_length[i-1][j-1] + 1
+#                 else, lcs_length[i][j] = max(lcs_length[i-1][j], lcs_length[i][j-1])
 # ============================================================================
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:

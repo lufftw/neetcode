@@ -26,8 +26,9 @@ SOLUTIONS = {
 # Solution 1: Interval DP (Last Operation)
 # Time: O(n³), Space: O(n²)
 #   - Key: think which balloon to burst LAST (not first)
-#   - If k is last in (i,j), boundaries nums[i], nums[j] still exist
-#   - max_coins[i][j] = max over k of: left + right + nums[i]*nums[k]*nums[j]
+#   - State: max_coins[i][j] = max coins for bursting all in (i, j) exclusive
+#   - Base case: max_coins[i][i+1] = 0 (no balloons between adjacent)
+#   - Transition: max_coins[i][j] = max over k of: left + right + nums[i]*nums[k]*nums[j]
 # ============================================================================
 class Solution:
     def maxCoins(self, nums: List[int]) -> int:

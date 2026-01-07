@@ -57,8 +57,10 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: 2D DP (Bottom-Up)
 # Time: O(m*n), Space: O(m*n)
-#   - is_match[i][j] = True if s[0:i] matches p[0:j]
-#   - '*' means zero or more of PRECEDING char (look back to p[j-2])
+#   - State: is_match[i][j] = True if s[0:i] matches p[0:j]
+#   - Base case: is_match[0][0] = True; is_match[0][j] handles a*, a*b* patterns
+#   - Transition: if p[j-1] == '*', check zero-match or one-match cases
+#                 else, check char match or '.' wildcard
 # ============================================================================
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:

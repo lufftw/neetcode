@@ -56,8 +56,10 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: 2D DP
 # Time: O(m*n), Space: O(m*n)
-#   - edit_cost[i][j] = min edits to convert word1[0:i] to word2[0:j]
-#   - Match: no cost; Mismatch: 1 + min(replace, delete, insert)
+#   - State: edit_cost[i][j] = min edits to convert word1[0:i] to word2[0:j]
+#   - Base case: edit_cost[i][0] = i (delete all), edit_cost[0][j] = j (insert all)
+#   - Transition: if match, edit_cost[i][j] = edit_cost[i-1][j-1]
+#                 else, edit_cost[i][j] = 1 + min(replace, delete, insert)
 # ============================================================================
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:

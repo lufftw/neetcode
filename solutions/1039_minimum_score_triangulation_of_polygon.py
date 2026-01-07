@@ -26,8 +26,9 @@ SOLUTIONS = {
 # Solution 1: Interval DP (Polygon Triangulation)
 # Time: O(n³), Space: O(n²)
 #   - For edge (i, j), choose third vertex k to form triangle
-#   - Splits polygon into two smaller polygons: [i,k] and [k,j]
-#   - min_score[i][j] = min over k of: left + right + values[i]*values[k]*values[j]
+#   - State: min_score[i][j] = min cost to triangulate polygon [i, j]
+#   - Base case: min_score[i][i+1] = 0 (edge, no triangle possible)
+#   - Transition: min_score[i][j] = min over k of: left + right + values[i]*values[k]*values[j]
 # ============================================================================
 class Solution:
     def minScoreTriangulation(self, values: List[int]) -> int:

@@ -26,8 +26,9 @@ SOLUTIONS = {
 # Solution 1: Interval DP (Cutting Problems)
 # Time: O(m³), Space: O(m²) where m = len(cuts) + 2
 #   - Key: think which cut to make LAST (not first)
-#   - If k is last cut in segment, cost = segment length + left + right
-#   - min_cost[i][j] = min over k of: left + right + (cuts[j] - cuts[i])
+#   - State: min_cost[i][j] = min cost to cut segment [cuts[i], cuts[j]]
+#   - Base case: min_cost[i][i+1] = 0 (no cuts needed for adjacent)
+#   - Transition: min_cost[i][j] = min over k of: left + right + segment_length
 # ============================================================================
 class Solution:
     def minCost(self, n: int, cuts: List[int]) -> int:

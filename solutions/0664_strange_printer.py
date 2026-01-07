@@ -24,8 +24,9 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: Interval DP (Character Printing)
 # Time: O(n³), Space: O(n²)
-#   - When s[k] == s[i], extend first print to cover s[k] (saves one turn)
-#   - min_turns[i][j] = min turns to print s[i:j+1]
+#   - State: min_turns[i][j] = min turns to print s[i:j+1]
+#   - Base case: min_turns[i][i] = 1 (single char needs 1 turn)
+#   - Transition: if s[k] == s[i], extend first print to cover s[k]
 #   - Preprocess: remove consecutive duplicates (don't affect answer)
 # ============================================================================
 class Solution:
