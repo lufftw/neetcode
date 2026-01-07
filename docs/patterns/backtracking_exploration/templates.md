@@ -118,8 +118,6 @@ Backtracking algorithms typically have exponential or factorial complexity becau
 
 ---
 
----
-
 ## 2. Base Template: Permutations (LeetCode 46)
 
 > **Problem**: Given an array of distinct integers, return all possible permutations.  

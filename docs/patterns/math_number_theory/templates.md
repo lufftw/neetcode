@@ -82,8 +82,6 @@ gcd(a, 0) = a
 
 ---
 
----
-
 ## 5. GCD of Array (LeetCode 1979)
 
 > **Problem**: Find GCD of all elements in array.
@@ -321,8 +319,6 @@ def titleToNumber(self, columnTitle: str) -> int:
 
 ---
 
----
-
 ## 8. Quick Reference Toolbox
 
 ### 8.1 GCD / LCM
@@ -436,8 +432,6 @@ def from_base(s: str, base: int) -> int:
     """Convert string in given base to integer."""
     return int(s, base)
 ```
-
----
 
 ---
 
