@@ -198,6 +198,9 @@ nav:
     - String DP:
       - Intuition: patterns/string_dp/intuition.md
       - Templates: patterns/string_dp/templates.md
+    - Monotonic Deque:
+      - Intuition: patterns/monotonic_deque/intuition.md
+      - Templates: patterns/monotonic_deque/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

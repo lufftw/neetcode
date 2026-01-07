@@ -47,6 +47,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `TreeDP` | 💡 [Intuition](tree_dp/intuition.md) · 🛠️ [Templates](tree_dp/templates.md) | Include/exclude, path contribution, multi-state | LeetCode 337, 124, 968 |
 | `BitmaskDP` | 💡 [Intuition](bitmask_dp/intuition.md) · 🛠️ [Templates](bitmask_dp/templates.md) | Subset enumeration, BFS with bitmask, set cover | LeetCode 78, 847, 1125 |
 | `StringDP` | 💡 [Intuition](string_dp/intuition.md) · 🛠️ [Templates](string_dp/templates.md) | LCS, edit distance, palindrome, regex matching | LeetCode 1143, 72, 516, 10 |
+| `MonotonicDeque` | 💡 [Intuition](monotonic_deque/intuition.md) · 🛠️ [Templates](monotonic_deque/templates.md) | Sliding window min/max, bounded range, prefix sum optimization | LeetCode 239, 1438, 862, 1499 |
 | `GridBFSMultiSource` | *coming soon* | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | Merge K sorted sequences | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
