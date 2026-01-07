@@ -798,8 +798,6 @@ For this problem with up to 20,000 bookings and 20,000 flights, difference array
 
 ---
 
----
-
 ## 10. Pattern Comparison
 
 ### 10.1 Prefix Sum vs Sliding Window
@@ -838,8 +836,6 @@ Difference: prefix → nums (consecutive differences)
 | **Build** | O(n) | O(m * n) |
 | **Query** | O(1) | O(1) |
 | **Space** | O(n) | O(m * n) |
-
----
 
 ---
 
