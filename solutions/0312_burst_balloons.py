@@ -22,36 +22,36 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Interval DP (Last Operation)
+# Time: O(n³), Space: O(n²)
+#   - Key: think which balloon to burst LAST (not first)
+#   - If k is last in (i,j), boundaries nums[i], nums[j] still exist
+#   - max_coins[i][j] = max over k of: left + right + nums[i]*nums[k]*nums[j]
+# ============================================================================
 class Solution:
     def maxCoins(self, nums: List[int]) -> int:
-        """
-        Maximum coins from bursting all balloons.
-
-        dp[i][j] = max coins from bursting all balloons in (i, j) exclusive
-
-        For each k in (i, j):
-        - If k is burst LAST, boundaries are nums[i] and nums[j]
-        - coins = nums[i] * nums[k] * nums[j]
-        - Total = dp[i][k] + dp[k][j] + coins
-        """
-        # Add virtual balloons at boundaries
+        # Add virtual balloons at boundaries (value 1)
         nums = [1] + nums + [1]
-        n = len(nums)
+        balloon_count = len(nums)
 
-        # dp[i][j] = max coins for interval (i, j) exclusive
-        dp = [[0] * n for _ in range(n)]
+        # max_coins[i][j] = max coins for bursting all in interval (i, j) exclusive
+        max_coins: list[list[int]] = [
+            [0] * balloon_count for _ in range(balloon_count)
+        ]
 
-        # Fill by interval length (from small to large)
-        for length in range(2, n):  # length = j - i
-            for i in range(n - length):
-                j = i + length
+        # Fill by interval length (small to large)
+        for interval_len in range(2, balloon_count):
+            for start in range(balloon_count - interval_len):
+                end = start + interval_len
 
-                # Try each balloon k as the LAST to burst
-                for k in range(i + 1, j):
-                    coins = nums[i] * nums[k] * nums[j]
-                    dp[i][j] = max(dp[i][j], dp[i][k] + dp[k][j] + coins)
+                # Try each balloon as the LAST to burst in this interval
+                for last_burst in range(start + 1, end):
+                    coins = nums[start] * nums[last_burst] * nums[end]
+                    total = max_coins[start][last_burst] + max_coins[last_burst][end] + coins
+                    max_coins[start][end] = max(max_coins[start][end], total)
 
-        return dp[0][n - 1]
+        return max_coins[0][balloon_count - 1]
 
 
 def solve():

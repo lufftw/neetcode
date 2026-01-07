@@ -22,36 +22,37 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Interval DP (Cutting Problems)
+# Time: O(m³), Space: O(m²) where m = len(cuts) + 2
+#   - Key: think which cut to make LAST (not first)
+#   - If k is last cut in segment, cost = segment length + left + right
+#   - min_cost[i][j] = min over k of: left + right + (cuts[j] - cuts[i])
+# ============================================================================
 class Solution:
     def minCost(self, n: int, cuts: List[int]) -> int:
-        """
-        Minimum cost to make all cuts on a stick of length n.
-
-        dp[i][j] = min cost to cut segment between cuts[i] and cuts[j]
-
-        For each cut position k in (i, j):
-        - If k is the LAST cut, cost = segment length = cuts[j] - cuts[i]
-        - Total = dp[i][k] + dp[k][j] + cost
-        """
-        # Add boundaries and sort
+        # Add boundaries (0 and n) and sort
         cuts = sorted([0] + cuts + [n])
-        m = len(cuts)
+        cut_count = len(cuts)
 
-        # dp[i][j] = min cost to cut segment [cuts[i], cuts[j]]
-        dp = [[0] * m for _ in range(m)]
+        # min_cost[i][j] = min cost to cut segment [cuts[i], cuts[j]]
+        min_cost: list[list[int]] = [
+            [0] * cut_count for _ in range(cut_count)
+        ]
 
         # Fill by gap between cut indices
-        for gap in range(2, m):
-            for i in range(m - gap):
-                j = i + gap
-                dp[i][j] = float('inf')
+        for gap in range(2, cut_count):
+            for start in range(cut_count - gap):
+                end = start + gap
+                min_cost[start][end] = float('inf')
 
-                # Try each intermediate cut as the LAST cut
-                for k in range(i + 1, j):
-                    cost = cuts[j] - cuts[i]  # Length of current segment
-                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j] + cost)
+                # Try each intermediate position as the LAST cut
+                for last_cut in range(start + 1, end):
+                    segment_length = cuts[end] - cuts[start]
+                    total = min_cost[start][last_cut] + min_cost[last_cut][end] + segment_length
+                    min_cost[start][end] = min(min_cost[start][end], total)
 
-        return dp[0][m - 1]
+        return min_cost[0][cut_count - 1]
 
 
 def solve():
