@@ -437,6 +437,7 @@ Each pattern provides **two learning paths**:
 | `BitmaskDP` | 💡 [Intuition](docs/patterns/bitmask_dp/intuition.md) · 🛠️ [Templates](docs/patterns/bitmask_dp/templates.md) | LeetCode 78, 847, 1125 |
 | `StringDP` | 💡 [Intuition](docs/patterns/string_dp/intuition.md) · 🛠️ [Templates](docs/patterns/string_dp/templates.md) | LeetCode 1143, 72, 516, 10 |
 | `MonotonicDeque` | 💡 [Intuition](docs/patterns/monotonic_deque/intuition.md) · 🛠️ [Templates](docs/patterns/monotonic_deque/templates.md) | LeetCode 239, 1438, 862, 1499 |
+| `IntervalDP` | 💡 [Intuition](docs/patterns/interval_dp/intuition.md) · 🛠️ [Templates](docs/patterns/interval_dp/templates.md) | LeetCode 312, 1039, 1547, 664 |
 | `GridBFSMultiSource` | *coming soon* | LeetCode 994, 286, 542 |
 | `KWayMerge` | *coming soon* | LeetCode 23, 21, 88 |
 | `LinkedListInPlaceReversal` | *coming soon* | LeetCode 25, 206, 92 |

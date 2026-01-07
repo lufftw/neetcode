@@ -201,6 +201,9 @@ nav:
     - Monotonic Deque:
       - Intuition: patterns/monotonic_deque/intuition.md
       - Templates: patterns/monotonic_deque/templates.md
+    - Interval DP:
+      - Intuition: patterns/interval_dp/intuition.md
+      - Templates: patterns/interval_dp/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
