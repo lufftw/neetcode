@@ -55,69 +55,84 @@ SOLUTIONS = {
 
 
 # ============================================================================
-# Solution: 2D DP (Bottom-Up)
+# Solution 1: 2D DP (Bottom-Up)
 # Time: O(m*n), Space: O(m*n)
-#   - dp[i][j] = True if s[0:i] matches p[0:j]
-#   - Handle '*' specially: zero or more of preceding element
+#   - is_match[i][j] = True if s[0:i] matches p[0:j]
+#   - '*' means zero or more of PRECEDING char (look back to p[j-2])
 # ============================================================================
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
-        m, n = len(s), len(p)
+        text_len, pattern_len = len(s), len(p)
 
-        # dp[i][j] = True if s[0:i] matches p[0:j]
-        dp = [[False] * (n + 1) for _ in range(m + 1)]
-        dp[0][0] = True  # Empty string matches empty pattern
+        # is_match[i][j] = True if s[0:i] matches p[0:j]
+        is_match: list[list[bool]] = [
+            [False] * (pattern_len + 1) for _ in range(text_len + 1)
+        ]
+        is_match[0][0] = True  # Empty string matches empty pattern
 
         # Base case: empty string can match patterns like a*, a*b*, etc.
-        for j in range(2, n + 1):
+        for j in range(2, pattern_len + 1):
             if p[j - 1] == '*':
-                dp[0][j] = dp[0][j - 2]
+                # '*' can eliminate preceding char, check j-2
+                is_match[0][j] = is_match[0][j - 2]
 
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
-                if p[j - 1] == '*':
-                    # Option 1: Use zero occurrences of preceding element
-                    dp[i][j] = dp[i][j - 2]
+        for i in range(1, text_len + 1):
+            for j in range(1, pattern_len + 1):
+                pattern_char = p[j - 1]
 
-                    # Option 2: Use one or more (if current char matches)
-                    if p[j - 2] == '.' or p[j - 2] == s[i - 1]:
-                        dp[i][j] = dp[i][j] or dp[i - 1][j]
-                elif p[j - 1] == '.' or p[j - 1] == s[i - 1]:
-                    # Direct match or wildcard .
-                    dp[i][j] = dp[i - 1][j - 1]
+                if pattern_char == '*':
+                    preceding_char = p[j - 2]
+                    # Option 1: Use zero occurrences (skip preceding + '*')
+                    zero_match = is_match[i][j - 2]
+                    # Option 2: Use one+ (if current text char matches preceding)
+                    char_matches = (preceding_char == '.' or preceding_char == s[i - 1])
+                    one_or_more = char_matches and is_match[i - 1][j]
+                    is_match[i][j] = zero_match or one_or_more
 
-        return dp[m][n]
+                elif pattern_char == '.' or pattern_char == s[i - 1]:
+                    # Direct match or '.' wildcard
+                    is_match[i][j] = is_match[i - 1][j - 1]
+
+        return is_match[text_len][pattern_len]
 
 
 # ============================================================================
-# Solution: Top-Down with Memoization
+# Solution 2: Top-Down with Memoization
 # Time: O(m*n), Space: O(m*n)
-#   - Recursive approach with caching
+#   - Recursive with lru_cache; check_match(i, j) = does s[i:] match p[j:]?
+#   - More intuitive flow but same complexity as bottom-up
 # ============================================================================
 class SolutionRecursive:
     def isMatch(self, s: str, p: str) -> bool:
         from functools import lru_cache
 
+        text_len, pattern_len = len(s), len(p)
+
         @lru_cache(maxsize=None)
-        def dp(i: int, j: int) -> bool:
-            """Check if s[i:] matches p[j:]"""
+        def check_match(text_idx: int, pattern_idx: int) -> bool:
+            """Check if s[text_idx:] matches p[pattern_idx:]."""
             # Base case: pattern exhausted
-            if j == len(p):
-                return i == len(s)
+            if pattern_idx == pattern_len:
+                return text_idx == text_len
 
             # Check if first character matches
-            first_match = i < len(s) and (p[j] == '.' or p[j] == s[i])
+            first_char_matches = (
+                text_idx < text_len and
+                (p[pattern_idx] == '.' or p[pattern_idx] == s[text_idx])
+            )
 
-            # Handle '*' - zero or more of preceding
-            if j + 1 < len(p) and p[j + 1] == '*':
-                # Option 1: Use zero of p[j] (skip p[j] and *)
-                # Option 2: Use one+ of p[j] (if first matches, advance s)
-                return dp(i, j + 2) or (first_match and dp(i + 1, j))
+            # Handle '*' - zero or more of preceding char
+            if pattern_idx + 1 < pattern_len and p[pattern_idx + 1] == '*':
+                # Option 1: Use zero (skip pattern char + '*')
+                # Option 2: Use one+ (if first matches, consume text char)
+                zero_match = check_match(text_idx, pattern_idx + 2)
+                one_or_more = first_char_matches and check_match(text_idx + 1, pattern_idx)
+                return zero_match or one_or_more
             else:
                 # Normal match: advance both if first matches
-                return first_match and dp(i + 1, j + 1)
+                return first_char_matches and check_match(text_idx + 1, pattern_idx + 1)
 
-        return dp(0, 0)
+        return check_match(0, 0)
 
 
 def solve():
