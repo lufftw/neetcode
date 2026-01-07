@@ -145,17 +145,18 @@ class SolutionGreedy:
 # ============================================================================
 # Solution 2: Dynamic Programming
 # Time: O(n^2), Space: O(n)
-#
-# State: dp[i] = True if position i is reachable from start
-# Transition: dp[j] = True if any dp[i] where i + nums[i] >= j
-#
-# Educational Value: Shows the DP approach before optimization to greedy.
+#   - Educational: shows DP approach before optimization to greedy
+#   - Mark all reachable positions from each reachable position
 # ============================================================================
 class SolutionDP:
+    # State: reachable[i] = True if position i is reachable from start
+    # Base case: reachable[0] = True (start position)
+    # Transition: reachable[j] = True if any reachable[i] where i + nums[i] >= j
+
     def canJump(self, nums: List[int]) -> bool:
         n = len(nums)
         reachable = [False] * n
-        reachable[0] = True
+        reachable[0] = True  # Base case
 
         for i in range(n):
             if not reachable[i]:
