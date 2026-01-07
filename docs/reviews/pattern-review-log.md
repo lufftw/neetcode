@@ -43,7 +43,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 |---------|------|-------------|------------------|--------|
 | binary_search | Tier 2 | 2025-01-07 | 0/0/1/2 | Reviewed |
 | bitmask_dp | Pending | - | - | Queued |
-| dp_1d_linear | Pending | - | - | Queued |
+| dp_1d_linear | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | dp_knapsack_subset | Pending | - | - | Queued |
 | game_theory_dp | Pending | - | - | Queued |
 | graph | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
@@ -790,6 +790,66 @@ END TEMPLATE
 
 ### Action Items
 - [x] Fix duplicate section separators (8 locations)
+
+---
+
+## DP 1D Linear Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/dp_1d_linear/templates.md` (708 lines)
+- `docs/patterns/dp_1d_linear/intuition.md` (227 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `DP1DLinear` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [DP1D-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/dp_1d_linear/templates.md` (4 locations between sections 5-13) |
+| **Issue** | Double `---` separators appear between sections 5-6, 10-11, 11-12, and 12-13, creating visual inconsistency. Fewer instances than other patterns. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Removed duplicate separators (4 locations). |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `DP1DLinear` with clear mechanism description |
+| **Core Concepts** | ✅ Section 1 covers DP formula, recurrence relation, base cases, and state definition |
+| **Include/Exclude Framework** | ✅ Fundamental binary choice pattern well explained |
+| **Pattern Variants** | ✅ 4 main variants: Climbing Stairs (LC 70), Min Cost (LC 746), House Robber (LC 198), Circular (LC 213) |
+| **Code Templates Summary** | ✅ Section 13 at end with 6 templates (Linear, Include/Exclude, Circular, State Machine, etc.) |
+| **Decision Framework** | ✅ Section 12 with decision flowchart for pattern selection |
+| **Space Optimization** | ✅ Section 7 covers O(n) → O(1) constant space patterns |
+| **State Machine Pattern** | ✅ Section 8 with stock problem variant (LC 121) |
+| **Trace Examples** | ✅ Step-by-step DP table evolution for each variant |
+| **Intuition Quality** | ✅ "1D DP Backbone" mental model, Include/Exclude framework |
+| **Common Pitfalls** | ✅ 4 pitfalls: wrong base case, off-by-one, forgetting circular wrap, overwriting values |
+| **Practice Progression** | ✅ Level 1-4 problem sequence: LC 70 → 746 → 198 → 213 → 121 |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Strong foundational DP pattern with clear Include/Exclude framework. The space optimization section is particularly valuable for interview prep. Fewer duplicate separators than other patterns (4 vs 7-8), indicating slightly cleaner formatting. Excellent intuition.md with 1D DP backbone mental model.
+
+### Action Items
+- [x] Fix duplicate section separators (4 locations)
 
 ---
 
