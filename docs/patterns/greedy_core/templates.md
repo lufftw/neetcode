@@ -60,8 +60,6 @@ For Greedy Core problems, the choice is typically:
 
 ---
 
----
-
 ## 5. Base Template: Jump Game (LeetCode 55)
 
 > **Problem**: Determine if you can reach the last index, starting from index 0.
@@ -551,8 +549,6 @@ The "advantage" metric captures opportunity cost.
 
 ---
 
----
-
 ## 11. Pattern Comparison
 
 ### 11.1 Greedy Core vs Interval Greedy
@@ -589,8 +585,6 @@ The "advantage" metric captures opportunity cost.
 | **Reachability** | Farthest reachable position | Single scan, max update | LC 55, 45 |
 | **Prefix Min/Reset** | Running balance with reset | Deficit triggers reset | LC 134 |
 | **Sort + Match** | Sorted order enables optimal | Two pointers / sorting | LC 135, 455, 1029 |
-
----
 
 ---
 
@@ -659,8 +653,6 @@ For Greedy Core problems, verify:
 
 ---
 
----
-
 ## 13. Problem Mapping
 
 ### 13.1 By Kernel Type
@@ -693,8 +685,6 @@ These problems use greedy but belong to other categories:
 | LC 435 (Non-overlapping Intervals) | Interval Greedy | Sort by end, conflict counting |
 | LC 253 (Meeting Rooms II) | Heap Greedy | Dynamic room assignment |
 | LC 621 (Task Scheduler) | Heap Greedy | Priority-based selection |
-
----
 
 ---
 
