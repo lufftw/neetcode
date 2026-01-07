@@ -61,7 +61,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | string_dp | Pending | - | - | Queued |
 | string_matching | Pending | - | - | Queued |
 | topological_sort | Pending | - | - | Queued |
-| tree | Pending | - | - | Queued |
+| tree | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | tree_dp | Pending | - | - | Queued |
 | trie | Pending | - | - | Queued |
 | union_find | Pending | - | - | Queued |
@@ -429,6 +429,65 @@ END TEMPLATE
 - **Previous Tier**: Pending
 - **New Tier**: Tier 2 (Silver)
 - **Rationale**: Comprehensive coverage of graph traversal patterns with excellent structure. Two API kernels (DFS/BFS) clearly differentiated. Outstanding intuition.md with mental models, pitfalls, and practice progression. Minor cosmetic issue with duplicate separators.
+
+### Action Items
+- [x] Fix duplicate section separators
+
+---
+
+## Tree Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/tree/templates.md` (1063 lines)
+- `docs/patterns/tree/intuition.md` (332 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entries: `TreeTraversalDFS`, `TreeTraversalBFS` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [TR-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/tree/templates.md:818-819, 878-879, 953-955` |
+| **Issue** | Double `---` separators appear between sections 7-8, 8-9, and 9-10, creating visual inconsistency. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Remove duplicate separators. |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ Two kernels: `TreeTraversalDFS`, `TreeTraversalBFS` |
+| **Core Invariants** | ✅ Explicit for each traversal order (pre/in/post) |
+| **Pattern Variants** | ✅ 4 variants: Basic DFS, Property Computation, Path Problems, Level-Order |
+| **Code Templates Summary** | ✅ Correctly placed at Section 10 (end) with 7 templates |
+| **Decision Framework** | ✅ ASCII decision tree (Section 9) |
+| **Return vs Update Pattern** | ✅ Well explained for diameter/path problems |
+| **Recursive Patterns** | ✅ 3 common patterns clearly documented |
+| **Iterative Versions** | ✅ Both recursive and iterative for each traversal |
+| **Intuition Quality** | ✅ "Trees decompose recursively" mental model |
+| **Common Pitfalls** | ✅ 4 pitfalls: height vs depth, base cases, negative values, stack overflow |
+| **Practice Progression** | ✅ Level 1-4 problem sequence |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Comprehensive coverage of tree traversal patterns. The "Return vs Update" pattern for path problems is particularly well explained. Excellent intuition.md with mental models and common pitfalls. Minor cosmetic issue with duplicate separators.
 
 ### Action Items
 - [x] Fix duplicate section separators
