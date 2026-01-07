@@ -778,8 +778,6 @@ firstList = [[1,3]], secondList = [[3,5]]
 
 ---
 
----
-
 ## 7. Pattern Comparison
 
 ### 7.1 Sort Key Decision
@@ -851,8 +849,6 @@ while i < len(A) and j < len(B):
 | LC 452 | Shoot at rightmost safe position | Maximizes balloons per arrow |
 | LC 56 | Merge all overlapping | No choice - must merge |
 | LC 57 | Process in phases | Already sorted, single pass optimal |
-
----
 
 ---
 
@@ -932,8 +928,6 @@ Need to INTERSECT two lists?
 | Post-sort processing | O(n) |
 | Two-list intersection | O(m + n) |
 | Space (typical) | O(n) for output |
-
----
 
 ---
 
