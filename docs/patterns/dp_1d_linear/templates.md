@@ -79,8 +79,6 @@ This creates the classic transition: `dp[i] = max(dp[i-1], dp[i-2] + value[i])`
 
 ---
 
----
-
 ## 6. Base Template: Climbing Stairs (LeetCode 70)
 
 > **Problem**: Count the number of distinct ways to climb n stairs, taking 1 or 2 steps at a time.
@@ -462,8 +460,6 @@ Result: 5
 
 ---
 
----
-
 ## 11. Pattern Comparison
 
 ### 11.1 1D DP vs Greedy
@@ -498,8 +494,6 @@ Result: 5
 | Fibonacci-like | O(n) | O(1) | Only need last 2 values |
 | Kadane-style | O(n) | O(1) | Only need running best |
 | Include/Exclude | O(n) | O(1) | Only need last 2 values |
-
----
 
 ---
 
@@ -563,8 +557,6 @@ When defining `dp[i]`, ask:
 | Transition uses only last k states? | Optimize to O(k) | Keep O(n) array |
 | Need to reconstruct path? | Keep full array | Can optimize |
 | Multiple queries on same array? | Keep prefix array | Can optimize |
-
----
 
 ---
 
