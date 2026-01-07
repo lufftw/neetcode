@@ -1,0 +1,150 @@
+# Interval DP Learning Path
+
+[roadmap]
+id = "interval_dp_path"
+name = "Interval DP Mastery"
+description = """
+Master Interval DP for problems where subproblems are defined by intervals [i, j].
+Progress from burst balloons to polygon to cutting to printing.
+"""
+api_kernel = "IntervalDP"
+difficulty_range = ["medium", "hard"]
+estimated_problems = 4
+
+prerequisites = [
+    "Basic dynamic programming",
+    "Understanding of recurrence relations",
+    "Familiarity with 2D DP tables",
+]
+
+objectives = [
+    "Understand 'last operation' thinking for interval DP",
+    "Master the universal interval DP template",
+    "Recognize when to add boundary elements",
+    "Apply character matching optimization",
+]
+
+# =============================================================================
+# Stage 1: Burst Balloons (The Foundation)
+# =============================================================================
+[[stages]]
+id = "burst_balloons"
+name = "Burst Balloons"
+description = "Master the foundational 'last to burst' insight"
+pattern = "interval_dp_burst"
+
+focus_points = [
+    "Think 'which element to process LAST' not 'first'",
+    "Add virtual boundary elements [1] at ends",
+    "dp[i][j] = max coins for interval (i, j) exclusive",
+    "Try each k as the last element to process",
+]
+
+[[stages.problems]]
+id = "0312"
+title = "Burst Balloons"
+difficulty = "hard"
+role = "base_template"
+notes = "Canonical interval DP - foundation for all variants"
+
+# =============================================================================
+# Stage 2: Polygon Triangulation
+# =============================================================================
+[[stages]]
+id = "polygon"
+name = "Polygon Triangulation"
+description = "Apply interval DP with geometric interpretation"
+pattern = "interval_dp_polygon"
+
+focus_points = [
+    "Same structure as burst balloons",
+    "Edge (i, j) + third vertex k forms triangle",
+    "Start from length 3 (minimum for triangle)",
+    "Geometric interpretation aids understanding",
+]
+
+[[stages.problems]]
+id = "1039"
+title = "Minimum Score Triangulation of Polygon"
+difficulty = "medium"
+role = "variant"
+notes = "Geometric interpretation - same algorithm as burst balloons"
+
+# =============================================================================
+# Stage 3: Cut Stick
+# =============================================================================
+[[stages]]
+id = "cut_stick"
+name = "Cut Stick"
+description = "Apply interval DP with preprocessing"
+pattern = "interval_dp_cut"
+
+focus_points = [
+    "Preprocessing: sort cuts and add boundaries 0 and n",
+    "Think 'which cut to make LAST'",
+    "Cost = segment length = cuts[j] - cuts[i]",
+    "Work with cut indices, not stick positions",
+]
+
+[[stages.problems]]
+id = "1547"
+title = "Minimum Cost to Cut a Stick"
+difficulty = "hard"
+role = "variant"
+notes = "Preprocessing pattern - sort and add boundaries"
+
+# =============================================================================
+# Stage 4: Strange Printer
+# =============================================================================
+[[stages]]
+id = "printer"
+name = "Strange Printer"
+description = "Non-standard interval DP with character matching"
+pattern = "interval_dp_printer"
+
+focus_points = [
+    "Different recurrence structure from standard split",
+    "Preprocessing: remove consecutive duplicates",
+    "Optimization: when s[k] == s[i], extend first print",
+    "Base case: single char needs 1 turn",
+]
+
+[[stages.problems]]
+id = "0664"
+title = "Strange Printer"
+difficulty = "hard"
+role = "capstone"
+notes = "Character matching optimization - unique recurrence"
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+Interval DP solves problems on intervals [i, j] by thinking about the LAST
+operation. This makes subproblems independent:
+- If k is processed last in (i, j), the result is dp[i][k] + dp[k][j] + cost(i,k,j)
+
+The key mental shift: instead of "what to do first", ask "what to do last".
+"""
+
+complexity_guide = """
+All standard interval DP problems:
+- Time: O(n³) - three nested loops (length, start, split point)
+- Space: O(n²) - the 2D DP table
+
+Fill order: by increasing interval length (small intervals before large).
+"""
+
+pattern_recognition = """
+Use interval DP when:
+1. Subproblems are naturally defined by contiguous intervals
+2. Processing an element affects its neighbors
+3. Each operation creates two independent subproblems
+4. Need to find optimal way to reduce interval to base case
+
+Common preprocessing:
+- Add boundary elements (burst balloons, cut stick)
+- Sort positions (cut stick)
+- Remove duplicates (strange printer)
+"""

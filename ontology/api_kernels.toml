@@ -141,3 +141,7 @@ summary = "2D DP on two strings: LCS, edit distance, regex matching, palindrome 
 [[api_kernels]]
 id = "MonotonicDeque"
 summary = "Deque maintaining monotonic order for sliding window min/max queries."
+
+[[api_kernels]]
+id = "IntervalDP"
+summary = "DP on intervals [i,j] with split point enumeration: burst balloons, polygon, cutting, printing."

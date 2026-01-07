@@ -841,3 +841,25 @@ summary = "Shortest subarray with sum >= k using prefix sums and monotonic deque
 id = "monotonic_deque_optimization"
 api_kernel = "MonotonicDeque"
 summary = "Optimize equations by decomposing into x-dependent and x-independent parts."
+
+# ===== Interval DP Patterns =====
+
+[[patterns]]
+id = "interval_dp_burst"
+api_kernel = "IntervalDP"
+summary = "Burst balloons style: think 'last to burst', add boundary elements."
+
+[[patterns]]
+id = "interval_dp_polygon"
+api_kernel = "IntervalDP"
+summary = "Polygon triangulation: choose third vertex for each edge."
+
+[[patterns]]
+id = "interval_dp_cut"
+api_kernel = "IntervalDP"
+summary = "Cut stick style: sort cuts, add boundaries, think 'last cut'."
+
+[[patterns]]
+id = "interval_dp_printer"
+api_kernel = "IntervalDP"
+summary = "Strange printer: character matching optimization, extend print when chars match."
