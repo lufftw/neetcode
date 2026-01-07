@@ -72,8 +72,6 @@ This greedy property is why Dijkstra works: once we pop a node from the heap, we
 
 ---
 
----
-
 ## 2. Base Template: Network Delay Time (LeetCode 743)
 
 > **Problem**: Find time for signal to reach all nodes from source.
@@ -167,8 +165,6 @@ Answer: max(0, 1, 1, 2) = 2
 
 ---
 
----
-
 ## 3. Variant: Path With Minimum Effort (LeetCode 1631)
 
 > **Problem**: Find path minimizing maximum absolute difference between adjacent cells.
@@ -254,8 +250,6 @@ class Solution:
 |--------|-------|
 | Time | O(mn log(mn)) |
 | Space | O(mn) |
-
----
 
 ---
 
@@ -377,8 +371,6 @@ class SolutionBellmanFord:
 
 ---
 
----
-
 ## 5. Variant: Minimum Cost to Make Valid Path (LeetCode 1368)
 
 > **Problem**: Modify minimum arrows to create path from (0,0) to (m-1,n-1).
@@ -487,8 +479,6 @@ The deque maintains the invariant that elements are sorted by cost!
 |--------|-------|
 | Time | O(mn) |
 | Space | O(mn) |
-
----
 
 ---
 
@@ -623,8 +613,6 @@ def bfs_01(grid):
 
 ---
 
----
-
 ## 7. Pattern Comparison
 
 ### 7.1 Algorithm Selection Guide
@@ -674,8 +662,6 @@ Modified Dijkstra with K (LC 787):
 ├── Relaxation: cost-0 → front, cost-1 → back
 └── Complexity: O(V + E)
 ```
-
----
 
 ---
 
@@ -749,8 +735,6 @@ Need shortest path in graph?
 | Longest path in DAG | Negate weights or DP |
 | Path with constraints | State-space Dijkstra |
 | MST (connect all nodes) | Prim's or Kruskal's |
-
----
 
 ---
 
