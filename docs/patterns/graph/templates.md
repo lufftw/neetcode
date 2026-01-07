@@ -1298,8 +1298,6 @@ class SolutionUnionFind:
 
 ---
 
----
-
 ## 9. Pattern Comparison Matrix
 
 ### 9.1 By Problem Type
@@ -1343,8 +1341,6 @@ class SolutionUnionFind:
 | BFS | O(V + E) | O(V) visited + O(V) queue |
 | Multi-source BFS | O(V + E) | O(V) for multiple sources |
 | Union-Find | O(E × α(V)) | O(V) for parent array |
-
----
 
 ---
 
@@ -1412,8 +1408,6 @@ def is_valid(r: int, c: int) -> bool:
 # - Use visited set: visited.add((r, c))
 # - Check condition: grid[r][c] == target_value
 ```
-
----
 
 ---
 
