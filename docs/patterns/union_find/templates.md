@@ -777,8 +777,6 @@ equations = ["a==b", "c==d", "a!=d"]
 
 ---
 
----
-
 ## 7. Pattern Comparison
 
 ### 7.1 Union-Find vs DFS/BFS for Connectivity
@@ -859,8 +857,6 @@ def union_with_size(x, y):
 | Union by rank | Balanced trees | Competitive programming |
 | Union by size | Track component sizes | Size-related queries |
 | Weighted Union-Find | Handle weighted relationships | Division evaluation |
-
----
 
 ---
 
@@ -952,8 +948,6 @@ idx = row * cols + col
 | Union (with rank) | O(α(n)) ≈ O(1) |
 | Process all edges | O(E × α(n)) |
 | Count components | O(n) |
-
----
 
 ---
 

@@ -64,7 +64,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | tree | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | tree_dp | Pending | - | - | Queued |
 | trie | Pending | - | - | Queued |
-| union_find | Pending | - | - | Queued |
+| union_find | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 
 **Legend**: C=Critical, M=Major, m=Minor, n=Nit
 
@@ -547,6 +547,65 @@ END TEMPLATE
 - **Previous Tier**: Pending
 - **New Tier**: Tier 2 (Silver)
 - **Rationale**: Excellent coverage of interval patterns with two distinct API Kernels (Merge vs Scheduling). The "sort by start vs sort by end" decision framework is particularly clear. Strong intuition.md with memorable mnemonic. Minor cosmetic issue with duplicate separators.
+
+### Action Items
+- [x] Fix duplicate section separators (3 locations)
+
+---
+
+## Union-Find Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/union_find/templates.md` (1107 lines)
+- `docs/patterns/union_find/intuition.md` (215 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `UnionFindConnectivity` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [UF-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/union_find/templates.md:778-780, 863-865, 956-958` |
+| **Issue** | Double `---` separators appear between sections 6-7, 7-8, and 8-9, creating visual inconsistency. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Removed duplicate separators (3 locations). |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `UnionFindConnectivity` with clear core mechanism description |
+| **Core Concepts** | ✅ Comprehensive Section 1: data structure, path compression, union by rank, O(α(n)) analysis |
+| **Pattern Variants** | ✅ 5 variants: Components, Cycle Detection, Equivalence Grouping, Network Connectivity, Constraint Satisfaction |
+| **Code Templates Summary** | ✅ Section 9 at end with 5 templates (Basic, Inline, Size-tracking, Cycle Detection, Constraints) |
+| **Decision Framework** | ✅ ASCII decision tree (Section 8) with feature selection guide |
+| **Visual Representations** | ✅ Excellent tree diagrams showing path compression and union by rank |
+| **Union-Find vs DFS** | ✅ Clear comparison table with use-case guidance |
+| **Index Mapping Patterns** | ✅ Section 8.4 covers 1-indexed, char indices, string mapping, grid coordinates |
+| **Intuition Quality** | ✅ 4 mental models: Forest View, Path Compression, Union by Rank, Cycle Detection |
+| **Common Pitfalls** | ✅ 3 pitfalls: no path compression, wrong index range, processing order |
+| **Practice Progression** | ✅ Level 1-4 problem sequence |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Comprehensive Union-Find coverage with excellent visual diagrams explaining path compression and union by rank. The O(α(n)) complexity analysis is well-presented. Strong intuition.md with 4 mental models. The index mapping patterns section (8.4) is particularly useful for handling different input formats. Minor cosmetic issue with duplicate separators.
 
 ### Action Items
 - [x] Fix duplicate section separators (3 locations)
