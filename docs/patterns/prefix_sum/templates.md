@@ -895,8 +895,6 @@ Start: "Range/subarray problem?"
 
 ---
 
----
-
 ## 12. Template Quick Reference
 
 ### 12.1 1. Basic Range Sum Query

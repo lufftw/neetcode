@@ -8,6 +8,18 @@ from .data import PatternDocConfig
 from .sections import generate_toc, add_section_numbers
 
 
+def _strip_separators(content: str) -> str:
+    """Remove leading and trailing '---' separators from content."""
+    lines = content.split("\n")
+    # Skip leading empty lines and separator
+    while lines and (lines[0].strip() == "" or lines[0].strip() == "---"):
+        lines.pop(0)
+    # Skip trailing empty lines and separator
+    while lines and (lines[-1].strip() == "" or lines[-1].strip() == "---"):
+        lines.pop()
+    return "\n".join(lines)
+
+
 def compose_document(
     config: PatternDocConfig,
     header_files: list[Path],
@@ -15,10 +27,10 @@ def compose_document(
     footer_files: list[Path],
 ) -> str:
     """Compose the final document from source files."""
-    # Read all content
-    header_contents = [f.read_text(encoding="utf-8").strip() for f in header_files]
-    problem_contents = [f.read_text(encoding="utf-8").strip() for f in problem_files]
-    footer_contents = [f.read_text(encoding="utf-8").strip() for f in footer_files]
+    # Read all content and strip separators to avoid duplicates
+    header_contents = [_strip_separators(f.read_text(encoding="utf-8")) for f in header_files]
+    problem_contents = [_strip_separators(f.read_text(encoding="utf-8")) for f in problem_files]
+    footer_contents = [_strip_separators(f.read_text(encoding="utf-8")) for f in footer_files]
     
     # First pass: collect section info for TOC
     all_sections_info: list[tuple[int, str, str]] = []

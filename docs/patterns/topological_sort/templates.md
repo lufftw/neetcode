@@ -916,8 +916,6 @@ def find_safe_nodes(graph: List[List[int]]) -> List[int]:
 | Cycle Detection | O(V + E) | O(V + E) |
 | Safe Nodes | O(V + E) | O(V) |
 
----
-
 
 
 ---

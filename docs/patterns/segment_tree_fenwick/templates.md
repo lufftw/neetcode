@@ -97,8 +97,6 @@ Query/Update: O(log n) by traversing relevant path
 
 ---
 
----
-
 ## 8. Base Template: Range Sum Query - Mutable (LeetCode 307)
 
 > **Problem**: Given an integer array `nums`, handle multiple queries: (1) update element at index, (2) query sum of range [left, right].
@@ -227,8 +225,6 @@ update(2, 6):  # nums[2] = 5 → 6, delta = 1
   _add(3, 1): tree[3] += 1, tree[4] += 1
   BIT: [0, 1, 4, 6, 17, 9, 21]
 ```
-
----
 
 ---
 
@@ -370,8 +366,6 @@ Process right to left:
 
 Result (reversed): [2, 1, 1, 0] ✓
 ```
-
----
 
 ---
 
@@ -535,8 +529,6 @@ Result: 3 ✓
 
 ---
 
----
-
 ## 11. Pattern Comparison
 
 | Problem | Pattern | Data Structure | Key Technique |
@@ -561,8 +553,6 @@ Result: 3 ✓
 | LC 307 | O(n) build + O(log n) ops | O(n) |
 | LC 315 | O(n log n) | O(n) |
 | LC 327 | O(n log n) | O(n) |
-
----
 
 ---
 
@@ -615,8 +605,6 @@ Result: 3 ✓
 | "count smaller after self" | BIT right-to-left |
 | "count pairs satisfying condition" | Merge Sort with counting |
 | 2D array with updates | 2D Segment Tree |
-
----
 
 ---
 
@@ -764,8 +752,6 @@ def merge_sort_count(arr: List[int], count_condition) -> int:
     merge_sort(arr)
     return total_count
 ```
-
----
 
 
 
