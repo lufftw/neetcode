@@ -57,7 +57,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | monotonic_stack | Tier 2 | 2025-01-07 | 0/0/0/1 | Reviewed |
 | prefix_sum | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | segment_tree_fenwick | Pending | - | - | Queued |
-| shortest_path | Pending | - | - | Queued |
+| shortest_path | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | string_dp | Pending | - | - | Queued |
 | string_matching | Pending | - | - | Queued |
 | topological_sort | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
@@ -668,6 +668,66 @@ END TEMPLATE
 
 ### Action Items
 - [x] Fix duplicate section separators (7 locations)
+
+---
+
+## Shortest Path Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/shortest_path/templates.md` (914 lines)
+- `docs/patterns/shortest_path/intuition.md` (234 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `ShortestPath` (Note: not explicitly in api_kernels.toml, uses GraphBFS as base)
+
+### Findings
+
+#### [SP-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/shortest_path/templates.md` (8 locations between sections 1-9) |
+| **Issue** | Double `---` separators appear between all major sections, creating visual inconsistency. Most instances found in any pattern so far. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Removed duplicate separators (8 locations). |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `ShortestPath` with clear core mechanism description |
+| **Algorithm Family** | ✅ Section 1.1 covers Dijkstra, 0-1 BFS, Bellman-Ford, BFS with selection guidance |
+| **Pattern Variants** | ✅ 5 variants: Network Delay (743), Min Effort (1631), K Stops (787), Valid Path (1368), Obstacle Removal (2290) |
+| **Code Templates Summary** | ✅ Section 9 with 4 templates (Dijkstra, 0-1 BFS, Bellman-Ford K, Minimax) |
+| **Decision Framework** | ✅ ASCII decision flowchart (Section 8) with algorithm trade-offs |
+| **0-1 BFS Explanation** | ✅ Excellent deque front/back explanation with visual comparison |
+| **Minimax Dijkstra** | ✅ Clear distinction from sum-based objective |
+| **State-Space Dijkstra** | ✅ Mental model for handling constraints (K stops) |
+| **Implementation Patterns** | ✅ Section 7.3 shows side-by-side pattern comparison |
+| **Intuition Quality** | ✅ 5 mental models: Greedy Expansion, 0-1 BFS Deque, Wave Propagation, Minimax, State-Space |
+| **Common Pitfalls** | ✅ 4 pitfalls: BFS for weighted, not skipping visited, wrong 0-1 order, forgetting path limit |
+| **Practice Progression** | ✅ Level 1-4 problem sequence |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Comprehensive shortest path coverage with excellent algorithm selection guidance. The 0-1 BFS deque explanation is particularly well-visualized. Strong coverage of variants including minimax and constrained paths. Most duplicate separators of any pattern reviewed (8), but still minor cosmetic issue.
+
+### Action Items
+- [x] Fix duplicate section separators (8 locations)
 
 ---
 
