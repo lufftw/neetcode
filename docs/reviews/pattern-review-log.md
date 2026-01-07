@@ -62,7 +62,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | string_matching | Pending | - | - | Queued |
 | topological_sort | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | tree | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
-| tree_dp | Pending | - | - | Queued |
+| tree_dp | Tier 2 | 2025-01-07 | 0/0/0/0 | Reviewed + Solutions |
 | trie | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | union_find | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 
@@ -1022,6 +1022,75 @@ END TEMPLATE
 
 ### Action Items
 - [x] No fixes required - pattern meets quality standards
+
+---
+
+## Tree DP Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/tree_dp/templates.md` (718 lines)
+- `docs/patterns/tree_dp/intuition.md`
+- `solutions/0337_house_robber_iii.py` (improved)
+- `solutions/0124_binary_tree_maximum_path_sum.py` (improved)
+- `solutions/0968_binary_tree_cameras.py` (improved)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `TreeDP` from `ontology/api_kernels.toml`
+
+### Findings
+
+**No template issues found.** First pattern reviewed with combined templates + solutions audit.
+
+### Solutions Improvements
+
+| Problem | Changes |
+|---------|---------|
+| **LC 337 House Robber III** | Standardized block comment format; renamed variables (`rob_profit`/`skip_profit`); added "Why Two States Work" explanation; aligned with Include/Exclude pattern terminology |
+| **LC 124 Max Path Sum** | Added "Why Return Only One Branch?" explanation; renamed to `global_max` and `max_contribution`; clarified apex concept from templates.md |
+| **LC 968 Binary Tree Cameras** | Removed module-level constants (contract compliance); added "Why Three States?" rationale; renamed to `coverage_state`; both Greedy and DP solutions improved |
+
+### Solution Quality Checklist
+
+| Criterion | LC 337 | LC 124 | LC 968 |
+|-----------|--------|--------|--------|
+| Block comment format | ✅ | ✅ | ✅ |
+| Time/Space complexity | ✅ | ✅ | ✅ |
+| Algorithm insight | ✅ | ✅ | ✅ |
+| Semantic variable names | ✅ | ✅ | ✅ |
+| Pattern alignment | ✅ | ✅ | ✅ |
+| JUDGE_FUNC defined | ✅ | ✅ | ✅ |
+
+### Positive Observations (Templates)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `TreeDP` with clear bottom-up (post-order) mechanism |
+| **Three Pattern Variants** | ✅ Include/Exclude, Path Contribution, Multi-State clearly distinguished |
+| **State Design Strategies** | ✅ Section 5 with pattern-to-state mapping table |
+| **Problem Coverage** | ✅ LC 337, 124, 968 with full implementations |
+| **Decision Flowchart** | ✅ Section 15 with when-to-use guidance |
+| **Quick Reference** | ✅ Section 16 with 5 template variants |
+| **State Design Cheat Sheet** | ✅ Section 17 summary table |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Templates | 0 | 0 | 0 | 0 | 0 |
+| Solutions | 0 | 0 | 0 | 0 | 0 |
+| **Total** | 0 | 0 | 0 | 0 | **0** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: First pattern with combined templates + solutions review. Templates have no issues (composer.py fix already applied). All three solutions upgraded with high-quality annotations following "Algorithm Professor + Engineering Lead" dual-perspective approach. Pattern terminology alignment between templates.md and solutions ensures consistent learning experience.
+
+### Action Items
+- [x] No template fixes required
+- [x] Improved LC 337 with Include/Exclude pattern terminology
+- [x] Improved LC 124 with Path Contribution explanation
+- [x] Improved LC 968 with Three-State rationale
 
 ---
 

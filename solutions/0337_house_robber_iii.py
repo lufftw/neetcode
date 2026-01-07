@@ -1,6 +1,6 @@
 """
-LeetCode 337: House Robber III
-https://leetcode.com/problems/house-robber-iii/
+Problem: House Robber III
+Link: https://leetcode.com/problems/house-robber-iii/
 
 The thief has found himself a new place for his thievery again. There is only
 one entrance to this area, called root.
@@ -13,7 +13,12 @@ broken into on the same night.
 Given the root of the binary tree, return the maximum amount of money the
 thief can rob without alerting the police.
 
-Pattern: Tree DP - Include/Exclude
+Constraints:
+- The number of nodes in the tree is in the range [1, 10^4].
+- 0 <= Node.val <= 10^4
+
+Topics: Dynamic Programming, Tree, Depth-First Search, Binary Tree
+Pattern: Tree DP - Include/Exclude (Base Template)
 API Kernel: TreeDP
 """
 
@@ -105,73 +110,62 @@ def _reference_rob(root) -> int:
 JUDGE_FUNC = judge
 
 
+# ============================================================================
+# Solution 1: Include/Exclude Tree DP
+# Time: O(n), Space: O(h) where h = tree height
+#   - Each node returns (rob_profit, skip_profit) tuple
+#   - Rob this node → must skip children; Skip → children free choice
+#   - Post-order traversal ensures children resolved before parent
+# ============================================================================
 class SolutionDP:
-    """
-    Tree DP Approach:
-    - For each node, compute two values:
-      1. Max if we include (rob) this node
-      2. Max if we exclude (skip) this node
-    - Include: can't include children → add children's exclude values
-    - Exclude: children are free → add max of each child's states
-
-    Time: O(n) - visit each node once
-    Space: O(h) - recursion stack (h = tree height)
-    """
-
     def rob(self, root: Optional[TreeNode]) -> int:
-        def dfs(node):
+        def postorder(node) -> tuple[int, int]:
             if not node:
-                return (0, 0)  # (with_node, without_node)
+                return (0, 0)
 
-            left = dfs(node.left)
-            right = dfs(node.right)
+            left_rob, left_skip = postorder(node.left)
+            right_rob, right_skip = postorder(node.right)
 
-            # If we rob this house, can't rob children
-            with_current = node.val + left[1] + right[1]
+            rob_profit = node.val + left_skip + right_skip
+            skip_profit = max(left_rob, left_skip) + max(right_rob, right_skip)
 
-            # If we skip this house, each child is independent
-            without_current = max(left) + max(right)
+            return (rob_profit, skip_profit)
 
-            return (with_current, without_current)
-
-        return max(dfs(root))
+        rob_root, skip_root = postorder(root)
+        return max(rob_root, skip_root)
 
 
+# ============================================================================
+# Solution 2: Top-Down Memoization
+# Time: O(n), Space: O(n) for memo dictionary
+#   - Pass "can_rob" flag downward based on parent's choice
+#   - Memoize by (node_id, can_rob) to avoid recomputation
+#   - Higher memory than Solution 1 but more intuitive flow
+# ============================================================================
 class SolutionMemo:
-    """
-    Memoization Approach:
-    - Recursive with caching
-    - For each node, compute max robbery with/without including it
-
-    Time: O(n)
-    Space: O(n) for memo dict
-    """
-
     def rob(self, root: Optional[TreeNode]) -> int:
         memo = {}
 
-        def dfs(node, can_rob):
+        def max_profit(node, can_rob: bool) -> int:
             if not node:
                 return 0
 
-            key = (id(node), can_rob)
-            if key in memo:
-                return memo[key]
+            cache_key = (id(node), can_rob)
+            if cache_key in memo:
+                return memo[cache_key]
 
-            # Skip this node
-            skip = dfs(node.left, True) + dfs(node.right, True)
+            profit_skip = max_profit(node.left, True) + max_profit(node.right, True)
 
             if can_rob:
-                # Rob this node (children can't be robbed)
-                rob_it = node.val + dfs(node.left, False) + dfs(node.right, False)
-                result = max(skip, rob_it)
+                profit_rob = node.val + max_profit(node.left, False) + max_profit(node.right, False)
+                best = max(profit_skip, profit_rob)
             else:
-                result = skip
+                best = profit_skip
 
-            memo[key] = result
-            return result
+            memo[cache_key] = best
+            return best
 
-        return dfs(root, True)
+        return max_profit(root, can_rob=True)
 
 
 def solve():
