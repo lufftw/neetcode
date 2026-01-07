@@ -54,42 +54,46 @@ SOLUTIONS = {
 
 
 # ============================================================================
-# Solution: 2D DP
+# Solution 1: 2D DP
 # Time: O(m*n), Space: O(m*n)
-#   - dp[i][j] = minimum edits to convert word1[0:i] to word2[0:j]
-#   - Base cases: dp[i][0] = i (delete all), dp[0][j] = j (insert all)
-#   - If chars match: dp[i][j] = dp[i-1][j-1]
-#   - If not: dp[i][j] = 1 + min(replace, delete, insert)
+#   - edit_cost[i][j] = min edits to convert word1[0:i] to word2[0:j]
+#   - Match: no cost; Mismatch: 1 + min(replace, delete, insert)
 # ============================================================================
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
-        m, n = len(word1), len(word2)
-        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        source_len, target_len = len(word1), len(word2)
 
-        # Base cases
-        for i in range(m + 1):
-            dp[i][0] = i  # Delete all characters from word1
-        for j in range(n + 1):
-            dp[0][j] = j  # Insert all characters of word2
+        # edit_cost[i][j] = min operations to convert word1[0:i] to word2[0:j]
+        edit_cost: list[list[int]] = [
+            [0] * (target_len + 1) for _ in range(source_len + 1)
+        ]
 
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
+        # Base cases: converting to/from empty string
+        for i in range(source_len + 1):
+            edit_cost[i][0] = i  # Delete all characters from word1
+        for j in range(target_len + 1):
+            edit_cost[0][j] = j  # Insert all characters of word2
+
+        for i in range(1, source_len + 1):
+            for j in range(1, target_len + 1):
                 if word1[i - 1] == word2[j - 1]:
-                    dp[i][j] = dp[i - 1][j - 1]  # No operation needed
+                    # Characters match: no operation needed
+                    edit_cost[i][j] = edit_cost[i - 1][j - 1]
                 else:
-                    dp[i][j] = 1 + min(
-                        dp[i - 1][j - 1],  # Replace
-                        dp[i - 1][j],  # Delete from word1
-                        dp[i][j - 1],  # Insert to word1
-                    )
+                    # Mismatch: take minimum of three operations
+                    replace_cost = edit_cost[i - 1][j - 1]
+                    delete_cost = edit_cost[i - 1][j]
+                    insert_cost = edit_cost[i][j - 1]
+                    edit_cost[i][j] = 1 + min(replace_cost, delete_cost, insert_cost)
 
-        return dp[m][n]
+        return edit_cost[source_len][target_len]
 
 
 # ============================================================================
-# Solution: Space-Optimized
+# Solution 2: Space-Optimized
 # Time: O(m*n), Space: O(min(m,n))
-#   - Only need previous row plus one extra variable for diagonal
+#   - Only need previous row to compute current row
+#   - Swap shorter string to column dimension for minimal space
 # ============================================================================
 class SolutionSpaceOptimized:
     def minDistance(self, word1: str, word2: str) -> int:
@@ -97,20 +101,24 @@ class SolutionSpaceOptimized:
         if len(word1) < len(word2):
             word1, word2 = word2, word1
 
-        m, n = len(word1), len(word2)
-        prev = list(range(n + 1))  # Base case: dp[0][j] = j
-        curr = [0] * (n + 1)
+        source_len, target_len = len(word1), len(word2)
+        previous_row: list[int] = list(range(target_len + 1))
+        current_row: list[int] = [0] * (target_len + 1)
 
-        for i in range(1, m + 1):
-            curr[0] = i  # Base case: dp[i][0] = i
-            for j in range(1, n + 1):
+        for i in range(1, source_len + 1):
+            current_row[0] = i  # Base case: i deletions
+            for j in range(1, target_len + 1):
                 if word1[i - 1] == word2[j - 1]:
-                    curr[j] = prev[j - 1]
+                    current_row[j] = previous_row[j - 1]
                 else:
-                    curr[j] = 1 + min(prev[j - 1], prev[j], curr[j - 1])
-            prev, curr = curr, prev
+                    current_row[j] = 1 + min(
+                        previous_row[j - 1],  # replace
+                        previous_row[j],       # delete
+                        current_row[j - 1]     # insert
+                    )
+            previous_row, current_row = current_row, previous_row
 
-        return prev[n]
+        return previous_row[target_len]
 
 
 def solve():

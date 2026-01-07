@@ -21,46 +21,47 @@ SOLUTIONS = {
 }
 
 
+# ============================================================================
+# Solution 1: Interval DP (Character Printing)
+# Time: O(n³), Space: O(n²)
+#   - When s[k] == s[i], extend first print to cover s[k] (saves one turn)
+#   - min_turns[i][j] = min turns to print s[i:j+1]
+#   - Preprocess: remove consecutive duplicates (don't affect answer)
+# ============================================================================
 class Solution:
     def strangePrinter(self, s: str) -> int:
-        """
-        Minimum turns to print the string.
-
-        dp[i][j] = min turns to print s[i:j+1]
-
-        Base: print s[i] to cover entire interval, then handle rest.
-        Optimization: if s[k] == s[i] for some k > i, extend first print.
-        """
         # Remove consecutive duplicates (they don't affect answer)
-        s = ''.join(c for i, c in enumerate(s) if i == 0 or c != s[i - 1])
-        n = len(s)
+        s = ''.join(c for idx, c in enumerate(s) if idx == 0 or c != s[idx - 1])
+        string_length = len(s)
 
-        if n == 0:
+        if string_length == 0:
             return 0
 
-        # dp[i][j] = min turns to print s[i:j+1]
-        dp = [[0] * n for _ in range(n)]
+        # min_turns[i][j] = minimum turns to print s[i:j+1]
+        min_turns: list[list[int]] = [
+            [0] * string_length for _ in range(string_length)
+        ]
 
         # Base case: single character needs 1 turn
-        for i in range(n):
-            dp[i][i] = 1
+        for idx in range(string_length):
+            min_turns[idx][idx] = 1
 
-        # Fill by increasing length
-        for length in range(2, n + 1):
-            for i in range(n - length + 1):
-                j = i + length - 1
+        # Fill by increasing interval length
+        for interval_len in range(2, string_length + 1):
+            for start in range(string_length - interval_len + 1):
+                end = start + interval_len - 1
 
-                # Worst case: print s[i] alone, then handle rest
-                dp[i][j] = dp[i + 1][j] + 1
+                # Worst case: print s[start] alone, then handle rest
+                min_turns[start][end] = min_turns[start + 1][end] + 1
 
-                # Optimization: extend s[i]'s print if s[k] == s[i]
-                for k in range(i + 1, j + 1):
-                    if s[k] == s[i]:
-                        left = dp[i + 1][k - 1] if k > i + 1 else 0
-                        right = dp[k][j]
-                        dp[i][j] = min(dp[i][j], left + right)
+                # Optimization: if s[match_pos] == s[start], extend first print
+                for match_pos in range(start + 1, end + 1):
+                    if s[match_pos] == s[start]:
+                        left_cost = min_turns[start + 1][match_pos - 1] if match_pos > start + 1 else 0
+                        right_cost = min_turns[match_pos][end]
+                        min_turns[start][end] = min(min_turns[start][end], left_cost + right_cost)
 
-        return dp[0][n - 1]
+        return min_turns[0][string_length - 1]
 
 
 def solve():

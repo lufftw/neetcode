@@ -1,4 +1,3 @@
-# solutions/0124_binary_tree_maximum_path_sum.py
 """
 Problem: Binary Tree Maximum Path Sum
 Link: https://leetcode.com/problems/binary-tree-maximum-path-sum/
@@ -26,6 +25,8 @@ Constraints:
 - -1000 <= Node.val <= 1000
 
 Topics: Dynamic Programming, Tree, Depth-First Search, Binary Tree
+Pattern: Tree DP - Path Contribution
+API Kernel: TreeDP
 """
 from typing import Optional
 from _runner import get_solver
@@ -65,38 +66,31 @@ SOLUTIONS = {
 }
 
 
-# ============================================
-# Solution 1: DFS Path Sum Tracking
-# ============================================
+# ============================================================================
+# Solution 1: Path Contribution Tree DP
+# Time: O(n), Space: O(h) where h = tree height
+#   - At each node: update global_max with path through this node as apex
+#   - Return single-branch max to parent (path can't fork upward)
+#   - Use max(0, child) to prune negative branches
+# ============================================================================
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
-        """
-        Maximum path sum in binary tree.
+        self.global_max = float('-inf')
 
-        At each node:
-        - Consider it as path apex: node.val + left_gain + right_gain
-        - Return single branch max for parent: node.val + max(left, right)
-        - Use max(0, child) to skip negative paths
-        """
-        self.max_sum = float('-inf')
-
-        def max_gain(node: Optional[TreeNode]) -> int:
+        def max_contribution(node: Optional[TreeNode]) -> int:
             if not node:
                 return 0
 
-            # Max gain from left/right (can skip negative paths)
-            left_gain = max(0, max_gain(node.left))
-            right_gain = max(0, max_gain(node.right))
+            left_gain = max(0, max_contribution(node.left))
+            right_gain = max(0, max_contribution(node.right))
 
-            # Path sum if this node is apex
-            path_sum = node.val + left_gain + right_gain
-            self.max_sum = max(self.max_sum, path_sum)
+            path_through_here = node.val + left_gain + right_gain
+            self.global_max = max(self.global_max, path_through_here)
 
-            # Return max single-branch gain for parent
             return node.val + max(left_gain, right_gain)
 
-        max_gain(root)
-        return self.max_sum
+        max_contribution(root)
+        return self.global_max
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:

@@ -1,6 +1,6 @@
 """
-LeetCode 968: Binary Tree Cameras
-https://leetcode.com/problems/binary-tree-cameras/
+Problem: Binary Tree Cameras
+Link: https://leetcode.com/problems/binary-tree-cameras/
 
 You are given the root of a binary tree. We install cameras on the tree nodes
 where each camera at a node can monitor its parent, itself, and its immediate
@@ -8,7 +8,12 @@ children.
 
 Return the minimum number of cameras needed to monitor all nodes of the tree.
 
-Pattern: Tree DP - Multi-State
+Constraints:
+- The number of nodes in the tree is in the range [1, 1000].
+- Node.val == 0
+
+Topics: Dynamic Programming, Tree, Depth-First Search, Binary Tree
+Pattern: Tree DP - Multi-State (Coverage States)
 API Kernel: TreeDP
 """
 
@@ -110,103 +115,91 @@ def _reference_cameras(root) -> int:
 JUDGE_FUNC = judge
 
 
+# ============================================================================
+# Solution 1: Greedy State Machine
+# Time: O(n), Space: O(h) where h = tree height
+#   - States: 0=not_covered, 1=covered, 2=has_camera
+#   - Place cameras at parents of leaves (not leaves) for efficiency
+#   - Any child==0 → place camera; Any child==2 → covered; Else → need parent
+# ============================================================================
 class SolutionGreedy:
-    """
-    Greedy Approach with State Machine:
-
-    States:
-    - 0: NOT COVERED (needs camera from parent)
-    - 1: COVERED (by child's camera)
-    - 2: HAS CAMERA
-
-    Strategy: Place cameras at parents of leaves (not at leaves).
-    This greedy is optimal because each camera covers at most 3 levels.
-
-    Transitions:
-    - If any child is not covered (0) → must place camera (return 2)
-    - If any child has camera (2) → this node is covered (return 1)
-    - Otherwise → not covered (return 0)
-
-    Time: O(n)
-    Space: O(h) for recursion stack
-    """
-
     def minCameraCover(self, root: Optional[TreeNode]) -> int:
-        self.cameras = 0
+        self.camera_count = 0
 
-        def dfs(node):
+        # State constants: 0=not_covered, 1=covered, 2=has_camera
+        NOT_COVERED, COVERED, HAS_CAMERA = 0, 1, 2
+
+        def coverage_state(node) -> int:
+            """
+            Returns the coverage state of this node after processing its subtree.
+            Side effect: increments camera_count when placing a camera.
+            """
             if not node:
-                return 1  # Null nodes are considered "covered"
+                return COVERED  # Null nodes don't need monitoring
 
-            left = dfs(node.left)
-            right = dfs(node.right)
+            left_state = coverage_state(node.left)
+            right_state = coverage_state(node.right)
 
-            # If any child is not covered, must place camera here
-            if left == 0 or right == 0:
-                self.cameras += 1
-                return 2  # Has camera
+            # Priority 1: Child needs coverage → must install camera here
+            if left_state == NOT_COVERED or right_state == NOT_COVERED:
+                self.camera_count += 1
+                return HAS_CAMERA
 
-            # If any child has camera, this node is covered
-            if left == 2 or right == 2:
-                return 1  # Covered
+            # Priority 2: Child has camera → this node is already covered
+            if left_state == HAS_CAMERA or right_state == HAS_CAMERA:
+                return COVERED
 
-            # Both children covered, no camera nearby
-            return 0  # Not covered, needs parent
+            # Both children covered but no camera nearby → need parent's help
+            return NOT_COVERED
 
-        # Handle root specially
-        if dfs(root) == 0:
-            self.cameras += 1
+        # Root has no parent, so if uncovered, must install camera
+        if coverage_state(root) == NOT_COVERED:
+            self.camera_count += 1
 
-        return self.cameras
+        return self.camera_count
 
 
+# ============================================================================
+# Solution 2: Explicit DP with Three States
+# Time: O(n), Space: O(h) where h = tree height
+#   - Returns (uncovered_cost, covered_cost, has_camera_cost) per node
+#   - More explicit than greedy but same complexity
+#   - Root must be covered: answer = min(result[1], result[2])
+# ============================================================================
 class SolutionDP:
-    """
-    Full DP Approach with Explicit States:
-
-    For each node, compute minimum cameras for 3 scenarios:
-    - s0: node is not covered (but subtree is covered)
-    - s1: node is covered (by child's camera), no camera here
-    - s2: node has camera
-
-    More explicit than greedy but same complexity.
-
-    Time: O(n)
-    Space: O(h)
-    """
-
     def minCameraCover(self, root: Optional[TreeNode]) -> int:
         INF = float("inf")
 
-        def dfs(node):
-            # Returns (s0, s1, s2)
-            # s0: not covered, s1: covered no camera, s2: has camera
+        def min_cameras(node) -> tuple[int, int, int]:
+            """
+            Returns (uncovered_cost, covered_cost, has_camera_cost)
+            for the subtree rooted at node.
+            """
             if not node:
-                return (0, 0, INF)  # null: covered, no camera needed
+                # Null node: "covered" with 0 cameras, can't have camera
+                return (0, 0, INF)
 
-            left = dfs(node.left)
-            right = dfs(node.right)
+            left = min_cameras(node.left)
+            right = min_cameras(node.right)
 
-            # s0: This node not covered
-            # Children must be covered (s1 or s2)
-            s0 = left[1] + right[1]
+            # State 0: This node not covered, children must be covered
+            uncovered = left[1] + right[1]
 
-            # s1: This node covered by child's camera (no camera here)
-            # At least one child has camera (s2)
-            # Both children must be covered (s1 or s2)
-            s1 = min(
-                left[2] + min(right[1], right[2]),  # left has camera
-                right[2] + min(left[1], left[2]),  # right has camera
+            # State 1: This node covered by child's camera (no camera here)
+            # At least one child must have camera to cover this node
+            covered = min(
+                left[2] + min(right[1], right[2]),  # left child has camera
+                right[2] + min(left[1], left[2]),   # right child has camera
             )
 
-            # s2: This node has camera
-            # Children can be anything (camera covers them)
-            s2 = 1 + min(left) + min(right)
+            # State 2: This node has camera (children can be any state)
+            has_camera = 1 + min(left) + min(right)
 
-            return (s0, s1, s2)
+            return (uncovered, covered, has_camera)
 
-        result = dfs(root)
-        return min(result[1], result[2])  # Root must be covered
+        result = min_cameras(root)
+        # Root must be covered: either by own camera or child's
+        return min(result[1], result[2])
 
 
 def solve():

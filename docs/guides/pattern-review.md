@@ -16,9 +16,10 @@ This guide defines the systematic review process for pattern documentation in th
 - [3. Review Scope](#3-review-scope)
 - [4. Review Criteria](#4-review-criteria)
 - [5. Review Process](#5-review-process)
-- [6. Recording Reviews](#6-recording-reviews)
-- [7. Branch and Commit Protocol](#7-branch-and-commit-protocol)
-- [8. Quality Tiers](#8-quality-tiers)
+- [6. Combined Pattern + Solutions Review Workflow](#6-combined-pattern--solutions-review-workflow)
+- [7. Recording Reviews](#7-recording-reviews)
+- [8. Branch and Commit Protocol](#8-branch-and-commit-protocol)
+- [9. Quality Tiers](#9-quality-tiers)
 
 ---
 
@@ -201,9 +202,64 @@ For each review checkpoint:
 
 ---
 
-## 6. Recording Reviews
+## 6. Combined Pattern + Solutions Review Workflow
 
-### 6.1 Review Log Location
+### 6.1 Context-Driven Solutions Audit
+
+When reviewing pattern templates, **simultaneously audit the corresponding solutions**. Reading `templates.md` first provides the algorithmic context needed to improve solution quality.
+
+**Workflow:**
+
+```
+1. Read docs/patterns/{pattern}/templates.md completely
+2. For each problem referenced in templates.md:
+   a. Read the corresponding solutions/{problem}.py
+   b. Apply dual-perspective quality criteria (see 6.2)
+   c. Improve comments and naming with pattern context
+3. Record both template and solution findings in pattern-review-log.md
+```
+
+**Why Context Matters:**
+
+| Without Context | With Context |
+|-----------------|--------------|
+| Generic variable names like `l`, `r`, `res` | Semantic names like `left_boundary`, `right_exclusive`, `max_contribution` |
+| Vague comments "loop through array" | Precise comments "extend window until constraint violated" |
+| Missing invariant documentation | Explicit invariant: "dp[i] represents optimal cost to reach position i" |
+
+### 6.2 Dual-Perspective Quality Criteria
+
+Solutions should satisfy both **pedagogical clarity** (teaching effectiveness) and **engineering quality** (production maintainability).
+
+| Aspect | Pedagogical (Professor) | Engineering (Tech Lead) |
+|--------|------------------------|-------------------------|
+| **Comments** | Explain WHY the approach works | Keep concise, avoid redundancy |
+| **Naming** | Self-documenting algorithm intent | Consistent, refactorable |
+| **Structure** | Progressive logic flow | Minimal coupling, clean interfaces |
+| **Complexity** | Explicit analysis with reasoning | Practical performance notes |
+
+**Quality Fusion Guidelines:**
+
+1. **Block comments**: Concise 3-4 bullet points (see Solution Contract)
+2. **Internal comments**: Document key transitions and non-obvious logic
+3. **Variable naming**: Semantic names reflecting algorithmic role
+4. **State documentation**: Explicit invariants where applicable
+
+### 6.3 Solutions Audit Checklist
+
+For each solution file touched during pattern review:
+
+- [ ] Block comment follows concise format (3-4 bullet points)
+- [ ] Variable names are semantic and consistent with pattern vocabulary
+- [ ] Key algorithmic transitions are documented inline
+- [ ] State/invariant is explicit where applicable
+- [ ] No redundant comments that merely restate the code
+
+---
+
+## 7. Recording Reviews
+
+### 7.1 Review Log Location
 
 All review findings must be recorded in:
 
@@ -211,7 +267,7 @@ All review findings must be recorded in:
 docs/reviews/pattern-review-log.md
 ```
 
-### 6.2 Log Entry Format
+### 7.2 Log Entry Format
 
 ```markdown
 ## [Pattern Name] Review - [Date]
@@ -253,7 +309,7 @@ docs/reviews/pattern-review-log.md
 - [ ] {Documentation update needed}
 ```
 
-### 6.3 What NOT to Record
+### 7.3 What NOT to Record
 
 - Changes made without issues (silent fixes)
 - Personal preferences overridden
@@ -261,16 +317,16 @@ docs/reviews/pattern-review-log.md
 
 ---
 
-## 7. Branch and Commit Protocol
+## 8. Branch and Commit Protocol
 
-### 7.1 Branch Naming
+### 8.1 Branch Naming
 
 ```
 review/pattern-{pattern_name}
 review/pattern-quality-audit-{date}
 ```
 
-### 7.2 Commit Structure
+### 8.2 Commit Structure
 
 ```bash
 # Review log commit
@@ -292,7 +348,7 @@ Impact: {What this fixes}
 Refs: docs/reviews/pattern-review-log.md#{pattern}-{date}"
 ```
 
-### 7.3 PR Requirements
+### 8.3 PR Requirements
 
 Each review PR must include:
 
@@ -306,9 +362,9 @@ Each review PR must include:
 
 ---
 
-## 8. Quality Tiers
+## 9. Quality Tiers
 
-### 8.1 Tier Definitions
+### 9.1 Tier Definitions
 
 | Tier | Criteria | Examples |
 |------|----------|----------|
@@ -317,7 +373,7 @@ Each review PR must include:
 | **Tier 3 (Bronze)** | Major issues, needs improvement | Newly generated patterns |
 | **Tier 4 (Draft)** | Critical issues or incomplete | Work in progress |
 
-### 8.2 Promotion Criteria
+### 9.2 Promotion Criteria
 
 ```
 Tier 4 → Tier 3: All critical issues resolved
@@ -325,7 +381,7 @@ Tier 3 → Tier 2: All major issues resolved
 Tier 2 → Tier 1: Peer-reviewed, community validated
 ```
 
-### 8.3 Current Pattern Status
+### 9.3 Current Pattern Status
 
 | Pattern | Current Tier | Last Review |
 |---------|--------------|-------------|

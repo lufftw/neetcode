@@ -44,55 +44,62 @@ SOLUTIONS = {
 
 
 # ============================================================================
-# Solution: LCS with Reversed String
+# Solution 1: LCS with Reversed String
 # Time: O(n^2), Space: O(n^2)
 #   - Key insight: LPS(s) = LCS(s, reverse(s))
-#   - Any common subsequence between s and reverse(s) is a palindrome
+#   - Any common subsequence of s and reverse(s) is palindromic
 # ============================================================================
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
-        n = len(s)
-        t = s[::-1]  # Reversed string
+        string_len = len(s)
+        reversed_s = s[::-1]
 
-        # LCS of s and t
-        dp = [[0] * (n + 1) for _ in range(n + 1)]
+        # lcs_length[i][j] = LCS length for s[0:i] and reversed_s[0:j]
+        lcs_length: list[list[int]] = [
+            [0] * (string_len + 1) for _ in range(string_len + 1)
+        ]
 
-        for i in range(1, n + 1):
-            for j in range(1, n + 1):
-                if s[i - 1] == t[j - 1]:
-                    dp[i][j] = dp[i - 1][j - 1] + 1
+        for i in range(1, string_len + 1):
+            for j in range(1, string_len + 1):
+                if s[i - 1] == reversed_s[j - 1]:
+                    lcs_length[i][j] = lcs_length[i - 1][j - 1] + 1
                 else:
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                    lcs_length[i][j] = max(lcs_length[i - 1][j], lcs_length[i][j - 1])
 
-        return dp[n][n]
+        return lcs_length[string_len][string_len]
 
 
 # ============================================================================
-# Solution: Interval DP
+# Solution 2: Interval DP
 # Time: O(n^2), Space: O(n^2)
-#   - dp[i][j] = length of LPS in s[i:j+1]
-#   - Base case: dp[i][i] = 1 (single character)
-#   - Fill by increasing interval length
+#   - lps_length[i][j] = LPS length in substring s[i:j+1]
+#   - Fill by increasing interval length; endpoints match → extend inner + 2
 # ============================================================================
 class SolutionIntervalDP:
     def longestPalindromeSubseq(self, s: str) -> int:
-        n = len(s)
-        dp = [[0] * n for _ in range(n)]
+        string_len = len(s)
 
-        # Base case: single characters
-        for i in range(n):
-            dp[i][i] = 1
+        # lps_length[i][j] = LPS length for s[i:j+1]
+        lps_length: list[list[int]] = [[0] * string_len for _ in range(string_len)]
+
+        # Base case: single character is palindrome of length 1
+        for i in range(string_len):
+            lps_length[i][i] = 1
 
         # Fill by increasing interval length
-        for length in range(2, n + 1):
-            for i in range(n - length + 1):
-                j = i + length - 1
-                if s[i] == s[j]:
-                    dp[i][j] = dp[i + 1][j - 1] + 2
+        for interval_len in range(2, string_len + 1):
+            for start in range(string_len - interval_len + 1):
+                end = start + interval_len - 1
+                if s[start] == s[end]:
+                    # Endpoints match: extend inner palindrome by 2
+                    lps_length[start][end] = lps_length[start + 1][end - 1] + 2
                 else:
-                    dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+                    # Mismatch: take best of excluding either endpoint
+                    lps_length[start][end] = max(
+                        lps_length[start + 1][end], lps_length[start][end - 1]
+                    )
 
-        return dp[0][n - 1] if n > 0 else 0
+        return lps_length[0][string_len - 1] if string_len > 0 else 0
 
 
 def solve():

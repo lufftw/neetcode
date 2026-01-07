@@ -50,32 +50,37 @@ SOLUTIONS = {
 
 
 # ============================================================================
-# Solution: 2D DP
+# Solution 1: 2D DP
 # Time: O(m*n), Space: O(m*n)
-#   - dp[i][j] = length of LCS for text1[0:i] and text2[0:j]
-#   - If chars match: dp[i][j] = dp[i-1][j-1] + 1
-#   - If not: dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+#   - lcs_length[i][j] = LCS length for text1[0:i] and text2[0:j]
+#   - Match: extend from diagonal; Mismatch: max of skip either string
 # ============================================================================
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
-        m, n = len(text1), len(text2)
-        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        len_1, len_2 = len(text1), len(text2)
 
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
+        # lcs_length[i][j] = LCS length for text1[0:i] and text2[0:j]
+        lcs_length: list[list[int]] = [
+            [0] * (len_2 + 1) for _ in range(len_1 + 1)
+        ]
+
+        for i in range(1, len_1 + 1):
+            for j in range(1, len_2 + 1):
                 if text1[i - 1] == text2[j - 1]:
-                    dp[i][j] = dp[i - 1][j - 1] + 1
+                    # Characters match: extend LCS from diagonal
+                    lcs_length[i][j] = lcs_length[i - 1][j - 1] + 1
                 else:
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                    # Mismatch: take best of skipping either character
+                    lcs_length[i][j] = max(lcs_length[i - 1][j], lcs_length[i][j - 1])
 
-        return dp[m][n]
+        return lcs_length[len_1][len_2]
 
 
 # ============================================================================
-# Solution: Space-Optimized
+# Solution 2: Space-Optimized
 # Time: O(m*n), Space: O(min(m,n))
 #   - Only need previous row to compute current row
-#   - Swap shorter string to be the column dimension
+#   - Swap shorter string to column dimension for minimal space
 # ============================================================================
 class SolutionSpaceOptimized:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -83,19 +88,19 @@ class SolutionSpaceOptimized:
         if len(text1) < len(text2):
             text1, text2 = text2, text1
 
-        m, n = len(text1), len(text2)
-        prev = [0] * (n + 1)
-        curr = [0] * (n + 1)
+        len_1, len_2 = len(text1), len(text2)
+        previous_row: list[int] = [0] * (len_2 + 1)
+        current_row: list[int] = [0] * (len_2 + 1)
 
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
+        for i in range(1, len_1 + 1):
+            for j in range(1, len_2 + 1):
                 if text1[i - 1] == text2[j - 1]:
-                    curr[j] = prev[j - 1] + 1
+                    current_row[j] = previous_row[j - 1] + 1
                 else:
-                    curr[j] = max(prev[j], curr[j - 1])
-            prev, curr = curr, prev
+                    current_row[j] = max(previous_row[j], current_row[j - 1])
+            previous_row, current_row = current_row, previous_row
 
-        return prev[n]
+        return previous_row[len_2]
 
 
 def solve():

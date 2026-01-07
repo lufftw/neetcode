@@ -227,6 +227,8 @@ Constraints:
 
 Each solution class SHOULD be preceded by a block comment explaining the approach.
 
+**Keep it concise**: Block comments should have **3-4 bullet points maximum**. Focus on key algorithmic insights, not exhaustive explanations.
+
 **No blank line** between the comment block and the class definition:
 
 ```python
@@ -247,8 +249,9 @@ class SolutionSlidingWindow:   # ← No blank line
 # ============================================
 # Solution {N}: {Approach Name}
 # Time: O(?), Space: O(?)
-#   - {Key insight or implementation detail}
-#   - {Additional notes}
+#   - {Key insight 1}
+#   - {Key insight 2}
+#   - {Key insight 3 (optional)}
 # ============================================
 class ClassName:   # ← No blank line before class/function
 ```
@@ -257,8 +260,55 @@ class ClassName:   # ← No blank line before class/function
 |-----------|----------|-------------|
 | Solution number & name | ✅ | e.g., `Solution 1: Sliding Window` |
 | Time/Space complexity | ✅ | e.g., `Time: O(n), Space: O(n)` |
-| Bullet points | Recommended | Key insights, implementation details |
+| Bullet points (3-4 max) | ✅ | Key insights only, avoid verbose explanations |
 | **No blank line** | ✅ | Comment block directly followed by class/function |
+
+**What NOT to include in block comments:**
+
+- ❌ Lengthy "Algorithm Insight" or "State Definition" sections
+- ❌ Detailed step-by-step pseudocode
+- ❌ Redundant restating of code logic
+- ❌ More than 4 bullet points
+
+#### Internal Function Comments
+
+Internal comments **within methods** are acceptable and encouraged for documenting:
+
+- Key state transitions
+- Non-obvious logic or edge case handling
+- Invariant maintenance
+
+```python
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        self.global_max = float('-inf')
+
+        def max_contribution(node: Optional[TreeNode]) -> int:
+            if not node:
+                return 0
+
+            # Prune negative branches - they can only decrease path sum
+            left_gain = max(0, max_contribution(node.left))
+            right_gain = max(0, max_contribution(node.right))
+
+            # Path through this node as apex: left → node → right
+            path_through_here = node.val + left_gain + right_gain
+            self.global_max = max(self.global_max, path_through_here)
+
+            # Return single-branch max to parent (can't fork upward)
+            return node.val + max(left_gain, right_gain)
+
+        max_contribution(root)
+        return self.global_max
+```
+
+**Internal comment guidelines:**
+
+| ✅ Good | ❌ Bad |
+|---------|--------|
+| Explains WHY (non-obvious reasoning) | Restates WHAT the code does |
+| Documents invariant or constraint | Comments obvious operations |
+| Marks key algorithmic transitions | Excessive line-by-line comments |
 
 ---
 
