@@ -1,0 +1,24 @@
+[problem]
+id = "1392"
+title = "Longest Happy Prefix"
+difficulty = "hard"
+url = "https://leetcode.com/problems/longest-happy-prefix/"
+tags = ["String", "Rolling Hash", "String Matching", "Hash Function"]
+
+[solution]
+api_kernel = "StringMatching"
+pattern = "string_matching_kmp_direct"
+complexity_time = "O(n)"
+complexity_space = "O(n)"
+
+[notes]
+key_insight = """
+This is the most direct application of KMP failure function.
+The answer is simply s[0:failure[n-1]].
+failure[n-1] = length of longest proper prefix that is also suffix.
+"""
+common_mistakes = [
+    "Returning the length instead of the actual string",
+    "Including the entire string (proper prefix excludes full string)",
+    "Off-by-one errors in substring extraction",
+]

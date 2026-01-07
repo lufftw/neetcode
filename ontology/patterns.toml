@@ -863,3 +863,30 @@ summary = "Cut stick style: sort cuts, add boundaries, think 'last cut'."
 id = "interval_dp_printer"
 api_kernel = "IntervalDP"
 summary = "Strange printer: character matching optimization, extend print when chars match."
+
+# ===== String Matching Patterns =====
+
+[[patterns]]
+id = "string_matching_kmp"
+api_kernel = "StringMatching"
+summary = "KMP algorithm: build failure function, use for substring search in O(n+m)."
+
+[[patterns]]
+id = "string_matching_rabin_karp"
+api_kernel = "StringMatching"
+summary = "Rabin-Karp: rolling hash for pattern search, verify on collision."
+
+[[patterns]]
+id = "string_matching_kmp_concatenation"
+api_kernel = "StringMatching"
+summary = "KMP on concatenated strings (s + '#' + reverse(s)) for palindrome prefix."
+
+[[patterns]]
+id = "string_matching_kmp_period"
+api_kernel = "StringMatching"
+summary = "Period detection: period = n - failure[n-1], check divisibility."
+
+[[patterns]]
+id = "string_matching_kmp_direct"
+api_kernel = "StringMatching"
+summary = "Direct failure function application for longest prefix-suffix."

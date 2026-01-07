@@ -1,0 +1,158 @@
+# String Matching Learning Path
+
+[roadmap]
+id = "string_matching_path"
+name = "String Matching Mastery"
+description = """
+Master KMP failure function and Rabin-Karp rolling hash for pattern matching.
+Progress from basic substring search to period detection and prefix-suffix problems.
+"""
+api_kernel = "StringMatching"
+difficulty_range = ["easy", "hard"]
+estimated_problems = 4
+
+prerequisites = [
+    "String manipulation basics",
+    "Understanding of hash functions",
+    "Basic array/string operations",
+]
+
+objectives = [
+    "Build KMP failure function (LPS array)",
+    "Apply rolling hash for pattern search",
+    "Detect string periodicity using failure function",
+    "Use concatenation trick for palindrome problems",
+]
+
+# =============================================================================
+# Stage 1: Find Index (The Foundation)
+# =============================================================================
+[[stages]]
+id = "find_index"
+name = "Find Index in String"
+description = "Master the foundational KMP and Rabin-Karp algorithms"
+pattern = "string_matching_kmp"
+
+focus_points = [
+    "Build failure function (LPS array) in O(n)",
+    "Use failure function to skip redundant comparisons",
+    "Rolling hash: update in O(1) when sliding window",
+    "Verify on hash match to handle collisions",
+]
+
+[[stages.problems]]
+id = "0028"
+title = "Find the Index of the First Occurrence in a String"
+difficulty = "easy"
+role = "base_template"
+notes = "Canonical string matching - foundation for all variants"
+
+# =============================================================================
+# Stage 2: Shortest Palindrome (Concatenation Trick)
+# =============================================================================
+[[stages]]
+id = "shortest_palindrome"
+name = "Shortest Palindrome"
+description = "Apply KMP with the concatenation trick"
+pattern = "string_matching_kmp_concatenation"
+
+focus_points = [
+    "Concatenate s + '#' + reverse(s)",
+    "Separator '#' prevents false matches across boundary",
+    "failure[-1] = length of longest palindromic prefix",
+    "Prepend reverse of remaining suffix",
+]
+
+[[stages.problems]]
+id = "0214"
+title = "Shortest Palindrome"
+difficulty = "hard"
+role = "variant"
+notes = "Concatenation trick - separator is critical"
+
+# =============================================================================
+# Stage 3: Repeated Substring Pattern (Period Detection)
+# =============================================================================
+[[stages]]
+id = "repeated_substring"
+name = "Repeated Substring Pattern"
+description = "Use failure function for periodicity detection"
+pattern = "string_matching_kmp_period"
+
+focus_points = [
+    "Period = n - failure[n-1]",
+    "String is periodic iff n % period == 0",
+    "Alternative: s in (s+s)[1:-1] trick",
+    "Edge cases: single character, length 1 period",
+]
+
+[[stages.problems]]
+id = "0459"
+title = "Repeated Substring Pattern"
+difficulty = "easy"
+role = "variant"
+notes = "Period formula from failure function"
+
+# =============================================================================
+# Stage 4: Longest Happy Prefix (Direct Application)
+# =============================================================================
+[[stages]]
+id = "happy_prefix"
+name = "Longest Happy Prefix"
+description = "Direct application of failure function"
+pattern = "string_matching_kmp_direct"
+
+focus_points = [
+    "failure[n-1] is exactly the answer length",
+    "Most direct application of KMP concepts",
+    "Proper prefix = excludes entire string",
+    "Rolling hash alternative exists",
+]
+
+[[stages.problems]]
+id = "1392"
+title = "Longest Happy Prefix"
+difficulty = "hard"
+role = "capstone"
+notes = "Direct failure function application - simplest conceptually"
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+The KMP failure function (LPS array) encodes the structure of a string:
+- failure[i] = length of longest proper prefix of s[0..i] that's also a suffix
+- This enables O(1) recovery on mismatch: jump to failure[j-1] instead of restart
+
+Key applications:
+1. Substring search: Use failure function to skip redundant comparisons
+2. Period detection: period = n - failure[n-1]
+3. Palindrome prefix: Apply KMP on s + '#' + reverse(s)
+"""
+
+complexity_guide = """
+All KMP-based solutions:
+- Time: O(n + m) where n = text length, m = pattern length
+- Space: O(m) for the failure function
+
+Rabin-Karp:
+- Time: O(n + m) average, O(nm) worst case (many hash collisions)
+- Space: O(1) for rolling hash
+
+Build failure function in O(n) with the key insight:
+when mismatch at position j, fall back to failure[j-1], don't increment i
+"""
+
+pattern_recognition = """
+Use String Matching when:
+1. Finding a pattern/substring in text
+2. Checking if string has repeating structure
+3. Finding longest prefix that equals suffix
+4. Problems involving string periodicity
+
+Key techniques:
+- KMP: Build failure function, use for matching
+- Rabin-Karp: Rolling hash with verification
+- Concatenation trick: s + '#' + reverse(s) for palindrome problems
+"""

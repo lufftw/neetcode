@@ -1,0 +1,26 @@
+[problem]
+id = "0459"
+title = "Repeated Substring Pattern"
+difficulty = "easy"
+url = "https://leetcode.com/problems/repeated-substring-pattern/"
+tags = ["String", "String Matching"]
+
+[solution]
+api_kernel = "StringMatching"
+pattern = "string_matching_kmp_period"
+complexity_time = "O(n)"
+complexity_space = "O(n)"
+
+[notes]
+key_insight = """
+Use KMP failure function for periodicity detection.
+Period = n - failure[n-1]. String is periodic iff:
+1. failure[n-1] > 0 (has proper prefix = suffix)
+2. n % period == 0 (period divides length)
+Alternative: s is periodic iff s appears in (s+s)[1:-1]
+"""
+common_mistakes = [
+    "Getting the period formula wrong (it's n - lps[n-1], not lps[n-1])",
+    "Forgetting to check that period divides n",
+    "Missing edge case: single character strings",
+]
