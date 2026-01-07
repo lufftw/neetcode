@@ -1,0 +1,49 @@
+# Problem: Shortest Subarray with Sum at Least K
+# https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/
+
+# ===== Problem Info =====
+id = "0862"
+slug = "0862_shortest_subarray_with_sum_at_least_k"
+title = "Shortest Subarray with Sum at Least K"
+leetcode_id = 862
+url = "https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "binary_search", "queue", "sliding_window", "heap", "prefix_sum", "monotonic_queue"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_deque_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicDeque", "PrefixSumRangeQuery"]
+patterns         = ["monotonic_deque_prefix_sum"]
+families         = ["deque_monotonic", "prefix_sum"]
+data_structures  = ["array", "deque"]
+algorithms       = ["monotonic_deque", "prefix_sum"]
+related_problems = ["0239", "1438", "1499", "0209"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0862_shortest_subarray_with_sum_at_least_k.py"
+generator = "generators/0862_shortest_subarray_with_sum_at_least_k.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionMonotonicDeque"
+method = "shortestSubarray"
+
+api_kernels      = ["MonotonicDeque", "PrefixSumRangeQuery"]
+patterns         = ["monotonic_deque_prefix_sum"]
+families         = ["deque_monotonic", "prefix_sum"]
+data_structures  = ["array", "deque"]
+algorithms       = ["monotonic_deque", "prefix_sum"]
+
+role       = "variant"
+variant    = "prefix_sum_optimization"
+based_on   = ["0239#default"]
+delta      = "Combine prefix sum with increasing monotonic deque for negative numbers."
+complexity = "O(n) time, O(n) space"
+notes      = "Handles negative numbers by using prefix sum transformation with monotonic deque."

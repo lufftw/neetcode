@@ -1,0 +1,49 @@
+# Problem: Max Value of Equation
+# https://leetcode.com/problems/max-value-of-equation/
+
+# ===== Problem Info =====
+id = "1499"
+slug = "1499_max_value_of_equation"
+title = "Max Value of Equation"
+leetcode_id = 1499
+url = "https://leetcode.com/problems/max-value-of-equation/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "queue", "sliding_window", "heap", "monotonic_queue"]
+companies = ["google", "amazon", "meta"]
+
+# ===== Roadmaps =====
+roadmaps = ["monotonic_deque_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MonotonicDeque"]
+patterns         = ["monotonic_deque_pair_optimization"]
+families         = ["deque_monotonic"]
+data_structures  = ["array", "deque"]
+algorithms       = ["monotonic_deque"]
+related_problems = ["0239", "1438", "0862"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1499_max_value_of_equation.py"
+generator = "generators/1499_max_value_of_equation.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionMonotonicDeque"
+method = "findMaxValueOfEquation"
+
+api_kernels      = ["MonotonicDeque"]
+patterns         = ["monotonic_deque_pair_optimization"]
+families         = ["deque_monotonic"]
+data_structures  = ["array", "deque"]
+algorithms       = ["monotonic_deque"]
+
+role       = "variant"
+variant    = "pair_optimization"
+based_on   = ["0239#default"]
+delta      = "Algebraic transformation to reduce pair optimization to sliding window max."
+complexity = "O(n) time, O(n) space"
+notes      = "Transform yi + yj + |xi - xj| to (yj + xj) + (yi - xi) and maximize yi - xi in window."
