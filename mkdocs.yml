@@ -207,6 +207,9 @@ nav:
     - String Matching:
       - Intuition: patterns/string_matching/intuition.md
       - Templates: patterns/string_matching/templates.md
+    - Game Theory DP:
+      - Intuition: patterns/game_theory_dp/intuition.md
+      - Templates: patterns/game_theory_dp/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

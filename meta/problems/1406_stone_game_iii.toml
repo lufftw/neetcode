@@ -1,0 +1,24 @@
+[problem]
+id = "1406"
+title = "Stone Game III"
+difficulty = "hard"
+url = "https://leetcode.com/problems/stone-game-iii/"
+tags = ["Array", "Math", "Dynamic Programming", "Game Theory"]
+
+[solution]
+api_kernel = "GameTheoryDP"
+pattern = "game_theory_linear"
+complexity_time = "O(n)"
+complexity_space = "O(1)"
+
+[notes]
+key_insight = """
+Linear DP from back to front. dp[i] = max score difference starting from i.
+Try taking 1, 2, or 3 stones, subtract opponent's best outcome.
+Space can be optimized to O(1) using rolling array of size 4.
+"""
+common_mistakes = [
+    "Not handling negative stone values correctly",
+    "Using greedy approach (always take most) which fails with negatives",
+    "Off-by-one errors in rolling array indexing",
+]
