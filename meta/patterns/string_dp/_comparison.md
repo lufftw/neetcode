@@ -1,49 +1,55 @@
-## Problem Comparison
+## Pattern Comparison Table
 
-| Problem | Core Pattern | State `dp[i][j]` | Match Transition | Mismatch Transition |
-|---------|-------------|------------------|------------------|---------------------|
-| **LC 1143 LCS** | Find longest common | Length of LCS | `dp[i-1][j-1] + 1` | `max(dp[i-1][j], dp[i][j-1])` |
-| **LC 72 Edit Distance** | Min operations | Min edits needed | `dp[i-1][j-1]` | `1 + min(3 options)` |
-| **LC 516 Palindrome** | LCS with reverse | Length of LPS | Same as LCS | Same as LCS |
-| **LC 10 Regex** | Pattern matching | Boolean: matches? | `dp[i-1][j-1]` | `False` (unless `*`) |
+| Problem | State `dp[i][j]` | Base Case | Match Transition | Mismatch Transition | Objective |
+|---------|------------------|-----------|------------------|---------------------|-----------|
+| **LCS** | LCS length for s[0:i], t[0:j] | 0 | `dp[i-1][j-1] + 1` | `max(dp[i-1][j], dp[i][j-1])` | Maximize |
+| **Edit Distance** | Min ops for s[0:i] → t[0:j] | i or j | `dp[i-1][j-1]` | `1 + min(diagonal, up, left)` | Minimize |
+| **Palindrome Subseq** | LPS length for s[i:j+1] | 1 (single char) | `dp[i+1][j-1] + 2` | `max(dp[i+1][j], dp[i][j-1])` | Maximize |
+| **Regex Match** | s[0:i] matches p[0:j]? | True for empty | `dp[i-1][j-1]` | False (or `*` logic) | Boolean |
+| **Wildcard Match** | s[0:i] matches p[0:j]? | True for empty | `dp[i-1][j-1]` | False (or `*` logic) | Boolean |
 
-## Pattern Evolution
+### Transition Direction Summary
 
 ```
-LC 1143 LCS (Base)
-    │
-    │ Add operation counting
-    │ Add non-zero base cases
-    ↓
-LC 72 Edit Distance
-    │
-    │ Apply to single string
-    │ s vs reverse(s)
-    ↓
-LC 516 Palindrome Subsequence
-    │
-    │ Add complex pattern matching
-    │ Handle . and * wildcards
-    ↓
-LC 10 Regex Matching
+LCS / Edit Distance / Regex / Wildcard:
+    ┌─────┬─────┐
+    │ ↖   │  ←  │
+    ├─────┼─────┤
+    │  ↑  │ cur │
+    └─────┴─────┘
+
+↖ = diagonal (match/substitute)
+← = horizontal (insert / skip in t)
+↑ = vertical (delete / skip in s)
+
+Palindrome Subsequence (Interval DP):
+    ┌─────────────────┐
+    │   dp[i+1][j-1]  │  (inner interval)
+    ├─────┬─────┬─────┤
+    │     │     │     │
+    └─────┴─────┴─────┘
+       ↑           ↑
+   dp[i+1][j]   dp[i][j-1]
 ```
 
-## Key Differences
+### Complexity Comparison
 
-### Base Cases
+| Problem | Time | Space | Space-Optimized |
+|---------|------|-------|-----------------|
+| LCS | O(mn) | O(mn) | O(min(m,n)) |
+| Edit Distance | O(mn) | O(mn) | O(n) |
+| Palindrome Subseq | O(n²) | O(n²) | O(n) |
+| Regex Match | O(mn) | O(mn) | O(n) |
+| Wildcard Match | O(mn) | O(mn) | O(n) or O(1)* |
 
-| Problem | `dp[i][0]` | `dp[0][j]` |
-|---------|-----------|-----------|
-| LCS | 0 | 0 |
-| Edit Distance | `i` | `j` |
-| Palindrome | 0 | 0 |
-| Regex | `False` | `True` if `p[0:j]` is all `x*` patterns |
+*Wildcard can achieve O(1) space with greedy + backtracking.
 
-### Optimization Potential
+### Special Character Handling
 
-| Problem | Space Optimization | Notes |
-|---------|-------------------|-------|
-| LCS | O(min(m,n)) | Only need previous row |
-| Edit Distance | O(min(m,n)) | Only need previous row |
-| Palindrome | O(n) | Single row for LCS approach |
-| Regex | O(n) | Only need previous row |
+| Char | Regex Meaning | Wildcard Meaning |
+|------|---------------|------------------|
+| `.` | Any single char | N/A |
+| `?` | N/A | Any single char |
+| `*` | Zero+ of PRECEDING char | Any sequence (including empty) |
+
+
