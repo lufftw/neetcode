@@ -47,7 +47,7 @@ This log records all pattern review findings, decisions, and resolutions. Each r
 | dp_knapsack_subset | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | game_theory_dp | Pending | - | - | Queued |
 | graph | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
-| greedy_core | Pending | - | - | Queued |
+| greedy_core | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | heap | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | interval | Tier 2 | 2025-01-07 | 0/0/1/0 | Reviewed |
 | interval_dp | Pending | - | - | Queued |
@@ -911,6 +911,66 @@ END TEMPLATE
 
 ### Action Items
 - [x] Fix duplicate section separators (4 locations)
+
+---
+
+## Greedy Core Review - 2025-01-07
+
+### Files Reviewed
+- `docs/patterns/greedy_core/templates.md` (832 lines)
+- `docs/patterns/greedy_core/intuition.md` (220 lines)
+
+### Reference Standards
+- Gold Standard: `sliding_window/templates.md`
+- Ontology Entry: `GreedyCore` from `ontology/api_kernels.toml`
+
+### Findings
+
+#### [GC-001]: Duplicate Section Separators
+
+| Field | Value |
+|-------|-------|
+| **Category** | Engineering |
+| **Severity** | Minor |
+| **Location** | `docs/patterns/greedy_core/templates.md` (5 locations between sections 4-14) |
+| **Issue** | Double `---` separators appear between sections 4-5, 10-11, 11-12, 12-13, and 13-14, creating visual inconsistency. |
+| **Why It Matters** | Cosmetic issue affecting document consistency. Does not impact functionality. |
+| **Decision** | Fix |
+| **Resolution** | Removed duplicate separators (5 locations). |
+
+### Positive Observations (Not Issues)
+
+| Aspect | Assessment |
+|--------|------------|
+| **API Kernel Header** | ✅ `GreedyCore` with clear "invariant preservation" mechanism |
+| **Three Core Kernels** | ✅ Reachability, Prefix Min/Reset, Sort + Match clearly distinguished |
+| **Why NOT Interval/Heap** | ✅ Section 3 explains scope boundaries vs other greedy patterns |
+| **Greedy Choice Property** | ✅ Section 4 explains when greedy works |
+| **Pattern Variants** | ✅ 6 problems: LC 55, 45, 134, 135, 455, 1029 with full implementations |
+| **Code Templates Summary** | ✅ Section 14 with 6 templates covering all kernels |
+| **Decision Flowchart** | ✅ Section 12 with ASCII flowchart and kernel selection guide |
+| **When Greedy Fails** | ✅ Section 12.2 explains DP/heap scenarios |
+| **Problem Mapping** | ✅ Section 13 with difficulty progression |
+| **Intuition Quality** | ✅ Three mental models: "Farthest Reach", "Balance Sheet", "Matchmaker" |
+| **Common Pitfalls** | ✅ 3 pitfalls: early exit, off-by-one jumps, total feasibility |
+| **Practice Progression** | ✅ Level 1-6: LC 55 → 45 → 455 → 1029 → 134 → 135 |
+
+### Summary
+
+| Category | Critical | Major | Minor | Nit | Total |
+|----------|----------|-------|-------|-----|-------|
+| Concept | 0 | 0 | 0 | 0 | 0 |
+| Explanation | 0 | 0 | 0 | 0 | 0 |
+| Engineering | 0 | 0 | 1 | 0 | 1 |
+| **Total** | 0 | 0 | 1 | 0 | **1** |
+
+### Tier Assessment
+- **Previous Tier**: Pending
+- **New Tier**: Tier 2 (Silver)
+- **Rationale**: Comprehensive greedy pattern coverage with excellent three-kernel taxonomy. The clear distinction from Interval Greedy and Heap Greedy prevents confusion. Intuition.md mental models ("Farthest Reach", "Balance Sheet", "Matchmaker") are memorable. Slightly more duplicate separators than recent patterns (5 vs 4).
+
+### Action Items
+- [x] Fix duplicate section separators (5 locations)
 
 ---
 
