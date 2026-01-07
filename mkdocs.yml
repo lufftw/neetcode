@@ -204,6 +204,9 @@ nav:
     - Interval DP:
       - Intuition: patterns/interval_dp/intuition.md
       - Templates: patterns/interval_dp/templates.md
+    - String Matching:
+      - Intuition: patterns/string_matching/intuition.md
+      - Templates: patterns/string_matching/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
