@@ -47,6 +47,52 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def _longest_happy_prefix_brute(s: str) -> str:
+    """Find longest happy prefix using brute force O(n^2)."""
+    n = len(s)
+    for length in range(n - 1, 0, -1):
+        if s[:length] == s[n - length:]:
+            return s[:length]
+    return ""
+
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result for Longest Happy Prefix.
+
+    Args:
+        actual: Program output (the prefix string)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+
+    Returns:
+        bool: True if correct
+    """
+    import json
+
+    s = json.loads(input_data.strip())
+
+    # Parse actual result
+    if isinstance(actual, str):
+        if actual.startswith('"') and actual.endswith('"'):
+            actual_val = json.loads(actual)
+        else:
+            actual_val = actual
+    else:
+        return False
+
+    # Verify using brute force
+    correct = _longest_happy_prefix_brute(s)
+    return actual_val == correct
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution: KMP Failure Function
 # Time: O(n), Space: O(n)
 #   - Build failure function for the string

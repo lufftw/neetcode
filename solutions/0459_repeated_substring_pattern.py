@@ -45,6 +45,53 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def _is_periodic(s: str) -> bool:
+    """Check if string is built from repeating substrings using brute force."""
+    n = len(s)
+    for period_len in range(1, n // 2 + 1):
+        if n % period_len == 0:
+            pattern = s[:period_len]
+            if pattern * (n // period_len) == s:
+                return True
+    return False
+
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result for Repeated Substring Pattern.
+
+    Args:
+        actual: Program output (true/false)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+
+    Returns:
+        bool: True if correct
+    """
+    import json
+
+    s = json.loads(input_data.strip())
+
+    # Convert actual to bool
+    if isinstance(actual, bool):
+        actual_val = actual
+    elif isinstance(actual, str):
+        actual_val = actual.lower() == 'true'
+    else:
+        return False
+
+    # Verify using brute force
+    correct = _is_periodic(s)
+    return actual_val == correct
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution: KMP Failure Function
 # Time: O(n), Space: O(n)
 #   - Use the property: if failure[n-1] > 0 and n % (n - failure[n-1]) == 0,

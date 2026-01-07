@@ -41,6 +41,48 @@ SOLUTIONS = {
 
 
 # ============================================================================
+# JUDGE_FUNC - Required for generator support
+# ============================================================================
+
+def judge(actual, expected, input_data: str) -> bool:
+    """
+    Validate result for Find Index problem.
+
+    Args:
+        actual: Program output (index or -1)
+        expected: Expected output (None if from generator)
+        input_data: Raw input string
+
+    Returns:
+        bool: True if correct
+    """
+    import json
+
+    lines = input_data.strip().split('\n')
+    haystack = json.loads(lines[0])
+    needle = json.loads(lines[1])
+
+    # Convert actual to int
+    try:
+        actual_val = int(actual) if not isinstance(actual, int) else actual
+    except (ValueError, TypeError):
+        return False
+
+    # Verify the result
+    if actual_val == -1:
+        # Should not find needle in haystack
+        return needle not in haystack
+    else:
+        # Should find needle at the returned index
+        if actual_val < 0 or actual_val > len(haystack) - len(needle):
+            return False
+        return haystack[actual_val:actual_val + len(needle)] == needle
+
+
+JUDGE_FUNC = judge
+
+
+# ============================================================================
 # Solution: KMP Algorithm
 # Time: O(m+n), Space: O(n) where m = haystack length, n = needle length
 #   - Preprocess needle to build failure function
