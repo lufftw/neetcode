@@ -1,0 +1,89 @@
+# Problem: Reverse Linked List II
+# https://leetcode.com/problems/reverse-linked-list-ii/
+
+# ===== Problem Info =====
+id = "0092"
+slug = "0092_reverse_linked_list_ii"
+title = "Reverse Linked List II"
+leetcode_id = 92
+url = "https://leetcode.com/problems/reverse-linked-list-ii/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["linked_list"]
+companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "linked_list_in_place_reversal_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["reverse_segment"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0206", "0025"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0092_reverse_linked_list_ii.py"
+generator = "generators/0092_reverse_linked_list_ii.py"
+tests_dir = "tests/0092_reverse_linked_list_ii/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionTwoPass"
+method = "reverseBetween"
+
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["reverse_segment"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0206", "0025"]
+
+role       = "variant"
+variant    = "segment_reversal"
+based_on   = ["0206#default"]
+delta      = "Reverse only segment [left, right]. Requires boundary tracking and reconnection."
+complexity = "O(N) time, O(1) space"
+notes      = "Two-pass approach: navigate to segment, reverse, reconnect."
+
+[[solutions]]
+key    = "two_pass"
+class  = "SolutionTwoPass"
+method = "reverseBetween"
+
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["reverse_segment"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0206", "0025"]
+
+role       = "variant"
+variant    = "segment_reversal"
+based_on   = ["0206#default"]
+delta      = "Reverse only segment [left, right]. Requires boundary tracking and reconnection."
+complexity = "O(N) time, O(1) space"
+notes      = "Same as default. Navigate, reverse segment, reconnect both ends."
+
+[[solutions]]
+key    = "one_pass"
+class  = "SolutionOnePass"
+method = "reverseBetween"
+
+api_kernels      = ["LinkedListInPlaceReversal"]
+patterns         = ["reverse_segment"]
+families         = ["linked_list_manipulation"]
+data_structures  = ["linked_list"]
+algorithms       = ["two_pointers"]
+related_problems = ["0206"]
+
+role       = "variant"
+variant    = "insert_at_front"
+based_on   = ["0092#default"]
+delta      = "One-pass by repeatedly inserting nodes at front of segment."
+complexity = "O(N) time, O(1) space"
+notes      = "Tricky but elegant one-pass approach. segment_start stays fixed."

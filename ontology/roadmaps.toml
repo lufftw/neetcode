@@ -146,3 +146,8 @@ summary = "Step-by-step path to master multi-source BFS: propagation timing, dis
 id = "k_way_merge_path"
 name = "K-Way Merge Mastery"
 summary = "Step-by-step path to master K-way merge: two-pointer, backward, heap-based approaches."
+
+[[roadmaps]]
+id = "linked_list_in_place_reversal_path"
+name = "Linked List In-Place Reversal Mastery"
+summary = "Step-by-step path to master in-place linked list reversal: full, segment, and k-group patterns."

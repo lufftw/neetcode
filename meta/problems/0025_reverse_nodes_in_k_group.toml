@@ -14,7 +14,7 @@ topics = ["linked_list", "recursion"]
 companies = ["google", "meta", "amazon", "microsoft", "bloomberg"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150"]
+roadmaps = ["neetcode_150", "linked_list_in_place_reversal_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["LinkedListInPlaceReversal"]

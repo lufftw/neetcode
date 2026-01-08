@@ -1,0 +1,112 @@
+# Linked List In-Place Reversal Learning Path
+
+[roadmap]
+id = "linked_list_in_place_reversal_path"
+name = "Linked List In-Place Reversal Mastery"
+description = """
+Master in-place linked list reversal patterns from basic three-pointer
+technique to complex k-group reversal. Focus on O(1) space pointer manipulation.
+"""
+api_kernel = "LinkedListInPlaceReversal"
+difficulty_range = ["easy", "hard"]
+estimated_problems = 3
+
+prerequisites = [
+    "Basic linked list operations (insert, delete, traverse)",
+    "Understanding of pointer/reference concepts",
+    "Familiarity with iterative vs recursive approaches",
+]
+
+objectives = [
+    "Master the three-pointer reversal technique",
+    "Apply segment reversal with boundary tracking",
+    "Handle k-group reversal with availability checking",
+    "Choose appropriate approach based on constraints",
+]
+
+# =============================================================================
+# Stage 1: Full List Reversal
+# =============================================================================
+[[stages]]
+id = "full_reversal"
+name = "Full List Reversal"
+description = "Foundation: reverse entire list with three-pointer technique"
+pattern = "reverse_entire_list"
+
+focus_points = [
+    "Three pointers: prev, curr, next_node",
+    "Save next before breaking link",
+    "Return prev as new head, not head",
+    "Recursive alternative with O(N) stack",
+]
+
+[[stages.problems]]
+id = "0206"
+title = "Reverse Linked List"
+difficulty = "easy"
+role = "base_template"
+notes = "Canonical three-pointer reversal. Foundation for all variants."
+
+# =============================================================================
+# Stage 2: Segment Reversal
+# =============================================================================
+[[stages]]
+id = "segment_reversal"
+name = "Segment Reversal"
+description = "Reverse a specific segment [left, right] within the list"
+pattern = "reverse_segment"
+
+focus_points = [
+    "Dummy node for stable anchor when left=1",
+    "Navigate to before_segment (left-1 steps)",
+    "Reverse exactly (right-left+1) nodes",
+    "Reconnect: segment_tail->after and before->new_head",
+]
+
+[[stages.problems]]
+id = "0092"
+title = "Reverse Linked List II"
+difficulty = "medium"
+role = "variant"
+notes = "Segment reversal with boundary tracking. Two-pass or one-pass approach."
+
+# =============================================================================
+# Stage 3: K-Group Reversal
+# =============================================================================
+[[stages]]
+id = "k_group_reversal"
+name = "K-Group Reversal"
+description = "Reverse every k consecutive nodes, leave remainder as-is"
+pattern = "reverse_k_group"
+
+focus_points = [
+    "Check k nodes available before reversing",
+    "Initialize prev to group_next for auto-connection",
+    "Track group_prev for reconnection between groups",
+    "Handle remainder (< k nodes) by not reversing",
+]
+
+[[stages.problems]]
+id = "0025"
+title = "Reverse Nodes in k-Group"
+difficulty = "hard"
+role = "advanced"
+notes = "Full pattern mastery. Combines counting, reversal, and reconnection."
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+In-place linked list reversal uses the three-pointer technique: prev, curr,
+next_node. The core operation is: save next, reverse pointer, advance all.
+Segment and k-group variants add boundary tracking and availability checking.
+The dummy node provides a stable anchor when the head might change.
+"""
+
+complexity_guide = """
+- Full reversal: O(N) time, O(1) space iterative / O(N) space recursive
+- Segment reversal: O(N) time, O(1) space
+- K-group reversal: O(N) time, O(1) space iterative / O(N/k) space recursive
+- All variants visit each node a constant number of times
+"""
