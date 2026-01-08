@@ -133,6 +133,10 @@ data_sources:
         path: "string_dp"
         enabled: true
         config_file: "_config.toml"
+      - name: "grid_bfs_multi_source"
+        path: "grid_bfs_multi_source"
+        enabled: true
+        config_file: "_config.toml"
 
   roadmaps:
     enabled: true
@@ -169,6 +173,9 @@ data_sources:
         enabled: true
       - name: "string_dp_path"
         path: "string_dp_path.toml"
+        enabled: true
+      - name: "grid_bfs_multi_source_path"
+        path: "grid_bfs_multi_source_path.toml"
         enabled: true
       - name: "neetcode_150"
         path: "neetcode_150.toml"

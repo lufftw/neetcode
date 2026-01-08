@@ -210,6 +210,9 @@ nav:
     - Game Theory DP:
       - Intuition: patterns/game_theory_dp/intuition.md
       - Templates: patterns/game_theory_dp/templates.md
+    - Multi-Source BFS:
+      - Intuition: patterns/grid_bfs_multi_source/intuition.md
+      - Templates: patterns/grid_bfs_multi_source/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
