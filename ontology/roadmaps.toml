@@ -136,3 +136,8 @@ summary = "Step-by-step path to master monotonic deque: sliding window max, boun
 id = "interval_dp_path"
 name = "Interval DP Mastery"
 summary = "Step-by-step path to master interval DP: burst balloons, polygon, cutting, strange printer."
+
+[[roadmaps]]
+id = "grid_bfs_multi_source_path"
+name = "Multi-Source BFS Mastery"
+summary = "Step-by-step path to master multi-source BFS: propagation timing, distance fill, distance field."

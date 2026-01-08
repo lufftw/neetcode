@@ -1,0 +1,110 @@
+# Grid Multi-Source BFS Learning Path
+
+[roadmap]
+id = "grid_bfs_multi_source_path"
+name = "Multi-Source BFS Mastery"
+description = """
+Master multi-source BFS for grid-based propagation problems.
+Progress from propagation timing to distance field computation.
+"""
+api_kernel = "GridBFSMultiSource"
+difficulty_range = ["medium", "medium"]
+estimated_problems = 3
+
+prerequisites = [
+    "Basic BFS understanding",
+    "2D grid traversal",
+    "Queue operations",
+]
+
+objectives = [
+    "Understand simultaneous multi-source initialization",
+    "Apply BFS level counting for time/distance",
+    "Implement distance field computation",
+    "Recognize when multi-source BFS is optimal",
+]
+
+# =============================================================================
+# Stage 1: Propagation Timer
+# =============================================================================
+[[stages]]
+id = "propagation_timer"
+name = "Propagation Timer"
+description = "Learn multi-source BFS basics with simultaneous spread timing"
+pattern = "grid_bfs_propagation"
+
+focus_points = [
+    "Initialize queue with ALL sources at distance 0",
+    "Process entire BFS level before incrementing time",
+    "Handle unreachable targets (return -1)",
+    "Avoid off-by-one errors in level counting",
+]
+
+[[stages.problems]]
+id = "0994"
+title = "Rotting Oranges"
+difficulty = "medium"
+role = "base_template"
+notes = "Canonical multi-source BFS: rotten oranges spread infection simultaneously"
+
+# =============================================================================
+# Stage 2: Distance Fill
+# =============================================================================
+[[stages]]
+id = "distance_fill"
+name = "Distance Fill"
+description = "Store distance values in grid cells"
+pattern = "grid_bfs_propagation"
+
+focus_points = [
+    "Use cell value as distance storage",
+    "INF/sentinel value as unvisited marker",
+    "Distance propagation: neighbor = current + 1",
+    "In-place modification pattern",
+]
+
+[[stages.problems]]
+id = "0286"
+title = "Walls and Gates"
+difficulty = "medium"
+role = "variant"
+notes = "Fill empty rooms with distance to nearest gate"
+
+# =============================================================================
+# Stage 3: Distance Field
+# =============================================================================
+[[stages]]
+id = "distance_field"
+name = "Distance Field"
+description = "Compute and return a complete distance matrix"
+pattern = "grid_bfs_propagation"
+
+focus_points = [
+    "Separate distance matrix vs in-place modification",
+    "Handle binary matrices cleanly",
+    "Alternative DP approach for comparison",
+    "Recognize problem equivalences",
+]
+
+[[stages.problems]]
+id = "0542"
+title = "01 Matrix"
+difficulty = "medium"
+role = "variant"
+notes = "Distance to nearest zero for each cell; also solvable with DP"
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+Multi-source BFS eliminates the need to run BFS from each source separately.
+By initializing the queue with all sources at distance 0, a single BFS traversal
+computes minimum distances to the nearest source for every cell.
+"""
+
+complexity_guide = """
+- Single-source BFS from k sources: O(k * m * n)
+- Multi-source BFS: O(m * n) regardless of k
+- Space: O(m * n) for queue and visited/distance tracking
+"""
