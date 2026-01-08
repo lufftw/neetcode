@@ -14,7 +14,7 @@ topics = ["array", "two_pointers", "sorting"]
 companies = ["google", "amazon", "meta", "microsoft", "bloomberg"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "grind_75"]
+roadmaps = ["neetcode_150", "grind_75", "k_way_merge_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["MergeSortedSequences"]

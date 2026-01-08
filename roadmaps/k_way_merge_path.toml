@@ -1,0 +1,112 @@
+# K-Way Merge Learning Path
+
+[roadmap]
+id = "k_way_merge_path"
+name = "K-Way Merge Mastery"
+description = """
+Master K-way merge patterns for combining sorted sequences efficiently.
+Progress from two-pointer merge to heap-based K-way merge.
+"""
+api_kernel = "KWayMerge"
+difficulty_range = ["easy", "hard"]
+estimated_problems = 3
+
+prerequisites = [
+    "Two-pointer technique",
+    "Basic heap operations",
+    "Linked list manipulation",
+]
+
+objectives = [
+    "Understand two-pointer merge for K=2",
+    "Apply backward merge for in-place operations",
+    "Master heap-based K-way merge",
+    "Choose appropriate approach based on K and constraints",
+]
+
+# =============================================================================
+# Stage 1: Two-Pointer Merge (K=2)
+# =============================================================================
+[[stages]]
+id = "two_pointer_merge"
+name = "Two-Pointer Merge"
+description = "Foundation: merge two sorted sequences with two pointers"
+pattern = "merge_two_sorted_lists"
+
+focus_points = [
+    "Dummy node pattern for simplified head handling",
+    "Compare heads, advance smaller pointer",
+    "Attach remaining elements efficiently",
+    "O(1) space for linked lists",
+]
+
+[[stages.problems]]
+id = "0021"
+title = "Merge Two Sorted Lists"
+difficulty = "easy"
+role = "base_template"
+notes = "Canonical two-pointer merge on linked lists. Building block for K-way."
+
+# =============================================================================
+# Stage 2: Backward Merge (In-Place)
+# =============================================================================
+[[stages]]
+id = "backward_merge"
+name = "Backward Merge"
+description = "In-place merge by writing from the end"
+pattern = "merge_sorted_from_ends"
+
+focus_points = [
+    "Backward direction prevents overwriting",
+    "Three pointers: p1, p2, write position",
+    "Only nums2 leftovers need copying",
+    "O(1) extra space in-place merge",
+]
+
+[[stages.problems]]
+id = "0088"
+title = "Merge Sorted Array"
+difficulty = "easy"
+role = "variant"
+notes = "In-place merge with pre-allocated space. Key: merge from end."
+
+# =============================================================================
+# Stage 3: Heap-based K-Way Merge
+# =============================================================================
+[[stages]]
+id = "heap_k_way"
+name = "Heap-based K-Way Merge"
+description = "Efficient merge of K sequences using min-heap"
+pattern = "merge_k_sorted_heap"
+
+focus_points = [
+    "Heap maintains K current heads",
+    "Tie-breaker index for non-comparable elements",
+    "O(N log K) vs O(NK) naive approach",
+    "Divide-and-conquer alternative",
+]
+
+[[stages.problems]]
+id = "0023"
+title = "Merge K Sorted Lists"
+difficulty = "hard"
+role = "base_template"
+notes = "Canonical K-way merge. Heap or divide-and-conquer approaches."
+
+# =============================================================================
+# Summary
+# =============================================================================
+[summary]
+key_insight = """
+K-way merge extends two-pointer merge to K sequences. When K=2, simple
+two-pointer comparison suffices. When K>2, use a min-heap to efficiently
+find the global minimum among K current heads. The heap maintains O(K)
+elements and each of N total elements is pushed/popped once, giving O(N log K).
+"""
+
+complexity_guide = """
+- Two-pointer merge (K=2): O(N) time, O(1) space
+- Heap-based K-way merge: O(N log K) time, O(K) space
+- Divide-and-conquer: O(N log K) time, O(log K) stack space
+- Naive greedy: O(NK) time, O(1) space (too slow)
+"""

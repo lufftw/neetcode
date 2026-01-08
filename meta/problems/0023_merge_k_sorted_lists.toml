@@ -14,7 +14,7 @@ topics = ["linked_list", "divide_and_conquer", "heap"]
 companies = ["google", "meta", "amazon", "microsoft", "uber", "bloomberg", "apple"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "blind_75", "leetcode_top_100", "heap_path"]
+roadmaps = ["neetcode_150", "blind_75", "leetcode_top_100", "heap_path", "k_way_merge_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["KWayMerge"]

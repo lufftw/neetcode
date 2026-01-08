@@ -213,6 +213,9 @@ nav:
     - Multi-Source BFS:
       - Intuition: patterns/grid_bfs_multi_source/intuition.md
       - Templates: patterns/grid_bfs_multi_source/templates.md
+    - K-Way Merge:
+      - Intuition: patterns/k_way_merge/intuition.md
+      - Templates: patterns/k_way_merge/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md

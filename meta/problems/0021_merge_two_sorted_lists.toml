@@ -14,7 +14,7 @@ topics = ["linked_list", "recursion"]
 companies = ["google", "amazon", "meta", "microsoft", "apple", "bloomberg", "adobe", "uber"]
 
 # ===== Roadmaps =====
-roadmaps = ["neetcode_150", "blind_75", "grind_75", "leetcode_top_100"]
+roadmaps = ["neetcode_150", "blind_75", "grind_75", "leetcode_top_100", "k_way_merge_path"]
 
 # ===== Ontology Tags (Problem Level) =====
 api_kernels      = ["MergeSortedSequences"]

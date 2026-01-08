@@ -141,3 +141,8 @@ summary = "Step-by-step path to master interval DP: burst balloons, polygon, cut
 id = "grid_bfs_multi_source_path"
 name = "Multi-Source BFS Mastery"
 summary = "Step-by-step path to master multi-source BFS: propagation timing, distance fill, distance field."
+
+[[roadmaps]]
+id = "k_way_merge_path"
+name = "K-Way Merge Mastery"
+summary = "Step-by-step path to master K-way merge: two-pointer, backward, heap-based approaches."
