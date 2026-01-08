@@ -13,14 +13,17 @@ This guide describes the complete workflow for developing a new algorithm patter
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
+- [Quick Start: Existing Problems](#quick-start-existing-problems)
 - [Phase 1: Meta Pattern Sources](#phase-1-meta-pattern-sources)
 - [Phase 2: Templates and Intuition](#phase-2-templates-and-intuition)
 - [Phase 3: Solutions](#phase-3-solutions)
-- [Phase 4: Generators](#phase-4-generators)
+- [Phase 4: Generators (Optional)](#phase-4-generators-optional)
 - [Phase 5: Test Files](#phase-5-test-files)
 - [Phase 6: Problem Metadata](#phase-6-problem-metadata)
 - [Phase 7: Ontology and Roadmap](#phase-7-ontology-and-roadmap)
 - [Phase 8: Navigation and Integration](#phase-8-navigation-and-integration)
+- [Common Pitfalls](#common-pitfalls)
+- [Writing Effective Intuition Guides](#writing-effective-intuition-guides)
 - [Quick Reference Checklist](#quick-reference-checklist)
 - [Example Patterns](#example-patterns)
 
@@ -123,6 +126,49 @@ Before starting, ensure you have:
 | Bitmask DP | LC 78, 847, 1125 | Enumeration → BFS + bitmask → Set cover |
 | Tree DP | LC 337, 124, 968 | Include/exclude → Path contribution → Multi-state |
 | Line Sweep | LC 253, 1094, 218 | Event counting → Capacity → Height tracking |
+| Multi-Source BFS | LC 994, 286, 542 | Propagation timing → Distance fill → Distance field |
+| K-Way Merge | LC 23, 21, 88 | Heap-based → Two-pointer → Backward in-place |
+| Linked List Reversal | LC 206, 92, 25 | Full → Segment → K-group |
+
+---
+
+## Quick Start: Existing Problems
+
+When creating a pattern from **problems that already have solutions and tests**, you can skip several phases:
+
+### Minimal Workflow (3-4 hours)
+
+```
+Phase 1: Meta Sources      ✅ Required - Create pattern documentation
+Phase 2: Docs              ✅ Required - Generate templates, write intuition
+Phase 3: Solutions         ⚡ Minimal  - Just add api_kernels/patterns to SOLUTIONS
+Phase 4: Generators        ⏭️ Skip     - Tests already exist
+Phase 5: Test Files        ⏭️ Skip     - Tests already exist
+Phase 6: Problem Metadata  ⚡ Minimal  - Update roadmaps field, or create if missing
+Phase 7: Ontology/Roadmap  ✅ Required - Create roadmap file
+Phase 8: Navigation        ✅ Required - Update mkdocs.yml and docs/patterns/README.md
+```
+
+### Example: KWayMerge Pattern
+
+LC 23, 21, 88 already had solutions and tests. The workflow was:
+
+1. **Phase 1-2**: Create meta sources and docs (most time spent here)
+2. **Phase 3**: Add metadata to existing SOLUTIONS dicts:
+   ```python
+   SOLUTIONS = {
+       "default": {
+           "class": "SolutionHeap",
+           "method": "mergeKLists",
+           "api_kernels": ["KWayMerge"],      # Added
+           "patterns": ["merge_k_sorted_heap"], # Added
+       },
+   }
+   ```
+3. **Phase 6**: Add `roadmaps = ["k_way_merge_path"]` to existing problem metadata
+4. **Phase 7-8**: Create roadmap and update navigation
+
+**Total commits**: 4 (vs 8 for new problems)
 
 ---
 
@@ -368,7 +414,14 @@ mkdir -p docs/patterns/{pattern_name}
 ### 2.2 Generate templates.md
 
 ```bash
-PYTHONPATH=. python tools/patterndocs/generate_pattern_docs.py --pattern {pattern_name}
+mkdir -p docs/patterns/{pattern_name}
+python tools/patterndocs/generate_pattern_docs.py --pattern {pattern_name}
+```
+
+**Important**: The generator outputs to `docs/patterns/{pattern_name}.md` (a file), not inside a subdirectory. You need to move it:
+
+```bash
+mv docs/patterns/{pattern_name}.md docs/patterns/{pattern_name}/templates.md
 ```
 
 ### 2.3 Create intuition.md
@@ -564,7 +617,17 @@ class Solution{Approach}:
         pass
 ```
 
-### 3.4 Commit Phase 3
+### 3.4 Verify Solutions Work
+
+Always run tests after creating/updating solutions:
+
+```bash
+python runner/test_runner.py {id1}_{slug1} --all
+python runner/test_runner.py {id2}_{slug2} --all
+python runner/test_runner.py {id3}_{slug3} --all
+```
+
+### 3.5 Commit Phase 3
 
 ```bash
 git add solutions/{id1}_*.py solutions/{id2}_*.py solutions/{id3}_*.py
@@ -578,9 +641,18 @@ git commit -m "solutions({pattern_name}): Phase 3 - Add/update solutions
 
 ---
 
-## Phase 4: Generators
+## Phase 4: Generators (Optional)
 
 **Purpose**: Create test generators for each problem.
+
+**Skip this phase if**:
+- The problems already have test files in `tests/`
+- You're updating an existing pattern with new documentation only
+
+Generators are primarily useful for:
+- New problems without existing tests
+- Stress testing with random inputs
+- Complexity estimation (`--estimate` flag)
 
 ### 4.1 Create Generator Files
 
@@ -1011,6 +1083,130 @@ git branch -d feat/pattern-{pattern_name}
 
 ---
 
+## Common Pitfalls
+
+Based on experience developing patterns, avoid these common mistakes:
+
+### 1. Generator Output Location
+
+The pattern docs generator outputs to `docs/patterns/{pattern}.md`, not inside the subdirectory:
+
+```bash
+# Wrong assumption:
+docs/patterns/my_pattern/templates.md  # NOT created automatically
+
+# Actual output:
+docs/patterns/my_pattern.md            # Created here
+
+# Fix: Move it manually
+mv docs/patterns/my_pattern.md docs/patterns/my_pattern/templates.md
+```
+
+### 2. Forgetting to Read Files Before Editing
+
+When updating existing TOML files, always read them first to avoid "File not read" errors:
+
+```python
+# Wrong: Trying to edit without reading
+Edit(file_path="meta/problems/0021.toml", old_string=..., new_string=...)
+
+# Right: Read first, then edit
+Read(file_path="meta/problems/0021.toml")
+Edit(file_path="meta/problems/0021.toml", old_string=..., new_string=...)
+```
+
+### 3. Missing api_kernels/patterns in SOLUTIONS
+
+When adding patterns to existing solutions, update ALL solution entries in SOLUTIONS dict:
+
+```python
+# Incomplete - only updated "default"
+SOLUTIONS = {
+    "default": {
+        "api_kernels": ["MyKernel"],  # ✅ Added
+        "patterns": ["my_pattern"],    # ✅ Added
+    },
+    "variant": {
+        # ❌ Missing api_kernels and patterns!
+    },
+}
+```
+
+### 4. README Updates May Be Optional
+
+If the main README uses a "View All Patterns" link to `docs/patterns/README.md`, you only need to update `docs/patterns/README.md`. The main README table shows representative examples, not exhaustive listings.
+
+### 5. Mindmap Config Update Is Optional
+
+Updating `tools/mindmaps/ai-markmap-agent/config/config.yaml` is only needed if you want the pattern to appear in auto-generated mindmaps. It can be deferred.
+
+---
+
+## Writing Effective Intuition Guides
+
+The `intuition.md` file is the most valuable documentation you'll write. Here's how to make it effective:
+
+### Use Relatable Analogies
+
+Each pattern benefits from a memorable mental model:
+
+| Pattern | Effective Analogy |
+|---------|-------------------|
+| Multi-Source BFS | "Flashlights in a cave" - multiple light sources spreading simultaneously |
+| K-Way Merge | "Racing snails" - each sequence is a snail, heap picks the leader |
+| Linked List Reversal | "Train car couplers" - flip the direction of each coupler |
+| Sliding Window | "Moving spotlight" - illuminate a section, slide to reveal more |
+| Monotonic Stack | "Building heights" - what can you see looking left/right? |
+
+### Include Visual Traces
+
+ASCII art helps readers follow the algorithm step-by-step:
+
+```
+Step 0:  prev=None, curr=1
+         None <- 1    2 -> 3 -> 4 -> None
+
+Step 1:  prev=1, curr=2
+         None <- 1 <- 2    3 -> 4 -> None
+```
+
+### Highlight Common Mistakes
+
+Show both wrong and right approaches:
+
+```python
+# ❌ WRONG - loses reference to next node
+curr.next = prev
+curr = curr.next  # Oops, curr.next is now prev!
+
+# ✅ RIGHT - save next before modifying
+next_node = curr.next
+curr.next = prev
+curr = next_node
+```
+
+### Add Pattern Recognition Signals
+
+Help readers identify when to use the pattern:
+
+```markdown
+**Use this pattern when you see:**
+- "Reverse" + "linked list" in problem statement
+- "In-place" or "O(1) space" constraints
+- "Swap adjacent pairs" or "reverse in groups"
+```
+
+### Structure Recommendations
+
+1. **Mental Model** (1-2 paragraphs with analogy)
+2. **Visual Walkthrough** (ASCII trace of key algorithm)
+3. **Pattern Variants** (when to use each variant)
+4. **Common Pitfalls** (mistakes to avoid)
+5. **Pattern Recognition** (keywords and signals)
+6. **Complexity Summary** (quick reference table)
+
+---
+
 ## Quick Reference Checklist
 
 ### Phase 1: Meta Pattern Sources
@@ -1034,16 +1230,18 @@ git branch -d feat/pattern-{pattern_name}
 - [ ] Add pattern variants to existing solutions
 - [ ] Commit Phase 3
 
-### Phase 4: Generators
+### Phase 4: Generators (Skip if tests exist)
+- [ ] Check if tests already exist: `ls tests/{id}_{slug}_*.in`
 - [ ] Create generator files with `generate()` function
 - [ ] Include edge cases
 - [ ] Add `generate_for_complexity()` (optional)
 - [ ] Commit Phase 4
 
-### Phase 5: Test Files
+### Phase 5: Test Files (Skip if tests exist)
+- [ ] Check if tests already exist
 - [ ] Create 5 input files per problem
 - [ ] Generate output files by running solutions
-- [ ] Verify all tests pass
+- [ ] Verify all tests pass: `python runner/test_runner.py {problem} --all`
 - [ ] Commit Phase 5
 
 ### Phase 6: Problem Metadata
@@ -1060,15 +1258,15 @@ git branch -d feat/pattern-{pattern_name}
 - [ ] Commit Phase 7
 
 ### Phase 8: Navigation and Integration
-- [ ] Update `mkdocs.yml`
-- [ ] Update `tools/mindmaps/ai-markmap-agent/config/config.yaml`
-- [ ] Update `README.md`
-- [ ] Update `README_zh-TW.md`
-- [ ] Update `docs/patterns/README.md`
+- [ ] Update `mkdocs.yml` (required)
+- [ ] Update `docs/patterns/README.md` (required)
+- [ ] Update `tools/mindmaps/ai-markmap-agent/config/config.yaml` (optional)
+- [ ] Update `README.md` (optional - only if adding to main table)
+- [ ] Update `README_zh-TW.md` (optional - only if adding to main table)
 - [ ] Commit Phase 8
-- [ ] Merge to main
-- [ ] Push to remote
-- [ ] Delete feature branch
+- [ ] Merge to main: `git checkout main && git merge feat/pattern-{pattern_name}`
+- [ ] Push to remote: `git push origin main`
+- [ ] Delete feature branch: `git branch -d feat/pattern-{pattern_name}`
 
 ---
 
@@ -1076,12 +1274,17 @@ git branch -d feat/pattern-{pattern_name}
 
 These patterns serve as implementation references:
 
-| Pattern | Problems | Files | Reference |
-|---------|----------|-------|-----------|
-| **Bitmask DP** | LC 78, 847, 1125 | 47 | Subset enumeration, BFS + bitmask, set cover |
-| **Tree DP** | LC 337, 124, 968 | 47 | Include/exclude, path contribution, multi-state |
-| **Line Sweep** | LC 253, 1094, 218 | 47 | Event counting, capacity, height tracking |
-| **Segment Tree/Fenwick** | LC 307, 315, 327 | 47 | Range queries with updates, inversion counting |
+| Pattern | Problems | Commits | Key Techniques |
+|---------|----------|---------|----------------|
+| **Bitmask DP** | LC 78, 847, 1125 | 8 | Subset enumeration, BFS + bitmask, set cover |
+| **Tree DP** | LC 337, 124, 968 | 8 | Include/exclude, path contribution, multi-state |
+| **Line Sweep** | LC 253, 1094, 218 | 8 | Event counting, capacity, height tracking |
+| **Segment Tree/Fenwick** | LC 307, 315, 327 | 8 | Range queries with updates, inversion counting |
+| **Multi-Source BFS** | LC 994, 286, 542 | 8 | Propagation timing, distance fill, distance field |
+| **K-Way Merge** | LC 23, 21, 88 | 4 | Heap-based, two-pointer, backward merge |
+| **Linked List Reversal** | LC 206, 92, 25 | 6 | Full reversal, segment, k-group |
+
+**Note**: Patterns using existing solutions/tests (K-Way Merge) require fewer commits since Phases 4-5 are skipped.
 
 ### Directory Structure Example (Bitmask DP)
 
