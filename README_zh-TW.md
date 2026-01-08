@@ -16,6 +16,8 @@
 
 我們的 AI 生成心智圖揭示模式之間的關聯 — 這些關係需要多年才能自己內化。
 
+[![Mind Map Preview](docs/assets/mindmap-preview.png)](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html)
+
 [English](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) · [繁體中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) · [所有心智圖 →](https://lufftw.github.io/neetcode/mindmaps/)
 
 ---

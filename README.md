@@ -16,6 +16,8 @@
 
 Our AI-generated mind maps reveal how patterns connect — relationships that take years to internalize on your own.
 
+[![Mind Map Preview](docs/assets/mindmap-preview.png)](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html)
+
 [English](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-en.html) · [繁體中文](https://lufftw.github.io/neetcode/pages/mindmaps/neetcode-ontology-agent-evolved-zh-tw.html) · [All Mind Maps →](https://lufftw.github.io/neetcode/mindmaps/)
 
 ---
