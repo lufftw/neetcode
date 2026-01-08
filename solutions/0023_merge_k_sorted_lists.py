@@ -51,25 +51,33 @@ SOLUTIONS = {
         "class": "SolutionHeap",
         "method": "mergeKLists",
         "complexity": "O(N log k)",
-        "description": "Priority Queue (Min Heap) approach"
+        "description": "Priority Queue (Min Heap) approach",
+        "api_kernels": ["KWayMerge"],
+        "patterns": ["merge_k_sorted_heap"],
     },
     "heap": {
         "class": "SolutionHeap",
         "method": "mergeKLists",
         "complexity": "O(N log k)",
-        "description": "Priority Queue (Min Heap) approach"
+        "description": "Priority Queue (Min Heap) approach",
+        "api_kernels": ["KWayMerge"],
+        "patterns": ["merge_k_sorted_heap"],
     },
     "divide": {
         "class": "SolutionDivideConquer",
         "method": "mergeKLists",
         "complexity": "O(N log k)",
-        "description": "Divide and Conquer approach"
+        "description": "Divide and Conquer approach",
+        "api_kernels": ["KWayMerge"],
+        "patterns": ["merge_k_sorted_divide"],
     },
     "greedy": {
         "class": "SolutionGreedy",
         "method": "mergeKLists",
         "complexity": "O(kN)",
-        "description": "Greedy comparison - compare all k heads each time"
+        "description": "Greedy comparison - compare all k heads each time",
+        "api_kernels": ["KWayMerge"],
+        "patterns": ["merge_k_sorted_heap"],
     },
 }
 

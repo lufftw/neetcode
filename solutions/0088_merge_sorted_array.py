@@ -54,18 +54,24 @@ SOLUTIONS = {
         "method": "merge",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Merge from end to avoid overwriting unprocessed elements",
+        "api_kernels": ["MergeSortedSequences"],
+        "patterns": ["merge_sorted_from_ends"],
     },
     "backward": {
         "class": "SolutionBackward",
         "method": "merge",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Merge from end to avoid overwriting unprocessed elements",
+        "api_kernels": ["MergeSortedSequences"],
+        "patterns": ["merge_sorted_from_ends"],
     },
     "forward": {
         "class": "SolutionForward",
         "method": "merge",
         "complexity": "O(m+n) time, O(m) space",
         "description": "Forward merge requiring extra space for nums1 copy",
+        "api_kernels": ["MergeSortedSequences"],
+        "patterns": ["merge_two_sorted_arrays"],
     },
 }
 

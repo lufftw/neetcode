@@ -40,18 +40,24 @@ SOLUTIONS = {
         "method": "mergeTwoLists",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Iterative merge using dummy head",
+        "api_kernels": ["MergeSortedSequences"],
+        "patterns": ["merge_two_sorted_lists"],
     },
     "iterative": {
         "class": "SolutionIterative",
         "method": "mergeTwoLists",
         "complexity": "O(m+n) time, O(1) space",
         "description": "Iterative merge using dummy head",
+        "api_kernels": ["MergeSortedSequences"],
+        "patterns": ["merge_two_sorted_lists"],
     },
     "recursive": {
         "class": "SolutionRecursive",
         "method": "mergeTwoLists",
         "complexity": "O(m+n) time, O(m+n) space for recursion stack",
         "description": "Recursive merge choosing smaller head",
+        "api_kernels": ["MergeSortedSequences"],
+        "patterns": ["merge_two_sorted_lists"],
     },
 }
 
