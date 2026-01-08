@@ -51,7 +51,7 @@ Each pattern provides **two learning paths** to help you master the concepts:
 | `IntervalDP` | 💡 [Intuition](interval_dp/intuition.md) · 🛠️ [Templates](interval_dp/templates.md) | Burst balloons, polygon triangulation, cut stick, strange printer | LeetCode 312, 1039, 1547, 664 |
 | `GridBFSMultiSource` | 💡 [Intuition](grid_bfs_multi_source/intuition.md) · 🛠️ [Templates](grid_bfs_multi_source/templates.md) | Multi-source BFS on grids | LeetCode 994, 286, 542 |
 | `KWayMerge` | 💡 [Intuition](k_way_merge/intuition.md) · 🛠️ [Templates](k_way_merge/templates.md) | Merge K sorted sequences | LeetCode 23, 21, 88 |
-| `LinkedListInPlaceReversal` | *coming soon* | In-place linked list reversal | LeetCode 25, 206, 92 |
+| `LinkedListInPlaceReversal` | 💡 [Intuition](linked_list_in_place_reversal/intuition.md) · 🛠️ [Templates](linked_list_in_place_reversal/templates.md) | In-place linked list reversal | LeetCode 206, 92, 25 |
 
 ---
 

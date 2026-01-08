@@ -216,6 +216,9 @@ nav:
     - K-Way Merge:
       - Intuition: patterns/k_way_merge/intuition.md
       - Templates: patterns/k_way_merge/templates.md
+    - Linked List Reversal:
+      - Intuition: patterns/linked_list_in_place_reversal/intuition.md
+      - Templates: patterns/linked_list_in_place_reversal/templates.md
   - 🧠 Mind Maps:
     - Overview: mindmaps/index.md
     - AI Analysis (English): mindmaps/neetcode-ontology-ai-en.md
