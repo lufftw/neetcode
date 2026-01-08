@@ -46,18 +46,24 @@ SOLUTIONS = {
         "method": "reverseKGroup",
         "complexity": "O(N) time, O(1) space",
         "description": "Iterative in-place k-group reversal using pointer manipulation",
+        "api_kernels": ["LinkedListInPlaceReversal"],
+        "patterns": ["reverse_k_group"],
     },
     "iterative": {
         "class": "SolutionIterative",
         "method": "reverseKGroup",
         "complexity": "O(N) time, O(1) space",
         "description": "Iterative in-place k-group reversal using pointer manipulation",
+        "api_kernels": ["LinkedListInPlaceReversal"],
+        "patterns": ["reverse_k_group"],
     },
     "recursive": {
         "class": "SolutionRecursive",
         "method": "reverseKGroup",
         "complexity": "O(N) time, O(N) space",
         "description": "Recursive k-group reversal using a helper to reverse exactly k nodes",
+        "api_kernels": ["LinkedListInPlaceReversal"],
+        "patterns": ["reverse_k_group"],
     },
 }
 
