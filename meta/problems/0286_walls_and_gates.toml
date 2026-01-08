@@ -1,0 +1,54 @@
+# ===== Problem Info =====
+id = "0286"
+slug = "0286_walls_and_gates"
+title = "Walls and Gates"
+leetcode_id = 286
+url = "https://leetcode.com/problems/walls-and-gates/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "breadth_first_search", "matrix"]
+companies = ["google", "meta", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["grid_bfs_multi_source_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GridBFSMultiSource"]
+patterns         = ["grid_bfs_propagation"]
+families         = ["graph_wavefront"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0994", "0542", "1162"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0286_walls_and_gates.py"
+generator = "generators/0286_walls_and_gates.py"
+tests_dir = "tests/0286_walls_and_gates/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "wallsAndGates"
+
+api_kernels      = ["GridBFSMultiSource"]
+patterns         = ["grid_bfs_propagation"]
+families         = ["graph_wavefront"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0994", "0542"]
+
+role       = "variant"
+variant    = "distance_fill"
+based_on   = ["0994#default"]
+delta      = "Store distance in cell instead of counting levels."
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Multi-source BFS from gates, fill empty rooms with distance."

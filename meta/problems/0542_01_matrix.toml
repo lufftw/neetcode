@@ -1,0 +1,73 @@
+# ===== Problem Info =====
+id = "0542"
+slug = "0542_01_matrix"
+title = "01 Matrix"
+leetcode_id = 542
+url = "https://leetcode.com/problems/01-matrix/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "breadth_first_search", "matrix"]
+companies = ["google", "amazon", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["grid_bfs_multi_source_path"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GridBFSMultiSource"]
+patterns         = ["grid_bfs_propagation"]
+families         = ["graph_wavefront"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs", "dynamic_programming"]
+related_problems = ["0994", "0286", "1162"]
+
+# ===== Pattern Role =====
+[pattern_role]
+is_base_template = false
+base_for_kernel = ""
+derived_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0542_01_matrix.py"
+generator = "generators/0542_01_matrix.py"
+tests_dir = "tests/0542_01_matrix/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "updateMatrix"
+
+api_kernels      = ["GridBFSMultiSource"]
+patterns         = ["grid_bfs_propagation"]
+families         = ["graph_wavefront"]
+data_structures  = ["grid", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0994", "0286"]
+
+role       = "variant"
+variant    = "distance_field"
+based_on   = ["0994#default"]
+delta      = "Return new distance matrix instead of modifying grid."
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Multi-source BFS from zeros, compute distance field."
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "updateMatrix"
+
+api_kernels      = ["DP2D"]
+patterns         = ["dp_grid_two_pass"]
+families         = ["dynamic_programming_grid"]
+data_structures  = ["grid"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+role       = "variant"
+variant    = "two_pass_dp"
+based_on   = []
+delta      = "Alternative DP approach: two passes (top-left, bottom-right)."
+complexity = "O(m*n) time, O(1) extra space"
+notes      = "Does not use BFS; uses DP recurrence from four directions."
