@@ -1,0 +1,15 @@
+# meta/patterns/k_way_merge/_config.toml
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0023-merge-k-sorted-lists.md",
+    "0021-merge-two-sorted-lists.md",
+    "0088-merge-sorted-array.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "k_way_merge"
+filename = "templates.md"
