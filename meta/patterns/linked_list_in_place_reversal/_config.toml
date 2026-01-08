@@ -1,0 +1,14 @@
+# Linked List In-Place Reversal Pattern - File Ordering Configuration
+#
+# This file specifies the exact order of files for generating
+# docs/patterns/linked_list_in_place_reversal/templates.md
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0206-reverse-linked-list.md",
+    "0092-reverse-linked-list-ii.md",
+    "0025-reverse-nodes-in-k-group.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
