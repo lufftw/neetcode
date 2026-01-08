@@ -1,0 +1,15 @@
+# meta/patterns/grid_bfs_multi_source/_config.toml
+
+header_files = ["_header.md"]
+
+problem_files = [
+    "0994-rotting-oranges.md",
+    "0286-walls-and-gates.md",
+    "0542-01-matrix.md"
+]
+
+footer_files = ["_comparison.md", "_decision.md", "_templates.md"]
+
+[output]
+subdirectory = "grid_bfs_multi_source"
+filename = "templates.md"
