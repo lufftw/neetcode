@@ -95,22 +95,27 @@ SOLUTIONS = {
 # ============================================
 # Solution 1: Greedy Scheduling
 # Time: O(n log n), Space: O(1)
-#   - Sort by end time
+#   - Sort by end time (critical for greedy)
 #   - Greedily keep non-overlapping intervals
+#   - Answer = total - max non-overlapping count
 # ============================================
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         """
-        Minimum intervals to remove for no overlaps.
+        Find minimum intervals to remove for no overlaps.
 
-        Key Insight:
-        - Equivalent to: total - max non-overlapping intervals
-        - Greedy: always keep interval that ends earliest
-        - Sort by END time (not start!) for optimal selection
+        Core insight: Sort by END time (not start). Keeping intervals that
+        end earliest leaves maximum room for future intervals. Greedy choice
+        property ensures locally optimal leads to globally optimal.
 
-        Why sort by end?
-        - Earlier ending = more room for future intervals
-        - Greedy choice property: locally optimal → globally optimal
+        Invariant: After processing interval i, non_overlapping is the maximum
+        count of non-overlapping intervals ending at or before intervals[i].
+
+        Args:
+            intervals: List of [start, end] intervals
+
+        Returns:
+            Minimum number of intervals to remove
         """
         if not intervals:
             return 0
@@ -137,19 +142,25 @@ class Solution:
 # Time: O(n²), Space: O(n)
 #   - dp[i] = max non-overlapping intervals ending at interval i
 #   - For each interval, check all previous compatible intervals
+#   - Similar to Longest Increasing Subsequence approach
 # ============================================
 class SolutionDP:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         """
-        DP approach similar to Longest Increasing Subsequence.
+        Find minimum removals using LIS-style dynamic programming.
 
-        State: dp[i] = max count of non-overlapping intervals
-               when interval i is the last selected interval
+        Core insight: dp[i] = max non-overlapping count when interval i is
+        last selected. For each interval, extend from all compatible previous
+        intervals (those ending before current starts).
 
-        Transition: dp[i] = 1 + max(dp[j]) for all j where
-                    intervals[j][1] <= intervals[i][0]
+        Invariant: After processing interval i, dp[i] contains the maximum
+        count of non-overlapping intervals ending at intervals[i].
 
-        This is O(n²) vs O(n log n) greedy, but shows the DP perspective.
+        Args:
+            intervals: List of [start, end] intervals
+
+        Returns:
+            Minimum number of intervals to remove
         """
         if not intervals:
             return 0

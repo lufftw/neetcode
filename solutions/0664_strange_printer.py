@@ -32,14 +32,26 @@ SOLUTIONS = {
 # Time: O(n³), Space: O(n²)
 #   - When s[k] == s[i], extend first print to cover s[k] (saves one turn)
 #   - Preprocess: remove consecutive duplicates (don't affect answer)
+#   - Fill DP table by increasing interval length
 # ============================================================================
 class Solution:
-    # State: min_turns[i][j] = minimum turns to print s[i:j+1]
-    # Base case: min_turns[i][i] = 1 (single char needs 1 turn)
-    # Transition: min_turns[i][j] = min(min_turns[i+1][j] + 1,
-    #                                   min_turns[i+1][k-1] + min_turns[k][j]) for s[k]==s[i]
-
     def strangePrinter(self, s: str) -> int:
+        """
+        Find minimum turns to print the string.
+
+        Core insight: When s[k] == s[i], extend the first print to cover s[k],
+        reducing turns needed. The first character's print can extend to any
+        matching character, effectively merging their costs.
+
+        Invariant: min_turns[i][j] is optimal solution for substring s[i..j]
+        after all positions in [i, j] have been assigned characters.
+
+        Args:
+            s: Target string to print
+
+        Returns:
+            Minimum number of printing turns needed
+        """
         # Remove consecutive duplicates (they don't affect answer)
         s = ''.join(c for idx, c in enumerate(s) if idx == 0 or c != s[idx - 1])
         string_length = len(s)
@@ -76,11 +88,27 @@ class Solution:
 # ============================================================================
 # Solution 2: Top-Down Memoization
 # Time: O(n³), Space: O(n²)
-#   - Same logic as bottom-up but recursive approach
-#   - May be more intuitive: "min turns to print s[i..j]?"
+#   - Recursive approach with memoization
+#   - Directly models subproblem: min turns for s[i..j]
+#   - Same complexity as bottom-up
 # ============================================================================
 class SolutionMemoization:
     def strangePrinter(self, s: str) -> int:
+        """
+        Find minimum turns using top-down memoization.
+
+        Core insight: Recursively solve "min turns to print s[i..j]?" by
+        trying to extend the first character's print to matching positions.
+
+        Invariant: memo[(start, end)] stores optimal solution for substring
+        s[start..end] once computed.
+
+        Args:
+            s: Target string to print
+
+        Returns:
+            Minimum number of printing turns needed
+        """
         # Remove consecutive duplicates
         s = ''.join(c for i, c in enumerate(s) if i == 0 or c != s[i - 1])
         n = len(s)

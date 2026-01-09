@@ -31,15 +31,28 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: Interval DP (Last Operation)
 # Time: O(n³), Space: O(n²)
-#   - Key: think which balloon to burst LAST (not first)
+#   - Think which balloon to burst LAST (not first)
 #   - Add virtual balloons with value 1 at boundaries
+#   - Fill DP table by increasing interval length
 # ============================================================================
 class Solution:
-    # State: max_coins[i][j] = max coins for bursting all in (i, j) exclusive
-    # Base case: max_coins[i][i+1] = 0 (no balloons between adjacent)
-    # Transition: max_coins[i][j] = max over k of: left + right + nums[i]*nums[k]*nums[j]
-
     def maxCoins(self, nums: List[int]) -> int:
+        """
+        Find maximum coins from bursting all balloons.
+
+        Core insight: Think about which balloon to burst LAST in each interval.
+        If k is burst last in (i, j), then nums[i] and nums[j] are still
+        boundaries, giving coins = nums[i] * nums[k] * nums[j].
+
+        Invariant: max_coins[i][j] contains optimal solution for the exclusive
+        interval (i, j) when all balloons between i and j are burst.
+
+        Args:
+            nums: Array of balloon values
+
+        Returns:
+            Maximum coins obtainable
+        """
         # Add virtual balloons at boundaries (value 1)
         nums = [1] + nums + [1]
         balloon_count = len(nums)
@@ -65,11 +78,27 @@ class Solution:
 # ============================================================================
 # Solution 2: Top-Down Memoization
 # Time: O(n³), Space: O(n²)
-#   - Same complexity as bottom-up, but recursive approach
-#   - May be more intuitive: "what's max coins for interval (i, j)?"
+#   - Recursive approach with memoization
+#   - Directly models subproblem: max coins for interval (i, j)
+#   - Same complexity as bottom-up
 # ============================================================================
 class SolutionMemoization:
     def maxCoins(self, nums: List[int]) -> int:
+        """
+        Find maximum coins using top-down memoization.
+
+        Core insight: Recursively solve "what's max coins for interval (i, j)?"
+        by trying each balloon as the last to burst and taking maximum.
+
+        Invariant: memo[(left, right)] stores optimal solution for the exclusive
+        interval (left, right) once computed.
+
+        Args:
+            nums: Array of balloon values
+
+        Returns:
+            Maximum coins obtainable
+        """
         # Add virtual balloons at boundaries
         nums = [1] + nums + [1]
         n = len(nums)

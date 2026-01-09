@@ -122,21 +122,19 @@ JUDGE_FUNC = judge
 #   - Deque stores indices with values in decreasing order
 #   - Front of deque is always the current window's maximum
 #   - Elements enter once and exit at most once (amortized O(1) per element)
-#
-# Key Insight: Any element smaller than the current element that came before
-# will never be the maximum while the current element is in the window.
 # ============================================================================
 class SolutionMonotonicDeque:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         """
         Return the maximum value in each sliding window of size k.
 
-        Core insight: Maintain a deque of indices in decreasing order of values.
-        When a new element enters, remove dominated elements from back (they'll
-        never be max while current element is in window). Front is always max.
+        Core insight: Any element smaller than current that came before will
+        never be the maximum while current is in window. Maintain deque of
+        indices in decreasing order; when new element enters, remove dominated
+        elements from back.
 
-        Invariant: Deque contains indices of potential maxima in decreasing value
-        order; all indices are within the current window [i-k+1, i].
+        Invariant: Deque contains indices of potential maxima in decreasing
+        value order; all indices are within current window [i-k+1, i].
 
         Args:
             nums: Array of integers
@@ -176,20 +174,27 @@ class SolutionMonotonicDeque:
 # Solution 2: Max-Heap with Lazy Deletion
 # Time: O(n log n), Space: O(n)
 #   - Use max-heap (via negation) to track maximum
-#   - Lazy deletion: only remove outdated elements when they're at heap top
+#   - Lazy deletion: only remove outdated elements when at heap top
 #   - Trade-off: simpler logic but worse time complexity
 # ============================================================================
 class SolutionHeap:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         """
-        Heap-based approach with lazy deletion.
+        Return maximum in each window using heap with lazy deletion.
 
-        Uses a max-heap (simulated via negated values) storing (-value, index).
-        When extracting max, check if index is still in current window.
-        If not, pop and try again (lazy deletion).
+        Core insight: Max-heap gives O(1) max lookup. Lazy deletion avoids
+        expensive remove operations by only removing outdated elements when
+        they surface to the heap top.
 
-        Time: O(n log n) worst case - each element pushed/popped once
-        Space: O(n) - heap can accumulate all elements before cleanup
+        Invariant: Heap top is always either the current max or an outdated
+        element (index outside window) that gets removed before use.
+
+        Args:
+            nums: Array of integers
+            k: Window size
+
+        Returns:
+            List of maximum values for each window position
         """
         import heapq
 

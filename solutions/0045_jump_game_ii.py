@@ -108,22 +108,29 @@ JUDGE_FUNC = judge
 # ============================================================================
 # Solution: Greedy BFS-like Level Traversal
 # Time: O(n), Space: O(1)
-#
-# Core Insight:
-#   Think of jumps as BFS levels. From position 0, we can reach positions
-#   in range [1, nums[0]] with 1 jump. From those positions, we can reach
-#   further positions with 2 jumps, etc.
-#
-#   Key variables:
-#   - current_end: rightmost position reachable with current number of jumps
-#   - farthest: rightmost position reachable with one more jump
-#
-#   When we reach current_end, we must take another jump.
-#
-# Pattern Reference: GreedyCore - Reachability (min jumps variant)
+#   - Track current level end and next level's farthest reach
+#   - Increment jump count when reaching current level end
+#   - Pattern: GreedyCore - Reachability (min jumps variant)
 # ============================================================================
 class SolutionGreedy:
     def jump(self, nums: List[int]) -> int:
+        """
+        Find minimum jumps to reach the last index.
+
+        Core insight: Think of jumps as BFS levels. From position 0, positions
+        [1, nums[0]] are reachable in 1 jump. When we reach current_level_end,
+        we must take another jump.
+
+        Invariant: current_level_end is the rightmost position reachable with
+        jump_count jumps; next_level_farthest is the rightmost reachable with
+        one more jump.
+
+        Args:
+            nums: Array where nums[i] is max jump length from position i
+
+        Returns:
+            Minimum number of jumps to reach nums[n-1]
+        """
         if len(nums) <= 1:
             return 0
 
@@ -152,18 +159,25 @@ class SolutionGreedy:
 # Solution 2: Dynamic Programming
 # Time: O(n²), Space: O(n)
 #   - dp[i] = minimum jumps to reach position i
-#   - For each position, try all reachable positions
-#   - Less efficient than greedy but shows DP perspective
+#   - For each position, update all reachable destinations
+#   - Less efficient than greedy but demonstrates DP approach
 # ============================================================================
 class SolutionDP:
     def jump(self, nums: List[int]) -> int:
         """
-        DP approach: compute minimum jumps to each position.
+        Compute minimum jumps to reach each position using DP.
 
-        State: dp[i] = minimum jumps to reach position i
-        Transition: dp[j] = min(dp[j], dp[i] + 1) for all j reachable from i
+        Core insight: Build optimal solution by considering all reachable
+        positions from each index and taking minimum.
 
-        O(n²) because for each position we may update many destinations.
+        Invariant: After processing position i, dp[0..i] contains the minimum
+        jumps to reach each position.
+
+        Args:
+            nums: Array where nums[i] is max jump length from position i
+
+        Returns:
+            Minimum number of jumps to reach nums[n-1]
         """
         n = len(nums)
         if n <= 1:

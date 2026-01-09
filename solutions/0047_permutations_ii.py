@@ -95,27 +95,19 @@ class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         """
         Generate all unique permutations when input may have duplicates.
-        
-        Algorithm:
-        - Sort the array to bring duplicates together
-        - Use same-level deduplication: skip a duplicate if its previous
-          occurrence wasn't used (meaning we're at the same decision level)
-        
-        Deduplication Logic:
-        - If nums[i] == nums[i-1] and used[i-1] == False, skip nums[i]
-        - Why? If used[i-1] is False, we're choosing between i-1 and i
-          at the same level. To avoid duplicate permutations, always
-          choose the leftmost (i-1) first.
-        - If used[i-1] is True, then i-1 is in an ancestor node, so
-          choosing i is valid (different branch of the tree).
-        
-        Invariants:
-        1. After sorting, duplicates are adjacent
-        2. We always use duplicates in left-to-right order at each level
-        3. This ensures each unique permutation is generated exactly once
-        
-        Time Complexity: O(n! × n) in worst case (all unique)
-        Space Complexity: O(n) for recursion and used array
+
+        Core insight: Sort array so duplicates are adjacent. Skip nums[i] if
+        nums[i-1] is identical and unused - this means we're at the same tree
+        level and should pick leftmost duplicate first.
+
+        Invariant: At each recursion level, duplicates are always chosen in
+        left-to-right order, ensuring each unique permutation appears once.
+
+        Args:
+            nums: Collection of numbers that may contain duplicates
+
+        Returns:
+            All possible unique permutations
         """
         results: List[List[int]] = []
         n = len(nums)
@@ -175,14 +167,20 @@ class Solution:
 class SolutionCounter:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         """
-        Counter-based approach for handling duplicates.
+        Generate unique permutations using Counter for deduplication.
 
-        Instead of tracking used[] array and sorting, use Counter:
-        - Keys are unique elements
-        - Values are remaining counts
-        - Decrement count when choosing, increment when backtracking
+        Core insight: Counter keys are unique elements, values are counts.
+        Iterating over keys naturally deduplicates - no sorting needed.
+        Decrement count when choosing, increment when backtracking.
 
-        Advantage: No sorting needed, naturally handles duplicates.
+        Invariant: At each recursion level, each unique value is considered
+        exactly once, with count tracking remaining availability.
+
+        Args:
+            nums: Collection of numbers that may contain duplicates
+
+        Returns:
+            All possible unique permutations
         """
         results: List[List[int]] = []
         n = len(nums)

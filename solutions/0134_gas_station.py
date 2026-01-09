@@ -120,23 +120,29 @@ JUDGE_FUNC = judge
 # ============================================================================
 # Solution: Greedy with Prefix Deficit and Reset
 # Time: O(n), Space: O(1)
-#
-# Core Insight (Prefix Minimum / Reset Kernel):
-#   1. If total gas >= total cost, a solution exists (pigeonhole principle)
-#   2. If we run out of gas at station j starting from station i,
-#      we can't complete the circuit starting from any station between i and j.
-#      Why? Those intermediate stations would have even less accumulated gas.
-#   3. So when we fail, reset and try station j+1 as new candidate.
-#
-# Key Variables:
-#   - total_tank: tracks overall feasibility
-#   - current_tank: tracks current attempt's balance
-#   - start_station: candidate starting position
-#
-# Pattern Reference: GreedyCore - Prefix Minimum / Reset
+#   - Single pass tracking total deficit and current deficit
+#   - Reset candidate when current tank goes negative
+#   - Pattern: GreedyCore - Prefix Minimum / Reset Kernel
 # ============================================================================
 class SolutionGreedy:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        """
+        Find starting station to complete circular route, or -1 if impossible.
+
+        Core insight: If total gas >= total cost, a solution exists. When we
+        fail at station j starting from i, stations i to j are all invalid
+        because they would have even less accumulated gas.
+
+        Invariant: candidate_start is always a valid potential answer; all
+        stations before it have been proven invalid.
+
+        Args:
+            gas: Gas available at each station
+            cost: Gas needed to travel to next station
+
+        Returns:
+            Starting station index, or -1 if impossible
+        """
         total_tank = 0  # Total gas balance for feasibility check
         current_tank = 0  # Current attempt's gas balance
         candidate_start = 0  # Current candidate starting station
@@ -148,8 +154,6 @@ class SolutionGreedy:
 
             # If we can't reach next station, reset candidate
             if current_tank < 0:
-                # All stations from candidate_start to station are invalid
-                # Try next station as new candidate
                 candidate_start = station + 1
                 current_tank = 0
 
@@ -161,17 +165,25 @@ class SolutionGreedy:
 # Solution 2: Brute Force
 # Time: O(n²), Space: O(1)
 #   - Try each station as starting point
-#   - Simulate the journey to check if we can complete the circuit
+#   - Simulate traveling around the entire circuit
+#   - Return first valid start or -1 if none works
 # ============================================================================
 class SolutionBruteforce:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
         """
-        Brute force: try each station as starting point.
+        Find valid starting station by trying each position.
 
-        For each potential start, simulate traveling around the circuit.
-        Return the first valid starting station, or -1 if none works.
+        Core insight: A valid start allows completing the full circuit
+        without tank going negative at any point.
 
-        O(n²) time because we may simulate n stations for each of n starts.
+        Invariant: For a valid start, tank >= 0 after visiting each station.
+
+        Args:
+            gas: Gas available at each station
+            cost: Gas needed to travel to next station
+
+        Returns:
+            Starting station index, or -1 if impossible
         """
         n = len(gas)
 

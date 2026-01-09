@@ -124,9 +124,26 @@ JUDGE_FUNC = judge
 # Time: O(m+n), Space: O(1)
 #   - Merge two sorted arrays using two pointers
 #   - Track median position during merge
+#   - Stop early once median position is reached
 # ============================================
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        """
+        Find median by virtually merging arrays with two pointers.
+
+        Core insight: We don't need the full merged array, just the middle
+        element(s). Track only prev and cur values, stop at median position.
+
+        Invariant: At step idx, cur holds the idx-th smallest element of
+        the combined arrays.
+
+        Args:
+            nums1: First sorted array
+            nums2: Second sorted array
+
+        Returns:
+            Median of the two sorted arrays
+        """
         i = 0
         j = 0
         m, n = len(nums1), len(nums2)
@@ -170,13 +187,21 @@ class Solution:
 class SolutionBinarySearch:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         """
-        Binary search for optimal partition position.
+        Find median via binary search on partition position.
 
-        Key insight: Find partition i in nums1 and j in nums2 such that:
-        - i + j = (m + n + 1) // 2  (left half has half the elements)
-        - nums1[i-1] <= nums2[j] and nums2[j-1] <= nums1[i]
+        Core insight: Find partition i in nums1 and j in nums2 such that
+        i + j = (m + n + 1) // 2 and all left elements <= all right elements.
+        Binary search on smaller array achieves O(log(min(m,n))).
 
-        Binary search on smaller array for O(log(min(m,n))).
+        Invariant: Partition is valid when nums1[i-1] <= nums2[j] and
+        nums2[j-1] <= nums1[i], meaning left half <= right half.
+
+        Args:
+            nums1: First sorted array
+            nums2: Second sorted array
+
+        Returns:
+            Median of the two sorted arrays
         """
         # Ensure nums1 is the smaller array
         if len(nums1) > len(nums2):

@@ -31,15 +31,29 @@ SOLUTIONS = {
 # ============================================================================
 # Solution 1: Interval DP (Cutting Problems)
 # Time: O(m³), Space: O(m²) where m = len(cuts) + 2
-#   - Key: think which cut to make LAST (not first)
+#   - Think which cut to make LAST (not first)
 #   - Add boundaries (0, n) and sort cuts
+#   - Fill DP table by increasing gap between cut indices
 # ============================================================================
 class Solution:
-    # State: min_cost[i][j] = min cost to cut segment [cuts[i], cuts[j]]
-    # Base case: min_cost[i][i+1] = 0 (no cuts needed for adjacent)
-    # Transition: min_cost[i][j] = min over k of: left + right + segment_length
-
     def minCost(self, n: int, cuts: List[int]) -> int:
+        """
+        Find minimum cost to make all cuts.
+
+        Core insight: Think about which cut to make LAST in each segment.
+        If k is cut last, cost = length of segment + cost of left subproblem
+        + cost of right subproblem.
+
+        Invariant: min_cost[i][j] contains minimum cost to make all cuts
+        in the segment [cuts[i], cuts[j]].
+
+        Args:
+            n: Length of the stick
+            cuts: Positions where cuts must be made
+
+        Returns:
+            Minimum total cost to make all cuts
+        """
         # Add boundaries (0 and n) and sort
         cuts = sorted([0] + cuts + [n])
         cut_count = len(cuts)
@@ -66,11 +80,29 @@ class Solution:
 # ============================================================================
 # Solution 2: Top-Down Memoization
 # Time: O(m³), Space: O(m²)
-#   - Recursive approach: "min cost to make all cuts in [cuts[i], cuts[j]]?"
-#   - More intuitive for some: directly models subproblem structure
+#   - Recursive approach with memoization
+#   - Directly models subproblem: min cost for segment [cuts[i], cuts[j]]
+#   - Same complexity as bottom-up
 # ============================================================================
 class SolutionMemoization:
     def minCost(self, n: int, cuts: List[int]) -> int:
+        """
+        Find minimum cost using top-down memoization.
+
+        Core insight: Recursively solve "min cost to make all cuts between
+        cuts[left] and cuts[right]?" by trying each intermediate cut as
+        the last one and taking minimum.
+
+        Invariant: memo[(left, right)] stores optimal solution for the segment
+        [cuts[left], cuts[right]] once computed.
+
+        Args:
+            n: Length of the stick
+            cuts: Positions where cuts must be made
+
+        Returns:
+            Minimum total cost to make all cuts
+        """
         # Add boundaries and sort
         cuts = sorted([0] + cuts + [n])
         m = len(cuts)
