@@ -25,6 +25,18 @@ SOLUTIONS = {
         "complexity": "O(n * target) time, O(target) space",
         "description": "Transform to subset sum count problem",
     },
+    "dp_transform": {
+        "class": "SolutionDP",
+        "method": "findTargetSumWays",
+        "complexity": "O(n * target) time, O(target) space",
+        "description": "Mathematical transformation to 0/1 knapsack count",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "findTargetSumWays",
+        "complexity": "O(n * sum) time, O(n * sum) space",
+        "description": "Top-down recursive with memoization (direct approach)",
+    },
 }
 
 
@@ -110,6 +122,53 @@ class SolutionDP:
                 dp[s] += dp[s - num]
 
         return dp[subset_target]
+
+
+class SolutionMemoization:
+    """
+    Top-down recursive with memoization.
+
+    More intuitive: directly models the +/- decision at each step.
+    No mathematical transformation needed.
+    """
+
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        """
+        Count ways to assign +/- using top-down memoization.
+
+        Core insight: At each index, we choose + or - for the current number.
+        Recursively count paths that achieve the remaining target.
+        Memoize (index, remaining_sum) pairs.
+
+        This is more intuitive than the transformation approach - directly
+        models the decision tree without mathematical insight.
+
+        Args:
+            nums: Array of non-negative integers
+            target: Target sum to achieve
+
+        Returns:
+            Number of valid +/- assignments
+        """
+        memo = {}
+
+        def dp(index: int, current_sum: int) -> int:
+            """Count ways to reach target starting from index with current_sum."""
+            if index == len(nums):
+                return 1 if current_sum == target else 0
+
+            if (index, current_sum) in memo:
+                return memo[(index, current_sum)]
+
+            # Try adding or subtracting the current number
+            add = dp(index + 1, current_sum + nums[index])
+            subtract = dp(index + 1, current_sum - nums[index])
+
+            result = add + subtract
+            memo[(index, current_sum)] = result
+            return result
+
+        return dp(0, 0)
 
 
 def solve():

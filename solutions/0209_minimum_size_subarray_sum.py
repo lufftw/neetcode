@@ -42,6 +42,18 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Sliding window approach",
     },
+    "sliding_window": {
+        "class": "Solution",
+        "method": "minSubArrayLen",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Optimal sliding window, each element visited twice",
+    },
+    "binary_search": {
+        "class": "SolutionBinarySearch",
+        "method": "minSubArrayLen",
+        "complexity": "O(n log n) time, O(n) space",
+        "description": "Prefix sum + binary search (follow-up solution)",
+    },
 }
 
 
@@ -142,6 +154,59 @@ class Solution:
                 window_sum -= nums[left]
                 left += 1
         
+        return min_length if min_length != float('inf') else 0
+
+
+# ============================================================================
+# Solution 2: Binary Search with Prefix Sum
+# Time: O(n log n), Space: O(n)
+#   - Build prefix sum array
+#   - For each starting position, binary search for ending position
+#   - Follow-up solution demonstrating O(n log n) approach
+# ============================================================================
+
+class SolutionBinarySearch:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        """
+        Find minimal subarray length using prefix sum + binary search.
+
+        Core insight: For positive numbers, prefix sum is monotonically increasing.
+        For each starting index i, binary search for smallest j where
+        prefix[j] - prefix[i] >= target, i.e., prefix[j] >= prefix[i] + target.
+
+        This is the O(n log n) follow-up solution.
+
+        Args:
+            target: Target sum to reach or exceed
+            nums: Array of positive integers
+
+        Returns:
+            Minimum length of valid subarray, or 0 if none exists
+        """
+        import bisect
+
+        n = len(nums)
+        if n == 0:
+            return 0
+
+        # Build prefix sum array: prefix[i] = sum(nums[0:i])
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        min_length = float('inf')
+
+        # For each starting position i, find smallest j where prefix[j] >= prefix[i] + target
+        for i in range(n):
+            # Need prefix[j] >= prefix[i] + target
+            required = prefix[i] + target
+
+            # Binary search for leftmost j where prefix[j] >= required
+            j = bisect.bisect_left(prefix, required)
+
+            if j <= n:
+                min_length = min(min_length, j - i)
+
         return min_length if min_length != float('inf') else 0
 
 

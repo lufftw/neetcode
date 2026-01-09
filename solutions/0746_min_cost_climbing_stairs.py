@@ -24,6 +24,24 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Space-optimized DP tracking min cost to each step",
     },
+    "dp_space_optimized": {
+        "class": "SolutionDP",
+        "method": "minCostClimbingStairs",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Space-optimized using only two variables",
+    },
+    "dp_array": {
+        "class": "SolutionDPArray",
+        "method": "minCostClimbingStairs",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Full DP array, easier to understand",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "minCostClimbingStairs",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Top-down recursive DP with memoization",
+    },
 }
 
 
@@ -92,6 +110,87 @@ class SolutionDP:
             prev2, prev1 = prev1, current
 
         return prev1
+
+
+class SolutionDPArray:
+    """
+    Full DP array solution.
+
+    dp[i] = minimum cost to reach step i
+    Easier to understand and debug than space-optimized version.
+    """
+
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        """
+        Find minimum cost using full DP array.
+
+        Core insight: Same recurrence as space-optimized, but keep full array
+        for easier understanding. dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]).
+
+        Invariant: dp[i] = minimum cost to reach step i.
+
+        Args:
+            cost: Cost of each step
+
+        Returns:
+            Minimum cost to reach the top
+        """
+        n = len(cost)
+        if n <= 1:
+            return 0
+
+        dp = [0] * (n + 1)
+        # dp[0] = dp[1] = 0: can start at index 0 or 1 for free
+
+        for i in range(2, n + 1):
+            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+
+        return dp[n]
+
+
+class SolutionMemoization:
+    """
+    Top-down recursive DP with memoization.
+
+    More intuitive: directly models the decision at each step.
+    """
+
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        """
+        Find minimum cost using top-down memoization.
+
+        Core insight: min_cost(i) = cost to reach step i, recursively defined
+        as min(min_cost(i-1) + cost[i-1], min_cost(i-2) + cost[i-2]).
+        Memoize to avoid recomputation.
+
+        Args:
+            cost: Cost of each step
+
+        Returns:
+            Minimum cost to reach the top
+        """
+        n = len(cost)
+        if n <= 1:
+            return 0
+
+        memo = {}
+
+        def min_cost(i: int) -> int:
+            """Minimum cost to reach step i."""
+            if i <= 1:
+                return 0  # Can start at 0 or 1 for free
+
+            if i in memo:
+                return memo[i]
+
+            result = min(
+                min_cost(i - 1) + cost[i - 1],
+                min_cost(i - 2) + cost[i - 2]
+            )
+            memo[i] = result
+            return result
+
+        return min_cost(n)
 
 
 def solve():

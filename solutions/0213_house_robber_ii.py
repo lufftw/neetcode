@@ -27,6 +27,18 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Decompose circular into two linear problems: exclude first or exclude last",
     },
+    "dp_decomposition": {
+        "class": "SolutionDP",
+        "method": "rob",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Space-optimized DP with circular decomposition",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "rob",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Top-down recursive DP with memoization",
+    },
 }
 
 
@@ -120,6 +132,55 @@ class SolutionDP:
             return prev1
 
         return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
+
+
+class SolutionMemoization:
+    """
+    Top-down recursive DP with memoization.
+
+    Same circular decomposition, but using memoization for linear subproblems.
+    """
+
+    def rob(self, nums: List[int]) -> int:
+        """
+        Find maximum robbery using top-down memoization.
+
+        Core insight: Same decomposition as iterative DP - handle circular
+        constraint by solving two linear problems. Each linear problem uses
+        memoization: rob(i) = max(rob(i+1), nums[i] + rob(i+2)).
+
+        Args:
+            nums: Money in each house (circular arrangement)
+
+        Returns:
+            Maximum money that can be robbed
+        """
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        if len(nums) == 2:
+            return max(nums)
+
+        def rob_linear_memo(arr: List[int]) -> int:
+            memo = {}
+
+            def dp(i: int) -> int:
+                """Max robbery from houses i to end."""
+                if i >= len(arr):
+                    return 0
+
+                if i in memo:
+                    return memo[i]
+
+                # Either skip this house or rob it
+                result = max(dp(i + 1), arr[i] + dp(i + 2))
+                memo[i] = result
+                return result
+
+            return dp(0)
+
+        return max(rob_linear_memo(nums[:-1]), rob_linear_memo(nums[1:]))
 
 
 def solve():

@@ -27,6 +27,18 @@ SOLUTIONS = {
         "complexity": "O(n * amount) time, O(amount) space",
         "description": "Unbounded knapsack count combinations (coins outer loop)",
     },
+    "dp_unbounded": {
+        "class": "SolutionDP",
+        "method": "change",
+        "complexity": "O(n * amount) time, O(amount) space",
+        "description": "Space-optimized unbounded knapsack (coins outer loop)",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "change",
+        "complexity": "O(n * amount) time, O(n * amount) space",
+        "description": "Top-down recursive with memoization",
+    },
 }
 
 
@@ -99,6 +111,54 @@ class SolutionDP:
                 dp[a] += dp[a - coin]
 
         return dp[amount]
+
+
+class SolutionMemoization:
+    """
+    Top-down recursive with memoization.
+
+    Key insight: To count combinations (not permutations), we must track
+    which coins we've "decided on" - hence (coin_index, remaining_amount).
+    """
+
+    def change(self, amount: int, coins: List[int]) -> int:
+        """
+        Count combinations using top-down memoization.
+
+        Core insight: dp(coin_index, remaining) counts combinations using
+        coins[coin_index:] to make remaining amount. For each coin, we can
+        use it 0, 1, 2, ... times (unbounded), but we must process coins
+        in order to avoid counting permutations.
+
+        Args:
+            amount: Target amount
+            coins: Available coin denominations
+
+        Returns:
+            Number of distinct combinations
+        """
+        memo = {}
+
+        def dp(coin_idx: int, remaining: int) -> int:
+            """Count combinations using coins[coin_idx:] to make remaining."""
+            if remaining == 0:
+                return 1
+            if remaining < 0 or coin_idx >= len(coins):
+                return 0
+
+            if (coin_idx, remaining) in memo:
+                return memo[(coin_idx, remaining)]
+
+            # Option 1: Use current coin at least once, stay at same coin_idx
+            # Option 2: Skip to next coin
+            use_coin = dp(coin_idx, remaining - coins[coin_idx])
+            skip_coin = dp(coin_idx + 1, remaining)
+
+            result = use_coin + skip_coin
+            memo[(coin_idx, remaining)] = result
+            return result
+
+        return dp(0, amount)
 
 
 def solve():

@@ -60,6 +60,18 @@ SOLUTIONS = {
         "api_kernels": ["TreeTraversalDFS"],
         "patterns": ["tree_path_computation"],
     },
+    "instance_var": {
+        "class": "Solution",
+        "method": "diameterOfBinaryTree",
+        "complexity": "O(n) time, O(h) space",
+        "description": "DFS with instance variable for max diameter",
+    },
+    "tuple_return": {
+        "class": "SolutionTupleReturn",
+        "method": "diameterOfBinaryTree",
+        "complexity": "O(n) time, O(h) space",
+        "description": "DFS returning (height, diameter) tuple - no shared state",
+    },
 }
 
 
@@ -101,6 +113,53 @@ class Solution:
 
         height(root)
         return self.diameter
+
+
+class SolutionTupleReturn:
+    """
+    DFS returning (height, max_diameter) tuple.
+
+    Alternative to using instance variable or nonlocal.
+    Each recursive call returns both the height and the maximum diameter
+    found in that subtree.
+    """
+
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        """
+        Find diameter using tuple return pattern.
+
+        Core insight: Instead of tracking diameter via shared state, each
+        recursive call returns (height, max_diameter_in_subtree). This is
+        a "pure functional" style - no side effects, all information flows
+        through return values.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Diameter in edges
+        """
+        def dfs(node: Optional[TreeNode]) -> tuple[int, int]:
+            """Returns (height, max_diameter_in_subtree)."""
+            if not node:
+                return (0, 0)
+
+            left_h, left_d = dfs(node.left)
+            right_h, right_d = dfs(node.right)
+
+            # Height to return to parent
+            height = 1 + max(left_h, right_h)
+
+            # Diameter through this node
+            through_node = left_h + right_h
+
+            # Max diameter is best of: left subtree, right subtree, or through this node
+            max_diameter = max(left_d, right_d, through_node)
+
+            return (height, max_diameter)
+
+        _, diameter = dfs(root)
+        return diameter
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
