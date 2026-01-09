@@ -36,3 +36,47 @@ def generate(count: int = 10, seed: Optional[int] = None) -> Iterator[str]:
     for _ in range(count):
         n = random.randint(1, 9)
         yield str(n)
+
+
+# ============================================
+# Complexity Estimation (controlled size)
+# ============================================
+
+def generate_for_complexity(n: int) -> str:
+    """
+    Generate test case with specific input size for complexity estimation.
+
+    For N-Queens II:
+    - Input size n is the board size
+    - Time complexity is O(N!) due to backtracking
+    - Solution counts grow fast:
+      - n=8:  92 solutions
+      - n=9:  352 solutions
+      - n=10: 724 solutions
+      - n=11: 2,680 solutions
+      - n=12: 14,200 solutions
+      - n=13: 73,712 solutions
+
+    Note: We use smaller n than typical problems (n=5000) because
+    factorial-like growth makes large n infeasible.
+
+    Args:
+        n: Size parameter (will be scaled down for factorial problems)
+
+    Returns:
+        str: Test input (single integer n)
+    """
+    # Scale n for factorial complexity
+    # n=5000 in other problems -> n=12-13 for N-Queens (similar runtime ~2-5s)
+    if n >= 5000:
+        scaled_n = 13  # ~73K solutions, ~2-5 seconds
+    elif n >= 1000:
+        scaled_n = 12  # ~14K solutions
+    elif n >= 500:
+        scaled_n = 11  # ~2.7K solutions
+    elif n >= 100:
+        scaled_n = 10  # 724 solutions
+    else:
+        scaled_n = max(1, min(n, 10))
+
+    return str(scaled_n)
