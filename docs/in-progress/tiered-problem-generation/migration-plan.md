@@ -52,7 +52,7 @@ encode_random_pointer_list(head) -> list
 
 **New Structure**:
 ```
-packages/codegen/core/catalog/
+src/codegen/core/catalog/
 ├── __init__.py              # Unified API
 ├── registry.py              # Metadata registry
 └── templates/
@@ -81,7 +81,7 @@ packages/codegen/core/catalog/
 
 ### 3.1 Create config reader utility ✅
 
-**Location**: `packages/codegen/core/problem_support.py` (implemented)
+**Location**: `src/codegen/core/problem_support.py` (implemented)
 
 All required functions are implemented:
 - ✅ `load_problem_config(problem_id: str) -> ProblemConfig`
@@ -92,7 +92,7 @@ All required functions are implemented:
 
 ### 3.2 Integrate with codegen ✅
 
-**Updated**: `packages/codegen/reference/generator.py`
+**Updated**: `src/codegen/reference/generator.py`
 - ✅ Auto-detects tier from config
 - ✅ Automatically uses tiered mode for Tier-1/1.5 problems
 - ✅ Applies codec_mode logic (import vs inline)

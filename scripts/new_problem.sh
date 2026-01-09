@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================
 #  Create New Problem (pass-through wrapper)
-#  All logic lives in packages/codegen
+#  All logic lives in src/codegen
 #  
 #  Usage:
 #    ./new_problem.sh 1                      Generate solution skeleton

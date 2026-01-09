@@ -25,7 +25,7 @@ Future Work:
 
 Related:
     - tools/docstring/formatter.py::_extract_examples() - Current regex implementation
-    - packages/leetcode_datasource - Data source for problem HTML
+    - src/leetcode_datasource - Data source for problem HTML
     - docs/in-progress/new-problem-tests-autogen/ - Feature specification
 """
 

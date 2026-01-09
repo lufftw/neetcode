@@ -15,7 +15,7 @@ from pathlib import Path
 # Setup paths
 _PROJECT_ROOT = Path(__file__).parent.parent.parent
 _TOOLS_PATH = _PROJECT_ROOT / "tools" / "leetcode-api"
-_CODEGEN_PATH = _PROJECT_ROOT / "packages" / "codegen"
+_CODEGEN_PATH = _PROJECT_ROOT / "src" / "codegen"
 
 if str(_TOOLS_PATH) not in sys.path:
     sys.path.insert(0, str(_TOOLS_PATH))

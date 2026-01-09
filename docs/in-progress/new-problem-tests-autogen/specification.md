@@ -20,7 +20,7 @@ This feature has been fully implemented with the following capabilities:
 
 For complete documentation, see:
 - [CodeGen Package Docs](../../packages/codegen/README.md)
-- [Package README](../../../packages/codegen/README.md)
+- [Package README](../../../src/codegen/README.md)
 
 ---
 
@@ -57,7 +57,7 @@ For complete documentation, see:
 @echo off
 setlocal EnableExtensions
 
-REM Pass-through wrapper: all logic lives in packages/codegen
+REM Pass-through wrapper: all logic lives in src/codegen
 python -m codegen new %*
 exit /b %ERRORLEVEL%
 ```
@@ -338,14 +338,14 @@ Summary: 1 solution, 0 test cases created
 
 | Component | Location |
 |-----------|----------|
-| CLI entry point | `packages/codegen/cli.py` |
-| IO Schema inference | `packages/codegen/core/io_schema.py` |
-| Example parser | `packages/codegen/core/example_parser.py` |
-| Stub parser | `packages/codegen/core/stub_parser.py` |
-| solve() generator | `packages/codegen/core/solve_generator.py` |
-| Test generator | `packages/codegen/core/test_generator.py` |
-| Consistency checker | `packages/codegen/checker.py` |
-| Format migrator | `packages/codegen/migrator.py` |
+| CLI entry point | `src/codegen/cli.py` |
+| IO Schema inference | `src/codegen/core/io_schema.py` |
+| Example parser | `src/codegen/core/example_parser.py` |
+| Stub parser | `src/codegen/core/stub_parser.py` |
+| solve() generator | `src/codegen/core/solve_generator.py` |
+| Test generator | `src/codegen/core/test_generator.py` |
+| Consistency checker | `src/codegen/checker.py` |
+| Format migrator | `src/codegen/migrator.py` |
 | Windows wrapper | `scripts/new_problem.bat` |
 
 ---
@@ -571,7 +571,7 @@ python -m codegen.analyzer
 
 | Component | Location |
 |-----------|----------|
-| Analyzer | `packages/codegen/analyzer.py` |
+| Analyzer | `src/codegen/analyzer.py` |
 | Report output | `docs/in-progress/new-problem-tests-autogen/mismatch-report.json` |
 
 ---

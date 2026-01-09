@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================
 #  Create Practice File (pass-through wrapper)
-#  All logic lives in packages/codegen
+#  All logic lives in src/codegen
 #  
 #  Usage:
 #    ./new_practice.sh 23                    Generate practice skeleton

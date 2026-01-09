@@ -335,11 +335,11 @@ The `runner/` module is the **reference implementation** for this documentation 
 
 ```markdown
 <!-- BAD: Same content in both files -->
-packages/codegen/README.md: "## How It Works: Step 1, Step 2..."
+src/codegen/README.md: "## How It Works: Step 1, Step 2..."
 docs/packages/codegen/README.md: "## How It Works: Step 1, Step 2..."
 
 <!-- GOOD: Different perspectives -->
-packages/codegen/README.md: "## Public API" (what to call)
+src/codegen/README.md: "## Public API" (what to call)
 docs/packages/codegen/README.md: "## Typical Workflows" (system-level flow)
 ```
 

@@ -3,7 +3,7 @@ setlocal EnableExtensions
 
 REM ============================================
 REM  Create Practice File (pass-through wrapper)
-REM  All logic lives in packages/codegen
+REM  All logic lives in src/codegen
 REM  
 REM  Usage:
 REM    new_practice.bat 23                    Generate practice skeleton

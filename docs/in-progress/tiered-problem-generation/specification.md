@@ -211,9 +211,9 @@ IF tier == "1.5":
 | `docs/contracts/codec.md` | Codec package contract |
 | `config/problem-support.yaml` | Living registry |
 | `runner/utils/codec/` | **Single Source**: Runtime + inline templates |
-| `packages/codegen/core/catalog/` | AST extraction from codec/ |
-| `packages/codegen/core/problem_support.py` | Config reader utility |
-| `packages/codegen/core/tiered_solve_generator.py` | Tiered solve() generation |
+| `src/codegen/core/catalog/` | AST extraction from codec/ |
+| `src/codegen/core/problem_support.py` | Config reader utility |
+| `src/codegen/core/tiered_solve_generator.py` | Tiered solve() generation |
 
 ---
 
@@ -231,8 +231,8 @@ IF tier == "1.5":
 - [x] Update `catalog/__init__.py` with AST extraction
 
 ### Phase 3: codegen Integration ✅
-- [x] Create `packages/codegen/core/problem_support.py` (config reader)
-- [x] Create `packages/codegen/core/tiered_solve_generator.py`
+- [x] Create `src/codegen/core/problem_support.py` (config reader)
+- [x] Create `src/codegen/core/tiered_solve_generator.py`
 - [x] Implement `codec_mode` logic (import vs inline)
 - [x] Add `--solve-mode=tiered` CLI option
 - [x] Add `--codec-mode` CLI option (override config)

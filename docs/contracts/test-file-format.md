@@ -274,7 +274,7 @@ false
 All test files must pass:
 
 ```bash
-python -m codegen validate-tests --all
+python -m codegen check --all
 ```
 
 Checks:

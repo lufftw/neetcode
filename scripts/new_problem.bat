@@ -3,7 +3,7 @@ setlocal EnableExtensions
 
 REM ============================================
 REM  Create New Problem (pass-through wrapper)
-REM  All logic lives in packages/codegen
+REM  All logic lives in src/codegen
 REM  
 REM  Usage:
 REM    new_problem.bat 1                      Generate solution skeleton

@@ -20,7 +20,7 @@ This package provides codec functions to convert between simple `.in/.out` forma
 
 - ❌ Problem-specific logic (handled by `solve()`)
 - ❌ Test comparison (handled by `runner/compare.py`)
-- ❌ Code generation (handled by `packages/codegen/`)
+- ❌ Code generation (handled by `src/codegen/`)
 
 ## Public API
 
@@ -85,7 +85,7 @@ codec/
 | Direction | Module | Purpose |
 |-----------|--------|---------|
 | Used by → | `solutions/*.py` | Runtime codec |
-| Used by → | `packages/codegen/` | AST extraction for inline mode |
+| Used by → | `src/codegen/` | AST extraction for inline mode |
 
 ## Related Documentation
 
@@ -100,5 +100,5 @@ codec/
 
 1. Update this README (quick reference)
 2. Update `docs/contracts/codec.md` (contract)
-3. Update `packages/codegen/core/catalog/__init__.py` if adding new classes/functions
+3. Update `src/codegen/core/catalog/__init__.py` if adding new classes/functions
 

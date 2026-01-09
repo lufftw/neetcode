@@ -128,7 +128,7 @@ High-level summary of public APIs. For complete API reference, see [Package READ
 ### Module Structure
 
 ```
-packages/leetcode_datasource/
+src/leetcode_datasource/
 ├── __init__.py              # Public API exports
 ├── datasource.py            # LeetCodeDataSource main class
 ├── config.py                # DataSourceConfig

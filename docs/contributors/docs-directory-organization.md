@@ -41,7 +41,7 @@ This document defines the organization of the `docs/` directory, including folde
 |------|------------|---------|
 | Folders | `snake_case` or `kebab-case` | `leetcode_datasource/`, `two_pointers/` |
 | Files | `kebab-case.md` | `solution-contract.md` |
-| Package folders | Match package name exactly | `docs/packages/codegen/` matches `packages/codegen/` |
+| Package folders | Match package name exactly | `docs/packages/codegen/` matches `src/codegen/` |
 
 ### 1.3 Root-level Files
 
@@ -253,9 +253,9 @@ System-level documentation for core modules. See [Package Documentation Strategy
 | Folder | Corresponds to |
 |--------|----------------|
 | `docs/runner/` | `runner/` |
-| `docs/packages/codegen/` | `packages/codegen/` |
-| `docs/packages/leetcode_datasource/` | `packages/leetcode_datasource/` |
-| `docs/packages/practice_workspace/` | `packages/practice_workspace/` |
+| `docs/packages/codegen/` | `src/codegen/` |
+| `docs/packages/leetcode_datasource/` | `src/leetcode_datasource/` |
+| `docs/packages/practice_workspace/` | `src/practice_workspace/` |
 
 > ⚠️ **Important**: Package docs must be under `docs/packages/<pkg>/`, not `docs/<pkg>/`.
 > Scattered files like `docs/codegen.md` are NOT allowed.

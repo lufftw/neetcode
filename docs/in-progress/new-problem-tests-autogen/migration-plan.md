@@ -462,7 +462,9 @@ CI automation (when enabled) does not replace manual responsibility.
 #### Command
 
 ```bash
-python -m codegen validate-tests --all
+# Note: validate-tests was planned but not implemented
+# Using check command instead:
+python -m codegen check --all
 ```
 
 #### Pass Condition
@@ -660,7 +662,7 @@ Phase 6: solve_generator ◀── Phase 5: generators/ ◀── Phase 4: codeg
 
 2. **Run Gate 0 validation**
    ```bash
-   python -m codegen validate-tests --all
+   python -m codegen check --all
    ```
 
 3. **Review and commit**
@@ -745,8 +747,9 @@ Phase 6: solve_generator ◀── Phase 5: generators/ ◀── Phase 4: codeg
 
 2. **Validate all Tier-0 problems**
    ```bash
-   # Run E2E validation script (to be created)
-   python -m codegen validate-e2e --tier 0
+   # Note: validate-e2e was planned but not implemented
+   # Use check command instead:
+   python -m codegen check --all
    ```
 
 3. **Verify unsupported types fail gracefully**
@@ -853,7 +856,7 @@ python -m codegen migrate --all --dry-run
 python -m codegen migrate --all
 
 # Step 3: Validate
-python -m codegen validate-tests --all
+python -m codegen check --all
 
 # Step 4: Run regression to ensure nothing broke
 python runner/test_runner.py --all
@@ -1017,7 +1020,7 @@ Prioritize by complexity:
 | Task | Command |
 |------|---------|
 | Migrate tests | `python -m codegen migrate --all` |
-| Validate tests | `python -m codegen validate-tests --all` |
+| Validate tests | `python -m codegen check --all` |
 | Run regression | `python runner/test_runner.py --all` |
 | New problem + tests | `python -m codegen new <id> --with-tests` |
 | Check consistency | `python -m codegen check <id>` |
@@ -1088,16 +1091,18 @@ python -m codegen migrate 0001_two_sum
 python -m codegen migrate --all --no-backup
 ```
 
-#### `codegen validate-tests`
+#### `codegen validate-tests` (Not Implemented)
+
+> **Note**: This command was planned but not implemented. Use `codegen check --all` instead for test file validation.
 
 Validate test files against canonical format (Gate 0).
 
 ```bash
-python -m codegen validate-tests [options]
+# Planned command (not implemented):
+# python -m codegen validate-tests [options]
 
-Options:
-  --all             Validate all test files
-  --verbose         Show detailed output
+# Use this instead:
+python -m codegen check --all
 ```
 
 #### `codegen check`
@@ -1260,7 +1265,7 @@ git checkout HEAD~1 -- generators/
 
 #### Scenario 1: Gate 0 fails after migration
 
-**Symptom:** `validate-tests` reports parse errors
+**Symptom:** `codegen check` reports parse errors
 
 **Recovery:**
 1. Identify failing files from error output
