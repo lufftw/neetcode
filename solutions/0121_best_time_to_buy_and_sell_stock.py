@@ -25,6 +25,18 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Track running minimum price and maximum profit",
     },
+    "running_min": {
+        "class": "SolutionDP",
+        "method": "maxProfit",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Optimal: track running min price (Kadane-style)",
+    },
+    "bruteforce": {
+        "class": "SolutionBruteforce",
+        "method": "maxProfit",
+        "complexity": "O(n²) time, O(1) space",
+        "description": "Baseline: check all buy-sell pairs",
+    },
 }
 
 
@@ -78,6 +90,43 @@ class SolutionDP:
         for price in prices:
             min_price = min(min_price, price)
             max_profit = max(max_profit, price - min_price)
+
+        return max_profit
+
+
+class SolutionBruteforce:
+    """
+    Brute force: check all (buy, sell) pairs.
+
+    O(n²) baseline to show why tracking running minimum is important.
+    """
+
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        Find maximum profit by checking all buy-sell pairs.
+
+        Core insight: For each possible buy day i, check all sell days j > i.
+        This is the naive approach that shows O(n²) → O(n) optimization.
+
+        Time: O(n²) - nested loops
+        Space: O(1)
+
+        Args:
+            prices: Stock prices by day
+
+        Returns:
+            Maximum possible profit (0 if no profit possible)
+        """
+        if not prices or len(prices) < 2:
+            return 0
+
+        max_profit = 0
+        n = len(prices)
+
+        for i in range(n):  # Buy day
+            for j in range(i + 1, n):  # Sell day
+                profit = prices[j] - prices[i]
+                max_profit = max(max_profit, profit)
 
         return max_profit
 

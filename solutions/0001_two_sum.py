@@ -51,6 +51,18 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(n) space",
         "description": "Single pass with hash map",
     },
+    "hash_map": {
+        "class": "Solution",
+        "method": "twoSum",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Optimal: single pass with hash map",
+    },
+    "bruteforce": {
+        "class": "SolutionBruteforce",
+        "method": "twoSum",
+        "complexity": "O(n²) time, O(1) space",
+        "description": "Baseline: check all pairs",
+    },
 }
 
 
@@ -69,6 +81,37 @@ class Solution:
             if complement in seen:
                 return [seen[complement], i]
             seen[num] = i
+        return []
+
+
+# ============================================================================
+# Solution 2: Brute Force
+# Time: O(n²), Space: O(1)
+#   - Check all pairs - baseline to show optimization
+# ============================================================================
+class SolutionBruteforce:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        """
+        Find two indices whose values sum to target using brute force.
+
+        Core insight: Check every pair (i, j) where i < j. This is the naive
+        approach that helps understand why hash map optimization matters.
+
+        Time: O(n²) - nested loops
+        Space: O(1) - no extra data structures
+
+        Args:
+            nums: Array of integers
+            target: Target sum
+
+        Returns:
+            Indices of two numbers that sum to target
+        """
+        n = len(nums)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
         return []
 
 

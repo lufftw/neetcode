@@ -115,6 +115,18 @@ SOLUTIONS = {
         "api_kernels": ["UnionFindConnectivity"],
         "patterns": ["union_find_equivalence_grouping"],
     },
+    "union_find": {
+        "class": "Solution",
+        "method": "accountsMerge",
+        "complexity": "O(n × k × α(n)) time, O(n × k) space",
+        "description": "Union-Find grouping accounts by shared emails",
+    },
+    "dfs": {
+        "class": "SolutionDFS",
+        "method": "accountsMerge",
+        "complexity": "O(n × k) time, O(n × k) space",
+        "description": "DFS graph traversal - emails as nodes",
+    },
 }
 
 
@@ -181,6 +193,62 @@ class Solution:
         for root, emails in root_to_emails.items():
             name = accounts[root][0]
             result.append([name] + sorted(emails))
+
+        return result
+
+
+# ============================================
+# Solution 2: DFS Graph Traversal
+# Time: O(n × k), Space: O(n × k)
+# ============================================
+class SolutionDFS:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        """
+        Merge accounts using DFS on email graph.
+
+        Core insight: Build a graph where emails are nodes, and edges connect
+        emails that appear in the same account. DFS from any unvisited email
+        finds all emails belonging to the same person (connected component).
+
+        This is a graph-based alternative to Union-Find, treating the problem
+        as finding connected components in an email graph.
+
+        Args:
+            accounts: List of [name, email1, email2, ...] entries
+
+        Returns:
+            Merged accounts with [name, sorted_emails...]
+        """
+        # Build email graph and track email->name mapping
+        email_graph: dict[str, set[str]] = defaultdict(set)
+        email_to_name: dict[str, str] = {}
+
+        for account in accounts:
+            name = account[0]
+            first_email = account[1]
+
+            for email in account[1:]:
+                email_graph[first_email].add(email)
+                email_graph[email].add(first_email)
+                email_to_name[email] = name
+
+        # DFS to find connected components
+        visited: set[str] = set()
+        result: list[list[str]] = []
+
+        def dfs(email: str, component: list[str]) -> None:
+            visited.add(email)
+            component.append(email)
+            for neighbor in email_graph[email]:
+                if neighbor not in visited:
+                    dfs(neighbor, component)
+
+        for email in email_graph:
+            if email not in visited:
+                component: list[str] = []
+                dfs(email, component)
+                name = email_to_name[email]
+                result.append([name] + sorted(component))
 
         return result
 

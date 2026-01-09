@@ -56,6 +56,18 @@ SOLUTIONS = {
         "api_kernels": ["TreeTraversalBFS"],
         "patterns": ["tree_bfs_level_order"],
     },
+    "bfs": {
+        "class": "Solution",
+        "method": "levelOrder",
+        "complexity": "O(n) time, O(w) space",
+        "description": "BFS with queue - canonical level order traversal",
+    },
+    "dfs": {
+        "class": "SolutionDFS",
+        "method": "levelOrder",
+        "complexity": "O(n) time, O(h) space",
+        "description": "DFS with depth tracking - recursive alternative",
+    },
 }
 
 
@@ -101,6 +113,46 @@ class Solution:
 
             result.append(level)
 
+        return result
+
+
+# ============================================
+# Solution 2: DFS with Depth Tracking
+# ============================================
+class SolutionDFS:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        Return level-order traversal using DFS with depth tracking.
+
+        Core insight: DFS can achieve level-order by tracking depth. As we
+        recurse, we pass the current depth and append to the corresponding
+        level list. This demonstrates that level-order doesn't require BFS.
+
+        Invariant: result[depth] contains all values at that depth visited so far.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            List of lists, where each inner list contains values at that depth
+        """
+        result: list[list[int]] = []
+
+        def dfs(node: Optional[TreeNode], depth: int) -> None:
+            if not node:
+                return
+
+            # Extend result if we've reached a new depth
+            if depth >= len(result):
+                result.append([])
+
+            result[depth].append(node.val)
+
+            # Pre-order: process left before right to maintain left-to-right order
+            dfs(node.left, depth + 1)
+            dfs(node.right, depth + 1)
+
+        dfs(root, 0)
         return result
 
 

@@ -106,6 +106,18 @@ SOLUTIONS = {
         "api_kernels": ["ShortestPath"],
         "patterns": ["shortest_path_dijkstra"],
     },
+    "dijkstra": {
+        "class": "SolutionDijkstra",
+        "method": "networkDelayTime",
+        "complexity": "O((V+E) log V) time, O(V+E) space",
+        "description": "Optimal for sparse graphs with non-negative weights",
+    },
+    "bellman_ford": {
+        "class": "SolutionBellmanFord",
+        "method": "networkDelayTime",
+        "complexity": "O(V × E) time, O(V) space",
+        "description": "Edge relaxation - handles negative weights",
+    },
 }
 
 
@@ -161,6 +173,52 @@ class SolutionDijkstra:
             return -1
 
         return max(dist.values())
+
+
+# ============================================
+# Solution 2: Bellman-Ford Algorithm
+# Time: O(V × E), Space: O(V)
+# ============================================
+class SolutionBellmanFord:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        """
+        Find minimum time using Bellman-Ford algorithm.
+
+        Core insight: Relax all edges V-1 times. After i iterations, dist[v]
+        contains shortest path using at most i edges. Works with negative
+        weights (unlike Dijkstra), though this problem has non-negative weights.
+
+        Bellman-Ford is slower than Dijkstra for this problem but is important
+        to know as it handles negative edge weights and can detect negative cycles.
+
+        Args:
+            times: Edge list [u, v, w] (source, target, weight)
+            n: Number of nodes (1 to n)
+            k: Source node to send signal from
+
+        Returns:
+            Maximum shortest path distance, or -1 if unreachable
+        """
+        # Initialize distances
+        INF = float('inf')
+        dist = [INF] * (n + 1)
+        dist[k] = 0
+
+        # Relax all edges V-1 times
+        for _ in range(n - 1):
+            updated = False
+            for u, v, w in times:
+                if dist[u] != INF and dist[u] + w < dist[v]:
+                    dist[v] = dist[u] + w
+                    updated = True
+            # Early termination if no updates
+            if not updated:
+                break
+
+        # Find maximum distance (excluding dist[0] which is unused)
+        max_dist = max(dist[1:])
+
+        return max_dist if max_dist != INF else -1
 
 
 def solve():

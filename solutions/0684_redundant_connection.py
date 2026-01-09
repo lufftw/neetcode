@@ -90,6 +90,18 @@ SOLUTIONS = {
         "api_kernels": ["UnionFindConnectivity"],
         "patterns": ["union_find_cycle_detection"],
     },
+    "union_find": {
+        "class": "Solution",
+        "method": "findRedundantConnection",
+        "complexity": "O(n × α(n)) time, O(n) space",
+        "description": "Optimal: Union-Find with path compression",
+    },
+    "dfs": {
+        "class": "SolutionDFS",
+        "method": "findRedundantConnection",
+        "complexity": "O(n²) time, O(n) space",
+        "description": "DFS cycle detection - rebuild graph each edge",
+    },
 }
 
 
@@ -139,6 +151,54 @@ class Solution:
         for u, v in edges:
             if not union(u, v):
                 return [u, v]
+
+        return []
+
+
+# ============================================
+# Solution 2: DFS Cycle Detection
+# Time: O(n²), Space: O(n)
+# ============================================
+class SolutionDFS:
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+        """
+        Find redundant edge using DFS to detect cycles.
+
+        Core insight: For each edge (u, v), check if u and v are already
+        connected in the graph built so far. If they are, adding this edge
+        creates a cycle. DFS checks connectivity.
+
+        This is O(n²) because we do O(n) DFS for each of n edges.
+        Union-Find is better but DFS shows the graph-thinking approach.
+
+        Args:
+            edges: List of edges [u, v] in the graph
+
+        Returns:
+            The last edge that would create a cycle
+        """
+        from collections import defaultdict
+
+        graph = defaultdict(set)
+
+        def has_path(source: int, target: int, visited: set) -> bool:
+            """Check if there's a path from source to target using DFS."""
+            if source == target:
+                return True
+            visited.add(source)
+            for neighbor in graph[source]:
+                if neighbor not in visited:
+                    if has_path(neighbor, target, visited):
+                        return True
+            return False
+
+        for u, v in edges:
+            # Check if u and v are already connected
+            if graph[u] and graph[v] and has_path(u, v, set()):
+                return [u, v]
+            # Add edge to graph
+            graph[u].add(v)
+            graph[v].add(u)
 
         return []
 

@@ -57,6 +57,18 @@ SOLUTIONS = {
         "api_kernels": ["TreeTraversalDFS"],
         "patterns": ["tree_property_validation"],
     },
+    "bottom_up": {
+        "class": "Solution",
+        "method": "isBalanced",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Optimal: bottom-up with early termination",
+    },
+    "top_down": {
+        "class": "SolutionTopDown",
+        "method": "isBalanced",
+        "complexity": "O(n²) time, O(h) space",
+        "description": "Baseline: top-down recomputing heights (naive)",
+    },
 }
 
 
@@ -99,6 +111,47 @@ class Solution:
             return 1 + max(left, right)
 
         return check(root) != -1
+
+
+# ============================================
+# Solution 2: Top-Down (Naive)
+# ============================================
+class SolutionTopDown:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        """
+        Check if tree is height-balanced using top-down approach.
+
+        Core insight: At each node, compute height of both subtrees and check
+        balance, then recursively check children. This recomputes heights
+        multiple times, leading to O(n²) in worst case.
+
+        This is the naive approach that shows why bottom-up with early
+        termination (O(n)) is preferred.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            True if height-balanced
+        """
+        def height(node: Optional[TreeNode]) -> int:
+            """Compute height of subtree rooted at node."""
+            if not node:
+                return 0
+            return 1 + max(height(node.left), height(node.right))
+
+        if not root:
+            return True
+
+        # Check balance at current node
+        left_height = height(root.left)
+        right_height = height(root.right)
+
+        if abs(left_height - right_height) > 1:
+            return False
+
+        # Recursively check both subtrees
+        return self.isBalanced(root.left) and self.isBalanced(root.right)
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
