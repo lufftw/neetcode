@@ -107,7 +107,7 @@ def generate_large_n_spotlight(large_n_data, top_n=10):
 
         if fastest["time_n5000_ms"] > 0:
             ratio = slowest["time_n5000_ms"] / fastest["time_n5000_ms"]
-            if ratio > 10:  # Only include 10x+ speedups
+            if ratio >= 2:  # Only include 2x+ speedups
                 dramatic.append({
                     "problem": problem,
                     "fastest_method": fastest["method"],
@@ -300,10 +300,115 @@ def format_spotlight_markdown(spotlight):
             f"{speedup} |"
         )
 
-    # Add interpretation
+    # Add interpretation and link to full table
     lines.append("")
     lines.append("> At n=5000, the wrong algorithm choice turns **milliseconds into minutes**.")
-    lines.append("> Regular Expression Matching: Memoization finishes while you blink; 2D DP takes a coffee break.")
+    lines.append("")
+    lines.append("📊 [查看全部 Large N 數據 →](benchmarks-full.md)")
+
+    return "\n".join(lines)
+
+
+def generate_all_large_n_comparisons(large_n_data, benchmark_data):
+    """Generate full table data for all problems with large n comparisons."""
+    all_data = []
+
+    for problem, data in large_n_data.items():
+        methods = data.get("estimate", {}).get("methods", [])
+        if len(methods) < 2:
+            continue
+
+        fastest = min(methods, key=lambda x: x["time_n5000_ms"])
+        slowest = max(methods, key=lambda x: x["time_n5000_ms"])
+
+        if fastest["time_n5000_ms"] > 0:
+            ratio = slowest["time_n5000_ms"] / fastest["time_n5000_ms"]
+
+            # Get complexity info
+            fast_time_c, fast_space_c = get_complexity_from_benchmark(
+                benchmark_data, problem, fastest["method"])
+            slow_time_c, slow_space_c = get_complexity_from_benchmark(
+                benchmark_data, problem, slowest["method"])
+
+            all_data.append({
+                "problem": problem,
+                "fastest_method": fastest["method"],
+                "fastest_time": fastest["time_n5000_ms"],
+                "slowest_method": slowest["method"],
+                "slowest_time": slowest["time_n5000_ms"],
+                "ratio": ratio,
+                "fast_time_complexity": fast_time_c,
+                "slow_time_complexity": slow_time_c,
+                "fast_space_complexity": fast_space_c,
+                "slow_space_complexity": slow_space_c,
+            })
+
+    # Sort by ratio descending
+    all_data.sort(key=lambda x: x["ratio"], reverse=True)
+    return all_data
+
+
+def format_full_benchmark_markdown(all_data, benchmark_data):
+    """Format full benchmark data as markdown for benchmarks-full.md."""
+
+    def simplify_complexity(c):
+        if " worst" in c:
+            c = c.split(" worst")[0]
+        if " average" in c:
+            c = c.split(" average")[0]
+        return c.strip()
+
+    lines = [
+        "# Full Benchmark Data (n=5000)",
+        "",
+        "[← 返回 Spotlight](benchmarks.md#large-n-spotlight-n5000)",
+        "",
+        f"共 **{len(all_data)}** 題有多解法可比較。",
+        "",
+        "## All Problems",
+        "",
+        "| # | Problem | Fast | Slow | Speedup | Time Complexity | Space Complexity |",
+        "|--:|---------|------|------|--------:|-----------------|------------------|"
+    ]
+
+    for d in all_data:
+        prob_num = d["problem"].split("_")[0]
+        prob_name = get_short_problem_name(d["problem"])
+        fast_name = get_descriptive_method_name(d["problem"], d["fastest_method"])
+        slow_name = get_descriptive_method_name(d["problem"], d["slowest_method"])
+        fast_time = format_time_human(d["fastest_time"])
+        slow_time = format_time_human(d["slowest_time"])
+
+        # Format speedup
+        if d["ratio"] >= 1000:
+            speedup = f"{d['ratio']/1000:.0f},000×"
+        else:
+            speedup = f"{d['ratio']:.0f}×"
+
+        # Format complexity
+        fast_tc = simplify_complexity(d["fast_time_complexity"])
+        slow_tc = simplify_complexity(d["slow_time_complexity"])
+        time_c = f"{fast_tc} vs {slow_tc}" if fast_tc != "?" and slow_tc != "?" else "—"
+
+        fast_sc = d["fast_space_complexity"]
+        slow_sc = d["slow_space_complexity"]
+        space_c = f"{fast_sc} vs {slow_sc}" if fast_sc != "?" and slow_sc != "?" else "—"
+
+        lines.append(
+            f"| {prob_num} | {prob_name} | {fast_name} ({fast_time}) | "
+            f"{slow_name} ({slow_time}) | {speedup} | {time_c} | {space_c} |"
+        )
+
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("## Legend")
+    lines.append("")
+    lines.append("- **Fast**: Fastest method at n=5000")
+    lines.append("- **Slow**: Slowest method at n=5000")
+    lines.append("- **Speedup**: How many times faster the Fast method is")
+    lines.append("- **Time Complexity**: Big-O time (Fast vs Slow)")
+    lines.append("- **Space Complexity**: Big-O space (Fast vs Slow)")
 
     return "\n".join(lines)
 
@@ -463,9 +568,14 @@ def main():
     main_rows = generate_main_table(benchmark_data)
     main_md = format_main_table_markdown(main_rows)
 
-    print("Generating spotlight...")
-    spotlight = generate_large_n_spotlight(large_n_data, top_n=15)
+    print("Generating spotlight (Top 20)...")
+    spotlight = generate_large_n_spotlight(large_n_data, top_n=20)
     spotlight_md = format_spotlight_markdown(spotlight) if spotlight else "No large n data available yet."
+
+    print("Generating full large n table...")
+    all_large_n = generate_all_large_n_comparisons(large_n_data, benchmark_data)
+    full_benchmark_md = format_full_benchmark_markdown(all_large_n, benchmark_data)
+    print(f"  Found {len(all_large_n)} problems with multi-solution comparisons")
 
     print("Generating appendix...")
     appendix = generate_appendix(benchmark_data)
@@ -509,10 +619,15 @@ python runner/test_runner.py <problem> --all --estimate
 ```
 """
 
-    # Save
+    # Save benchmarks.md
     output_path = PROJECT_ROOT / "docs" / "benchmarks.md"
     output_path.write_text(doc, encoding="utf-8")
     print(f"\n[DONE] Saved to {output_path}")
+
+    # Save benchmarks-full.md
+    full_output_path = PROJECT_ROOT / "docs" / "benchmarks-full.md"
+    full_output_path.write_text(full_benchmark_md, encoding="utf-8")
+    print(f"[DONE] Saved to {full_output_path}")
 
 
 if __name__ == "__main__":

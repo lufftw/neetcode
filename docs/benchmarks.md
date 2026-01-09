@@ -23,9 +23,15 @@ When input size grows, algorithm choice becomes critical:
 | 0125 | Valid Palindrome | Default (0.03ms) | Filtered Pointe (0.80ms) | **23x** faster |
 | 0459 | Repeated Substring Pat | Concatenation (0.06ms) | Default (0.97ms) | **17x** faster |
 | 0496 | Next Greater Element I | Default (0.73ms) | Brute (9.4ms) | **13x** faster |
+| 0055 | Jump Game | Greedy (1.7ms) | DP Array (10.9ms) | **7x** faster |
+| 1392 | Longest Happy Prefix | Default (1.5ms) | Rolling Hash (7.5ms) | **5x** faster |
+| 0110 | Balanced Binary Tree | Default (7.7ms) | Top Down (35.6ms) | **5x** faster |
+| 1094 | Car Pooling | Difference (5.4ms) | Events (18.1ms) | **3x** faster |
+| 0200 | Number Of Islands | Dfs (3.1ms) | Union Find (9.7ms) | **3x** faster |
 
 > At n=5000, the wrong algorithm choice turns **milliseconds into minutes**.
-> Regular Expression Matching: Memoization finishes while you blink; 2D DP takes a coffee break.
+
+📊 [查看全部 Large N 數據 →](benchmarks-full.md)
 
 ---
 
