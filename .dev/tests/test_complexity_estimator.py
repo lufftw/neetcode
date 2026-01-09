@@ -173,7 +173,7 @@ class TestComplexityEstimatorInit:
     
     def test_runs_per_size(self):
         """Test RUNS_PER_SIZE constant."""
-        assert ComplexityEstimator.RUNS_PER_SIZE == 3
+        assert ComplexityEstimator.RUNS_PER_SIZE == 5
 
 
 class TestComplexityEstimatorEstimate:

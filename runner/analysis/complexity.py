@@ -23,6 +23,7 @@ import sys
 import io
 import time
 import tracemalloc
+from statistics import median
 from typing import Optional, List, Any, Tuple
 from dataclasses import dataclass
 
@@ -61,8 +62,8 @@ class ComplexityEstimator:
     # Includes 5000 to better distinguish O(n) vs O(n²) algorithms
     DEFAULT_SIZES = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
     
-    # Number of times to run each size (for averaging)
-    RUNS_PER_SIZE = 3
+    # Number of times to run each size (for median calculation)
+    RUNS_PER_SIZE = 5
     
     def __init__(self, generator_module: Any, problem: str, 
                  solution_module: Any = None,
@@ -180,15 +181,16 @@ class ComplexityEstimator:
                             ))
                 
                 if run_times:
-                    avg_time = sum(run_times) / len(run_times)
+                    # Use median instead of mean - more robust to outliers
+                    med_time = median(run_times)
                     sizes.append(size)
-                    times.append(avg_time)
-                    
+                    times.append(med_time)
+
                     if run_memories:
-                        avg_mem = sum(run_memories) / len(run_memories)
-                        print(f"      n={size:>5}: {avg_time:.4f}ms, mem={avg_mem/1024:.1f}KB (avg of {len(run_times)} runs)")
+                        med_mem = median(run_memories)
+                        print(f"      n={size:>5}: {med_time:.4f}ms, mem={med_mem/1024:.1f}KB (median of {len(run_times)} runs)")
                     else:
-                        print(f"      n={size:>5}: {avg_time:.4f}ms (avg of {len(run_times)} runs)")
+                        print(f"      n={size:>5}: {med_time:.4f}ms (median of {len(run_times)} runs)")
                 
             except Exception as e:
                 print(f"      ⚠️ Failed at size {size}: {e}")
