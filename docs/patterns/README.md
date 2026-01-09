@@ -24,34 +24,36 @@ Each pattern provides **two learning paths** to help you master the concepts:
 
 | API Kernel | Learning Resources | Description | Problems |
 |------------|-------------------|-------------|----------|
-| `SubstringSlidingWindow` | 💡 [Intuition](sliding_window/intuition.md) · 🛠️ [Templates](sliding_window/templates.md) | Dynamic window over sequences | LeetCode 3, 76, 159, 209, 340, 438, 567 |
-| `TwoPointersTraversal` | 💡 [Intuition](two_pointers/intuition.md) · 🛠️ [Templates](two_pointers/templates.md) | Two pointer traversal patterns | LeetCode 1, 11, 15, 16, 21, 26, 27, 75, 88, 125, 141, 142, 167, 202, 283, 680, 876 |
-| `BinarySearchBoundary` | 💡 [Intuition](binary_search/intuition.md) · 🛠️ [Templates](binary_search/templates.md) | Binary search boundaries | LeetCode 33, 34, 35, 81, 162, 875, 1011 |
-| `BacktrackingExploration` | 💡 [Intuition](backtracking_exploration/intuition.md) · 🛠️ [Templates](backtracking_exploration/templates.md) | Exhaustive search with pruning | LeetCode 39, 40, 46, 47, 51, 77, 78, 79, 90, 93, 131, 216 |
-| `MonotonicStack` | 💡 [Intuition](monotonic_stack/intuition.md) · 🛠️ [Templates](monotonic_stack/templates.md) | Boundary resolution via monotonicity | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907, 2104 |
+| `SubstringSlidingWindow` | 💡 [Intuition](sliding_window/intuition.md) · 🛠️ [Templates](sliding_window/templates.md) | Dynamic window over sequences | LeetCode 3, 76, 209, 239, 340, 438, 567 |
+| `TwoPointersTraversal` | 💡 [Intuition](two_pointers/intuition.md) · 🛠️ [Templates](two_pointers/templates.md) | Two pointer traversal patterns | LeetCode 11, 15, 16, 26, 27, 75, 80, 88, 125, 141, 142, 167, 202, 283, 287, 680, 876, 977 |
+| `BinarySearchBoundary` | 💡 [Intuition](binary_search/intuition.md) · 🛠️ [Templates](binary_search/templates.md) | Binary search boundaries | LeetCode 4, 33, 34, 35, 81, 162, 875, 1011 |
+| `BacktrackingExploration` | 💡 [Intuition](backtracking_exploration/intuition.md) · 🛠️ [Templates](backtracking_exploration/templates.md) | Exhaustive search with pruning | LeetCode 39, 40, 46, 47, 51, 52, 77, 78, 79, 90, 93, 131, 216 |
+| `MonotonicStack` | 💡 [Intuition](monotonic_stack/intuition.md) · 🛠️ [Templates](monotonic_stack/templates.md) | Boundary resolution via monotonicity | LeetCode 42, 84, 85, 316, 321, 402, 496, 503, 739, 901, 907 |
 | `PrefixSum` | 💡 [Intuition](prefix_sum/intuition.md) · 🛠️ [Templates](prefix_sum/templates.md) | Range queries and subarray sums | LeetCode 238, 303, 304, 523, 525, 560, 1094, 1109 |
 | `Heap` | 💡 [Intuition](heap/intuition.md) · 🛠️ [Templates](heap/templates.md) | Top-K, median, scheduling | LeetCode 23, 215, 253, 295, 347, 621, 1046 |
-| `GraphDFS` / `GraphBFS` | 💡 [Intuition](graph/intuition.md) · 🛠️ [Templates](graph/templates.md) | Graph traversal patterns | LeetCode 133, 200, 417, 785, 841, 994, 1971 |
+| `GraphDFS` / `GraphBFS` | 💡 [Intuition](graph/intuition.md) · 🛠️ [Templates](graph/templates.md) | Graph traversal patterns | LeetCode 133, 200, 286, 417, 542, 547, 785, 841, 994 |
 | `IntervalMerge` / `IntervalScheduling` | 💡 [Intuition](interval/intuition.md) · 🛠️ [Templates](interval/templates.md) | Interval merge and scheduling | LeetCode 56, 57, 435, 452, 986 |
 | `UnionFindConnectivity` | 💡 [Intuition](union_find/intuition.md) · 🛠️ [Templates](union_find/templates.md) | Disjoint set connectivity | LeetCode 547, 684, 721, 990, 1319 |
-| `TreeTraversalDFS` / `TreeTraversalBFS` | 💡 [Intuition](tree/intuition.md) · 🛠️ [Templates](tree/templates.md) | Tree DFS/BFS and path problems | LeetCode 94, 102, 104, 110, 124, 543 |
+| `TreeTraversalDFS` / `TreeTraversalBFS` | 💡 [Intuition](tree/intuition.md) · 🛠️ [Templates](tree/templates.md) | Tree DFS/BFS and path problems | LeetCode 94, 102, 104, 110, 124, 337, 543, 968 |
 | `TopologicalSort` | 💡 [Intuition](topological_sort/intuition.md) · 🛠️ [Templates](topological_sort/templates.md) | Dependency ordering and cycle detection | LeetCode 207, 210, 802, 1203 |
-| `ShortestPath` | 💡 [Intuition](shortest_path/intuition.md) · 🛠️ [Templates](shortest_path/templates.md) | Dijkstra, 0-1 BFS, Bellman-Ford | LeetCode 743, 787, 1368, 1631, 2290 |
+| `ShortestPath` | 💡 [Intuition](shortest_path/intuition.md) · 🛠️ [Templates](shortest_path/templates.md) | Dijkstra, 0-1 BFS, Bellman-Ford | LeetCode 743, 787, 1368, 1631 |
 | `Trie` | 💡 [Intuition](trie/intuition.md) · 🛠️ [Templates](trie/templates.md) | Prefix tree operations, autocomplete | LeetCode 208, 211, 212, 648, 1268 |
-| `GreedyCore` | 💡 [Intuition](greedy_core/intuition.md) · 🛠️ [Templates](greedy_core/templates.md) | Non-interval, non-heap greedy invariants | LeetCode 55, 45, 134, 135, 455, 1029 |
-| `DP1DLinear` | 💡 [Intuition](dp_1d_linear/intuition.md) · 🛠️ [Templates](dp_1d_linear/templates.md) | 1D dynamic programming backbone | LeetCode 70, 198, 213, 121, 746 |
-| `DPKnapsackSubset` | 💡 [Intuition](dp_knapsack_subset/intuition.md) · 🛠️ [Templates](dp_knapsack_subset/templates.md) | 0/1 and unbounded knapsack patterns | LeetCode 416, 494, 322, 518 |
-| `MathNumberTheory` | 💡 [Intuition](math_number_theory/intuition.md) · 🛠️ [Templates](math_number_theory/templates.md) | GCD, primes, modular arithmetic, base conversion | LeetCode 1979, 204, 168 |
+| `GreedyCore` | 💡 [Intuition](greedy_core/intuition.md) · 🛠️ [Templates](greedy_core/templates.md) | Non-interval, non-heap greedy invariants | LeetCode 45, 55, 134, 135, 455, 1029 |
+| `DP1DLinear` | 💡 [Intuition](dp_1d_linear/intuition.md) · 🛠️ [Templates](dp_1d_linear/templates.md) | 1D dynamic programming backbone | LeetCode 70, 121, 198, 213, 746 |
+| `DPKnapsackSubset` | 💡 [Intuition](dp_knapsack_subset/intuition.md) · 🛠️ [Templates](dp_knapsack_subset/templates.md) | 0/1 and unbounded knapsack patterns | LeetCode 322, 416, 494, 518 |
+| `MathNumberTheory` | 💡 [Intuition](math_number_theory/intuition.md) · 🛠️ [Templates](math_number_theory/templates.md) | GCD, primes, modular arithmetic, base conversion | LeetCode 168, 204 |
 | `SegmentTreeFenwick` | 💡 [Intuition](segment_tree_fenwick/intuition.md) · 🛠️ [Templates](segment_tree_fenwick/templates.md) | Range queries with updates, inversion counting | LeetCode 307, 315, 327 |
-| `LineSweep` | 💡 [Intuition](line_sweep/intuition.md) · 🛠️ [Templates](line_sweep/templates.md) | Event counting, capacity tracking, height tracking | LeetCode 253, 1094, 218 |
-| `TreeDP` | 💡 [Intuition](tree_dp/intuition.md) · 🛠️ [Templates](tree_dp/templates.md) | Include/exclude, path contribution, multi-state | LeetCode 337, 124, 968 |
+| `LineSweep` | 💡 [Intuition](line_sweep/intuition.md) · 🛠️ [Templates](line_sweep/templates.md) | Event counting, capacity tracking, height tracking | LeetCode 218, 253, 1094, 1109 |
+| `TreeDP` | 💡 [Intuition](tree_dp/intuition.md) · 🛠️ [Templates](tree_dp/templates.md) | Include/exclude, path contribution, multi-state | LeetCode 124, 337, 968 |
 | `BitmaskDP` | 💡 [Intuition](bitmask_dp/intuition.md) · 🛠️ [Templates](bitmask_dp/templates.md) | Subset enumeration, BFS with bitmask, set cover | LeetCode 78, 847, 1125 |
-| `StringDP` | 💡 [Intuition](string_dp/intuition.md) · 🛠️ [Templates](string_dp/templates.md) | LCS, edit distance, palindrome, regex matching | LeetCode 1143, 72, 516, 10, 44 |
-| `MonotonicDeque` | 💡 [Intuition](monotonic_deque/intuition.md) · 🛠️ [Templates](monotonic_deque/templates.md) | Sliding window min/max, bounded range, prefix sum optimization | LeetCode 239, 1438, 862, 1499 |
-| `IntervalDP` | 💡 [Intuition](interval_dp/intuition.md) · 🛠️ [Templates](interval_dp/templates.md) | Burst balloons, polygon triangulation, cut stick, strange printer | LeetCode 312, 1039, 1547, 664 |
-| `GridBFSMultiSource` | 💡 [Intuition](grid_bfs_multi_source/intuition.md) · 🛠️ [Templates](grid_bfs_multi_source/templates.md) | Multi-source BFS on grids | LeetCode 994, 286, 542 |
-| `KWayMerge` | 💡 [Intuition](k_way_merge/intuition.md) · 🛠️ [Templates](k_way_merge/templates.md) | Merge K sorted sequences | LeetCode 23, 21, 88 |
-| `LinkedListInPlaceReversal` | 💡 [Intuition](linked_list_in_place_reversal/intuition.md) · 🛠️ [Templates](linked_list_in_place_reversal/templates.md) | In-place linked list reversal | LeetCode 206, 92, 25 |
+| `StringDP` | 💡 [Intuition](string_dp/intuition.md) · 🛠️ [Templates](string_dp/templates.md) | LCS, edit distance, palindrome, regex matching | LeetCode 10, 44, 72, 516 |
+| `MonotonicDeque` | 💡 [Intuition](monotonic_deque/intuition.md) · 🛠️ [Templates](monotonic_deque/templates.md) | Sliding window min/max, bounded range, prefix sum optimization | LeetCode 239, 862 |
+| `IntervalDP` | 💡 [Intuition](interval_dp/intuition.md) · 🛠️ [Templates](interval_dp/templates.md) | Burst balloons, polygon triangulation, cut stick, strange printer | LeetCode 312, 664, 1039, 1547 |
+| `GridBFSMultiSource` | 💡 [Intuition](grid_bfs_multi_source/intuition.md) · 🛠️ [Templates](grid_bfs_multi_source/templates.md) | Multi-source BFS on grids | LeetCode 286, 542, 994 |
+| `KWayMerge` | 💡 [Intuition](k_way_merge/intuition.md) · 🛠️ [Templates](k_way_merge/templates.md) | Merge K sorted sequences | LeetCode 21, 23, 88 |
+| `LinkedListInPlaceReversal` | 💡 [Intuition](linked_list_in_place_reversal/intuition.md) · 🛠️ [Templates](linked_list_in_place_reversal/templates.md) | In-place linked list reversal | LeetCode 25, 92, 206 |
+| `StringMatching` | 💡 [Intuition](string_matching/intuition.md) · 🛠️ [Templates](string_matching/templates.md) | KMP, Rabin-Karp, pattern matching | LeetCode 28, 214, 459, 1392 |
+| `GameTheoryDP` | 💡 [Intuition](game_theory_dp/intuition.md) · 🛠️ [Templates](game_theory_dp/templates.md) | Minimax, optimal play, game states | LeetCode 486, 877, 1406 |
 
 ---
 
