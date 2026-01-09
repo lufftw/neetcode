@@ -101,6 +101,12 @@ SOLUTIONS = {
         "complexity": "O(n log S) time, O(1) space, where S = sum(weights)",
         "description": "Binary search on answer space (minimum feasible capacity)",
     },
+    "linear_search": {
+        "class": "SolutionLinear",
+        "method": "shipWithinDays",
+        "complexity": "O(n * S) time, O(1) space",
+        "description": "Baseline: try capacities from max(weights) upward",
+    },
 }
 
 
@@ -196,6 +202,42 @@ class Solution:
                 lo = mid + 1
 
         return lo
+
+
+# ============================================
+# Solution 2: Linear Search (Baseline)
+# Time: O(n * S) where S = sum(weights) - max(weights), Space: O(1)
+#   - Try each capacity from max(weights) to sum(weights)
+#   - Return first capacity that allows shipping within days
+# ============================================
+class SolutionLinear:
+    def shipWithinDays(self, weights: List[int], days: int) -> int:
+        """
+        Linear search for minimum feasible capacity.
+
+        This is the baseline O(n * S) approach that binary search improves upon.
+        Try each capacity starting from the minimum possible (max single weight)
+        until we find one that works.
+        """
+        def days_needed(capacity: int) -> int:
+            day_count = 1
+            current_load = 0
+            for weight in weights:
+                if current_load + weight > capacity:
+                    day_count += 1
+                    current_load = weight
+                else:
+                    current_load += weight
+            return day_count
+
+        # Start from minimum possible capacity
+        capacity = max(weights)
+
+        # Linear search upward
+        while days_needed(capacity) > days:
+            capacity += 1
+
+        return capacity
 
 
 # ============================================

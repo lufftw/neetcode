@@ -83,6 +83,12 @@ SOLUTIONS = {
         "api_kernels": ["IntervalScheduling"],
         "patterns": ["interval_scheduling"],
     },
+    "dp": {
+        "class": "SolutionDP",
+        "method": "eraseOverlapIntervals",
+        "complexity": "O(n²) time, O(n) space",
+        "description": "DP: max non-overlapping subsequence (LIS-style)",
+    },
 }
 
 
@@ -124,6 +130,46 @@ class Solution:
             # Else: skip current (implicit removal)
 
         return len(intervals) - non_overlapping
+
+
+# ============================================
+# Solution 2: Dynamic Programming (LIS-style)
+# Time: O(n²), Space: O(n)
+#   - dp[i] = max non-overlapping intervals ending at interval i
+#   - For each interval, check all previous compatible intervals
+# ============================================
+class SolutionDP:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        """
+        DP approach similar to Longest Increasing Subsequence.
+
+        State: dp[i] = max count of non-overlapping intervals
+               when interval i is the last selected interval
+
+        Transition: dp[i] = 1 + max(dp[j]) for all j where
+                    intervals[j][1] <= intervals[i][0]
+
+        This is O(n²) vs O(n log n) greedy, but shows the DP perspective.
+        """
+        if not intervals:
+            return 0
+
+        # Sort by end time (consistent with greedy)
+        intervals.sort(key=lambda x: x[1])
+        n = len(intervals)
+
+        # dp[i] = max non-overlapping count ending with intervals[i]
+        dp = [1] * n
+
+        for i in range(1, n):
+            for j in range(i):
+                # If interval j ends before or when interval i starts
+                if intervals[j][1] <= intervals[i][0]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+
+        # Maximum non-overlapping intervals
+        max_non_overlap = max(dp)
+        return n - max_non_overlap
 
 
 def solve():

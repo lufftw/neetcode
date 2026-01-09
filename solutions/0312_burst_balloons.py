@@ -19,6 +19,12 @@ SOLUTIONS = {
         "complexity": "O(n³) time, O(n²) space",
         "description": "Interval DP with 'last to burst' approach",
     },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "maxCoins",
+        "complexity": "O(n³) time, O(n²) space",
+        "description": "Top-down recursive with memoization",
+    },
 }
 
 
@@ -54,6 +60,40 @@ class Solution:
                     max_coins[start][end] = max(max_coins[start][end], total)
 
         return max_coins[0][balloon_count - 1]
+
+
+# ============================================================================
+# Solution 2: Top-Down Memoization
+# Time: O(n³), Space: O(n²)
+#   - Same complexity as bottom-up, but recursive approach
+#   - May be more intuitive: "what's max coins for interval (i, j)?"
+# ============================================================================
+class SolutionMemoization:
+    def maxCoins(self, nums: List[int]) -> int:
+        # Add virtual balloons at boundaries
+        nums = [1] + nums + [1]
+        n = len(nums)
+        memo = {}
+
+        def dp(left: int, right: int) -> int:
+            # Base case: no balloons between left and right
+            if left + 1 == right:
+                return 0
+
+            if (left, right) in memo:
+                return memo[(left, right)]
+
+            # Try each balloon as the LAST to burst in interval (left, right)
+            max_coins = 0
+            for last in range(left + 1, right):
+                coins = nums[left] * nums[last] * nums[right]
+                total = dp(left, last) + dp(last, right) + coins
+                max_coins = max(max_coins, total)
+
+            memo[(left, right)] = max_coins
+            return max_coins
+
+        return dp(0, n - 1)
 
 
 def solve():

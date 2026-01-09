@@ -49,6 +49,12 @@ SOLUTIONS = {
         "complexity": "O(log n) add, O(1) find",
         "description": "Two heaps: max-heap for lower half, min-heap for upper half",
     },
+    "sorted_list": {
+        "class": "MedianFinderSortedList",
+        "method": "findMedian",
+        "complexity": "O(n) add, O(1) find",
+        "description": "Maintain sorted list with bisect.insort",
+    },
 }
 
 
@@ -195,6 +201,42 @@ class MedianFinder:
         else:
             # Even count: average of two middle elements
             return (-self.lower_half[0] + self.upper_half[0]) / 2.0
+
+
+# ============================================================================
+# Solution 2: Sorted List with Binary Search Insert
+# Time: O(n) for addNum (due to list insertion), O(1) for findMedian
+# Space: O(n)
+#
+# Trade-off vs Two Heaps:
+# - Simpler to understand and implement
+# - O(n) insert vs O(log n), but O(1) median access for both
+# - Better for small streams or when median is called frequently
+# ============================================================================
+class MedianFinderSortedList:
+    """
+    Maintain median using a sorted list.
+
+    Uses bisect.insort for O(log n) binary search + O(n) insertion.
+    Simple and intuitive but slower for large streams.
+    """
+
+    def __init__(self):
+        self.sorted_nums: list[int] = []
+
+    def addNum(self, num: int) -> None:
+        """Insert number in sorted position. O(n) due to list insertion."""
+        import bisect
+        bisect.insort(self.sorted_nums, num)
+
+    def findMedian(self) -> float:
+        """Return median in O(1) time via direct index access."""
+        n = len(self.sorted_nums)
+        mid = n // 2
+        if n % 2 == 1:
+            return float(self.sorted_nums[mid])
+        else:
+            return (self.sorted_nums[mid - 1] + self.sorted_nums[mid]) / 2.0
 
 
 def solve():
