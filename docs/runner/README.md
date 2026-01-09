@@ -258,10 +258,10 @@ python runner/test_runner.py 0011_container --all --estimate
 **Output (O(n²) Brute Force):**
 ```
 📌 Estimating: bruteforce
-   n=  500: 43.59ms
-   n= 1000: 195.59ms
-   n= 2000: 782.44ms
-   n= 5000: 5052.72ms  ← 5 seconds!
+   n=  500: 554ms
+   n= 1000: 2,544ms
+   n= 2000: 10,697ms
+   n= 5000: 68,291ms  ← 68 seconds!
 
 ✅ Estimated: O(n²)
    Confidence: 1.00
@@ -271,9 +271,9 @@ python runner/test_runner.py 0011_container --all --estimate
 
 | n | O(n) Two Pointers | O(n²) Brute Force | Ratio |
 |---|-------------------|-------------------|-------|
-| 1000 | 0.51ms | 196ms | 384x |
-| 2000 | 1.24ms | 782ms | 631x |
-| 5000 | 2.78ms | **5,053ms** | **1,818x** |
+| 500 | 0.27ms | 554ms | **2,052x** |
+| 1000 | 0.52ms | 2,544ms | **4,892x** |
+| 5000 | 2.78ms | **68,291ms** | **24,565x** |
 
 **How to Interpret:**
 - O(n): Time doubles when n doubles (linear growth)
@@ -409,7 +409,7 @@ heap         → Heap-Based Solution
 For complexity estimation without benchmark comparison:
 
 ```bash
-python runner/test_runner.py 0322_coin_change --estimate
+python runner/test_runner.py 0239_sliding_window --estimate
 ```
 
 ```
@@ -419,26 +419,26 @@ python runner/test_runner.py 0322_coin_change --estimate
       Mode: Direct call (Mock stdin, no subprocess overhead)
       Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
       Runs per size: 3
-      n=  500: 0.54ms (avg of 3 runs)
-      n= 1000: 1.08ms (avg of 3 runs)
-      n= 2000: 2.13ms (avg of 3 runs)
-      n= 5000: 5.31ms (avg of 3 runs)
+      n=  500: 0.32ms (avg of 3 runs)
+      n= 1000: 0.69ms (avg of 3 runs)
+      n= 2000: 1.12ms (avg of 3 runs)
+      n= 5000: 2.78ms (avg of 3 runs)
 
    ✅ Estimated: O(n)
       Confidence: 1.00
-      Details: Linear: time = 0.038 + 0.001*n (sec)
+      Details: Linear: time = 0.059 + 0.00054*n (sec)
 ```
 
 #### More Complexity Examples
 
 | Problem | Algorithm | Declared | Estimated | Confidence |
 |---------|-----------|----------|-----------|------------|
+| 0239_sliding_window | Monotonic Deque | O(n) | O(n) | 1.00 |
 | 0011_container (two_pointers) | Two Pointers | O(n) | O(n) | 1.00 |
 | 0011_container (bruteforce) | Brute Force | O(n²) | **O(n²)** | 1.00 |
-| 0322_coin_change | DP (1D) | O(n×amount) | O(n) | 1.00 |
 | 0042_trapping (twopointer) | Two Pointers | O(n) | O(n) | 1.00 |
 
-> **Note:** The estimator now uses sizes up to n=5000, which provides more accurate results for distinguishing O(n) from O(n²). For very fast algorithms where constant overhead dominates, the curve fitting may be less accurate.
+> **Note:** The estimator uses sizes up to n=5000, which provides accurate results for distinguishing O(n) from O(n²). At n=5000, an O(n²) algorithm takes ~24,000x longer than O(n)!
 
 ---
 

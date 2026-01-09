@@ -68,15 +68,15 @@ heap           107.34ms         3/3  O(n log k) time, O(k) space
 **Verify your Big-O claim:**
 
 ```bash
-python runner/test_runner.py 0322_coin_change --estimate
+python runner/test_runner.py 0239_sliding_window --estimate
 ```
 
 ```
 📈 Running complexity estimation...
-   n=  100: 0.1286ms (avg of 3 runs)
-   n=  500: 0.5394ms (avg of 3 runs)
-   n= 1000: 1.0778ms (avg of 3 runs)
-   n= 2000: 2.1274ms (avg of 3 runs)
+   n=  500: 0.32ms
+   n= 1000: 0.69ms
+   n= 2000: 1.12ms
+   n= 5000: 2.78ms
 
 ✅ Estimated: O(n)
    Confidence: 1.00
