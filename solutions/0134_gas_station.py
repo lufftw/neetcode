@@ -64,6 +64,12 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Single pass with deficit tracking and candidate reset",
     },
+    "bruteforce": {
+        "class": "SolutionBruteforce",
+        "method": "canCompleteCircuit",
+        "complexity": "O(n²) time, O(1) space",
+        "description": "Try each station as starting point",
+    },
 }
 
 
@@ -149,6 +155,42 @@ class SolutionGreedy:
 
         # If total gas >= total cost, candidate_start is the answer
         return candidate_start if total_tank >= 0 else -1
+
+
+# ============================================================================
+# Solution 2: Brute Force
+# Time: O(n²), Space: O(1)
+#   - Try each station as starting point
+#   - Simulate the journey to check if we can complete the circuit
+# ============================================================================
+class SolutionBruteforce:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        """
+        Brute force: try each station as starting point.
+
+        For each potential start, simulate traveling around the circuit.
+        Return the first valid starting station, or -1 if none works.
+
+        O(n²) time because we may simulate n stations for each of n starts.
+        """
+        n = len(gas)
+
+        for start in range(n):
+            tank = 0
+            can_complete = True
+
+            for i in range(n):
+                station = (start + i) % n
+                tank += gas[station] - cost[station]
+
+                if tank < 0:
+                    can_complete = False
+                    break
+
+            if can_complete:
+                return start
+
+        return -1
 
 
 def solve():

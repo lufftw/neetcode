@@ -75,6 +75,12 @@ SOLUTIONS = {
         "complexity": "O(n! × n) time, O(n) space",
         "description": "Backtracking with sorting and same-level deduplication",
     },
+    "counter": {
+        "class": "SolutionCounter",
+        "method": "permuteUnique",
+        "complexity": "O(n! × n) time, O(n) space",
+        "description": "Backtracking with Counter for deduplication",
+    },
 }
 
 
@@ -155,6 +161,53 @@ class Solution:
                 path.pop()
                 used[i] = False
         
+        backtrack()
+        return results
+
+
+# ============================================================================
+# Solution 2: Backtracking with Counter
+# Time: O(n! × n), Space: O(n)
+#   - Use Counter to track available elements
+#   - No sorting needed - Counter naturally handles duplicates
+#   - At each level, iterate over unique elements only
+# ============================================================================
+class SolutionCounter:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        """
+        Counter-based approach for handling duplicates.
+
+        Instead of tracking used[] array and sorting, use Counter:
+        - Keys are unique elements
+        - Values are remaining counts
+        - Decrement count when choosing, increment when backtracking
+
+        Advantage: No sorting needed, naturally handles duplicates.
+        """
+        results: List[List[int]] = []
+        n = len(nums)
+        count = Counter(nums)
+        path: List[int] = []
+
+        def backtrack() -> None:
+            if len(path) == n:
+                results.append(path[:])
+                return
+
+            # Iterate over unique elements only
+            for num in count:
+                if count[num] > 0:
+                    # Choose
+                    path.append(num)
+                    count[num] -= 1
+
+                    # Explore
+                    backtrack()
+
+                    # Unchoose
+                    path.pop()
+                    count[num] += 1
+
         backtrack()
         return results
 

@@ -43,6 +43,12 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(k) space",
         "description": "Monotonic decreasing deque storing indices",
     },
+    "heap": {
+        "class": "SolutionHeap",
+        "method": "maxSlidingWindow",
+        "complexity": "O(n log n) time, O(n) space",
+        "description": "Max-heap with lazy deletion",
+    },
 }
 
 
@@ -162,6 +168,49 @@ class SolutionMonotonicDeque:
             # 4. Window is complete when we have at least k elements
             if i >= k - 1:
                 result.append(nums[max_candidates[0]])
+
+        return result
+
+
+# ============================================================================
+# Solution 2: Max-Heap with Lazy Deletion
+# Time: O(n log n), Space: O(n)
+#   - Use max-heap (via negation) to track maximum
+#   - Lazy deletion: only remove outdated elements when they're at heap top
+#   - Trade-off: simpler logic but worse time complexity
+# ============================================================================
+class SolutionHeap:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        Heap-based approach with lazy deletion.
+
+        Uses a max-heap (simulated via negated values) storing (-value, index).
+        When extracting max, check if index is still in current window.
+        If not, pop and try again (lazy deletion).
+
+        Time: O(n log n) worst case - each element pushed/popped once
+        Space: O(n) - heap can accumulate all elements before cleanup
+        """
+        import heapq
+
+        if not nums or k == 0:
+            return []
+
+        # Max-heap using negated values: (-value, index)
+        heap: List[tuple[int, int]] = []
+        result: List[int] = []
+
+        for i, num in enumerate(nums):
+            # Push current element
+            heapq.heappush(heap, (-num, i))
+
+            # Remove elements outside current window (lazy deletion)
+            while heap[0][1] < i - k + 1:
+                heapq.heappop(heap)
+
+            # Window is complete
+            if i >= k - 1:
+                result.append(-heap[0][0])
 
         return result
 

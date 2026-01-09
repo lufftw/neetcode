@@ -52,6 +52,12 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "BFS-like level traversal with farthest reach",
     },
+    "dp": {
+        "class": "SolutionDP",
+        "method": "jump",
+        "complexity": "O(n²) time, O(n) space",
+        "description": "DP: min jumps to reach each position",
+    },
 }
 
 
@@ -140,6 +146,40 @@ class SolutionGreedy:
                     break
 
         return jump_count
+
+
+# ============================================================================
+# Solution 2: Dynamic Programming
+# Time: O(n²), Space: O(n)
+#   - dp[i] = minimum jumps to reach position i
+#   - For each position, try all reachable positions
+#   - Less efficient than greedy but shows DP perspective
+# ============================================================================
+class SolutionDP:
+    def jump(self, nums: List[int]) -> int:
+        """
+        DP approach: compute minimum jumps to each position.
+
+        State: dp[i] = minimum jumps to reach position i
+        Transition: dp[j] = min(dp[j], dp[i] + 1) for all j reachable from i
+
+        O(n²) because for each position we may update many destinations.
+        """
+        n = len(nums)
+        if n <= 1:
+            return 0
+
+        # dp[i] = min jumps to reach position i
+        dp = [float('inf')] * n
+        dp[0] = 0
+
+        for i in range(n):
+            # Try all positions reachable from i
+            max_reach = min(i + nums[i], n - 1)
+            for j in range(i + 1, max_reach + 1):
+                dp[j] = min(dp[j], dp[i] + 1)
+
+        return dp[n - 1]
 
 
 def solve():

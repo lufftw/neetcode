@@ -41,6 +41,18 @@ SOLUTIONS = {
         "complexity": "O(m+n) time, O(1) space",
         "description": "Two pointer merge approach",
     },
+    "merge": {
+        "class": "Solution",
+        "method": "findMedianSortedArrays",
+        "complexity": "O(m+n) time, O(1) space",
+        "description": "Two pointer merge approach",
+    },
+    "binary_search": {
+        "class": "SolutionBinarySearch",
+        "method": "findMedianSortedArrays",
+        "complexity": "O(log(min(m,n))) time, O(1) space",
+        "description": "Binary search on partition position",
+    },
 }
 
 
@@ -146,6 +158,61 @@ class Solution:
             return cur
         else:
             return (prev + cur) / 2
+
+
+# ============================================
+# Solution 2: Binary Search on Partition
+# Time: O(log(min(m,n))), Space: O(1)
+#   - Binary search on smaller array to find partition
+#   - Partition divides both arrays such that left half <= right half
+#   - Optimal solution meeting the O(log(m+n)) requirement
+# ============================================
+class SolutionBinarySearch:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        """
+        Binary search for optimal partition position.
+
+        Key insight: Find partition i in nums1 and j in nums2 such that:
+        - i + j = (m + n + 1) // 2  (left half has half the elements)
+        - nums1[i-1] <= nums2[j] and nums2[j-1] <= nums1[i]
+
+        Binary search on smaller array for O(log(min(m,n))).
+        """
+        # Ensure nums1 is the smaller array
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+
+        m, n = len(nums1), len(nums2)
+        total = m + n
+        half = (total + 1) // 2
+
+        lo, hi = 0, m
+
+        while lo <= hi:
+            i = (lo + hi) // 2  # Partition in nums1
+            j = half - i        # Partition in nums2
+
+            # Get boundary values (use infinity for out-of-bounds)
+            left1 = nums1[i - 1] if i > 0 else float('-inf')
+            right1 = nums1[i] if i < m else float('inf')
+            left2 = nums2[j - 1] if j > 0 else float('-inf')
+            right2 = nums2[j] if j < n else float('inf')
+
+            # Check if partition is correct
+            if left1 <= right2 and left2 <= right1:
+                # Found valid partition
+                if total % 2 == 1:
+                    return max(left1, left2)
+                else:
+                    return (max(left1, left2) + min(right1, right2)) / 2
+            elif left1 > right2:
+                # Too many elements from nums1, move left
+                hi = i - 1
+            else:
+                # Too few elements from nums1, move right
+                lo = i + 1
+
+        return 0.0  # Should never reach here
 
 
 # ============================================
