@@ -53,33 +53,36 @@ python runner/test_runner.py 0215_kth_largest --all --benchmark
 ╔════════════════════════════════════════════════════╗
 ║ 0215_kth_largest_element_in_an_array - Performance ║
 ╠════════════════════════════════════════════════════╣
-║ default:     █████████████████░░░  170ms           ║
-║ quickselect: ███████████████████░  191ms           ║
-║ heap:        ████████████████████  199ms           ║
+║ default:     ████████████████████  114ms           ║
+║ quickselect: ████████████████░░░░   96ms           ║
+║ heap:        ██████████████████░░  107ms           ║
 ╚════════════════════════════════════════════════════╝
 
-Method       Avg Time   Complexity              Description
------------  ---------  ----------------------  ---------------------------
-default      170.01ms   O(n) avg, O(1) space    Quickselect with random pivot
-quickselect  191.13ms   O(n) avg, O(1) space    Quickselect with random pivot
-heap         199.22ms   O(n log k), O(k) space  Min-heap of size k
+Method         Avg Time   Pass Rate  Complexity
+-----------  ----------  ----------  --------------------
+default        113.51ms         3/3  O(n) average time, O(1) space
+quickselect     96.06ms         3/3  O(n) average time, O(1) space
+heap           107.34ms         3/3  O(n log k) time, O(k) space
 ```
 
 **Verify your Big-O claim:**
 
 ```bash
-python runner/test_runner.py 0004_median --estimate
+python runner/test_runner.py 0322_coin_change --estimate
 ```
 
 ```
 📈 Running complexity estimation...
-   n=   10: 0.0040ms
-   n=  100: 0.0082ms
-   n= 1000: 0.0685ms
+   n=  100: 0.1286ms (avg of 3 runs)
+   n=  500: 0.5394ms (avg of 3 runs)
+   n= 1000: 1.0778ms (avg of 3 runs)
+   n= 2000: 2.1274ms (avg of 3 runs)
 
-✅ Estimated: O(log n)
-   Confidence: 0.98
+✅ Estimated: O(n)
+   Confidence: 1.00
 ```
+
+> 📖 [More examples →](docs/runner/README.md#complexity-estimation-with-visual-charts)
 
 **Auto-save failing cases for debugging:**
 

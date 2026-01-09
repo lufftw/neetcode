@@ -169,20 +169,19 @@ naive        → Backtracking with On-the-Fly Checking
 
 The approach descriptions are shown in a legend below the table, matching the format used in the visual bar chart.
 
-### Complexity Estimation with Visual Charts
+### Multi-Solution Benchmark with Visual Charts
 
-Use `--all --benchmark --estimate` to integrate complexity estimation into the visual performance comparison:
+Use `--all --benchmark` to compare all solutions with visual performance charts:
 
 ```bash
-python runner/test_runner.py 0215 --all --benchmark --estimate
+python runner/test_runner.py 0215 --all --benchmark
 ```
 
 This displays:
 
 1. **Visual bar chart** with execution times
 2. **Approach legend** (method → approach name)
-3. **Estimated complexity section** with confidence scores
-4. **Detailed table** showing both declared and estimated complexity
+3. **Detailed table** showing pass rate and complexity
 
 **Example Output:**
 
@@ -190,29 +189,24 @@ This displays:
    ╔════════════════════════════════════════════════════╗
    ║ 0215_kth_largest_element_in_an_array - Performance ║
    ╠════════════════════════════════════════════════════╣
-   ║ default:     █████████████████░░░  170ms           ║
-   ║ quickselect: ███████████████████░  191ms           ║
-   ║ heap:        ████████████████████  199ms           ║
+   ║ default:     ████████████████████  114ms           ║
+   ║ quickselect: ████████████████░░░░   96ms           ║
+   ║ heap:        ██████████████████░░  107ms           ║
    ╚════════════════════════════════════════════════════╝
 
    default      → Quickselect Algorithm
    quickselect  → Quickselect Algorithm
    heap         → Heap-Based Solution
 
-   📈 Estimated Complexity:
-   default    : O(n)        [confidence: 1.00]
-   quickselect: O(n log n)  [confidence: 1.00]
-   heap       : O(n log n)  [confidence: 1.00]
-
 ======================================================================
 Performance Comparison (Details)
 ======================================================================
 
-Method         Avg Time   Pass Rate      Declared     Estimated
------------  ----------  ----------  ------------  ------------
-default        169.59ms         3/3  O(n) average          O(n)
-quickselect    190.74ms         3/3  O(n) average    O(n log n)
-heap           198.63ms         3/3  O(n log k)      O(n log n)
+Method         Avg Time   Pass Rate  Complexity
+-----------  ----------  ----------  --------------------
+default        113.51ms         3/3  O(n) average time, O(1) space
+quickselect     96.06ms         3/3  O(n) average time, O(1) space
+heap           107.34ms         3/3  O(n log k) time, O(k) space
 
 default      → Quickselect Algorithm
 quickselect  → Quickselect Algorithm
@@ -231,15 +225,35 @@ heap         → Heap-Based Solution
 For complexity estimation without benchmark comparison:
 
 ```bash
-python runner/test_runner.py 0004 --estimate
+python runner/test_runner.py 0322_coin_change --estimate
 ```
 
 ```
-📌 Estimating: heap
+📌 Estimating: default
 
-   ✅ Estimated: O(n log n)
-      Confidence: 0.95
+   📈 Running complexity estimation...
+      Mode: Direct call (Mock stdin, no subprocess overhead)
+      Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000]
+      Runs per size: 3
+      n=  100: 0.1286ms (avg of 3 runs)
+      n=  500: 0.5394ms (avg of 3 runs)
+      n= 1000: 1.0778ms (avg of 3 runs)
+      n= 2000: 2.1274ms (avg of 3 runs)
+
+   ✅ Estimated: O(n)
+      Confidence: 1.00
+      Details: Linear: time = 0.038 + 0.001*n (sec)
 ```
+
+#### More Complexity Examples
+
+| Problem | Algorithm | Estimated | Confidence |
+|---------|-----------|-----------|------------|
+| 0322_coin_change | DP (1D) | O(n) | 1.00 |
+| 0084_largest_rectangle | Monotonic Stack | O(n log n) | 1.00 |
+| 0121_best_time | Single Pass | O(n log n) | 1.00 |
+
+> **Note:** The estimator uses curve fitting which may report O(n log n) for linear algorithms when constant overhead dominates at small input sizes. Verify with larger test inputs if needed.
 
 ---
 
