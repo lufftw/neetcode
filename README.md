@@ -65,22 +65,19 @@ quickselect     96.06ms         3/3  O(n) average time, O(1) space
 heap           107.34ms         3/3  O(n log k) time, O(k) space
 ```
 
-**Verify your Big-O claim:**
+**See why algorithm complexity matters:**
 
 ```bash
-python runner/test_runner.py 0239_sliding_window --estimate
+python runner/test_runner.py 0011_container --all --estimate
 ```
 
-```
-📈 Running complexity estimation...
-   n=  500: 0.32ms
-   n= 1000: 0.69ms
-   n= 2000: 1.12ms
-   n= 5000: 2.78ms
+| n | O(n) Two Pointers | O(n²) Brute Force | Speedup |
+|--:|------------------:|------------------:|--------:|
+| 500 | 0.27ms | 554ms | **2,052x** |
+| 1000 | 0.52ms | 2,544ms | **4,892x** |
+| 5000 | 2.78ms | 68,291ms | **24,565x** |
 
-✅ Estimated: O(n)
-   Confidence: 1.00
-```
+At n=5000, the O(n) algorithm finishes in **3ms** while O(n²) takes **68 seconds**.
 
 > 📖 [More examples with interpretation guide →](docs/runner/README.md#examples-gallery)
 
