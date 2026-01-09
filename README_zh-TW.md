@@ -174,12 +174,26 @@ python runner/test_runner.py 0001_two_sum
 
 ## 文件
 
+### 入門指南
+
+| 文件 | 說明 |
+|:-----|:-----|
+| [建立新題目](docs/guides/new-problem.md) | 如何建立題目骨架 |
+| [解法規範](docs/contracts/solution-contract.md) | 解法檔案格式與要求 |
+| [測試檔案格式](docs/contracts/test-file-format.md) | 如何撰寫 `.in/.out` 測試檔案 |
+
+### 學習資源
+
 | 文件 | 說明 |
 |:-----|:-----|
 | [模式指南](docs/patterns/README.md) | 全部 25+ 模式的直覺篇 + 模板篇 |
-| [測試與驗證](docs/runner/README.md) | 完整測試執行器參考 |
-| [解法規範](docs/contracts/solution-contract.md) | 如何撰寫解法檔案 |
-| [心智圖](https://lufftw.github.io/neetcode/mindmaps/) | 互動式模式視覺化 |
+| [測試執行器](docs/runner/README.md) | 測試、效能基準與驗證 |
+
+### 進階主題
+
+| 文件 | 說明 |
+|:-----|:-----|
+| [生成器規範](docs/contracts/generator-contract.md) | 隨機測試生成與壓力測試 |
 
 ---
 

@@ -174,12 +174,26 @@ Each pattern provides Intuition + Templates. Start with intuition, use templates
 
 ## Documentation
 
+### Getting Started
+
+| Document | Description |
+|:---------|:------------|
+| [Create New Problem](docs/guides/new-problem.md) | How to scaffold a new problem |
+| [Solution Contract](docs/contracts/solution-contract.md) | Solution file format and requirements |
+| [Test File Format](docs/contracts/test-file-format.md) | How to write `.in/.out` test files |
+
+### Learning
+
 | Document | Description |
 |:---------|:------------|
 | [Pattern Guides](docs/patterns/README.md) | All 25+ patterns with Intuition + Templates |
-| [Testing & Validation](docs/runner/README.md) | Complete test runner reference |
-| [Solution Contract](docs/contracts/solution-contract.md) | How to write solution files |
-| [Mind Maps](https://lufftw.github.io/neetcode/mindmaps/) | Interactive pattern visualizations |
+| [Test Runner](docs/runner/README.md) | Testing, benchmarking, and validation |
+
+### Advanced
+
+| Document | Description |
+|:---------|:------------|
+| [Generator Contract](docs/contracts/generator-contract.md) | Random test generation for stress testing |
 
 ---
 
