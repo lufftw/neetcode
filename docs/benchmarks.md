@@ -8,11 +8,21 @@ When input size grows, algorithm choice becomes critical:
 
 | # | Problem | Fast | Slow | Speedup |
 |--:|---------|------|------|--------:|
-| 0010 | Regular Expression Mat | Top-down Memo (0.08ms) | Bottom-up DP (5.3s) | **66,000x** faster |
-| 0044 | Wildcard Matching | Greedy Backtrack (1.4ms) | 2D DP Table (10.0s) | **7048x** faster |
-| 0011 | Container With Most Wa | Two Pointers (0.75ms) | Nested Loops (4.9s) | **6567x** faster |
-| 0016 | 3Sum Closest | Two Ptr+Prune (1.1ms) | Two Ptr Basic (1.4s) | **1184x** faster |
+| 0010 | Regular Expression Mat | Top-down Memo (0.08ms) | Bottom-up DP (5.3s) | **62,000x** faster |
+| 0044 | Wildcard Matching | Greedy Backtrack (1.4ms) | 2D DP Table (10.0s) | **7052x** faster |
+| 0011 | Container With Most Wa | Two Pointers (0.75ms) | Nested Loops (4.9s) | **6545x** faster |
+| 0121 | Best Time To Buy And S | Running Min (2.0ms) | Nested Loops (3.1s) | **1552x** faster |
+| 0416 | Partition Equal Subset | 2D DP Table (0.08ms) | 1D DP Space-Opt (96.6ms) | **1267x** faster |
+| 0016 | 3Sum Closest | Two Ptr+Prune (1.1ms) | Two Ptr Basic (1.4s) | **1189x** faster |
+| 0435 | Non Overlapping Interv | Greedy Sort (5.0ms) | DP Array (3.1s) | **617x** faster |
 | 0001 | Two Sum | Hash Map (0.66ms) | Nested Loops (70.1ms) | **106x** faster |
+| 0494 | Target Sum | DP Transform (0.04ms) | Memoization (3.2ms) | **73x** faster |
+| 0875 | Koko Eating Bananas | Binary Search (14.6ms) | Linear Search (1.1s) | **72x** faster |
+| 2104 | Sum Of Subarray Ranges | Stack (4.5ms) | Brute (305.5ms) | **68x** faster |
+| 1011 | Capacity To Ship Packa | Default (10.3ms) | Linear Search (343.8ms) | **33x** faster |
+| 0125 | Valid Palindrome | Default (0.03ms) | Filtered Pointe (0.80ms) | **23x** faster |
+| 0459 | Repeated Substring Pat | Concatenation (0.06ms) | Default (0.97ms) | **17x** faster |
+| 0496 | Next Greater Element I | Default (0.73ms) | Brute (9.4ms) | **13x** faster |
 
 > At n=5000, the wrong algorithm choice turns **milliseconds into minutes**.
 > Regular Expression Matching: Memoization finishes while you blink; 2D DP takes a coffee break.

@@ -3,8 +3,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "hash_map", "time_n5000_ms": 0.66, "estimated_complexity": null},
-        {"method": "bruteforce", "time_n5000_ms": 70.08, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 0.7593,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "hash_map",
+          "time_n5000_ms": 0.6636,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "bruteforce",
+          "time_n5000_ms": 70.0788,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -12,8 +25,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 1.42, "estimated_complexity": null},
-        {"method": "set", "time_n5000_ms": 1.97, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1.4204,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dict",
+          "time_n5000_ms": 1.4821,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "set",
+          "time_n5000_ms": 1.974,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -21,8 +47,16 @@
     "method_count": 2,
     "estimate": {
       "methods": [
-        {"method": "recursive", "time_n5000_ms": 0.08, "estimated_complexity": null},
-        {"method": "default", "time_n5000_ms": 5268.40, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 5268.3953,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "recursive",
+          "time_n5000_ms": 0.0845,
+          "estimated_complexity": "O(log n)"
+        }
       ]
     }
   },
@@ -30,8 +64,26 @@
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "optimized", "time_n5000_ms": 0.75, "estimated_complexity": null},
-        {"method": "bruteforce", "time_n5000_ms": 4925.45, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 2.383,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 2.3913,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "optimized",
+          "time_n5000_ms": 0.7526,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "bruteforce",
+          "time_n5000_ms": 4925.4504,
+          "estimated_complexity": "O(n²)"
+        }
       ]
     }
   },
@@ -39,8 +91,26 @@
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 1453.83, "estimated_complexity": null},
-        {"method": "hash", "time_n5000_ms": 2189.82, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1453.834,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 1543.2865,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "hashset",
+          "time_n5000_ms": 2036.3843,
+          "estimated_complexity": "O(n³)"
+        },
+        {
+          "method": "hash",
+          "time_n5000_ms": 2189.815,
+          "estimated_complexity": "O(n²)"
+        }
       ]
     }
   },
@@ -48,26 +118,82 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "optimized", "time_n5000_ms": 1.14, "estimated_complexity": null},
-        {"method": "default", "time_n5000_ms": 1350.16, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1350.1565,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 1328.3994,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "optimized",
+          "time_n5000_ms": 1.1354,
+          "estimated_complexity": "O(n)"
+        }
       ]
+    }
+  },
+  "0021_merge_two_sorted_lists": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
     }
   },
   "0023_merge_k_sorted_lists": {
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 17.33, "estimated_complexity": null},
-        {"method": "greedy", "time_n5000_ms": 46.39, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 17.3297,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "heap",
+          "time_n5000_ms": 17.9392,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "divide",
+          "time_n5000_ms": 21.687,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 46.3895,
+          "estimated_complexity": "O(n log n)"
+        }
       ]
+    }
+  },
+  "0025_reverse_nodes_in_k_group": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
     }
   },
   "0026_remove_duplicates_from_sorted_array": {
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 0.86, "estimated_complexity": null},
-        {"method": "enumerate", "time_n5000_ms": 0.93, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 0.8588,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 0.8663,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "enumerate",
+          "time_n5000_ms": 0.9266,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -75,8 +201,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "two_ends", "time_n5000_ms": 1.07, "estimated_complexity": null},
-        {"method": "two_pointers", "time_n5000_ms": 1.28, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1.2431,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 1.2814,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_ends",
+          "time_n5000_ms": 1.0675,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -84,8 +223,16 @@
     "method_count": 2,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 0.68, "estimated_complexity": null},
-        {"method": "rabin_karp", "time_n5000_ms": 1.19, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 0.6768,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "rabin_karp",
+          "time_n5000_ms": 1.188,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -93,8 +240,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "binary_search", "time_n5000_ms": 0.48, "estimated_complexity": null},
-        {"method": "linear_scan", "time_n5000_ms": 1.08, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 0.4921,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "binary_search",
+          "time_n5000_ms": 0.482,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "linear_scan",
+          "time_n5000_ms": 1.0754,
+          "estimated_complexity": "O(n²)"
+        }
       ]
     }
   },
@@ -102,8 +262,26 @@
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "twopointer", "time_n5000_ms": 1.81, "estimated_complexity": null},
-        {"method": "dp", "time_n5000_ms": 3.69, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 3.2002,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "stack",
+          "time_n5000_ms": 3.3662,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "twopointer",
+          "time_n5000_ms": 1.8057,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dp",
+          "time_n5000_ms": 3.6887,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -111,8 +289,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "greedy", "time_n5000_ms": 1.42, "estimated_complexity": null},
-        {"method": "default", "time_n5000_ms": 10007.62, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 10007.6245,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "space_optimized",
+          "time_n5000_ms": 7530.7144,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 1.4191,
+          "estimated_complexity": "O(n log n)"
+        }
       ]
     }
   },
@@ -120,8 +311,16 @@
     "method_count": 2,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 1.60, "estimated_complexity": null},
-        {"method": "greedy", "time_n5000_ms": 1.67, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1.6013,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 1.6733,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -129,8 +328,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 1.66, "estimated_complexity": null},
-        {"method": "dp", "time_n5000_ms": 10.88, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1.6647,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 1.7501,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dp",
+          "time_n5000_ms": 10.8826,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -138,8 +350,16 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "sort_merge", "time_n5000_ms": 5.17, "estimated_complexity": null},
-        {"method": "default", "time_n5000_ms": 5.44, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 5.4415,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "sort_merge",
+          "time_n5000_ms": 5.1725,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -147,8 +367,26 @@
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "dp_space_optimized", "time_n5000_ms": 0.03, "estimated_complexity": null},
-        {"method": "memoization", "time_n5000_ms": 0.05, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0318,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_space_optimized",
+          "time_n5000_ms": 0.0315,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_array",
+          "time_n5000_ms": 0.033,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "memoization",
+          "time_n5000_ms": 0.0545,
+          "estimated_complexity": "O(log n)"
+        }
       ]
     }
   },
@@ -156,8 +394,21 @@
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "space_optimized", "time_n5000_ms": 11143.17, "estimated_complexity": null},
-        {"method": "default", "time_n5000_ms": 13701.75, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 13701.7505,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "dp_2d",
+          "time_n5000_ms": 13666.2407,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "space_optimized",
+          "time_n5000_ms": 11143.173,
+          "estimated_complexity": "O(n²)"
+        }
       ]
     }
   },
@@ -165,8 +416,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 1.30, "estimated_complexity": null},
-        {"method": "dutch_flag", "time_n5000_ms": 1.34, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1.3006,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dutch_flag",
+          "time_n5000_ms": 1.3356,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "counting",
+          "time_n5000_ms": 1.3066,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -174,8 +438,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 2.64, "estimated_complexity": null},
-        {"method": "sliding_window_filtered", "time_n5000_ms": 3.36, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 2.6391,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "sliding_window",
+          "time_n5000_ms": 2.867,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "sliding_window_filtered",
+          "time_n5000_ms": 3.3597,
+          "estimated_complexity": "O(n log n)"
+        }
       ]
     }
   },
@@ -183,8 +460,26 @@
     "method_count": 4,
     "estimate": {
       "methods": [
-        {"method": "counter", "time_n5000_ms": 1.62, "estimated_complexity": null},
-        {"method": "default", "time_n5000_ms": 2.00, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 2.0018,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 1.6233,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "k_copies",
+          "time_n5000_ms": 1.7317,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "counter",
+          "time_n5000_ms": 1.6227,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -192,8 +487,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 2.93, "estimated_complexity": null},
-        {"method": "twopass", "time_n5000_ms": 4.56, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 2.9341,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "sentinel",
+          "time_n5000_ms": 3.0614,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "twopass",
+          "time_n5000_ms": 4.5615,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -201,8 +509,21 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "default", "time_n5000_ms": 2.17, "estimated_complexity": null},
-        {"method": "dp", "time_n5000_ms": 2.76, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 2.1735,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "stack",
+          "time_n5000_ms": 2.2255,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dp",
+          "time_n5000_ms": 2.7625,
+          "estimated_complexity": "O(n)"
+        }
       ]
     }
   },
@@ -210,8 +531,1424 @@
     "method_count": 3,
     "estimate": {
       "methods": [
-        {"method": "backward", "time_n5000_ms": 1.85, "estimated_complexity": null},
-        {"method": "forward", "time_n5000_ms": 1.96, "estimated_complexity": null}
+        {
+          "method": "default",
+          "time_n5000_ms": 1.906,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "backward",
+          "time_n5000_ms": 1.8533,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "forward",
+          "time_n5000_ms": 1.9566,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0094_binary_tree_inorder_traversal": {
+    "method_count": 4,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0102_binary_tree_level_order_traversal": {
+    "method_count": 3,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0104_maximum_depth_of_binary_tree": {
+    "method_count": 4,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0110_balanced_binary_tree": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 7.6585,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bottom_up",
+          "time_n5000_ms": 8.0282,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "top_down",
+          "time_n5000_ms": 35.5715,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0121_best_time_to_buy_and_sell_stock": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.9818,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "running_min",
+          "time_n5000_ms": 3.619,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bruteforce",
+          "time_n5000_ms": 3076.1017,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "0124_binary_tree_maximum_path_sum": {
+    "method_count": 4,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0125_valid_palindrome": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.034,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 0.0426,
+          "estimated_complexity": "O(n³)"
+        },
+        {
+          "method": "filtered",
+          "time_n5000_ms": 0.7307,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "filtered_pointers",
+          "time_n5000_ms": 0.7983,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0133_clone_graph": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0134_gas_station": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.5515,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 2.4436,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0135_candy": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.1017,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pass",
+          "time_n5000_ms": 2.4568,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0141_linked_list_cycle": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 3.0835,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "floyd",
+          "time_n5000_ms": 6.744,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "hashset",
+          "time_n5000_ms": 8.3289,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0142_linked_list_cycle_ii": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.7936,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "floyd",
+          "time_n5000_ms": 3.5289,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "hashset",
+          "time_n5000_ms": 4.0554,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0162_find_peak_element": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.1884,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "binary_search",
+          "time_n5000_ms": 0.1721,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "linear_scan",
+          "time_n5000_ms": 0.1625,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0198_house_robber": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.072,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_space_optimized",
+          "time_n5000_ms": 0.084,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_array",
+          "time_n5000_ms": 0.0808,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "memoization",
+          "time_n5000_ms": 0.147,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0200_number_of_islands": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 3.588,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dfs",
+          "time_n5000_ms": 3.084,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bfs",
+          "time_n5000_ms": 6.0677,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "union_find",
+          "time_n5000_ms": 9.6769,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0202_happy_number": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0322,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "floyd",
+          "time_n5000_ms": 0.0337,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "hashset",
+          "time_n5000_ms": 0.0595,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0207_course_schedule": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0208_implement_trie_prefix_tree": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0209_minimum_size_subarray_sum": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.6129,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "sliding_window",
+          "time_n5000_ms": 1.5934,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "binary_search",
+          "time_n5000_ms": 3.4592,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0210_course_schedule_ii": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0211_design_add_and_search_words_data_structure": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0212_word_search_ii": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0213_house_robber_ii": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0955,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_decomposition",
+          "time_n5000_ms": 0.099,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "memoization",
+          "time_n5000_ms": 0.2531,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0214_shortest_palindrome": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.5996,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "rolling_hash",
+          "time_n5000_ms": 2.8022,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0215_kth_largest_element_in_an_array": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.9295,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "quickselect",
+          "time_n5000_ms": 1.8494,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "heap",
+          "time_n5000_ms": 2.0003,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0218_the_skyline_problem": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 14.9033,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "heap",
+          "time_n5000_ms": 24.4243,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "sortedlist",
+          "time_n5000_ms": 18.6453,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0238_product_of_array_except_self": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0239_sliding_window_maximum": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 3.3443,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "deque",
+          "time_n5000_ms": 3.8436,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0253_meeting_rooms_ii": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 7.6218,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "heap",
+          "time_n5000_ms": 9.0035,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "sweep",
+          "time_n5000_ms": 17.6014,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0283_move_zeroes": {
+    "method_count": 5,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.5779,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 1.4769,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "swap",
+          "time_n5000_ms": 3.1005,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "optimized_swap",
+          "time_n5000_ms": 2.751,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "snowball",
+          "time_n5000_ms": 1.8125,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0295_find_median_from_data_stream": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 7.6659,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "sorted_list",
+          "time_n5000_ms": 10.1439,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0307_range_sum_query_mutable": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 38.1908,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bit",
+          "time_n5000_ms": 58.2293,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "segment_tree",
+          "time_n5000_ms": 44.0449,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0312_burst_balloons": {
+    "method_count": 2,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0315_count_of_smaller_numbers_after_self": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 16.5812,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bit",
+          "time_n5000_ms": 16.6727,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "merge_sort",
+          "time_n5000_ms": 29.6795,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "0322_coin_change": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 6.9109,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "dp_bottom_up",
+          "time_n5000_ms": 6.5896,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "bfs",
+          "time_n5000_ms": 3.6337,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0327_count_of_range_sum": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 27.8879,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "merge_sort",
+          "time_n5000_ms": 25.4352,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0337_house_robber_iii": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 88.6,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "memo",
+          "time_n5000_ms": 90.686,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "0347_top_k_frequent_elements": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0416_partition_equal_subset_sum": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 96.5806,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dp_1d",
+          "time_n5000_ms": 70.5448,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_2d",
+          "time_n5000_ms": 0.0762,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "memoization",
+          "time_n5000_ms": 0.1523,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0417_pacific_atlantic_water_flow": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0435_non_overlapping_intervals": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 4.9786,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dp",
+          "time_n5000_ms": 3069.3189,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "0455_assign_cookies": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 3.4019,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 3.2943,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0459_repeated_substring_pattern": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.9723,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "concatenation",
+          "time_n5000_ms": 0.0579,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0494_target_sum": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0902,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_transform",
+          "time_n5000_ms": 0.0433,
+          "estimated_complexity": "O(n³)"
+        },
+        {
+          "method": "memoization",
+          "time_n5000_ms": 3.1543,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0496_next_greater_element_i": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.7279,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "stack",
+          "time_n5000_ms": 0.7619,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "brute",
+          "time_n5000_ms": 9.3544,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0503_next_greater_element_ii": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 3.3111,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "twopass",
+          "time_n5000_ms": 3.4658,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "concat",
+          "time_n5000_ms": 4.1532,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0516_longest_palindromic_subsequence": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 11268.9096,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "interval_dp",
+          "time_n5000_ms": 6496.6069,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "0518_coin_change_2": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.2441,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "dp_unbounded",
+          "time_n5000_ms": 2.3449,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0523_continuous_subarray_sum": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0525_contiguous_array": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0542_01_matrix": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 7.9711,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bfs",
+          "time_n5000_ms": 6.905,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "dp",
+          "time_n5000_ms": 6.0583,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0543_diameter_of_binary_tree": {
+    "method_count": 3,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0547_number_of_provinces": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0560_subarray_sum_equals_k": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0621_task_scheduler": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0648_replace_words": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0664_strange_printer": {
+    "method_count": 2,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "0680_valid_palindrome_ii": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0487,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 0.0346,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "recursive",
+          "time_n5000_ms": 0.0581,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "iterative",
+          "time_n5000_ms": 0.0782,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0684_redundant_connection": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0958,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "union_find",
+          "time_n5000_ms": 0.0752,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dfs",
+          "time_n5000_ms": 0.1073,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0721_accounts_merge": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.0974,
+          "estimated_complexity": "O(n³)"
+        },
+        {
+          "method": "union_find",
+          "time_n5000_ms": 0.0877,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dfs",
+          "time_n5000_ms": 0.1278,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0739_daily_temperatures": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.4875,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "stack",
+          "time_n5000_ms": 2.2577,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "backward",
+          "time_n5000_ms": 2.1622,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0743_network_delay_time": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 19.4107,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "dijkstra",
+          "time_n5000_ms": 17.7159,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "bellman_ford",
+          "time_n5000_ms": 9.7023,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0746_min_cost_climbing_stairs": {
+    "method_count": 4,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.6908,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_space_optimized",
+          "time_n5000_ms": 0.5226,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "dp_array",
+          "time_n5000_ms": 0.6013,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "0785_is_graph_bipartite": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0787_cheapest_flights_within_k_stops": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0802_find_eventual_safe_states": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0841_keys_and_rooms": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "0862_shortest_subarray_with_sum_at_least_k": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.9332,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "deque",
+          "time_n5000_ms": 3.1255,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0875_koko_eating_bananas": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 14.5921,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "binary_search",
+          "time_n5000_ms": 15.0097,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "linear_search",
+          "time_n5000_ms": 1053.2422,
+          "estimated_complexity": "O(n³)"
+        }
+      ]
+    }
+  },
+  "0876_middle_of_the_linked_list": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 3.3346,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "fast_slow",
+          "time_n5000_ms": 3.871,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pass",
+          "time_n5000_ms": 4.1914,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0905_sort_array_by_parity": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.8618,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "opposite_pointers",
+          "time_n5000_ms": 2.1886,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "writer",
+          "time_n5000_ms": 4.2157,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0907_sum_of_subarray_minimums": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 5.2609,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "contribution",
+          "time_n5000_ms": 6.3685,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "single",
+          "time_n5000_ms": 5.5975,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0922_sort_array_by_parity_ii": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.1891,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 2.1731,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "0968_binary_tree_cameras": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 89.1914,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "dp",
+          "time_n5000_ms": 85.0214,
+          "estimated_complexity": "O(n³)"
+        }
+      ]
+    }
+  },
+  "0977_squares_of_a_sorted_array": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 2.5902,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "two_pointers",
+          "time_n5000_ms": 2.2092,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "sort",
+          "time_n5000_ms": 2.4734,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0990_satisfiability_of_equality_equations": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 4.5087,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "dfs",
+          "time_n5000_ms": 1.605,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "0994_rotting_oranges": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 0.2281,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "bfs",
+          "time_n5000_ms": 0.2436,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "simulation",
+          "time_n5000_ms": 0.1556,
+          "estimated_complexity": "O(log n)"
+        }
+      ]
+    }
+  },
+  "1011_capacity_to_ship_packages_within_d_days": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 10.2854,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "linear_search",
+          "time_n5000_ms": 343.8291,
+          "estimated_complexity": "O(n³)"
+        }
+      ]
+    }
+  },
+  "1029_two_city_scheduling": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 5.9203,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "greedy",
+          "time_n5000_ms": 7.6388,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "1094_car_pooling": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 6.7747,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "difference",
+          "time_n5000_ms": 5.3727,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "events",
+          "time_n5000_ms": 18.0542,
+          "estimated_complexity": "O(n log n)"
+        }
+      ]
+    }
+  },
+  "1109_corporate_flight_bookings": {
+    "method_count": 2,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "1143_longest_common_subsequence": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 14417.9159,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "space_optimized",
+          "time_n5000_ms": 12538.042,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "1268_search_suggestions_system": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "1392_longest_happy_prefix": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 1.5029,
+          "estimated_complexity": "O(n log n)"
+        },
+        {
+          "method": "rolling_hash",
+          "time_n5000_ms": 7.5211,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "1438_longest_continuous_subarray_with_absolute_diff_limit": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 9.3447,
+          "estimated_complexity": "O(n²)"
+        },
+        {
+          "method": "two_deques",
+          "time_n5000_ms": 6.915,
+          "estimated_complexity": "O(n)"
+        }
+      ]
+    }
+  },
+  "1499_max_value_of_equation": {
+    "method_count": 2,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 7.765,
+          "estimated_complexity": "O(n)"
+        },
+        {
+          "method": "deque",
+          "time_n5000_ms": 13.0148,
+          "estimated_complexity": "O(n²)"
+        }
+      ]
+    }
+  },
+  "1547_minimum_cost_to_cut_a_stick": {
+    "method_count": 2,
+    "estimate": {
+      "error": "timeout"
+    }
+  },
+  "1971_find_if_path_exists_in_graph": {
+    "method_count": 3,
+    "estimate": {
+      "error": "no data parsed"
+    }
+  },
+  "2104_sum_of_subarray_ranges": {
+    "method_count": 3,
+    "estimate": {
+      "methods": [
+        {
+          "method": "default",
+          "time_n5000_ms": 5.0244,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "stack",
+          "time_n5000_ms": 4.4945,
+          "estimated_complexity": "O(log n)"
+        },
+        {
+          "method": "brute",
+          "time_n5000_ms": 305.5346,
+          "estimated_complexity": "O(log n)"
+        }
       ]
     }
   }

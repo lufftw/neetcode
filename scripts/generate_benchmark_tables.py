@@ -226,6 +226,26 @@ def get_descriptive_method_name(problem, method):
             "binary_search": "Binary Search",
             "linear_scan": "Linear Scan",
         },
+        "0121_best_time_to_buy_and_sell_stock": {
+            "default": "Running Min",
+            "bruteforce": "Nested Loops",
+        },
+        "0416_partition_equal_subset_sum": {
+            "dp_2d": "2D DP Table",
+            "default": "1D DP Space-Opt",
+        },
+        "0435_non_overlapping_intervals": {
+            "default": "Greedy Sort",
+            "dp": "DP Array",
+        },
+        "0494_target_sum": {
+            "dp_transform": "DP Transform",
+            "memoization": "Memoization",
+        },
+        "0875_koko_eating_bananas": {
+            "default": "Binary Search",
+            "linear_search": "Linear Search",
+        },
     }
     if problem in mappings and method in mappings[problem]:
         return mappings[problem][method]
@@ -319,6 +339,11 @@ def get_short_problem_name(problem):
         "0042_trapping_rain_water": "Trapping Rain",
         "0023_merge_k_sorted_lists": "Merge K Lists",
         "0033_search_in_rotated_sorted_array": "Search Rotated",
+        "0121_best_time_to_buy_and_sell_stock": "Buy Sell Stock",
+        "0416_partition_equal_subset_sum": "Partition Sum",
+        "0435_non_overlapping_intervals": "Non-Overlap Intv",
+        "0494_target_sum": "Target Sum",
+        "0875_koko_eating_bananas": "Koko Bananas",
     }
     if problem in name_map:
         return name_map[problem]
