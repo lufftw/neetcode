@@ -58,7 +58,8 @@ class ComplexityEstimator:
     """
     
     # Default sizes for estimation
-    DEFAULT_SIZES = [10, 20, 50, 100, 200, 500, 1000, 2000]
+    # Includes 5000 to better distinguish O(n) vs O(n²) algorithms
+    DEFAULT_SIZES = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
     
     # Number of times to run each size (for averaging)
     RUNS_PER_SIZE = 3
@@ -211,19 +212,25 @@ class ComplexityEstimator:
     def _run_with_mock_stdin(self, solve_func, input_data: str) -> Tuple[Optional[float], Optional[int]]:
         """
         Run solve() with mocked stdin and capture execution time + memory.
-        
+
         Args:
             solve_func: The solve() function to call
             input_data: Input string to feed via stdin
-        
+
         Returns:
             Tuple of (elapsed_ms, peak_memory_bytes) or (None, None) on error
         """
+        import os
         original_stdin = sys.stdin
         original_stdout = sys.stdout
+        original_method = os.environ.get('SOLUTION_METHOD')
         peak_bytes = None
-        
+
         try:
+            # Set the solution method for get_solver() to pick up
+            if self.method:
+                os.environ['SOLUTION_METHOD'] = self.method
+
             # Mock stdin with input data
             sys.stdin = io.StringIO(input_data)
             # Capture stdout to avoid output interference
@@ -257,6 +264,11 @@ class ComplexityEstimator:
             # Restore original stdin/stdout
             sys.stdin = original_stdin
             sys.stdout = original_stdout
+            # Restore original SOLUTION_METHOD
+            if original_method is not None:
+                os.environ['SOLUTION_METHOD'] = original_method
+            elif 'SOLUTION_METHOD' in os.environ:
+                del os.environ['SOLUTION_METHOD']
     
     def _fit_complexity(self, sizes: List[int], times: List[float]) -> Optional[ComplexityResult]:
         """Use big_O to fit complexity class."""

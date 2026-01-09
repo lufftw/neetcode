@@ -234,39 +234,57 @@ Peak 4.8MB | P95 4.8MB
 
 ---
 
-### Example 5: Complexity Estimation
+### Example 5: Complexity Estimation (O(n) vs O(n²))
+
+This is the most impressive demonstration — showing the **dramatic difference** between O(n) and O(n²) algorithms.
 
 **Command:**
 ```bash
-python runner/test_runner.py 0322_coin_change --estimate
+python runner/test_runner.py 0011_container --all --estimate
 ```
 
-**Output:**
+**Output (O(n) Two Pointers):**
 ```
-📈 Running complexity estimation...
-   Mode: Direct call (Mock stdin, no subprocess overhead)
-   Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000]
-   Runs per size: 3
-   n=  100: 0.1286ms (avg of 3 runs)
-   n=  500: 0.5394ms (avg of 3 runs)
-   n= 1000: 1.0778ms (avg of 3 runs)
-   n= 2000: 2.1274ms (avg of 3 runs)
+📌 Estimating: two_pointers
+   n=  500: 0.34ms
+   n= 1000: 0.51ms
+   n= 2000: 1.24ms
+   n= 5000: 2.78ms
 
 ✅ Estimated: O(n)
    Confidence: 1.00
-   Details: Linear: time = 0.038 + 0.001*n (sec)
 ```
 
-**How to Interpret:**
-- Times should roughly double when n doubles for O(n) algorithms
-- `Confidence: 1.00` means the curve fit is excellent
-- `Details` shows the fitted formula: `time = constant + coefficient * f(n)`
-- For this DP problem, n represents the `amount` parameter
+**Output (O(n²) Brute Force):**
+```
+📌 Estimating: bruteforce
+   n=  500: 43.59ms
+   n= 1000: 195.59ms
+   n= 2000: 782.44ms
+   n= 5000: 5052.72ms  ← 5 seconds!
 
-**Estimation Accuracy Tips:**
+✅ Estimated: O(n²)
+   Confidence: 1.00
+```
+
+**The Dramatic Difference:**
+
+| n | O(n) Two Pointers | O(n²) Brute Force | Ratio |
+|---|-------------------|-------------------|-------|
+| 1000 | 0.51ms | 196ms | 384x |
+| 2000 | 1.24ms | 782ms | 631x |
+| 5000 | 2.78ms | **5,053ms** | **1,818x** |
+
+**How to Interpret:**
+- O(n): Time doubles when n doubles (linear growth)
+- O(n²): Time quadruples when n doubles (quadratic growth)
+- At n=5000, the O(n²) algorithm is **1,818x slower**
+- This is why algorithm complexity matters for large inputs!
+
+**Estimation Tips:**
 - Works best when algorithm time dominates constant overhead
-- Very fast algorithms (< 0.1ms) may show inaccurate results
-- If estimated ≠ declared, try larger input sizes via generator
+- For fast algorithms, use larger n values (5000+) for accurate estimation
+- If estimated ≠ declared, the algorithm may have optimizations or the test sizes are too small
 
 ---
 
@@ -399,12 +417,12 @@ python runner/test_runner.py 0322_coin_change --estimate
 
    📈 Running complexity estimation...
       Mode: Direct call (Mock stdin, no subprocess overhead)
-      Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000]
+      Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
       Runs per size: 3
-      n=  100: 0.1286ms (avg of 3 runs)
-      n=  500: 0.5394ms (avg of 3 runs)
-      n= 1000: 1.0778ms (avg of 3 runs)
-      n= 2000: 2.1274ms (avg of 3 runs)
+      n=  500: 0.54ms (avg of 3 runs)
+      n= 1000: 1.08ms (avg of 3 runs)
+      n= 2000: 2.13ms (avg of 3 runs)
+      n= 5000: 5.31ms (avg of 3 runs)
 
    ✅ Estimated: O(n)
       Confidence: 1.00
@@ -413,13 +431,14 @@ python runner/test_runner.py 0322_coin_change --estimate
 
 #### More Complexity Examples
 
-| Problem | Algorithm | Estimated | Confidence |
-|---------|-----------|-----------|------------|
-| 0322_coin_change | DP (1D) | O(n) | 1.00 |
-| 0084_largest_rectangle | Monotonic Stack | O(n log n) | 1.00 |
-| 0121_best_time | Single Pass | O(n log n) | 1.00 |
+| Problem | Algorithm | Declared | Estimated | Confidence |
+|---------|-----------|----------|-----------|------------|
+| 0011_container (two_pointers) | Two Pointers | O(n) | O(n) | 1.00 |
+| 0011_container (bruteforce) | Brute Force | O(n²) | **O(n²)** | 1.00 |
+| 0322_coin_change | DP (1D) | O(n×amount) | O(n) | 1.00 |
+| 0042_trapping (twopointer) | Two Pointers | O(n) | O(n) | 1.00 |
 
-> **Note:** The estimator uses curve fitting which may report O(n log n) for linear algorithms when constant overhead dominates at small input sizes. Verify with larger test inputs if needed.
+> **Note:** The estimator now uses sizes up to n=5000, which provides more accurate results for distinguishing O(n) from O(n²). For very fast algorithms where constant overhead dominates, the curve fitting may be less accurate.
 
 ---
 
