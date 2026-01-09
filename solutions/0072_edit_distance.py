@@ -44,11 +44,23 @@ SOLUTIONS = {
         "complexity": "O(m*n) time, O(m*n) space",
         "description": "2D DP with dp[i][j] = min edits for word1[0:i] to word2[0:j]",
     },
+    "dp_2d": {
+        "class": "Solution",
+        "method": "minDistance",
+        "complexity": "O(m*n) time, O(m*n) space",
+        "description": "Classic 2D bottom-up DP (Levenshtein distance)",
+    },
     "space_optimized": {
         "class": "SolutionSpaceOptimized",
         "method": "minDistance",
         "complexity": "O(m*n) time, O(min(m,n)) space",
         "description": "Space-optimized using only two rows",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "minDistance",
+        "complexity": "O(m*n) time, O(m*n) space",
+        "description": "Top-down recursive DP with memoization",
     },
 }
 
@@ -139,6 +151,58 @@ class SolutionSpaceOptimized:
             previous_row, current_row = current_row, previous_row
 
         return previous_row[target_len]
+
+
+# ============================================================================
+# Solution 3: Top-Down Memoization
+# Time: O(m*n), Space: O(m*n)
+#   - Recursive approach with memoization
+#   - More intuitive for understanding the recurrence
+# ============================================================================
+class SolutionMemoization:
+    def minDistance(self, word1: str, word2: str) -> int:
+        """
+        Find minimum edit distance using top-down memoization.
+
+        Core insight: Define dp(i, j) as min edits to convert word1[i:] to word2[j:].
+        Recursively try all three operations and memoize results.
+
+        More intuitive than bottom-up: directly matches the problem's recursive structure.
+
+        Args:
+            word1: Source string
+            word2: Target string
+
+        Returns:
+            Minimum number of edit operations
+        """
+        memo = {}
+
+        def dp(i: int, j: int) -> int:
+            """Min edits to convert word1[i:] to word2[j:]."""
+            # Base cases
+            if i == len(word1):
+                return len(word2) - j  # Insert remaining chars of word2
+            if j == len(word2):
+                return len(word1) - i  # Delete remaining chars of word1
+
+            if (i, j) in memo:
+                return memo[(i, j)]
+
+            if word1[i] == word2[j]:
+                # Characters match: no operation needed
+                result = dp(i + 1, j + 1)
+            else:
+                # Try all three operations, take minimum
+                replace = dp(i + 1, j + 1)  # Replace word1[i] with word2[j]
+                delete = dp(i + 1, j)        # Delete word1[i]
+                insert = dp(i, j + 1)        # Insert word2[j]
+                result = 1 + min(replace, delete, insert)
+
+            memo[(i, j)] = result
+            return result
+
+        return dp(0, 0)
 
 
 def solve():
