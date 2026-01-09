@@ -167,24 +167,23 @@ class ExpertAgent(BaseAgent):
         self.suggestion_prefix = agent_id[0].upper()  # A for architect, P for professor, etc.
     
     def _get_phase_instructions(self, phase: str, round_number: int) -> str:
-        """Get phase-specific instructions."""
+        """
+        Get phase-specific instructions.
+
+        Note: These are intentionally concise. Detailed instructions are in
+        the behavior prompts (architect-behavior.md, etc.). Phase instructions
+        only emphasize key constraints to avoid redundancy and save tokens.
+        """
         if phase == "review":
-            return """You are conducting an **independent review** of the Markmap.
-            
-Focus on your areas of expertise and identify concrete improvements.
-Do NOT consider other experts' opinions yet—this is your independent assessment.
-Be thorough but practical. Prioritize high-impact improvements."""
-        
+            # Key constraint: independent assessment (no cross-expert influence)
+            return """**Independent Review** — Do NOT consider other experts' opinions.
+Identify concrete improvements from your expertise. Be thorough but practical."""
+
         elif phase == "discussion":
-            return """You are participating in a **group discussion**.
+            # Discussion template (discussion-behavior.md) already contains full instructions.
+            # Only add minimal context here.
+            return """**Group Discussion** — Review all suggestions, vote, and create your adoption list."""
 
-You can see all suggestions from all experts. Your task is to:
-1. Vote on each suggestion from other experts
-2. Provide your rationale for each vote
-3. Create your final adoption list
-
-Remember: Only suggestions with majority support will be implemented."""
-        
         return ""
     
     def _prepare_review_input(
@@ -208,50 +207,258 @@ Remember: Only suggestions with majority support will be implemented."""
             "phase_instructions": self._get_phase_instructions("review", 1),
             "baseline_markmap": baseline_markmap,
             "ontology_summary": self._format_ontology(ontology),
-            "problem_data": self._format_problems(problems),
+            "problem_data": self._format_problems(problems, baseline_markmap),
             "min_suggestions": min_suggestions,
             "max_suggestions": max_suggestions,
         }
     
+    def _parse_baseline_sections(self, baseline: str) -> list[dict[str, Any]]:
+        """
+        Parse baseline markmap into sections based on ## headings.
+
+        Returns list of sections:
+        [{"heading": "Kernel 1: SubstringSlidingWindow", "content": "...", "line_start": 28, "line_end": 63}]
+        """
+        import re
+        lines = baseline.split('\n')
+        sections = []
+        current_section = None
+
+        for i, line in enumerate(lines):
+            # Match ## headings (not # or ###)
+            if re.match(r'^##\s+[^#]', line):
+                # Save previous section
+                if current_section:
+                    current_section["line_end"] = i - 1
+                    current_section["content"] = '\n'.join(
+                        lines[current_section["line_start"]:i]
+                    )
+                    sections.append(current_section)
+
+                # Start new section
+                heading = re.sub(r'^##\s+', '', line).strip()
+                current_section = {
+                    "heading": heading,
+                    "line_start": i,
+                    "line_end": None,
+                    "content": "",
+                }
+
+        # Don't forget the last section
+        if current_section:
+            current_section["line_end"] = len(lines) - 1
+            current_section["content"] = '\n'.join(
+                lines[current_section["line_start"]:]
+            )
+            sections.append(current_section)
+
+        return sections
+
+    def _extract_keywords_from_suggestions(
+        self,
+        suggestions: dict[str, list["Suggestion"]],
+    ) -> set[str]:
+        """
+        Extract location keywords from all suggestions.
+
+        Extracts:
+        - Quoted strings: "Sliding Window"
+        - Kernel references: Kernel 1, Kernel 2
+        - Pattern names: sliding_window_unique
+        - Section indicators: Two Pointers, Backtracking
+        """
+        import re
+        keywords = set()
+
+        for expert_suggestions in suggestions.values():
+            for s in expert_suggestions:
+                location = s.location.lower() if s.location else ""
+
+                # Extract quoted strings
+                quoted = re.findall(r'"([^"]+)"', s.location)
+                keywords.update(q.lower() for q in quoted)
+
+                # Extract Kernel references
+                kernels = re.findall(r'kernel\s*(\d+)', location, re.IGNORECASE)
+                keywords.update(f"kernel {k}" for k in kernels)
+
+                # Extract pattern names (snake_case)
+                patterns = re.findall(r'\b([a-z]+_[a-z_]+)\b', location)
+                keywords.update(patterns)
+
+                # Extract common section names
+                common_sections = [
+                    "sliding window", "two pointer", "backtracking",
+                    "binary search", "dynamic programming", "dp",
+                    "graph", "tree", "linked list", "heap", "stack",
+                    "superhighway", "universe"
+                ]
+                for section in common_sections:
+                    if section in location:
+                        keywords.add(section)
+
+        return keywords
+
+    def _match_sections_to_keywords(
+        self,
+        sections: list[dict],
+        keywords: set[str],
+    ) -> list[dict]:
+        """
+        Match sections to keywords using fuzzy matching.
+
+        Returns sections that match any keyword.
+        Uses multiple matching strategies:
+        1. Direct substring match
+        2. Word-based match (ignoring case/spacing)
+        3. Content pattern match
+        """
+        import re
+
+        def normalize(text: str) -> str:
+            """Normalize text for matching: lowercase, remove special chars."""
+            return re.sub(r'[^a-z0-9]', '', text.lower())
+
+        def words(text: str) -> set[str]:
+            """Extract words from text."""
+            return set(re.findall(r'[a-z]+', text.lower()))
+
+        matched = []
+        for section in sections:
+            heading_lower = section["heading"].lower()
+            heading_normalized = normalize(section["heading"])
+            heading_words = words(section["heading"])
+            content_lower = section["content"].lower()
+
+            for kw in keywords:
+                kw_normalized = normalize(kw)
+                kw_words = words(kw)
+
+                # Strategy 1: Direct substring match
+                if kw in heading_lower or heading_lower in kw:
+                    matched.append(section)
+                    break
+
+                # Strategy 2: Normalized match (ignore spaces, special chars)
+                if kw_normalized in heading_normalized:
+                    matched.append(section)
+                    break
+
+                # Strategy 3: Word overlap (e.g., "two pointer" matches "TwoPointersTraversal")
+                if kw_words and kw_words.issubset(heading_words):
+                    matched.append(section)
+                    break
+
+                # Strategy 4: Content pattern match (for snake_case patterns)
+                if '_' in kw and kw in content_lower:
+                    matched.append(section)
+                    break
+
+        return matched
+
+    def _extract_relevant_baseline(
+        self,
+        baseline: str,
+        suggestions: dict[str, list["Suggestion"]],
+        min_sections: int = 2,
+        fallback_ratio: float = 0.3,
+    ) -> tuple[str, bool]:
+        """
+        Extract only the baseline sections relevant to the suggestions.
+
+        Args:
+            baseline: Full baseline markmap
+            suggestions: All expert suggestions
+            min_sections: Minimum sections to extract (safety threshold)
+            fallback_ratio: If matched sections < this ratio of total, use full baseline
+
+        Returns:
+            Tuple of (extracted_content, is_full_baseline)
+        """
+        sections = self._parse_baseline_sections(baseline)
+
+        if not sections:
+            return baseline, True
+
+        keywords = self._extract_keywords_from_suggestions(suggestions)
+
+        if not keywords:
+            return baseline, True
+
+        matched = self._match_sections_to_keywords(sections, keywords)
+
+        # Safety checks: fall back to full baseline if matching is too sparse
+        if len(matched) < min_sections:
+            return baseline, True
+
+        if len(matched) / len(sections) < fallback_ratio:
+            # Less than 30% matched - might miss important context
+            return baseline, True
+
+        # Build extracted content with section indicators
+        lines = [
+            f"*Showing {len(matched)}/{len(sections)} sections relevant to suggestions*",
+            f"*Keywords matched: {', '.join(sorted(keywords)[:10])}*",
+            "",
+        ]
+
+        for section in matched:
+            lines.append(f"--- Section: {section['heading']} (lines {section['line_start']}-{section['line_end']}) ---")
+            lines.append(section["content"])
+            lines.append("")
+
+        return '\n'.join(lines), False
+
     def _prepare_discussion_input(
         self,
         state: dict[str, Any],
     ) -> dict[str, Any]:
-        """Prepare input for the discussion phase (Round 2)."""
+        """
+        Prepare input for the discussion phase (Round 2).
+
+        Token optimization: Only includes baseline sections relevant to
+        the suggestions, unless matching is too sparse (then falls back
+        to full baseline for safety).
+        """
         from pathlib import Path
-        
+
         baseline_markmap = state.get("baseline_markmap", "")
         all_suggestions = state.get("expert_suggestions", {})
-        
+
+        # Token optimization: Extract only relevant baseline sections
+        relevant_baseline, is_full = self._extract_relevant_baseline(
+            baseline_markmap, all_suggestions
+        )
+
         # Get own suggestions
         own_suggestions = all_suggestions.get(self.agent_id, [])
         own_suggestions_text = self._format_suggestions_list(own_suggestions)
-        
+
         # Get other experts' suggestions
         architect_suggestions = self._format_suggestions_list(
             all_suggestions.get("architect", [])
         ) if self.agent_id != "architect" else "(Your own suggestions)"
-        
+
         professor_suggestions = self._format_suggestions_list(
             all_suggestions.get("professor", [])
         ) if self.agent_id != "professor" else "(Your own suggestions)"
-        
+
         engineer_suggestions = self._format_suggestions_list(
             all_suggestions.get("engineer", [])
         ) if self.agent_id != "engineer" else "(Your own suggestions)"
-        
+
         # Load discussion behavior prompt
         base_dir = Path(__file__).parent.parent.parent
         discussion_prompt_path = base_dir / "prompts/experts/discussion-behavior.md"
-        
+
         if discussion_prompt_path.exists():
             discussion_template = discussion_prompt_path.read_text(encoding="utf-8")
         else:
             discussion_template = self.behavior_prompt
-        
+
         # Prepare focus reminder based on expert type
         focus_reminder = f"Focus areas: {', '.join(self.focus_areas)}"
-        
+
         return {
             "phase": "Full Discussion",
             "round_number": 2,
@@ -259,10 +466,11 @@ Remember: Only suggestions with majority support will be implemented."""
             "architect_suggestions": architect_suggestions,
             "professor_suggestions": professor_suggestions,
             "engineer_suggestions": engineer_suggestions,
-            "baseline_markmap": baseline_markmap,
+            "baseline_markmap": relevant_baseline,
             "expert_name": self.name,
             "expert_focus_reminder": focus_reminder,
             "_discussion_template": discussion_template,
+            "_baseline_is_full": is_full,  # For debugging/logging
         }
     
     def _format_ontology(self, ontology: dict[str, Any]) -> str:
@@ -283,24 +491,135 @@ Remember: Only suggestions with majority support will be implemented."""
         
         return "\n".join(lines)
     
-    def _format_problems(self, problems: dict[str, Any]) -> str:
-        """Format problems for prompt."""
+    def _extract_problem_ids_from_baseline(self, baseline: str) -> set[str]:
+        """
+        Extract LeetCode problem IDs mentioned in the baseline markmap.
+
+        Matches patterns like:
+        - LeetCode 3
+        - LeetCode 76
+        - [LeetCode 3 - Title](url)
+        """
+        import re
+        # Match "LeetCode" followed by a number
+        matches = re.findall(r'LeetCode\s+(\d+)', baseline, re.IGNORECASE)
+        return set(matches)
+
+    def _format_problems_tiered(
+        self,
+        problems: dict[str, Any],
+        baseline: str,
+    ) -> str:
+        """
+        Format problems with tiered detail levels to save tokens.
+
+        Tier 1: Problems in baseline → Full table (ID, Title, Difficulty, Patterns)
+        Tier 2: Other solved problems → Compact (ID + Difficulty)
+        Tier 3: Unsolved problems → ID list only
+
+        This preserves full context for problems experts will discuss,
+        while reducing token usage for peripheral data.
+        """
         if not problems:
             return "No problem data available."
-        
+
+        baseline_ids = self._extract_problem_ids_from_baseline(baseline)
+
+        tier1_problems = []  # In baseline
+        tier2_problems = []  # Solved, not in baseline
+        tier3_ids = []       # Unsolved
+
+        for key, problem in problems.items():
+            if not isinstance(problem, dict):
+                continue
+
+            pid = str(problem.get("id", key))
+            # Normalize ID (remove leading zeros for comparison)
+            pid_normalized = pid.lstrip("0") or "0"
+
+            # Check if has solution
+            files = problem.get("files", {})
+            has_solution = bool(files.get("solution"))
+
+            if pid_normalized in baseline_ids or pid in baseline_ids:
+                tier1_problems.append(problem)
+            elif has_solution:
+                tier2_problems.append(problem)
+            else:
+                tier3_ids.append(pid)
+
+        lines = []
+
+        # Tier 1: Full table for baseline problems
+        if tier1_problems:
+            lines.append("**Tier 1 — Problems in baseline (full detail):**")
+            lines.append("| ID | Title | Difficulty | Patterns |")
+            lines.append("|---|---|---|---|")
+            for p in sorted(tier1_problems, key=lambda x: str(x.get("id", ""))):
+                pid = p.get("id", "?")
+                title = p.get("title", "Unknown")[:40]
+                diff = p.get("difficulty", "?")
+                patterns = ", ".join(p.get("patterns", [])[:3])
+                lines.append(f"| {pid} | {title} | {diff} | {patterns} |")
+            lines.append("")
+
+        # Tier 2: Compact format for other solved problems
+        if tier2_problems:
+            lines.append("**Tier 2 — Other solved problems (compact):**")
+            # Group by difficulty for readability
+            by_diff = {"easy": [], "medium": [], "hard": []}
+            for p in tier2_problems:
+                diff = p.get("difficulty", "medium").lower()
+                pid = p.get("id", "?")
+                if diff in by_diff:
+                    by_diff[diff].append(pid)
+
+            for diff, pids in by_diff.items():
+                if pids:
+                    lines.append(f"- {diff.upper()}: {', '.join(sorted(pids)[:20])}")
+                    if len(pids) > 20:
+                        lines.append(f"  (+{len(pids) - 20} more)")
+            lines.append("")
+
+        # Tier 3: ID list only for unsolved
+        if tier3_ids:
+            lines.append(f"**Tier 3 — Unsolved ({len(tier3_ids)} problems):**")
+            lines.append(f"IDs: {', '.join(sorted(tier3_ids)[:30])}")
+            if len(tier3_ids) > 30:
+                lines.append(f"(+{len(tier3_ids) - 30} more)")
+
+        # Summary
+        lines.insert(0, f"*Problem data: {len(tier1_problems)} in baseline, {len(tier2_problems)} solved, {len(tier3_ids)} unsolved*\n")
+
+        return "\n".join(lines)
+
+    def _format_problems(self, problems: dict[str, Any], baseline: str = "") -> str:
+        """
+        Format problems for prompt.
+
+        If baseline is provided, uses tiered formatting to save tokens.
+        Otherwise falls back to simple table format.
+        """
+        if baseline:
+            return self._format_problems_tiered(problems, baseline)
+
+        # Fallback: simple table (for backward compatibility)
+        if not problems:
+            return "No problem data available."
+
         lines = ["| ID | Title | Difficulty | Patterns |", "|---|---|---|---|"]
-        
-        for key, problem in list(problems.items())[:50]:  # Limit for tokens
+
+        for key, problem in list(problems.items())[:50]:
             if isinstance(problem, dict):
                 pid = problem.get("id", key)
                 title = problem.get("title", "Unknown")[:40]
                 diff = problem.get("difficulty", "?")
                 patterns = ", ".join(problem.get("patterns", [])[:3])
                 lines.append(f"| {pid} | {title} | {diff} | {patterns} |")
-        
+
         if len(problems) > 50:
             lines.append(f"| ... | ({len(problems) - 50} more problems) | | |")
-        
+
         return "\n".join(lines)
     
     def _format_suggestions_list(self, suggestions: list[Suggestion]) -> str:
