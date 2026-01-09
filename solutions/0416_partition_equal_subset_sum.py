@@ -22,6 +22,24 @@ SOLUTIONS = {
         "complexity": "O(n * target) time, O(target) space",
         "description": "0/1 Knapsack boolean DP with backward iteration",
     },
+    "dp_1d": {
+        "class": "SolutionDP",
+        "method": "canPartition",
+        "complexity": "O(n * target) time, O(target) space",
+        "description": "Space-optimized 1D DP, canonical 0/1 knapsack",
+    },
+    "dp_2d": {
+        "class": "SolutionDP2D",
+        "method": "canPartition",
+        "complexity": "O(n * target) time, O(n * target) space",
+        "description": "Full 2D DP table, easier to understand",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "canPartition",
+        "complexity": "O(n * target) time, O(n * target) space",
+        "description": "Top-down recursive DP with memoization",
+    },
 }
 
 
@@ -102,6 +120,99 @@ class SolutionDP:
                 dp[s] = dp[s] or dp[s - num]
 
         return dp[target]
+
+
+class SolutionDP2D:
+    """
+    Full 2D DP table for 0/1 Knapsack.
+
+    dp[i][s] = True if we can achieve sum s using first i numbers.
+    More space but easier to understand and debug.
+    """
+
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        Determine if array can be partitioned using 2D DP table.
+
+        Core insight: Same as 1D but explicitly track which items are considered.
+        dp[i][s] = dp[i-1][s] (skip nums[i-1]) OR dp[i-1][s-nums[i-1]] (take it).
+
+        Args:
+            nums: Array of positive integers
+
+        Returns:
+            True if equal partition exists
+        """
+        total = sum(nums)
+        if total % 2 != 0:
+            return False
+
+        target = total // 2
+        n = len(nums)
+
+        # dp[i][s] = can we make sum s using first i items?
+        dp = [[False] * (target + 1) for _ in range(n + 1)]
+
+        # Base case: sum 0 is always achievable (empty subset)
+        for i in range(n + 1):
+            dp[i][0] = True
+
+        for i in range(1, n + 1):
+            num = nums[i - 1]
+            for s in range(target + 1):
+                # Option 1: don't take current number
+                dp[i][s] = dp[i - 1][s]
+                # Option 2: take current number (if possible)
+                if s >= num:
+                    dp[i][s] = dp[i][s] or dp[i - 1][s - num]
+
+        return dp[n][target]
+
+
+class SolutionMemoization:
+    """
+    Top-down recursive DP with memoization.
+
+    More intuitive: directly models the decision at each step.
+    """
+
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        Determine if array can be partitioned using top-down memoization.
+
+        Core insight: At each index, decide to include or exclude the number.
+        Memoize (index, remaining_sum) pairs to avoid recomputation.
+
+        Args:
+            nums: Array of positive integers
+
+        Returns:
+            True if equal partition exists
+        """
+        total = sum(nums)
+        if total % 2 != 0:
+            return False
+
+        target = total // 2
+        memo = {}
+
+        def dp(index: int, remaining: int) -> bool:
+            """Can we make 'remaining' sum using nums[index:]?"""
+            if remaining == 0:
+                return True
+            if index >= len(nums) or remaining < 0:
+                return False
+
+            if (index, remaining) in memo:
+                return memo[(index, remaining)]
+
+            # Try including or excluding current number
+            result = dp(index + 1, remaining - nums[index]) or dp(index + 1, remaining)
+
+            memo[(index, remaining)] = result
+            return result
+
+        return dp(0, target)
 
 
 def solve():
