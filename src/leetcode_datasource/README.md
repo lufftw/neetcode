@@ -66,8 +66,24 @@ leetcode_datasource/
 | Direction | Package | Purpose |
 |-----------|---------|---------|
 | Uses → | (stdlib only) | No package dependencies |
+| Optional → | `leetscrape` | Network fetcher (pip install leetscrape) |
 
 > ❗ **Do NOT list tools here.** Tools depend on packages, not vice versa.
+
+## Related Packages
+
+| Package | Relationship |
+|---------|--------------|
+| `codegen` | Consumes this package for problem metadata |
+| `practice_workspace` | No direct dependency |
+
+## Related Tools
+
+| Tool | Relationship |
+|------|--------------|
+| `tools/leetcode-api/` | Legacy API layer (uses SQLite cache) |
+| `tools/docstring/` | HTML parser for docstrings (consumes this package) |
+| `tools/review-code/` | Docstring fixer (consumes this package) |
 
 ## Usage
 

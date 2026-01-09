@@ -39,6 +39,9 @@ python -m codegen new <problem_id> --with-tests
 # Generate with auto-inferred solve()
 python -m codegen new <problem_id> --solve-mode infer
 
+# Generate with tiered solve() for tree/linked list problems
+python -m codegen new <problem_id> --solve-mode tiered
+
 # Generate practice skeleton
 python -m codegen practice <problem_id>
 
@@ -50,6 +53,14 @@ python -m codegen check --all
 python -m codegen migrate <problem_id>
 python -m codegen migrate --all --dry-run
 ```
+
+### Solve Mode Options
+
+| Mode | Description |
+|------|-------------|
+| `placeholder` | Generate TODO placeholder (default) |
+| `infer` | Auto-generate based on method signature |
+| `tiered` | Config-based generation for tree/linked list problems |
 
 ## Public API
 
@@ -77,6 +88,7 @@ python -m codegen migrate --all --dry-run
 ```
 codegen/
 ├── __init__.py              # Public API re-exports
+├── __main__.py              # CLI entry point
 ├── cli.py                   # CLI: new / practice / check / migrate
 ├── checker.py               # Test consistency checker
 ├── analyzer.py              # Mismatch analysis
@@ -90,7 +102,11 @@ codegen/
 │   ├── io_schema.py         # IO format inference
 │   ├── example_parser.py    # HTML example extraction
 │   ├── solve_generator.py   # solve() auto-generation
+│   ├── tiered_solve_generator.py  # Tiered solve() for trees/lists
 │   ├── test_generator.py    # Test file generation
+│   ├── problem_support.py   # Problem-specific support detection
+│   ├── catalog/             # Problem catalog data
+│   │   └── __init__.py
 │   └── helpers/             # Helper utilities
 │       ├── __init__.py
 │       ├── catalog.py       # Canonical definitions
@@ -113,6 +129,13 @@ codegen/
 | Uses → | `practice_workspace` | History management (save_to_history) |
 
 > ❗ **Do NOT list tools here.** Tools depend on packages, not vice versa.
+
+## Related Packages
+
+| Package | Relationship |
+|---------|--------------|
+| `leetcode_datasource` | Provides problem data for skeleton generation |
+| `practice_workspace` | Receives history save calls from practice generator |
 
 ## Usage
 

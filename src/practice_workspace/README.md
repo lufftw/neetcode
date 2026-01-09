@@ -55,6 +55,13 @@ practice_workspace/
 
 > ❗ **Do NOT list tools here.** Tools depend on packages, not vice versa.
 
+## Related Packages
+
+| Package | Relationship |
+|---------|--------------|
+| `codegen` | Generates practice skeletons, calls `save_to_history()` |
+| `leetcode_datasource` | No direct dependency |
+
 ## Usage
 
 ```python
