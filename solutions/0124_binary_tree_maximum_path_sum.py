@@ -63,6 +63,24 @@ SOLUTIONS = {
         "api_kernels": ["TreeTraversalDFS"],
         "patterns": ["tree_path_sum"],
     },
+    "instance_var": {
+        "class": "Solution",
+        "method": "maxPathSum",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Use instance variable to track global max",
+    },
+    "nonlocal": {
+        "class": "SolutionNonlocal",
+        "method": "maxPathSum",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Use nonlocal variable in closure for global max",
+    },
+    "tuple_return": {
+        "class": "SolutionTuple",
+        "method": "maxPathSum",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Return tuple (contribution, max_path) to avoid mutable state",
+    },
 }
 
 
@@ -108,6 +126,90 @@ class Solution:
 
         max_contribution(root)
         return self.global_max
+
+
+# ============================================================================
+# Solution 2: Nonlocal Variable Pattern
+# ============================================================================
+class SolutionNonlocal:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        """
+        Find maximum path sum using nonlocal variable.
+
+        Same algorithm as Solution but uses closure with nonlocal
+        instead of instance variable. More Pythonic for some.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Maximum sum of any path
+        """
+        max_sum = float('-inf')
+
+        def dfs(node: Optional[TreeNode]) -> int:
+            nonlocal max_sum
+            if not node:
+                return 0
+
+            left = max(0, dfs(node.left))
+            right = max(0, dfs(node.right))
+
+            # Path with this node as apex
+            max_sum = max(max_sum, node.val + left + right)
+
+            # Return contribution to parent (single branch only)
+            return node.val + max(left, right)
+
+        dfs(root)
+        return max_sum
+
+
+# ============================================================================
+# Solution 3: Tuple Return Pattern (No Mutable State)
+# ============================================================================
+class SolutionTuple:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        """
+        Find maximum path sum using pure functional approach.
+
+        Returns tuple (max_contribution, max_path_in_subtree) to avoid
+        mutable state. More suitable for parallel/distributed settings.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Maximum sum of any path
+        """
+        def dfs(node: Optional[TreeNode]) -> tuple[int, int]:
+            """
+            Returns:
+                (max_contribution_to_parent, max_path_sum_in_subtree)
+            """
+            if not node:
+                return (0, float('-inf'))
+
+            left_contrib, left_max = dfs(node.left)
+            right_contrib, right_max = dfs(node.right)
+
+            # Prune negative contributions
+            left_contrib = max(0, left_contrib)
+            right_contrib = max(0, right_contrib)
+
+            # Path with this node as apex
+            path_through_here = node.val + left_contrib + right_contrib
+
+            # Max path in this subtree
+            subtree_max = max(left_max, right_max, path_through_here)
+
+            # Contribution to parent (single branch)
+            contribution = node.val + max(left_contrib, right_contrib)
+
+            return (contribution, subtree_max)
+
+        _, result = dfs(root)
+        return result
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
