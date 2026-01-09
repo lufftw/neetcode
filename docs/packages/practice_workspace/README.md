@@ -130,7 +130,14 @@ practices/
 | Module | Relationship |
 |--------|--------------|
 | `codegen` | **Used by** - Calls `save_to_history()` before regenerating |
+| `leetcode_datasource` | No direct dependency |
 | `runner` | No direct dependency |
+
+### Related Packages
+
+| Package | Relationship |
+|---------|--------------|
+| `codegen` | Generates practice skeletons, calls `save_to_history()` |
 | `leetcode_datasource` | No direct dependency |
 
 ### Dependency Direction

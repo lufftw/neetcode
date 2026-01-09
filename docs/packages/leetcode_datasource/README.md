@@ -118,8 +118,16 @@ High-level summary of public APIs. For complete API reference, see [Package READ
 | Module | Relationship |
 |--------|--------------|
 | `codegen` | **Used by** - Fetches problem metadata for generation |
-| `tools/leetcode-api` | **Used by** - CLI wrapper (future migration) |
+| `practice_workspace` | No direct dependency |
 | `runner` | No direct dependency |
+
+### Related Tools
+
+| Tool | Relationship |
+|------|--------------|
+| `tools/leetcode-api/` | Legacy API layer (uses SQLite cache) |
+| `tools/docstring/` | HTML parser for docstrings (consumes this package) |
+| `tools/review-code/` | Docstring fixer (consumes this package) |
 
 ---
 
