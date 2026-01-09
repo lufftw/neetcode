@@ -946,3 +946,22 @@ versioning:
 
 見 `src/consensus.py`（程式碼，非 prompt）
 
+## Appendix D: Token Optimization
+
+見 `docs/token-optimization.md`
+
+Token 優化的核心原則：
+
+1. **優化「重複與無用」，而非「理解與推理」**
+2. **不假設 LLM 有跨輪記憶**（Stateless）
+3. **保護 Serendipity**（意外發現的空間）
+4. **Why 欄位是討論的推理主幹，不可刪除**
+
+實施的三階段優化：
+
+| Phase | 優化項 | 節省 |
+|-------|--------|------|
+| Phase 1 | 精簡 phase_instructions | ~210 tokens/run |
+| Phase 2 | 問題資料分層傳遞 | ~26% |
+| Phase 3 | Round 2 只傳相關 baseline | ~46% |
+
