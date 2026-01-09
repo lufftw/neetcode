@@ -80,6 +80,18 @@ SOLUTIONS = {
         "api_kernels": ["IntervalMerge"],
         "patterns": ["interval_merge"],
     },
+    "sort_merge": {
+        "class": "Solution",
+        "method": "merge",
+        "complexity": "O(n log n) time, O(n) space",
+        "description": "Optimal: sort then linear merge",
+    },
+    "graph_components": {
+        "class": "SolutionGraph",
+        "method": "merge",
+        "complexity": "O(n²) time, O(n²) space",
+        "description": "Graph connected components approach",
+    },
 }
 
 
@@ -117,6 +129,72 @@ class Solution:
                 merged.append(interval)
 
         return merged
+
+
+# ============================================
+# Solution 2: Graph Connected Components
+# Time: O(n²), Space: O(n²)
+#   - Build overlap graph: edge between overlapping intervals
+#   - Find connected components
+#   - Each component merges into one interval
+# ============================================
+class SolutionGraph:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        """
+        Merge intervals by finding connected components in overlap graph.
+
+        Core insight: Two intervals that overlap (directly or transitively)
+        must merge. Build a graph where edges connect overlapping intervals,
+        then find connected components. Each component becomes one merged interval.
+
+        This is O(n²) because we check all pairs, but demonstrates the
+        graph perspective on interval merging.
+
+        Args:
+            intervals: List of [start, end] intervals
+
+        Returns:
+            Merged non-overlapping intervals
+        """
+        if not intervals:
+            return []
+
+        n = len(intervals)
+
+        def overlaps(a: List[int], b: List[int]) -> bool:
+            """Check if two intervals overlap."""
+            return a[0] <= b[1] and b[0] <= a[1]
+
+        # Build adjacency list for overlap graph
+        graph = [[] for _ in range(n)]
+        for i in range(n):
+            for j in range(i + 1, n):
+                if overlaps(intervals[i], intervals[j]):
+                    graph[i].append(j)
+                    graph[j].append(i)
+
+        # Find connected components using DFS
+        visited = [False] * n
+        result = []
+
+        def dfs(node: int, component: List[int]) -> None:
+            visited[node] = True
+            component.append(node)
+            for neighbor in graph[node]:
+                if not visited[neighbor]:
+                    dfs(neighbor, component)
+
+        for i in range(n):
+            if not visited[i]:
+                component: List[int] = []
+                dfs(i, component)
+
+                # Merge all intervals in this component
+                min_start = min(intervals[idx][0] for idx in component)
+                max_end = max(intervals[idx][1] for idx in component)
+                result.append([min_start, max_end])
+
+        return result
 
 
 def solve():

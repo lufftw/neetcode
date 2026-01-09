@@ -78,6 +78,18 @@ SOLUTIONS = {
         "complexity": "O(log n) time, O(1) space",
         "description": "Binary search with slope direction invariant",
     },
+    "binary_search": {
+        "class": "Solution",
+        "method": "findPeakElement",
+        "complexity": "O(log n) time, O(1) space",
+        "description": "Optimal: slope-based binary search",
+    },
+    "linear_scan": {
+        "class": "SolutionLinear",
+        "method": "findPeakElement",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Baseline: find first descent",
+    },
 }
 
 
@@ -145,6 +157,37 @@ class Solution:
         # left == right: only one candidate remains
         # This element must be a peak due to our invariant
         return left
+
+
+# ============================================
+# Solution 2: Linear Scan
+# Time: O(n), Space: O(1)
+# ============================================
+class SolutionLinear:
+    def findPeakElement(self, nums: List[int]) -> int:
+        """
+        Find a peak element using linear scan.
+
+        Core insight: Walk from left. Since nums[-1] = -infinity, we start
+        ascending. The first index where nums[i] > nums[i+1] is a peak.
+        If we reach the end, the last element is a peak (since nums[n] = -infinity).
+
+        This is O(n) baseline showing why binary search is better.
+
+        Args:
+            nums: Array where adjacent elements differ
+
+        Returns:
+            Index of any peak element
+        """
+        n = len(nums)
+
+        for i in range(n - 1):
+            if nums[i] > nums[i + 1]:
+                return i
+
+        # If we never found a descent, last element is the peak
+        return n - 1
 
 
 # ============================================

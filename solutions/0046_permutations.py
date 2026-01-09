@@ -74,6 +74,18 @@ SOLUTIONS = {
         "complexity": "O(n! × n) time, O(n) space",
         "description": "Backtracking with used array",
     },
+    "backtracking": {
+        "class": "Solution",
+        "method": "permute",
+        "complexity": "O(n! × n) time, O(n) space",
+        "description": "Backtracking with used boolean array",
+    },
+    "swap": {
+        "class": "SolutionSwap",
+        "method": "permute",
+        "complexity": "O(n! × n) time, O(n) space",
+        "description": "In-place swap-based backtracking",
+    },
 }
 
 
@@ -147,6 +159,53 @@ class Solution:
                 used[i] = False
         
         backtrack()
+        return results
+
+
+# ============================================================================
+# Solution 2: Swap-Based Backtracking
+# Time: O(n! × n), Space: O(n) for recursion
+#   - Generate permutations by swapping elements in place
+#   - At position i, swap nums[i] with each element from i to n-1
+# ============================================================================
+class SolutionSwap:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        Generate permutations using in-place swapping.
+
+        Core insight: Instead of tracking used elements, fix positions
+        left-to-right. At position i, try every element from i to n-1
+        by swapping it into position i, then recurse on i+1.
+
+        This avoids extra space for the 'used' array - the array itself
+        tracks what's been placed by partition: nums[0..i-1] are fixed,
+        nums[i..n-1] are candidates for position i.
+
+        Args:
+            nums: Array of distinct integers
+
+        Returns:
+            All permutations
+        """
+        results: List[List[int]] = []
+        n = len(nums)
+
+        def backtrack(start: int) -> None:
+            if start == n:
+                results.append(nums[:])
+                return
+
+            for i in range(start, n):
+                # Swap nums[start] with nums[i]
+                nums[start], nums[i] = nums[i], nums[start]
+
+                # Recurse on next position
+                backtrack(start + 1)
+
+                # Swap back (backtrack)
+                nums[start], nums[i] = nums[i], nums[start]
+
+        backtrack(0)
         return results
 
 

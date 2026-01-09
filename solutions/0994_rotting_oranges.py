@@ -111,6 +111,18 @@ SOLUTIONS = {
         "api_kernels": ["GridBFSMultiSource"],
         "patterns": ["graph_bfs_multi_source"],
     },
+    "bfs": {
+        "class": "Solution",
+        "method": "orangesRotting",
+        "complexity": "O(m*n) time, O(m*n) space",
+        "description": "Multi-source BFS - canonical approach",
+    },
+    "simulation": {
+        "class": "SolutionSimulation",
+        "method": "orangesRotting",
+        "complexity": "O((m*n)²) time, O(m*n) space",
+        "description": "Simulation: scan grid each minute",
+    },
 }
 
 
@@ -170,6 +182,69 @@ class Solution:
             minutes += 1
 
         # If there are still fresh oranges, it's impossible to rot them all
+        return minutes if fresh == 0 else -1
+
+
+# ============================================
+# Solution 2: Simulation
+# Time: O((m*n)²), Space: O(m*n)
+# ============================================
+class SolutionSimulation:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        """
+        Simulate rotting process minute by minute.
+
+        Each minute, scan entire grid for fresh oranges adjacent to rotten
+        ones and mark them for rotting. This is less efficient than BFS
+        but more intuitive as direct simulation.
+
+        O((m*n)²) because we may scan the grid O(m*n) times.
+
+        Args:
+            grid: 2D grid with 0=empty, 1=fresh, 2=rotten
+
+        Returns:
+            Minutes until all oranges rot, or -1 if impossible
+        """
+        import copy
+
+        rows, cols = len(grid), len(grid[0])
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+        # Count fresh oranges
+        def count_fresh() -> int:
+            return sum(1 for r in range(rows) for c in range(cols) if grid[r][c] == 1)
+
+        fresh = count_fresh()
+        if fresh == 0:
+            return 0
+
+        minutes = 0
+
+        while True:
+            # Find all fresh oranges that will rot this minute
+            to_rot = []
+            for r in range(rows):
+                for c in range(cols):
+                    if grid[r][c] == 1:  # Fresh orange
+                        # Check if adjacent to rotten
+                        for dr, dc in directions:
+                            nr, nc = r + dr, c + dc
+                            if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 2:
+                                to_rot.append((r, c))
+                                break
+
+            # If no oranges will rot, we're done
+            if not to_rot:
+                break
+
+            # Rot the oranges
+            for r, c in to_rot:
+                grid[r][c] = 2
+                fresh -= 1
+
+            minutes += 1
+
         return minutes if fresh == 0 else -1
 
 

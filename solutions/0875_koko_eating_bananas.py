@@ -85,6 +85,18 @@ SOLUTIONS = {
         "complexity": "O(n log m) time, O(1) space, where m = max(piles)",
         "description": "Binary search on answer space (minimum feasible speed)",
     },
+    "binary_search": {
+        "class": "Solution",
+        "method": "minEatingSpeed",
+        "complexity": "O(n log m) time, O(1) space",
+        "description": "Optimal: binary search on answer space",
+    },
+    "linear_search": {
+        "class": "SolutionLinear",
+        "method": "minEatingSpeed",
+        "complexity": "O(n × m) time, O(1) space",
+        "description": "Baseline: try speeds 1, 2, 3, ... until feasible",
+    },
 }
 
 
@@ -163,6 +175,36 @@ class Solution:
                 lo = mid + 1
 
         return lo
+
+
+# ============================================
+# Solution 2: Linear Search (Baseline)
+# Time: O(n × m), Space: O(1)
+# ============================================
+class SolutionLinear:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        """
+        Find minimum eating speed using linear search.
+
+        Try speeds 1, 2, 3, ... until we find one that works. This is the
+        O(n × m) baseline that demonstrates why binary search on answer
+        space is important - we improve from O(n × m) to O(n log m).
+
+        Args:
+            piles: Array of banana pile sizes
+            h: Available hours
+
+        Returns:
+            Minimum eating speed
+        """
+        def hours_needed(speed: int) -> int:
+            return sum((pile + speed - 1) // speed for pile in piles)
+
+        speed = 1
+        while hours_needed(speed) > h:
+            speed += 1
+
+        return speed
 
 
 # ============================================

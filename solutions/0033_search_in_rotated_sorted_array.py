@@ -80,6 +80,18 @@ SOLUTIONS = {
         "complexity": "O(log n) time, O(1) space",
         "description": "Single-pass binary search with sorted-half detection",
     },
+    "binary_search": {
+        "class": "Solution",
+        "method": "search",
+        "complexity": "O(log n) time, O(1) space",
+        "description": "Optimal: sorted-half detection binary search",
+    },
+    "linear_scan": {
+        "class": "SolutionLinear",
+        "method": "search",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Baseline: simple linear scan",
+    },
 }
 
 
@@ -156,6 +168,32 @@ class Solution:
                     # Target must be in the left half
                     right = mid - 1
 
+        return -1
+
+
+# ============================================
+# Solution 2: Linear Scan (Baseline)
+# Time: O(n), Space: O(1)
+# ============================================
+class SolutionLinear:
+    def search(self, nums: List[int], target: int) -> int:
+        """
+        Search for target using simple linear scan.
+
+        This is the O(n) baseline approach that ignores the rotated sorted
+        property. It demonstrates why binary search optimization matters -
+        we go from O(n) to O(log n).
+
+        Args:
+            nums: Rotated sorted array
+            target: Value to find
+
+        Returns:
+            Index of target, or -1 if not found
+        """
+        for i, num in enumerate(nums):
+            if num == target:
+                return i
         return -1
 
 
