@@ -53,33 +53,33 @@ python runner/test_runner.py 0215_kth_largest --all --benchmark
 ╔════════════════════════════════════════════════════╗
 ║ 0215_kth_largest_element_in_an_array - Performance ║
 ╠════════════════════════════════════════════════════╣
-║ default:     █████████████████░░░  170ms           ║
-║ quickselect: ███████████████████░  191ms           ║
-║ heap:        ████████████████████  199ms           ║
+║ default:     ████████████████████  114ms           ║
+║ quickselect: ████████████████░░░░   96ms           ║
+║ heap:        ██████████████████░░  107ms           ║
 ╚════════════════════════════════════════════════════╝
 
-Method       Avg Time   Complexity              Description
------------  ---------  ----------------------  ---------------------------
-default      170.01ms   O(n) avg, O(1) space    Quickselect with random pivot
-quickselect  191.13ms   O(n) avg, O(1) space    Quickselect with random pivot
-heap         199.22ms   O(n log k), O(k) space  Min-heap of size k
+Method         Avg Time   Pass Rate  Complexity
+-----------  ----------  ----------  --------------------
+default        113.51ms         3/3  O(n) average time, O(1) space
+quickselect     96.06ms         3/3  O(n) average time, O(1) space
+heap           107.34ms         3/3  O(n log k) time, O(k) space
 ```
 
-**驗證你的 Big-O 宣稱：**
+**看看演算法複雜度為何重要：**
 
 ```bash
-python runner/test_runner.py 0004_median --estimate
+python runner/test_runner.py 0011_container --all --estimate
 ```
 
-```
-📈 Running complexity estimation...
-   n=   10: 0.0040ms
-   n=  100: 0.0082ms
-   n= 1000: 0.0685ms
+| n | O(n) Two Pointers | O(n²) Brute Force | 加速比 |
+|--:|------------------:|------------------:|-------:|
+| 500 | 0.27ms | 554ms | **2,052x** |
+| 1000 | 0.52ms | 2,544ms | **4,892x** |
+| 5000 | 2.78ms | 68,291ms | **24,565x** |
 
-✅ Estimated: O(log n)
-   Confidence: 0.98
-```
+當 n=5000 時，O(n) 演算法在 **3ms** 內完成，而 O(n²) 需要 **68 秒**。
+
+> 📖 [更多範例與解讀指南 →](docs/runner/README.md#examples-gallery)
 
 **自動儲存失敗案例以便除錯：**
 
@@ -148,14 +148,14 @@ python runner/test_runner.py 0001_two_sum
 
 | 模式 | 直覺 | 模板 | 範例題目 |
 |:-----|:----:|:----:|:---------|
-| Sliding Window | [💡](docs/patterns/sliding_window/intuition.md) | [🛠️](docs/patterns/sliding_window/templates.md) | LC 3, 76, 438 |
-| Two Pointers | [💡](docs/patterns/two_pointers/intuition.md) | [🛠️](docs/patterns/two_pointers/templates.md) | LC 15, 11, 142 |
-| Binary Search | [💡](docs/patterns/binary_search/intuition.md) | [🛠️](docs/patterns/binary_search/templates.md) | LC 33, 34, 875 |
-| Backtracking | [💡](docs/patterns/backtracking_exploration/intuition.md) | [🛠️](docs/patterns/backtracking_exploration/templates.md) | LC 46, 51, 79 |
-| Monotonic Stack | [💡](docs/patterns/monotonic_stack/intuition.md) | [🛠️](docs/patterns/monotonic_stack/templates.md) | LC 84, 739, 42 |
-| Dynamic Programming | [💡](docs/patterns/dp_1d_linear/intuition.md) | [🛠️](docs/patterns/dp_1d_linear/templates.md) | LC 70, 198, 322 |
-| Graph Traversal | [💡](docs/patterns/graph/intuition.md) | [🛠️](docs/patterns/graph/templates.md) | LC 200, 133, 994 |
-| Tree Traversal | [💡](docs/patterns/tree/intuition.md) | [🛠️](docs/patterns/tree/templates.md) | LC 104, 124, 236 |
+| Sliding Window | [💡](docs/patterns/sliding_window/intuition.md) | [🛠️](docs/patterns/sliding_window/templates.md) | LC 3, 76, 209, 239, 340, 438, 567 |
+| Two Pointers | [💡](docs/patterns/two_pointers/intuition.md) | [🛠️](docs/patterns/two_pointers/templates.md) | LC 11, 15, 16, 26, 27, 75, 80, 88, 125, 141, 142, 167, 202, 283, 287, 876, 977 |
+| Binary Search | [💡](docs/patterns/binary_search/intuition.md) | [🛠️](docs/patterns/binary_search/templates.md) | LC 4, 33, 34, 35, 81, 162, 875, 1011 |
+| Backtracking | [💡](docs/patterns/backtracking_exploration/intuition.md) | [🛠️](docs/patterns/backtracking_exploration/templates.md) | LC 39, 40, 46, 47, 51, 52, 77, 78, 79, 90, 93, 131, 216 |
+| Monotonic Stack | [💡](docs/patterns/monotonic_stack/intuition.md) | [🛠️](docs/patterns/monotonic_stack/templates.md) | LC 42, 84, 85, 316, 402, 496, 503, 739, 901, 907 |
+| Dynamic Programming | [💡](docs/patterns/dp_1d_linear/intuition.md) | [🛠️](docs/patterns/dp_1d_linear/templates.md) | LC 70, 72, 121, 198, 213, 322, 416, 494, 516, 518, 746 |
+| Graph Traversal | [💡](docs/patterns/graph/intuition.md) | [🛠️](docs/patterns/graph/templates.md) | LC 133, 200, 207, 210, 286, 417, 542, 547, 743, 785, 787, 802, 841, 994, 1631 |
+| Tree Traversal | [💡](docs/patterns/tree/intuition.md) | [🛠️](docs/patterns/tree/templates.md) | LC 94, 102, 104, 110, 124, 337, 543, 968 |
 
 **[查看全部 25+ 模式 →](docs/patterns/README.md)**
 
