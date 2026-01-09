@@ -47,36 +47,52 @@ def load_ontology() -> OntologyData:
 
 
 def load_problems() -> dict[str, ProblemData]:
-    """Load all problem metadata."""
+    """Load all problem metadata.
+
+    Supports two TOML formats:
+    - Legacy format: fields at top level (id, title, etc.)
+    - New format: fields under [problem] section
+    """
     problems = {}
     if not META_PROBLEMS_DIR.exists():
         return problems
 
     for path in META_PROBLEMS_DIR.glob("*.toml"):
         parsed = parse_toml_simple(path.read_text(encoding="utf-8"))
-        files = parsed.get("files", {})
+
+        # Support both formats: [problem] section or top-level fields
+        if "problem" in parsed:
+            # New format: fields under [problem] section
+            problem_data = parsed["problem"]
+            solution_data = parsed.get("solution", {})
+            files = parsed.get("files", {})
+        else:
+            # Legacy format: fields at top level
+            problem_data = parsed
+            solution_data = parsed
+            files = parsed.get("files", {})
         
         problem = ProblemData(
-            id=parsed.get("id", ""),
-            title=parsed.get("title", ""),
-            slug=parsed.get("slug", ""),
-            leetcode_id=parsed.get("leetcode_id", 0),
-            url=parsed.get("url", ""),
-            difficulty=parsed.get("difficulty", ""),
-            topics=parsed.get("topics", []),
-            companies=parsed.get("companies", []),
-            roadmaps=parsed.get("roadmaps", []),
-            api_kernels=parsed.get("api_kernels", []),
-            patterns=parsed.get("patterns", []),
-            families=parsed.get("families", []),
-            data_structures=parsed.get("data_structures", []),
-            algorithms=parsed.get("algorithms", []),
-            related_problems=parsed.get("related_problems", []),
-            solutions=parsed.get("solutions", []),
+            id=problem_data.get("id", ""),
+            title=problem_data.get("title", ""),
+            slug=problem_data.get("slug", ""),
+            leetcode_id=problem_data.get("leetcode_id", 0),
+            url=problem_data.get("url", ""),
+            difficulty=problem_data.get("difficulty", ""),
+            topics=problem_data.get("topics", problem_data.get("tags", [])),
+            companies=problem_data.get("companies", []),
+            roadmaps=problem_data.get("roadmaps", []),
+            api_kernels=solution_data.get("api_kernels", [solution_data.get("api_kernel", "")] if solution_data.get("api_kernel") else []),
+            patterns=solution_data.get("patterns", [solution_data.get("pattern", "")] if solution_data.get("pattern") else []),
+            families=problem_data.get("families", []),
+            data_structures=problem_data.get("data_structures", []),
+            algorithms=problem_data.get("algorithms", []),
+            related_problems=problem_data.get("related_problems", []),
+            solutions=problem_data.get("solutions", []),
             solution_file=files.get("solution", "") if isinstance(files, dict) else "",
             generator_file=files.get("generator", "") if isinstance(files, dict) else "",
         )
-        
+
         role = parsed.get("pattern_role", {})
         if role:
             problem.is_base_template = role.get("is_base_template", False)
