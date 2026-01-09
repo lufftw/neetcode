@@ -32,6 +32,7 @@ This document defines the organization of the `docs/` directory, including folde
 | **How-to Guides** | `docs/guides/` | Step-by-step tutorials |
 | **Contributor Docs** | `docs/contributors/` | Development guidelines |
 | **Development in Progress** | `docs/in-progress/` | Feature specifications and design docs for ongoing development |
+| **Backlog** | `docs/backlog/` | Technical debt, known issues, and gaps pending resolution |
 | **Content** | `docs/patterns/`, `docs/mindmaps/` | User-facing educational content |
 | **Tools Documentation** | `docs/tools/` | Tool-specific documentation |
 
@@ -118,6 +119,11 @@ docs/
 │       ├── specification.md              # Feature requirements
 │       ├── design.md                     # Design documentation (optional)
 │       └── checklist.md                  # Acceptance checklist
+│
+├── backlog/                              # ═══ Backlog (Persistent) ═══
+│   ├── README.md                         # Directory purpose and workflow
+│   ├── missing-test-files.md             # Solutions without test files
+│   └── environment-issues.md             # Known environment problems
 │
 ├── runner/                               # ═══ Runner Module ═══
 │   ├── README.md                         # Runner specification
@@ -246,7 +252,35 @@ docs/in-progress/new-problem-tests-autogen/
 
 **Note:** Not all features require all three files. For example, `new-problem-tests-autogen` currently only contains `specification.md` with acceptance criteria embedded within it.
 
-### 3.7 Package Folders (`docs/packages/<pkg>/`, `docs/runner/`)
+### 3.7 `backlog/` — Technical Debt and Known Issues
+
+Persistent documentation for issues, gaps, and technical debt that are acknowledged but not actively being worked on.
+
+| Purpose | Details |
+|---------|---------|
+| **Persistent storage** | Unlike `in-progress/`, documents persist until items are resolved |
+| **Coverage tracking** | Missing test files, incomplete pattern coverage |
+| **Known issues** | Environment problems, workarounds |
+| **Technical debt** | Items to clean up or improve |
+
+**Difference from `in-progress/`:**
+
+| Aspect | `in-progress/` | `backlog/` |
+|--------|----------------|------------|
+| **Content** | Features under active development | Issues/gaps pending resolution |
+| **Lifecycle** | Removed after completion | Persists until resolved |
+| **Structure** | Feature directories with specs | Topic-based documents |
+| **Priority** | Active work | Not actively being worked on |
+
+**Example structure:**
+```
+docs/backlog/
+├── README.md                      # Directory purpose
+├── missing-test-files.md          # Solutions without tests
+└── environment-issues.md          # Environment setup problems
+```
+
+### 3.8 Package Folders (`docs/packages/<pkg>/`, `docs/runner/`)
 
 System-level documentation for core modules. See [Package Documentation Strategy](./package-documentation-strategy.md).
 
@@ -300,6 +334,10 @@ Is it a feature specification/design doc for ongoing development?
 ├── YES → docs/in-progress/<feature-name>/
 └── NO ↓
 
+Is it a known issue, gap, or technical debt (not actively being worked on)?
+├── YES → docs/backlog/
+└── NO ↓
+
 Is it educational content (patterns, mindmaps)?
 ├── YES → docs/patterns/ or docs/mindmaps/
 └── NO ↓
@@ -318,6 +356,7 @@ Is it about a tool?
 | `docs/act-local-github-actions.md` | `docs/guides/act-local-github-actions.md` | How-to guides go in guides/ |
 | `docs/stylesheets/` | `docs/_mkdocs/stylesheets/` | Infrastructure goes in _mkdocs/ |
 | `docs/new-feature-spec.md` | `docs/in-progress/new-feature/specification.md` | Development specs go in in-progress/ |
+| `docs/known-issues.md` | `docs/backlog/environment-issues.md` | Known issues go in backlog/ |
 
 ---
 
