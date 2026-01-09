@@ -56,6 +56,18 @@ SOLUTIONS = {
         "complexity": "O(|s| + |t|) time, O(|t|) space",
         "description": "Sliding window with frequency tracking",
     },
+    "sliding_window": {
+        "class": "Solution",
+        "method": "minWindow",
+        "complexity": "O(|s| + |t|) time, O(|t|) space",
+        "description": "Canonical sliding window with satisfied counter optimization",
+    },
+    "sliding_window_filtered": {
+        "class": "SolutionFiltered",
+        "method": "minWindow",
+        "complexity": "O(|s| + |t|) time, O(|s|) space",
+        "description": "Pre-filter s to only relevant chars, faster when t chars are sparse",
+    },
 }
 
 
@@ -221,6 +233,86 @@ class Solution:
             return ""
         
         return s[min_window_start : min_window_start + min_length]
+
+
+# ============================================================================
+# Solution 2: Sliding Window with Pre-filtering
+# Time: O(|s| + |t|), Space: O(|s|)
+#   - Pre-filter s to only include characters present in t
+#   - Slide window over filtered list (faster when t chars are sparse in s)
+#   - Trade-off: Uses more space but skips irrelevant characters
+# ============================================================================
+
+class SolutionFiltered:
+    def minWindow(self, s: str, t: str) -> str:
+        """
+        Find minimum window using pre-filtered character list.
+
+        Core insight: When t's characters are sparse in s, many iterations
+        are wasted on irrelevant characters. Pre-filter to only positions
+        that matter, then slide window over this compressed representation.
+
+        Trade-off: O(|s|) extra space for filtered list, but potentially
+        faster iteration when len(filtered) << len(s).
+
+        Args:
+            s: Source string to search in
+            t: Target string containing required characters
+
+        Returns:
+            Minimum window substring, or "" if no valid window exists
+        """
+        if not t or not s or len(t) > len(s):
+            return ""
+
+        # Build frequency map of required characters
+        need_frequency: Dict[str, int] = Counter(t)
+
+        # Pre-filter: collect (index, char) for chars that appear in t
+        filtered = [(i, c) for i, c in enumerate(s) if c in need_frequency]
+
+        if len(filtered) < len(t):
+            return ""
+
+        # Sliding window on filtered list
+        have_frequency: Dict[str, int] = {}
+        chars_satisfied = 0
+        chars_required = len(need_frequency)
+
+        min_length = float('inf')
+        min_window_start = 0
+        min_window_end = 0
+
+        left = 0
+
+        for right, (right_idx, char) in enumerate(filtered):
+            # EXPAND: Add character
+            have_frequency[char] = have_frequency.get(char, 0) + 1
+
+            if have_frequency[char] == need_frequency[char]:
+                chars_satisfied += 1
+
+            # CONTRACT: Shrink while valid
+            while chars_satisfied == chars_required:
+                left_idx, left_char = filtered[left]
+
+                # Window in original s is [left_idx, right_idx]
+                window_length = right_idx - left_idx + 1
+                if window_length < min_length:
+                    min_length = window_length
+                    min_window_start = left_idx
+                    min_window_end = right_idx + 1
+
+                have_frequency[left_char] -= 1
+                if have_frequency[left_char] < need_frequency[left_char]:
+                    chars_satisfied -= 1
+
+                left += 1
+
+        if min_length == float('inf'):
+            return ""
+
+        return s[min_window_start:min_window_end]
 
 
 # ============================================================================

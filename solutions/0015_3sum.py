@@ -64,6 +64,12 @@ SOLUTIONS = {
         "complexity": "O(n²) time, O(n) space for set",
         "description": "Sort + two pointers using set for deduplication",
     },
+    "hash": {
+        "class": "SolutionHash",
+        "method": "threeSum",
+        "complexity": "O(n²) time, O(n) space",
+        "description": "Hash-based two-sum for each element, no two-pointer",
+    },
 }
 
 
@@ -278,6 +284,74 @@ class SolutionHashSet:
                     right -= 1
         
         return [list(triplet) for triplet in result_set]
+
+
+# ============================================
+# Solution 3: Hash-based Two-Sum Approach
+# Time: O(n²), Space: O(n)
+#   - For each element, solve two-sum using hash set
+#   - No two-pointer technique, pure hash lookup
+#   - Alternative paradigm: extends Two-Sum pattern
+# ============================================
+class SolutionHash:
+    """
+    Hash-based approach: reduce to Two-Sum for each fixed element.
+
+    Key insight: For each nums[i], find pairs (nums[j], nums[k]) where
+    j > i and nums[j] + nums[k] = -nums[i]. Use hash set for O(1) lookup.
+
+    Trade-off: Same O(n²) time but different paradigm than two-pointer.
+    Useful when array is not sorted or sorting is undesirable.
+    """
+
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        Find all unique triplets using hash-based two-sum.
+
+        Core insight: Fix first element, then solve two-sum on remaining
+        elements using a hash set for complement lookup.
+
+        Args:
+            nums: List of integers
+
+        Returns:
+            List of triplets [a, b, c] where a + b + c = 0
+        """
+        n = len(nums)
+        if n < 3:
+            return []
+
+        # Sort for consistent triplet ordering and deduplication
+        nums.sort()
+        result: List[List[int]] = []
+
+        for i in range(n - 2):
+            # Skip duplicate first elements
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+
+            # Early termination: smallest element > 0
+            if nums[i] > 0:
+                break
+
+            # Two-Sum using hash set
+            target = -nums[i]
+            seen = set()
+
+            j = i + 1
+            while j < n:
+                complement = target - nums[j]
+
+                if complement in seen:
+                    result.append([nums[i], complement, nums[j]])
+                    # Skip duplicates for third element
+                    while j + 1 < n and nums[j] == nums[j + 1]:
+                        j += 1
+
+                seen.add(nums[j])
+                j += 1
+
+        return result
 
 
 # ============================================================================

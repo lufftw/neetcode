@@ -58,6 +58,12 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Two pointers with skip optimization for consecutive smaller heights",
     },
+    "bruteforce": {
+        "class": "SolutionBruteForce",
+        "method": "maxArea",
+        "complexity": "O(n^2) time, O(1) space",
+        "description": "Enumerate all pairs, baseline for correctness reference",
+    },
 }
 
 
@@ -202,6 +208,51 @@ class SolutionTwoPointersOptimized:
                 while left < right and height[right] <= current_right_height:
                     right -= 1
         
+        return max_area
+
+
+# ============================================
+# Solution 3: Brute Force (Baseline)
+# Time: O(n^2), Space: O(1)
+#   - Enumerate all pairs of lines
+#   - Educational: shows why optimization matters
+#   - Use as correctness reference
+# ============================================
+class SolutionBruteForce:
+    """
+    Baseline O(n²) solution: enumerate all pairs.
+
+    Purpose: Establish correctness baseline and demonstrate the optimization
+    gap between brute force and two-pointer approach.
+    """
+
+    def maxArea(self, height: List[int]) -> int:
+        """
+        Find maximum area by checking all pairs of lines.
+
+        Core insight: Area = min(height[i], height[j]) * (j - i).
+        Try all pairs and track maximum.
+
+        Args:
+            height: List of non-negative integers representing line heights
+
+        Returns:
+            Maximum area of water that can be contained
+        """
+        n = len(height)
+        if n < 2:
+            return 0
+
+        max_area = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                # Width is distance between lines
+                width = j - i
+                # Height is limited by shorter line
+                h = min(height[i], height[j])
+                area = width * h
+                max_area = max(max_area, area)
+
         return max_area
 
 

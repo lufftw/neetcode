@@ -102,6 +102,14 @@ SOLUTIONS = {
         "api_kernels": ["GraphDFS"],
         "patterns": ["graph_dfs_connected_components"],
     },
+    "dfs": {
+        "class": "SolutionDFS",
+        "method": "numIslands",
+        "complexity": "O(m*n) time, O(m*n) space",
+        "description": "DFS flood fill, recursive exploration",
+        "api_kernels": ["GraphDFS"],
+        "patterns": ["graph_dfs_connected_components"],
+    },
     "bfs": {
         "class": "SolutionBFS",
         "method": "numIslands",
@@ -109,6 +117,14 @@ SOLUTIONS = {
         "description": "BFS flood fill approach",
         "api_kernels": ["GraphBFS"],
         "patterns": ["graph_bfs_connected_components"],
+    },
+    "union_find": {
+        "class": "SolutionUnionFind",
+        "method": "numIslands",
+        "complexity": "O(m*n * α(m*n)) time, O(m*n) space",
+        "description": "Union-Find (DSU) for connected components",
+        "api_kernels": ["UnionFind"],
+        "patterns": ["union_find_connected_components"],
     },
 }
 
@@ -207,6 +223,84 @@ class SolutionBFS:
                     bfs(row, col)
 
         return island_count
+
+
+# ============================================
+# Solution 3: Union-Find (Disjoint Set Union)
+# Time: O(m * n * α(m*n)), Space: O(m * n)
+#   - α is inverse Ackermann, effectively O(1)
+#   - Classic DSU pattern for connected components
+#   - Does not modify input grid
+# ============================================
+class SolutionUnionFind:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Count islands using Union-Find (Disjoint Set Union).
+
+        Core insight: Model each land cell as a node. Union adjacent land cells.
+        Final count of disjoint sets = number of islands.
+
+        Key advantage: Does not modify input grid. Also foundation for
+        dynamic connectivity problems (e.g., adding/removing edges).
+
+        Args:
+            grid: 2D grid of '0' (water) and '1' (land)
+
+        Returns:
+            Number of islands (connected components of land)
+        """
+        if not grid or not grid[0]:
+            return 0
+
+        rows, cols = len(grid), len(grid[0])
+
+        # Union-Find data structure
+        parent = {}
+        rank = {}
+
+        def find(x: int) -> int:
+            """Find root with path compression."""
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(x: int, y: int) -> None:
+            """Union by rank."""
+            root_x, root_y = find(x), find(y)
+            if root_x == root_y:
+                return
+            # Attach smaller tree under larger tree
+            if rank[root_x] < rank[root_y]:
+                parent[root_x] = root_y
+            elif rank[root_x] > rank[root_y]:
+                parent[root_y] = root_x
+            else:
+                parent[root_y] = root_x
+                rank[root_x] += 1
+
+        # Initialize: each land cell is its own component
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == '1':
+                    idx = r * cols + c
+                    parent[idx] = idx
+                    rank[idx] = 0
+
+        # Union adjacent land cells (only right and down to avoid duplicates)
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == '1':
+                    idx = r * cols + c
+                    # Check right neighbor
+                    if c + 1 < cols and grid[r][c + 1] == '1':
+                        union(idx, idx + 1)
+                    # Check down neighbor
+                    if r + 1 < rows and grid[r + 1][c] == '1':
+                        union(idx, idx + cols)
+
+        # Count distinct roots (connected components)
+        roots = set(find(idx) for idx in parent)
+        return len(roots)
 
 
 def solve():
