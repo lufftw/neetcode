@@ -1,0 +1,2679 @@
+{
+  "0001_two_sum": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 102.55,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "hash_map",
+          "avg_time_ms": 97.84,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "bruteforce",
+          "avg_time_ms": 98.39,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0003_longest_substring_without_repeating_characters": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.96,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(min(n,σ)) space       4.6MB"
+        },
+        {
+          "method": "dict",
+          "avg_time_ms": 96.36,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(min(n,σ)) space       4.6MB"
+        },
+        {
+          "method": "set",
+          "avg_time_ms": 94.53,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(min(n,σ)) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0010_regular_expression_matching": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 94.55,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.6MB"
+        },
+        {
+          "method": "recursive",
+          "avg_time_ms": 94.6,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0011_container_with_most_water": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 106.02,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 104.54,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "optimized",
+          "avg_time_ms": 98.83,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "bruteforce",
+          "avg_time_ms": 100.89,
+          "pass_rate": "3/3",
+          "complexity": "O(n^2) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0015_3sum": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.96,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(1) extra space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 96.33,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(1) extra space       4.7MB"
+        },
+        {
+          "method": "hashset",
+          "avg_time_ms": 93.95,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(n) space for set       4.7MB"
+        },
+        {
+          "method": "hash",
+          "avg_time_ms": 96.99,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0016_3sum_closest": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.79,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(1) extra space       4.8MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 94.6,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(1) extra space       4.6MB"
+        },
+        {
+          "method": "optimized",
+          "avg_time_ms": 98.86,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(1) extra space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0021_merge_two_sorted_lists": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "\n============================================================\n🧪 Testing: 0021_merge_two_sorted_lists\n⚖️  Judge: JUDGE_FUNC\n🧠 Memory profiling: enabled\n============================================================\n\n──────────────────────────────────────────────────\n📌 Shorthand: default\n   Approach: Iterative Merge\n   Complexity: O(m+n) time, O(1) space\n──────────────────────────────────────────────────\n   --- tests/ (static) ---\n   0021_merge_two_sorted_lists_1: ✅ PASS (98.36ms) [judge]\n"
+    }
+  },
+  "0023_merge_k_sorted_lists": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 109.11,
+          "pass_rate": "3/3",
+          "complexity": "O(N log k)       4.6MB"
+        },
+        {
+          "method": "heap",
+          "avg_time_ms": 100.82,
+          "pass_rate": "3/3",
+          "complexity": "O(N log k)       4.6MB"
+        },
+        {
+          "method": "divide",
+          "avg_time_ms": 101.02,
+          "pass_rate": "3/3",
+          "complexity": "O(N log k)       4.7MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 103.46,
+          "pass_rate": "3/3",
+          "complexity": "O(kN)       4.7MB"
+        }
+      ]
+    }
+  },
+  "0025_reverse_nodes_in_k_group": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 102.48,
+          "pass_rate": "3/3",
+          "complexity": "O(N) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "iterative",
+          "avg_time_ms": 97.25,
+          "pass_rate": "3/3",
+          "complexity": "O(N) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "recursive",
+          "avg_time_ms": 96.37,
+          "pass_rate": "3/3",
+          "complexity": "O(N) time, O(N) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0026_remove_duplicates_from_sorted_array": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.36,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 111.92,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "enumerate",
+          "avg_time_ms": 94.23,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0027_remove_element": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.55,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 94.46,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_ends",
+          "avg_time_ms": 95.32,
+          "pass_rate": "2/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0028_find_the_index_of_the_first_occurrence_in_a_string": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.39,
+          "pass_rate": "2/2",
+          "complexity": "O(m+n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "rabin_karp",
+          "avg_time_ms": 99.86,
+          "pass_rate": "2/2",
+          "complexity": "O(m+n) average time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0033_search_in_rotated_sorted_array": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.47,
+          "pass_rate": "3/3",
+          "complexity": "O(log n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "binary_search",
+          "avg_time_ms": 94.49,
+          "pass_rate": "3/3",
+          "complexity": "O(log n) time, O(1) space       4.9MB"
+        },
+        {
+          "method": "linear_scan",
+          "avg_time_ms": 99.27,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0042_trapping_rain_water": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 102.5,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "stack",
+          "avg_time_ms": 98.97,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "twopointer",
+          "avg_time_ms": 95.77,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 95.06,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0044_wildcard_matching": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.57,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.7MB"
+        },
+        {
+          "method": "space_optimized",
+          "avg_time_ms": 94.93,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(n) space       4.9MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 94.68,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) worst, O(m+n) average time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0045_jump_game_ii": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 94.66,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 95.91,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0046_permutations": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.98,
+          "pass_rate": "2/2",
+          "complexity": "O(n! × n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "backtracking",
+          "avg_time_ms": 97.68,
+          "pass_rate": "2/2",
+          "complexity": "O(n! × n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "swap",
+          "avg_time_ms": 98.29,
+          "pass_rate": "2/2",
+          "complexity": "O(n! × n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0051_n_queens": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.03,
+          "pass_rate": "2/2",
+          "complexity": "O(N!) time, O(N) space       4.6MB"
+        },
+        {
+          "method": "sets",
+          "avg_time_ms": 104.18,
+          "pass_rate": "2/2",
+          "complexity": "O(N!) time, O(N) space       4.6MB"
+        },
+        {
+          "method": "bitmask",
+          "avg_time_ms": 101.41,
+          "pass_rate": "2/2",
+          "complexity": "O(N!) time, O(N) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0052_n_queens_ii": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.75,
+          "pass_rate": "2/2",
+          "complexity": "O(n!) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "bitmask",
+          "avg_time_ms": 100.1,
+          "pass_rate": "2/2",
+          "complexity": "O(n!) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0055_jump_game": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.69,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 96.5,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 96.21,
+          "pass_rate": "5/5",
+          "complexity": "O(n^2) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0056_merge_intervals": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 105.3,
+          "pass_rate": "2/2",
+          "complexity": "O(n log n) time, O(n) space       4.8MB"
+        },
+        {
+          "method": "sort_merge",
+          "avg_time_ms": 106.49,
+          "pass_rate": "2/2",
+          "complexity": "O(n log n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "graph_components",
+          "avg_time_ms": 94.91,
+          "pass_rate": "2/2",
+          "complexity": "O(n²) time, O(n²) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0070_climbing_stairs": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.65,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dp_space_optimized",
+          "avg_time_ms": 99.42,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "dp_array",
+          "avg_time_ms": 94.83,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 98.34,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0072_edit_distance": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.27,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.6MB"
+        },
+        {
+          "method": "dp_2d",
+          "avg_time_ms": 95.7,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.6MB"
+        },
+        {
+          "method": "space_optimized",
+          "avg_time_ms": 96.03,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(min(m,n)) space       4.7MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 99.32,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0075_sort_colors": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.57,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dutch_flag",
+          "avg_time_ms": 94.59,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "counting",
+          "avg_time_ms": 95.89,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0076_minimum_window_substring": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.09,
+          "pass_rate": "3/3",
+          "complexity": "O(|s| + |t|) time, O(|t|) space       4.6MB"
+        },
+        {
+          "method": "sliding_window",
+          "avg_time_ms": 95.62,
+          "pass_rate": "3/3",
+          "complexity": "O(|s| + |t|) time, O(|t|) space       4.6MB"
+        },
+        {
+          "method": "sliding_window_filtered",
+          "avg_time_ms": 96.11,
+          "pass_rate": "3/3",
+          "complexity": "O(|s| + |t|) time, O(|s|) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0078_subsets": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.63,
+          "pass_rate": "2/2",
+          "complexity": "O(n × 2^n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "bitmask",
+          "avg_time_ms": 93.43,
+          "pass_rate": "2/2",
+          "complexity": "O(n × 2^n) time, O(1) extra space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0080_remove_duplicates_from_sorted_array_ii": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.46,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 99.84,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "k_copies",
+          "avg_time_ms": 96.76,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "counter",
+          "avg_time_ms": 98.37,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0084_largest_rectangle_in_histogram": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.46,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "sentinel",
+          "avg_time_ms": 94.45,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "twopass",
+          "avg_time_ms": 96.44,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0085_maximal_rectangle": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 94.52,
+          "pass_rate": "5/5",
+          "complexity": "O(rows * cols) time, O(cols) space       4.6MB"
+        },
+        {
+          "method": "stack",
+          "avg_time_ms": 94.55,
+          "pass_rate": "5/5",
+          "complexity": "O(rows * cols) time, O(cols) space       4.7MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 95.18,
+          "pass_rate": "5/5",
+          "complexity": "O(rows * cols) time, O(cols) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0088_merge_sorted_array": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 100.49,
+          "pass_rate": "3/3",
+          "complexity": "O(m+n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "backward",
+          "avg_time_ms": 98.53,
+          "pass_rate": "3/3",
+          "complexity": "O(m+n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "forward",
+          "avg_time_ms": 106.52,
+          "pass_rate": "3/3",
+          "complexity": "O(m+n) time, O(m) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0092_reverse_linked_list_ii": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.8,
+          "pass_rate": "5/5",
+          "complexity": "O(N) time, O(1) space       4.8MB"
+        },
+        {
+          "method": "two_pass",
+          "avg_time_ms": 100.76,
+          "pass_rate": "5/5",
+          "complexity": "O(N) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "one_pass",
+          "avg_time_ms": 95.27,
+          "pass_rate": "5/5",
+          "complexity": "O(N) time, O(1) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0094_binary_tree_inorder_traversal": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.95,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "recursive",
+          "avg_time_ms": 105.28,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "iterative",
+          "avg_time_ms": 99.32,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "morris",
+          "avg_time_ms": 94.73,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0102_binary_tree_level_order_traversal": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.88,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(w) space       4.7MB"
+        },
+        {
+          "method": "bfs",
+          "avg_time_ms": 94.41,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(w) space       4.6MB"
+        },
+        {
+          "method": "dfs",
+          "avg_time_ms": 93.94,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0104_maximum_depth_of_binary_tree": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.79,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "recursive",
+          "avg_time_ms": 94.3,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "bfs",
+          "avg_time_ms": 94.35,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(w) space       4.7MB"
+        },
+        {
+          "method": "iterative_dfs",
+          "avg_time_ms": 93.79,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0110_balanced_binary_tree": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 104.9,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "bottom_up",
+          "avg_time_ms": 103.16,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "top_down",
+          "avg_time_ms": 95.93,
+          "pass_rate": "2/2",
+          "complexity": "O(n²) time, O(h) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0121_best_time_to_buy_and_sell_stock": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.66,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "running_min",
+          "avg_time_ms": 99.69,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "bruteforce",
+          "avg_time_ms": 97.51,
+          "pass_rate": "5/5",
+          "complexity": "O(n²) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0124_binary_tree_maximum_path_sum": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.7,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "instance_var",
+          "avg_time_ms": 95.46,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "nonlocal",
+          "avg_time_ms": 95.74,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "tuple_return",
+          "avg_time_ms": 99.91,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0125_valid_palindrome": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 103.82,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 93.4,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "filtered",
+          "avg_time_ms": 97.14,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "filtered_pointers",
+          "avg_time_ms": 95.68,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0131_palindrome_partitioning": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 101.4,
+          "pass_rate": "2/2",
+          "complexity": "O(n × 2^n) time, O(n^2) space       4.6MB"
+        },
+        {
+          "method": "naive",
+          "avg_time_ms": 109.43,
+          "pass_rate": "2/2",
+          "complexity": "O(n × 2^n × n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0133_clone_graph": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0134_gas_station": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 106.57,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 96.32,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0135_candy": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.56,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "two_pass",
+          "avg_time_ms": 99.85,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0141_linked_list_cycle": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 107.65,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "floyd",
+          "avg_time_ms": 98.03,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "hashset",
+          "avg_time_ms": 97.79,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0142_linked_list_cycle_ii": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.19,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "floyd",
+          "avg_time_ms": 95.01,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "hashset",
+          "avg_time_ms": 97.86,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0162_find_peak_element": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 116.8,
+          "pass_rate": "2/2",
+          "complexity": "O(log n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "binary_search",
+          "avg_time_ms": 96.34,
+          "pass_rate": "2/2",
+          "complexity": "O(log n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "linear_scan",
+          "avg_time_ms": 97.95,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0167_two_sum_ii_input_array_is_sorted": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 99.89,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 96.63,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.8MB"
+        },
+        {
+          "method": "binary_search",
+          "avg_time_ms": 100.1,
+          "pass_rate": "2/2",
+          "complexity": "O(n log n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0198_house_robber": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.44,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "dp_space_optimized",
+          "avg_time_ms": 96.5,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dp_array",
+          "avg_time_ms": 105.29,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 100.93,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0200_number_of_islands": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 109.21,
+          "pass_rate": "2/2",
+          "complexity": "O(m*n) time, O(m*n) space       4.7MB"
+        },
+        {
+          "method": "dfs",
+          "avg_time_ms": 113.73,
+          "pass_rate": "2/2",
+          "complexity": "O(m*n) time, O(m*n) space       4.6MB"
+        },
+        {
+          "method": "bfs",
+          "avg_time_ms": 105.75,
+          "pass_rate": "2/2",
+          "complexity": "O(m*n) time, O(min(m,n)) space       4.7MB"
+        },
+        {
+          "method": "union_find",
+          "avg_time_ms": 103.79,
+          "pass_rate": "2/2",
+          "complexity": "O(m*n * α(m*n)) time, O(m*n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0202_happy_number": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 108.25,
+          "pass_rate": "3/3",
+          "complexity": "O(log n) time, O(1) space       4.8MB"
+        },
+        {
+          "method": "floyd",
+          "avg_time_ms": 102.19,
+          "pass_rate": "3/3",
+          "complexity": "O(log n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "hashset",
+          "avg_time_ms": 104.17,
+          "pass_rate": "3/3",
+          "complexity": "O(log n) time, O(log n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0206_reverse_linked_list": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 100.83,
+          "pass_rate": "5/5",
+          "complexity": "O(N) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "iterative",
+          "avg_time_ms": 102.31,
+          "pass_rate": "5/5",
+          "complexity": "O(N) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "recursive",
+          "avg_time_ms": 100.28,
+          "pass_rate": "5/5",
+          "complexity": "O(N) time, O(N) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0207_course_schedule": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0208_implement_trie_prefix_tree": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0209_minimum_size_subarray_sum": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 100.85,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "sliding_window",
+          "avg_time_ms": 98.21,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "binary_search",
+          "avg_time_ms": 99.36,
+          "pass_rate": "3/3",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0210_course_schedule_ii": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0211_design_add_and_search_words_data_structure": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0212_word_search_ii": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0213_house_robber_ii": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 101.47,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dp_decomposition",
+          "avg_time_ms": 105.22,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 95.44,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0214_shortest_palindrome": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 107.98,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "rolling_hash",
+          "avg_time_ms": 93.59,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0215_kth_largest_element_in_an_array": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 101.07,
+          "pass_rate": "3/3",
+          "complexity": "O(n) average time, O(1) space       4.6MB"
+        },
+        {
+          "method": "quickselect",
+          "avg_time_ms": 97.11,
+          "pass_rate": "3/3",
+          "complexity": "O(n) average time, O(1) space       4.6MB"
+        },
+        {
+          "method": "heap",
+          "avg_time_ms": 98.39,
+          "pass_rate": "3/3",
+          "complexity": "O(n log k) time, O(k) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0218_the_skyline_problem": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 101.45,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "heap",
+          "avg_time_ms": 97.22,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "sortedlist",
+          "avg_time_ms": 98.06,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0238_product_of_array_except_self": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0239_sliding_window_maximum": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 100.19,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(k) space       4.8MB"
+        },
+        {
+          "method": "deque",
+          "avg_time_ms": 101.65,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(k) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0253_meeting_rooms_ii": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.57,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "heap",
+          "avg_time_ms": 102.75,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "sweep",
+          "avg_time_ms": 102.18,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0283_move_zeroes": {
+    "method_count": 5,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.55,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 98.7,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "swap",
+          "avg_time_ms": 94.0,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "optimized_swap",
+          "avg_time_ms": 94.0,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "snowball",
+          "avg_time_ms": 95.9,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0287_find_the_duplicate_number": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 103.69,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.8MB"
+        },
+        {
+          "method": "floyd",
+          "avg_time_ms": 94.34,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "binary_search",
+          "avg_time_ms": 95.49,
+          "pass_rate": "2/2",
+          "complexity": "O(n log n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0295_find_median_from_data_stream": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 103.62,
+          "pass_rate": "1/1",
+          "complexity": "O(log n) add, O(1) find       4.6MB"
+        },
+        {
+          "method": "sorted_list",
+          "avg_time_ms": 101.51,
+          "pass_rate": "1/1",
+          "complexity": "O(n) add, O(1) find       4.6MB"
+        }
+      ]
+    }
+  },
+  "0307_range_sum_query_mutable": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 118.34,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) build, O(log n) ops       4.7MB"
+        },
+        {
+          "method": "bit",
+          "avg_time_ms": 101.82,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) build, O(log n) ops       4.7MB"
+        },
+        {
+          "method": "segment_tree",
+          "avg_time_ms": 125.68,
+          "pass_rate": "5/5",
+          "complexity": "O(n) build, O(log n) ops       4.7MB"
+        }
+      ]
+    }
+  },
+  "0312_burst_balloons": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.08,
+          "pass_rate": "5/5",
+          "complexity": "O(n³) time, O(n²) space       4.7MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 114.34,
+          "pass_rate": "5/5",
+          "complexity": "O(n³) time, O(n²) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0315_count_of_smaller_numbers_after_self": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.67,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "bit",
+          "avg_time_ms": 109.2,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "merge_sort",
+          "avg_time_ms": 101.46,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0322_coin_change": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 120.27,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(amount) space       4.8MB"
+        },
+        {
+          "method": "dp_bottom_up",
+          "avg_time_ms": 103.85,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(amount) space       4.8MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 104.22,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(amount) space       4.7MB"
+        },
+        {
+          "method": "bfs",
+          "avg_time_ms": 106.85,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(amount) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0327_count_of_range_sum": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 103.19,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "merge_sort",
+          "avg_time_ms": 115.4,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0337_house_robber_iii": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 108.82,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "memo",
+          "avg_time_ms": 99.26,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0347_top_k_frequent_elements": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0416_partition_equal_subset_sum": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 108.31,
+          "pass_rate": "5/5",
+          "complexity": "O(n * target) time, O(target) space       4.8MB"
+        },
+        {
+          "method": "dp_1d",
+          "avg_time_ms": 104.0,
+          "pass_rate": "5/5",
+          "complexity": "O(n * target) time, O(target) space       4.6MB"
+        },
+        {
+          "method": "dp_2d",
+          "avg_time_ms": 124.68,
+          "pass_rate": "5/5",
+          "complexity": "O(n * target) time, O(n * target) space       4.6MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 98.82,
+          "pass_rate": "5/5",
+          "complexity": "O(n * target) time, O(n * target) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0417_pacific_atlantic_water_flow": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0435_non_overlapping_intervals": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 99.07,
+          "pass_rate": "3/3",
+          "complexity": "O(n log n) time, O(1) space       4.8MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 95.22,
+          "pass_rate": "3/3",
+          "complexity": "O(n²) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0455_assign_cookies": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 93.59,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n + m log m) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 95.84,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n + m log m) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0459_repeated_substring_pattern": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 94.32,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "concatenation",
+          "avg_time_ms": 95.57,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0486_predict_the_winner": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.41,
+          "pass_rate": "2/2",
+          "complexity": "O(n²) time, O(n²) space       4.6MB"
+        },
+        {
+          "method": "space_optimized",
+          "avg_time_ms": 92.59,
+          "pass_rate": "2/2",
+          "complexity": "O(n²) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0494_target_sum": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 99.96,
+          "pass_rate": "5/5",
+          "complexity": "O(n * target) time, O(target) space       4.7MB"
+        },
+        {
+          "method": "dp_transform",
+          "avg_time_ms": 103.16,
+          "pass_rate": "5/5",
+          "complexity": "O(n * target) time, O(target) space       4.6MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 94.69,
+          "pass_rate": "5/5",
+          "complexity": "O(n * sum) time, O(n * sum) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0496_next_greater_element_i": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.91,
+          "pass_rate": "5/5",
+          "complexity": "O(n + m) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "stack",
+          "avg_time_ms": 94.41,
+          "pass_rate": "5/5",
+          "complexity": "O(n + m) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "brute",
+          "avg_time_ms": 94.81,
+          "pass_rate": "5/5",
+          "complexity": "O(m * n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0503_next_greater_element_ii": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.36,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        },
+        {
+          "method": "twopass",
+          "avg_time_ms": 93.61,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        },
+        {
+          "method": "concat",
+          "avg_time_ms": 95.23,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0516_longest_palindromic_subsequence": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.52,
+          "pass_rate": "5/5",
+          "complexity": "O(n^2) time, O(n^2) space       4.6MB"
+        },
+        {
+          "method": "interval_dp",
+          "avg_time_ms": 98.25,
+          "pass_rate": "5/5",
+          "complexity": "O(n^2) time, O(n^2) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0518_coin_change_2": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 101.4,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(amount) space       4.6MB"
+        },
+        {
+          "method": "dp_unbounded",
+          "avg_time_ms": 97.03,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(amount) space       4.8MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 96.68,
+          "pass_rate": "5/5",
+          "complexity": "O(n * amount) time, O(n * amount) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0523_continuous_subarray_sum": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0525_contiguous_array": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0542_01_matrix": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.64,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.8MB"
+        },
+        {
+          "method": "bfs",
+          "avg_time_ms": 99.68,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.8MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 96.38,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(1) extra space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0543_diameter_of_binary_tree": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.25,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "instance_var",
+          "avg_time_ms": 94.45,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        },
+        {
+          "method": "tuple_return",
+          "avg_time_ms": 96.53,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0547_number_of_provinces": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0560_subarray_sum_equals_k": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0621_task_scheduler": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0648_replace_words": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0664_strange_printer": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.31,
+          "pass_rate": "5/5",
+          "complexity": "O(n³) time, O(n²) space       4.6MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 98.3,
+          "pass_rate": "5/5",
+          "complexity": "O(n³) time, O(n²) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0680_valid_palindrome_ii": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.51,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 95.02,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "recursive",
+          "avg_time_ms": 94.63,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space for recursion stack       4.6MB"
+        },
+        {
+          "method": "iterative",
+          "avg_time_ms": 96.54,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0684_redundant_connection": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.91,
+          "pass_rate": "2/2",
+          "complexity": "O(n × α(n)) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "union_find",
+          "avg_time_ms": 93.91,
+          "pass_rate": "2/2",
+          "complexity": "O(n × α(n)) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "dfs",
+          "avg_time_ms": 95.28,
+          "pass_rate": "2/2",
+          "complexity": "O(n²) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0721_accounts_merge": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.71,
+          "pass_rate": "1/1",
+          "complexity": "O(n × k × α(n)) time, O(n × k) space       4.8MB"
+        },
+        {
+          "method": "union_find",
+          "avg_time_ms": 98.32,
+          "pass_rate": "1/1",
+          "complexity": "O(n × k × α(n)) time, O(n × k) space       4.6MB"
+        },
+        {
+          "method": "dfs",
+          "avg_time_ms": 93.55,
+          "pass_rate": "1/1",
+          "complexity": "O(n × k) time, O(n × k) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0739_daily_temperatures": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 106.81,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "stack",
+          "avg_time_ms": 106.43,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "backward",
+          "avg_time_ms": 100.04,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0743_network_delay_time": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.25,
+          "pass_rate": "2/2",
+          "complexity": "O((V+E) log V) time, O(V+E) space       4.7MB"
+        },
+        {
+          "method": "dijkstra",
+          "avg_time_ms": 95.5,
+          "pass_rate": "2/2",
+          "complexity": "O((V+E) log V) time, O(V+E) space       4.7MB"
+        },
+        {
+          "method": "bellman_ford",
+          "avg_time_ms": 93.77,
+          "pass_rate": "2/2",
+          "complexity": "O(V × E) time, O(V) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0746_min_cost_climbing_stairs": {
+    "method_count": 4,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.38,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dp_space_optimized",
+          "avg_time_ms": 94.13,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dp_array",
+          "avg_time_ms": 97.55,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 98.17,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0785_is_graph_bipartite": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0787_cheapest_flights_within_k_stops": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0802_find_eventual_safe_states": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0841_keys_and_rooms": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "0862_shortest_subarray_with_sum_at_least_k": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 102.91,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "deque",
+          "avg_time_ms": 96.62,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0875_koko_eating_bananas": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 97.9,
+          "pass_rate": "3/3",
+          "complexity": "O(n log m) time, O(1) space, where m = max(piles)       4.6MB"
+        },
+        {
+          "method": "binary_search",
+          "avg_time_ms": 95.8,
+          "pass_rate": "3/3",
+          "complexity": "O(n log m) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "linear_search",
+          "avg_time_ms": 94.62,
+          "pass_rate": "3/3",
+          "complexity": "O(n × m) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0876_middle_of_the_linked_list": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.35,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "fast_slow",
+          "avg_time_ms": 98.37,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pass",
+          "avg_time_ms": 95.82,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0877_stone_game": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.54,
+          "pass_rate": "2/2",
+          "complexity": "O(1) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 97.11,
+          "pass_rate": "2/2",
+          "complexity": "O(n²) time, O(n²) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0905_sort_array_by_parity": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 99.74,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "opposite_pointers",
+          "avg_time_ms": 98.4,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "writer",
+          "avg_time_ms": 100.12,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0907_sum_of_subarray_minimums": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 107.41,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "contribution",
+          "avg_time_ms": 112.27,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.8MB"
+        },
+        {
+          "method": "single",
+          "avg_time_ms": 103.26,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0922_sort_array_by_parity_ii": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.94,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 101.94,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0968_binary_tree_cameras": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 101.08,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.7MB"
+        },
+        {
+          "method": "dp",
+          "avg_time_ms": 99.39,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(h) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "0977_squares_of_a_sorted_array": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 102.07,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "two_pointers",
+          "avg_time_ms": 98.23,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "sort",
+          "avg_time_ms": 96.87,
+          "pass_rate": "3/3",
+          "complexity": "O(n log n) time, O(n) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "0990_satisfiability_of_equality_equations": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 100.25,
+          "pass_rate": "3/3",
+          "complexity": "O(n × α(26)) time, O(1) space       4.7MB"
+        },
+        {
+          "method": "dfs",
+          "avg_time_ms": 99.21,
+          "pass_rate": "3/3",
+          "complexity": "O(n + 26) time, O(26) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "0994_rotting_oranges": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 104.06,
+          "pass_rate": "3/3",
+          "complexity": "O(m*n) time, O(m*n) space       4.7MB"
+        },
+        {
+          "method": "bfs",
+          "avg_time_ms": 102.57,
+          "pass_rate": "3/3",
+          "complexity": "O(m*n) time, O(m*n) space       4.6MB"
+        },
+        {
+          "method": "simulation",
+          "avg_time_ms": 104.01,
+          "pass_rate": "3/3",
+          "complexity": "O((m*n)²) time, O(m*n) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "1011_capacity_to_ship_packages_within_d_days": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 95.48,
+          "pass_rate": "3/3",
+          "complexity": "O(n log S) time, O(1) space, where S = sum(weights)       4.6MB"
+        },
+        {
+          "method": "linear_search",
+          "avg_time_ms": 98.44,
+          "pass_rate": "3/3",
+          "complexity": "O(n * S) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "1029_two_city_scheduling": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.3,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(1) space       4.6MB"
+        },
+        {
+          "method": "greedy",
+          "avg_time_ms": 95.48,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "1094_car_pooling": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.91,
+          "pass_rate": "5/5",
+          "complexity": "O(n + m) time, O(m) space where m = max location       4.7MB"
+        },
+        {
+          "method": "difference",
+          "avg_time_ms": 108.47,
+          "pass_rate": "5/5",
+          "complexity": "O(n + m) time, O(m) space where m = max location       4.7MB"
+        },
+        {
+          "method": "events",
+          "avg_time_ms": 100.66,
+          "pass_rate": "5/5",
+          "complexity": "O(n log n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "1109_corporate_flight_bookings": {
+    "method_count": 2,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "1143_longest_common_subsequence": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 99.53,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(m*n) space       4.7MB"
+        },
+        {
+          "method": "space_optimized",
+          "avg_time_ms": 95.61,
+          "pass_rate": "5/5",
+          "complexity": "O(m*n) time, O(min(m,n)) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "1268_search_suggestions_system": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "1392_longest_happy_prefix": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.11,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "rolling_hash",
+          "avg_time_ms": 97.5,
+          "pass_rate": "2/2",
+          "complexity": "O(n) time, O(1) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "1406_stone_game_iii": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.61,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "space_optimized",
+          "avg_time_ms": 101.68,
+          "pass_rate": "3/3",
+          "complexity": "O(n) time, O(1) space       4.8MB"
+        }
+      ]
+    }
+  },
+  "1438_longest_continuous_subarray_with_absolute_diff_limit": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 96.88,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "two_deques",
+          "avg_time_ms": 97.86,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "1499_max_value_of_equation": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 98.68,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "deque",
+          "avg_time_ms": 103.82,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        }
+      ]
+    }
+  },
+  "1547_minimum_cost_to_cut_a_stick": {
+    "method_count": 2,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 100.05,
+          "pass_rate": "5/5",
+          "complexity": "O(m³) time, O(m²) space where m = len(cuts) + 2       4.7MB"
+        },
+        {
+          "method": "memoization",
+          "avg_time_ms": 95.18,
+          "pass_rate": "5/5",
+          "complexity": "O(m³) time, O(m²) space       4.6MB"
+        }
+      ]
+    }
+  },
+  "1971_find_if_path_exists_in_graph": {
+    "method_count": 3,
+    "benchmark": {
+      "error": "no data parsed",
+      "raw": "⚠️ No test input files found and no --generate specified\n"
+    }
+  },
+  "2104_sum_of_subarray_ranges": {
+    "method_count": 3,
+    "benchmark": {
+      "methods": [
+        {
+          "method": "default",
+          "avg_time_ms": 102.62,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.6MB"
+        },
+        {
+          "method": "stack",
+          "avg_time_ms": 96.27,
+          "pass_rate": "5/5",
+          "complexity": "O(n) time, O(n) space       4.7MB"
+        },
+        {
+          "method": "brute",
+          "avg_time_ms": 96.06,
+          "pass_rate": "5/5",
+          "complexity": "O(n^2) time, O(1) space       4.7MB"
+        }
+      ]
+    }
+  }
+}
