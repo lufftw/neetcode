@@ -55,6 +55,12 @@ SOLUTIONS = {
         "api_kernels": ["TreeTraversalDFS"],
         "patterns": ["tree_dfs_inorder"],
     },
+    "recursive": {
+        "class": "SolutionRecursive",
+        "method": "inorderTraversal",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Recursive DFS, natural Left-Node-Right order",
+    },
     "iterative": {
         "class": "SolutionIterative",
         "method": "inorderTraversal",
@@ -62,6 +68,12 @@ SOLUTIONS = {
         "description": "Iterative with explicit stack",
         "api_kernels": ["TreeTraversalDFS"],
         "patterns": ["tree_dfs_iterative"],
+    },
+    "morris": {
+        "class": "SolutionMorris",
+        "method": "inorderTraversal",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Morris traversal using threaded binary tree",
     },
 }
 
@@ -117,6 +129,60 @@ class SolutionIterative:
             curr = stack.pop()
             result.append(curr.val)
             curr = curr.right
+
+        return result
+
+
+# ============================================
+# Solution 3: Morris Traversal (O(1) Space)
+# ============================================
+class SolutionMorris:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        Inorder traversal using Morris algorithm (threaded binary tree).
+
+        Core insight: Use the null right pointers of predecessors to create
+        temporary links back to the current node. This eliminates the need
+        for a stack, achieving O(1) space.
+
+        Algorithm:
+        1. If no left child: visit node, go right
+        2. If left child exists: find inorder predecessor (rightmost in left subtree)
+           - If predecessor.right is null: create thread, go left
+           - If predecessor.right points to curr: remove thread, visit node, go right
+
+        Trade-off: O(1) space but modifies tree temporarily (restored after).
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            List of node values in inorder sequence
+        """
+        result: List[int] = []
+        curr = root
+
+        while curr:
+            if not curr.left:
+                # No left subtree: visit and go right
+                result.append(curr.val)
+                curr = curr.right
+            else:
+                # Find inorder predecessor (rightmost node in left subtree)
+                predecessor = curr.left
+                while predecessor.right and predecessor.right != curr:
+                    predecessor = predecessor.right
+
+                if not predecessor.right:
+                    # Create thread: predecessor -> current
+                    predecessor.right = curr
+                    curr = curr.left
+                else:
+                    # Thread exists: we've returned via thread
+                    # Remove thread, visit current, go right
+                    predecessor.right = None
+                    result.append(curr.val)
+                    curr = curr.right
 
         return result
 

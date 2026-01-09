@@ -22,6 +22,24 @@ SOLUTIONS = {
         "complexity": "O(n) time, O(1) space",
         "description": "Space-optimized DP using two variables",
     },
+    "dp_space_optimized": {
+        "class": "SolutionDP",
+        "method": "climbStairs",
+        "complexity": "O(n) time, O(1) space",
+        "description": "Canonical bottom-up DP with O(1) space",
+    },
+    "dp_array": {
+        "class": "SolutionDPArray",
+        "method": "climbStairs",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Bottom-up DP with full array, easier to understand",
+    },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "climbStairs",
+        "complexity": "O(n) time, O(n) space",
+        "description": "Top-down recursive DP with memoization",
+    },
 }
 
 
@@ -85,6 +103,76 @@ class SolutionDP:
             prev2, prev1 = prev1, prev2 + prev1
 
         return prev1
+
+
+class SolutionDPArray:
+    """
+    Bottom-up DP with full array.
+
+    Easier to understand than space-optimized version.
+    dp[i] represents the number of ways to reach step i.
+    """
+
+    def climbStairs(self, n: int) -> int:
+        """
+        Count ways using full DP array.
+
+        Core insight: Same recurrence dp[i] = dp[i-1] + dp[i-2],
+        but store all values in an array for clarity.
+
+        Args:
+            n: Number of stairs to climb
+
+        Returns:
+            Number of distinct ways to reach the top
+        """
+        if n <= 2:
+            return n
+
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+
+        return dp[n]
+
+
+class SolutionMemoization:
+    """
+    Top-down recursive DP with memoization.
+
+    Natural recursive thinking: to reach step n, we can come from
+    step n-1 or step n-2. Memoization avoids recomputation.
+    """
+
+    def climbStairs(self, n: int) -> int:
+        """
+        Count ways using top-down memoization.
+
+        Core insight: Recursive definition matches problem structure.
+        climbStairs(n) = climbStairs(n-1) + climbStairs(n-2).
+        Memoize to avoid exponential recomputation.
+
+        Args:
+            n: Number of stairs to climb
+
+        Returns:
+            Number of distinct ways to reach the top
+        """
+        memo = {}
+
+        def dp(step: int) -> int:
+            if step <= 2:
+                return step
+            if step in memo:
+                return memo[step]
+
+            memo[step] = dp(step - 1) + dp(step - 2)
+            return memo[step]
+
+        return dp(n)
 
 
 def solve():

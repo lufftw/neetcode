@@ -57,6 +57,24 @@ SOLUTIONS = {
         "api_kernels": ["TreeTraversalDFS"],
         "patterns": ["tree_property_computation"],
     },
+    "recursive": {
+        "class": "Solution",
+        "method": "maxDepth",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Recursive DFS, elegant one-liner",
+    },
+    "bfs": {
+        "class": "SolutionBFS",
+        "method": "maxDepth",
+        "complexity": "O(n) time, O(w) space",
+        "description": "BFS level-order traversal, count levels",
+    },
+    "iterative_dfs": {
+        "class": "SolutionIterativeDFS",
+        "method": "maxDepth",
+        "complexity": "O(n) time, O(h) space",
+        "description": "Iterative DFS with explicit stack",
+    },
 }
 
 
@@ -84,6 +102,83 @@ class Solution:
         if not root:
             return 0
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+
+
+# ============================================
+# Solution 2: BFS Level-Order Traversal
+# ============================================
+class SolutionBFS:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        """
+        Find maximum depth using BFS level-order traversal.
+
+        Core insight: Process tree level by level. Each level increment
+        corresponds to one depth unit. Count how many levels exist.
+
+        Advantage: No recursion, avoids stack overflow on deep trees.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Maximum depth (number of levels)
+        """
+        if not root:
+            return 0
+
+        from collections import deque
+
+        queue = deque([root])
+        depth = 0
+
+        while queue:
+            depth += 1
+            # Process all nodes at current level
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+        return depth
+
+
+# ============================================
+# Solution 3: Iterative DFS with Stack
+# ============================================
+class SolutionIterativeDFS:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        """
+        Find maximum depth using iterative DFS with explicit stack.
+
+        Core insight: Simulate recursion with a stack. Track depth at each
+        node by storing (node, depth) pairs. Update max_depth as we go.
+
+        Advantage: No recursion, explicit control over traversal.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Maximum depth
+        """
+        if not root:
+            return 0
+
+        stack = [(root, 1)]
+        max_depth = 0
+
+        while stack:
+            node, depth = stack.pop()
+            max_depth = max(max_depth, depth)
+
+            if node.left:
+                stack.append((node.left, depth + 1))
+            if node.right:
+                stack.append((node.right, depth + 1))
+
+        return max_depth
 
 
 def _build_tree(values: list) -> Optional[TreeNode]:
