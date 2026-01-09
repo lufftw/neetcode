@@ -82,7 +82,7 @@ python runner/test_runner.py 0322_coin_change --estimate
    Confidence: 1.00
 ```
 
-> 📖 [More examples →](docs/runner/README.md#complexity-estimation-with-visual-charts)
+> 📖 [More examples with interpretation guide →](docs/runner/README.md#examples-gallery)
 
 **Auto-save failing cases for debugging:**
 

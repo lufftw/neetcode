@@ -90,17 +90,183 @@ python runner/test_runner.py 0023 --all --benchmark
 ### Random Testing
 
 ```bash
-python runner/test_runner.py 0004 --generate 10
-python runner/test_runner.py 0004 --generate 10 --seed 12345
-python runner/test_runner.py 0004 --generate 100 --save-failed
+python runner/test_runner.py 0215 --generate 10
+python runner/test_runner.py 0215 --generate 10 --seed 12345
+python runner/test_runner.py 0215 --generate 100 --save-failed
 ```
 
 ### Complexity Estimation
 
 ```bash
-python runner/test_runner.py 0004 --estimate
-python runner/test_runner.py 0004 --all --estimate
+python runner/test_runner.py 0322 --estimate
+python runner/test_runner.py 0215 --all --estimate
 ```
+
+---
+
+## Examples Gallery
+
+This section shows actual output from various test runs to help you understand how to interpret results.
+
+### Example 1: Multi-Solution Benchmark (Trapping Rain Water)
+
+**Command:**
+```bash
+python runner/test_runner.py 0042_trapping --all --benchmark
+```
+
+**Output:**
+```
+╔═════════════════════════════════════════╗
+║ 0042_trapping_rain_water - Performance  ║
+╠═════════════════════════════════════════╣
+║ default:    ████████████████████  106ms ║
+║ stack:      ███████████████████░  104ms ║
+║ twopointer: ███████████████████░  102ms ║
+║ dp:         ██████████████████░░  100ms ║
+╚═════════════════════════════════════════╝
+
+Method        Avg Time   Pass Rate  Complexity              Peak RSS
+----------  ----------  ----------  --------------------  ----------
+default       106.07ms         2/2  O(n) time, O(n) space      4.8MB
+stack         103.54ms         2/2  O(n) time, O(n) space      4.7MB
+twopointer    102.15ms         2/2  O(n) time, O(1) space      4.6MB
+dp            100.35ms         2/2  O(n) time, O(n) space      4.6MB
+```
+
+**How to Interpret:**
+- Bar length is proportional to execution time (longest = full bar)
+- `twopointer` uses O(1) space while others use O(n) — a key insight for interviews
+- All approaches are O(n) time but have different constant factors
+
+---
+
+### Example 2: Four Solutions Comparison (3Sum)
+
+**Command:**
+```bash
+python runner/test_runner.py 0015_3sum --all --benchmark
+```
+
+**Output:**
+```
+╔═══════════════════════════════════════════╗
+║          0015_3sum - Performance          ║
+╠═══════════════════════════════════════════╣
+║ default:      ██████████████████░░  103ms ║
+║ two_pointers: ████████████████████  109ms ║
+║ hashset:      ██████████████████░░  102ms ║
+║ hash:         ██████████████████░░  102ms ║
+╚═══════════════════════════════════════════╝
+
+Method          Avg Time   Pass Rate  Complexity
+------------  ----------  ----------  ---------------------------------
+default         102.81ms         3/3  O(n²) time, O(1) extra space
+two_pointers    108.52ms         3/3  O(n²) time, O(1) extra space
+hashset         102.21ms         3/3  O(n²) time, O(n) space for set
+hash            102.39ms         3/3  O(n²) time, O(n) space
+```
+
+**How to Interpret:**
+- All four approaches have similar O(n²) time complexity
+- `hashset` and `hash` trade space for simpler deduplication logic
+- Similar times indicate the test cases may be small — use `--generate` for stress testing
+
+---
+
+### Example 3: Random Test Generation
+
+**Command:**
+```bash
+python runner/test_runner.py 0215_kth_largest --generate 5 --seed 42
+```
+
+**Output:**
+```
+🎲 Generator: 5 cases, seed: 42
+
+   --- tests/ (static) ---
+   0215_kth_largest_element_in_an_array_1: ✅ PASS [judge]
+   0215_kth_largest_element_in_an_array_2: ✅ PASS [judge]
+   0215_kth_largest_element_in_an_array_3: ✅ PASS [judge]
+
+   --- generators/ (5 cases, seed: 42) ---
+   gen_1: ✅ PASS [generated]
+   gen_2: ✅ PASS [generated]
+   gen_3: ✅ PASS [generated]
+   gen_4: ✅ PASS [generated]
+   gen_5: ✅ PASS [generated]
+
+   Result: 8 / 8 cases passed.
+      ├─ Static: 3/3
+      └─ Generated: 5/5
+```
+
+**How to Interpret:**
+- Static tests run first (from `tests/` directory)
+- Generated tests use `JUDGE_FUNC` for validation (no expected output file)
+- The seed `42` makes tests reproducible — same seed = same test cases
+- Use `--save-failed` to capture failing generated cases for debugging
+
+---
+
+### Example 4: Memory Trace Visualization
+
+**Command:**
+```bash
+python runner/test_runner.py 0042_trapping --memory-trace
+```
+
+**Output:**
+```
+Memory Trace (Run-level RSS)
+
+default:
+▁▂▃▃▄▅▆▆▇█
+Peak 4.8MB | P95 4.8MB
+```
+
+**How to Interpret:**
+- Sparkline shows memory usage progression over test cases
+- Peak RSS is the maximum memory used across all runs
+- P95 RSS is the 95th percentile — useful for identifying outliers
+- Compare across methods with `--trace-compare` (requires multiple solutions)
+
+---
+
+### Example 5: Complexity Estimation
+
+**Command:**
+```bash
+python runner/test_runner.py 0322_coin_change --estimate
+```
+
+**Output:**
+```
+📈 Running complexity estimation...
+   Mode: Direct call (Mock stdin, no subprocess overhead)
+   Sizes: [10, 20, 50, 100, 200, 500, 1000, 2000]
+   Runs per size: 3
+   n=  100: 0.1286ms (avg of 3 runs)
+   n=  500: 0.5394ms (avg of 3 runs)
+   n= 1000: 1.0778ms (avg of 3 runs)
+   n= 2000: 2.1274ms (avg of 3 runs)
+
+✅ Estimated: O(n)
+   Confidence: 1.00
+   Details: Linear: time = 0.038 + 0.001*n (sec)
+```
+
+**How to Interpret:**
+- Times should roughly double when n doubles for O(n) algorithms
+- `Confidence: 1.00` means the curve fit is excellent
+- `Details` shows the fitted formula: `time = constant + coefficient * f(n)`
+- For this DP problem, n represents the `amount` parameter
+
+**Estimation Accuracy Tips:**
+- Works best when algorithm time dominates constant overhead
+- Very fast algorithms (< 0.1ms) may show inaccurate results
+- If estimated ≠ declared, try larger input sizes via generator
 
 ---
 
