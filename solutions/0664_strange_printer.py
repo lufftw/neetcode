@@ -18,6 +18,12 @@ SOLUTIONS = {
         "complexity": "O(n³) time, O(n²) space",
         "description": "Interval DP with character matching optimization",
     },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "strangePrinter",
+        "complexity": "O(n³) time, O(n²) space",
+        "description": "Top-down recursive with memoization",
+    },
 }
 
 
@@ -65,6 +71,46 @@ class Solution:
                         min_turns[start][end] = min(min_turns[start][end], left_cost + right_cost)
 
         return min_turns[0][string_length - 1]
+
+
+# ============================================================================
+# Solution 2: Top-Down Memoization
+# Time: O(n³), Space: O(n²)
+#   - Same logic as bottom-up but recursive approach
+#   - May be more intuitive: "min turns to print s[i..j]?"
+# ============================================================================
+class SolutionMemoization:
+    def strangePrinter(self, s: str) -> int:
+        # Remove consecutive duplicates
+        s = ''.join(c for i, c in enumerate(s) if i == 0 or c != s[i - 1])
+        n = len(s)
+
+        if n == 0:
+            return 0
+
+        memo = {}
+
+        def dp(start: int, end: int) -> int:
+            if start > end:
+                return 0
+            if start == end:
+                return 1
+
+            if (start, end) in memo:
+                return memo[(start, end)]
+
+            # Worst case: print s[start] alone, then handle rest
+            result = dp(start + 1, end) + 1
+
+            # Optimization: if s[k] == s[start], extend first print
+            for k in range(start + 1, end + 1):
+                if s[k] == s[start]:
+                    result = min(result, dp(start + 1, k - 1) + dp(k, end))
+
+            memo[(start, end)] = result
+            return result
+
+        return dp(0, n - 1)
 
 
 def solve():

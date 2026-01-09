@@ -19,6 +19,12 @@ SOLUTIONS = {
         "complexity": "O(m³) time, O(m²) space where m = len(cuts) + 2",
         "description": "Interval DP with 'last cut' approach",
     },
+    "memoization": {
+        "class": "SolutionMemoization",
+        "method": "minCost",
+        "complexity": "O(m³) time, O(m²) space",
+        "description": "Top-down recursive with memoization",
+    },
 }
 
 
@@ -55,6 +61,41 @@ class Solution:
                     min_cost[start][end] = min(min_cost[start][end], total)
 
         return min_cost[0][cut_count - 1]
+
+
+# ============================================================================
+# Solution 2: Top-Down Memoization
+# Time: O(m³), Space: O(m²)
+#   - Recursive approach: "min cost to make all cuts in [cuts[i], cuts[j]]?"
+#   - More intuitive for some: directly models subproblem structure
+# ============================================================================
+class SolutionMemoization:
+    def minCost(self, n: int, cuts: List[int]) -> int:
+        # Add boundaries and sort
+        cuts = sorted([0] + cuts + [n])
+        m = len(cuts)
+        memo = {}
+
+        def dp(left: int, right: int) -> int:
+            # Base case: no cuts needed between adjacent positions
+            if right - left <= 1:
+                return 0
+
+            if (left, right) in memo:
+                return memo[(left, right)]
+
+            # Try each intermediate position as the LAST cut
+            result = float('inf')
+            segment_length = cuts[right] - cuts[left]
+
+            for k in range(left + 1, right):
+                cost = dp(left, k) + dp(k, right) + segment_length
+                result = min(result, cost)
+
+            memo[(left, right)] = result
+            return result
+
+        return dp(0, m - 1)
 
 
 def solve():

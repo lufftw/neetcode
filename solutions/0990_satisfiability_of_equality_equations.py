@@ -103,6 +103,12 @@ SOLUTIONS = {
         "api_kernels": ["UnionFindConnectivity"],
         "patterns": ["union_find_constraint_satisfaction"],
     },
+    "dfs": {
+        "class": "SolutionDFS",
+        "method": "equationsPossible",
+        "complexity": "O(n + 26) time, O(26) space",
+        "description": "DFS graph traversal for connected components",
+    },
 }
 
 
@@ -151,6 +157,66 @@ class Solution:
                 x = ord(eq[0]) - ord('a')
                 y = ord(eq[3]) - ord('a')
                 if find(x) == find(y):
+                    return False
+
+        return True
+
+
+# ============================================
+# Solution 2: DFS Graph Traversal
+# Time: O(n + 26), Space: O(26)
+#   - Build graph from equality equations
+#   - Find connected components via DFS
+#   - Check inequality constraints
+# ============================================
+class SolutionDFS:
+    def equationsPossible(self, equations: List[str]) -> bool:
+        """
+        Graph-based approach using DFS for connected components.
+
+        Alternative to Union-Find:
+        1. Build adjacency list from '==' equations
+        2. Find connected components using DFS
+        3. Assign component IDs to each variable
+        4. Check '!=' equations: must have different component IDs
+        """
+        from collections import defaultdict
+
+        # Build adjacency list from equalities
+        graph = defaultdict(list)
+        for eq in equations:
+            if eq[1] == '=':
+                x, y = eq[0], eq[3]
+                graph[x].append(y)
+                graph[y].append(x)
+
+        # Find connected components via DFS
+        component = {}
+        comp_id = 0
+
+        def dfs(node: str, cid: int) -> None:
+            component[node] = cid
+            for neighbor in graph[node]:
+                if neighbor not in component:
+                    dfs(neighbor, cid)
+
+        # Assign component IDs
+        for c in 'abcdefghijklmnopqrstuvwxyz':
+            if c in graph and c not in component:
+                dfs(c, comp_id)
+                comp_id += 1
+
+        # Check inequalities
+        for eq in equations:
+            if eq[1] == '!':
+                x, y = eq[0], eq[3]
+                # Same variable: a != a is always false
+                if x == y:
+                    return False
+                # Both must exist and be in different components
+                cx = component.get(x, ord(x))  # Use char code if not in graph
+                cy = component.get(y, ord(y))
+                if cx == cy:
                     return False
 
         return True
