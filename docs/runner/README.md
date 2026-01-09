@@ -416,7 +416,7 @@ python runner/test_runner.py 0023 --all --benchmark
 
 ### Required
 
-- Python 3.10+
+- Python 3.11 (matching LeetCode official environment)
 - Solution files in `solutions/`
 - Test files in `tests/` (or use generators)
 

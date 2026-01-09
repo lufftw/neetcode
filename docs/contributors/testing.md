@@ -218,12 +218,11 @@ Test results must be deterministic, unaffected by time, environment, or other fa
 ## Test Markers
 
 ```python
-@pytest.mark.unit          # Unit tests
 @pytest.mark.integration   # Integration tests
 @pytest.mark.edge_case     # Edge case tests
-@pytest.mark.slow          # Slow tests
-@pytest.mark.requires_big_o # Requires big-O package
 ```
+
+> **Note:** Currently only `integration` and `edge_case` markers are actively used in the test suite. The `edge_case` marker is defined in `pytest.ini`.
 
 ---
 

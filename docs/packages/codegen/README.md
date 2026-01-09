@@ -142,7 +142,7 @@ python -m codegen new <problem_id> --dry-run
 | Flag | Description |
 |------|-------------|
 | `--with-tests` | Generate `.in`/`.out` files from LeetCode examples |
-| `--solve-mode` | `placeholder` (default) or `infer` (auto-generate) |
+| `--solve-mode` | `placeholder` (default), `infer` (auto-generate), or `tiered` (for Tier-1/1.5 problems) |
 | `--force` | Overwrite existing test files |
 | `--dry-run` | Preview without writing files |
 | `--header-level` | `minimal`, `standard`, or `full` |
@@ -417,7 +417,7 @@ Total files: 218
 |---------|---------|-------------|
 | `header.level` | `"full"` | Header detail: `minimal`, `standard`, `full` |
 | `helpers.mode` | `"inline"` | Helper emit: `inline`, `import`, `none` |
-| `skeleton.solve_mode` | `"placeholder"` | solve() mode: `placeholder`, `infer` |
+| `skeleton.solve_mode` | `"placeholder"` | solve() mode: `placeholder`, `infer`, `tiered` |
 | `practice.multi_solution_mode` | `"single"` | Practice mode: `single`, `all` |
 
 ### Priority Order
@@ -543,7 +543,11 @@ codegen/
 │   ├── io_schema.py         # IO format inference
 │   ├── example_parser.py    # HTML example extraction
 │   ├── solve_generator.py   # solve() auto-generation
+│   ├── tiered_solve_generator.py  # Tiered solve() for Tier-1/1.5 problems
+│   ├── problem_support.py   # Problem-specific config loading
 │   ├── test_generator.py    # Test file generation
+│   ├── catalog/             # Problem catalog utilities
+│   │   └── __init__.py
 │   └── helpers/
 │       ├── __init__.py
 │       ├── catalog.py       # Canonical helper definitions
@@ -557,3 +561,13 @@ codegen/
     ├── generator.py         # Practice skeleton generation
     └── reuse.py             # Reuse from reference
 ```
+
+### Tiered Solve Generation
+
+For problems involving complex types (TreeNode, ListNode), use `--solve-mode tiered`:
+
+```bash
+python -m codegen new 104 --solve-mode tiered
+```
+
+This generates solve() functions with codec support for serialization/deserialization of complex types. See [Problem Support Boundary](../../contracts/problem-support-boundary.md) for tier definitions.

@@ -77,13 +77,14 @@ class Solution:
 
 def solve():
     import sys
+    import json
     lines = sys.stdin.read().strip().split('\n')
-    nums = list(map(int, lines[0].split(',')))
+    nums = json.loads(lines[0])
     target = int(lines[1])
-    
+
     solver = get_solver(SOLUTIONS)
     result = solver.twoSum(nums, target)
-    print(result)
+    print(json.dumps(result, separators=(',', ':')))
 
 if __name__ == "__main__":
     solve()

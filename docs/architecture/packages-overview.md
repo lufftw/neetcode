@@ -1,17 +1,16 @@
 # Packages Architecture Overview
 
-> **Status**: Canonical Reference  
-> **Scope**: `packages/` directory architecture
+> **Status**: Canonical Reference
+> **Scope**: `src/` directory architecture
 
-This document provides an overview of the `packages/` directory structure and the relationships between packages.
+This document provides an overview of the `src/` directory structure and the relationships between packages.
 
 ---
 
 ## Directory Structure
 
 ```
-packages/
-├── __init__.py
+src/
 ├── codegen/                    # Solution skeleton generator (Stateless)
 │   ├── core/                   # Shared core components
 │   ├── reference/              # Reference skeleton generation
