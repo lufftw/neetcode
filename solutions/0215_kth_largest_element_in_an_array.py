@@ -112,11 +112,18 @@ class SolutionQuickselect:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         """
         Find the kth largest element in the array.
-        
+
+        Core insight: Quickselect partitions around a pivot. If pivot lands at
+        target index, we're done. Otherwise, recurse on the correct side. Random
+        pivot selection gives expected O(n) time.
+
+        Invariant: After partition, elements at indices < pivot_idx are >= pivot,
+        elements at indices > pivot_idx are < pivot (for descending order).
+
         Args:
             nums: Array of integers
             k: Position (1-indexed) of element to find when sorted descending
-            
+
         Returns:
             The kth largest element
         """

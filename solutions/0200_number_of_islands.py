@@ -122,6 +122,23 @@ SOLUTIONS = {
 # ============================================
 class SolutionDFS:
     def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Count number of islands in a 2D grid.
+
+        Core insight: Each unvisited '1' starts a new island. Use DFS flood fill
+        to mark all connected land cells as visited (sink them to '0'). Count
+        how many times we initiate a new DFS.
+
+        Invariant: After processing cell (r, c), all land cells connected to it
+        have been marked '0'; island_count equals number of distinct islands
+        discovered so far.
+
+        Args:
+            grid: 2D grid of '0' (water) and '1' (land)
+
+        Returns:
+            Number of islands (connected land components)
+        """
         if not grid or not grid[0]:
             return 0
 

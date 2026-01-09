@@ -128,10 +128,16 @@ class SolutionTwoPointers:
     def maxArea(self, height: List[int]) -> int:
         """
         Find the maximum area of water that can be contained.
-        
+
+        Core insight: Moving the shorter pointer is correct because keeping it
+        fixed cannot improve area — height is already bottlenecked, and width
+        can only decrease.
+
+        Invariant: Maximum area using any pair outside [left, right] has been computed.
+
         Args:
             height: List of non-negative integers representing line heights
-            
+
         Returns:
             Maximum area of water that can be contained
         """
@@ -204,7 +210,6 @@ class SolutionTwoPointersOptimized:
 # ============================================================================
 
 def solve():
-    import json
     """
     Input format:
         Line 1: Space-separated integers representing heights

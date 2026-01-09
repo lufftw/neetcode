@@ -72,6 +72,22 @@ class SolutionDP:
     """
 
     def canPartition(self, nums: List[int]) -> bool:
+        """
+        Determine if array can be partitioned into two equal-sum subsets.
+
+        Core insight: Transform to "can we select a subset summing to total/2?"
+        This is 0/1 knapsack boolean DP. Backward iteration ensures each number
+        is used at most once.
+
+        Invariant: dp[s] = True iff sum s is achievable using a subset of
+        numbers processed so far.
+
+        Args:
+            nums: Array of positive integers
+
+        Returns:
+            True if equal partition exists
+        """
         total = sum(nums)
         if total % 2 != 0:
             return False

@@ -131,11 +131,16 @@ class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         """
         Find all start indices of p's anagrams in s.
-        
+
+        Core insight: Same as permutation check (LC 567), but collect all
+        starting indices instead of returning on first match.
+
+        Invariant: Window size is always exactly len(p) after initial fill.
+
         Args:
             s: Source string to search in
             p: Pattern string (looking for its anagrams)
-            
+
         Returns:
             List of starting indices where anagrams of p begin in s
         """

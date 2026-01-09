@@ -109,10 +109,16 @@ class SolutionTwoPointers:
     def sortedSquares(self, nums: List[int]) -> List[int]:
         """
         Return array of squares in sorted order.
-        
+
+        Core insight: In a sorted array, the largest squared values are at the
+        extremes (most negative or most positive). Compare absolute values at
+        both ends and write the larger square to the result from back to front.
+
+        Invariant: result[write+1:] contains the largest squares in sorted order.
+
         Args:
             nums: Sorted array of integers
-            
+
         Returns:
             Sorted array of squares
         """

@@ -67,6 +67,21 @@ class SolutionDP:
     """
 
     def minCostClimbingStairs(self, cost: List[int]) -> int:
+        """
+        Find minimum cost to reach the top of the staircase.
+
+        Core insight: To reach step i, we must come from i-1 or i-2, paying that
+        step's cost. dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]).
+        Can start at index 0 or 1 for free, so dp[0] = dp[1] = 0.
+
+        Invariant: prev1 = min cost to reach step i-1, prev2 = min cost to reach i-2.
+
+        Args:
+            cost: Cost of each step
+
+        Returns:
+            Minimum cost to reach the top (beyond last step)
+        """
         n = len(cost)
         if n <= 1:
             return 0

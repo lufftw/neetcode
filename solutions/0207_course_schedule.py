@@ -117,6 +117,23 @@ SOLUTIONS = {
 # ============================================
 class SolutionKahn:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        Determine if all courses can be finished (no cyclic dependency).
+
+        Core insight: Use Kahn's algorithm — repeatedly remove nodes with in-degree
+        0 (no remaining prerequisites). If all nodes are removed, graph is acyclic
+        (valid topological order exists). Remaining nodes indicate a cycle.
+
+        Invariant: Nodes in queue have in-degree 0 (all prerequisites satisfied);
+        visited count tracks nodes successfully processed.
+
+        Args:
+            numCourses: Total number of courses
+            prerequisites: List of [course, prereq] pairs
+
+        Returns:
+            True if all courses can be completed (no cycle)
+        """
         # Build adjacency list and in-degree array
         graph: List[List[int]] = [[] for _ in range(numCourses)]
         in_degree: List[int] = [0] * numCourses

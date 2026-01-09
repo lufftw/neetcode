@@ -166,10 +166,15 @@ class SolutionTwoPointers:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         """
         Find all unique triplets that sum to zero.
-        
+
+        Core insight: Sorting enables both efficient two-pointer pair search
+        and systematic duplicate avoidance via skip logic.
+
+        Invariant: All unique triplets with first element < nums[i] have been found.
+
         Args:
             nums: List of integers
-            
+
         Returns:
             List of triplets [a, b, c] where a + b + c = 0
         """

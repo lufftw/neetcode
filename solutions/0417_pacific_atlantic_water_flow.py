@@ -131,6 +131,23 @@ COMPARE_MODE = "sorted"
 # ============================================
 class SolutionBFS:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        """
+        Find cells that can flow to both Pacific and Atlantic oceans.
+
+        Core insight: Reverse the problem — instead of flowing downhill from
+        each cell, flow uphill from ocean borders. Multi-source BFS from Pacific
+        edge finds all cells reachable by Pacific. Same for Atlantic. Answer is
+        intersection.
+
+        Invariant: reachable set contains all cells that can reach the ocean
+        (water can flow from these cells to the ocean border).
+
+        Args:
+            heights: 2D grid of cell heights
+
+        Returns:
+            List of [row, col] coordinates that can reach both oceans
+        """
         if not heights or not heights[0]:
             return []
 

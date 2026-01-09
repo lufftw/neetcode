@@ -125,12 +125,21 @@ SOLUTIONS = {
 class Solution:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
         """
-        Merge accounts sharing common emails.
+        Merge accounts that share at least one common email.
 
-        Key Insight:
-        - Map each email to first account index that has it
-        - If email seen before, union current account with previous
-        - Collect emails by component root
+        Core insight: Emails define equivalence between accounts. If account A
+        and B share an email, they're the same person. Union-Find groups accounts
+        transitively. Map each email to its first account, union when email is seen
+        again. Finally, collect all emails by component root.
+
+        Invariant: email_to_account maps each unique email to an account index;
+        accounts in the same Union-Find component belong to the same person.
+
+        Args:
+            accounts: List of [name, email1, email2, ...] entries
+
+        Returns:
+            Merged accounts with [name, sorted_emails...]
         """
         n = len(accounts)
         parent = list(range(n))

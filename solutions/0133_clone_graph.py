@@ -116,6 +116,23 @@ SOLUTIONS = {
 # ============================================
 class SolutionDFS:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        """
+        Create a deep copy of an undirected graph.
+
+        Core insight: Use hash map (original → clone) to handle cycles and
+        shared references. On first visit, create clone and add to map. On
+        subsequent visits, return existing clone. DFS naturally handles graph
+        structure.
+
+        Invariant: old_to_new maps every visited original node to its clone;
+        clones have complete neighbor lists for all fully processed nodes.
+
+        Args:
+            node: Reference to any node in the connected graph
+
+        Returns:
+            Reference to the cloned graph (corresponding clone of input node)
+        """
         if not node:
             return None
 

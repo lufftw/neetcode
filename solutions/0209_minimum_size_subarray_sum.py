@@ -102,11 +102,17 @@ class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         """
         Find the minimal length of a subarray whose sum is >= target.
-        
+
+        Core insight: Works because all elements are positive — adding always
+        increases sum, removing always decreases. This monotonicity enables
+        sliding window. (With negatives, need prefix sum + monotonic deque.)
+
+        Invariant: window_sum = sum of nums[left..right].
+
         Args:
             target: Target sum to reach or exceed
             nums: Array of positive integers
-            
+
         Returns:
             Minimum length of valid subarray, or 0 if none exists
         """

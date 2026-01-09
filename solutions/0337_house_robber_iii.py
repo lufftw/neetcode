@@ -119,6 +119,22 @@ JUDGE_FUNC = judge
 # ============================================================================
 class SolutionDP:
     def rob(self, root: Optional[TreeNode]) -> int:
+        """
+        Find maximum money robbing non-adjacent nodes in a binary tree.
+
+        Core insight: Each node returns (rob_profit, skip_profit). If we rob this
+        node, children must be skipped. If we skip, children have free choice.
+        Post-order ensures children are resolved before parent decision.
+
+        Invariant: For each subtree, the returned tuple contains optimal values
+        for both choices (rob root vs skip root) of that subtree.
+
+        Args:
+            root: Root of the binary tree
+
+        Returns:
+            Maximum money that can be robbed
+        """
         def postorder(node) -> tuple[int, int]:
             if not node:
                 return (0, 0)

@@ -116,10 +116,17 @@ class SolutionFloyd:
     def isHappy(self, n: int) -> bool:
         """
         Determine if n is a happy number.
-        
+
+        Core insight: The sum-of-squares sequence forms an implicit linked list.
+        Apply Floyd's cycle detection: if we cycle back without hitting 1, n is
+        unhappy. If fast reaches 1, n is happy.
+
+        Invariant: If slow and fast haven't met and fast hasn't reached 1, no
+        conclusion can be drawn yet — continue iteration.
+
         Args:
             n: Positive integer to check
-            
+
         Returns:
             True if n is happy (sequence reaches 1)
         """

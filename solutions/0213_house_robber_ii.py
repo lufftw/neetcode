@@ -87,6 +87,22 @@ class SolutionDP:
     """
 
     def rob(self, nums: List[int]) -> int:
+        """
+        Find maximum money robbing non-adjacent houses arranged in a circle.
+
+        Core insight: Since first and last houses are adjacent in circle, we can't
+        rob both. Decompose into two linear problems: (1) houses 0 to n-2 (exclude last),
+        (2) houses 1 to n-1 (exclude first). Answer is max of both cases.
+
+        Invariant: Each linear subproblem maintains the House Robber I invariant;
+        the circular constraint is handled by case decomposition.
+
+        Args:
+            nums: Money in each house (circular arrangement)
+
+        Returns:
+            Maximum money that can be robbed
+        """
         if not nums:
             return 0
         if len(nums) == 1:

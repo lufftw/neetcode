@@ -132,15 +132,21 @@ class SolutionIterative:
     current heads, then advancing that pointer.
     """
     
-    def mergeTwoLists(self, list1: Optional[ListNode], 
+    def mergeTwoLists(self, list1: Optional[ListNode],
                        list2: Optional[ListNode]) -> Optional[ListNode]:
         """
         Merge two sorted linked lists into one sorted list.
-        
+
+        Core insight: Always append the smaller head to the result. Since both
+        inputs are sorted, the smaller head is the globally smallest remaining
+        element. Dummy head simplifies edge case handling.
+
+        Invariant: All nodes in result list are sorted and <= min(list1.val, list2.val).
+
         Args:
             list1: Head of first sorted list
             list2: Head of second sorted list
-            
+
         Returns:
             Head of merged sorted list
         """

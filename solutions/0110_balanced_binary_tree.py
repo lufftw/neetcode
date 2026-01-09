@@ -68,7 +68,18 @@ class Solution:
         """
         Check if tree is height-balanced.
 
-        Returns height if balanced, -1 if not (early termination).
+        Core insight: Compute height bottom-up while checking balance. Return -1
+        as sentinel to signal imbalance, enabling early termination. This avoids
+        O(n²) of naive approach that recomputes heights at each level.
+
+        Invariant: Return value is either -1 (subtree unbalanced) or the actual
+        height of the balanced subtree.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            True if height-balanced (|left - right| <= 1 for all nodes)
         """
         def check(node: Optional[TreeNode]) -> int:
             if not node:

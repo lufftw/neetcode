@@ -124,6 +124,22 @@ JUDGE_FUNC = judge
 # ============================================================================
 class SolutionMonotonicStack:
     def trap(self, height: List[int]) -> int:
+        """
+        Calculate trapped rainwater using monotonic decreasing stack.
+
+        Core insight: Each pop finalizes a horizontal layer of water. The stack
+        ensures we process valleys from bottom to top, accumulating water layer
+        by layer as we find increasingly tall bounding walls.
+
+        Invariant: Stack contains indices of bars in decreasing height order;
+        each represents a potential left wall for future water containers.
+
+        Args:
+            height: List of non-negative integers representing elevation map
+
+        Returns:
+            Total units of rainwater trapped
+        """
         trapped_water = 0
         index_stack: list[int] = []  # Indices with decreasing heights
 
@@ -164,6 +180,21 @@ class SolutionMonotonicStack:
 # ============================================================================
 class SolutionTwoPointers:
     def trap(self, height: List[int]) -> int:
+        """
+        Calculate trapped rainwater using two pointers with running max.
+
+        Core insight: Water level at any position is bounded by min(left_max, right_max).
+        By always advancing the smaller side, we ensure the other side's max is >= current
+        side's max, making the water calculation safe without needing the full array scan.
+
+        Invariant: Water at positions outside [left_ptr, right_ptr] has been calculated.
+
+        Args:
+            height: List of non-negative integers representing elevation map
+
+        Returns:
+            Total units of rainwater trapped
+        """
         if len(height) <= 2:
             return 0
 

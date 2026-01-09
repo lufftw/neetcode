@@ -119,10 +119,15 @@ class SolutionTwoPointers:
     def isPalindrome(self, s: str) -> bool:
         """
         Check if the string is a palindrome (alphanumeric only, case-insensitive).
-        
+
+        Core insight: Compare characters from both ends, skipping non-alphanumeric
+        inline. If all pairs match, it's a palindrome.
+
+        Invariant: Characters outside [left, right] are verified to be palindromic.
+
         Args:
             s: Input string
-            
+
         Returns:
             True if s is a valid palindrome
         """

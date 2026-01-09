@@ -69,9 +69,20 @@ SOLUTIONS = {
 class Solution:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         """
-        Longest path between any two nodes (in edges).
+        Find diameter (longest path between any two nodes) in edges.
 
-        Track maximum left_height + right_height during height computation.
+        Core insight: For each node, longest path through it = left_height +
+        right_height. Track max during height computation. Return height to
+        parent (path can only extend one direction upward).
+
+        Invariant: self.diameter holds the maximum (left_h + right_h) seen across
+        all nodes; height() returns correct subtree height.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Diameter in edges (number of edges on longest path)
         """
         self.diameter = 0
 

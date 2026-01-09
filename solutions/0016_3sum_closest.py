@@ -126,11 +126,16 @@ class SolutionTwoPointers:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
         """
         Find the sum of three integers closest to target.
-        
+
+        Core insight: Same as 3Sum, but track closest sum instead of exact matches.
+        Move pointers based on whether current sum is below or above target.
+
+        Invariant: closest_sum is the nearest sum to target among all triplets examined.
+
         Args:
             nums: List of integers
             target: Target sum to approach
-            
+
         Returns:
             Sum of the triplet closest to target
         """
@@ -241,7 +246,6 @@ class SolutionTwoPointersOptimized:
 # ============================================================================
 
 def solve():
-    import json
     """
     Input format:
         Line 1: Space-separated integers (nums)

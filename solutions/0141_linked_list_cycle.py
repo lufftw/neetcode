@@ -136,10 +136,15 @@ class SolutionFloyd:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
         """
         Detect if linked list contains a cycle.
-        
+
+        Core insight: If cycle exists, fast will eventually lap slow inside
+        the cycle — the gap decreases by 1 each step until they meet.
+
+        Invariant: If slow and fast haven't met, no cycle exists in the traversed portion.
+
         Args:
             head: Head of the linked list
-            
+
         Returns:
             True if the list has a cycle
         """
@@ -197,7 +202,6 @@ class SolutionHashSet:
 # ============================================================================
 
 def solve():
-    import json
     """
     Input format:
         Line 1: Space-separated integers (node values)

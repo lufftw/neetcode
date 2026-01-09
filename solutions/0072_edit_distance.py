@@ -66,6 +66,22 @@ class Solution:
     #             else, edit_cost[i][j] = 1 + min(replace, delete, insert)
 
     def minDistance(self, word1: str, word2: str) -> int:
+        """
+        Find minimum edit operations to transform word1 to word2.
+
+        Core insight: Classic Levenshtein distance. If characters match, no edit
+        needed (take diagonal). If mismatch, take 1 + min(replace, delete, insert).
+        Base cases: converting to/from empty string requires all inserts/deletes.
+
+        Invariant: edit_cost[i][j] = min edits to convert word1[0:i] to word2[0:j].
+
+        Args:
+            word1: Source string
+            word2: Target string
+
+        Returns:
+            Minimum number of edit operations
+        """
         source_len, target_len = len(word1), len(word2)
 
         edit_cost: list[list[int]] = [

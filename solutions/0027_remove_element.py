@@ -137,11 +137,17 @@ class SolutionTwoPointers:
     def removeElement(self, nums: List[int], val: int) -> int:
         """
         Remove all occurrences of val in-place.
-        
+
+        Core insight: Use reader/writer pattern — reader scans all elements,
+        writer only advances when keeping an element. Non-val elements are
+        copied forward, effectively "overwriting" vals.
+
+        Invariant: nums[0:write_index] contains all non-val elements seen so far.
+
         Args:
             nums: Array of integers (modified in-place)
             val: Value to remove
-            
+
         Returns:
             Number of elements remaining (not equal to val)
         """

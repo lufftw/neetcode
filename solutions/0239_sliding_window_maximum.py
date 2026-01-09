@@ -122,6 +122,23 @@ JUDGE_FUNC = judge
 # ============================================================================
 class SolutionMonotonicDeque:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        Return the maximum value in each sliding window of size k.
+
+        Core insight: Maintain a deque of indices in decreasing order of values.
+        When a new element enters, remove dominated elements from back (they'll
+        never be max while current element is in window). Front is always max.
+
+        Invariant: Deque contains indices of potential maxima in decreasing value
+        order; all indices are within the current window [i-k+1, i].
+
+        Args:
+            nums: Array of integers
+            k: Window size
+
+        Returns:
+            List of maximum values for each window position
+        """
         if not nums:
             return []
 

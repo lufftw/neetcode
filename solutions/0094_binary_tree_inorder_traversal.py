@@ -71,7 +71,21 @@ SOLUTIONS = {
 # ============================================
 class SolutionRecursive:
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        """Inorder: Left → Node → Right."""
+        """
+        Return inorder traversal of binary tree nodes.
+
+        Core insight: Inorder visits Left → Node → Right. For BST, this produces
+        sorted order. Recursion naturally handles the ordering — fully process
+        left subtree before visiting current node.
+
+        Invariant: When visiting a node, its entire left subtree has been processed.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            List of node values in inorder sequence
+        """
         result: list[int] = []
 
         def dfs(node: Optional[TreeNode]) -> None:

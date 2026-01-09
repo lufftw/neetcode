@@ -122,6 +122,26 @@ SOLUTIONS = {
 class SolutionBellmanFord:
     def findCheapestPrice(self, n: int, flights: List[List[int]],
                           src: int, dst: int, k: int) -> int:
+        """
+        Find cheapest flight from src to dst with at most k stops.
+
+        Core insight: Bellman-Ford naturally handles the k-stop constraint. Each
+        iteration relaxes all edges, extending shortest paths by one hop. After
+        k+1 iterations, we have shortest paths using at most k+1 edges (k stops).
+
+        Invariant: After i iterations, dist[v] is the minimum cost to reach v
+        using at most i edges.
+
+        Args:
+            n: Number of cities
+            flights: Edge list [from, to, price]
+            src: Source city
+            dst: Destination city
+            k: Maximum number of intermediate stops
+
+        Returns:
+            Minimum cost, or -1 if no valid route
+        """
         INF = float('inf')
         dist: List[float] = [INF] * n
         dist[src] = 0

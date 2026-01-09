@@ -62,6 +62,21 @@ class SolutionDP:
     """
 
     def climbStairs(self, n: int) -> int:
+        """
+        Count distinct ways to climb n stairs taking 1 or 2 steps at a time.
+
+        Core insight: Ways to reach step n = ways to reach (n-1) + ways to reach (n-2),
+        since we can arrive from either. This is exactly the Fibonacci sequence.
+        Space-optimize by keeping only the last two values.
+
+        Invariant: prev1 = ways to reach step i-1, prev2 = ways to reach step i-2.
+
+        Args:
+            n: Number of stairs to climb
+
+        Returns:
+            Number of distinct ways to reach the top
+        """
         if n <= 2:
             return n
 

@@ -135,6 +135,23 @@ SOLUTIONS = {
 # ============================================
 class SolutionKahn:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        """
+        Return a valid course ordering, or empty array if impossible.
+
+        Core insight: Kahn's algorithm produces topological order directly. Process
+        nodes with in-degree 0, append to result, decrement neighbors' in-degrees.
+        Order of processing = valid course sequence.
+
+        Invariant: result contains courses in valid topological order; remaining
+        courses in queue have all prerequisites already in result.
+
+        Args:
+            numCourses: Total number of courses
+            prerequisites: List of [course, prereq] pairs
+
+        Returns:
+            Valid course order, or [] if cycle exists
+        """
         # Build adjacency list and in-degree array
         graph: List[List[int]] = [[] for _ in range(numCourses)]
         in_degree: List[int] = [0] * numCourses

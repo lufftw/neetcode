@@ -144,7 +144,12 @@ class SolutionBackward:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         """
         Merge nums2 into nums1 in-place.
-        
+
+        Core insight: Write from end to avoid overwriting unprocessed elements.
+        Place largest elements first; remaining nums1 elements are already in place.
+
+        Invariant: nums1[write+1:] contains the largest elements in sorted order.
+
         Args:
             nums1: First sorted array with extra space at end
             m: Number of actual elements in nums1

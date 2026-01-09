@@ -133,7 +133,13 @@ class SolutionTwoPointers:
     def moveZeroes(self, nums: List[int]) -> None:
         """
         Move all zeros to the end while maintaining relative order of non-zeros.
-        
+
+        Core insight: Reader/writer pattern with zero-fill. Non-zeros are copied
+        forward preserving order, then remaining positions are filled with zeros.
+        This minimizes writes when zeros are sparse.
+
+        Invariant: nums[0:write_index] contains all non-zero elements in original order.
+
         Args:
             nums: Array of integers (modified in-place)
         """
@@ -239,7 +245,6 @@ class SolutionSnowball:
 # ============================================================================
 
 def solve():
-    import json
     """
     Input format:
         Line 1: Space-separated integers

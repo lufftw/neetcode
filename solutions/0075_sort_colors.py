@@ -117,7 +117,13 @@ class SolutionDutchFlag:
     def sortColors(self, nums: List[int]) -> None:
         """
         Sort array containing only 0s, 1s, and 2s in-place.
-        
+
+        Core insight: Dutch National Flag maintains three regions and classifies
+        each element in one pass. Don't increment mid when swapping with high
+        because the swapped element is unexamined.
+
+        Invariant: [0,low) = 0s, [low,mid) = 1s, (high,n) = 2s, [mid,high] = unclassified.
+
         Args:
             nums: Array of integers (0, 1, or 2) to sort in-place
         """

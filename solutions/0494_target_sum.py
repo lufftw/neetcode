@@ -77,6 +77,22 @@ class SolutionDP:
     """
 
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        """
+        Count ways to assign +/- to nums to achieve target sum.
+
+        Core insight: Let P = sum of positive nums, N = sum of negative nums.
+        P - N = target and P + N = total. Solving: P = (target + total) / 2.
+        Transform to counting subsets that sum to P (0/1 knapsack count).
+
+        Invariant: dp[s] = number of subsets from processed numbers that sum to s.
+
+        Args:
+            nums: Array of non-negative integers
+            target: Target sum to achieve
+
+        Returns:
+            Number of valid +/- assignments
+        """
         total = sum(nums)
 
         # Check if solution exists

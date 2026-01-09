@@ -117,6 +117,24 @@ SOLUTIONS = {
 # ============================================
 class SolutionDijkstra:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        """
+        Find minimum time for signal to reach all nodes from source k.
+
+        Core insight: Dijkstra finds shortest paths from single source. Use min-heap
+        to always process the node with smallest distance next. Once a node is popped,
+        its distance is final (greedy property holds for non-negative weights).
+
+        Invariant: dist[node] contains the shortest path distance for all finalized
+        nodes; heap contains candidates with tentative distances.
+
+        Args:
+            times: Edge list [u, v, w] (source, target, weight)
+            n: Number of nodes (1 to n)
+            k: Source node to send signal from
+
+        Returns:
+            Maximum shortest path distance (time for last node), or -1 if unreachable
+        """
         # Build adjacency list
         graph: Dict[int, List[Tuple[int, int]]] = defaultdict(list)
         for u, v, w in times:

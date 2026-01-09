@@ -100,12 +100,21 @@ SOLUTIONS = {
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         """
-        Find the edge that creates a cycle.
+        Find the edge that creates a cycle in a tree with one extra edge.
 
-        Key Insight:
-        - Process edges in order
-        - Union returns False if nodes already connected
-        - That edge is redundant (creates a cycle)
+        Core insight: Process edges in order. Before adding each edge, check if
+        endpoints are already connected (same component). If yes, this edge would
+        create a cycle — return it. Union-Find with path compression + rank gives
+        near O(1) per operation.
+
+        Invariant: After processing i edges, the Union-Find structure represents
+        the forest formed by the first i edges that didn't create cycles.
+
+        Args:
+            edges: List of edges [u, v] in the graph
+
+        Returns:
+            The last edge that would create a cycle
         """
         n = len(edges)
         parent = list(range(n + 1))  # 1-indexed

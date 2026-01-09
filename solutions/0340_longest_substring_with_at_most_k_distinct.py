@@ -98,11 +98,16 @@ class Solution:
     def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
         """
         Find the length of the longest substring with at most K distinct characters.
-        
+
+        Core insight: Unlike unique-char problem, we cannot jump — removing one
+        character may not restore validity, so we must shrink incrementally.
+
+        Invariant: Number of distinct characters in window [left, right] ≤ k.
+
         Args:
             s: Input string
             k: Maximum number of distinct characters allowed
-            
+
         Returns:
             Length of the longest valid substring
         """

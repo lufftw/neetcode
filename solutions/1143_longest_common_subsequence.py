@@ -62,6 +62,22 @@ class Solution:
     #             else, lcs_length[i][j] = max(lcs_length[i-1][j], lcs_length[i][j-1])
 
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        """
+        Find length of longest common subsequence of two strings.
+
+        Core insight: Classic dual-sequence DP. If characters match, extend LCS
+        from diagonal (dp[i-1][j-1] + 1). If mismatch, take max of skipping either
+        character. Build solution bottom-up from empty prefixes.
+
+        Invariant: lcs_length[i][j] = LCS length for text1[0:i] and text2[0:j].
+
+        Args:
+            text1: First string
+            text2: Second string
+
+        Returns:
+            Length of longest common subsequence
+        """
         len_1, len_2 = len(text1), len(text2)
 
         lcs_length: list[list[int]] = [

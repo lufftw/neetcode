@@ -75,6 +75,23 @@ SOLUTIONS = {
 # ============================================================================
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        """
+        Find maximum path sum in binary tree.
+
+        Core insight: At each node, consider it as the path's apex (turning point).
+        Path through node = node.val + left_gain + right_gain. Use max(0, child)
+        to prune negative branches. Return single-branch max to parent since path
+        can't fork upward.
+
+        Invariant: global_max holds the maximum path sum seen so far across all
+        nodes considered as apex.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Maximum sum of any path (may start/end anywhere)
+        """
         self.global_max = float('-inf')
 
         def max_contribution(node: Optional[TreeNode]) -> int:

@@ -65,7 +65,22 @@ SOLUTIONS = {
 # ============================================
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        """Maximum depth via recursive DFS."""
+        """
+        Find maximum depth (height) of binary tree.
+
+        Core insight: Depth is computed bottom-up. Empty tree has depth 0, leaf
+        has depth 1, internal node has depth = 1 + max(left_depth, right_depth).
+        Recursion naturally handles the postorder computation.
+
+        Invariant: Return value represents the height of the subtree rooted at
+        the current node.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            Maximum depth (number of nodes on longest root-to-leaf path)
+        """
         if not root:
             return 0
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))

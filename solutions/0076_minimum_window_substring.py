@@ -159,11 +159,17 @@ class Solution:
     def minWindow(self, s: str, t: str) -> str:
         """
         Find the minimum window substring of s that contains all characters of t.
-        
+
+        Core insight: Expand until all requirements satisfied, then contract
+        aggressively while still valid. The "satisfied counter" optimization
+        reduces validity check from O(|t|) to O(1).
+
+        Invariant: When chars_satisfied == chars_required, window contains all of t.
+
         Args:
             s: Source string to search in
             t: Target string containing required characters
-            
+
         Returns:
             Minimum window substring, or "" if no valid window exists
         """

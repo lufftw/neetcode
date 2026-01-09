@@ -72,6 +72,23 @@ class SolutionDP:
     """
 
     def change(self, amount: int, coins: List[int]) -> int:
+        """
+        Count number of combinations to make up the amount.
+
+        Core insight: Unbounded knapsack counting combinations. Coins as outer loop
+        ensures each combination is counted once (not permutations). Forward inner
+        loop allows unlimited coin reuse.
+
+        Invariant: After processing coin c, dp[a] counts combinations using only
+        coins processed so far to make amount a.
+
+        Args:
+            amount: Target amount
+            coins: Available coin denominations
+
+        Returns:
+            Number of distinct combinations
+        """
         dp = [0] * (amount + 1)
         dp[0] = 1
 

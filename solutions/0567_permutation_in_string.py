@@ -125,11 +125,16 @@ class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
         """
         Check if s2 contains any permutation of s1.
-        
+
+        Core insight: Permutation = same character frequencies. Use fixed window
+        of size len(s1) and track how many characters have matching frequencies.
+
+        Invariant: Window size is always exactly len(s1) after initial fill.
+
         Args:
             s1: Pattern string (looking for its permutation)
             s2: Source string to search in
-            
+
         Returns:
             True if s2 contains a permutation of s1
         """

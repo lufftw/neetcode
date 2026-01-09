@@ -76,6 +76,21 @@ class SolutionDP:
     """
 
     def rob(self, nums: List[int]) -> int:
+        """
+        Find maximum money robbing non-adjacent houses.
+
+        Core insight: At each house, choose max of (skip it, rob it). If we rob house i,
+        we add nums[i] to best result excluding house i-1. The recurrence is:
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i]).
+
+        Invariant: prev1 = max profit from houses 0..i-1, prev2 = max profit from 0..i-2.
+
+        Args:
+            nums: Money in each house
+
+        Returns:
+            Maximum money that can be robbed
+        """
         if not nums:
             return 0
         if len(nums) == 1:

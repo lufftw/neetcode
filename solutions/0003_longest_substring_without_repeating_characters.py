@@ -122,10 +122,15 @@ class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         """
         Find the length of the longest substring without repeating characters.
-        
+
+        Core insight: When a duplicate is found, jump left directly past
+        the previous occurrence — skipping unnecessary incremental shrinking.
+
+        Invariant: All characters in window [left, right] are unique.
+
         Args:
             s: Input string
-            
+
         Returns:
             Length of the longest substring with all unique characters
         """

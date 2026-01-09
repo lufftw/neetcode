@@ -72,6 +72,23 @@ class SolutionDP:
     """
 
     def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        Find minimum coins needed to make up the amount.
+
+        Core insight: Unbounded knapsack for minimum count. dp[a] = min coins for
+        amount a. For each coin, dp[a] = min(dp[a], dp[a-coin] + 1). Forward
+        iteration allows reusing same coin multiple times.
+
+        Invariant: After processing coin c, dp[a] is minimum coins using coins
+        processed so far to make amount a.
+
+        Args:
+            coins: Available coin denominations
+            amount: Target amount
+
+        Returns:
+            Minimum coins needed, or -1 if impossible
+        """
         if amount == 0:
             return 0
 

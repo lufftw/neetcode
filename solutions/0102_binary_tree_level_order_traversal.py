@@ -64,7 +64,22 @@ SOLUTIONS = {
 # ============================================
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        """Level-order traversal using BFS."""
+        """
+        Return level-order traversal as list of lists.
+
+        Core insight: BFS with queue naturally processes nodes level by level.
+        By recording queue size at start of each iteration, we process exactly
+        one level before moving to the next.
+
+        Invariant: At start of each while iteration, queue contains exactly all
+        nodes at the current depth level.
+
+        Args:
+            root: Root of binary tree
+
+        Returns:
+            List of lists, where each inner list contains values at that depth
+        """
         if not root:
             return []
 

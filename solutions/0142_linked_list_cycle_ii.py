@@ -137,10 +137,18 @@ class SolutionFloyd:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
         Find the node where the cycle begins, or None if no cycle.
-        
+
+        Core insight: When slow and fast meet inside cycle, the distance from
+        head to cycle start equals distance from meeting point to cycle start.
+        This is because slow travels x + y, fast travels x + y + nC (cycle length),
+        and 2(x+y) = x + y + nC implies x = nC - y.
+
+        Invariant: After phase 1, if cycle exists, slow is at meeting point exactly
+        (cycle_length - distance_to_cycle_start) steps into the cycle.
+
         Args:
             head: Head of the linked list
-            
+
         Returns:
             The node where cycle begins, or None
         """

@@ -126,6 +126,24 @@ JUDGE_FUNC = judge
 # ============================================================================
 class SolutionMonotonicDeque:
     def shortestSubarray(self, nums: List[int], k: int) -> int:
+        """
+        Find shortest subarray with sum >= k (handles negative numbers).
+
+        Core insight: Use prefix sums so sum(nums[i:j]) = prefix[j] - prefix[i].
+        Maintain increasing deque of prefix sums. If prefix[i1] >= prefix[i2]
+        where i1 < i2, i1 is dominated (i2 gives larger difference AND shorter
+        length). Pop valid starts immediately as they won't give shorter answers.
+
+        Invariant: Deque contains indices with increasing prefix values; each
+        represents a potential subarray start that hasn't been dominated or used.
+
+        Args:
+            nums: Array of integers (may contain negatives)
+            k: Required minimum sum
+
+        Returns:
+            Length of shortest valid subarray, or -1 if none exists
+        """
         n = len(nums)
 
         # Build prefix sum array: prefix[i] = sum(nums[0:i])

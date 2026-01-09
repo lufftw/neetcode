@@ -131,6 +131,23 @@ JUDGE_FUNC = judge
 # ============================================================================
 class SolutionMonotonicDeque:
     def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
+        """
+        Maximize yi + yj + |xi - xj| where |xi - xj| <= k and i < j.
+
+        Core insight: Since points sorted by x and i < j, |xi - xj| = xj - xi.
+        Rewrite as (yj + xj) + (yi - xi). For each j, maximize (yi - xi) among
+        valid i. This is sliding window maximum on transformed values (y - x).
+
+        Invariant: Deque contains (x, y-x) with decreasing y-x values; all points
+        are within distance k of current point.
+
+        Args:
+            points: List of [x, y] coordinates sorted by x
+            k: Maximum allowed x-distance between points
+
+        Returns:
+            Maximum value of the equation
+        """
         # Deque stores (x, y-x) tuples with y-x in decreasing order
         candidates: deque[tuple[int, int]] = deque()
         max_value = float("-inf")

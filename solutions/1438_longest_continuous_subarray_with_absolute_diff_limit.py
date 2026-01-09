@@ -140,6 +140,23 @@ JUDGE_FUNC = judge
 # ============================================================================
 class SolutionTwoDeques:
     def longestSubarray(self, nums: List[int], limit: int) -> int:
+        """
+        Find longest subarray where max - min <= limit.
+
+        Core insight: The absolute difference between any two elements in a
+        subarray equals max - min. Maintain two deques: one for max (decreasing),
+        one for min (increasing). Shrink window when constraint violated.
+
+        Invariant: For window [left, right], max_deque[0] and min_deque[0] give
+        the current window's max and min; max - min <= limit.
+
+        Args:
+            nums: Array of integers
+            limit: Maximum allowed difference between any two elements
+
+        Returns:
+            Length of longest valid subarray
+        """
         if not nums:
             return 0
 

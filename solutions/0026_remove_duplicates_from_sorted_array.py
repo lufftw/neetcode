@@ -139,10 +139,15 @@ class SolutionTwoPointers:
     def removeDuplicates(self, nums: List[int]) -> int:
         """
         Remove duplicates in-place, keeping one copy of each unique element.
-        
+
+        Core insight: Write pointer marks boundary of unique elements. Only copy
+        when current element differs from the last written element.
+
+        Invariant: nums[0:write_index] contains exactly one copy of each unique value seen.
+
         Args:
             nums: Sorted array of integers (modified in-place)
-            
+
         Returns:
             Number of unique elements (new logical length)
         """
