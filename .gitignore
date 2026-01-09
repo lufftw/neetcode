@@ -37,6 +37,7 @@ AGENTS.md
 # OS
 .DS_Store
 Thumbs.db
+nul
 
 # Debug
 *.log
