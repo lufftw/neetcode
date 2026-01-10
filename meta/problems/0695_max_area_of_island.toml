@@ -1,0 +1,46 @@
+# Problem: Max Area of Island
+# https://leetcode.com/problems/max-area-of-island/
+
+id = "0695"
+slug = "0695_max_area_of_island"
+title = "Max Area of Island"
+leetcode_id = 695
+url = "https://leetcode.com/problems/max-area-of-island/"
+
+difficulty = "medium"
+topics = ["array", "depth_first_search", "breadth_first_search", "union_find", "matrix"]
+companies = ["amazon", "facebook", "google", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["GridDFS", "GridBFS", "FloodFill"]
+patterns         = ["grid_traversal", "connected_components", "in_place_marking"]
+families         = ["graph", "matrix"]
+data_structures  = ["matrix", "stack", "queue"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0200", "0463", "0733"]
+
+[files]
+solution  = "solutions/0695_max_area_of_island.py"
+generator = "generators/0695_max_area_of_island.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "maxAreaOfIsland"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Recursive DFS with in-place marking (sink visited land)"
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterativeDFS"
+method = "maxAreaOfIsland"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Iterative DFS with explicit stack; avoids recursion limit"
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "maxAreaOfIsland"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "BFS traversal using deque; explores level by level"
