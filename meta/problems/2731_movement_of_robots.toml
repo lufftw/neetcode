@@ -1,0 +1,32 @@
+# Problem: Movement of Robots
+# https://leetcode.com/problems/movement-of-robots/
+
+id = "2731"
+slug = "2731_movement_of_robots"
+title = "Movement of Robots"
+leetcode_id = 2731
+url = "https://leetcode.com/problems/movement-of-robots/"
+
+difficulty = "medium"
+topics = ["array", "brainteaser", "sorting", "prefix_sum"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["prefix_sum", "pairwise_distance_sum"]
+patterns         = ["collision_pass_through", "sorted_contribution"]
+families         = ["sum_of_distances"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "prefix_sum"]
+related_problems = []
+
+[files]
+solution  = "solutions/2731_movement_of_robots.py"
+generator = "generators/2731_movement_of_robots.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "sumDistance"
+complexity = "O(n log n) time, O(n) space"
+notes  = "Collision = pass through (brain teaser). Sort positions, use prefix sum for pairwise distances."
