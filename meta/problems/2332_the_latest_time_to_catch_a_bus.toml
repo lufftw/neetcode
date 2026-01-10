@@ -1,0 +1,32 @@
+# Problem: The Latest Time to Catch a Bus
+# https://leetcode.com/problems/the-latest-time-to-catch-a-bus/
+
+id = "2332"
+slug = "2332_the_latest_time_to_catch_a_bus"
+title = "The Latest Time to Catch a Bus"
+leetcode_id = 2332
+url = "https://leetcode.com/problems/the-latest-time-to-catch-a-bus/"
+
+difficulty = "medium"
+topics = ["array", "two-pointers", "binary-search", "sorting"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["simulation", "gap_finding"]
+patterns         = ["two_pointers", "backtrack_search"]
+families         = ["simulation"]
+data_structures  = ["array", "hash_set"]
+algorithms       = ["sorting", "simulation"]
+related_problems = ["1870", "2410"]
+
+[files]
+solution  = "solutions/2332_the_latest_time_to_catch_a_bus.py"
+generator = "generators/2332_the_latest_time_to_catch_a_bus.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "latestTimeCatchTheBus"
+complexity = "O(n log n + m log m) time, O(sort) space"
+notes  = "Simulate boarding, then backtrack to find gap in passenger times."
