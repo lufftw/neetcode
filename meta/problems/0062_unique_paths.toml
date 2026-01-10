@@ -1,0 +1,89 @@
+# Problem: Unique Paths
+# https://leetcode.com/problems/unique-paths/
+
+# ===== Problem Info =====
+id = "0062"
+slug = "0062_unique_paths"
+title = "Unique Paths"
+leetcode_id = 62
+url = "https://leetcode.com/problems/unique-paths/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["math", "dynamic_programming", "combinatorics"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GridDP", "Combinatorics"]
+patterns         = ["grid_dp", "path_counting", "combinatorics"]
+families         = ["dynamic_programming_2d", "math_combinatorics"]
+data_structures  = ["matrix"]
+algorithms       = ["dynamic_programming", "combinatorics"]
+related_problems = ["0063", "0064", "0980"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0062_unique_paths.py"
+generator = "generators/0062_unique_paths.py"
+tests_dir = "tests/0062_unique_paths/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDP1D"
+method = "uniquePaths"
+
+api_kernels      = ["GridDP"]
+patterns         = ["space_optimized_dp"]
+families         = ["dynamic_programming_2d"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0063", "0064"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(n) space"
+notes      = "Each cell = sum of above + left. Single row reused per iteration."
+
+[[solutions]]
+key    = "dp_2d"
+class  = "SolutionDP2D"
+method = "uniquePaths"
+
+api_kernels      = ["GridDP"]
+patterns         = ["grid_dp"]
+families         = ["dynamic_programming_2d"]
+data_structures  = ["matrix"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0063", "0064"]
+
+role       = "variant"
+variant    = "dp_2d"
+based_on   = ["0062#default"]
+delta      = "Full 2D grid for conceptual clarity"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Standard DP: dp[i][j] = dp[i-1][j] + dp[i][j-1]."
+
+[[solutions]]
+key    = "math"
+class  = "SolutionMath"
+method = "uniquePaths"
+
+api_kernels      = ["Combinatorics"]
+patterns         = ["combinatorics"]
+families         = ["math_combinatorics"]
+data_structures  = []
+algorithms       = ["combinatorics"]
+related_problems = []
+
+role       = "variant"
+variant    = "math"
+based_on   = ["0062#default"]
+delta      = "Direct formula instead of building DP table"
+complexity = "O(min(m,n)) time, O(1) space"
+notes      = "C(m+n-2, m-1): choose which moves are down from total moves."
