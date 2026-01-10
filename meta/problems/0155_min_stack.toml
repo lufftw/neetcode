@@ -1,0 +1,39 @@
+# Problem: Min Stack
+# https://leetcode.com/problems/min-stack/
+
+id = "0155"
+slug = "0155_min_stack"
+title = "Min Stack"
+leetcode_id = 155
+url = "https://leetcode.com/problems/min-stack/"
+
+difficulty = "medium"
+topics = ["stack", "design"]
+companies = ["amazon", "google", "microsoft", "bloomberg"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["Stack", "MinTracking"]
+patterns         = ["auxiliary_stack", "monotonic_tracking"]
+families         = ["stack", "design"]
+data_structures  = ["stack"]
+algorithms       = ["min_tracking"]
+related_problems = ["0239", "0716"]
+
+[files]
+solution  = "solutions/0155_min_stack.py"
+generator = "generators/0155_min_stack.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "MinStackTwoStacks"
+method = "_run_operations"
+complexity = "O(1) per operation, O(n) space"
+notes      = "Two stacks: values and minimum history"
+
+[[solutions]]
+key    = "tuple"
+class  = "MinStackTuple"
+method = "_run_operations"
+complexity = "O(1) per operation, O(n) space"
+notes      = "Single stack with (value, current_min) pairs"
