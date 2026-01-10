@@ -1,0 +1,39 @@
+# Problem: Single Number
+# https://leetcode.com/problems/single-number/
+
+id = "0136"
+slug = "0136_single_number"
+title = "Single Number"
+leetcode_id = 136
+url = "https://leetcode.com/problems/single-number/"
+
+difficulty = "easy"
+topics = ["array", "bit_manipulation"]
+companies = ["amazon", "apple", "facebook"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["XORCancellation"]
+patterns         = ["xor_pairing"]
+families         = ["bit_manipulation"]
+data_structures  = ["array"]
+algorithms       = ["xor"]
+related_problems = ["0137", "0260", "0268"]
+
+[files]
+solution  = "solutions/0136_single_number.py"
+generator = "generators/0136_single_number.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionXOR"
+method = "singleNumber"
+complexity = "O(n) time, O(1) space"
+notes      = "XOR all elements; pairs cancel to zero"
+
+[[solutions]]
+key    = "reduce"
+class  = "SolutionReduce"
+method = "singleNumber"
+complexity = "O(n) time, O(1) space"
+notes      = "Functional reduce with XOR operator"
