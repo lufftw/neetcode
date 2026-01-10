@@ -1,0 +1,32 @@
+# Problem: Max Points on a Line
+# https://leetcode.com/problems/max-points-on-a-line/
+
+id = "0149"
+slug = "0149_max_points_on_a_line"
+title = "Max Points on a Line"
+leetcode_id = 149
+url = "https://leetcode.com/problems/max-points-on-a-line/"
+
+difficulty = "hard"
+topics = ["array", "hash-table", "math", "geometry"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["slope_counting", "gcd_normalization"]
+patterns         = ["point_enumeration"]
+families         = ["geometry"]
+data_structures  = ["hash_map"]
+algorithms       = ["enumeration"]
+related_problems = ["0356"]
+
+[files]
+solution  = "solutions/0149_max_points_on_a_line.py"
+generator = "generators/0149_max_points_on_a_line.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maxPoints"
+complexity = "O(n^2) time, O(n) space"
+notes  = "For each anchor, count slopes using GCD-reduced fractions."
