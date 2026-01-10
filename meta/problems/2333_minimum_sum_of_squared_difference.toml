@@ -1,0 +1,32 @@
+# Problem: Minimum Sum of Squared Difference
+# https://leetcode.com/problems/minimum-sum-of-squared-difference/
+
+id = "2333"
+slug = "2333_minimum_sum_of_squared_difference"
+title = "Minimum Sum of Squared Difference"
+leetcode_id = 2333
+url = "https://leetcode.com/problems/minimum-sum-of-squared-difference/"
+
+difficulty = "medium"
+topics = ["array", "math", "sorting", "heap", "binary_search"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["binary_search_on_answer"]
+patterns         = ["greedy_reduction", "squared_error_minimization"]
+families         = ["optimization"]
+data_structures  = ["counter"]
+algorithms       = ["binary_search", "greedy"]
+related_problems = ["0462"]
+
+[files]
+solution  = "solutions/2333_minimum_sum_of_squared_difference.py"
+generator = "generators/2333_minimum_sum_of_squared_difference.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minSumSquareDiff"
+complexity = "O(n log M) time, O(n) space"
+notes  = "Binary search for target max difference. Reduce largest diffs first. Handle leftover operations."
