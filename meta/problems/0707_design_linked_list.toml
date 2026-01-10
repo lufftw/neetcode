@@ -1,0 +1,32 @@
+# Problem: Design Linked List
+# https://leetcode.com/problems/design-linked-list/
+
+id = "0707"
+slug = "0707_design_linked_list"
+title = "Design Linked List"
+leetcode_id = 707
+url = "https://leetcode.com/problems/design-linked-list/"
+
+difficulty = "medium"
+topics = ["linked-list", "design"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["linked_list_ops", "dummy_head"]
+patterns         = ["data_structure_design"]
+families         = ["design"]
+data_structures  = ["linked_list"]
+algorithms       = ["linked_list"]
+related_problems = ["0146", "0460", "0706"]
+
+[files]
+solution  = "solutions/0707_design_linked_list.py"
+generator = "generators/0707_design_linked_list.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "execute"
+complexity = "O(n) per operation, O(n) space"
+notes  = "Singly linked list with dummy head for uniform edge handling."
