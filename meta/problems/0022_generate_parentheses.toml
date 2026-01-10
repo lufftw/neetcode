@@ -1,0 +1,70 @@
+# Problem: Generate Parentheses
+# https://leetcode.com/problems/generate-parentheses/
+
+# ===== Problem Info =====
+id = "0022"
+slug = "0022_generate_parentheses"
+title = "Generate Parentheses"
+leetcode_id = 22
+url = "https://leetcode.com/problems/generate-parentheses/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "dynamic_programming", "backtracking"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration", "CatalanDP"]
+patterns         = ["backtracking_enumeration", "catalan_number"]
+families         = ["backtracking_combinatorial", "parentheses_generation"]
+data_structures  = ["string", "array"]
+algorithms       = ["backtracking", "dynamic_programming"]
+related_problems = ["0017", "0020", "0032"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0022_generate_parentheses.py"
+generator = "generators/0022_generate_parentheses.py"
+tests_dir = "tests/0022_generate_parentheses/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionBacktrack"
+method = "generateParenthesis"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_enumeration"]
+families         = ["backtracking_combinatorial", "parentheses_generation"]
+data_structures  = ["string"]
+algorithms       = ["backtracking"]
+related_problems = ["0017", "0046", "0078"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(4^n / sqrt(n)) time, O(n) space"
+notes      = "Track open/close counts. Add '(' if open < n, add ')' if close < open."
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "generateParenthesis"
+
+api_kernels      = ["CatalanDP"]
+patterns         = ["catalan_number", "bottom_up_dp"]
+families         = ["parentheses_generation", "dynamic_programming_sequence"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0096"]
+
+role       = "variant"
+variant    = "dp"
+based_on   = ["0022#default"]
+delta      = "Builds solutions from smaller subproblems using Catalan recurrence"
+complexity = "O(4^n / sqrt(n)) time, O(4^n / sqrt(n)) space"
+notes      = "dp[n] = '(' + dp[i] + ')' + dp[n-1-i] for all i in 0..n-1"
