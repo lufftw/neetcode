@@ -1,0 +1,32 @@
+# Problem: Word Ladder II
+# https://leetcode.com/problems/word-ladder-ii/
+
+id = "0126"
+slug = "0126_word_ladder_ii"
+title = "Word Ladder II"
+leetcode_id = 126
+url = "https://leetcode.com/problems/word-ladder-ii/"
+
+difficulty = "hard"
+topics = ["hash_table", "string", "backtracking", "bfs"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["bfs_shortest_path", "parent_tracking"]
+patterns         = ["graph_implicit", "path_reconstruction"]
+families         = ["word_ladder"]
+data_structures  = ["queue", "hash_set", "hash_map"]
+algorithms       = ["bfs", "dfs", "backtracking"]
+related_problems = ["127"]
+
+[files]
+solution  = "solutions/0126_word_ladder_ii.py"
+generator = "generators/0126_word_ladder_ii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "findLadders"
+complexity = "O(n * m * 26) time, O(n * m) space"
+notes  = "BFS level-by-level to build parent graph, then DFS backtracking to collect all paths."
