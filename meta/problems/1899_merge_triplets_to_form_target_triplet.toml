@@ -1,0 +1,70 @@
+# Problem: Merge Triplets to Form Target Triplet
+# https://leetcode.com/problems/merge-triplets-to-form-target-triplet/
+
+# ===== Problem Info =====
+id = "1899"
+slug = "1899_merge_triplets_to_form_target_triplet"
+title = "Merge Triplets to Form Target Triplet"
+leetcode_id = 1899
+url = "https://leetcode.com/problems/merge-triplets-to-form-target-triplet/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "greedy"]
+companies = ["google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["GreedySelection"]
+patterns         = ["greedy_filtering", "element_contribution"]
+families         = ["greedy"]
+data_structures  = ["array"]
+algorithms       = ["greedy"]
+related_problems = ["0045", "0055", "0134"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1899_merge_triplets_to_form_target_triplet.py"
+generator = "generators/1899_merge_triplets_to_form_target_triplet.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionGreedy"
+method = "mergeTriplets"
+
+api_kernels      = ["GreedySelection"]
+patterns         = ["greedy_filtering"]
+families         = ["greedy"]
+data_structures  = ["array"]
+algorithms       = ["greedy"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Filter valid triplets (all values <= target), track which positions match exactly"
+
+[[solutions]]
+key    = "set"
+class  = "SolutionSet"
+method = "mergeTriplets"
+
+api_kernels      = ["GreedySelection"]
+patterns         = ["greedy_filtering", "set_tracking"]
+families         = ["greedy"]
+data_structures  = ["array", "set"]
+algorithms       = ["greedy"]
+related_problems = []
+
+role       = "variant"
+variant    = "set"
+based_on   = ["1899#default"]
+delta      = "Uses set to track matched positions, generalizes to k-tuples"
+complexity = "O(n) time, O(1) space"
+notes      = "Elegant set-based approach that extends naturally to higher dimensions"
