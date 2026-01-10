@@ -1,0 +1,70 @@
+# Problem: Maximum Product Subarray
+# https://leetcode.com/problems/maximum-product-subarray/
+
+# ===== Problem Info =====
+id = "0152"
+slug = "0152_maximum_product_subarray"
+title = "Maximum Product Subarray"
+leetcode_id = 152
+url = "https://leetcode.com/problems/maximum-product-subarray/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "linkedin"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SubarrayProduct", "MinMaxDP"]
+patterns         = ["track_min_max", "subarray_product"]
+families         = ["subarray_optimization", "dynamic_programming_linear"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0053", "0628", "0238"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0152_maximum_product_subarray.py"
+generator = "generators/0152_maximum_product_subarray.py"
+tests_dir = "tests/0152_maximum_product_subarray/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionMinMax"
+method = "maxProduct"
+
+api_kernels      = ["MinMaxDP"]
+patterns         = ["track_min_max"]
+families         = ["dynamic_programming_linear"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0053"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Track both min and max. Negative can flip min to max."
+
+[[solutions]]
+key    = "prefix_suffix"
+class  = "SolutionPrefixSuffix"
+method = "maxProduct"
+
+api_kernels      = ["SubarrayProduct"]
+patterns         = ["prefix_suffix_product"]
+families         = ["subarray_optimization"]
+data_structures  = ["array"]
+algorithms       = ["two_pass"]
+related_problems = ["0238"]
+
+role       = "variant"
+variant    = "prefix_suffix"
+based_on   = ["0152#default"]
+delta      = "Compute prefix and suffix products, reset at zeros"
+complexity = "O(n) time, O(1) space"
+notes      = "Max is either a prefix or suffix. Zeros split into subarrays."
