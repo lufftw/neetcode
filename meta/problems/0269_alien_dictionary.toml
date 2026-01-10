@@ -1,0 +1,39 @@
+# Problem: Alien Dictionary
+# https://leetcode.com/problems/alien-dictionary/
+
+id = "0269"
+slug = "0269_alien_dictionary"
+title = "Alien Dictionary"
+leetcode_id = 269
+url = "https://leetcode.com/problems/alien-dictionary/"
+
+difficulty = "hard"
+topics = ["graph", "topological_sort", "dfs", "bfs"]
+companies = ["facebook", "airbnb", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["TopologicalSort", "KahnsAlgorithm"]
+patterns         = ["dependency_ordering", "cycle_detection"]
+families         = ["graph", "topological_sort"]
+data_structures  = ["adjacency_list", "queue"]
+algorithms       = ["topological_sort", "bfs", "dfs"]
+related_problems = ["0207", "0210", "0953"]
+
+[files]
+solution  = "solutions/0269_alien_dictionary.py"
+generator = "generators/0269_alien_dictionary.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionBFS"
+method = "alienOrder"
+complexity = "O(C) time, O(1) space"
+notes      = "BFS topological sort (Kahn's algorithm)"
+
+[[solutions]]
+key    = "dfs"
+class  = "SolutionDFS"
+method = "alienOrder"
+complexity = "O(C) time, O(1) space"
+notes      = "DFS topological sort with cycle detection"
