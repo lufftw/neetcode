@@ -1,0 +1,48 @@
+# 0488 - Zuma Game
+# https://leetcode.com/problems/zuma-game/
+
+[problem]
+id = "0488"
+title = "Zuma Game"
+difficulty = "hard"
+categories = ["string", "dynamic-programming", "dfs"]
+tags = ["memoization", "game-simulation", "state-search"]
+
+[solutions.default]
+name = "DFS with Memoization"
+time_complexity = "O(n * 5^m * n)"
+space_complexity = "O(n * 5^m)"
+description = """
+DFS explores all possible ball insertions. After each insertion,
+remove consecutive groups of 3+ same-colored balls. Memoize on
+(board, sorted_hand) to avoid revisiting states. Pruning: prefer
+inserting next to same color.
+"""
+
+[analysis]
+key_insight = """
+The search space is bounded by board states (exponential in board length)
+and hand configurations (at most 5! permutations). Memoization on
+canonicalized (board, hand) pairs avoids redundant computation.
+Key pruning: inserting a ball only helps if it creates or extends
+a group of the same color.
+"""
+
+edge_cases = [
+    "Single ball on board (need 2 more of same color)",
+    "Empty result possible with exact hand",
+    "Impossible to clear (insufficient balls)",
+    "Chain reactions (one insertion triggers multiple removals)",
+    "All different colors on board",
+]
+
+[ontology]
+api_kernels = ["dfs-memoization", "string-manipulation", "state-search"]
+patterns = ["memoization", "game-state-search", "pruning"]
+families = ["game-theory", "backtracking"]
+techniques = ["state-canonicalization", "consecutive-removal", "branch-pruning"]
+
+[metadata]
+leetcode_id = 488
+acceptance_rate = 30.49
+related_problems = ["0312", "0546", "0664"]
