@@ -1,0 +1,39 @@
+# Problem: Lowest Common Ancestor of a Binary Search Tree
+# https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+
+id = "0235"
+slug = "0235_lowest_common_ancestor_of_a_binary_search_tree"
+title = "Lowest Common Ancestor of a Binary Search Tree"
+leetcode_id = 235
+url = "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"
+
+difficulty = "medium"
+topics = ["tree", "depth_first_search", "binary_search_tree", "binary_tree"]
+companies = ["facebook", "amazon", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["BSTTraversal", "AncestorSearch"]
+patterns         = ["bst_property_exploitation", "split_point_detection"]
+families         = ["tree", "bst"]
+data_structures  = ["binary_search_tree"]
+algorithms       = ["bst_traversal", "lca"]
+related_problems = ["0236", "0700", "0701"]
+
+[files]
+solution  = "solutions/0235_lowest_common_ancestor_of_a_binary_search_tree.py"
+generator = "generators/0235_lowest_common_ancestor_of_a_binary_search_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionIterative"
+method = "lowestCommonAncestor"
+complexity = "O(h) time, O(1) space"
+notes      = "Iterative traversal to split point; constant space"
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "lowestCommonAncestor"
+complexity = "O(h) time, O(h) space"
+notes      = "Recursive BST traversal; implicit call stack"
