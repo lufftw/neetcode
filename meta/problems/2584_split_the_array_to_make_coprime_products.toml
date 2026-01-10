@@ -1,0 +1,32 @@
+# Problem: Split the Array to Make Coprime Products
+# https://leetcode.com/problems/split-the-array-to-make-coprime-products/
+
+id = "2584"
+slug = "2584_split_the_array_to_make_coprime_products"
+title = "Split the Array to Make Coprime Products"
+leetcode_id = 2584
+url = "https://leetcode.com/problems/split-the-array-to-make-coprime-products/"
+
+difficulty = "hard"
+topics = ["array", "hash_table", "math", "number_theory"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["factorization", "last_occurrence_tracking"]
+patterns         = ["sweep_line", "interval_cover"]
+families         = ["number_theory"]
+data_structures  = ["hash_map"]
+algorithms       = ["factorization", "greedy"]
+related_problems = []
+
+[files]
+solution  = "solutions/2584_split_the_array_to_make_coprime_products.py"
+generator = "generators/2584_split_the_array_to_make_coprime_products.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "findValidSplit"
+complexity = "O(n * sqrt(M)) time, O(n + P) space"
+notes  = "Factorize each number. Track last occurrence of each prime. Valid split when right boundary <= current index."
