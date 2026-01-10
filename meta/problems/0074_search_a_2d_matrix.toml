@@ -1,0 +1,70 @@
+# Problem: Search a 2D Matrix
+# https://leetcode.com/problems/search-a-2d-matrix/
+
+# ===== Problem Info =====
+id = "0074"
+slug = "0074_search_a_2d_matrix"
+title = "Search a 2D Matrix"
+leetcode_id = 74
+url = "https://leetcode.com/problems/search-a-2d-matrix/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search", "matrix"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearch", "MatrixSearch"]
+patterns         = ["binary_search_2d", "virtual_flatten"]
+families         = ["binary_search", "matrix_search"]
+data_structures  = ["matrix"]
+algorithms       = ["binary_search"]
+related_problems = ["0240", "0035"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0074_search_a_2d_matrix.py"
+generator = "generators/0074_search_a_2d_matrix.py"
+tests_dir = "tests/0074_search_a_2d_matrix/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionSingleBinarySearch"
+method = "searchMatrix"
+
+api_kernels      = ["BinarySearch"]
+patterns         = ["virtual_flatten"]
+families         = ["binary_search"]
+data_structures  = ["matrix"]
+algorithms       = ["binary_search"]
+related_problems = ["0035"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(log(m*n)) time, O(1) space"
+notes      = "Treat matrix as 1D array. Index i maps to row=i//n, col=i%n."
+
+[[solutions]]
+key    = "two_binary"
+class  = "SolutionTwoBinarySearch"
+method = "searchMatrix"
+
+api_kernels      = ["BinarySearch"]
+patterns         = ["binary_search_2d"]
+families         = ["binary_search"]
+data_structures  = ["matrix"]
+algorithms       = ["binary_search"]
+related_problems = ["0240"]
+
+role       = "variant"
+variant    = "two_binary"
+based_on   = ["0074#default"]
+delta      = "Find row with binary search, then search within row"
+complexity = "O(log m + log n) time, O(1) space"
+notes      = "Two-phase: locate row, then locate column. Same asymptotic complexity."
