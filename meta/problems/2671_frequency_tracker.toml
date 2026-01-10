@@ -1,0 +1,45 @@
+# 2671 - Frequency Tracker
+# https://leetcode.com/problems/frequency-tracker/
+
+[problem]
+id = "2671"
+title = "Frequency Tracker"
+difficulty = "medium"
+categories = ["hash-table", "design"]
+tags = ["dual-hashmap", "frequency-counting"]
+
+[solutions.default]
+name = "Dual HashMap"
+time_complexity = "O(1) per operation"
+space_complexity = "O(n)"
+description = """
+Maintain two maps: count[num] = frequency of num,
+freq_count[f] = how many distinct numbers have frequency f.
+hasFrequency(f) checks freq_count[f] > 0 in O(1).
+"""
+
+[analysis]
+key_insight = """
+The key is maintaining a reverse index: freq_count maps frequencies to
+the count of numbers with that frequency. On add/delete, we update both
+maps synchronously, decrementing the old frequency count and incrementing
+the new one.
+"""
+
+edge_cases = [
+    "Delete non-existent number (no-op)",
+    "hasFrequency before any adds (false)",
+    "Multiple numbers with same frequency",
+    "Add and immediately delete",
+]
+
+[ontology]
+api_kernels = ["hashmap-update", "frequency-tracking"]
+patterns = ["dual-hashmap", "reverse-index"]
+families = ["design", "data-structure"]
+techniques = ["bidirectional-mapping", "count-synchronization"]
+
+[metadata]
+leetcode_id = 2671
+acceptance_rate = 30.57
+related_problems = ["0380", "0432", "0460"]
