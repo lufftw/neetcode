@@ -1,0 +1,39 @@
+# Problem: Counting Bits
+# https://leetcode.com/problems/counting-bits/
+
+id = "0338"
+slug = "0338_counting_bits"
+title = "Counting Bits"
+leetcode_id = 338
+url = "https://leetcode.com/problems/counting-bits/"
+
+difficulty = "easy"
+topics = ["dynamic_programming", "bit_manipulation"]
+companies = ["amazon", "apple", "facebook"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["PopCount", "BitManipulation"]
+patterns         = ["dp_with_bit_operations", "subproblem_reuse"]
+families         = ["bit_manipulation", "dynamic_programming"]
+data_structures  = ["array"]
+algorithms       = ["dp", "bit_shifting"]
+related_problems = ["0191", "0190", "0461"]
+
+[files]
+solution  = "solutions/0338_counting_bits.py"
+generator = "generators/0338_counting_bits.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDPShift"
+method = "countBits"
+complexity = "O(n) time, O(n) space"
+notes      = "ans[i] = ans[i>>1] + (i&1); uses relation with i/2"
+
+[[solutions]]
+key    = "dp_lowest"
+class  = "SolutionDPLowestBit"
+method = "countBits"
+complexity = "O(n) time, O(n) space"
+notes      = "ans[i] = ans[i&(i-1)] + 1; removes lowest set bit"
