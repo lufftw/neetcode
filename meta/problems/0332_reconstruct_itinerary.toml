@@ -1,0 +1,70 @@
+# Problem: Reconstruct Itinerary
+# https://leetcode.com/problems/reconstruct-itinerary/
+
+# ===== Problem Info =====
+id = "0332"
+slug = "0332_reconstruct_itinerary"
+title = "Reconstruct Itinerary"
+leetcode_id = 332
+url = "https://leetcode.com/problems/reconstruct-itinerary/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["dfs", "graph", "eulerian_circuit"]
+companies = ["google", "facebook", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["EulerianPath", "GraphDFS"]
+patterns         = ["hierholzer_algorithm", "post_order_dfs", "lexicographic_ordering"]
+families         = ["graph", "eulerian"]
+data_structures  = ["graph", "stack"]
+algorithms       = ["dfs", "hierholzer", "eulerian_path"]
+related_problems = ["0753", "2097"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0332_reconstruct_itinerary.py"
+generator = "generators/0332_reconstruct_itinerary.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionHierholzer"
+method = "findItinerary"
+
+api_kernels      = ["EulerianPath"]
+patterns         = ["hierholzer_algorithm", "post_order_dfs"]
+families         = ["graph", "eulerian"]
+data_structures  = ["graph"]
+algorithms       = ["dfs", "hierholzer"]
+related_problems = ["0753"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(E log E) time, O(E) space"
+notes      = "Hierholzer's algorithm: DFS with post-order collection, reverse for path"
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterative"
+method = "findItinerary"
+
+api_kernels      = ["EulerianPath"]
+patterns         = ["hierholzer_algorithm", "explicit_stack"]
+families         = ["graph", "eulerian"]
+data_structures  = ["graph", "stack"]
+algorithms       = ["hierholzer", "iterative_dfs"]
+related_problems = []
+
+role       = "variant"
+variant    = "iterative"
+based_on   = ["0332#default"]
+delta      = "Explicit stack instead of recursion, avoids stack overflow"
+complexity = "O(E log E) time, O(E) space"
+notes      = "Same algorithm, different control flow for deep graphs"
