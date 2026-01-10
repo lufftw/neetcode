@@ -1,0 +1,32 @@
+# Problem: Decremental String Concatenation
+# https://leetcode.com/problems/decremental-string-concatenation/
+
+id = "2746"
+slug = "2746_decremental_string_concatenation"
+title = "Decremental String Concatenation"
+leetcode_id = 2746
+url = "https://leetcode.com/problems/decremental-string-concatenation/"
+
+difficulty = "medium"
+topics = ["array", "string", "dynamic_programming"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["memoization"]
+patterns         = ["state_compression", "boundary_tracking"]
+families         = ["string_dp"]
+data_structures  = []
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+[files]
+solution  = "solutions/2746_decremental_string_concatenation.py"
+generator = "generators/2746_decremental_string_concatenation.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minimizeConcatenatedLength"
+complexity = "O(n * 26 * 26) time, O(26 * 26) space"
+notes  = "Only first/last character matter for future joins. DP state = (index, first_char, last_char)."
