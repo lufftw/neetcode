@@ -1,0 +1,32 @@
+# Problem: Meeting Rooms
+# https://leetcode.com/problems/meeting-rooms/
+
+id = "0252"
+slug = "0252_meeting_rooms"
+title = "Meeting Rooms"
+leetcode_id = 252
+url = "https://leetcode.com/problems/meeting-rooms/"
+
+difficulty = "easy"
+topics = ["array", "sorting"]
+companies = ["amazon", "facebook", "bloomberg"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["IntervalOverlap", "IntervalSorting"]
+patterns         = ["interval_scheduling", "overlap_detection"]
+families         = ["intervals", "sorting"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+related_problems = ["0253", "0056", "0435"]
+
+[files]
+solution  = "solutions/0252_meeting_rooms.py"
+generator = "generators/0252_meeting_rooms.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionSorting"
+method = "canAttendMeetings"
+complexity = "O(n log n) time, O(1) space"
+notes      = "Sort by start, check consecutive overlaps"
