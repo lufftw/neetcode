@@ -1,0 +1,89 @@
+# Problem: Decode Ways
+# https://leetcode.com/problems/decode-ways/
+
+# ===== Problem Info =====
+id = "0091"
+slug = "0091_decode_ways"
+title = "Decode Ways"
+leetcode_id = 91
+url = "https://leetcode.com/problems/decode-ways/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "dynamic_programming"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["LinearDP", "PathCounting"]
+patterns         = ["linear_dp", "counting_ways"]
+families         = ["dynamic_programming_linear", "string_dp"]
+data_structures  = ["string"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0062", "0070", "0639"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0091_decode_ways.py"
+generator = "generators/0091_decode_ways.py"
+tests_dir = "tests/0091_decode_ways/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDPConstant"
+method = "numDecodings"
+
+api_kernels      = ["LinearDP"]
+patterns         = ["space_optimized_dp"]
+families         = ["dynamic_programming_linear"]
+data_structures  = ["string"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0070"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Only prev two values needed, like Fibonacci. Handle zeros carefully."
+
+[[solutions]]
+key    = "dp_array"
+class  = "SolutionDPArray"
+method = "numDecodings"
+
+api_kernels      = ["LinearDP"]
+patterns         = ["linear_dp"]
+families         = ["dynamic_programming_linear"]
+data_structures  = ["string", "array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0062"]
+
+role       = "variant"
+variant    = "dp_array"
+based_on   = ["0091#default"]
+delta      = "Explicit dp array for conceptual clarity"
+complexity = "O(n) time, O(n) space"
+notes      = "dp[i] = ways to decode first i chars. Clear state definition."
+
+[[solutions]]
+key    = "memo"
+class  = "SolutionMemo"
+method = "numDecodings"
+
+api_kernels      = ["LinearDP"]
+patterns         = ["memoization"]
+families         = ["dynamic_programming_linear"]
+data_structures  = ["string"]
+algorithms       = ["dynamic_programming", "recursion"]
+related_problems = ["0639"]
+
+role       = "variant"
+variant    = "memo"
+based_on   = ["0091#default"]
+delta      = "Top-down instead of bottom-up"
+complexity = "O(n) time, O(n) space"
+notes      = "Recursive thinking: try single or double digit at each position."
