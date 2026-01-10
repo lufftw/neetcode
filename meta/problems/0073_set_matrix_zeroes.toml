@@ -1,0 +1,70 @@
+# Problem: Set Matrix Zeroes
+# https://leetcode.com/problems/set-matrix-zeroes/
+
+# ===== Problem Info =====
+id = "0073"
+slug = "0073_set_matrix_zeroes"
+title = "Set Matrix Zeroes"
+leetcode_id = 73
+url = "https://leetcode.com/problems/set-matrix-zeroes/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "matrix"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MatrixMarking"]
+patterns         = ["in_place_modification", "marker_technique"]
+families         = ["matrix_manipulation"]
+data_structures  = ["matrix", "hash_set"]
+algorithms       = ["simulation"]
+related_problems = ["0289"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0073_set_matrix_zeroes.py"
+generator = "generators/0073_set_matrix_zeroes.py"
+tests_dir = "tests/0073_set_matrix_zeroes/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionConstant"
+method = "setZeroes"
+
+api_kernels      = ["MatrixMarking"]
+patterns         = ["in_place_modification", "marker_technique"]
+families         = ["matrix_manipulation"]
+data_structures  = ["matrix"]
+algorithms       = ["simulation"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(1) space"
+notes      = "Use first row/column as markers. Handle [0][0] overlap carefully."
+
+[[solutions]]
+key    = "sets"
+class  = "SolutionSets"
+method = "setZeroes"
+
+api_kernels      = ["MatrixMarking"]
+patterns         = ["collect_then_process"]
+families         = ["matrix_manipulation"]
+data_structures  = ["matrix", "hash_set"]
+algorithms       = ["simulation"]
+related_problems = []
+
+role       = "variant"
+variant    = "sets"
+based_on   = ["0073#default"]
+delta      = "Trade space for simplicity using explicit sets"
+complexity = "O(m*n) time, O(m+n) space"
+notes      = "Collect zero positions in first pass, apply in second pass."
