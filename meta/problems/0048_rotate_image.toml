@@ -1,0 +1,70 @@
+# Problem: Rotate Image
+# https://leetcode.com/problems/rotate-image/
+
+# ===== Problem Info =====
+id = "0048"
+slug = "0048_rotate_image"
+title = "Rotate Image"
+leetcode_id = 48
+url = "https://leetcode.com/problems/rotate-image/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "math", "matrix"]
+companies = ["amazon", "google", "meta", "microsoft", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MatrixTranspose", "InPlaceRotation"]
+patterns         = ["matrix_rotation", "transpose_reverse"]
+families         = ["matrix_manipulation", "in_place_modification"]
+data_structures  = ["matrix"]
+algorithms       = []
+related_problems = ["0054", "0059", "0073"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0048_rotate_image.py"
+generator = "generators/0048_rotate_image.py"
+tests_dir = "tests/0048_rotate_image/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionTransposeReverse"
+method = "rotate"
+
+api_kernels      = ["MatrixTranspose"]
+patterns         = ["transpose_reverse"]
+families         = ["matrix_manipulation"]
+data_structures  = ["matrix"]
+algorithms       = []
+related_problems = ["0054"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n²) time, O(1) space"
+notes      = "90° clockwise = transpose + reverse rows. Elegant decomposition of rotation."
+
+[[solutions]]
+key    = "layer"
+class  = "SolutionLayerRotation"
+method = "rotate"
+
+api_kernels      = ["InPlaceRotation"]
+patterns         = ["layer_rotation"]
+families         = ["matrix_manipulation", "in_place_modification"]
+data_structures  = ["matrix"]
+algorithms       = []
+related_problems = ["0054", "0059"]
+
+role       = "variant"
+variant    = "layer"
+based_on   = ["0048#default"]
+delta      = "Directly rotates 4 elements in a cycle, layer by layer"
+complexity = "O(n²) time, O(1) space"
+notes      = "Process from outer layer to inner. Each position: top->right->bottom->left->top."
