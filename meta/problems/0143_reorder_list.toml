@@ -1,0 +1,39 @@
+# Problem: Reorder List
+# https://leetcode.com/problems/reorder-list/
+
+id = "0143"
+slug = "0143_reorder_list"
+title = "Reorder List"
+leetcode_id = 143
+url = "https://leetcode.com/problems/reorder-list/"
+
+difficulty = "medium"
+topics = ["linked_list", "two_pointers", "stack", "recursion"]
+companies = ["amazon", "facebook", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["FindMiddle", "ReverseList", "MergeLists"]
+patterns         = ["slow_fast_pointers", "list_reversal", "list_merge"]
+families         = ["linked_list", "two_pointers"]
+data_structures  = ["linked_list"]
+algorithms       = ["slow_fast", "reversal", "merge"]
+related_problems = ["0206", "0876", "0234"]
+
+[files]
+solution  = "solutions/0143_reorder_list.py"
+generator = "generators/0143_reorder_list.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionThreePhase"
+method = "reorderList"
+complexity = "O(n) time, O(1) space"
+notes      = "Find middle with slow/fast, reverse second half, merge"
+
+[[solutions]]
+key    = "array"
+class  = "SolutionArray"
+method = "reorderList"
+complexity = "O(n) time, O(n) space"
+notes      = "Store nodes in array for random access reordering"
