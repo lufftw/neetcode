@@ -1,0 +1,70 @@
+# Problem: Longest Increasing Path in a Matrix
+# https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+
+# ===== Problem Info =====
+id = "0329"
+slug = "0329_longest_increasing_path_in_a_matrix"
+title = "Longest Increasing Path in a Matrix"
+leetcode_id = 329
+url = "https://leetcode.com/problems/longest-increasing-path-in-a-matrix/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "dynamic_programming", "dfs", "bfs", "graph", "topological_sort", "memoization", "matrix"]
+companies = ["google", "facebook", "amazon", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["DFSMemo", "TopologicalSort", "MatrixDFS"]
+patterns         = ["dfs_with_memoization", "dag_longest_path", "topological_bfs"]
+families         = ["dynamic_programming", "graph", "matrix"]
+data_structures  = ["matrix", "graph"]
+algorithms       = ["dfs", "memoization", "topological_sort", "bfs"]
+related_problems = ["0200", "0417", "0695"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0329_longest_increasing_path_in_a_matrix.py"
+generator = "generators/0329_longest_increasing_path_in_a_matrix.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDFSMemo"
+method = "longestIncreasingPath"
+
+api_kernels      = ["DFSMemo", "MatrixDFS"]
+patterns         = ["dfs_with_memoization", "dag_longest_path"]
+families         = ["dynamic_programming", "graph"]
+data_structures  = ["matrix"]
+algorithms       = ["dfs", "memoization"]
+related_problems = ["0200", "0695"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(mn) time, O(mn) space"
+notes      = "DFS with memoization exploiting DAG structure (no cycles due to strict increase)"
+
+[[solutions]]
+key    = "topological"
+class  = "SolutionTopological"
+method = "longestIncreasingPath"
+
+api_kernels      = ["TopologicalSort"]
+patterns         = ["topological_bfs", "dag_longest_path"]
+families         = ["graph"]
+data_structures  = ["matrix", "queue"]
+algorithms       = ["topological_sort", "bfs"]
+related_problems = ["0210", "0207"]
+
+role       = "variant"
+variant    = "topological"
+based_on   = ["0329#default"]
+delta      = "BFS from endpoints (outdegree 0), count levels for path length"
+complexity = "O(mn) time, O(mn) space"
+notes      = "Alternative view: longest path in DAG via topological sort"
