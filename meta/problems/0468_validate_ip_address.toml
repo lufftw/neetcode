@@ -1,0 +1,32 @@
+# Problem: Validate IP Address
+# https://leetcode.com/problems/validate-ip-address/
+
+id = "0468"
+slug = "0468_validate_ip_address"
+title = "Validate IP Address"
+leetcode_id = 468
+url = "https://leetcode.com/problems/validate-ip-address/"
+
+difficulty = "medium"
+topics = ["string"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["string_parsing"]
+patterns         = ["validation"]
+families         = ["string_processing"]
+data_structures  = []
+algorithms       = ["string_parsing"]
+related_problems = []
+
+[files]
+solution  = "solutions/0468_validate_ip_address.py"
+generator = "generators/0468_validate_ip_address.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "validIPAddress"
+complexity = "O(n) time, O(1) space"
+notes  = "Parse and validate IPv4 (4 parts, 0-255, no leading zeros) and IPv6 (8 parts, 1-4 hex chars)."
