@@ -1,0 +1,70 @@
+# Problem: Detect Squares
+# https://leetcode.com/problems/detect-squares/
+
+# ===== Problem Info =====
+id = "2013"
+slug = "2013_detect_squares"
+title = "Detect Squares"
+leetcode_id = 2013
+url = "https://leetcode.com/problems/detect-squares/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "design", "counting"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PointCounter", "GeometryQuery"]
+patterns         = ["hash_counting", "diagonal_enumeration"]
+families         = ["design", "geometry"]
+data_structures  = ["hash_table", "array"]
+algorithms       = ["counting", "enumeration"]
+related_problems = ["0149", "0593"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/2013_detect_squares.py"
+generator = "generators/2013_detect_squares.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "DetectSquaresHashMap"
+method = "_run_operations"
+
+api_kernels      = ["PointCounter"]
+patterns         = ["hash_counting", "diagonal_enumeration"]
+families         = ["design", "geometry"]
+data_structures  = ["hash_table"]
+algorithms       = ["counting"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(1) add, O(n) count"
+notes      = "Iterate potential diagonal corners, verify other two corners exist"
+
+[[solutions]]
+key    = "by_x"
+class  = "DetectSquaresByX"
+method = "_run_operations"
+
+api_kernels      = ["PointCounter"]
+patterns         = ["hash_counting", "coordinate_grouping"]
+families         = ["design", "geometry"]
+data_structures  = ["hash_table"]
+algorithms       = ["counting"]
+related_problems = []
+
+role       = "variant"
+variant    = "by_x"
+based_on   = ["2013#default"]
+delta      = "Group points by x-coordinate for cleaner iteration"
+complexity = "O(1) add, O(n) count"
+notes      = "Look at vertical neighbors first, then check horizontal"
