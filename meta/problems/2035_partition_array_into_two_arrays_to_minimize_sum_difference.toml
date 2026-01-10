@@ -1,0 +1,32 @@
+# Problem: Partition Array Into Two Arrays to Minimize Sum Difference
+# https://leetcode.com/problems/partition-array-into-two-arrays-to-minimize-sum-difference/
+
+id = "2035"
+slug = "2035_partition_array_into_two_arrays_to_minimize_sum_difference"
+title = "Partition Array Into Two Arrays to Minimize Sum Difference"
+leetcode_id = 2035
+url = "https://leetcode.com/problems/partition-array-into-two-arrays-to-minimize-sum-difference/"
+
+difficulty = "hard"
+topics = ["array", "two_pointers", "binary_search", "dynamic_programming", "bit_manipulation", "bitmask"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["meet_in_the_middle", "subset_sum"]
+families         = ["partition_problems", "optimization"]
+data_structures  = ["sorted_list"]
+algorithms       = ["meet_in_the_middle", "binary_search", "bitmask"]
+related_problems = ["0416"]
+
+[files]
+solution  = "solutions/2035_partition_array_into_two_arrays_to_minimize_sum_difference.py"
+generator = "generators/2035_partition_array_into_two_arrays_to_minimize_sum_difference.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minimumDifference"
+complexity = "O(n * 2^n * log(2^n)) time, O(2^n) space"
+notes  = "Meet in the Middle: split array, generate subset sums by size, binary search for optimal complement."
