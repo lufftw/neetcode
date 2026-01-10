@@ -1,0 +1,32 @@
+# Problem: Distribute Money to Maximum Children
+# https://leetcode.com/problems/distribute-money-to-maximum-children/
+
+id = "2591"
+slug = "2591_distribute_money_to_maximum_children"
+title = "Distribute Money to Maximum Children"
+leetcode_id = 2591
+url = "https://leetcode.com/problems/distribute-money-to-maximum-children/"
+
+difficulty = "easy"
+topics = ["math", "greedy"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["greedy_allocation", "edge_case_analysis"]
+families         = ["math_optimization"]
+data_structures  = []
+algorithms       = ["greedy", "math"]
+related_problems = []
+
+[files]
+solution  = "solutions/2591_distribute_money_to_maximum_children.py"
+generator = "generators/2591_distribute_money_to_maximum_children.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "distMoney"
+complexity = "O(1) time, O(1) space"
+notes  = "Pure math with edge cases: leftover after all get $8, or remaining child would get exactly $4."
