@@ -1,0 +1,46 @@
+# Problem: K Closest Points to Origin
+# https://leetcode.com/problems/k-closest-points-to-origin/
+
+id = "0973"
+slug = "0973_k_closest_points_to_origin"
+title = "K Closest Points to Origin"
+leetcode_id = 973
+url = "https://leetcode.com/problems/k-closest-points-to-origin/"
+
+difficulty = "medium"
+topics = ["array", "math", "divide_and_conquer", "geometry", "sorting", "heap", "quickselect"]
+companies = ["amazon", "facebook", "google", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["TopK", "Quickselect", "HeapSelection"]
+patterns         = ["top_k_elements", "quickselect_partition", "heap_selection"]
+families         = ["heap", "sorting", "divide_and_conquer"]
+data_structures  = ["heap", "array"]
+algorithms       = ["heap_operations", "sorting", "quickselect"]
+related_problems = ["0215", "0347", "0692"]
+
+[files]
+solution  = "solutions/0973_k_closest_points_to_origin.py"
+generator = "generators/0973_k_closest_points_to_origin.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionHeap"
+method = "kClosest"
+complexity = "O(n log k) time, O(k) space"
+notes      = "Max-heap of size k; efficient when k << n"
+
+[[solutions]]
+key    = "sort"
+class  = "SolutionSort"
+method = "kClosest"
+complexity = "O(n log n) time, O(n) space"
+notes      = "Sort by distance, take first k; simple but sorts all"
+
+[[solutions]]
+key    = "quickselect"
+class  = "SolutionQuickselect"
+method = "kClosest"
+complexity = "O(n) average time, O(1) space"
+notes      = "Quickselect partitioning; optimal average case"
