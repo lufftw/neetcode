@@ -1,0 +1,32 @@
+# Problem: Find Substring With Given Hash Value
+# https://leetcode.com/problems/find-substring-with-given-hash-value/
+
+id = "2156"
+slug = "2156_find_substring_with_given_hash_value"
+title = "Find Substring With Given Hash Value"
+leetcode_id = 2156
+url = "https://leetcode.com/problems/find-substring-with-given-hash-value/"
+
+difficulty = "hard"
+topics = ["string", "sliding_window", "rolling_hash"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["rolling_hash"]
+patterns         = ["reverse_iteration", "modular_arithmetic"]
+families         = ["string_hashing"]
+data_structures  = []
+algorithms       = ["rolling_hash", "modular_arithmetic"]
+related_problems = ["0028", "0187"]
+
+[files]
+solution  = "solutions/2156_find_substring_with_given_hash_value.py"
+generator = "generators/2156_find_substring_with_given_hash_value.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "subStrHash"
+complexity = "O(n) time, O(1) space"
+notes  = "Reverse rolling hash. Iterate right-to-left to avoid modular inverse in hash update."
