@@ -1,0 +1,70 @@
+# Problem: Distinct Subsequences
+# https://leetcode.com/problems/distinct-subsequences/
+
+# ===== Problem Info =====
+id = "0115"
+slug = "0115_distinct_subsequences"
+title = "Distinct Subsequences"
+leetcode_id = 115
+url = "https://leetcode.com/problems/distinct-subsequences/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["string", "dynamic_programming"]
+companies = ["google", "amazon", "facebook"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["DP2DString", "SubsequenceCounting"]
+patterns         = ["2d_dp_strings", "subsequence_matching", "space_optimization"]
+families         = ["dynamic_programming", "string"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0072", "0583", "1143", "0097"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0115_distinct_subsequences.py"
+generator = "generators/0115_distinct_subsequences.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDP2D"
+method = "numDistinct"
+
+api_kernels      = ["DP2DString", "SubsequenceCounting"]
+patterns         = ["2d_dp_strings", "subsequence_matching"]
+families         = ["dynamic_programming"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0072", "1143"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(mn) time, O(mn) space"
+notes      = "dp[i][j] = ways to form t[0:j] from s[0:i]; use or skip each char"
+
+[[solutions]]
+key    = "dp_1d"
+class  = "SolutionDP1D"
+method = "numDistinct"
+
+api_kernels      = ["DP2DString"]
+patterns         = ["space_optimization", "right_to_left_dp"]
+families         = ["dynamic_programming"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0072", "0583"]
+
+role       = "variant"
+variant    = "dp_1d"
+based_on   = ["0115#default"]
+delta      = "Space optimization to O(n) by processing right-to-left"
+complexity = "O(mn) time, O(n) space"
+notes      = "Row-by-row DP with single array, reverse iteration preserves dependencies"
