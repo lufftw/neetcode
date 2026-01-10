@@ -1,0 +1,32 @@
+# Problem: Walking Robot Simulation II
+# https://leetcode.com/problems/walking-robot-simulation-ii/
+
+id = "2069"
+slug = "2069_walking_robot_simulation_ii"
+title = "Walking Robot Simulation II"
+leetcode_id = 2069
+url = "https://leetcode.com/problems/walking-robot-simulation-ii/"
+
+difficulty = "medium"
+topics = ["design", "simulation", "math"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["modular_arithmetic", "state_machine", "perimeter_traversal"]
+families         = ["robot_simulation"]
+data_structures  = []
+algorithms       = ["modular_arithmetic"]
+related_problems = ["0874"]
+
+[files]
+solution  = "solutions/2069_walking_robot_simulation_ii.py"
+generator = "generators/2069_walking_robot_simulation_ii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Robot"
+method = ""
+complexity = "O(1) per operation"
+notes  = "Perimeter modular arithmetic. Map linear position to (x, y, direction). Handle corner direction cases."
