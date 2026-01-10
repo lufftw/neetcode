@@ -1,0 +1,70 @@
+# Problem: Partition Labels
+# https://leetcode.com/problems/partition-labels/
+
+# ===== Problem Info =====
+id = "0763"
+slug = "0763_partition_labels"
+title = "Partition Labels"
+leetcode_id = 763
+url = "https://leetcode.com/problems/partition-labels/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["hash_table", "two_pointers", "string", "greedy"]
+companies = ["amazon", "google", "facebook"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalMerge", "LastOccurrence"]
+patterns         = ["greedy_extension", "interval_merging", "two_pass"]
+families         = ["greedy", "string", "intervals"]
+data_structures  = ["hash_table"]
+algorithms       = ["greedy", "two_pointers"]
+related_problems = ["0056", "0435", "0452"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0763_partition_labels.py"
+generator = "generators/0763_partition_labels.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionGreedy"
+method = "partitionLabels"
+
+api_kernels      = ["LastOccurrence"]
+patterns         = ["greedy_extension", "two_pass"]
+families         = ["greedy", "string"]
+data_structures  = ["hash_table"]
+algorithms       = ["greedy"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Track last occurrence, extend partition boundary greedily"
+
+[[solutions]]
+key    = "merge_intervals"
+class  = "SolutionMergeIntervals"
+method = "partitionLabels"
+
+api_kernels      = ["IntervalMerge"]
+patterns         = ["interval_merging", "first_last_occurrence"]
+families         = ["intervals", "string"]
+data_structures  = ["hash_table"]
+algorithms       = ["greedy", "merge_intervals"]
+related_problems = ["0056", "0435"]
+
+role       = "variant"
+variant    = "merge_intervals"
+based_on   = ["0763#default"]
+delta      = "View as interval merge problem: each char defines [first, last] interval"
+complexity = "O(n) time, O(1) space"
+notes      = "Reduces to merge intervals, overlapping char ranges = same partition"
