@@ -1,0 +1,39 @@
+# Problem: Word Ladder
+# https://leetcode.com/problems/word-ladder/
+
+id = "0127"
+slug = "0127_word_ladder"
+title = "Word Ladder"
+leetcode_id = 127
+url = "https://leetcode.com/problems/word-ladder/"
+
+difficulty = "hard"
+topics = ["hash_table", "string", "breadth_first_search"]
+companies = ["amazon", "facebook", "microsoft", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["BFS", "BidirectionalBFS"]
+patterns         = ["graph_bfs", "implicit_graph", "word_transformation"]
+families         = ["graph", "bfs"]
+data_structures  = ["hash_set", "queue"]
+algorithms       = ["bfs", "bidirectional_search"]
+related_problems = ["0126", "0433", "0752"]
+
+[files]
+solution  = "solutions/0127_word_ladder.py"
+generator = "generators/0127_word_ladder.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionBFS"
+method = "ladderLength"
+complexity = "O(n * m^2) time, O(n * m) space"
+notes      = "BFS with pattern-based neighbor lookup"
+
+[[solutions]]
+key    = "bidirectional"
+class  = "SolutionBidirectional"
+method = "ladderLength"
+complexity = "O(n * m^2) time, O(n * m) space"
+notes      = "Bidirectional BFS for reduced search space"
