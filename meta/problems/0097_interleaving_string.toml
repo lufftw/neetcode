@@ -1,0 +1,89 @@
+# Problem: Interleaving String
+# https://leetcode.com/problems/interleaving-string/
+
+# ===== Problem Info =====
+id = "0097"
+slug = "0097_interleaving_string"
+title = "Interleaving String"
+leetcode_id = 97
+url = "https://leetcode.com/problems/interleaving-string/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "dynamic_programming"]
+companies = ["amazon", "google", "meta", "microsoft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TwoStringDP"]
+patterns         = ["two_string_dp", "interleave_check"]
+families         = ["string_dp", "dynamic_programming_2d"]
+data_structures  = ["string"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0115", "1143", "0072"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0097_interleaving_string.py"
+generator = "generators/0097_interleaving_string.py"
+tests_dir = "tests/0097_interleaving_string/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDP1D"
+method = "isInterleave"
+
+api_kernels      = ["TwoStringDP"]
+patterns         = ["space_optimized_dp"]
+families         = ["string_dp"]
+data_structures  = ["string", "array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0115"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(n) space"
+notes      = "Satisfies follow-up space requirement. Single row DP."
+
+[[solutions]]
+key    = "dp_2d"
+class  = "SolutionDP2D"
+method = "isInterleave"
+
+api_kernels      = ["TwoStringDP"]
+patterns         = ["two_string_dp"]
+families         = ["dynamic_programming_2d"]
+data_structures  = ["string", "matrix"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["1143", "0072"]
+
+role       = "variant"
+variant    = "dp_2d"
+based_on   = ["0097#default"]
+delta      = "Full 2D table for conceptual clarity"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "dp[i][j] = can s1[0:i] and s2[0:j] form s3[0:i+j]?"
+
+[[solutions]]
+key    = "memo"
+class  = "SolutionMemo"
+method = "isInterleave"
+
+api_kernels      = ["TwoStringDP"]
+patterns         = ["memoization"]
+families         = ["string_dp"]
+data_structures  = ["string"]
+algorithms       = ["dynamic_programming", "recursion"]
+related_problems = []
+
+role       = "variant"
+variant    = "memo"
+based_on   = ["0097#default"]
+delta      = "Top-down recursive formulation"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "Try taking from s1 or s2 at each position."
