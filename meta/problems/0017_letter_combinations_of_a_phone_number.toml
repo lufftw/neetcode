@@ -1,0 +1,89 @@
+# Problem: Letter Combinations of a Phone Number
+# https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+# ===== Problem Info =====
+id = "0017"
+slug = "0017_letter_combinations_of_a_phone_number"
+title = "Letter Combinations of a Phone Number"
+leetcode_id = 17
+url = "https://leetcode.com/problems/letter-combinations-of-a-phone-number/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["hash_table", "string", "backtracking"]
+companies = ["amazon", "google", "meta", "microsoft", "apple"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_enumeration", "cartesian_product"]
+families         = ["backtracking_combinatorial", "string_generation"]
+data_structures  = ["hash_map", "string", "array"]
+algorithms       = ["backtracking", "bfs"]
+related_problems = ["0022", "0039", "0046", "0077", "0078"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0017_letter_combinations_of_a_phone_number.py"
+generator = "generators/0017_letter_combinations_of_a_phone_number.py"
+tests_dir = "tests/0017_letter_combinations_of_a_phone_number/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionBacktrack"
+method = "letterCombinations"
+
+api_kernels      = ["BacktrackingExploration"]
+patterns         = ["backtracking_enumeration"]
+families         = ["backtracking_combinatorial"]
+data_structures  = ["hash_map", "string"]
+algorithms       = ["backtracking"]
+related_problems = ["0022", "0039", "0046"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(4^n) time, O(n) space"
+notes      = "Classic backtracking - build combinations character by character with choose-explore-unchoose pattern."
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterative"
+method = "letterCombinations"
+
+api_kernels      = ["BFSExpansion"]
+patterns         = ["bfs_level_order"]
+families         = ["string_generation"]
+data_structures  = ["array"]
+algorithms       = ["bfs"]
+related_problems = ["0102"]
+
+role       = "variant"
+variant    = "iterative"
+based_on   = ["0017#default"]
+delta      = "BFS-style level expansion instead of DFS backtracking"
+complexity = "O(4^n) time, O(4^n) space"
+notes      = "Iterative approach using queue-like expansion."
+
+[[solutions]]
+key    = "product"
+class  = "SolutionProduct"
+method = "letterCombinations"
+
+api_kernels      = []
+patterns         = ["cartesian_product"]
+families         = ["string_generation"]
+data_structures  = ["array"]
+algorithms       = []
+related_problems = []
+
+role       = "variant"
+variant    = "product"
+based_on   = ["0017#default"]
+delta      = "Uses itertools.product for Cartesian product"
+complexity = "O(4^n) time, O(4^n) space"
+notes      = "Pythonic solution using standard library. Less educational but concise."
