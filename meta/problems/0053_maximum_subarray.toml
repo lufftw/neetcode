@@ -1,0 +1,89 @@
+# Problem: Maximum Subarray
+# https://leetcode.com/problems/maximum-subarray/
+
+# ===== Problem Info =====
+id = "0053"
+slug = "0053_maximum_subarray"
+title = "Maximum Subarray"
+leetcode_id = 53
+url = "https://leetcode.com/problems/maximum-subarray/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "divide_and_conquer", "dynamic_programming"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg", "linkedin"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["KadaneAlgorithm", "DivideConquer"]
+patterns         = ["kadane", "maximum_subarray_sum", "divide_conquer_array"]
+families         = ["subarray_optimization", "dynamic_programming_linear"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming", "divide_and_conquer"]
+related_problems = ["0121", "0152", "0918"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0053_maximum_subarray.py"
+generator = "generators/0053_maximum_subarray.py"
+tests_dir = "tests/0053_maximum_subarray/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionKadane"
+method = "maxSubArray"
+
+api_kernels      = ["KadaneAlgorithm"]
+patterns         = ["kadane"]
+families         = ["subarray_optimization"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0121", "0152"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "Classic Kadane's algorithm. At each position: extend or start fresh."
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "maxSubArray"
+
+api_kernels      = ["KadaneAlgorithm"]
+patterns         = ["dp_subarray"]
+families         = ["dynamic_programming_linear"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0152"]
+
+role       = "variant"
+variant    = "dp"
+based_on   = ["0053#default"]
+delta      = "Same logic with explicit dp array for clarity"
+complexity = "O(n) time, O(n) space"
+notes      = "dp[i] = max sum ending at i. Easier to understand state transitions."
+
+[[solutions]]
+key    = "divide_conquer"
+class  = "SolutionDivideConquer"
+method = "maxSubArray"
+
+api_kernels      = ["DivideConquer"]
+patterns         = ["divide_conquer_array"]
+families         = ["divide_and_conquer"]
+data_structures  = ["array"]
+algorithms       = ["divide_and_conquer"]
+related_problems = []
+
+role       = "variant"
+variant    = "divide_conquer"
+based_on   = ["0053#default"]
+delta      = "Divide into halves, handle crossing case separately"
+complexity = "O(n log n) time, O(log n) space"
+notes      = "Follow-up solution. Max is in left half, right half, or crossing middle."
