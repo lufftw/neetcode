@@ -1,0 +1,62 @@
+# Problem: Fancy Sequence
+# https://leetcode.com/problems/fancy-sequence/
+
+# ===== Problem Info =====
+id = "1622"
+slug = "1622_fancy_sequence"
+title = "Fancy Sequence"
+leetcode_id = 1622
+url = "https://leetcode.com/problems/fancy-sequence/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["math", "design", "segment_tree"]
+companies = []
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = []
+patterns         = ["lazy_propagation", "modular_arithmetic"]
+families         = ["design_data_structure"]
+data_structures  = ["array"]
+algorithms       = ["modular_inverse"]
+related_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1622_fancy_sequence.py"
+generator = "generators/1622_fancy_sequence.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Fancy"
+method = "__init__"
+
+api_kernels      = []
+patterns         = ["lazy_propagation", "modular_arithmetic"]
+families         = ["design_data_structure"]
+data_structures  = ["array"]
+algorithms       = ["modular_inverse"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(1) per operation, O(log MOD) for modular inverse"
+notes      = """
+Lazy propagation design: track cumulative multiplier and adder.
+
+Invariant: current_value = stored_value * mult + add (mod MOD)
+
+On append: store inverse-transformed value v' = (v - add) * mult^(-1)
+On addAll: add += inc
+On multAll: mult *= m, add *= m
+On getIndex: return stored * mult + add
+
+Key insight: Fermat's little theorem gives modular inverse in O(log MOD).
+"""
