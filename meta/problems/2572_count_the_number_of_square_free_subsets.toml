@@ -1,0 +1,32 @@
+# Problem: Count the Number of Square-Free Subsets
+# https://leetcode.com/problems/count-the-number-of-square-free-subsets/
+
+id = "2572"
+slug = "2572_count_the_number_of_square_free_subsets"
+title = "Count the Number of Square-Free Subsets"
+leetcode_id = 2572
+url = "https://leetcode.com/problems/count-the-number-of-square-free-subsets/"
+
+difficulty = "medium"
+topics = ["array", "math", "dynamic_programming", "bitmask"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["bitmask_dp"]
+patterns         = ["prime_factorization", "subset_counting"]
+families         = ["number_theory", "subset_dp"]
+data_structures  = ["bitmask"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0078", "0090"]
+
+[files]
+solution  = "solutions/2572_count_the_number_of_square_free_subsets.py"
+generator = "generators/2572_count_the_number_of_square_free_subsets.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "squareFreeSubsets"
+complexity = "O(n * 2^10) time, O(2^10) space"
+notes  = "10 primes under 30. Bitmask DP where mask represents used primes. Skip elements with squared prime factors."
