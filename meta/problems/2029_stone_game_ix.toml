@@ -1,0 +1,32 @@
+# Problem: Stone Game IX
+# https://leetcode.com/problems/stone-game-ix/
+
+id = "2029"
+slug = "2029_stone_game_ix"
+title = "Stone Game IX"
+leetcode_id = 2029
+url = "https://leetcode.com/problems/stone-game-ix/"
+
+difficulty = "medium"
+topics = ["array", "math", "counting", "game-theory"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["modular_counting", "game_state_analysis"]
+patterns         = ["remainder_classification", "parity_analysis"]
+families         = ["game_theory"]
+data_structures  = ["counter"]
+algorithms       = ["greedy", "math"]
+related_problems = ["0877", "1140", "1406", "1563", "1686"]
+
+[files]
+solution  = "solutions/2029_stone_game_ix.py"
+generator = "generators/2029_stone_game_ix.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "stoneGameIX"
+complexity = "O(n) time, O(1) space"
+notes  = "Count stones by mod 3 remainder, analyze based on cnt[0] parity."
