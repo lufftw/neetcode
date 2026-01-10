@@ -1,0 +1,39 @@
+# Problem: Serialize and Deserialize Binary Tree
+# https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+
+id = "0297"
+slug = "0297_serialize_and_deserialize_binary_tree"
+title = "Serialize and Deserialize Binary Tree"
+leetcode_id = 297
+url = "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"
+
+difficulty = "hard"
+topics = ["string", "tree", "depth_first_search", "breadth_first_search", "design", "binary_tree"]
+companies = ["amazon", "facebook", "google", "microsoft", "uber"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["PreorderTraversal", "LevelOrderTraversal", "TreeSerialization"]
+patterns         = ["tree_serialization", "preorder_with_null_markers", "bfs_level_order"]
+families         = ["tree", "design"]
+data_structures  = ["binary_tree", "queue", "string"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0449", "0652", "0428"]
+
+[files]
+solution  = "solutions/0297_serialize_and_deserialize_binary_tree.py"
+generator = "generators/0297_serialize_and_deserialize_binary_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "CodecDFS"
+method = "_run_operations"
+complexity = "O(n) time, O(n) space"
+notes      = "Pre-order DFS with 'N' markers for null; unique reconstruction"
+
+[[solutions]]
+key    = "bfs"
+class  = "CodecBFS"
+method = "_run_operations"
+complexity = "O(n) time, O(n) space"
+notes      = "Level-order BFS serialization; processes nodes breadth-first"
