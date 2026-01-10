@@ -1,0 +1,32 @@
+# Problem: Sell Diminishing-Valued Colored Balls
+# https://leetcode.com/problems/sell-diminishing-valued-colored-balls/
+
+id = "1648"
+slug = "1648_sell_diminishing_valued_colored_balls"
+title = "Sell Diminishing-Valued Colored Balls"
+leetcode_id = 1648
+url = "https://leetcode.com/problems/sell-diminishing-valued-colored-balls/"
+
+difficulty = "medium"
+topics = ["array", "math", "binary-search", "greedy", "sorting", "heap"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["binary_search_threshold", "arithmetic_sum"]
+patterns         = ["greedy_selection", "binary_search_answer"]
+families         = ["greedy"]
+data_structures  = ["array"]
+algorithms       = ["binary_search", "greedy"]
+related_problems = ["1870"]
+
+[files]
+solution  = "solutions/1648_sell_diminishing_valued_colored_balls.py"
+generator = "generators/1648_sell_diminishing_valued_colored_balls.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maxProfit"
+complexity = "O(n log M) time, O(1) space"
+notes  = "Binary search for threshold, use arithmetic sum for profit calculation."
