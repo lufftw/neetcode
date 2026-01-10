@@ -1,0 +1,58 @@
+# Problem: Booking Concert Tickets in Groups
+# https://leetcode.com/problems/booking-concert-tickets-in-groups/
+
+# ===== Problem Info =====
+id = "2286"
+slug = "2286_booking_concert_tickets_in_groups"
+title = "Booking Concert Tickets in Groups"
+leetcode_id = 2286
+url = "https://leetcode.com/problems/booking-concert-tickets-in-groups/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["binary_search", "design", "segment_tree", "binary_indexed_tree"]
+companies = []
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["SegmentTree"]
+patterns         = ["segment_tree_range_query", "greedy_allocation"]
+families         = ["design_data_structure", "range_query"]
+data_structures  = ["segment_tree", "array"]
+algorithms       = ["segment_tree", "binary_search"]
+related_problems = ["0307"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/2286_booking_concert_tickets_in_groups.py"
+generator = "generators/2286_booking_concert_tickets_in_groups.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "BookMyShow"
+method = "__init__"
+
+api_kernels      = ["SegmentTree"]
+patterns         = ["segment_tree_range_query"]
+families         = ["design_data_structure"]
+data_structures  = ["segment_tree"]
+algorithms       = ["segment_tree"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(log n) per operation"
+notes      = """
+Segment tree supporting range max and range sum queries.
+
+- gather(k, maxRow): Binary search on segment tree for leftmost row with >= k seats
+- scatter(k, maxRow): Range sum query + greedy allocation from first available row
+
+Key optimization: Track first_available_row to skip full rows in scatter.
+"""
