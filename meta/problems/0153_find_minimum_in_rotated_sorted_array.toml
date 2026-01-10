@@ -1,0 +1,70 @@
+# Problem: Find Minimum in Rotated Sorted Array
+# https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+
+# ===== Problem Info =====
+id = "0153"
+slug = "0153_find_minimum_in_rotated_sorted_array"
+title = "Find Minimum in Rotated Sorted Array"
+leetcode_id = 153
+url = "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "binary_search"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearchRotated"]
+patterns         = ["binary_search_rotated", "find_pivot"]
+families         = ["binary_search"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0033", "0154", "0081"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0153_find_minimum_in_rotated_sorted_array.py"
+generator = "generators/0153_find_minimum_in_rotated_sorted_array.py"
+tests_dir = "tests/0153_find_minimum_in_rotated_sorted_array/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionBinarySearch"
+method = "findMin"
+
+api_kernels      = ["BinarySearchRotated"]
+patterns         = ["binary_search_rotated"]
+families         = ["binary_search"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0033", "0154"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(log n) time, O(1) space"
+notes      = "Compare mid with right. If mid > right, min is in right half."
+
+[[solutions]]
+key    = "find_pivot"
+class  = "SolutionFindPivot"
+method = "findMin"
+
+api_kernels      = ["BinarySearchRotated"]
+patterns         = ["find_pivot"]
+families         = ["binary_search"]
+data_structures  = ["array"]
+algorithms       = ["binary_search"]
+related_problems = ["0033"]
+
+role       = "variant"
+variant    = "find_pivot"
+based_on   = ["0153#default"]
+delta      = "Explicitly find the pivot point where rotation occurred"
+complexity = "O(log n) time, O(1) space"
+notes      = "Pivot is where nums[i] > nums[i+1]. Minimum is at pivot+1."
