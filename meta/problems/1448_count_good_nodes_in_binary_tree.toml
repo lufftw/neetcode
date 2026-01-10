@@ -1,0 +1,70 @@
+# Problem: Count Good Nodes in Binary Tree
+# https://leetcode.com/problems/count-good-nodes-in-binary-tree/
+
+# ===== Problem Info =====
+id = "1448"
+slug = "1448_count_good_nodes_in_binary_tree"
+title = "Count Good Nodes in Binary Tree"
+leetcode_id = 1448
+url = "https://leetcode.com/problems/count-good-nodes-in-binary-tree/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["tree", "dfs", "bfs", "binary_tree"]
+companies = ["microsoft", "amazon", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["TreeTraversalDFS", "TreeTraversalBFS", "PathTracking"]
+patterns         = ["dfs_with_state", "bfs_with_state", "path_max_tracking"]
+families         = ["tree", "traversal"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0104", "0112", "0124", "0543"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1448_count_good_nodes_in_binary_tree.py"
+generator = "generators/1448_count_good_nodes_in_binary_tree.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "goodNodes"
+
+api_kernels      = ["TreeTraversalDFS", "PathTracking"]
+patterns         = ["dfs_with_state", "path_max_tracking"]
+families         = ["tree", "traversal"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs"]
+related_problems = ["0104", "0112"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(h) space"
+notes      = "DFS passing max-so-far as parameter, node is good if val >= max"
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "goodNodes"
+
+api_kernels      = ["TreeTraversalBFS", "PathTracking"]
+patterns         = ["bfs_with_state", "path_max_tracking"]
+families         = ["tree", "traversal"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["bfs"]
+related_problems = ["0102", "0199"]
+
+role       = "variant"
+variant    = "bfs"
+based_on   = ["1448#default"]
+delta      = "Level-order traversal storing (node, max_on_path) in queue"
+complexity = "O(n) time, O(w) space"
+notes      = "BFS alternative, useful when DFS stack depth is a concern"
