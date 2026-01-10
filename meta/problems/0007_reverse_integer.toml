@@ -1,0 +1,39 @@
+# Problem: Reverse Integer
+# https://leetcode.com/problems/reverse-integer/
+
+id = "0007"
+slug = "0007_reverse_integer"
+title = "Reverse Integer"
+leetcode_id = 7
+url = "https://leetcode.com/problems/reverse-integer/"
+
+difficulty = "medium"
+topics = ["math"]
+companies = ["amazon", "google", "apple"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["DigitManipulation", "OverflowCheck"]
+patterns         = ["digit_extraction", "overflow_prevention"]
+families         = ["math", "integer_manipulation"]
+data_structures  = []
+algorithms       = ["modulo", "integer_division"]
+related_problems = ["0008", "0009", "0190"]
+
+[files]
+solution  = "solutions/0007_reverse_integer.py"
+generator = "generators/0007_reverse_integer.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionMath"
+method = "reverse"
+complexity = "O(log n) time, O(1) space"
+notes      = "Extract digits with mod/div, check overflow before operation"
+
+[[solutions]]
+key    = "string"
+class  = "SolutionString"
+method = "reverse"
+complexity = "O(log n) time, O(log n) space"
+notes      = "String reversal with boundary check"
