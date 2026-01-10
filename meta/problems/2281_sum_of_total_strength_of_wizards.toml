@@ -1,0 +1,32 @@
+# Problem: Sum of Total Strength of Wizards
+# https://leetcode.com/problems/sum-of-total-strength-of-wizards/
+
+id = "2281"
+slug = "2281_sum_of_total_strength_of_wizards"
+title = "Sum of Total Strength of Wizards"
+leetcode_id = 2281
+url = "https://leetcode.com/problems/sum-of-total-strength-of-wizards/"
+
+difficulty = "hard"
+topics = ["array", "stack", "monotonic_stack", "prefix_sum"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["monotonic_stack", "prefix_of_prefix_sum"]
+patterns         = ["contribution_counting", "range_minimum"]
+families         = ["subarray_sum"]
+data_structures  = ["stack", "array"]
+algorithms       = ["monotonic_stack", "prefix_sum"]
+related_problems = ["907"]
+
+[files]
+solution  = "solutions/2281_sum_of_total_strength_of_wizards.py"
+generator = "generators/2281_sum_of_total_strength_of_wizards.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "totalStrength"
+complexity = "O(n) time, O(n) space"
+notes  = "For each element as min, use prefix of prefix sums to compute sum of sums over valid subarrays."
