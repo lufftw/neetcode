@@ -1,0 +1,32 @@
+# Problem: Abbreviating the Product of a Range
+# https://leetcode.com/problems/abbreviating-the-product-of-a-range/
+
+id = "2117"
+slug = "2117_abbreviating_the_product_of_a_range"
+title = "Abbreviating the Product of a Range"
+leetcode_id = 2117
+url = "https://leetcode.com/problems/abbreviating-the-product-of-a-range/"
+
+difficulty = "hard"
+topics = ["math"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["prime_factorization", "modular_arithmetic", "logarithm_tricks"]
+families         = ["number_theory"]
+data_structures  = []
+algorithms       = ["math"]
+related_problems = []
+
+[files]
+solution  = "solutions/2117_abbreviating_the_product_of_a_range.py"
+generator = "generators/2117_abbreviating_the_product_of_a_range.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "abbreviateProduct"
+complexity = "O(n) time, O(1) space"
+notes  = "Count 2s and 5s for trailing zeros. Mod 10^5 for suffix. Log10 sum for prefix."
