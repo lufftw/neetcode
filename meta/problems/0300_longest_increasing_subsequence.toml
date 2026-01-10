@@ -1,0 +1,39 @@
+# Problem: Longest Increasing Subsequence
+# https://leetcode.com/problems/longest-increasing-subsequence/
+
+id = "0300"
+slug = "0300_longest_increasing_subsequence"
+title = "Longest Increasing Subsequence"
+leetcode_id = 300
+url = "https://leetcode.com/problems/longest-increasing-subsequence/"
+
+difficulty = "medium"
+topics = ["array", "binary_search", "dynamic_programming"]
+companies = ["amazon", "google", "microsoft", "facebook"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["BinarySearch", "DynamicProgramming"]
+patterns         = ["patience_sorting", "lis_pattern", "binary_search_dp"]
+families         = ["dp", "binary_search"]
+data_structures  = ["array"]
+algorithms       = ["binary_search", "dp"]
+related_problems = ["0334", "0354", "0646", "0673"]
+
+[files]
+solution  = "solutions/0300_longest_increasing_subsequence.py"
+generator = "generators/0300_longest_increasing_subsequence.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionBinarySearch"
+method = "lengthOfLIS"
+complexity = "O(n log n) time, O(n) space"
+notes      = "Binary search with patience sorting tails array"
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "lengthOfLIS"
+complexity = "O(n^2) time, O(n) space"
+notes      = "DP where dp[i] = LIS length ending at index i"
