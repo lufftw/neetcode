@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/claude-code) when working with this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -65,10 +65,25 @@ python -m pytest .dev/tests -v
 - `tests/` - Test cases (.in/.out files)
 - `generators/` - Random test generators (optional)
 - `runner/` - Test execution engine
-- `src/` - Core packages (codegen, leetcode_datasource, practice_workspace)
+- `src/` - Core packages (see below)
+- `tools/` - Standalone tools (mindmaps, patterndocs, review-code)
 - `ontology/` - Algorithm ontology (TOML files)
 - `meta/` - Problem and pattern metadata
 - `docs/` - MkDocs documentation
+
+### Core Packages (`src/`)
+
+```
+leetcode_datasource ←── codegen ──→ practice_workspace
+```
+
+| Package | Purpose |
+|---------|---------|
+| `leetcode_datasource` | LeetCode API + SQLite cache, problem metadata |
+| `codegen` | Solution/practice skeleton generation, test extraction |
+| `practice_workspace` | Practice file history and restore |
+
+Dependency rule: `tools/ → src/` only, never reverse.
 
 ### Solution File Format
 
