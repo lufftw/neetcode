@@ -1,0 +1,45 @@
+# 1494 - Parallel Courses II
+# https://leetcode.com/problems/parallel-courses-ii/
+
+[problem]
+id = "1494"
+title = "Parallel Courses II"
+difficulty = "hard"
+categories = ["dynamic-programming", "bit-manipulation"]
+tags = ["bitmask-dp", "subset-enumeration", "dag-scheduling"]
+
+[solutions.default]
+name = "Bitmask DP with Subset Enumeration"
+time_complexity = "O(3^n)"
+space_complexity = "O(2^n)"
+description = """
+Uses bitmask to represent set of completed courses. For each state,
+finds courses with prerequisites met, then enumerates all subsets up to size k.
+Subset enumeration uses bit manipulation: sub = (sub-1) & available.
+"""
+
+[analysis]
+key_insight = """
+This is an NP-hard problem (related to machine scheduling). n <= 15 enables
+bitmask DP approach. Each of n courses is either taken or not, giving 2^n states.
+The 3^n complexity comes from iterating over all (taken, available subset) pairs.
+"""
+
+edge_cases = [
+    "No prerequisites (optimal: ceil(n/k) semesters)",
+    "Linear chain of dependencies (n semesters regardless of k)",
+    "k >= n (all available courses taken at once)",
+    "Star topology (many courses depend on one)",
+    "Single course (always 1 semester)",
+]
+
+[ontology]
+api_kernels = ["bitmask-dp", "subset-enumeration", "prerequisite-check"]
+patterns = ["bitmask-dp", "state-compression", "subset-enumeration"]
+families = ["dynamic-programming", "np-hard-approx"]
+techniques = ["submask-iteration", "prerequisite-bitmask", "popcount-limit"]
+
+[metadata]
+leetcode_id = 1494
+acceptance_rate = 30.2
+related_problems = ["0207", "0210", "1136"]
