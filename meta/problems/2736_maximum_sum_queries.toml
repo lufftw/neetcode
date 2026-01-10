@@ -1,0 +1,32 @@
+# Problem: Maximum Sum Queries
+# https://leetcode.com/problems/maximum-sum-queries/
+
+id = "2736"
+slug = "2736_maximum_sum_queries"
+title = "Maximum Sum Queries"
+leetcode_id = 2736
+url = "https://leetcode.com/problems/maximum-sum-queries/"
+
+difficulty = "hard"
+topics = ["array", "binary-search", "stack", "segment-tree", "monotonic-stack", "sorting"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["monotonic_stack", "offline_query"]
+patterns         = ["sorted_query_processing", "2d_range_query"]
+families         = ["range_query"]
+data_structures  = ["monotonic_stack", "array"]
+algorithms       = ["sorting", "binary_search"]
+related_problems = ["2940"]
+
+[files]
+solution  = "solutions/2736_maximum_sum_queries.py"
+generator = "generators/2736_maximum_sum_queries.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maximumSumQueries"
+complexity = "O((n + q) log n) time, O(n + q) space"
+notes  = "Sort queries by x descending, use monotonic stack for 2D range max."
