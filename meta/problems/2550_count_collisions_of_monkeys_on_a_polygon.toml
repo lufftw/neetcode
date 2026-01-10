@@ -1,0 +1,32 @@
+# Problem: Count Collisions of Monkeys on a Polygon
+# https://leetcode.com/problems/count-collisions-of-monkeys-on-a-polygon/
+
+id = "2550"
+slug = "2550_count_collisions_of_monkeys_on_a_polygon"
+title = "Count Collisions of Monkeys on a Polygon"
+leetcode_id = 2550
+url = "https://leetcode.com/problems/count-collisions-of-monkeys-on-a-polygon/"
+
+difficulty = "medium"
+topics = ["math", "recursion"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["modular_exponentiation", "combinatorics"]
+patterns         = ["complement_counting"]
+families         = ["counting"]
+data_structures  = []
+algorithms       = ["fast_exponentiation"]
+related_problems = ["0050", "0372"]
+
+[files]
+solution  = "solutions/2550_count_collisions_of_monkeys_on_a_polygon.py"
+generator = "generators/2550_count_collisions_of_monkeys_on_a_polygon.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "monkeyMove"
+complexity = "O(log n) time, O(1) space"
+notes  = "Complement counting: 2^n total ways - 2 collision-free ways."
