@@ -1,0 +1,32 @@
+# Problem: Super Egg Drop
+# https://leetcode.com/problems/super-egg-drop/
+
+id = "0887"
+slug = "0887_super_egg_drop"
+title = "Super Egg Drop"
+leetcode_id = 887
+url = "https://leetcode.com/problems/super-egg-drop/"
+
+difficulty = "hard"
+topics = ["math", "binary-search", "dynamic-programming"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["reformulated_dp", "monotonic_dp"]
+patterns         = ["dp_state_redesign", "minimax"]
+families         = ["optimization_dp"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["1884"]
+
+[files]
+solution  = "solutions/0887_super_egg_drop.py"
+generator = "generators/0887_super_egg_drop.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "superEggDrop"
+complexity = "O(k * log n) time, O(k) space"
+notes  = "Reformulated DP: how many floors can be checked with m moves and k eggs."
