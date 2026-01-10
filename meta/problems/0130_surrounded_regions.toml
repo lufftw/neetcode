@@ -1,0 +1,39 @@
+# Problem: Surrounded Regions
+# https://leetcode.com/problems/surrounded-regions/
+
+id = "0130"
+slug = "0130_surrounded_regions"
+title = "Surrounded Regions"
+leetcode_id = 130
+url = "https://leetcode.com/problems/surrounded-regions/"
+
+difficulty = "medium"
+topics = ["array", "depth_first_search", "breadth_first_search", "union_find", "matrix"]
+companies = ["amazon", "google", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["BorderDFS", "FloodFill", "ConnectedComponents"]
+patterns         = ["boundary_traversal", "flood_fill", "in_place_marking"]
+families         = ["graph", "matrix"]
+data_structures  = ["matrix", "queue", "stack"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0200", "0286", "0417"]
+
+[files]
+solution  = "solutions/0130_surrounded_regions.py"
+generator = "generators/0130_surrounded_regions.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "solve"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "DFS from borders to mark safe O's, then flip remaining"
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "solve"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "BFS from border O's using queue; avoids deep recursion"
