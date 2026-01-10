@@ -1,0 +1,70 @@
+# Problem: Minimum Interval to Include Each Query
+# https://leetcode.com/problems/minimum-interval-to-include-each-query/
+
+# ===== Problem Info =====
+id = "1851"
+slug = "1851_minimum_interval_to_include_each_query"
+title = "Minimum Interval to Include Each Query"
+leetcode_id = 1851
+url = "https://leetcode.com/problems/minimum-interval-to-include-each-query/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "binary_search", "line_sweep", "sorting", "heap_priority_queue"]
+companies = ["google", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["OfflineQuery", "MinHeap"]
+patterns         = ["offline_query", "sweep_line", "lazy_deletion"]
+families         = ["interval_query", "heap_problems"]
+data_structures  = ["array", "heap"]
+algorithms       = ["sorting", "heap"]
+related_problems = ["0056", "0057", "0253", "0435"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1851_minimum_interval_to_include_each_query.py"
+generator = "generators/1851_minimum_interval_to_include_each_query.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionSortAndHeap"
+method = "minInterval"
+
+api_kernels      = ["OfflineQuery", "MinHeap"]
+patterns         = ["offline_query", "sweep_line"]
+families         = ["interval_query"]
+data_structures  = ["array", "heap"]
+algorithms       = ["sorting", "heap"]
+related_problems = ["0253"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O((n + q) log n) time, O(n + q) space"
+notes      = "Sort intervals by start, process queries in sorted order with min-heap"
+
+[[solutions]]
+key    = "offline"
+class  = "SolutionOfflineQuery"
+method = "minInterval"
+
+api_kernels      = ["OfflineQuery", "MinHeap"]
+patterns         = ["offline_query", "lazy_deletion"]
+families         = ["interval_query"]
+data_structures  = ["array", "heap"]
+algorithms       = ["sorting", "heap"]
+related_problems = []
+
+role       = "variant"
+variant    = "offline"
+based_on   = ["1851#default"]
+delta      = "Emphasizes lazy deletion pattern"
+complexity = "O((n + q) log n) time, O(n + q) space"
+notes      = "Same algorithm with explicit lazy deletion semantics"
