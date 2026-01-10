@@ -1,0 +1,59 @@
+# Problem: Minimum Reverse Operations
+# https://leetcode.com/problems/minimum-reverse-operations/
+
+# ===== Problem Info =====
+id = "2612"
+slug = "2612_minimum_reverse_operations"
+title = "Minimum Reverse Operations"
+leetcode_id = 2612
+url = "https://leetcode.com/problems/minimum-reverse-operations/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "hard"
+topics = ["array", "bfs", "ordered_set"]
+companies = []
+
+# ===== Roadmaps =====
+roadmaps = []
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BFS"]
+patterns         = ["bfs_shortest_path", "parity_optimization"]
+families         = ["graph_traversal", "range_query"]
+data_structures  = ["sorted_list", "queue", "hash_set"]
+algorithms       = ["bfs", "range_deletion"]
+related_problems = []
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/2612_minimum_reverse_operations.py"
+generator = "generators/2612_minimum_reverse_operations.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minReverseOperations"
+
+api_kernels      = ["BFS"]
+patterns         = ["bfs_shortest_path", "parity_optimization"]
+families         = ["graph_traversal"]
+data_structures  = ["sorted_list", "queue"]
+algorithms       = ["bfs"]
+related_problems = []
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(n) space"
+notes      = """
+BFS on position graph with SortedList optimization.
+
+Key insight: From position i, reversing [L, L+k-1] moves 1 to j = 2L + k - 1 - i.
+All reachable positions share the same parity as (i + k - 1).
+
+Use two SortedLists (even/odd indices) for O(log n) range queries.
+BFS explores each position exactly once, giving O(n log n) total time.
+"""
