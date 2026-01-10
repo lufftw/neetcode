@@ -1,0 +1,39 @@
+# Problem: Graph Valid Tree
+# https://leetcode.com/problems/graph-valid-tree/
+
+id = "0261"
+slug = "0261_graph_valid_tree"
+title = "Graph Valid Tree"
+leetcode_id = 261
+url = "https://leetcode.com/problems/graph-valid-tree/"
+
+difficulty = "medium"
+topics = ["graph", "dfs", "bfs", "union_find"]
+companies = ["google", "facebook", "linkedin"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["CycleDetection", "UnionFind"]
+patterns         = ["connectivity_check", "cycle_detection"]
+families         = ["graph", "union_find"]
+data_structures  = ["adjacency_list", "disjoint_set"]
+algorithms       = ["dfs", "union_find"]
+related_problems = ["0200", "0684", "0323"]
+
+[files]
+solution  = "solutions/0261_graph_valid_tree.py"
+generator = "generators/0261_graph_valid_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "validTree"
+complexity = "O(V + E) time, O(V + E) space"
+notes      = "DFS checking connectivity and no cycles"
+
+[[solutions]]
+key    = "union_find"
+class  = "SolutionUnionFind"
+method = "validTree"
+complexity = "O(V + E * alpha(V)) time, O(V) space"
+notes      = "Union-Find detecting cycles during edge merges"
