@@ -1,0 +1,45 @@
+# 0166 - Fraction to Recurring Decimal
+# https://leetcode.com/problems/fraction-to-recurring-decimal/
+
+[problem]
+id = "0166"
+title = "Fraction to Recurring Decimal"
+difficulty = "medium"
+categories = ["math", "hash-table", "string"]
+tags = ["long-division", "cycle-detection", "number-theory"]
+
+[solutions.default]
+name = "Long Division with Remainder Tracking"
+time_complexity = "O(d)"
+space_complexity = "O(d)"
+description = """
+Simulates long division while tracking remainders in a hash map.
+When a remainder repeats, we've found the start of the repeating cycle.
+d is the length of the repeating period, bounded by the denominator.
+"""
+
+[analysis]
+key_insight = """
+In long division, if we ever see the same remainder twice, the quotient digits
+will repeat from that point onward. By tracking remainder -> position mapping,
+we can detect exactly where the cycle begins and insert parentheses.
+"""
+
+edge_cases = [
+    "Zero numerator returns '0'",
+    "Sign handling: exactly one negative operand gives negative result",
+    "Terminating decimals: denominator has only factors 2 and 5",
+    "Integer result: no decimal point needed",
+    "Overflow: -2^31 requires careful abs() handling",
+]
+
+[ontology]
+api_kernels = ["hash-map-lookup", "string-builder", "integer-division"]
+patterns = ["cycle-detection", "simulation", "remainder-tracking"]
+families = ["number-theory", "string-construction"]
+techniques = ["hash-map-for-position", "long-division-simulation"]
+
+[metadata]
+leetcode_id = 166
+acceptance_rate = 24.6
+related_problems = ["0060", "0172", "0204"]
