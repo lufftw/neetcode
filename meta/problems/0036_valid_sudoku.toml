@@ -1,0 +1,70 @@
+# Problem: Valid Sudoku
+# https://leetcode.com/problems/valid-sudoku/
+
+# ===== Problem Info =====
+id = "0036"
+slug = "0036_valid_sudoku"
+title = "Valid Sudoku"
+leetcode_id = 36
+url = "https://leetcode.com/problems/valid-sudoku/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "matrix"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["HashSetValidation"]
+patterns         = ["matrix_validation", "constraint_checking"]
+families         = ["sudoku", "grid_validation"]
+data_structures  = ["hash_set", "array", "bitmask"]
+algorithms       = []
+related_problems = ["0037"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0036_valid_sudoku.py"
+generator = "generators/0036_valid_sudoku.py"
+tests_dir = "tests/0036_valid_sudoku/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionHashSet"
+method = "isValidSudoku"
+
+api_kernels      = ["HashSetValidation"]
+patterns         = ["matrix_validation"]
+families         = ["sudoku", "grid_validation"]
+data_structures  = ["hash_set"]
+algorithms       = []
+related_problems = ["0037"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(1) time, O(1) space"
+notes      = "Fixed 9x9 board. Track digits in rows/cols/boxes using sets. Box index = (row//3)*3 + col//3."
+
+[[solutions]]
+key    = "bitmask"
+class  = "SolutionBitmask"
+method = "isValidSudoku"
+
+api_kernels      = ["BitmaskValidation"]
+patterns         = ["bitmask_tracking"]
+families         = ["sudoku"]
+data_structures  = ["bitmask"]
+algorithms       = []
+related_problems = ["0037"]
+
+role       = "variant"
+variant    = "bitmask"
+based_on   = ["0036#default"]
+delta      = "Uses integers as bitmasks instead of sets for compact storage"
+complexity = "O(1) time, O(1) space"
+notes      = "Bit i represents digit (i+1). More cache-friendly than hash sets."
