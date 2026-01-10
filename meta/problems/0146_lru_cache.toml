@@ -1,0 +1,39 @@
+# Problem: LRU Cache
+# https://leetcode.com/problems/lru-cache/
+
+id = "0146"
+slug = "0146_lru_cache"
+title = "LRU Cache"
+leetcode_id = 146
+url = "https://leetcode.com/problems/lru-cache/"
+
+difficulty = "medium"
+topics = ["hash_table", "linked_list", "design", "doubly_linked_list"]
+companies = ["amazon", "facebook", "microsoft", "google", "apple"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["OrderedDict", "DoublyLinkedList"]
+patterns         = ["lru_eviction", "cache_design"]
+families         = ["design", "linked_list"]
+data_structures  = ["hash_map", "doubly_linked_list", "ordered_dict"]
+algorithms       = ["cache_eviction"]
+related_problems = ["0460", "0432", "0588"]
+
+[files]
+solution  = "solutions/0146_lru_cache.py"
+generator = "generators/0146_lru_cache.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "LRUCacheOrderedDict"
+method = "_run_operations"
+complexity = "O(1) per operation"
+notes      = "OrderedDict with move_to_end for recency tracking"
+
+[[solutions]]
+key    = "manual"
+class  = "LRUCacheManual"
+method = "_run_operations"
+complexity = "O(1) per operation"
+notes      = "HashMap + Doubly linked list with dummy head/tail"
