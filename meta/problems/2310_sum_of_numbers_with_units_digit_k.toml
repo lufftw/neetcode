@@ -1,0 +1,32 @@
+# Problem: Sum of Numbers With Units Digit K
+# https://leetcode.com/problems/sum-of-numbers-with-units-digit-k/
+
+id = "2310"
+slug = "2310_sum_of_numbers_with_units_digit_k"
+title = "Sum of Numbers With Units Digit K"
+leetcode_id = 2310
+url = "https://leetcode.com/problems/sum-of-numbers-with-units-digit-k/"
+
+difficulty = "medium"
+topics = ["math", "dynamic_programming", "greedy", "enumeration"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["modular_arithmetic"]
+patterns         = ["units_digit_cycle", "enumeration"]
+families         = ["number_theory"]
+data_structures  = []
+algorithms       = ["enumeration"]
+related_problems = []
+
+[files]
+solution  = "solutions/2310_sum_of_numbers_with_units_digit_k.py"
+generator = "generators/2310_sum_of_numbers_with_units_digit_k.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minimumNumbers"
+complexity = "O(1) time, O(1) space"
+notes  = "Units digit cycles every 10. Check n=1..10 for (n*k)%10 == num%10 and n*k <= num."
