@@ -1,0 +1,39 @@
+# Problem: Kth Smallest Element in a BST
+# https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+
+id = "0230"
+slug = "0230_kth_smallest_element_in_a_bst"
+title = "Kth Smallest Element in a BST"
+leetcode_id = 230
+url = "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"
+
+difficulty = "medium"
+topics = ["tree", "depth_first_search", "binary_search_tree", "binary_tree"]
+companies = ["amazon", "facebook", "google", "uber"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["InorderTraversal", "BSTProperty"]
+patterns         = ["inorder_traversal", "bst_sorted_order", "early_termination"]
+families         = ["tree", "binary_search_tree"]
+data_structures  = ["binary_search_tree", "stack"]
+algorithms       = ["inorder", "dfs"]
+related_problems = ["0094", "0144", "0270"]
+
+[files]
+solution  = "solutions/0230_kth_smallest_element_in_a_bst.py"
+generator = "generators/0230_kth_smallest_element_in_a_bst.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionIterative"
+method = "kthSmallest"
+complexity = "O(H + k) time, O(H) space"
+notes      = "Iterative inorder with early termination; optimal when k << n"
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "kthSmallest"
+complexity = "O(n) time, O(H) space"
+notes      = "Recursive inorder collecting all elements"
