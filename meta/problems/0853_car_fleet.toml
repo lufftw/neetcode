@@ -1,0 +1,70 @@
+# Problem: Car Fleet
+# https://leetcode.com/problems/car-fleet/
+
+# ===== Problem Info =====
+id = "0853"
+slug = "0853_car_fleet"
+title = "Car Fleet"
+leetcode_id = 853
+url = "https://leetcode.com/problems/car-fleet/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "stack", "sorting", "monotonic_stack"]
+companies = ["google", "amazon", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["IntervalMerge", "MonotonicSequence"]
+patterns         = ["sort_by_position", "arrival_time_analysis", "monotonic_stack"]
+families         = ["simulation", "sorting", "stack"]
+data_structures  = ["array", "stack"]
+algorithms       = ["sorting", "greedy"]
+related_problems = ["0739", "0901", "1776"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0853_car_fleet.py"
+generator = "generators/0853_car_fleet.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionSort"
+method = "carFleet"
+
+api_kernels      = ["IntervalMerge"]
+patterns         = ["sort_by_position", "arrival_time_analysis"]
+families         = ["sorting", "simulation"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+related_problems = ["1776"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n log n) time, O(n) space"
+notes      = "Sort by position desc, count how many times arrival time increases (new fleet)"
+
+[[solutions]]
+key    = "stack"
+class  = "SolutionStack"
+method = "carFleet"
+
+api_kernels      = ["MonotonicSequence"]
+patterns         = ["monotonic_stack", "arrival_time_analysis"]
+families         = ["stack"]
+data_structures  = ["stack", "array"]
+algorithms       = ["sorting", "monotonic_stack"]
+related_problems = ["0739", "0901"]
+
+role       = "variant"
+variant    = "stack"
+based_on   = ["0853#default"]
+delta      = "Explicit monotonic stack tracking fleet leaders"
+complexity = "O(n log n) time, O(n) space"
+notes      = "Stack stores arrival times of fleet leaders (decreasing sequence)"
