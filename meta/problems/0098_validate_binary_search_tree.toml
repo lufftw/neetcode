@@ -1,0 +1,39 @@
+# Problem: Validate Binary Search Tree
+# https://leetcode.com/problems/validate-binary-search-tree/
+
+id = "0098"
+slug = "0098_validate_binary_search_tree"
+title = "Validate Binary Search Tree"
+leetcode_id = 98
+url = "https://leetcode.com/problems/validate-binary-search-tree/"
+
+difficulty = "medium"
+topics = ["tree", "binary_search_tree", "dfs"]
+companies = ["amazon", "facebook", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["BSTValidation", "InorderTraversal"]
+patterns         = ["range_propagation", "inorder_check"]
+families         = ["tree", "binary_search_tree"]
+data_structures  = ["binary_tree"]
+algorithms       = ["dfs", "inorder_traversal"]
+related_problems = ["0094", "0501", "0530"]
+
+[files]
+solution  = "solutions/0098_validate_binary_search_tree.py"
+generator = "generators/0098_validate_binary_search_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionRangeCheck"
+method = "isValidBST"
+complexity = "O(n) time, O(h) space"
+notes      = "Propagate valid range bounds down the tree"
+
+[[solutions]]
+key    = "inorder"
+class  = "SolutionInorder"
+method = "isValidBST"
+complexity = "O(n) time, O(h) space"
+notes      = "In-order traversal must be strictly increasing"
