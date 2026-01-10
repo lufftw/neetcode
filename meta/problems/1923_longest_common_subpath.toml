@@ -1,0 +1,32 @@
+# Problem: Longest Common Subpath
+# https://leetcode.com/problems/longest-common-subpath/
+
+id = "1923"
+slug = "1923_longest_common_subpath"
+title = "Longest Common Subpath"
+leetcode_id = 1923
+url = "https://leetcode.com/problems/longest-common-subpath/"
+
+difficulty = "hard"
+topics = ["array", "binary-search", "rolling-hash", "hash-function", "suffix-array"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["rolling_hash", "binary_search"]
+patterns         = ["binary_search_answer", "hash_intersection"]
+families         = ["string_matching"]
+data_structures  = ["hash_set", "array"]
+algorithms       = ["binary_search", "rabin_karp"]
+related_problems = ["0718", "1062", "1044"]
+
+[files]
+solution  = "solutions/1923_longest_common_subpath.py"
+generator = "generators/1923_longest_common_subpath.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "longestCommonSubpath"
+complexity = "O(T * log(min_len)) time, O(T) space"
+notes  = "Binary search on length with double rolling hash for collision avoidance."
