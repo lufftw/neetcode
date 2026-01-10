@@ -1,0 +1,39 @@
+# Problem: Missing Number
+# https://leetcode.com/problems/missing-number/
+
+id = "0268"
+slug = "0268_missing_number"
+title = "Missing Number"
+leetcode_id = 268
+url = "https://leetcode.com/problems/missing-number/"
+
+difficulty = "easy"
+topics = ["array", "hash_table", "math", "binary_search", "bit_manipulation", "sorting"]
+companies = ["amazon", "microsoft", "apple"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["XORCancellation", "GaussSum"]
+patterns         = ["xor_pairing", "arithmetic_sum"]
+families         = ["bit_manipulation", "math"]
+data_structures  = ["array"]
+algorithms       = ["xor", "sum_formula"]
+related_problems = ["0041", "0136", "0287"]
+
+[files]
+solution  = "solutions/0268_missing_number.py"
+generator = "generators/0268_missing_number.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionXOR"
+method = "missingNumber"
+complexity = "O(n) time, O(1) space"
+notes      = "XOR indices and values; matching pairs cancel"
+
+[[solutions]]
+key    = "sum"
+class  = "SolutionSum"
+method = "missingNumber"
+complexity = "O(n) time, O(1) space"
+notes      = "Gauss formula n*(n+1)/2 minus actual sum"
