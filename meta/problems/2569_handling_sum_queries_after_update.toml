@@ -1,0 +1,47 @@
+# 2569 - Handling Sum Queries After Update
+# https://leetcode.com/problems/handling-sum-queries-after-update/
+
+[problem]
+id = "2569"
+title = "Handling Sum Queries After Update"
+difficulty = "hard"
+categories = ["array", "segment-tree"]
+tags = ["lazy-propagation", "range-update", "toggle-operation"]
+
+[solutions.default]
+name = "Segment Tree with Lazy Propagation"
+time_complexity = "O((n + q) log n)"
+space_complexity = "O(n)"
+description = """
+Uses segment tree to track count of 1s in nums1 with O(log n) range toggles.
+Lazy propagation defers toggle operations using XOR semantics (toggle twice = no change).
+nums2 sum tracked as single value since only aggregate is needed.
+"""
+
+[analysis]
+key_insight = """
+For Type 2 queries, we only need sum(nums1), not individual elements.
+Segment tree with lazy propagation efficiently handles range toggle operations.
+Toggle operation: new_count = segment_length - old_count.
+XOR-based lazy tags: toggling a toggled segment cancels out.
+"""
+
+edge_cases = [
+    "Single element arrays",
+    "All zeros or all ones in nums1",
+    "Consecutive toggles on same range (cancel out)",
+    "p=0 in Type 2 (no change to nums2)",
+    "No Type 3 queries (empty result)",
+    "Large p values with many 1s (overflow check)",
+]
+
+[ontology]
+api_kernels = ["segment-tree-update", "segment-tree-query", "lazy-propagation"]
+patterns = ["segment-tree", "lazy-propagation", "range-update"]
+families = ["segment-tree", "range-query"]
+techniques = ["xor-toggle", "aggregate-tracking", "deferred-evaluation"]
+
+[metadata]
+leetcode_id = 2569
+acceptance_rate = 30.19
+related_problems = ["0307", "0699", "0715"]
