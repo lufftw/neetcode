@@ -1,0 +1,47 @@
+# 1862 - Sum of Floored Pairs
+# https://leetcode.com/problems/sum-of-floored-pairs/
+
+[problem]
+id = "1862"
+title = "Sum of Floored Pairs"
+difficulty = "hard"
+categories = ["array", "math", "prefix-sum"]
+tags = ["frequency-count", "harmonic-series", "counting"]
+
+[solutions.default]
+name = "Frequency Count + Prefix Sum"
+time_complexity = "O(M log M)"
+space_complexity = "O(M)"
+description = """
+Count frequency of each value. Build prefix sum for range queries.
+For each unique divisor d, iterate through quotients k=1,2,3,...
+Elements with floor(x/d)=k lie in range [k*d, (k+1)*d-1].
+Total iterations bounded by harmonic series: O(M log M).
+"""
+
+[analysis]
+key_insight = """
+Direct O(n^2) is too slow. Group elements by their quotient ranges.
+For divisor d, elements in [k*d, (k+1)*d-1] all give quotient k.
+Use prefix sums to count elements in any range in O(1).
+Harmonic series bound: sum(M/1 + M/2 + ... + M/M) = O(M log M).
+"""
+
+edge_cases = [
+    "Single element (n^2 = 1 pair)",
+    "All same value (each pair contributes 1)",
+    "All ones (maximum contributions)",
+    "Powers of 2 (clean divisibility)",
+    "Large values with small divisors",
+]
+
+[ontology]
+api_kernels = ["prefix-sum", "frequency-count", "modular-arithmetic"]
+patterns = ["counting-by-ranges", "harmonic-series-optimization"]
+families = ["number-theory", "prefix-sum"]
+techniques = ["multiple-enumeration", "range-counting", "frequency-array"]
+
+[metadata]
+leetcode_id = 1862
+acceptance_rate = 30.45
+related_problems = ["0204", "1808", "2183"]
