@@ -1,0 +1,39 @@
+# Problem: Multiply Strings
+# https://leetcode.com/problems/multiply-strings/
+
+id = "0043"
+slug = "0043_multiply_strings"
+title = "Multiply Strings"
+leetcode_id = 43
+url = "https://leetcode.com/problems/multiply-strings/"
+
+difficulty = "medium"
+topics = ["math", "string", "simulation"]
+companies = ["facebook", "google", "microsoft", "twitter"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["GradeSchoolMultiplication", "BigInteger"]
+patterns         = ["digit_by_digit", "carry_propagation"]
+families         = ["math", "string"]
+data_structures  = ["array", "string"]
+algorithms       = ["multiplication"]
+related_problems = ["0002", "0066", "0067"]
+
+[files]
+solution  = "solutions/0043_multiply_strings.py"
+generator = "generators/0043_multiply_strings.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionGradeSchool"
+method = "multiply"
+complexity = "O(m*n) time, O(m+n) space"
+notes      = "Grade-school multiplication with position-based accumulation"
+
+[[solutions]]
+key    = "optimized"
+class  = "SolutionOptimized"
+method = "multiply"
+complexity = "O(m*n) time, O(m+n) space"
+notes      = "Reversed digit arrays with deferred carry propagation"
