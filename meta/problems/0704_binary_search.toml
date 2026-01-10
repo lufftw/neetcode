@@ -1,0 +1,39 @@
+# Problem: Binary Search
+# https://leetcode.com/problems/binary-search/
+
+id = "0704"
+slug = "0704_binary_search"
+title = "Binary Search"
+leetcode_id = 704
+url = "https://leetcode.com/problems/binary-search/"
+
+difficulty = "easy"
+topics = ["array", "binary_search"]
+companies = ["amazon", "apple", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["BinarySearch"]
+patterns         = ["binary_search_exact"]
+families         = ["binary_search"]
+data_structures  = ["sorted_array"]
+algorithms       = ["binary_search"]
+related_problems = ["0033", "0034", "0035"]
+
+[files]
+solution  = "solutions/0704_binary_search.py"
+generator = "generators/0704_binary_search.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionIterative"
+method = "search"
+complexity = "O(log n) time, O(1) space"
+notes      = "Classic iterative binary search"
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "search"
+complexity = "O(log n) time, O(log n) space"
+notes      = "Recursive divide and conquer"
