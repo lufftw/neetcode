@@ -1,0 +1,89 @@
+# Problem: Word Break
+# https://leetcode.com/problems/word-break/
+
+# ===== Problem Info =====
+id = "0139"
+slug = "0139_word_break"
+title = "Word Break"
+leetcode_id = 139
+url = "https://leetcode.com/problems/word-break/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "hash_table", "string", "dynamic_programming", "trie", "memoization"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["StringDP", "WordSegmentation"]
+patterns         = ["word_segmentation", "linear_dp"]
+families         = ["string_dp", "dynamic_programming_linear"]
+data_structures  = ["string", "hash_set"]
+algorithms       = ["dynamic_programming", "bfs"]
+related_problems = ["0140", "0472"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0139_word_break.py"
+generator = "generators/0139_word_break.py"
+tests_dir = "tests/0139_word_break/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionDP"
+method = "wordBreak"
+
+api_kernels      = ["StringDP"]
+patterns         = ["word_segmentation"]
+families         = ["string_dp"]
+data_structures  = ["string", "hash_set", "array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0091", "0140"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n^2 * m) time, O(n) space"
+notes      = "dp[i] = can s[0:i] be segmented? Check all j < i where dp[j] and s[j:i] is word."
+
+[[solutions]]
+key    = "bfs"
+class  = "SolutionBFS"
+method = "wordBreak"
+
+api_kernels      = ["WordSegmentation"]
+patterns         = ["bfs_string"]
+families         = ["graph_search"]
+data_structures  = ["queue", "hash_set"]
+algorithms       = ["bfs"]
+related_problems = []
+
+role       = "variant"
+variant    = "bfs"
+based_on   = ["0139#default"]
+delta      = "Graph perspective: find path from 0 to n via valid words"
+complexity = "O(n^2 * m) time, O(n) space"
+notes      = "Nodes are positions, edges connect i to j if s[i:j] in dictionary."
+
+[[solutions]]
+key    = "memo"
+class  = "SolutionMemo"
+method = "wordBreak"
+
+api_kernels      = ["StringDP"]
+patterns         = ["memoization"]
+families         = ["string_dp"]
+data_structures  = ["string", "hash_set"]
+algorithms       = ["dynamic_programming", "recursion"]
+related_problems = ["0140"]
+
+role       = "variant"
+variant    = "memo"
+based_on   = ["0139#default"]
+delta      = "Top-down instead of bottom-up"
+complexity = "O(n^2 * m) time, O(n) space"
+notes      = "canBreak(i) = can s[i:] be segmented? Natural recursive formulation."
