@@ -1,0 +1,32 @@
+# Problem: Disconnect Path in a Binary Matrix by at Most One Flip
+# https://leetcode.com/problems/disconnect-path-in-a-binary-matrix-by-at-most-one-flip/
+
+id = "2556"
+slug = "2556_disconnect_path_in_a_binary_matrix_by_at_most_one_flip"
+title = "Disconnect Path in a Binary Matrix by at Most One Flip"
+leetcode_id = 2556
+url = "https://leetcode.com/problems/disconnect-path-in-a-binary-matrix-by-at-most-one-flip/"
+
+difficulty = "medium"
+topics = ["array", "dynamic_programming", "dfs", "bfs", "matrix"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["vertex_disjoint_paths"]
+patterns         = ["path_existence", "graph_connectivity"]
+families         = ["grid_traversal"]
+data_structures  = ["matrix"]
+algorithms       = ["dfs"]
+related_problems = []
+
+[files]
+solution  = "solutions/2556_disconnect_path_in_a_binary_matrix_by_at_most_one_flip.py"
+generator = "generators/2556_disconnect_path_in_a_binary_matrix_by_at_most_one_flip.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "isPossibleToCutPath"
+complexity = "O(m * n) time, O(m + n) space"
+notes  = "Two DFS: if second path exists after removing first, can't disconnect."
