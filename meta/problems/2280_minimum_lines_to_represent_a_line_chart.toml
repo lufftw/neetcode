@@ -1,0 +1,32 @@
+# Problem: Minimum Lines to Represent a Line Chart
+# https://leetcode.com/problems/minimum-lines-to-represent-a-line-chart/
+
+id = "2280"
+slug = "2280_minimum_lines_to_represent_a_line_chart"
+title = "Minimum Lines to Represent a Line Chart"
+leetcode_id = 2280
+url = "https://leetcode.com/problems/minimum-lines-to-represent-a-line-chart/"
+
+difficulty = "medium"
+topics = ["array", "math", "geometry", "sorting"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["slope_comparison", "cross_multiplication"]
+families         = ["geometry"]
+data_structures  = ["array"]
+algorithms       = ["sorting"]
+related_problems = ["0149"]
+
+[files]
+solution  = "solutions/2280_minimum_lines_to_represent_a_line_chart.py"
+generator = "generators/2280_minimum_lines_to_represent_a_line_chart.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minimumLines"
+complexity = "O(n log n) time, O(1) space"
+notes  = "Sort by day, count slope changes. Compare slopes via cross-multiplication to avoid floating point."
