@@ -1,0 +1,32 @@
+# Problem: Make Number of Distinct Characters Equal
+# https://leetcode.com/problems/make-number-of-distinct-characters-equal/
+
+id = "2531"
+slug = "2531_make_number_of_distinct_characters_equal"
+title = "Make Number of Distinct Characters Equal"
+leetcode_id = 2531
+url = "https://leetcode.com/problems/make-number-of-distinct-characters-equal/"
+
+difficulty = "medium"
+topics = ["hash_table", "string", "counting"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["frequency_counting"]
+patterns         = ["enumerate_pairs", "delta_tracking"]
+families         = ["string_counting"]
+data_structures  = ["hash_map"]
+algorithms       = ["enumeration"]
+related_problems = []
+
+[files]
+solution  = "solutions/2531_make_number_of_distinct_characters_equal.py"
+generator = "generators/2531_make_number_of_distinct_characters_equal.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "isItPossible"
+complexity = "O(n + 26^2) time, O(26) space"
+notes  = "Build freq tables, try all 26*26 swap pairs, track distinct count delta."
