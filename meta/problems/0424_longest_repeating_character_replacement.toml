@@ -1,0 +1,39 @@
+# Problem: Longest Repeating Character Replacement
+# https://leetcode.com/problems/longest-repeating-character-replacement/
+
+id = "0424"
+slug = "0424_longest_repeating_character_replacement"
+title = "Longest Repeating Character Replacement"
+leetcode_id = 424
+url = "https://leetcode.com/problems/longest-repeating-character-replacement/"
+
+difficulty = "medium"
+topics = ["hash_table", "string", "sliding_window"]
+companies = ["google", "amazon", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["SlidingWindow", "BinarySearchOnAnswer"]
+patterns         = ["sliding_window", "frequency_counting", "binary_search_answer"]
+families         = ["string", "sliding_window"]
+data_structures  = ["hash_table", "array"]
+algorithms       = ["sliding_window", "binary_search"]
+related_problems = ["0003", "0076", "0340"]
+
+[files]
+solution  = "solutions/0424_longest_repeating_character_replacement.py"
+generator = "generators/0424_longest_repeating_character_replacement.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionSlidingWindow"
+method = "characterReplacement"
+complexity = "O(n) time, O(26) space"
+notes      = "Track maxFreq; window valid if (size - maxFreq) <= k"
+
+[[solutions]]
+key    = "binary_search"
+class  = "SolutionBinarySearch"
+method = "characterReplacement"
+complexity = "O(n log n) time, O(26) space"
+notes      = "Binary search on window length, check feasibility"
