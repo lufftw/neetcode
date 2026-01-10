@@ -1,0 +1,39 @@
+# Problem: Number of 1 Bits
+# https://leetcode.com/problems/number-of-1-bits/
+
+id = "0191"
+slug = "0191_number_of_1_bits"
+title = "Number of 1 Bits"
+leetcode_id = 191
+url = "https://leetcode.com/problems/number-of-1-bits/"
+
+difficulty = "easy"
+topics = ["divide_and_conquer", "bit_manipulation"]
+companies = ["apple", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["PopCount", "BitManipulation"]
+patterns         = ["bit_counting", "clear_lowest_bit"]
+families         = ["bit_manipulation"]
+data_structures  = []
+algorithms       = ["kernighan", "bit_iteration"]
+related_problems = ["0190", "0231", "0338"]
+
+[files]
+solution  = "solutions/0191_number_of_1_bits.py"
+generator = "generators/0191_number_of_1_bits.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionKernighan"
+method = "hammingWeight"
+complexity = "O(k) time, O(1) space"
+notes      = "Brian Kernighan's algorithm; k = number of set bits"
+
+[[solutions]]
+key    = "iterate"
+class  = "SolutionIterate"
+method = "hammingWeight"
+complexity = "O(32) time, O(1) space"
+notes      = "Check each bit position; fixed 32 iterations"
