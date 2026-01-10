@@ -1,0 +1,47 @@
+# 2234 - Maximum Total Beauty of the Gardens
+# https://leetcode.com/problems/maximum-total-beauty-of-the-gardens/
+
+[problem]
+id = "2234"
+title = "Maximum Total Beauty of the Gardens"
+difficulty = "hard"
+categories = ["array", "binary-search", "greedy", "sorting"]
+tags = ["two-pointers", "prefix-sum", "optimization"]
+
+[solutions.default]
+name = "Sort + Enumerate + Binary Search"
+time_complexity = "O(n log n)"
+space_complexity = "O(n)"
+description = """
+Sort gardens by flower count. Enumerate how many gardens become complete
+(from right side of sorted array). For remaining incomplete gardens,
+binary search for maximum achievable minimum using prefix sums.
+"""
+
+[analysis]
+key_insight = """
+After sorting, complete gardens should be chosen from the right (larger values)
+to minimize completion cost. For incomplete gardens, raising the minimum requires
+filling up gardens level by level, which can be computed efficiently with prefix sums.
+The problem decomposes into: enumerate complete count, then maximize incomplete minimum.
+"""
+
+edge_cases = [
+    "All gardens already complete",
+    "Enough budget to complete all gardens",
+    "Single garden",
+    "All gardens have same flower count",
+    "partial >> full (prefer high minimum over completeness)",
+    "full >> partial (prefer more complete gardens)",
+]
+
+[ontology]
+api_kernels = ["binary-search", "prefix-sum", "sorting"]
+patterns = ["greedy-enumeration", "binary-search-answer", "prefix-sum"]
+families = ["optimization", "greedy"]
+techniques = ["sort-then-enumerate", "two-pointer", "budget-allocation"]
+
+[metadata]
+leetcode_id = 2234
+acceptance_rate = 30.2
+related_problems = ["0410", "1011", "2187"]
