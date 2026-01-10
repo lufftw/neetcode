@@ -1,0 +1,39 @@
+# Problem: Valid Parenthesis String
+# https://leetcode.com/problems/valid-parenthesis-string/
+
+id = "0678"
+slug = "0678_valid_parenthesis_string"
+title = "Valid Parenthesis String"
+leetcode_id = 678
+url = "https://leetcode.com/problems/valid-parenthesis-string/"
+
+difficulty = "medium"
+topics = ["string", "dynamic_programming", "stack", "greedy"]
+companies = ["amazon", "google", "facebook"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["GreedyRange", "TwoPassValidation"]
+patterns         = ["min_max_tracking", "bidirectional_scan"]
+families         = ["greedy", "string"]
+data_structures  = []
+algorithms       = ["greedy"]
+related_problems = ["0020", "0022", "0032"]
+
+[files]
+solution  = "solutions/0678_valid_parenthesis_string.py"
+generator = "generators/0678_valid_parenthesis_string.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionGreedy"
+method = "checkValidString"
+complexity = "O(n) time, O(1) space"
+notes      = "Track min/max open count range; valid if 0 is achievable"
+
+[[solutions]]
+key    = "two_pass"
+class  = "SolutionTwoPass"
+method = "checkValidString"
+complexity = "O(n) time, O(1) space"
+notes      = "L→R validates ), R→L validates (; both must pass"
