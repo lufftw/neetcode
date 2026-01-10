@@ -1,0 +1,32 @@
+# Problem: X of a Kind in a Deck of Cards
+# https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/
+
+id = "0914"
+slug = "0914_x_of_a_kind_in_a_deck_of_cards"
+title = "X of a Kind in a Deck of Cards"
+leetcode_id = 914
+url = "https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/"
+
+difficulty = "easy"
+topics = ["array", "hash-table", "math", "counting", "number-theory"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["gcd_multiple", "frequency_count"]
+patterns         = ["divisibility_check"]
+families         = ["number_theory"]
+data_structures  = ["counter"]
+algorithms       = ["gcd"]
+related_problems = []
+
+[files]
+solution  = "solutions/0914_x_of_a_kind_in_a_deck_of_cards.py"
+generator = "generators/0914_x_of_a_kind_in_a_deck_of_cards.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "hasGroupsSizeX"
+complexity = "O(n log^2 n) time, O(n) space"
+notes  = "Count cards, check if GCD of all counts >= 2."
