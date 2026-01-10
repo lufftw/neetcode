@@ -1,0 +1,39 @@
+# Problem: Kth Largest Element in a Stream
+# https://leetcode.com/problems/kth-largest-element-in-a-stream/
+
+id = "0703"
+slug = "0703_kth_largest_element_in_a_stream"
+title = "Kth Largest Element in a Stream"
+leetcode_id = 703
+url = "https://leetcode.com/problems/kth-largest-element-in-a-stream/"
+
+difficulty = "easy"
+topics = ["tree", "design", "binary_search_tree", "heap", "binary_tree", "data_stream"]
+companies = ["amazon", "facebook", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["MinHeap", "BinarySearchInsertion"]
+patterns         = ["top_k_elements", "stream_processing", "lazy_deletion"]
+families         = ["heap", "design"]
+data_structures  = ["heap", "sorted_list"]
+algorithms       = ["heap_operations"]
+related_problems = ["0215", "0347", "0295"]
+
+[files]
+solution  = "solutions/0703_kth_largest_element_in_a_stream.py"
+generator = "generators/0703_kth_largest_element_in_a_stream.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "KthLargestHeap"
+method = "_run_operations"
+complexity = "O(n log k) time, O(k) space"
+notes      = "Min-heap of size k; root is always the k-th largest"
+
+[[solutions]]
+key    = "bisect"
+class  = "KthLargestBisect"
+method = "_run_operations"
+complexity = "O(n^2) time, O(n) space"
+notes      = "Sorted list with bisect.insort; simpler but slower insertion"
