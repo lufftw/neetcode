@@ -1,0 +1,32 @@
+# Problem: Append K Integers With Minimal Sum
+# https://leetcode.com/problems/append-k-integers-with-minimal-sum/
+
+id = "2195"
+slug = "2195_append_k_integers_with_minimal_sum"
+title = "Append K Integers With Minimal Sum"
+leetcode_id = 2195
+url = "https://leetcode.com/problems/append-k-integers-with-minimal-sum/"
+
+difficulty = "medium"
+topics = ["array", "math", "greedy", "sorting"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["arithmetic_sum"]
+patterns         = ["blocked_range_extension"]
+families         = ["number_selection"]
+data_structures  = ["set"]
+algorithms       = ["sorting", "greedy"]
+related_problems = []
+
+[files]
+solution  = "solutions/2195_append_k_integers_with_minimal_sum.py"
+generator = "generators/2195_append_k_integers_with_minimal_sum.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "minimalKSum"
+complexity = "O(n log n) time, O(n) space"
+notes  = "Sort and dedupe. Extend target range [1,k] for each blocked number. Final = sum(1..end) - blocked_sum."
