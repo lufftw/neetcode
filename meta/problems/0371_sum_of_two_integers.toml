@@ -1,0 +1,70 @@
+# Problem: Sum of Two Integers
+# https://leetcode.com/problems/sum-of-two-integers/
+
+# ===== Problem Info =====
+id = "0371"
+slug = "0371_sum_of_two_integers"
+title = "Sum of Two Integers"
+leetcode_id = 371
+url = "https://leetcode.com/problems/sum-of-two-integers/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["math", "bit_manipulation"]
+companies = ["facebook", "apple", "amazon"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BitManipulation", "BinaryArithmetic"]
+patterns         = ["xor_and_carry", "twos_complement"]
+families         = ["bit_manipulation", "math"]
+data_structures  = []
+algorithms       = ["bit_manipulation"]
+related_problems = ["0067", "0415", "0989"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0371_sum_of_two_integers.py"
+generator = "generators/0371_sum_of_two_integers.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionBitManipulation"
+method = "getSum"
+
+api_kernels      = ["BitManipulation"]
+patterns         = ["xor_and_carry", "twos_complement"]
+families         = ["bit_manipulation"]
+data_structures  = []
+algorithms       = ["bit_manipulation"]
+related_problems = ["0067"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(1) time, O(1) space"
+notes      = "XOR for sum without carry, AND<<1 for carry, iterate until carry=0"
+
+[[solutions]]
+key    = "recursive"
+class  = "SolutionRecursive"
+method = "getSum"
+
+api_kernels      = ["BitManipulation"]
+patterns         = ["xor_and_carry", "recursive_bit_ops"]
+families         = ["bit_manipulation"]
+data_structures  = []
+algorithms       = ["bit_manipulation", "recursion"]
+related_problems = []
+
+role       = "variant"
+variant    = "recursive"
+based_on   = ["0371#default"]
+delta      = "Same algorithm expressed recursively instead of iteratively"
+complexity = "O(1) time, O(1) space"
+notes      = "Elegant recursive formulation, tail-recursive style"
