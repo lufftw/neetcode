@@ -1,0 +1,46 @@
+# 1654 - Minimum Jumps to Reach Home
+# https://leetcode.com/problems/minimum-jumps-to-reach-home/
+
+[problem]
+id = "1654"
+title = "Minimum Jumps to Reach Home"
+difficulty = "medium"
+categories = ["array", "dynamic-programming", "bfs"]
+tags = ["state-space-search", "shortest-path", "graph-traversal"]
+
+[solutions.default]
+name = "BFS with Direction State"
+time_complexity = "O(max(x, max(forbidden) + a + b))"
+space_complexity = "O(max(x, max(forbidden) + a + b))"
+description = """
+BFS on state (position, was_last_backward). Track whether last jump
+was backward to enforce the "no consecutive backward" rule.
+Upper bound on position: max(forbidden) + a + b.
+"""
+
+[analysis]
+key_insight = """
+The state includes both position and whether the last jump was backward,
+because we cannot jump backward twice in a row. BFS guarantees shortest
+path. The upper bound is crucial: beyond max(forbidden) + a + b, no
+useful path exists.
+"""
+
+edge_cases = [
+    "Target is 0 (already home)",
+    "Path blocked by forbidden (return -1)",
+    "Need to overshoot and backtrack",
+    "Forward-only path possible",
+    "Complex zigzag required",
+]
+
+[ontology]
+api_kernels = ["bfs", "hash-set", "state-tracking"]
+patterns = ["bfs-shortest-path", "state-space-search"]
+families = ["graph-traversal", "shortest-path"]
+techniques = ["direction-state", "upper-bound-pruning"]
+
+[metadata]
+leetcode_id = 1654
+acceptance_rate = 30.49
+related_problems = ["0055", "0045", "0403"]
