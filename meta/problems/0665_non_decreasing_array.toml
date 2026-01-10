@@ -1,0 +1,32 @@
+# Problem: Non-decreasing Array
+# https://leetcode.com/problems/non-decreasing-array/
+
+id = "0665"
+slug = "0665_non_decreasing_array"
+title = "Non-decreasing Array"
+leetcode_id = 665
+url = "https://leetcode.com/problems/non-decreasing-array/"
+
+difficulty = "medium"
+topics = ["array", "greedy"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["greedy_local_fix", "array_modification"]
+families         = ["array_validation"]
+data_structures  = ["array"]
+algorithms       = ["greedy"]
+related_problems = ["0053", "0283"]
+
+[files]
+solution  = "solutions/0665_non_decreasing_array.py"
+generator = "generators/0665_non_decreasing_array.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "checkPossibility"
+complexity = "O(n) time, O(1) space"
+notes  = "Single pass greedy. On violation, prefer lowering nums[i] if valid, else raise nums[i+1]."
