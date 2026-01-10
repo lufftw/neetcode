@@ -1,0 +1,39 @@
+# Problem: Subtree of Another Tree
+# https://leetcode.com/problems/subtree-of-another-tree/
+
+id = "0572"
+slug = "0572_subtree_of_another_tree"
+title = "Subtree of Another Tree"
+leetcode_id = 572
+url = "https://leetcode.com/problems/subtree-of-another-tree/"
+
+difficulty = "easy"
+topics = ["tree", "depth_first_search", "string_matching", "binary_tree", "hash_function"]
+companies = ["amazon", "facebook", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["TreeMatching", "TreeSerialization"]
+patterns         = ["tree_comparison", "dfs_traversal", "serialization"]
+families         = ["tree", "string"]
+data_structures  = ["binary_tree", "string"]
+algorithms       = ["dfs", "string_matching"]
+related_problems = ["0100", "0226", "0508"]
+
+[files]
+solution  = "solutions/0572_subtree_of_another_tree.py"
+generator = "generators/0572_subtree_of_another_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionDFS"
+method = "isSubtree"
+complexity = "O(m * n) time, O(h) space"
+notes      = "DFS traversal checking isSameTree at each node"
+
+[[solutions]]
+key    = "serialization"
+class  = "SolutionSerialization"
+method = "isSubtree"
+complexity = "O(m + n) time, O(m + n) space"
+notes      = "Serialize both trees, check string containment"
