@@ -1,0 +1,39 @@
+# Problem: Invert Binary Tree
+# https://leetcode.com/problems/invert-binary-tree/
+
+id = "0226"
+slug = "0226_invert_binary_tree"
+title = "Invert Binary Tree"
+leetcode_id = 226
+url = "https://leetcode.com/problems/invert-binary-tree/"
+
+difficulty = "easy"
+topics = ["tree", "depth_first_search", "breadth_first_search", "binary_tree"]
+companies = ["google", "amazon", "facebook"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["TreeTraversal", "RecursiveSwap"]
+patterns         = ["tree_transformation", "recursive_structure"]
+families         = ["tree", "dfs", "bfs"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0101", "0104", "0110"]
+
+[files]
+solution  = "solutions/0226_invert_binary_tree.py"
+generator = "generators/0226_invert_binary_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionRecursive"
+method = "invertTree"
+complexity = "O(n) time, O(h) space"
+notes      = "Recursive DFS with child swap at each node"
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterative"
+method = "invertTree"
+complexity = "O(n) time, O(w) space"
+notes      = "Iterative BFS level-order traversal with swap"
