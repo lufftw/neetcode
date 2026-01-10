@@ -1,0 +1,32 @@
+# Problem: Make Array Empty
+# https://leetcode.com/problems/make-array-empty/
+
+id = "2659"
+slug = "2659_make_array_empty"
+title = "Make Array Empty"
+leetcode_id = 2659
+url = "https://leetcode.com/problems/make-array-empty/"
+
+difficulty = "hard"
+topics = ["array", "sorting", "greedy"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["sorted_order_processing", "wrap_around_counting"]
+families         = ["simulation_optimization"]
+data_structures  = ["array"]
+algorithms       = ["sorting", "greedy"]
+related_problems = ["0621"]
+
+[files]
+solution  = "solutions/2659_make_array_empty.py"
+generator = "generators/2659_make_array_empty.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "countOperationsToEmptyArray"
+complexity = "O(n log n) time, O(n) space"
+notes  = "Elements removed in sorted order. Count wrap-arounds when next index < current index. Each wrap adds remaining elements."
