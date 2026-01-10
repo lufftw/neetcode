@@ -1,0 +1,39 @@
+# Problem: Evaluate Reverse Polish Notation
+# https://leetcode.com/problems/evaluate-reverse-polish-notation/
+
+id = "0150"
+slug = "0150_evaluate_reverse_polish_notation"
+title = "Evaluate Reverse Polish Notation"
+leetcode_id = 150
+url = "https://leetcode.com/problems/evaluate-reverse-polish-notation/"
+
+difficulty = "medium"
+topics = ["array", "math", "stack"]
+companies = ["amazon", "linkedin", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["StackEvaluation", "PostfixEvaluation"]
+patterns         = ["stack_based_evaluation", "postfix_notation"]
+families         = ["stack", "math"]
+data_structures  = ["stack"]
+algorithms       = ["stack_evaluation"]
+related_problems = ["0224", "0227", "0772"]
+
+[files]
+solution  = "solutions/0150_evaluate_reverse_polish_notation.py"
+generator = "generators/0150_evaluate_reverse_polish_notation.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionStack"
+method = "evalRPN"
+complexity = "O(n) time, O(n) space"
+notes      = "Stack-based with explicit operator handling"
+
+[[solutions]]
+key    = "lambda"
+class  = "SolutionLambda"
+method = "evalRPN"
+complexity = "O(n) time, O(n) space"
+notes      = "Lambda dispatch table for cleaner operator handling"
