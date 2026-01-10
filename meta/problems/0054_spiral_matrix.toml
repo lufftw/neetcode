@@ -1,0 +1,70 @@
+# Problem: Spiral Matrix
+# https://leetcode.com/problems/spiral-matrix/
+
+# ===== Problem Info =====
+id = "0054"
+slug = "0054_spiral_matrix"
+title = "Spiral Matrix"
+leetcode_id = 54
+url = "https://leetcode.com/problems/spiral-matrix/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "matrix", "simulation"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MatrixTraversal"]
+patterns         = ["spiral_traversal", "boundary_simulation"]
+families         = ["matrix_traversal"]
+data_structures  = ["matrix"]
+algorithms       = ["simulation"]
+related_problems = ["0048", "0059", "0885"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0054_spiral_matrix.py"
+generator = "generators/0054_spiral_matrix.py"
+tests_dir = "tests/0054_spiral_matrix/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionBoundary"
+method = "spiralOrder"
+
+api_kernels      = ["MatrixTraversal"]
+patterns         = ["boundary_simulation"]
+families         = ["matrix_traversal"]
+data_structures  = ["matrix"]
+algorithms       = ["simulation"]
+related_problems = ["0059"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(m*n) time, O(1) space"
+notes      = "Process layer by layer: right, down, left, up, then shrink boundaries."
+
+[[solutions]]
+key    = "direction"
+class  = "SolutionDirection"
+method = "spiralOrder"
+
+api_kernels      = ["MatrixTraversal"]
+patterns         = ["direction_simulation"]
+families         = ["matrix_traversal"]
+data_structures  = ["matrix"]
+algorithms       = ["simulation"]
+related_problems = ["0885"]
+
+role       = "variant"
+variant    = "direction"
+based_on   = ["0054#default"]
+delta      = "Turn clockwise when hitting boundary or visited cell"
+complexity = "O(m*n) time, O(m*n) space"
+notes      = "More flexible approach using direction vectors and visited tracking."
