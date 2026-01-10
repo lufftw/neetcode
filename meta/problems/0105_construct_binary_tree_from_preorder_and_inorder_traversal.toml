@@ -1,0 +1,39 @@
+# Problem: Construct Binary Tree from Preorder and Inorder Traversal
+# https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+
+id = "0105"
+slug = "0105_construct_binary_tree_from_preorder_and_inorder_traversal"
+title = "Construct Binary Tree from Preorder and Inorder Traversal"
+leetcode_id = 105
+url = "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"
+
+difficulty = "medium"
+topics = ["array", "hash_table", "divide_and_conquer", "tree", "binary_tree"]
+companies = ["amazon", "facebook", "google", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["TreeReconstruction", "DivideAndConquer"]
+patterns         = ["tree_traversal_reconstruction", "divide_and_conquer"]
+families         = ["tree", "divide_and_conquer"]
+data_structures  = ["binary_tree", "hash_table"]
+algorithms       = ["divide_and_conquer", "recursion"]
+related_problems = ["0106", "0889"]
+
+[files]
+solution  = "solutions/0105_construct_binary_tree_from_preorder_and_inorder_traversal.py"
+generator = "generators/0105_construct_binary_tree_from_preorder_and_inorder_traversal.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionHashMap"
+method = "buildTree"
+complexity = "O(n) time, O(n) space"
+notes      = "Hash map for O(1) inorder lookup; optimal time"
+
+[[solutions]]
+key    = "linear_search"
+class  = "SolutionLinearSearch"
+method = "buildTree"
+complexity = "O(n^2) time, O(n) space"
+notes      = "Simpler implementation with index() search"
