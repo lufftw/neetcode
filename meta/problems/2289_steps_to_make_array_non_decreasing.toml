@@ -1,0 +1,32 @@
+# Problem: Steps to Make Array Non-decreasing
+# https://leetcode.com/problems/steps-to-make-array-non-decreasing/
+
+id = "2289"
+slug = "2289_steps_to_make_array_non_decreasing"
+title = "Steps to Make Array Non-decreasing"
+leetcode_id = 2289
+url = "https://leetcode.com/problems/steps-to-make-array-non-decreasing/"
+
+difficulty = "medium"
+topics = ["array", "linked_list", "stack", "monotonic_stack"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["monotonic_stack", "step_simulation"]
+families         = ["array_transformation"]
+data_structures  = ["stack"]
+algorithms       = ["monotonic_stack"]
+related_problems = []
+
+[files]
+solution  = "solutions/2289_steps_to_make_array_non_decreasing.py"
+generator = "generators/2289_steps_to_make_array_non_decreasing.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "totalSteps"
+complexity = "O(n) time, O(n) space"
+notes  = "Monotonic decreasing stack tracks removal steps. Pop smaller elements, max their steps + 1."
