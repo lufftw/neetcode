@@ -1,0 +1,32 @@
+# Problem: Remove Letter To Equalize Frequency
+# https://leetcode.com/problems/remove-letter-to-equalize-frequency/
+
+id = "2423"
+slug = "2423_remove_letter_to_equalize_frequency"
+title = "Remove Letter To Equalize Frequency"
+leetcode_id = 2423
+url = "https://leetcode.com/problems/remove-letter-to-equalize-frequency/"
+
+difficulty = "easy"
+topics = ["hash_table", "string", "counting"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["frequency_counting"]
+families         = ["string_processing"]
+data_structures  = ["hash_table"]
+algorithms       = ["counting"]
+related_problems = []
+
+[files]
+solution  = "solutions/2423_remove_letter_to_equalize_frequency.py"
+generator = "generators/2423_remove_letter_to_equalize_frequency.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "equalFrequency"
+complexity = "O(26n) time, O(26) space"
+notes  = "Try removing each unique char and check if remaining frequencies are equal."
