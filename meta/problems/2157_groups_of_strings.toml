@@ -1,0 +1,32 @@
+# Problem: Groups of Strings
+# https://leetcode.com/problems/groups-of-strings/
+
+id = "2157"
+slug = "2157_groups_of_strings"
+title = "Groups of Strings"
+leetcode_id = 2157
+url = "https://leetcode.com/problems/groups-of-strings/"
+
+difficulty = "hard"
+topics = ["string", "bit_manipulation", "union_find"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["union_find", "bitmask"]
+patterns         = ["connectivity_detection", "state_compression"]
+families         = ["connected_components"]
+data_structures  = ["union_find"]
+algorithms       = ["union_find"]
+related_problems = []
+
+[files]
+solution  = "solutions/2157_groups_of_strings.py"
+generator = "generators/2157_groups_of_strings.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "groupStrings"
+complexity = "O(n * 26) time, O(n * 26) space"
+notes  = "Bitmask for each word. Delete-mask trick: if two words share same delete-mask, they're connected by replace."
