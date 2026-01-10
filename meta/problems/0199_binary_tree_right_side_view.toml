@@ -1,0 +1,39 @@
+# Problem: Binary Tree Right Side View
+# https://leetcode.com/problems/binary-tree-right-side-view/
+
+id = "0199"
+slug = "0199_binary_tree_right_side_view"
+title = "Binary Tree Right Side View"
+leetcode_id = 199
+url = "https://leetcode.com/problems/binary-tree-right-side-view/"
+
+difficulty = "medium"
+topics = ["tree", "depth_first_search", "breadth_first_search", "binary_tree"]
+companies = ["amazon", "facebook", "bloomberg"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["LevelOrderTraversal", "RightFirstDFS"]
+patterns         = ["level_order_traversal", "right_first_traversal"]
+families         = ["tree", "bfs", "dfs"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["bfs", "dfs"]
+related_problems = ["0102", "0116", "0545"]
+
+[files]
+solution  = "solutions/0199_binary_tree_right_side_view.py"
+generator = "generators/0199_binary_tree_right_side_view.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionBFS"
+method = "rightSideView"
+complexity = "O(n) time, O(w) space"
+notes      = "BFS level-order; rightmost node is last in each level"
+
+[[solutions]]
+key    = "dfs"
+class  = "SolutionDFS"
+method = "rightSideView"
+complexity = "O(n) time, O(h) space"
+notes      = "DFS right-first; first node at each depth is rightmost"
