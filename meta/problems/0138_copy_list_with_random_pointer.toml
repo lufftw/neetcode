@@ -1,0 +1,39 @@
+# Problem: Copy List with Random Pointer
+# https://leetcode.com/problems/copy-list-with-random-pointer/
+
+id = "0138"
+slug = "0138_copy_list_with_random_pointer"
+title = "Copy List with Random Pointer"
+leetcode_id = 138
+url = "https://leetcode.com/problems/copy-list-with-random-pointer/"
+
+difficulty = "medium"
+topics = ["hash_table", "linked_list"]
+companies = ["amazon", "facebook", "microsoft", "bloomberg"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["DeepCopy", "LinkedListClone"]
+patterns         = ["hash_map_mapping", "interweaving", "deep_copy"]
+families         = ["linked_list", "hash_table"]
+data_structures  = ["linked_list", "hash_table"]
+algorithms       = ["deep_copy", "interweaving"]
+related_problems = ["0133", "1485"]
+
+[files]
+solution  = "solutions/0138_copy_list_with_random_pointer.py"
+generator = "generators/0138_copy_list_with_random_pointer.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionHashMap"
+method = "copyRandomList"
+complexity = "O(n) time, O(n) space"
+notes      = "Hash map for original -> copy mapping"
+
+[[solutions]]
+key    = "interweave"
+class  = "SolutionInterweave"
+method = "copyRandomList"
+complexity = "O(n) time, O(1) space"
+notes      = "Interweave copies with originals; three-pass algorithm"
