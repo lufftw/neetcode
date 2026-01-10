@@ -1,0 +1,46 @@
+# Problem: Palindromic Substrings
+# https://leetcode.com/problems/palindromic-substrings/
+
+id = "0647"
+slug = "0647_palindromic_substrings"
+title = "Palindromic Substrings"
+leetcode_id = 647
+url = "https://leetcode.com/problems/palindromic-substrings/"
+
+difficulty = "medium"
+topics = ["two_pointers", "string", "dynamic_programming"]
+companies = ["amazon", "facebook", "google", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["ExpandAroundCenter", "Manacher"]
+patterns         = ["expand_from_center", "palindrome_dp", "string_transformation"]
+families         = ["palindrome", "dynamic_programming", "string"]
+data_structures  = ["array"]
+algorithms       = ["expand_around_center", "manacher"]
+related_problems = ["0005", "0516", "0131"]
+
+[files]
+solution  = "solutions/0647_palindromic_substrings.py"
+generator = "generators/0647_palindromic_substrings.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionExpandCenter"
+method = "countSubstrings"
+complexity = "O(n^2) time, O(1) space"
+notes      = "Expand from each of 2n-1 centers; most practical approach"
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "countSubstrings"
+complexity = "O(n^2) time, O(n^2) space"
+notes      = "Build full palindrome table dp[i][j]"
+
+[[solutions]]
+key    = "manacher"
+class  = "SolutionManacher"
+method = "countSubstrings"
+complexity = "O(n) time, O(n) space"
+notes      = "Linear time using palindrome radius array"
