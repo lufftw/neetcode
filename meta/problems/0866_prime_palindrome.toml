@@ -1,0 +1,32 @@
+# Problem: Prime Palindrome
+# https://leetcode.com/problems/prime-palindrome/
+
+id = "0866"
+slug = "0866_prime_palindrome"
+title = "Prime Palindrome"
+leetcode_id = 866
+url = "https://leetcode.com/problems/prime-palindrome/"
+
+difficulty = "medium"
+topics = ["math"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["primality_test", "palindrome_generation"]
+patterns         = ["skip_divisibility"]
+families         = ["number_theory"]
+data_structures  = []
+algorithms       = ["enumeration", "math"]
+related_problems = []
+
+[files]
+solution  = "solutions/0866_prime_palindrome.py"
+generator = "generators/0866_prime_palindrome.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "primePalindrome"
+complexity = "O(sqrt(N) per check) time, O(log N) space"
+notes  = "Even-digit palindromes > 11 are divisible by 11. Generate odd-digit palindromes from left half."
