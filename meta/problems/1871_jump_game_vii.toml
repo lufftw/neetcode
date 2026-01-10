@@ -1,0 +1,32 @@
+# Problem: Jump Game VII
+# https://leetcode.com/problems/jump-game-vii/
+
+id = "1871"
+slug = "1871_jump_game_vii"
+title = "Jump Game VII"
+leetcode_id = 1871
+url = "https://leetcode.com/problems/jump-game-vii/"
+
+difficulty = "medium"
+topics = ["string", "dynamic_programming", "sliding_window", "prefix_sum"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["sliding_window_count"]
+patterns         = ["reachability_dp", "range_source_tracking"]
+families         = ["jump_game"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming", "sliding_window"]
+related_problems = ["0055", "0045", "1306", "1345"]
+
+[files]
+solution  = "solutions/1871_jump_game_vii.py"
+generator = "generators/1871_jump_game_vii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "canReach"
+complexity = "O(n) time, O(n) space"
+notes  = "Sliding window to count reachable sources in [j-maxJump, j-minJump] range."
