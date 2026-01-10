@@ -1,0 +1,70 @@
+# Problem: Best Time to Buy and Sell Stock with Cooldown
+# https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+
+# ===== Problem Info =====
+id = "0309"
+slug = "0309_best_time_to_buy_and_sell_stock_with_cooldown"
+title = "Best Time to Buy and Sell Stock with Cooldown"
+leetcode_id = 309
+url = "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "dynamic_programming"]
+companies = ["amazon", "google", "facebook"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["DP1DLinear", "StateMachine"]
+patterns         = ["state_machine_dp", "stock_trading", "cooldown_constraint"]
+families         = ["dynamic_programming", "stock_problems"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming", "state_machine"]
+related_problems = ["0121", "0122", "0188", "0714"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0309_best_time_to_buy_and_sell_stock_with_cooldown.py"
+generator = "generators/0309_best_time_to_buy_and_sell_stock_with_cooldown.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionStateMachine"
+method = "maxProfit"
+
+api_kernels      = ["StateMachine"]
+patterns         = ["state_machine_dp", "cooldown_constraint"]
+families         = ["dynamic_programming"]
+data_structures  = ["array"]
+algorithms       = ["state_machine"]
+related_problems = ["0714"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(1) space"
+notes      = "3 states (hold/sold/rest) with transitions capturing cooldown"
+
+[[solutions]]
+key    = "dp_2d"
+class  = "SolutionDP2D"
+method = "maxProfit"
+
+api_kernels      = ["DP1DLinear"]
+patterns         = ["stock_trading", "hold_not_hold_states"]
+families         = ["dynamic_programming"]
+data_structures  = ["array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0121", "0122"]
+
+role       = "variant"
+variant    = "dp_2d"
+based_on   = ["0309#default"]
+delta      = "Explicit 2D DP array with hold/not-hold, cooldown via dp[i-2]"
+complexity = "O(n) time, O(n) space"
+notes      = "Classic DP formulation, easier to understand transitions"
