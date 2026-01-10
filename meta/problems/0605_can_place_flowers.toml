@@ -1,0 +1,32 @@
+# Problem: Can Place Flowers
+# https://leetcode.com/problems/can-place-flowers/
+
+id = "0605"
+slug = "0605_can_place_flowers"
+title = "Can Place Flowers"
+leetcode_id = 605
+url = "https://leetcode.com/problems/can-place-flowers/"
+
+difficulty = "easy"
+topics = ["array", "greedy"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["greedy_scan"]
+patterns         = ["local_decision"]
+families         = ["greedy"]
+data_structures  = ["array"]
+algorithms       = ["greedy"]
+related_problems = []
+
+[files]
+solution  = "solutions/0605_can_place_flowers.py"
+generator = "generators/0605_can_place_flowers.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "canPlaceFlowers"
+complexity = "O(n) time, O(1) space"
+notes  = "Greedily plant when current and both neighbors are 0."
