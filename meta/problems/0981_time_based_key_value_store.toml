@@ -1,0 +1,70 @@
+# Problem: Time Based Key-Value Store
+# https://leetcode.com/problems/time-based-key-value-store/
+
+# ===== Problem Info =====
+id = "0981"
+slug = "0981_time_based_key_value_store"
+title = "Time Based Key-Value Store"
+leetcode_id = 981
+url = "https://leetcode.com/problems/time-based-key-value-store/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["hash_table", "string", "binary_search", "design"]
+companies = ["google", "amazon", "netflix", "lyft"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["BinarySearch", "HashMapDesign"]
+patterns         = ["binary_search_on_sorted", "timestamp_versioning"]
+families         = ["design", "binary_search"]
+data_structures  = ["hash_table", "array"]
+algorithms       = ["binary_search"]
+related_problems = ["0146", "0380", "0705"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0981_time_based_key_value_store.py"
+generator = "generators/0981_time_based_key_value_store.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "TimeMapBisect"
+method = "_run_operations"
+
+api_kernels      = ["BinarySearch", "HashMapDesign"]
+patterns         = ["binary_search_on_sorted", "bisect_right"]
+families         = ["design", "binary_search"]
+data_structures  = ["hash_table", "array"]
+algorithms       = ["binary_search"]
+related_problems = ["0146"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(1) set, O(log n) get"
+notes      = "HashMap + bisect_right; timestamps increasing so list is sorted"
+
+[[solutions]]
+key    = "manual_binary_search"
+class  = "TimeMapManual"
+method = "_run_operations"
+
+api_kernels      = ["BinarySearch", "HashMapDesign"]
+patterns         = ["manual_binary_search", "timestamp_versioning"]
+families         = ["design", "binary_search"]
+data_structures  = ["hash_table", "array"]
+algorithms       = ["binary_search"]
+related_problems = []
+
+role       = "variant"
+variant    = "manual"
+based_on   = ["0981#default"]
+delta      = "Explicit binary search instead of bisect module"
+complexity = "O(1) set, O(log n) get"
+notes      = "Educational: shows binary search logic for rightmost valid entry"
