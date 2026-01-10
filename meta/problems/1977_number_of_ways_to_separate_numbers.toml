@@ -1,0 +1,32 @@
+# Problem: Number of Ways to Separate Numbers
+# https://leetcode.com/problems/number-of-ways-to-separate-numbers/
+
+id = "1977"
+slug = "1977_number_of_ways_to_separate_numbers"
+title = "Number of Ways to Separate Numbers"
+leetcode_id = 1977
+url = "https://leetcode.com/problems/number-of-ways-to-separate-numbers/"
+
+difficulty = "hard"
+topics = ["string", "dynamic_programming", "suffix_array"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["dp_with_string_comparison", "lcp_optimization"]
+families         = ["string_dp", "counting_partitions"]
+data_structures  = ["2d_array"]
+algorithms       = ["dynamic_programming"]
+related_problems = []
+
+[files]
+solution  = "solutions/1977_number_of_ways_to_separate_numbers.py"
+generator = "generators/1977_number_of_ways_to_separate_numbers.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "numberOfCombinations"
+complexity = "O(n^2) time, O(n^2) space"
+notes  = "DP with LCP array for O(1) string comparison. Prefix sums to optimize summation."
