@@ -1,0 +1,32 @@
+# Problem: Encode and Decode Strings
+# https://leetcode.com/problems/encode-and-decode-strings/
+
+id = "0271"
+slug = "0271_encode_and_decode_strings"
+title = "Encode and Decode Strings"
+leetcode_id = 271
+url = "https://leetcode.com/problems/encode-and-decode-strings/"
+
+difficulty = "medium"
+topics = ["string", "design"]
+companies = ["google", "facebook", "bloomberg"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["LengthPrefixEncoding", "Serialization"]
+patterns         = ["encoding_scheme", "delimiter_handling"]
+families         = ["string", "design"]
+data_structures  = ["string"]
+algorithms       = ["parsing", "encoding"]
+related_problems = ["0297", "0394", "0443"]
+
+[files]
+solution  = "solutions/0271_encode_and_decode_strings.py"
+generator = "generators/0271_encode_and_decode_strings.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Codec"
+method = "encode"
+complexity = "O(n) time, O(n) space"
+notes      = "Length prefix with # delimiter"
