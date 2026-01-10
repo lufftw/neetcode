@@ -1,0 +1,32 @@
+# Problem: Valid Number
+# https://leetcode.com/problems/valid-number/
+
+id = "0065"
+slug = "0065_valid_number"
+title = "Valid Number"
+leetcode_id = 65
+url = "https://leetcode.com/problems/valid-number/"
+
+difficulty = "hard"
+topics = ["string"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["state_machine", "string_parsing"]
+families         = ["string_validation", "parsing"]
+data_structures  = []
+algorithms       = ["dfa"]
+related_problems = ["0008"]
+
+[files]
+solution  = "solutions/0065_valid_number.py"
+generator = "generators/0065_valid_number.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "isNumber"
+complexity = "O(n) time, O(1) space"
+notes  = "DFA with 9 states tracking sign, digits, dot, and exponent components."
