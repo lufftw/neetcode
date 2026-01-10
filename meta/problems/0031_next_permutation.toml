@@ -1,0 +1,32 @@
+# Problem: Next Permutation
+# https://leetcode.com/problems/next-permutation/
+
+id = "0031"
+slug = "0031_next_permutation"
+title = "Next Permutation"
+leetcode_id = 31
+url = "https://leetcode.com/problems/next-permutation/"
+
+difficulty = "medium"
+topics = ["array", "two_pointers"]
+companies = ["google", "amazon", "microsoft"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["NextPermutation", "ArrayReversal"]
+patterns         = ["permutation_generation", "in_place_modification"]
+families         = ["array", "combinatorics"]
+data_structures  = ["array"]
+algorithms       = ["two_pointers", "reverse"]
+related_problems = ["0046", "0047", "0060"]
+
+[files]
+solution  = "solutions/0031_next_permutation.py"
+generator = "generators/0031_next_permutation.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionTwoPointer"
+method = "nextPermutation"
+complexity = "O(n) time, O(1) space"
+notes      = "Find pivot, swap with next larger, reverse suffix"
