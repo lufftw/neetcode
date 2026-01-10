@@ -1,0 +1,32 @@
+# Problem: String to Integer (atoi)
+# https://leetcode.com/problems/string-to-integer-atoi/
+
+id = "0008"
+slug = "0008_string_to_integer_atoi"
+title = "String to Integer (atoi)"
+leetcode_id = 8
+url = "https://leetcode.com/problems/string-to-integer-atoi/"
+
+difficulty = "medium"
+topics = ["string"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["string_parsing", "state_machine"]
+families         = ["string_processing", "type_conversion"]
+data_structures  = []
+algorithms       = ["linear_scan"]
+related_problems = ["0007"]
+
+[files]
+solution  = "solutions/0008_string_to_integer_atoi.py"
+generator = "generators/0008_string_to_integer_atoi.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "myAtoi"
+complexity = "O(n) time, O(1) space"
+notes  = "Linear scan with early overflow detection. Handle whitespace, sign, digits, then clamp to 32-bit range."
