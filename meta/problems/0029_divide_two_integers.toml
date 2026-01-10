@@ -1,0 +1,32 @@
+# Problem: Divide Two Integers
+# https://leetcode.com/problems/divide-two-integers/
+
+id = "0029"
+slug = "0029_divide_two_integers"
+title = "Divide Two Integers"
+leetcode_id = 29
+url = "https://leetcode.com/problems/divide-two-integers/"
+
+difficulty = "medium"
+topics = ["math", "bit_manipulation"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["bit_shifting", "exponential_search"]
+families         = ["math_operations", "binary_representation"]
+data_structures  = []
+algorithms       = ["bit_manipulation"]
+related_problems = []
+
+[files]
+solution  = "solutions/0029_divide_two_integers.py"
+generator = "generators/0029_divide_two_integers.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "divide"
+complexity = "O(log^2 n) time, O(1) space"
+notes  = "Bit shifting with exponential search. Find largest 2^k multiple that fits, subtract, repeat."

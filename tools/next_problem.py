@@ -75,36 +75,38 @@ def get_next_problems(
     with sqlite3.connect(db_path) as conn:
         conn.row_factory = sqlite3.Row
 
-        # Build exclusion clause
+        # Build exclusion clause (use table alias p for JOIN query)
         if solved_ids:
             placeholders = ",".join("?" * len(solved_ids))
-            exclude_clause = f"AND frontend_question_id NOT IN ({placeholders})"
+            exclude_clause = f"AND p.frontend_question_id NOT IN ({placeholders})"
             params = list(solved_ids) + [count]
         else:
             exclude_clause = ""
             params = [count]
 
-        paid_clause = "AND paid_only = 0" if exclude_paid else ""
+        paid_clause = "AND p.paid_only = 0" if exclude_paid else ""
 
+        # JOIN with questions table to ensure problem has full data for codegen
         query = f"""
             SELECT
-                frontend_question_id as id,
-                title_slug as slug,
-                title,
-                difficulty,
-                total_acs,
-                total_submitted,
-                CASE WHEN total_submitted > 0
-                     THEN ROUND(100.0 * total_acs / total_submitted, 2)
+                p.frontend_question_id as id,
+                p.title_slug as slug,
+                p.title,
+                p.difficulty,
+                p.total_acs,
+                p.total_submitted,
+                CASE WHEN p.total_submitted > 0
+                     THEN ROUND(100.0 * p.total_acs / p.total_submitted, 2)
                      ELSE 0
                 END AS acceptance_rate
-            FROM problem_index
-            WHERE total_submitted > 0
+            FROM problem_index p
+            INNER JOIN questions q ON p.frontend_question_id = q.qid
+            WHERE p.total_submitted > 0
               {paid_clause}
               {exclude_clause}
             ORDER BY
                 acceptance_rate ASC,
-                CASE difficulty
+                CASE p.difficulty
                     WHEN 'Hard' THEN 3
                     WHEN 'Medium' THEN 2
                     WHEN 'Easy' THEN 1
