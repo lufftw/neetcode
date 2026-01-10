@@ -1,0 +1,32 @@
+# Problem: Maximize the Topmost Element After K Moves
+# https://leetcode.com/problems/maximize-the-topmost-element-after-k-moves/
+
+id = "2202"
+slug = "2202_maximize_the_topmost_element_after_k_moves"
+title = "Maximize the Topmost Element After K Moves"
+leetcode_id = 2202
+url = "https://leetcode.com/problems/maximize-the-topmost-element-after-k-moves/"
+
+difficulty = "medium"
+topics = ["array", "greedy"]
+companies = []
+roadmaps = []
+
+api_kernels      = []
+patterns         = ["case_analysis", "greedy_selection"]
+families         = ["stack_simulation"]
+data_structures  = ["array"]
+algorithms       = ["greedy"]
+related_problems = []
+
+[files]
+solution  = "solutions/2202_maximize_the_topmost_element_after_k_moves.py"
+generator = "generators/2202_maximize_the_topmost_element_after_k_moves.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "maximumTop"
+complexity = "O(min(n, k)) time, O(1) space"
+notes  = "Case analysis: can reach nums[i] for i < k-1 or nums[k] if k < n. Handle single element odd k special case."
