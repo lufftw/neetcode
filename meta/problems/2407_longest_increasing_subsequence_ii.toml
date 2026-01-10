@@ -1,0 +1,32 @@
+# Problem: Longest Increasing Subsequence II
+# https://leetcode.com/problems/longest-increasing-subsequence-ii/
+
+id = "2407"
+slug = "2407_longest_increasing_subsequence_ii"
+title = "Longest Increasing Subsequence II"
+leetcode_id = 2407
+url = "https://leetcode.com/problems/longest-increasing-subsequence-ii/"
+
+difficulty = "hard"
+topics = ["array", "dynamic_programming", "segment_tree"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["segment_tree_range_max", "segment_tree_point_update"]
+patterns         = ["dp_with_segment_tree", "range_query_optimization"]
+families         = ["longest_increasing_subsequence"]
+data_structures  = ["segment_tree"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0300", "0673", "0354"]
+
+[files]
+solution  = "solutions/2407_longest_increasing_subsequence_ii.py"
+generator = "generators/2407_longest_increasing_subsequence_ii.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "lengthOfLIS"
+complexity = "O(n log M) time, O(M) space"
+notes  = "Segment tree for dp[val] = max LIS ending at value val. Query range [num-k, num-1], update at num."
