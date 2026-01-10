@@ -1,0 +1,89 @@
+# Problem: Min Cost to Connect All Points
+# https://leetcode.com/problems/min-cost-to-connect-all-points/
+
+# ===== Problem Info =====
+id = "1584"
+slug = "1584_min_cost_to_connect_all_points"
+title = "Min Cost to Connect All Points"
+leetcode_id = 1584
+url = "https://leetcode.com/problems/min-cost-to-connect-all-points/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["array", "union_find", "graph", "minimum_spanning_tree"]
+companies = ["amazon", "microsoft", "google"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["MinimumSpanningTree", "DisjointSet"]
+patterns         = ["prim_mst", "kruskal_mst", "dense_graph_optimization"]
+families         = ["graph", "minimum_spanning_tree"]
+data_structures  = ["heap", "union_find", "array"]
+algorithms       = ["prim", "kruskal", "greedy"]
+related_problems = ["0778", "1135", "1168", "1489"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/1584_min_cost_to_connect_all_points.py"
+generator = "generators/1584_min_cost_to_connect_all_points.py"
+tests_dir = "tests/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionPrim"
+method = "minCostConnectPoints"
+
+api_kernels      = ["MinimumSpanningTree"]
+patterns         = ["prim_mst", "heap_optimization"]
+families         = ["minimum_spanning_tree"]
+data_structures  = ["heap"]
+algorithms       = ["prim", "greedy"]
+related_problems = ["0778", "1135"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n^2 log n) time, O(n^2) space"
+notes      = "Prim's algorithm using min-heap, grows MST by adding minimum edge to unvisited"
+
+[[solutions]]
+key    = "kruskal"
+class  = "SolutionKruskal"
+method = "minCostConnectPoints"
+
+api_kernels      = ["MinimumSpanningTree", "DisjointSet"]
+patterns         = ["kruskal_mst", "edge_sorting"]
+families         = ["minimum_spanning_tree"]
+data_structures  = ["union_find", "array"]
+algorithms       = ["kruskal", "union_find", "sorting"]
+related_problems = ["0684", "0721", "1135"]
+
+role       = "variant"
+variant    = "kruskal"
+based_on   = []
+delta      = "Sort all edges globally, use Union-Find to avoid cycles"
+complexity = "O(n^2 log n) time, O(n^2) space"
+notes      = "Kruskal's algorithm processes edges in sorted order with Union-Find"
+
+[[solutions]]
+key    = "prim_optimized"
+class  = "SolutionPrimOptimized"
+method = "minCostConnectPoints"
+
+api_kernels      = ["MinimumSpanningTree"]
+patterns         = ["prim_mst", "dense_graph_optimization"]
+families         = ["minimum_spanning_tree"]
+data_structures  = ["array"]
+algorithms       = ["prim", "greedy"]
+related_problems = ["1135", "1168"]
+
+role       = "variant"
+variant    = "prim_optimized"
+based_on   = ["1584#default"]
+delta      = "Replace heap with linear scan - optimal for complete/dense graphs"
+complexity = "O(n^2) time, O(n) space"
+notes      = "Optimal for dense graphs where O(n^2) is unavoidable due to edge count"
