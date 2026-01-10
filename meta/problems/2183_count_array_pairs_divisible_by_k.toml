@@ -1,0 +1,47 @@
+# 2183 - Count Array Pairs Divisible by K
+# https://leetcode.com/problems/count-array-pairs-divisible-by-k/
+
+[problem]
+id = "2183"
+title = "Count Array Pairs Divisible by K"
+difficulty = "hard"
+categories = ["array", "math", "number-theory"]
+tags = ["gcd", "divisor-counting", "pair-counting"]
+
+[solutions.default]
+name = "GCD-Based Counting"
+time_complexity = "O(n * d(k))"
+space_complexity = "O(d(k))"
+description = """
+Key insight: a*b divisible by k iff gcd(a,k)*gcd(b,k) has all prime factors of k.
+Reduce each number to its gcd with k. Count occurrences of each gcd value.
+For each pair of gcd values, check if their product is divisible by k.
+Number of distinct gcd values is at most d(k), the divisor count of k.
+"""
+
+[analysis]
+key_insight = """
+Instead of checking n^2 pairs, observe that only gcd(num, k) matters.
+Two numbers a, b satisfy k | a*b iff k | gcd(a,k)*gcd(b,k).
+Since gcd values are divisors of k, there are at most d(k) ≤ 128 distinct values.
+This reduces the problem to O(d(k)^2) gcd-pair checks.
+"""
+
+edge_cases = [
+    "k = 1 (all pairs valid)",
+    "Prime k (only multiples of k contribute)",
+    "No valid pairs (coprime to k)",
+    "All elements are multiples of k",
+    "Single element array",
+]
+
+[ontology]
+api_kernels = ["gcd", "divisor-enumeration", "counting"]
+patterns = ["gcd-reduction", "pair-counting", "value-compression"]
+families = ["number-theory", "counting"]
+techniques = ["divisor-compression", "gcd-property"]
+
+[metadata]
+leetcode_id = 2183
+acceptance_rate = 30.45
+related_problems = ["1862", "0204", "2654"]
