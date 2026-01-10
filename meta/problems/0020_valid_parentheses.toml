@@ -1,0 +1,70 @@
+# Problem: Valid Parentheses
+# https://leetcode.com/problems/valid-parentheses/
+
+# ===== Problem Info =====
+id = "0020"
+slug = "0020_valid_parentheses"
+title = "Valid Parentheses"
+leetcode_id = 20
+url = "https://leetcode.com/problems/valid-parentheses/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "easy"
+topics = ["string", "stack"]
+companies = ["amazon", "google", "meta", "microsoft", "apple", "bloomberg", "uber"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75", "grind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["StackMatching"]
+patterns         = ["stack_matching", "bracket_validation"]
+families         = ["stack_operations", "string_validation"]
+data_structures  = ["stack", "hash_map"]
+algorithms       = []
+related_problems = ["0022", "0032", "0921", "1541"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0020_valid_parentheses.py"
+generator = "generators/0020_valid_parentheses.py"
+tests_dir = "tests/0020_valid_parentheses/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionStack"
+method = "isValid"
+
+api_kernels      = ["StackMatching"]
+patterns         = ["stack_matching"]
+families         = ["stack_operations"]
+data_structures  = ["stack", "hash_map"]
+algorithms       = []
+related_problems = ["0032", "0921"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n) time, O(n) space"
+notes      = "Classic stack solution. Push opens, pop and match for closes. Hash map for O(1) pair lookup."
+
+[[solutions]]
+key    = "replace"
+class  = "SolutionReplace"
+method = "isValid"
+
+api_kernels      = []
+patterns         = ["iterative_elimination"]
+families         = ["string_manipulation"]
+data_structures  = ["string"]
+algorithms       = []
+related_problems = []
+
+role       = "variant"
+variant    = "replace"
+based_on   = ["0020#default"]
+delta      = "Repeatedly remove matched pairs until string is empty"
+complexity = "O(n²) time, O(n) space"
+notes      = "Simple but inefficient. Good for understanding but not for production."
