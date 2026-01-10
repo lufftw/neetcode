@@ -1,0 +1,32 @@
+# Problem: Split Array With Same Average
+# https://leetcode.com/problems/split-array-with-same-average/
+
+id = "0805"
+slug = "0805_split_array_with_same_average"
+title = "Split Array With Same Average"
+leetcode_id = 805
+url = "https://leetcode.com/problems/split-array-with-same-average/"
+
+difficulty = "hard"
+topics = ["array", "math", "dynamic_programming", "bitmask"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["subset_sum_dp"]
+patterns         = ["average_partition", "subset_with_constraint"]
+families         = ["subset_sum"]
+data_structures  = ["set"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0416", "0494"]
+
+[files]
+solution  = "solutions/0805_split_array_with_same_average.py"
+generator = "generators/0805_split_array_with_same_average.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "splitArraySameAverage"
+complexity = "O(n * S * n/2) time, O(n * S) space"
+notes  = "DP with size tracking. For subset of size k, target sum = S*k/n. Check valid k where S*k % n == 0."
