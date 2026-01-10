@@ -1,0 +1,32 @@
+# Problem: Special Permutations
+# https://leetcode.com/problems/special-permutations/
+
+id = "2741"
+slug = "2741_special_permutations"
+title = "Special Permutations"
+leetcode_id = 2741
+url = "https://leetcode.com/problems/special-permutations/"
+
+difficulty = "medium"
+topics = ["array", "dynamic-programming", "bit-manipulation", "bitmask"]
+companies = []
+roadmaps = []
+
+api_kernels      = ["bitmask_dp", "permutation_count"]
+patterns         = ["state_compression", "subset_enumeration"]
+families         = ["counting_dp"]
+data_structures  = ["array", "2d_array"]
+algorithms       = ["dynamic_programming", "bit_manipulation"]
+related_problems = ["0046", "0078", "0698", "0526"]
+
+[files]
+solution  = "solutions/2741_special_permutations.py"
+generator = "generators/2741_special_permutations.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "Solution"
+method = "specialPerm"
+complexity = "O(n^2 * 2^n) time, O(n * 2^n) space"
+notes  = "Bitmask DP tracking used elements and last element in permutation."
