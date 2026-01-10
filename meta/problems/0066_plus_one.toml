@@ -1,0 +1,39 @@
+# Problem: Plus One
+# https://leetcode.com/problems/plus-one/
+
+id = "0066"
+slug = "0066_plus_one"
+title = "Plus One"
+leetcode_id = 66
+url = "https://leetcode.com/problems/plus-one/"
+
+difficulty = "easy"
+topics = ["array", "math"]
+companies = ["google", "amazon", "apple"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["CarryPropagation"]
+patterns         = ["right_to_left_scan", "digit_manipulation"]
+families         = ["array", "math"]
+data_structures  = ["array"]
+algorithms       = ["carry_propagation"]
+related_problems = ["0067", "0369", "0989"]
+
+[files]
+solution  = "solutions/0066_plus_one.py"
+generator = "generators/0066_plus_one.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionIterative"
+method = "plusOne"
+complexity = "O(n) time, O(1) space"
+notes      = "Right-to-left with carry propagation"
+
+[[solutions]]
+key    = "pythonic"
+class  = "SolutionPythonic"
+method = "plusOne"
+complexity = "O(n) time, O(n) space"
+notes      = "Convert to int, add, convert back"
