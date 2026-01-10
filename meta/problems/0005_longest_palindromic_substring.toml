@@ -1,0 +1,89 @@
+# Problem: Longest Palindromic Substring
+# https://leetcode.com/problems/longest-palindromic-substring/
+
+# ===== Problem Info =====
+id = "0005"
+slug = "0005_longest_palindromic_substring"
+title = "Longest Palindromic Substring"
+leetcode_id = 5
+url = "https://leetcode.com/problems/longest-palindromic-substring/"
+
+# ===== LeetCode Official Metadata =====
+difficulty = "medium"
+topics = ["string", "dynamic_programming"]
+companies = ["amazon", "microsoft", "google", "meta", "apple", "bloomberg"]
+
+# ===== Roadmaps =====
+roadmaps = ["neetcode_150", "blind_75"]
+
+# ===== Ontology Tags (Problem Level) =====
+api_kernels      = ["PalindromeExpansion", "IntervalDP"]
+patterns         = ["expand_around_center", "interval_dp_palindrome"]
+families         = ["palindrome", "substring_search"]
+data_structures  = ["string", "array"]
+algorithms       = ["dynamic_programming", "two_pointers"]
+related_problems = ["0516", "0647", "0214", "0131"]
+
+# ===== File Locations =====
+[files]
+solution  = "solutions/0005_longest_palindromic_substring.py"
+generator = "generators/0005_longest_palindromic_substring.py"
+tests_dir = "tests/0005_longest_palindromic_substring/"
+
+# ===== Solutions =====
+[[solutions]]
+key    = "default"
+class  = "SolutionExpandCenter"
+method = "longestPalindrome"
+
+api_kernels      = ["PalindromeExpansion"]
+patterns         = ["expand_around_center"]
+families         = ["palindrome"]
+data_structures  = ["string"]
+algorithms       = ["two_pointers"]
+related_problems = ["0647"]
+
+role       = "base"
+variant    = ""
+based_on   = []
+delta      = ""
+complexity = "O(n²) time, O(1) space"
+notes      = "Expand from each center - optimal interview solution. Handles both odd and even length palindromes."
+
+[[solutions]]
+key    = "dp"
+class  = "SolutionDP"
+method = "longestPalindrome"
+
+api_kernels      = ["IntervalDP"]
+patterns         = ["interval_dp_palindrome"]
+families         = ["palindrome", "dynamic_programming_sequence"]
+data_structures  = ["string", "array"]
+algorithms       = ["dynamic_programming"]
+related_problems = ["0516", "0131"]
+
+role       = "variant"
+variant    = "dp"
+based_on   = ["0005#default"]
+delta      = "Uses 2D DP table to track palindrome substrings"
+complexity = "O(n²) time, O(n²) space"
+notes      = "Classic interval DP approach. Good for understanding DP on substrings."
+
+[[solutions]]
+key    = "manacher"
+class  = "SolutionManacher"
+method = "longestPalindrome"
+
+api_kernels      = ["ManacherAlgorithm"]
+patterns         = ["manacher_palindrome"]
+families         = ["palindrome"]
+data_structures  = ["string", "array"]
+algorithms       = []
+related_problems = ["0214"]
+
+role       = "variant"
+variant    = "manacher"
+based_on   = ["0005#default"]
+delta      = "O(n) using Manacher's algorithm with transformed string"
+complexity = "O(n) time, O(n) space"
+notes      = "Theoretically optimal but complex. Uses palindrome symmetry to skip redundant checks."
