@@ -1,0 +1,39 @@
+# Problem: Same Tree
+# https://leetcode.com/problems/same-tree/
+
+id = "0100"
+slug = "0100_same_tree"
+title = "Same Tree"
+leetcode_id = 100
+url = "https://leetcode.com/problems/same-tree/"
+
+difficulty = "easy"
+topics = ["tree", "depth_first_search", "breadth_first_search", "binary_tree"]
+companies = ["amazon", "microsoft", "google"]
+roadmaps = ["neetcode_150"]
+
+api_kernels      = ["TreeTraversal", "ParallelComparison"]
+patterns         = ["simultaneous_traversal", "recursive_comparison"]
+families         = ["tree", "dfs", "bfs"]
+data_structures  = ["binary_tree", "queue"]
+algorithms       = ["dfs", "bfs"]
+related_problems = ["0101", "0104", "0572"]
+
+[files]
+solution  = "solutions/0100_same_tree.py"
+generator = "generators/0100_same_tree.py"
+tests_dir = "tests/"
+
+[[solutions]]
+key    = "default"
+class  = "SolutionRecursive"
+method = "isSameTree"
+complexity = "O(n) time, O(h) space"
+notes      = "Recursive DFS comparing structure and values"
+
+[[solutions]]
+key    = "iterative"
+class  = "SolutionIterative"
+method = "isSameTree"
+complexity = "O(n) time, O(w) space"
+notes      = "Iterative BFS with parallel node pairs"
